@@ -1,0 +1,33 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Hugo: server (local)",
+      "type": "shell",
+      "command": "hugo",
+      "args": [
+        "server",
+        "--disableFastRender",
+        "--port",
+        "1313",
+        "--baseURL",
+        "http://localhost:1313/",
+        "--appendPort=false"
+      ],
+      "isBackground": true,
+      "problemMatcher": {
+        "pattern": [{ "regexp": ".*" }],
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "Start building sites",
+          "endsPattern": "Web Server is available at"
+        }
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": false
+      }
+    }
+  ]
+}
