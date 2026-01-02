@@ -1,0 +1,7 @@
+{{ define "main" }}
+<main style="max-width: 60ch; margin: 3rem auto; font-family: system-ui, -apple-system, sans-serif; line-height: 1.5;">
+  <h1>{{ .Title }}</h1>
+  {{ with .Date }}<p><small>{{ .Format "2006-01-02" }}</small></p>{{ end }}
+  {{ .Content }}
+</main>
+{{ end }}
