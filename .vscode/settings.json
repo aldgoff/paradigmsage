@@ -1,0 +1,10 @@
+{
+  "files.associations": {
+    "**/layouts/**/*.html": "gotmpl",
+    "**/themes/**/layouts/**/*.html": "gotmpl",
+    "**/*.gohtml": "gotmpl",
+    "**/*.gotmpl": "gotmpl",
+    "**/*.tmpl": "gotmpl",
+    "**/*.tpl": "gotmpl"
+  }
+}

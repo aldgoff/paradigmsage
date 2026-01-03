@@ -3,10 +3,45 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>{{ .Title }}</title>
+  <title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }} · {{ site.Title }}{{ end }}</title>
 </head>
-<body>
-  {{ block "main" . }}{{ end }}
+
+<body style="margin:0; font-family: system-ui, -apple-system, sans-serif; line-height: 1.5;">
+  <header style="border-bottom:1px solid #ddd; padding:0.75rem 1rem;">
+    <nav style="max-width: 72rem; margin: 0 auto; display:flex; gap:1rem; align-items:baseline; flex-wrap:wrap;">
+      <a href="/" style="font-weight:700; text-decoration:none; color:inherit;">
+        {{ site.Title }}
+      </a>
+
+      <span style="opacity:0.35;">|</span>
+
+      {{ $p := .RelPermalink }}
+      {{ $items := slice
+        (dict "name" "Start Here"      "url" "/start-here/")
+        (dict "name" "Quantum"         "url" "/quantum/")
+        (dict "name" "3D Chess"        "url" "/3d-chess/")
+        (dict "name" "Self-Reference"  "url" "/self-reference/")
+      }}
+
+      {{ range $items }}
+        {{ $active := or (eq $p .url) (hasPrefix $p .url) }}
+        <a href="{{ .url }}"
+           style="text-decoration:none; color:inherit; padding:0.15rem 0.35rem; border-radius:0.35rem; {{ if $active }}background:#eee; font-weight:600;{{ end }}">
+          {{ .name }}
+        </a>
+      {{ end }}
+    </nav>
+  </header>
+
+  <main style="max-width: 60ch; margin: 2rem auto; padding: 0 1rem;">
+    {{ block "main" . }}{{ end }}
+  </main>
+
+  <footer style="border-top:1px solid #ddd; padding:1rem; margin-top:2rem; font-size:0.9rem; opacity:0.8;">
+    <div style="max-width: 72rem; margin: 0 auto; padding: 0 1rem;">
+      © {{ now.Format "2006" }} {{ site.Title }}
+    </div>
+  </footer>
 </body>
 </html>
 
