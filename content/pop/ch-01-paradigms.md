@@ -1,8 +1,10 @@
 ---
 title: "Ch1 — Paradigms"
 order: "01-ch"
+date: "2026-01-05"
 params:
   role: "ch"
+  nickname: "Paradigms"
 ---
 
 **Chapter 1**

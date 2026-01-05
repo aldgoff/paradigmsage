@@ -1,8 +1,10 @@
 ---
 title: "PD1 — Boxes"
 order: "01-pd"
+date: "2026-01-05"
 params:
   role: "pd"
+  nickname: "Boxes"
 ---
 
 **The Paradigm Discourses**

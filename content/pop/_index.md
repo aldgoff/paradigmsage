@@ -1,6 +1,5 @@
 ---
 title: "The Paradigm of Paradox"
-type: "book"
 ---
 
 This is a book in progress.
