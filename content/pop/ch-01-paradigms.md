@@ -1,5 +1,5 @@
 ---
-title: "Ch1 — Paradigms"
+title: "Paradigms"
 order: "01-b"
 date: "2026-01-05"
 params:
@@ -9,7 +9,7 @@ params:
 
 **Chapter 1**
 
-"Paradigms"
+### Paradigms
 
 *Credit – Cannot find artist: “Wagon on Square Wheels” (need permission)*
 

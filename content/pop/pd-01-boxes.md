@@ -1,5 +1,5 @@
 ---
-title: "PD1 — Boxes"
+title: "Boxes"
 order: "01-a"
 date: "2026-01-05"
 params:
@@ -9,7 +9,7 @@ params:
 
 **Paradigm Discourse 1**
 
-"Boxes"
+### Boxes
 
 *A story is worth a thousand pictures.*
 
