@@ -1,11 +1,11 @@
 {{ define "main" }}
 <div style="display:flex; gap:2rem;">
 
-  <aside style="width:18rem; flex-shrink:0; font-size:0.9rem;">
+  <aside style="width:13rem; flex-shrink:0; font-size:0.9rem;">
     {{ partial "pop-nav.html" . }}
   </aside>
 
-  <section style="flex:1; min-width:0;">
+  <section style="flex:1; min-width:0; max-width:60ch;">
     {{ .Content }}
   </section>
 
