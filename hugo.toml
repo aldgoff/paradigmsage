@@ -2,3 +2,8 @@ baseURL = "https://aldgoff.github.io/paradigmsage/"
 languageCode = "en-us"
 title = "Paradigm Sage"
 
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+
