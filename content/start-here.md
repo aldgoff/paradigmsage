@@ -15,9 +15,11 @@ Apparently nature has conned us;
 65 million years of evolution have programmed our instincts to be at odds with fundamental realitiy.
 Oh, they work great at the classical level (all we were missing was the calculus), but at the quantum level - at the quantum level we are chumps.
 
-We are naive about the nature of reality, but why?
+So, we are naive about the nature of reality; challenge accepted.
 Most quests begin with an epiphany, that *Aha* moment when the data lines up in a beautiful but unexpected way.
-This reseach stems from a pair of epiphanies; *self-reference* and *games*.
+This research stems from a pair of epiphanies; *self-reference* and *games*.
+Self-reference is at the heart of the major limit theorems of the last century - proofs that show where formal systems fail.
+Games are toy universes, perfect for building intuition - standard scientific reductionism.
 They offer some hope of *understanding* quantum systems, not just computing them,
 not just predicting uncertain futures and fuzzy pasts, but actually developing an intuition about their nature.
 
