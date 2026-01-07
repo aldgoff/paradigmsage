@@ -19,14 +19,15 @@ We are naive about the nature of reality, but why?
 Most quests begin with an epiphany, that *Aha* moment when the data lines up in a beautiful but unexpected way.
 This reseach stems from a pair of epiphanies; *self-reference* and *games*.
 They offer some hope of *understanding* quantum systems, not just computing them,
-not just predicting futures and pasts, but actually developing an intuition about their nature.
+not just predicting uncertain futures and fuzzy pasts, but actually developing an intuition about their nature.
 
-It has been claimed that one should start at the begnning, but a paradigm shift is a gestalt phenomenon - it emerges as an integrated whole, no beginning, no ending, but rather a fixed structure where every internal depends on the other internals.
+It has been claimed that one should start at the begnning, but a paradigm shift is a gestalt phenomenon - it emerges as an integrated whole, no beginning, no ending, but rather an intricate structure where every internal depends on other internals.
 You either see it, or you don't - all at once, or not at all.
 Therefore, this site, like the research itself, is free form.
-Dive in, somewhere, anywhere, expecting that after several dives that elusive *Aha* momement will arrive,
-that momenent when the trauma of being lost in a jungle gives way to the relief of grokking that you are actally in an orchard,
+Dive in, somewhere, anywhere, trusting that after enough dives that elusive *Aha* momement will arrive,
+that momenent when the trauma of being lost in a jungle gives way to the relief of grokking that you are actually in an orchard,
 ordered, regular, structured, even planned - each tree neatly laid out, producing a structure of sublime beauty.
+All it took, was a change in perspective.
 
 Epiphanies are my great joy in life - it is my pleasure to share them with you.
 
