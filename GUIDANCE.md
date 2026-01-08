@@ -1,9 +1,42 @@
 # GUIDANCE.md
 *This file is append-only; decisions here are not silently reversed.*
 
+This file exists solely to restore critical assistant context after chat resets or model degradation. 
+It is not a project spec.
+
 ## Purpose
-  Captures AI behavior constraints, lessons learned, and meta-specs that must persist across chats.
+  Captures AI behavior constraints and lessons learned that must persist across chats.
   Upload immediately upon starting a new chat.
+
+## Mission Lock
+  Paradigm Sage is a long-horizon, cross-disciplinary research program centered on
+  the quantum measurement problem, using games and self-reference to rebuild intuition,
+  and deliberately presented in public to establish intellectual coherence,
+  seriousness, and audience demand beyond traditional academic channels.
+
+## Project Posture
+  - This site serves as a durable public record demonstrating sustained interest
+    in cross-disciplinary research that does not fit standard academic channels.
+  - Content is written to signal seriousness, depth, and long-form potential
+    (books, research programs), not to optimize for traffic or virality.
+
+## New Chat Reboot Protocol
+  ### 1. Upload GUIDANCE.md
+    The whole file.
+  ### 2. Paste One Relevant Context Artifact
+    Choose one, based on the chat:
+    - tree -I public -I GUIDANCE  (structure)
+    - _index.md                   (site intent)
+    - start-here.md               (reader posture)
+
+  ### 3. Declare the Chat Scope
+    Example: This chat is about framing QT3 for the site.
+
+## Consult Triggers
+  - Starting a new chat
+  - Assistant performance degrades or becomes verbose
+  - Repeated disagreement about prior decisions
+  - Before proposing structural changes
 
 ## SWE Principles
   - SPOT (Single Point of Truth)
@@ -11,31 +44,9 @@
   - Deletion as a design litmus test
   - Hypercube idiom (orthogonal development axes, linear amount of *code*, polynomial behavior)
 
-## Style
-  - Pedagogy over engagement metrics (explicit non-goal: optimization for clicks or retention)
-
-## Hugo Constraints
-  - Type-driven layouts (no topic-specific layouts)
-  - Global partials only (namespaced under layouts/partials/)
-  - Static assets served from static/
-  - Markdown may include raw HTML when needed
-
-## Navigation Semantics
-  - Nav entries consist of date + nickname (CCYY/MM/DD – nickname).
-  - Titles may be longer and need not fit in nav.
-  - Hover may reveal full title and/or brief description; not required.
-
-## Tooling Lessons Learned
-  - If updates fail, always attempt cache refresh before debugging.
-  - Canonical writing is done in Word; Markdown is a publishing format.
-  - Convert Word → Markdown via Pandoc.
-  - Images reside under static/assets/.
-
 ## Assistant Interaction Rules
   - Prefer structure over implementation
   - No guessing: explain Hugo rules when they exist
   - Alphabetize trees
   - Small steps, validated locally
 
-## Open Questions (Non-binding)
-  …
