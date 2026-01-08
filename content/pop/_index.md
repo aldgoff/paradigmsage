@@ -3,8 +3,7 @@ title: "The Paradigm of Paradox"
 ---
 
 This is a serialization of a book in progress.
-The "The Paradigm of Paradox" is an investigation into the potential for 
-self-reference to be the key to the quantum measurement problem.
+The "The Paradigm of Paradox" is an investigation into self-reference as the key to the quantum measurement problem.
 
 Preceeding each technical chapter is a *Paradigm Discourse* — a short, fictional dialogue
 between recurring characters. These discourses are not decorative; they introduce the

@@ -9,6 +9,7 @@
 <!--  NAV TODO (intentionally excluded from $items to avoid dead links)
         (dict "name" "3D Chess"             "path" "3d-chess/")
         (dict "name" "Self-Reference"       "path" "self-reference/")
+        (dict "name" "Quantum Tic-Tac-Toe"  "path" "qt3/")
 -->
 
 <body style="margin:0; font-family: system-ui, -apple-system, sans-serif; line-height: 1.5;">
@@ -23,8 +24,9 @@
       {{ $p := .RelPermalink }}
       {{ $items := slice
         (dict "name" "Start Here"           "path" "start-here/")
-        (dict "name" "Quantum"              "path" "quantum/")
         (dict "name" "Paradigm of Paradox"  "path" "pop/")
+        (dict "name" "Quantum Tic-Tac-Toe"  "path" "qt3/")
+        (dict "name" "Quantum"              "path" "quantum/")
       }}
 
       {{ range $items }}
