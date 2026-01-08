@@ -1,5 +1,6 @@
 ---
 title: "The Paradigm of Paradox"
+type: "serial"
 ---
 
 This is a serialization of a book in progress.
