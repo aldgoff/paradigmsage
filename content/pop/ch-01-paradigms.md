@@ -1,5 +1,6 @@
 ---
 title: "Paradigms"
+type: "serial"
 order: "01-b"
 date: "2026-01-05"
 params:

@@ -1,5 +1,6 @@
 ---
 title: "Boxes"
+type: "serial"
 order: "01-a"
 date: "2026-01-05"
 params:
