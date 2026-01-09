@@ -1,5 +1,6 @@
 <nav style="font-size:0.9rem; line-height:1.4;">
   <ul style="list-style:none; padding-left:0;">
+
     <li style="margin-bottom:0.75rem;">
       <a href="{{ .root.RelPermalink }}" style="font-weight:600; font-style:italic;">Hub</a>
     </li>
@@ -7,7 +8,19 @@
     {{ range .root.Sections }}
       <li style="margin-bottom:0.5rem;">
         <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+
+        {{ if .Pages }}
+          <ul style="list-style:none; padding-left:1rem; margin-top:0.25rem;">
+            {{ range .Pages }}
+              <li>
+                <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+              </li>
+            {{ end }}
+          </ul>
+        {{ end }}
+
       </li>
     {{ end }}
+
   </ul>
 </nav>
