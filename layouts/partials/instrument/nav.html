@@ -1,12 +1,12 @@
-<nav>
-  <ul>
-    <li>
-      <a href="{{ .root.RelPermalink }}"><strong>Hub</strong></a>
+<nav style="font-size:0.9rem; line-height:1.4;">
+  <ul style="list-style:none; padding-left:0;">
+    <li style="margin-bottom:0.75rem;">
+      <a href="{{ .root.RelPermalink }}" style="font-weight:600; font-style:italic;">Hub</a>
     </li>
 
     {{ range .root.Sections }}
-      <li>
-        <a href="{{ .RelPermalink }}"><strong>{{ .Title }}</strong></a>
+      <li style="margin-bottom:0.5rem;">
+        <a href="{{ .RelPermalink }}">{{ .Title }}</a>
       </li>
     {{ end }}
   </ul>
