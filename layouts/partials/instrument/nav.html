@@ -1,0 +1,13 @@
+<nav>
+  <ul>
+    <li>
+      <a href="{{ .root.RelPermalink }}"><strong>Hub</strong></a>
+    </li>
+
+    {{ range .root.Sections }}
+      <li>
+        <a href="{{ .RelPermalink }}"><strong>{{ .Title }}</strong></a>
+      </li>
+    {{ end }}
+  </ul>
+</nav>
