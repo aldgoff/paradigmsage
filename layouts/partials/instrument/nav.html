@@ -2,10 +2,13 @@
   <ul style="list-style:none; padding-left:0;">
 
     <li style="margin-bottom:0.75rem;">
-      <a href="{{ .root.RelPermalink }}" style="font-weight:600; font-style:italic;">Hub</a>
+      <a href="{{ .RelPermalink }}"
+         style="font-weight:600; font-style:italic;">
+        Hub
+      </a>
     </li>
 
-    {{ range .root.Sections }}
+    {{ range .Sections }}
       <li style="margin-bottom:0.5rem;">
         <a href="{{ .RelPermalink }}">{{ .Title }}</a>
 

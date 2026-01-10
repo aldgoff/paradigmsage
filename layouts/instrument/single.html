@@ -2,7 +2,7 @@
 <div style="display:flex; gap:2rem; max-width: 80ch; margin: 3rem auto;">
 
   <aside style="width:16rem; flex-shrink:0; font-size:0.9rem;">
-    {{ partial "instrument/nav.html" . }}
+    {{ partial "instrument/nav.html" .CurrentSection.Parent }}
   </aside>
 
   <main style="max-width: 60ch; font-family: system-ui, -apple-system, sans-serif; line-height: 1.5;">
