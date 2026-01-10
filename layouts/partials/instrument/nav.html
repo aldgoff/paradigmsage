@@ -8,22 +8,34 @@
       </a>
     </li>
 
-    {{ range .Sections }}
-      <li style="margin-bottom:0.5rem;">
-        <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+{{ if .Sections }}
 
-        {{ if .Pages }}
-          <ul style="list-style:none; padding-left:1rem; margin-top:0.25rem;">
-            {{ range .Pages }}
-              <li>
-                <a href="{{ .RelPermalink }}">{{ .Title }}</a>
-              </li>
-            {{ end }}
-          </ul>
-        {{ end }}
+  {{ range .Sections }}
+    <li style="margin-bottom:0.5rem;">
+      <a href="{{ .RelPermalink }}">{{ .Title }}</a>
 
-      </li>
-    {{ end }}
+      {{ if .Pages }}
+        <ul style="list-style:none; padding-left:1rem; margin-top:0.25rem;">
+          {{ range .Pages }}
+            <li>
+              <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+            </li>
+          {{ end }}
+        </ul>
+      {{ end }}
+
+    </li>
+  {{ end }}
+
+{{ else if .Pages }}
+
+  {{ range .Pages }}
+    <li style="margin-bottom:0.5rem;">
+      <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+    </li>
+  {{ end }}
+
+{{ end }}
 
   </ul>
 </nav>
