@@ -1,4 +1,26 @@
-![](assets/pop/ch/media/image1.tiff){width="6.177906824146982in" height="2.0282239720034996in"}
+---
+title: "Paradox"
+type: "serial"
+order: "02-b"
+date: "2026-01-12"
+source:
+  format: "docx"
+  id: "Ch02 Paradox"
+  version: "14"
+params:
+  role: "ch"
+  nickname: "Ch 2 - Paradox"
+---
+
+**Chapter 2**
+
+### Paradox
+
+<img
+  src="/paradigmsage/assets/pop/ch/media/ch-02-portent.png"
+  alt="Portent 2 — Logic"
+  style="width: 100%; height: auto;"
+/>
 
 *Credit -- Fox Trot: "Logic" (need permission)*
 
@@ -50,13 +72,10 @@ Equation (4) is the analog to the first sentence of this chapter, while equation
 
 To maintain this complementary relationship in the translation from math to logic, it is required to introduce two unary operators, [not]{.smallcaps} and [buf]{.smallcaps}. The intent of the [not]{.smallcaps} operator is to perform negation, and the intent of the [buf]{.smallcaps} operator (short for buffer) is to perform duplication. As is well known, [not]{.smallcaps} T is F, and [not]{.smallcaps} F is T, and it should be obvious that [buf]{.smallcaps} T is T, and [buf]{.smallcaps} F is F. The surprise is that [not]{.smallcaps} i is i, and [not]{.smallcaps} j is j, just the opposite of the case for the Boolean truthvalues, with the further inversion that [buf]{.smallcaps} i is j, and [buf]{.smallcaps} j is i, again opposite. With this formal notation it is now trivial to evaluate each of the two self-referential statements in both sets of truthvalues. For clarity, the evaluations are presented in a table.
 
-  ---------------------------------------------------------------------------------------
-  **Self-referential Statement**   **Boolean Truthvalues**    **Imaginary Truthvalues**
-  -------------------------------- -------------------------- ---------------------------
-  This statement is true.          Indeterminate over T & F   Paradoxical over i & j
-
-  This statement is false.         Paradoxical over T & F     Indeterminate over i & j
-  ---------------------------------------------------------------------------------------
+| **Self-referential Statement**  | **Boolean Truthvalues**     | **Imaginary Truthvalues**    |
+|:------------------------------- |:--------------------------- |:---------------------------- |
+| This statement is true.         | Indeterminate over T & F    | Paradoxical over i & j       |
+| This statement is false.        | Paradoxical over T & F      | Indeterminate over i & j     |
 
 > Table 2-1: **Evaluation of the basic self-referential statements** -- Each self-referential statement is paradoxical in one truthvalue basis, but indeterminate in the other.
 

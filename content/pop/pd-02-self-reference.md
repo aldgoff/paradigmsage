@@ -1,3 +1,21 @@
+---
+title: "Self-Reference"
+type: "serial"
+order: "02-a"
+date: "2026-01-12"
+source:
+  format: "docx"
+  id: "PD02 SelfReference"
+  version: "10"
+params:
+  role: "pd"
+  nickname: "PD 2 - SelfReference"
+---
+
+**Paradigm Discourse 2**
+
+### Self-Reference
+
 *What are the odds that a random guess will get the right answer to this question?*
 
 A.  *25%*

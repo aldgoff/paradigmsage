@@ -53,10 +53,24 @@
     docx-to-md
     "Usage: docx-to-md <topic> <role> <input.docx> <output.md>"
     <role> may only apply to PoP - will need to be modified for other topics.
-  ### 1. Extract Figures
-    Open in word, select figure, right click "Save as Picture...".
 
-  ### 2. Extract Equations
+  ### 1. Add Front Matter
+    This drives the nav system.
+    Hugo will not publish nor set up nav for pages in the future.
+    To confirm behaviour, relaunch: Hugo server --buildFuture.
+
+  ### 2. Extract Figures
+    Open in word, select figure, right click "Save as Picture...".
+    Replace the asset line from the pandoc conversion.
+      ```
+      <img
+        src="/paradigmsage/assets/pop/ch/media/ch-0N-portent.png"
+        alt="Portent N — <title>"
+        style="width: 100%; height: auto;"
+      />
+      ```
+
+  ### 3. Extract Equations
     yada
 
 ## Potential Topic List
