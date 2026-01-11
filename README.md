@@ -53,6 +53,11 @@
     docx-to-md
     "Usage: docx-to-md <topic> <role> <input.docx> <output.md>"
     <role> may only apply to PoP - will need to be modified for other topics.
+  ### 1. Extract Figures
+    Open in word, select figure, right click "Save as Picture...".
+
+  ### 2. Extract Equations
+    yada
 
 ## Potential Topic List
   I have a doc somewhere that lays this out, but as a first pass...
