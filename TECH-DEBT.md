@@ -12,3 +12,7 @@
 
 ## 4. No visitor stats yet.
   This is how we validate the site is engaging our target demographic.
+
+## 5. Inconsistent nav-typography elements.
+  Need to disentangle and layer properly.
+  

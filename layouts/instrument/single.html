@@ -5,7 +5,7 @@
     {{ partial "instrument/nav.html" .CurrentSection.Parent }}
   </aside>
 
-  <main style="max-width: 60ch; font-family: system-ui, -apple-system, sans-serif; line-height: 1.5;">
+  <main style="max-width: 70ch; font-family: system-ui, -apple-system, sans-serif; line-height: 1.5;">
     <h1>{{ .Title }}</h1>
     {{ with .Date }}<p><small>{{ .Format "2006-01-02" }}</small></p>{{ end }}
     {{ .Content }}
