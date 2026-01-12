@@ -30,8 +30,17 @@
   UX should be ultra clear; you are here, by topic, by post, by concept.
   Make it easy for the Intrepid Reader to revisit site without getting lost with a clear idea of what is new.
 
+## Layout versus Content
+  The AI wrote most of this code, so I'm playing catchup to understand the connections.
+  ### Defaults affect the simple pages
+    - home.html => Paradigm Sage
+    - single.htm => Start Here
+  ### Serial affect the PoP pages
+    - list.html => PoP landing page
+    - single.html => PoP leaf pages
+
 ## Architectural Invariants
-  - Nav must encode "where amI?" unambiguously.
+  - Nav must encode "where am I?" unambiguously.
   - Topic role (hypercube separation).
   - Figures live in static/assets, never inline blobs.
   - Instrument nav is hub-anchored.
