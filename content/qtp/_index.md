@@ -18,7 +18,7 @@ type: instrument
   The state of a quantum system is specified by a *wave function*.
   The Schrodinger and Dirac equations specify how the wave function evolves in time.
   For a given situation there are multiple solutions, many wave equations that conform to the physics and conditions.
-  Any linear combination of theses solutions is also a solution.
+  Any linear combination of these solutions is also a solution.
 
 ### Reduction (discontinuous, not differentiable, stochastic)
   No known mechanism.
