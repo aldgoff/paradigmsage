@@ -18,7 +18,11 @@
       - ---
       - <topic>-staging-nn
       ```
-  Release is manual by explicit merging of the stage branch on the day of publication.
+  Release strategy is to develop content on the stage branch.
+  Pages are dated for Monday, but can be viewed locally with 'hugo server --buildfuture'
+  Merge into main over the weekend (or Friday, or whenever).
+  Hugo Pages will publish on the date trigger (UTC).
+  Could actually prepare weeks in advance with this strategy.
   In the case of PoP, stage one is empty, as this workflow was not established yet,
   but I want the full sequence to be obvious.
 
