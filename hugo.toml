@@ -7,3 +7,6 @@ title = "Paradigm Sage"
     [markup.goldmark.renderer]
       unsafe = true
 
+    [markup.goldmark.extensions]
+      table = true
+

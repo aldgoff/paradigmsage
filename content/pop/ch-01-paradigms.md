@@ -3,6 +3,10 @@ title: "Paradigms"
 type: "serial"
 order: "01-b"
 date: "2026-01-05"
+source:
+  format: "docx"
+  id: "Ch01 Paradigms"
+  version: "18"
 params:
   role: "ch"
   nickname: "Ch 1 - Paradigms"

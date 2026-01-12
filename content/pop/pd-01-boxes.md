@@ -3,6 +3,10 @@ title: "Boxes"
 type: "serial"
 order: "01-a"
 date: "2026-01-05"
+source:
+  format: "docx"
+  id: "PD01 Boxes"
+  version: "14"
 params:
   role: "pd"
   nickname: "PD 1 - Boxes"
