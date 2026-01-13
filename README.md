@@ -86,6 +86,12 @@
   ### 3. Extract Equations
     yada
 
+## Hypercube Architecture
+  N dimensional hypercube of orthogonal axes.
+  1. **Topics** (QTP, PoP, QT3, 3DC, etc.)
+  2. **Navigation** (serial, analytic)
+  3. **Typography** (expansive, condensed)
+
 ## Potential Topic List
   I have a doc somewhere that lays this out, but as a first pass...
   - NLL
