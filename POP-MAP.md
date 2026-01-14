@@ -4,7 +4,7 @@ The PoP forest:
 |----|----------------------------|---------------------|------------:|-----:|-----:|----------------------------------------|
 | 01 | Paradigms                  | Boxes               |   451 -- 25 |    6 |    0 | The power and peril of paradigms       |
 | 02 | Paradox                    | Selfreference       |   451 -- 25 |    1 |    4 | Self-reference as sabatoge             |
-| 03 | Relativity                 | Causality           |  1318 -- 25 |    5 |    0 | Timelike and spacelike causes          |
+| 03 | Special Relativity         | Causality           |  1318 -- 25 |    4 |    0 | FTL: Four types of causallity
 | 04 | Quantum Mechanics          | FirmColor           |   393 -- 25 |    0 |    7 | Critical elements of QM
 | 05 | Uncertainty                | Ignoring            |  1260 -- 37 |    0 |    4 | The ignoring and uncertainty principles
 | 06 | Interference               | CrestValley         |  1260 -- 20 |    0 |    0 | Destructive interference
