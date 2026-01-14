@@ -112,3 +112,5 @@ Navigation is considered complete when:
 4. Adding PoP chapters requires no nav changes.
 5. Adding supporting work requires no PoP nav changes.
 6. You stop thinking about navigation while writing content.
+
+“Nav fixes only. Treat the above as axioms.”
