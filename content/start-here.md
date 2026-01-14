@@ -34,7 +34,7 @@ But a story, like a quest, has unavoidable linearity.
 It must be presented, and experienced, one stage at a time.
 
 *Paradigm of Paradox* is an attempt to dive into the tangled morass with some guiderails.
-My hope is that you will find it an engaging and trustworthy guide — that after enough dives, that elusive *Aha* moment will arrive:  
+My hope is that you will find it an engaging and trustworthy guide — that after enough dives, that elusive *Aha* moment will arrive: 
 the moment when the trauma of being lost in a jungle gives way to the relief of realizing you are actually in an orchard; 
 ordered, regular, structured, even planned — each tree neatly laid out, forming a structure of sublime beauty.
 

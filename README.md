@@ -72,7 +72,7 @@
     Hugo will not publish nor set up nav for pages in the future.
     To confirm behaviour, relaunch: Hugo server --buildFuture.
 
-  ### 2. Extract Figures
+  ### 2. Extract Figures (DEPRECATED)
     Open in word, select figure, right click "Save as Picture...".
     Replace the asset line from the pandoc conversion.
       ```
@@ -83,8 +83,20 @@
       />
       ```
 
-  ### 3. Extract Equations
+  ### 3. Extract Equations (DEPRECATED)
     yada
+
+## Development Plan (1/14/26)
+  1. Pre-publish PoP Ch 3 for the 19th (PDF-first, staged).
+  2. Review Ch 1–3 vs WORK-INVENTORY, asking only:
+      “What is demanded, not what is interesting?”
+  3. Fix nav issues as infrastructure, not as content support.
+  4. Demote QT3 to a nav stress test, not reader-facing activation.
+  5. Create one branch per inventory item, explicitly marked as:
+      exploratory
+      supporting
+      or dormant
+  6. Merge branches only when a PoP chapter requires them, never earlier.
 
 ## Hypercube Architecture
   N dimensional hypercube of orthogonal axes.
@@ -106,3 +118,6 @@
   - NTR
   - etc. etc. etc.
   Even I get lost.
+
+### See the Work Inventory Page
+  It provides a more indepth capture.
