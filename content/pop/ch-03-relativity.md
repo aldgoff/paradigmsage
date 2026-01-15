@@ -1,7 +1,6 @@
 ---
 title: "Relativity"
 nav-entry: "Ch 3"
-type: "serial"
 order: "02"
 date: "2026-01-19"
 documents:

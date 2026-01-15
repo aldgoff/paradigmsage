@@ -1,7 +1,7 @@
 <nav>
   {{ $current := .RelPermalink }}
 
-  {{ range .Pages.ByParam "order" }}
+  {{ range .CurrentSection.Pages.ByParam "order" }}
     {{ $active := eq .RelPermalink $current }}
 
     <div style="margin-bottom:0.4rem;">

@@ -1,7 +1,6 @@
 ---
 title: "Paradox"
 nav-entry: "Ch 2"
-type: "serial"
 order: "02"
 date: "2026-01-12"
 documents:

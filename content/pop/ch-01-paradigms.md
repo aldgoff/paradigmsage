@@ -1,7 +1,6 @@
 ---
 title: "Paradigms"
 nav-entry: "Ch 1"
-type: "serial"
 order: "01"
 date: "2026-01-05"
 documents:

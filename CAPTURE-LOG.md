@@ -87,3 +87,10 @@
 
 27. **Tooling insight:**
     GitHub Actions UI provides reliable visibility into build/deploy progress; the Pages UI spinner may lag or fail to update even after completion.
+
+28. **Navigation architecture decision (Gate 2):**
+    Topic expansion is governed by a site-local activation state. PoP and topics must not encode knowledge of each other; integration is editorial and site-specific (O(N) coupling, not O(N²)).
+
+29. **Navigation architecture correction (PoP sovereignty):**
+    Traversal mode (“serial”) must not be encoded as content identity (type). PoP pages are rendered by section-based layouts, and navigation ranges over sibling pages via .CurrentSection.Pages, ensuring correct active-state highlighting and preserving orthogonal hypercube axes.
+
