@@ -1,7 +1,7 @@
 ---
 title: "Relativity"
 nav-entry: "Ch 3"
-order: "02"
+order: "03"
 date: "2026-01-19"
 documents:
   discourse:
