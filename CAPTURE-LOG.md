@@ -94,3 +94,8 @@
 29. **Navigation architecture correction (PoP sovereignty):**
     Traversal mode (“serial”) must not be encoded as content identity (type). PoP pages are rendered by section-based layouts, and navigation ranges over sibling pages via .CurrentSection.Pages, ensuring correct active-state highlighting and preserving orthogonal hypercube axes.
 
+30. **Git workflow invariant (merge semantics):** 
+    All branch merges must use --no-ff. 
+    Fast-forward merges are disallowed so that merges remain visually explicit in history and serve as semantic landmarks. 
+    When discussing or performing a merge, explicitly verify non-fast-forward behavior.
+    
