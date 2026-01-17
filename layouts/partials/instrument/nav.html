@@ -1,0 +1,14 @@
+<nav>
+  <strong>Instruments</strong>
+  <ul style="list-style:none; padding-left:0; margin-top:0.5rem;">
+    {{ range .Pages }}
+      {{ if .IsSection }}
+        <li>
+          <a href="{{ .RelPermalink }}">
+            {{ .Title }}
+          </a>
+        </li>
+      {{ end }}
+    {{ end }}
+  </ul>
+</nav>

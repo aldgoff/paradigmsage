@@ -121,3 +121,14 @@
 
 ### See the Work Inventory Page
   It provides a more indepth capture.
+
+## Git commands:
+  git status
+  git branch
+  git checkout -b pop-staging-04
+  git diff (or VSC diff)
+  "Probably used VSC to commit the changes."
+  git push -u origin pop-staging-04
+  git switch main
+  git merge --no-ff pop-staging-04
+  git log --oneline --decorate --graph --all --boundary
