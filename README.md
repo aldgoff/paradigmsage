@@ -132,3 +132,4 @@
   git switch main
   git merge --no-ff pop-staging-04
   git log --oneline --decorate --graph --all --boundary
+  git push origin main
