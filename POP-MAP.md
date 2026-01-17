@@ -7,7 +7,7 @@ The PoP forest:
 | 03 | Special Relativity         | Causality           |  1318 -- 25 |    4 |    0 | FTL: Four types of causallity
 | 04 | Quantum Mechanics          | FirmColor           |   393 -- 25 |    0 |    7 | Critical elements of QM
 | 05 | Uncertainty                | Ignoring            |  1260 -- 37 |    0 |    4 | The ignoring and uncertainty principles
-| 06 | Interference               | CrestValley         |  1260 -- 20 |    0 |    0 | Destructive interference
+| 06 | Interference               | CrestValley         |  1260 -- 20 |    1 |    0 | Destructive interference
 | 07 | Entanglement               | SCME                |  1260 -- 25 |    0 |    5 | Entanglement conflics with relativity
 | 08 | QTP                        | Zombies             |  1258 -- 29 |    0 |    0 | Quantum Temporal Paradox
 | 09 | R&D                        | Quest               |  1253 -- 25 |    0 |    0 | Invitation to a quest
