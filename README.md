@@ -135,3 +135,14 @@
     Merge msg: "Merge PoP Chapter 7 (Entanglement)."
   git log --oneline --decorate --graph --all --boundary -n 50
   git push origin main
+
+## Cleanup Plan (temporary)
+  git switch -c cleanup-public-surface
+  rm -rf public
+  hugo
+  git status        # sanity check: only expected files changed
+  git commit -am "Clean public surface; remove early quantum section"
+  git switch main
+  git merge --no-ff cleanup-public-surface
+  git branch -d cleanup-public-surface
+  git push
