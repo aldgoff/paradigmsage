@@ -128,8 +128,10 @@
   git checkout -b pop-staging-04
   git diff (or VSC diff)
   "Probably used VSC to commit the changes."
+    Commit msg: "PoP Ch07: staging complete."
   git push -u origin pop-staging-04
   git switch main
   git merge --no-ff pop-staging-04
-  git log --oneline --decorate --graph --all --boundary
+    Merge msg: "Merge PoP Chapter 7 (Entanglement)."
+  git log --oneline --decorate --graph --all --boundary -n 50
   git push origin main
