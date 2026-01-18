@@ -1,6 +1,7 @@
 ---
 title: "Quantum Tic-TacToe"
 type: instrument
+draft: true
 ---
 
 Quantum tic-tac-toe is based on the classic children's game of tic-tac-toe.

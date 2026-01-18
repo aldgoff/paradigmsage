@@ -2,6 +2,8 @@ baseURL = "https://aldgoff.github.io/paradigmsage/"
 languageCode = "en-us"
 title = "Paradigm Sage"
 
+[taxonomies]
+
 [markup]
   [markup.goldmark]
     [markup.goldmark.renderer]
@@ -9,4 +11,6 @@ title = "Paradigm Sage"
 
     [markup.goldmark.extensions]
       table = true
+
+disableKinds = ["taxonomy", "taxonomyTerm"]
 
