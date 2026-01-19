@@ -50,3 +50,30 @@ It is not a project spec.
   - Alphabetize trees
   - Small steps, validated locally
 
+## Reader Contract — Final Version (Locked Draft)
+
+  ### RC-1 — Single Promise
+    The site makes one promise only: a sustained, serious pursuit of the quantum measurement problem via paradox, self-reference, and explanatory coherence—not results, consensus, or closure.
+
+  ### RC-2 — Narrative Sovereignty
+    Paradigm of Paradox (PoP) is the only guaranteed linear narrative at site inception. Other topics may originate as subordinate or instrumental, and may later emancipate into standalone research threads once their internal coherence and motivation are earned.
+
+  ### RC-3 — Motivated Activation
+    No side topic may become reader-facing before the PoP chapter that motivates its necessity. Premature exposure is non-authoritative and must not imply conceptual readiness.
+
+  ### RC-4 — Act Structure Discipline
+    Act I establishes the problem space and recruits the reader.
+    Act II introduces tools, objections, failures, and stress tests.
+    Act III admits consequences, byproducts, and partial successes.
+    No Act II instrument may function as an Act I explanation.
+    Act III material may stand alone only after its lineage is legible.
+
+   ### RC-5 — Topic Lineage & Emancipation
+    Topics may evolve from instrumental to emancipated research programs. When they do, their origin in the PoP quest must remain discoverable, even if no longer required for engagement.
+
+  ### RC-6 — Non-Completion Signaling
+    Navigation, typography, and layout must never imply global completeness. Local completeness within an emancipated topic is permitted, but must not masquerade as closure of the larger quest.
+
+  ### RC-7 — Reader Respect
+    The site assumes an intelligent, patient reader. Difficulty is not avoided or diluted; it is managed through structure, staging, and narrative discipline.
+

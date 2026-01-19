@@ -99,3 +99,17 @@
     Fast-forward merges are disallowed so that merges remain visually explicit in history and serve as semantic landmarks. 
     When discussing or performing a merge, explicitly verify non-fast-forward behavior.
     
+31. **Hugo analytics invariant:**
+    Hugo can validate analytics semantics locally (injection, execution, payload), but can never validate endpoint viability; transport must be mocked or external.
+
+32. **Static-site stats rule:**
+    Static sites can emit signals, but can never receive them. Any stats receiver must live outside Hugo/GitHub Pages.
+
+33. **Editor context:**
+    Primary editor is VS Code; user is also comfortable with vi. Instructions may assume either, defaulting to VS Code when practical and CLI/vi-safe when necessary.
+
+34. **Hugo taxonomy foot-gun:**
+    An explicit empty `[taxonomies]` block combined with `disableKinds = ["taxonomy", "taxonomyTerm"]` alters Hugo’s internal page graph and can silently break `.CurrentSection.Pages` navigation. If taxonomies are unused, do not declare `[taxonomies]`.
+
+35. **GitHub Pages + dated content invariant:**
+    GitHub Pages does not rebuild on date rollover. Future-dated Hugo content requires a post-date commit to trigger p
