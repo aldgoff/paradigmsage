@@ -146,3 +146,7 @@
   git merge --no-ff cleanup-public-surface
   git branch -d cleanup-public-surface
   git push
+
+## Auto Publish Isn't
+  Requires a post date commit to publish.
+  
