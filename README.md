@@ -146,3 +146,25 @@
   git merge --no-ff cleanup-public-surface
   git branch -d cleanup-public-surface
   git push
+
+## Site Stats
+  This site uses a minimal, passive page-view beacon.
+
+  - No cookies
+  - No user identifiers
+  - No cross-site tracking
+  - No optimization or personalization
+
+  Stats exist solely as evidence of readership over time, not as a feedback or growth mechanism.
+
+  **Status:** No receiver endpoint is currently configured; the beacon is inert until one is deliberately added.
+
+## DevTools
+  Is in your browser.
+
+  Open DevTools → ⌥⌘I
+  Check HTML exists → Elements
+  Check JS loads / sends → Network
+  Check logs → Console
+
+  

@@ -50,6 +50,12 @@
       © {{ now.Format "2006" }} {{ site.Title }}
     </div>
   </footer>
+
+  {{ if .Site.Params.siteStats }}
+    {{ partial "analytics.html" . }}
+  {{ end }}
+
 </body>
+
 </html>
 
