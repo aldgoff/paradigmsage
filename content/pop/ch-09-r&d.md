@@ -25,12 +25,12 @@ params:
 
 ## Primary Docs
   **Paradigm Discourse:**  
-  <a href="/paradigmsage/assets/pop/pdf/PD09-Quest_07.pdf" target="_blank" rel="noopener">
+  <a href="/paradigmsage/assets/pop/act1/PD09-Quest_07.pdf" target="_blank" rel="noopener">
     Open the *Quest* discourse in the next tab
   </a>
 
   **Technical Chapter:**  
-  <a href="/paradigmsage/assets/pop/pdf/Ch09-R&D_05.pdf" target="_blank" rel="noopener">
+  <a href="/paradigmsage/assets/pop/act1/Ch09-R&D_05.pdf" target="_blank" rel="noopener">
     Open the *R&D* chapter in the next tab
   </a>
 

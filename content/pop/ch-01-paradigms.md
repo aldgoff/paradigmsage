@@ -30,12 +30,12 @@ params:
 
 ## Primary Docs
   **Paradigm Discourse:**  
-  <a href="/paradigmsage/assets/pop/pdf/PD01-Boxes_14.pdf" target="_blank" rel="noopener">
+  <a href="/paradigmsage/assets/pop/act1/PD01-Boxes_14.pdf" target="_blank" rel="noopener">
     Open the *Boxes* discourse in the next tab
   </a>
 
   **Technical Chapter:**  
-  <a href="/paradigmsage/assets/pop/pdf/Ch01-Paradigms_18.pdf" target="_blank" rel="noopener">
+  <a href="/paradigmsage/assets/pop/act1/Ch01-Paradigms_18.pdf" target="_blank" rel="noopener">
     Open the *Paradigms* chapter in the next tab
   </a>
 

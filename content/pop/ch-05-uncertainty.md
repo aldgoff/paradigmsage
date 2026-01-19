@@ -24,12 +24,12 @@ params:
 
 ## Primary Docs
   **Paradigm Discourse:**  
-  <a href="/paradigmsage/assets/pop/pdf/PD05-Ignoring_11.pdf" target="_blank" rel="noopener">
+  <a href="/paradigmsage/assets/pop/act1/PD05-Ignoring_11.pdf" target="_blank" rel="noopener">
     Open the *Ignoring* discourse in the next tab
   </a>
 
   **Technical Chapter:**  
-  <a href="/paradigmsage/assets/pop/pdf/Ch05-Uncertainty_07.pdf" target="_blank" rel="noopener">
+  <a href="/paradigmsage/assets/pop/act1/Ch05-Uncertainty_07.pdf" target="_blank" rel="noopener">
     Open the *Uncertainty* chapter in the next tab
   </a>
 
