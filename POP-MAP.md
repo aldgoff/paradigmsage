@@ -14,7 +14,7 @@ The PoP forest:
 | 10 | Objections                 | Journal             |  1256 -- 29 |    0 |    0 | Devil's advocate
 | 11 | QT3                        | Outsmarted          | 18845 -- 33 |    2 |    0 | Quantum tic-tac-toe
 | 12 | By Contradiction           | Paired Correlations |   565 -- 25 |    2 |    1 | FTL by correlated noise
-| 13 | Light Seconds              | Red, White and Blue |  1337 -- 29 |    2 |   14 | 12 light-second thought experiment
+| 13 | Light Seconds              | Red, White and Blue |  1337 -- 29 |    4 |   18 | 12 light-second thought experiment
 | 14 | World Ribbons              | Barrier Boxes       |   221 -- 25 |    1 |    8 | Collapse and fat world lines
 | 15 | SSI                        | Surf Beach          |   270 -- 29 |    2 |    0 | Symmetric Spacetime Intervals
 | 16 | Bowtie                     | Art Show            |   139 -- 25 |    3 |    0 | The 6 Bowtie Thought Experiments
