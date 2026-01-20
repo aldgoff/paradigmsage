@@ -11,6 +11,11 @@
   ## 6. Cancel WordPress
     Avoid the $20 monthly fee, confirm URL ownership.
   
+  ## 7. PoP Chapter 12
+    Need an emancipation paper, or delete the section.
+
+  ## --------------------------------------------------
+
 # Tadone
 
   ## 2. Corrupted figure in PoP Ch01, Word groups bad
