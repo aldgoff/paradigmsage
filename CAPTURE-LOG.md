@@ -113,3 +113,15 @@
 
 35. **GitHub Pages + dated content invariant:**
     GitHub Pages does not rebuild on date rollover. Future-dated Hugo content requires a post-date commit to trigger p
+
+36. **Comic Usage as Epistemic Portents**
+  Comics in *Paradigm of Paradox* are not illustrations or decoration. They function as epistemic portents: pre-formal devices that train reader attention toward self-reference, incongruity, and framing failure before technical discussion begins.
+
+37. **Self-Reference as a Primary Explanatory Resource**
+  The project treats self-reference as ubiquitous, intuitively detected (often via humor), and systematically excluded from formal physics. Intuitive recognition of self-reference precedes formal articulation, and confronting it explicitly is necessary to address the quantum measurement problem.
+
+38. **Formalization Limits as Signal**
+  Attempts to fully formalize or translate intuitive artifacts (e.g., humor, comics, recognition-based alignment) may degrade their function. Such failures are informative and should be preserved as epistemic artifacts rather than erased.
+
+39. **Assistant Evaluation Boundary**
+  Comic selection is recognitional rather than rule-based. The assistant can evaluate alignment, redundancy, and epistemic function of proposed comics, but cannot originate or replace the author’s recognition of conceptual fit.
