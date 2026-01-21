@@ -146,7 +146,28 @@
   This comic commiserates with the Intrepid Reader.
   **Self-Reference:** The student's physical appearence leds credence to a classic line that in most contexts has little merit.
 
-## Chapter 10 - 
+## Chapter 16 - Bowtie
+  **Comic:** Escher "Drawing Hands". A black and white etching.
+  **Desc:** An etching of two hands each drawing the other, emerging into 3D out of the flat surface of the drawing.
+  **Role:** Self-reference is widespread; it is not limited to just logic, math and physics, but can showup even in art.
+  Self-reference can be self-consistent
+
+## Chapter 17 - 
+  **Comic:** 
+  **Desc:**
+  **Role:**
+
+## Chapter 18 - 
+  **Comic:** 
+  **Desc:**
+  **Role:**
+
+## Chapter 19 - 
+  **Comic:** 
+  **Desc:**
+  **Role:**
+
+## Chapter 20 - 
   **Comic:** 
   **Desc:**
   **Role:**
