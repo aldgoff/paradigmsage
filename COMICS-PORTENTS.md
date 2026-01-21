@@ -117,3 +117,37 @@
   **Desc:**
   **Role:**
 
+## Chapter 11 - 
+  **Comic:** 
+  **Desc:**
+  **Role:**
+
+## Chapter 12 - 
+  **Comic:** 
+  **Desc:**
+  **Role:**
+
+## Chapter 13 - 
+  **Comic:** 
+  **Desc:**
+  **Role:**
+
+## Chapter 14 - 
+  **Comic:** 
+  **Desc:**
+  **Role:**
+
+## Chapter 15 - Symmetric Spacetime Intervals
+  **Comic:** Far Side: "My Brain is Full". Single-panel cartoon, black and white.
+  **Desc:** A classroom. One student has his had up asking a question, 
+  "Mr. Osborne can I be excused, my brain is full."
+  Upon closer examination, his head is much smaller than any other students'.
+  **Role:** As act II progresses, the technical material becomes more demanding.
+  This comic commiserates with the Intrepid Reader.
+  **Self-Reference:** The student's physical appearence leds credence to a classic line that in most contexts has little merit.
+
+## Chapter 10 - 
+  **Comic:** 
+  **Desc:**
+  **Role:**
+

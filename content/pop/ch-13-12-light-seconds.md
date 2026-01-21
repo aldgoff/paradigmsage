@@ -40,8 +40,8 @@ params:
   one where an entangled pair of photons, headed in opposite directions, have the *same* frequency,
   then they can agree on the *temporal ordering* of the detection events.
 
-## Research Lineage - SSI
-  The original paper introducing symmetric spacetime intervals was presented at the 42nd annual Joint Propulsion Conference in 2006.  
-<a href="/paradigmsage/assets/ssi/JPC06_3_SSI-PAPER_5.pdf" target="_blank" rel="noopener">
-  Open the *Derivation of the Symmetric Spacetime Interval* paper in the next tab
+## Research Lineage - The 12 Lightsecond Thought Experiment
+  The original paper introducing the 12 light second thought experiment was presented at the 42nd annual Joint Propulsion Conference in 2006.  
+<a href="/paradigmsage/assets/12ls/JPC06_2_12ls-Paper_6.pdf" target="_blank" rel="noopener">
+  Open the *Relativistically Consistent Collapse of the Wave Function along Symmetric Spacetime Intervals* paper in the next tab
 </a>
