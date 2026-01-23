@@ -152,10 +152,22 @@
   **Role:** Self-reference is widespread; it is not limited to just logic, math and physics, but can showup even in art.
   Self-reference can be self-consistent
 
-## Chapter 17 - 
-  **Comic:** 
-  **Desc:**
-  **Role:**
+## Chapter 17 - Crayon Masterpiece
+  **Comic:** ChatGPT via Author Guidance
+  **Desc:** A three panel cartoon, black and white.
+  The three panels do not have to be the same width.
+  Panel 1:
+    Parents queiring children in front of family wall (thermostat, lower part of a picture frame).
+    Main part of wall has been colored with crayons in typical kid art.
+    Mom, single balloon, "Who did this?"
+  Panel 2:
+    Kids in front of same wall, but no crayon art yet.
+    Brother, "If they can't fix blame, they can't punish us."
+  Panel 3:
+    Kids in their shared bedroom, each sitting on their own bed.
+    Sister, gripping her stomach, a pained expression on her face, "I'm hungry."
+    Brother, perplexed look on his face, "What did Dad mean by, 'Ambiguous Crayon Prank?"
+  **Role:** Mimics a situation with ambiguous causality, and our assumption that there must be only one cause.
 
 ## Chapter 18 - 
   **Comic:** 

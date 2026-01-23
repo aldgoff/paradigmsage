@@ -16,9 +16,9 @@ The PoP forest:
 | 12 | By Contradiction           | Paired Correlations |   565 -- 25 |    2 |    1 | FTL by correlated noise
 | 13 | Light Seconds              | Red, White and Blue |  1337 -- 29 |    4 |   18 | 12 light-second thought experiment
 | 14 | World Ribbons              | Barrier Boxes       |   221 -- 25 |    1 |    8 | Collapse and fat world lines
-| 15 | SSI                        | Surf Beach          |   270 -- 29 |    2 |    0 | Symmetric Spacetime Intervals
-| 16 | Bowtie                     | Art Show            |   139 -- 25 |    3 |    0 | The 6 Bowtie Thought Experiments
-| 17 | GHZ                        | Teleportation       |  1118 -- 25 |      |      | **Incomplete**
+| 15 | SSI                        | Surf Beach          |   356 -- 127 |    2 |    0 | Symmetric Spacetime Intervals
+| 16 | Bowtie                     | Art Show            |   532 -- 119 |    3 |    0 | The 6 Bowtie Thought Experiments
+| 17 | ACP                        | Royally Confused    |   356 -- 119 |    0 |   11  | Question the desire for one and only one cause
 | 18 | Indistinguishable          | Bingo Bos           |   713 -- 25 |    8 |    0 | Indistinguishability
 | 19 | Quantum Optics             | Halfway There       |  1255 -- 29 |    0 |    0 | <duplicate comic - Procrastination>
 | 20 | FTL by Indistinguisability | Faster Than Letter  |   225 -- 29 |    2 |    0 | The quantum optics indistinguishability experiment
