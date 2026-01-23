@@ -3,6 +3,7 @@ title: "The Ambiguous Collapse Paradigm"
 nav-entry: "Ch 17"
 order: "17"
 date: "2026-04-27"
+draft: true
 documents:
   discourse:
     title: "Royally Confused"
