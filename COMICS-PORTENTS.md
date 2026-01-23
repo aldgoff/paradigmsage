@@ -33,7 +33,7 @@
 
 
  ## Chapter 02 - Paradox
-  - **Comic:** Fox Trot: "Logic". A four panel cartoon, black and white.
+  - **Comic:** Fox Trot: "Logic". Four panel cartoon, black and white.
   - **Desc:** The young kid (family genius) has a question requring parental approval.
   1st panel: "Mom, can Marcus sleep over tonight?" "It's ok with me if it's ok with your father." 
   2nd panel: "Dad, can Marcus sleep over tonight?" "It's ok with me if it's ok with your mother."
@@ -58,12 +58,12 @@
 
 
   ## Chapter 03 - Special Relativity
-  - **Comic:** Frank & Ernest: "Counterintuitive". A single panel cartoon, black and white.
+  - **Comic:** Frank & Ernest: "Counterintuitive". Single-panel cartoon, black and white.
   - **Desc:** Two cavemen around a fire, one says "You make it by rubbing two sticks together - counterintutive isn't it?
   - **Role:** Primes the reader to accept that correct physical descriptions may violate everyday intuition, even when well established.
 
   ## Chapter 04 - Quantum Mechanics
-  - **Comic:** xkcd: "Amber Particles of Grain". A single panel cartoon, colored.
+  - **Comic:** xkcd: "Amber Particles of Grain". Single-panel cartoon, colored.
   - **Desc:** A couple standing in a field of ripe wheat. She says, "Well, when we observe them, they become amber *particles* of grain."
   - **Role:** Primes the reader for the central role of observation in quantum mechanics and the collapse of categories under measurement.
 
@@ -98,7 +98,7 @@
 - **Role:** Primes the reader to recognize how success can undermine the foundations of an idea by exposing hidden contradictions.
 
 ## Chapter 09 - R&D
-  **Comic:** Frank & Ernest: "“Procrastination”". Single panel cartoon, black and white.
+  **Comic:** Frank & Ernest: “Procrastination". Single-panel cartoon, black and white.
   **Desc:** Frank and Ernest in an art gallery, sculpture exhibit.
   They are standing in front of a large cube of granite, titled, "“Procrastination”.
   **Role:** More self-reference.
@@ -112,33 +112,40 @@
 
 # Act II
 
-## Chapter 10 - 
-  **Comic:** 
-  **Desc:**
-  **Role:**
+## Chapter 10 - Objections
+  **Comic:** Frant & Ernest: "Klepto". Single-panel cartoon, black and white.
+  **Desc:** Sign outside the Kleptomania Clinic is missing a letter.
+  **Role:** Irony, the comic refers to itself indirectly.
 
-## Chapter 11 - 
-  **Comic:** 
-  **Desc:**
-  **Role:**
+## Chapter 11 - QT3
+  **Comic:** BC: "Boomerang". Tri-panel cartoon, black and white.
+  **Desc:** Customer approaches gift exchange 'rock' holding a boomerang.
+  "I'd like to return this boomerang, it doesn't work."
+  BC, standing behind the rock, "I'm sorry, faulty boomerangs are non-returnable."
+  **Role:** It's a pun, a play on words, leveraging the ambiguity of language.
 
-## Chapter 12 - 
-  **Comic:** 
-  **Desc:**
-  **Role:**
+## Chapter 12 - By Contradiction
+  **Comic:** Luann: "Horoscope". Six-panel cartoon, colored.
+  **Desc:** Luann and best friend are arguing about the validity of horoscopes.
+  Launn is reading it and it predicts they will have a fight tomorrow.
+  Best friend is skeptical and derisive, proving her point by noting that having predicted tomorrow's fight they can avoid it.
+  But they are certainly having one today. QED. 
+  But then Luann notices the horoscope she is reading is from yesterday's paper. Oops.
+  **Role:** Self-reference is everywhere, sneaky, and subtle.
 
-## Chapter 13 - 
-  **Comic:** 
-  **Desc:**
-  **Role:**
+## Chapter 13 - 12 Light Seconds
+  **Comic:** Fox Trot: "Football Pattern". Four-panel cartoon, colored.
+  **Desc:** Older brother tries to teach a football route to his younger (genius) brother.
+  Instead of running the route, he runs the hypotenuse. Same thing in geometry, not the same thing in football.
+  **Role:** Context determines whether two things are comensurate or not.
 
-## Chapter 14 - 
-  **Comic:** 
-  **Desc:**
-  **Role:**
+## Chapter 14 - World Ribbons
+  **Comic:** Ziggy: "Hard to Think Outside the Box". Single panel cartoon, black and white.
+  **Desc:** Ziggy, head in hands, "It's really hard to think outside the box, when you're a single-panel cartoon!"
+  **Role:** You can think outside the box in one domain, and then another, but miss their overlap.
 
 ## Chapter 15 - Symmetric Spacetime Intervals
-  **Comic:** Far Side: "My Brain is Full". Single-panel cartoon, black and white.
+  **Comic:** Far Side: "My Brain is Full". Single panel cartoon, black and white.
   **Desc:** A classroom. One student has his had up asking a question, 
   "Mr. Osborne can I be excused, my brain is full."
   Upon closer examination, his head is much smaller than any other students'.
@@ -147,13 +154,53 @@
   **Self-Reference:** The student's physical appearence leds credence to a classic line that in most contexts has little merit.
 
 ## Chapter 16 - Bowtie
-  **Comic:** Escher "Drawing Hands". A black and white etching.
+  **Comic:** Escher: "Drawing Hands". A black and white etching.
   **Desc:** An etching of two hands each drawing the other, emerging into 3D out of the flat surface of the drawing.
   **Role:** Self-reference is widespread; it is not limited to just logic, math and physics, but can showup even in art.
   Self-reference can be self-consistent
 
-## Chapter 17 - Crayon Masterpiece
-  **Comic:** ChatGPT via Author Guidance
+## Chapter 17 - Teleportation
+  **Comic:** Rose is Rose: "Deceptive Checkup". Multi-panel cartoon in color.
+  **Desc:** Wife enlists husband's help in conning their kitten into the pet carrier so they can take it to the vet.
+  The twist is she is actually conning the husband into the car to go for a medical checkup, the kitten was red-herring.
+  **Role:** Nature is deceptive, we need to stay on our toes, or we'll end up somewhere other than where intended.
+
+## Chapter 18 - Indistinguishable
+  **Comic:** Show, "Conundrum". Three panel cartoon, black and white.
+  **Desc:** Wise old bird quips, "Life is a conundrum, Skyler."
+  Skyler, "I don't understand..."
+  Wise old bird, "Precisely."
+  **Role:** Quantum mechanics is a conundrum, one for more deep, intricated, and counter-intuitive than we supposed.
+
+
+
+## Chapter 19 - Quantum Optics (DUP ALERT)
+- **Comic:** Frank & Ernest, “Procrastination”. Single-panel cartoon, black and white.
+- **Desc:** Frank and Ernest stand in a gallery before a massive granite cube titled “Procrastination.”
+- **Role:** Primes the reader to recognize delay and inertia as structural features of large projects, not merely personal failings.
+
+## Chapter 20 - 
+  **Comic:** 
+  **Desc:**
+  **Role:**
+
+## Chapter 21 - 
+  **Comic:** 
+  **Desc:**
+  **Role:**
+
+## Chapter 22 - 
+  **Comic:** 
+  **Desc:**
+  **Role:**
+
+## Chapter 23 - 
+  **Comic:** 
+  **Desc:**
+  **Role:**
+
+## Chapter 17 - ACP
+  **Comic:** ChatGPT via Author Guidance: "Crayon Masterpiece". A three panel cartoon, black and white.
   **Desc:** A three panel cartoon, black and white.
   The three panels do not have to be the same width.
   Panel 1:
@@ -168,16 +215,6 @@
     Sister, gripping her stomach, a pained expression on her face, "I'm hungry."
     Brother, perplexed look on his face, "What did Dad mean by, 'Ambiguous Crayon Prank?"
   **Role:** Mimics a situation with ambiguous causality, and our assumption that there must be only one cause.
-
-## Chapter 18 - 
-  **Comic:** 
-  **Desc:**
-  **Role:**
-
-## Chapter 19 - 
-  **Comic:** 
-  **Desc:**
-  **Role:**
 
 ## Chapter 20 - 
   **Comic:** 
