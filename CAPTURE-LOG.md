@@ -92,7 +92,9 @@
     Topic expansion is governed by a site-local activation state. PoP and topics must not encode knowledge of each other; integration is editorial and site-specific (O(N) coupling, not O(N²)).
 
 29. **Navigation architecture correction (PoP sovereignty):**
-    Traversal mode (“serial”) must not be encoded as content identity (type). PoP pages are rendered by section-based layouts, and navigation ranges over sibling pages via .CurrentSection.Pages, ensuring correct active-state highlighting and preserving orthogonal hypercube axes.
+    Traversal mode (“serial”) must not be encoded as content identity (type). 
+    PoP pages are rendered by section-based layouts, and navigation ranges over sibling pages via .CurrentSection.Pages, 
+    ensuring correct active-state highlighting and preserving orthogonal hypercube axes.
 
 30. **Git workflow invariant (merge semantics):** 
     All branch merges must use --no-ff. 
@@ -109,19 +111,36 @@
     Primary editor is VS Code; user is also comfortable with vi. Instructions may assume either, defaulting to VS Code when practical and CLI/vi-safe when necessary.
 
 34. **Hugo taxonomy foot-gun:**
-    An explicit empty `[taxonomies]` block combined with `disableKinds = ["taxonomy", "taxonomyTerm"]` alters Hugo’s internal page graph and can silently break `.CurrentSection.Pages` navigation. If taxonomies are unused, do not declare `[taxonomies]`.
+    An explicit empty `[taxonomies]` block combined with `disableKinds = ["taxonomy", "taxonomyTerm"]` alters Hugo’s internal page graph 
+    and can silently break `.CurrentSection.Pages` navigation. If taxonomies are unused, do not declare `[taxonomies]`.
 
 35. **GitHub Pages + dated content invariant:**
     GitHub Pages does not rebuild on date rollover. Future-dated Hugo content requires a post-date commit to trigger p
 
 36. **Comic Usage as Epistemic Portents**
-  Comics in *Paradigm of Paradox* are not illustrations or decoration. They function as epistemic portents: pre-formal devices that train reader attention toward self-reference, incongruity, and framing failure before technical discussion begins.
+  Comics in *Paradigm of Paradox* are not illustrations or decoration. 
+  They function as epistemic portents: pre-formal devices that train reader attention toward self-reference, incongruity, and framing failure before technical discussion begins.
 
 37. **Self-Reference as a Primary Explanatory Resource**
-  The project treats self-reference as ubiquitous, intuitively detected (often via humor), and systematically excluded from formal physics. Intuitive recognition of self-reference precedes formal articulation, and confronting it explicitly is necessary to address the quantum measurement problem.
+  The project treats self-reference as ubiquitous, intuitively detected (often via humor), and systematically excluded from formal physics. 
+  Intuitive recognition of self-reference precedes formal articulation, and confronting it explicitly is necessary to address the quantum measurement problem.
 
 38. **Formalization Limits as Signal**
-  Attempts to fully formalize or translate intuitive artifacts (e.g., humor, comics, recognition-based alignment) may degrade their function. Such failures are informative and should be preserved as epistemic artifacts rather than erased.
+  Attempts to fully formalize or translate intuitive artifacts (e.g., humor, comics, recognition-based alignment) may degrade their function. 
+  Such failures are informative and should be preserved as epistemic artifacts rather than erased.
 
 39. **Assistant Evaluation Boundary**
-  Comic selection is recognitional rather than rule-based. The assistant can evaluate alignment, redundancy, and epistemic function of proposed comics, but cannot originate or replace the author’s recognition of conceptual fit.
+  Comic selection is recognitional rather than rule-based. 
+  The assistant can evaluate alignment, redundancy, and epistemic function of proposed comics, but cannot originate or replace the author’s recognition of conceptual fit.
+
+40. **Act II Failure Is Structural, Not Accidental**
+  Act II is designed to fail because the quantum measurement problem is not blocked by a single false assumption.
+  Progress requires confronting a cluster of mutually reinforcing assumptions. Partial successes and dead ends are expected and necessary.
+
+41. **Critique Must Be Earned by Prior Proposals**
+  Any critique presented in Act II (e.g., Chapter 23 — Friends) must correspond to explicit proposals or mechanisms introduced earlier. 
+  A critique is valid only if the reader has first been given sufficient reason to believe, and then doubt, the proposal.
+
+42. **FTL as Pressure, Not Objective**
+  Faster-than-light signaling functions as a motivating pressure rather than a desired outcome. 
+  Treating FTL as a live possibility forces the discovery of deeper nonlocal structures, even when FTL itself proves illusory.
