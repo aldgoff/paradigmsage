@@ -44,7 +44,7 @@ params:
   Consider two quantum objects, with just two possible states, like coins.
   As long as they are *distinguishable*, your classical analysis will be valid.
   But as soon as they are *indistinguishable*, the two cases where their outcomes were different
-  collapse into a single case; three permutations instead of four, 33% 33% 33% instead of 25% 25% 25% 25%.
+  counted as a single case; three permutations instead of four, 33% 33% 33% instead of 25% 25% 25% 25%.
   Now it is twice as likely that their outcomes will match
   - 1/3 HH
   - 1/3 HT/TH
