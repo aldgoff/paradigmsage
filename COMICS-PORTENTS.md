@@ -148,10 +148,12 @@
   - **Desc:** Youngster speaking to oldster, "Let's say we were talking about something hypothetically..."
   - **Role:** The speaker is claiming a hypothetical scenario, but the audience suspects the topic is anything but hypothetical.
 
- ## Chapter 21 - 
-  - **Comic:** 
-  - **Desc:**
-  - **Role:**
+ ## Chapter 21 - Now and Then
+  - **Comic:** Frank & Ernest, "Inexperienced Loan Officer". Single-panel cartoon, black and white.
+  - **Desc:** Frant and Ernest are at the loan department of the local bank.
+  They ask the clerk, "Do you have an inexperienced young loan officer in need of a valuable lesson?"
+  - **Role:** The query is self-denying.
+  By asking it they reveal the odds are they will never repay the loan, and thus should not be given one.
 
 ## Chapter 22 - 
   - **Comic:** 
