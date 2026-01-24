@@ -141,10 +141,12 @@
   - **Desc:** Frank and Ernest stand in a gallery before a massive granite cube titled “Procrastination.”
   - **Role:** Primes the reader to recognize delay and inertia as structural features of large projects, not merely personal failings.
 
- ## Chapter 20 - 
-  - **Comic:** 
-  - **Desc:**
-  - **Role:**
+
+
+ ## Chapter 20 - FTL by Indistinguishability
+  - **Comic:** Frazz, "Hypothetically Speaking". Single-panel cartoon, colored.
+  - **Desc:** Youngster speaking to oldster, "Let's say we were talking about something hypothetically..."
+  - **Role:** The speaker is claiming a hypothetical scenario, but the audience suspects the topic is anything but hypothetical.
 
  ## Chapter 21 - 
   - **Comic:** 

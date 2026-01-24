@@ -8,7 +8,7 @@ documents:
     title: "Halfway There"
     version: "02"
   chapter:
-    title: "Indistinguishable"
+    title: "Quantum Optics"
     version: "02"
 params:
   role: "ch"
