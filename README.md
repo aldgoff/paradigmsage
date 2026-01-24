@@ -55,6 +55,7 @@
     git (CLI)
   VSC (modern code editor, integrated with markdown, git, etc.)
   Hugo server (local and via Pages)
+    hugo server --disableFastRender --buildFuture
   Word (full featured content editor)
   pandoc (convert Word to markdown)
   Custom chatgpt (paradigmsage), tailored as a website development assistant
