@@ -35,7 +35,7 @@ params:
   </a>
 
   **Technical Chapter:**  
-  <a href="/paradigmsage/assets/pop/act2/Ch22-QTI_12.pdf" target="_blank" rel="noopener">
+  <a href="/paradigmsage/assets/pop/act2/Ch22-QTI_13.pdf" target="_blank" rel="noopener">
     Open the *QTI* chapter in the next tab
   </a>
 

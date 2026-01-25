@@ -29,7 +29,7 @@ params:
 ## Primary Docs
   **Paradigm Discourse:**  
   <a href="/paradigmsage/assets/pop/act2/PD12-Paired-Correlations_03.pdf" target="_blank" rel="noopener">
-    Open the *Out Smarted* discourse in the next tab
+    Open the *Paired Correlations* discourse in the next tab
   </a>
 
   **Technical Chapter:**  
