@@ -130,7 +130,9 @@
   git diff (or VSC diff)
   "Probably used VSC to commit the changes."
     Commit msg: "PoP Ch07: staging complete."
+    Commit msg: "PoP Epiphany: holding complete."
   git push -u origin pop-staging-04
+  git push -u origin pop-holding
   git switch main
   git merge --no-ff pop-staging-04
     Merge msg: "Merge PoP Chapter 7 (Entanglement)."
