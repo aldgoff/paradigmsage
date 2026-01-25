@@ -136,6 +136,7 @@
     Merge msg: "Merge PoP Chapter 7 (Entanglement)."
   git log --oneline --decorate --graph --all --boundary -n 50
   git push origin main
+  Some glitch hit on chapter 22, don't know what.
 
 ## Cleanup Plan (temporary)
   git switch -c cleanup-public-surface
