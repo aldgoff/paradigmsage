@@ -1,9 +1,9 @@
 ---
 title: "The Ambiguous Collapse Paradigm"
-nav-entry: "Ch 17"
-order: "17"
-date: "2026-04-27"
-draft: true
+nav-entry: "tbd 81"
+order: "81"
+date: "2027-01-01"
+draft: false
 documents:
   discourse:
     title: "Royally Confused"
@@ -13,10 +13,10 @@ documents:
     version: "01"
 params:
   role: "ch"
-  nickname: "Ch 17 - ACP"
+  nickname: "tbd 81 - ACP"
 ---
 
-**Chapter 17 - The Ambiguous Collapse Paradigm**
+**Chapter 81 - The Ambiguous Collapse Paradigm**
 
 ## Portent
   Classical physics, commonsense, and 65 million years of evolution have conspsired to make us believe
@@ -27,12 +27,12 @@ params:
 
 ## Primary Docs
   **Paradigm Discourse:**  
-  <a href="/paradigmsage/assets/pop/act2/PD17-Royally-Confused_01.pdf" target="_blank" rel="noopener">
+  <a href="/paradigmsage/assets/pop/tbd/PD81-Royally-Confused_01.pdf" target="_blank" rel="noopener">
     Open the *Royally Confused* discourse in the next tab
   </a>
 
   **Technical Chapter:**  
-  <a href="/paradigmsage/assets/pop/act2/Ch17-ACP_01.pdf" target="_blank" rel="noopener">
+  <a href="/paradigmsage/assets/pop/tbd/Ch81-ACP_01.pdf" target="_blank" rel="noopener">
     Open the *The Ambiguous Collapse Paradigm* chapter in the next tab
   </a>
 
