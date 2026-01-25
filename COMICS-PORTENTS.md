@@ -155,10 +155,10 @@
   - **Role:** The query is self-denying.
   By asking it they reveal the odds are they will never repay the loan, and thus should not be given one.
 
-## Chapter 22 - 
-  - **Comic:** 
-  - **Desc:**
-  - **Role:**
+## Chapter 22 - QTI
+  - **Comic:** Mr. Spot, "Borrow from the Future". Six-panel cartoon, black and white.
+  - **Desc:** Uses the spatial adjancy of the panels, and their implied temporal ordering, to let present-self steal money from future self.
+  - **Role:** Shows temporal indeterminacy, but begs the question of where did the money come from in the first case.
 
  ## Chapter 23 - 
   - **Comic:** 
