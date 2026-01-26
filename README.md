@@ -129,8 +129,12 @@
   git checkout -b pop-staging-04
   git diff (or VSC diff)
   "Probably used VSC to commit the changes."
-    Commit msg: "PoP Ch07: staging complete."
+    Commit msg: "PoP Ch77: staging complete."
+    Commit msg: "PoP ACP: holding complete."
     Commit msg: "PoP Epiphany: holding complete."
+    Commit msg: "PoP Circles of Truth: holding complete."
+    Commit msg: "PoP Laws of Form: holding complete."
+    Commit msg: "PoP Assumptions: holding complete."
   git push -u origin pop-staging-04
   git push -u origin pop-holding
   git switch main
