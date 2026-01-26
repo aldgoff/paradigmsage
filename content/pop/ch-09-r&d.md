@@ -6,10 +6,10 @@ date: "2026-03-02"
 documents:
   discourse:
     title: "Quest"
-    version: "07"
+    version: "08"
   chapter:
     title: "R&D"
-    version: "05"
+    version: "06"
 params:
   role: "ch"
   nickname: "Ch 9 - R&D"
@@ -25,12 +25,12 @@ params:
 
 ## Primary Docs
   **Paradigm Discourse:**  
-  <a href="/paradigmsage/assets/pop/act1/PD09-Quest_07.pdf" target="_blank" rel="noopener">
+  <a href="/paradigmsage/assets/pop/act1/PD09-Quest_08.pdf" target="_blank" rel="noopener">
     Open the *Quest* discourse in the next tab
   </a>
 
   **Technical Chapter:**  
-  <a href="/paradigmsage/assets/pop/act1/Ch09-R&D_05.pdf" target="_blank" rel="noopener">
+  <a href="/paradigmsage/assets/pop/act1/Ch09-R&D_06.pdf" target="_blank" rel="noopener">
     Open the *R&D* chapter in the next tab
   </a>
 
