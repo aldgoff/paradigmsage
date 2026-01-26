@@ -14,6 +14,12 @@
   ## 7. PoP Chapter 12
     Need an emancipation paper, or delete the section.
 
+  ## 8. Objections, Act 2, Critique
+    Story arc just needs to be synchronized a little better.
+
+  ## 9. Duplicated Comic
+    Find the chapters!
+
   ## --------------------------------------------------
 
 # Tadone
