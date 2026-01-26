@@ -137,6 +137,7 @@
     Commit msg: "PoP Assumptions: holding complete."
     Commit msg: "PoP 3D Chess: holding complete."
     Commit msg: "PoP TLA: holding complete."
+    Commit msg: "PoP Debate: holding complete."
   git push -u origin pop-staging-04
   git push -u origin pop-holding
   git switch main
