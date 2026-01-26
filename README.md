@@ -151,4 +151,5 @@
 
 ## Auto Publish Isn't
   Requires a post date commit to publish.
+  Post date commit to force publish - 1/26/26.
   
