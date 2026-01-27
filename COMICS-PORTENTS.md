@@ -160,10 +160,12 @@
   - **Desc:** Uses the spatial adjancy of the panels, and their implied temporal ordering, to let present-self steal money from future self.
   - **Role:** Shows temporal indeterminacy, but begs the question of where did the money come from in the first case.
 
- ## Chapter 23 - 
-  - **Comic:** 
-  - **Desc:**
-  - **Role:**
+ ## Chapter 23 - Critique
+  - **Comic:** The Far Side, "Beach Boards". Single-panel cartoon, black and white.
+  - **Desc:** Beach scene, two dweebs with whiteboards covered in equations.
+  The beach babes are currenlty behind the dweeb with the smaller whiteboard, 
+  but starting to flirt with the other dweeb, who has apparently just arrived on the scence.
+  - **Role:** Inverts the stereotype of the muscular beach bum who attracts the bikini babes.
 
  ## Chapter 17 - ACP
   - **Comic:** ChatGPT via Author Guidance: "Crayon Masterpiece". A three panel cartoon, black and white.

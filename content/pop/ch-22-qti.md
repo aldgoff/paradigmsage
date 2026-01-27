@@ -9,7 +9,7 @@ documents:
     version: "08"
   chapter:
     title: "Quantum Temporal Indeterminacy"
-    version: "12"
+    version: "13"
 params:
   role: "ch"
   nickname: "Ch 22 - QTI"
