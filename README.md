@@ -130,10 +130,12 @@
   git diff (or VSC diff)
   "Probably used VSC to commit the changes."
     Commit msg: "PoP Ch07: staging complete."
+    Commit msg: "PoP Ch23: staging complete."
   git push -u origin pop-staging-04
   git switch main
   git merge --no-ff pop-staging-04
     Merge msg: "Merge PoP Chapter 7 (Entanglement)."
+    Merge msg: "Merge PoP Chapter 23 (Critique)."
   git log --oneline --decorate --graph --all --boundary -n 50
   git push origin main
   Some glitch hit on chapter 22, don't know what.
