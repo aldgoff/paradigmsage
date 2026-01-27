@@ -14,12 +14,6 @@
   ## 7. PoP Chapter 12
     Need an emancipation paper, or delete the section.
 
-  ## 8. Objections, Act 2, Critique
-    Story arc just needs to be synchronized a little better.
-
-  ## 9. Duplicated Comic
-    Find the chapters!
-
   ## --------------------------------------------------
 
 # Tadone
@@ -34,3 +28,10 @@
   ## 5. Inconsistent nav-typography elements.
     Need to disentangle and layer properly.
 
+  ## 8. Objections, Act 2, Critique
+    Story arc just needs to be synchronized a little better.
+    Decided that story stands, expanded and reordered objections table in ch 23 works just fine.
+
+  ## 9. Duplicated Comic
+    Find the chapters - 19.
+    Replace "Procrastination" with "Analogies".
