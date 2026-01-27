@@ -134,14 +134,10 @@
   Wise old bird, "Precisely."
   - **Role:** Quantum mechanics is a conundrum, one for more deep, intricated, and counter-intuitive than we supposed.
 
-
-
- ## Chapter 19 - Quantum Optics (DUP ALERT)
-  - **Comic:** Frank & Ernest, “Procrastination”. Single-panel cartoon, black and white.
-  - **Desc:** Frank and Ernest stand in a gallery before a massive granite cube titled “Procrastination.”
-  - **Role:** Primes the reader to recognize delay and inertia as structural features of large projects, not merely personal failings.
-
-
+ ## Chapter 19 - Quantum Optics 
+  - **Comic:** xkcd, Analagies. Four-panel cartoon, black and white.
+  - **Desc:** Convoluted conversation defining analogies, metaphors, and similes in terms of analogies, metaphors and similes.
+  - **Role:** Convoluted, hard to follow self-reference about English words we mostly use wrongly.
 
  ## Chapter 20 - FTL by Indistinguishability
   - **Comic:** Frazz, "Hypothetically Speaking". Single-panel cartoon, colored.

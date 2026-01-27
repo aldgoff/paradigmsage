@@ -9,7 +9,7 @@ documents:
     version: "02"
   chapter:
     title: "Quantum Optics"
-    version: "02"
+    version: "03"
 params:
   role: "ch"
   nickname: "Ch 19 - Quantum Optics"
@@ -30,7 +30,7 @@ params:
   </a>
 
   **Technical Chapter:**  
-  <a href="/paradigmsage/assets/pop/act2/Ch19-Quantum-Optics_02.pdf" target="_blank" rel="noopener">
+  <a href="/paradigmsage/assets/pop/act2/Ch19-Quantum-Optics_03.pdf" target="_blank" rel="noopener">
     Open the *Quantum Optics* chapter in the next tab
   </a>
 
