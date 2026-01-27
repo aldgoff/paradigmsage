@@ -144,3 +144,25 @@
 42. **FTL as Pressure, Not Objective**
   Faster-than-light signaling functions as a motivating pressure rather than a desired outcome. 
   Treating FTL as a live possibility forces the discovery of deeper nonlocal structures, even when FTL itself proves illusory.
+
+43. Emancipation Pattern (Formalized)
+  Each emancipation series is launched by one PoP chapter (formal) and one Paradigm Discourse (dramatic). 
+  Understanding assigns ownership to one or more team members. 
+  Results are later reintroduced into PoP only through those characters and only in distilled form.
+
+44. Act II Completion Criterion (Reconfirmed)
+  An Act II endpoint is successful if a fair, open-minded critic concludes: *"This isn’t junk science. 
+  It’s incomplete. Show me something testable."*
+
+45. Semi-Entanglements (Terminology)
+  "Semi-entanglements" denote two-particle pure states with three equal-magnitude coefficients and one zero, 
+  occupying an intermediate entanglement stratum with discrete Schmidt rank but non-maximal entropy.
+
+46. Entanglement Stratification as a Structural Clue
+  The discreteness of Schmidt rank induces singular boundaries in physically relevant state space. 
+  Continuous unitary evolution cannot traverse these boundaries; inverse (retrodictive) mappings 
+  become multivalued there, yielding indeterminacy rather than contradiction.
+
+47. Workflow Stability and Cadence Enforcement
+  Established practices include one-commit-per-idea on holding branches, cherry-picking into staging branches, 
+  null commits to enforce cadence, and verified Hugo + GitHub Pages propagation (CSS, navigation, spacing).
