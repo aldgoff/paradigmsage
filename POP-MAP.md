@@ -20,8 +20,10 @@ The PoP forest:
 | 16 | Bowtie                     | Art Show            |   532 -- 119 |    3 |    0 | The 6 Bowtie Thought Experiments
 | 17 | ACP                        | Royally Confused    |   356 -- 119 |    0 |   11  | Question the desire for one and only one cause
 | 18 | Indistinguishable          | Bingo Bos           |   713 -- 25 |    8 |    0 | Indistinguishability
-| 19 | Quantum Optics             | Halfway There       |  1255 -- 29 |    0 |    0 | <duplicate comic - Procrastination>
+| 19 | Quantum Optics             | Halfway There       |  1255 -- 29 |    0 |    0 | 
 | 20 | FTL by Indistinguisability | Faster Than Letter  |   225 -- 29 |    2 |    0 | The quantum optics indistinguishability experiment
 | 21 | Now and Then               | There and Back      |  1044 -- 25 |    0 |    0 | Are past and future entangled?
-| 22 | Quantum Temporal Paradox   | Numbskull           |  1161 -- 29 |      |      | **Incomplete**
-| 23 | Critique                   | Friends             |    82 -- 33 |    0 |   10 | Critique of QTP
+| 22 | QTI                        | Numbskull           |  1161 -- 29 |    0 |    0 | Indeterminate closed causal loops in spacetime
+| 23 | Critique                   | Friends             |    82 -- 33 |    0 |   10 | Critique of QTP/QTI
+| 24 | Frame                      | Search Party        |  1253 -- 29 |    0 |    0 | Uncertain end state, but SR likely
+

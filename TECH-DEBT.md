@@ -11,7 +11,7 @@
   ## 6. Cancel WordPress
     Avoid the $20 monthly fee, confirm URL ownership.
   
-  ## 7. PoP Chapter 12
+  ## 7. PoP Chapter 12 - DEPRECATE?
     Need an emancipation paper, or delete the section.
 
   ## --------------------------------------------------
