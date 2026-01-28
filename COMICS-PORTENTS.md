@@ -163,6 +163,24 @@
   but starting to flirt with the other dweeb, who has apparently just arrived on the scence.
   - **Role:** Inverts the stereotype of the muscular beach bum who attracts the bikini babes.
 
+ ## Chapter 24 - Frame
+  - **Comic:** Mother Goose and Grimm, "God Sneezed". Single-panel, black and white
+  - **Desc:** A heavenly scene. Narrator, "Suddenly there was stunned silience in heaven, no one knew what to say when God sneezed."
+  - **Role:** Pivots on the polite phrase, "God bless you" when someone sneezes. 
+  Communicates a situation where there is a lack of clarity about the next actions.
+
+ ## Chapter 20 - tbd
+  - **Comic:** 
+  - **Desc:**
+  - **Role:**
+
+ ## Chapter 20 - tbd
+  - **Comic:** 
+  - **Desc:**
+  - **Role:**
+
+
+
  ## Chapter 17 - ACP
   - **Comic:** ChatGPT via Author Guidance: "Crayon Masterpiece". A three panel cartoon, black and white.
   - **Desc:** A three panel cartoon, black and white.
