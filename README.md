@@ -132,7 +132,17 @@
     Commit msg: "PoP Ch07: staging complete."
     Commit msg: "PoP Ch23: staging complete."
     Commit msg: "PoP Ch24: staging complete."
+    Commit msg: "PoP Ch77: staging complete."
+    Commit msg: "PoP ACP: holding complete."
+    Commit msg: "PoP Epiphany: holding complete."
+    Commit msg: "PoP Circles of Truth: holding complete."
+    Commit msg: "PoP Laws of Form: holding complete."
+    Commit msg: "PoP Assumptions: holding complete."
+    Commit msg: "PoP 3D Chess: holding complete."
+    Commit msg: "PoP TLA: holding complete."
+    Commit msg: "PoP Debate: holding complete."
   git push -u origin pop-staging-04
+  git push -u origin pop-holding
   git switch main
   git merge --no-ff pop-staging-04
     Merge msg: "Merge PoP Chapter 7 (Entanglement)."
