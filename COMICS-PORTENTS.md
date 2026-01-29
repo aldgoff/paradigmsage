@@ -169,6 +169,21 @@
   - **Role:** Pivots on the polite phrase, "God bless you" when someone sneezes. 
   Communicates a situation where there is a lack of clarity about the next actions.
 
+ ## Chapter 25 - Laws of Form
+  - **Comic:** M. C. Escher, "Ants on a Mobius Strip. Single pane, colored engraving.
+  - **Desc:** Nine ants are crawling around 'both' sides of a wire mesh Mobius strip.
+  - **Role:** Self-reference leads to global properties (one sided) that violate local properties (two sided).
+
+ ## Chapter 20 - tbd
+  - **Comic:** 
+  - **Desc:**
+  - **Role:**
+
+ ## Chapter 20 - tbd
+  - **Comic:** 
+  - **Desc:**
+  - **Role:**
+
  ## Chapter 20 - tbd
   - **Comic:** 
   - **Desc:**

@@ -132,6 +132,7 @@
     Commit msg: "PoP Ch07: staging complete."
     Commit msg: "PoP Ch23: staging complete."
     Commit msg: "PoP Ch24: staging complete."
+    Commit msg: "PoP Ch25: staging complete."
     Commit msg: "PoP Ch77: staging complete."
     Commit msg: "PoP ACP: holding complete."
     Commit msg: "PoP Epiphany: holding complete."
@@ -148,6 +149,7 @@
     Merge msg: "Merge PoP Chapter 7 (Entanglement)."
     Merge msg: "Merge PoP Chapter 23 (Critique)."
     Merge msg: "Merge PoP Chapter 24 (Frame)."
+    Merge msg: "Merge PoP Chapter 25 (LOF)."
   git log --oneline --decorate --graph --all --boundary -n 50
   git push origin main
   Some glitch hit on chapter 22, don't know what.
