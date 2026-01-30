@@ -3,6 +3,7 @@ title: "Frame"
 nav-entry: "Ch 25"
 order: "25"
 date: "2026-06-08"
+draft: true
 documents:
   discourse:
     title: "TBD"
@@ -12,7 +13,7 @@ documents:
     version: "00"
 params:
   role: "ch"
-  nickname: "Ch 25 - NLL"
+  nickname: "Ch 25 - NLL - Maybe"
 ---
 
 **Chapter 25 - NLL**

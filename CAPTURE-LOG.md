@@ -145,24 +145,39 @@
   Faster-than-light signaling functions as a motivating pressure rather than a desired outcome. 
   Treating FTL as a live possibility forces the discovery of deeper nonlocal structures, even when FTL itself proves illusory.
 
-43. Emancipation Pattern (Formalized)
+43. **Emancipation Pattern (Formalized)**
   Each emancipation series is launched by one PoP chapter (formal) and one Paradigm Discourse (dramatic). 
   Understanding assigns ownership to one or more team members. 
   Results are later reintroduced into PoP only through those characters and only in distilled form.
 
-44. Act II Completion Criterion (Reconfirmed)
+44. **Act II Completion Criterion (Reconfirmed)**
   An Act II endpoint is successful if a fair, open-minded critic concludes: *"This isn’t junk science. 
   It’s incomplete. Show me something testable."*
 
-45. Semi-Entanglements (Terminology)
+45. **Semi-Entanglements (Terminology)**
   "Semi-entanglements" denote two-particle pure states with three equal-magnitude coefficients and one zero, 
   occupying an intermediate entanglement stratum with discrete Schmidt rank but non-maximal entropy.
 
-46. Entanglement Stratification as a Structural Clue
+46. **Entanglement Stratification as a Structural Clue**
   The discreteness of Schmidt rank induces singular boundaries in physically relevant state space. 
   Continuous unitary evolution cannot traverse these boundaries; inverse (retrodictive) mappings 
   become multivalued there, yielding indeterminacy rather than contradiction.
 
-47. Workflow Stability and Cadence Enforcement
+47. **Workflow Stability and Cadence Enforcement**
   Established practices include one-commit-per-idea on holding branches, cherry-picking into staging branches, 
   null commits to enforce cadence, and verified Hugo + GitHub Pages propagation (CSS, navigation, spacing).
+
+48. **Portents as Structural Invariants**
+  Every discourse begins with a self-referential quote, and every technical chapter begins with a self-referential visual.
+  These portents function as orientation markers, preparing the reader for conceptual destabilization prior to formal exposition.
+
+49. **Comic as Visual Self-Reference (Definition)**
+  A “comic” is defined functionally, not humorously: any visual artifact that conveys self-reference and structural tension before explanation.
+  Non-humorous works (e.g., Escher-class visuals) satisfy this role when they preserve the orienting function.
+
+50. **Forms-4 as a Generative Base Case**
+  Forms-4 (the exhaustive n = 2 self-referential logic space) is treated as a fully unfolded base case of a generative family.
+  Exhaustiveness at n = 2 establishes structural richness; higher n are addressable but not enumerable.
+
+51. **Emancipation as Transfer of Agency**
+  Emancipation chapters are defined by transfer of agency rather than depth alone: the reader is given instruments (enumerations, generators, or tools) instead of conclusions.
