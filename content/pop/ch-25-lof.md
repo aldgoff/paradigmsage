@@ -13,7 +13,7 @@ documents:
     version: "04"
 params:
   role: "ch"
-  nickname: "25 - LOF"
+  nickname: "Ch 25 - LOF"
 ---
 
 **Chapter 25 - Laws of Form**
