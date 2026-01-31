@@ -174,10 +174,35 @@
   - **Desc:** Nine ants are crawling around 'both' sides of a wire mesh Mobius strip.
   - **Role:** Self-reference leads to global properties (one sided) that violate local properties (two sided).
 
- ## Chapter 20 - tbd
-  - **Comic:** 
-  - **Desc:**
-  - **Role:**
+ ## Chapter 26 - Engineering
+  - **Comic:** ChatGPT via Author Guidance: "Pack of Derms". Single-panel cartoon, black and white, with border.
+  - **Desc:** Five mature elephants are walking single file in a circle on the African savana,
+  each grasping the TAIL of the elephant in FRONT of them with their TRUNK.
+  They are all walking in the SAME direction.
+  The elephants should be equi distant from each other around the circle.
+  In the distance is a low range of hills, grassland in the foreground.
+  On one side of the circle is a winding river, on the other side a lone african tree.
+  Perspective should be high, so the CIRCLE is evident.
+  The circle is the central element.
+  One elephant is talking, "We should be logical about this."
+
+  On the broad side of each elephant is a single word (clean hand-lettered), one word per elephant.
+  The five words are:
+    - Circuit
+    - Table
+    - Vector
+    - Graph
+    - String
+
+  Use ONLY these words, ONCE only, one per elephant.
+  This is the order in which the topics will be covered, so should be preserved, pending visual demands.
+  The words should look like they were actually painted onto the sides of the elephants.
+
+  Create two images. identical except that river and tree swap positions,
+  and the elephants are marching in the other direction.
+  Direction flip is coupled with the environment. 
+  Aspect ratio should probably be between 4:3 and 16:9.
+  - **Role:** It is intended as a meme for the five tools used to analyze iterative self-reference.
 
  ## Chapter 20 - tbd
   - **Comic:** 

@@ -3,7 +3,7 @@ title: "Digital Circuits"
 nav-entry: "26"
 order: "26"
 date: "2026-06-08"
-draft: false
+draft: true
 documents:
   discourse:
     title: "Circle of Truth"

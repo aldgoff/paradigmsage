@@ -133,6 +133,7 @@
     Commit msg: "PoP Ch23: staging complete."
     Commit msg: "PoP Ch24: staging complete."
     Commit msg: "PoP Ch25: staging complete."
+    Commit msg: "PoP Ch26: staging complete."
     Commit msg: "PoP Ch77: staging complete."
     Commit msg: "PoP ACP: holding complete."
     Commit msg: "PoP Epiphany: holding complete."
@@ -143,6 +144,7 @@
     Commit msg: "PoP TLA: holding complete."
     Commit msg: "PoP Debate: holding complete."
   git push -u origin pop-staging-04
+  git push -u origin pop-staging-26-eng
   git push -u origin pop-holding
   git switch main
   git merge --no-ff pop-staging-04
@@ -150,6 +152,8 @@
     Merge msg: "Merge PoP Chapter 23 (Critique)."
     Merge msg: "Merge PoP Chapter 24 (Frame)."
     Merge msg: "Merge PoP Chapter 25 (LOF)."
+    Merge msg: "Merge PoP Chapter 26 (Digital Circuits)."
+    Merge msg: "Merge PoP Chapter 26 (Engineering)."
   git log --oneline --decorate --graph --all --boundary -n 50
   git push origin main
   Some glitch hit on chapter 22, don't know what.
