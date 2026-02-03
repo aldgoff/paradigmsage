@@ -7,7 +7,31 @@
   <title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }} · {{ site.Title }}{{ end }}</title>
 
   <script data-goatcounter="https://paradigmsage.goatcounter.com/count"
-          async src="//gc.zgo.at/count.js"></script>  
+          async src="//gc.zgo.at/count.js">
+  </script> 
+
+  <script>
+    document.addEventListener("click", function (e) {
+      const a = e.target.closest("a[href$='.pdf']");
+      if (!a) return;
+
+      const href = a.getAttribute("href");
+
+      // match /actN/Ch*.pdf or /actN/PD*.pdf
+      const m = href.match(/\/act(\d+)\/(Ch|PD)\d+/);
+      if (!m) return;
+
+      const act = m[1];
+      const type = (m[2] === "Ch") ? "chapter" : "discourse";
+
+      if (window.goatcounter) {
+        window.goatcounter.count({
+          path: "pdf_" + type + "_act" + act
+        });
+      }
+    });
+  </script>
+
 </head>
 
 <!--  NAV TODO (intentionally excluded from $items to avoid dead links)
