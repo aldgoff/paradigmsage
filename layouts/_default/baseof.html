@@ -31,7 +31,8 @@
           // path: "pdf_" + type + "_act" + act
           // event: "pdf_" + type + "_act" + act
           event: "pdf_open",
-          path: type + "_act" + act,
+          // path: type + "_act" + act,
+          path: type + "_act" + act + "_" + Date.now(),
           title: type + " PDF open (act " + act + ")"
           // if (type === "chapter")
           //   chapter: "pdf_" + type + "_act" + act
