@@ -16,6 +16,7 @@
       if (!a) return;
 
       const href = a.getAttribute("href");
+      console.log("CLICKED PDF:", href);
 
       // match /actN/Ch*.pdf or /actN/PD*.pdf
       const m = href.match(/\/act(\d+)\/(Ch|PD)\d+/);
