@@ -181,3 +181,19 @@
 
 51. **Emancipation as Transfer of Agency**
   Emancipation chapters are defined by transfer of agency rather than depth alone: the reader is given instruments (enumerations, generators, or tools) instead of conclusions.
+
+52. **Naming Conventions as Analytics Schema**
+  Content naming and directory structure *are* the analytics schema.
+  - `Ch*` vs `PD*` encodes **chapter vs discourse**
+  - `/actN/` encodes **reader progression**
+  - No per-file instrumentation required
+  Measurement is derived from structure, not added as markup. Analytics scales automatically with content growth.
+
+53. **Global PDF Instrumentation Pattern**
+  Use a single global JavaScript click interceptor to classify and record PDF interactions.
+  - Intercept all `<a href="*.pdf">` clicks
+  - Infer semantics from URL (`act`, `Ch`/`PD`)
+  - Emit GoatCounter events:
+    - `pdf_chapter_actN`
+    - `pdf_discourse_actN`
+  Eliminates manual tagging across dozens of files, enforces consistency, and preserves low-friction authoring.

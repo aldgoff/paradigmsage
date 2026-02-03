@@ -68,6 +68,7 @@
 │   ├── quantum
 │   │   └── first.md
 │   └── start-here.md
+├── GOAT-COUNTER.md
 ├── GUIDANCE.md
 ├── hugo.toml
 ├── i18n
@@ -139,6 +140,7 @@
 │       │   │   ├── Ch18-Indistinguishable_02.pdf
 │       │   │   ├── Ch19-Quantum-Optics_03.pdf
 │       │   │   ├── Ch20-FTL_04.pdf
+│       │   │   ├── Ch20-FTLbyIndistinguishability_04.pdf
 │       │   │   ├── Ch21-Now-and-Then_04.pdf
 │       │   │   ├── Ch22-QTI_13.pdf
 │       │   │   ├── Ch23-Critique_07.pdf
@@ -176,4 +178,4 @@
 ├── themes
 └── WORK-INVENTORY.md
 
-35 directories, 141 files
+35 directories, 143 files
