@@ -30,6 +30,12 @@
         window.goatcounter.count({
           // path: "pdf_" + type + "_act" + act
           event: "pdf_" + type + "_act" + act
+          if (type == "chapter")
+            chapter: "pdf_" + type + "_act" + act
+          else if (type == "discourse")
+            discourse: "pdf_" + type + "_act" + act
+          else
+            markdown: "pdf_" + type + "_act" + act
         });
       }
     });
