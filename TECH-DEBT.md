@@ -1,12 +1,9 @@
-# Tech Debt
+# Tech Debt (3/9)
 
 # Todo:
 
   ## 1. QT3 Nav for Grandchild pages not working
     Child pages have nav, but not their offspring.
-
-  ## 4. No visitor stats yet.
-    This is how we validate the site is engaging our target demographic.
 
   ## 6. Cancel WordPress
     Avoid the $20 monthly fee, confirm URL ownership.
@@ -35,3 +32,6 @@
   ## 9. Duplicated Comic
     Find the chapters - 19.
     Replace "Procrastination" with "Analogies".
+
+  ## 4. No visitor stats yet.
+    This is how we validate the site is engaging our target demographic.
