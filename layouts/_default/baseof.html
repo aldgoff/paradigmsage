@@ -10,40 +10,69 @@
           async src="//gc.zgo.at/count.js">
   </script> 
 
-  <script>
-    document.addEventListener("click", function (e) {
-      const a = e.target.closest("a[href$='.pdf']");
-      if (!a) return;
+//  <script>
+  //    document.addEventListener("click", function (e) {
+  //      const a = e.target.closest("a[href$='.pdf']");
+  //      if (!a) return;
+  //
+  //      const href = a.getAttribute("href");
+  //      console.log("CLICKED PDF:", href);
+  //
+  //      // match /actN/Ch*.pdf or /actN/PD*.pdf
+  //      const m = href.match(/\/act(\d+)\/(Ch|PD)\d+/);
+  //      if (!m) return;
+  //
+  //      const act = m[1];
+  //      const type = (m[2] === "Ch") ? "chapter" : "discourse";
+  //      console.log("type:", type);
+  //
+  //      if (window.goatcounter) {
+  //        window.goatcounter.count({
+  //          // path: "pdf_" + type + "_act" + act
+  //          // event: "pdf_" + type + "_act" + act
+  //          event: "pdf_open",
+  //          // path: type + "_act" + act, // discourse-act1
+  //          path: type + "_act" + act + "_" + Date.now(),
+  //          title: type + " PDF open (act " + act + ")"   // discourse PDF open (act 1)
+  //          // if (type === "chapter")
+  //          //   chapter: "pdf_" + type + "_act" + act
+  //          // else if (type === "discourse")
+  //          //   discourse: "pdf_" + type + "_act" + act
+  //          // else
+  //          //   markdown: "pdf_" + type + "_act" + act
+  //        });
+  //      }
+  //    });
+//  </script>
 
-      const href = a.getAttribute("href");
-      console.log("CLICKED PDF:", href);
+<script>
+  document.addEventListener("click", function (e) {
+    const a = e.target.closest("a[href$='.pdf']");
+    if (!a) return;
 
-      // match /actN/Ch*.pdf or /actN/PD*.pdf
-      const m = href.match(/\/act(\d+)\/(Ch|PD)\d+/);
-      if (!m) return;
+    const href = a.getAttribute("href");
 
-      const act = m[1];
-      const type = (m[2] === "Ch") ? "chapter" : "discourse";
-      console.log("type:", type);
+    const m = href.match(/\/act(\d+)\/(Ch|PD)(\d+)-([^_]+)_\d+\.pdf/);
+    if (!m) return;
 
-      if (window.goatcounter) {
-        window.goatcounter.count({
-          // path: "pdf_" + type + "_act" + act
-          // event: "pdf_" + type + "_act" + act
-          event: "pdf_open",
-          // path: type + "_act" + act,
-          path: type + "_act" + act + "_" + Date.now(),
-          title: type + " PDF open (act " + act + ")"
-          // if (type === "chapter")
-          //   chapter: "pdf_" + type + "_act" + act
-          // else if (type === "discourse")
-          //   discourse: "pdf_" + type + "_act" + act
-          // else
-          //   markdown: "pdf_" + type + "_act" + act
-        });
-      }
-    });
-  </script>
+    const act = m[1];
+    const kind = m[2];        // "Ch" or "PD"
+    const num  = m[3];        // "01"
+    const slug = m[4];        // "Paradigms", "Boxes"
+
+    const typeLabel = (kind === "Ch") ? "Chapter" : "PD";
+    const titleText =
+      `Act ${act}: ${typeLabel} ${num} - ${slug} (pdf)`;
+
+    if (window.goatcounter) {
+      window.goatcounter.count({
+        event: "pdf_open",
+        path: `${kind}${num}_act${act}`,
+        title: titleText
+      });
+    }
+  });
+</script>
 
 </head>
 
