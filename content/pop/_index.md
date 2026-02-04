@@ -12,4 +12,4 @@ conceptual tension of the chapter that follows, without technical machinery.
 You may read linearly, or enter at any chapter. 
 The discourse introduces the topic, the chapter dives into the techncial details.
 
-Last updated: 2026-01-06
+Last updated: 2026-02-04
