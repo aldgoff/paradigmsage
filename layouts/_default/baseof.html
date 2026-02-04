@@ -46,32 +46,32 @@
   </script>
 
   <script>
-    // document.addEventListener("click", function (e) {
-    //   const a = e.target.closest("a[href$='.pdf']");
-    //   if (!a) return;
+    document.addEventListener("click", function (e) {
+      const a = e.target.closest("a[href$='.pdf']");
+      if (!a) return;
  
-    //   const href = a.getAttribute("href");
+      const href = a.getAttribute("href");
 
-    //   const m = href.match(/\/act(\d+)\/(Ch|PD)(\d+)-([^_]+)_\d+\.pdf/);
-    //   if (!m) return;
+      const m = href.match(/\/act(\d+)\/(Ch|PD)(\d+)-([^_]+)_\d+\.pdf/);
+      if (!m) return;
 
-    //   const act = m[1];
-    //   const kind = m[2];        // "Ch" or "PD"
-    //   const num  = m[3];        // "01"
-    //   const slug = m[4];        // "Paradigms", "Boxes"
+      const act = m[1];
+      const kind = m[2];        // "Ch" or "PD"
+      const num  = m[3];        // "01"
+      const slug = m[4];        // "Paradigms", "Boxes"
 
-    //   const typeLabel = (kind === "Ch") ? "Chapter" : "PD";
-    //   const titleText =
-    //     `Act ${act}: ${typeLabel} ${num} - ${slug} (pdf)`;
+      const typeLabel = (kind === "Ch") ? "Chapter" : "PD";
+      const titleText =
+        `Act ${act}: ${typeLabel} ${num} - ${slug} (pdf)`;
 
-    //   if (window.goatcounter) {
-    //     window.goatcounter.count({
-    //       event: "pdf_open",
-    //       path: `${kind}${num}_act${act}`,
-    //       title: titleText
-    //     });
-    //   }
-    // });
+      if (window.goatcounter) {
+        window.goatcounter.count({
+          event: "pdf_open",
+          path: `${kind}${num}_act${act}`,
+          title: titleText
+        });
+      }
+    });
   </script>
 
 </head>
