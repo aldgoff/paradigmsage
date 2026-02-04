@@ -170,7 +170,7 @@
   Communicates a situation where there is a lack of clarity about the next actions.
 
  ## Chapter 25 - Laws of Form
-  - **Comic:** M. C. Escher, "Ants on a Mobius Strip. Single pane, colored engraving.
+  - **Comic:** M. C. Escher, "Ants on a Mobius Strip". Single pane, colored engraving.
   - **Desc:** Nine ants are crawling around 'both' sides of a wire mesh Mobius strip.
   - **Role:** Self-reference leads to global properties (one sided) that violate local properties (two sided).
 
@@ -204,10 +204,15 @@
   Aspect ratio should probably be between 4:3 and 16:9.
   - **Role:** It is intended as a meme for the five tools used to analyze iterative self-reference.
 
- ## Chapter 20 - tbd
-  - **Comic:** 
-  - **Desc:**
-  - **Role:**
+ ## Chapter 27 - Infinity
+  - **Comic:** Frank & Ernest, "Zeno". Single-panel cartoon, black and white.
+  - **Desc:** Frank and Eernest as two Greek scholars, "Zeno was late for work yesterday, and wait till you hear his excuse!"
+  - **Role:** Requires reader to know about Zero's paradox, how motion is impossible 
+  because you have to go half the remaining distance, an infinite regress.
+  Thus motion is impossible (why he couldn't get there, lame excuse), except of course motion is possible - why?
+ ## Discourse 27 - A Title Without End
+  - **Quote:** Today I invented a new word - plagiarism.
+  - **Role:** Almost any other word fails to be self-referential, but *plagiarism* denies the claim of the quote.
 
  ## Chapter 20 - tbd
   - **Comic:** 
