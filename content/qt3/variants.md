@@ -1,6 +1,5 @@
 ---
 title: "Variants of Quantum Tic-TacToe"
-type: instrument
 ---
 
 Present variations on QT3, such as
