@@ -214,10 +214,13 @@
   - **Quote:** Today I invented a new word - plagiarism.
   - **Role:** Almost any other word fails to be self-referential, but *plagiarism* denies the claim of the quote.
 
- ## Chapter 20 - tbd
+ ## Chapter 27 - Equality
   - **Comic:** 
   - **Desc:**
   - **Role:**
+ ## Discourse 28 - Earrings
+  - **Quote:** I just sold my homing pigeon on eBay for the 13th time.
+  - **Role:** Rather indirect, just another example of iteration.
 
  ## Chapter 20 - tbd
   - **Comic:** 

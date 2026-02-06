@@ -10,13 +10,13 @@ Has physics stalled because it contains paradoxes, or because it refuses to lear
 The purpose of this site is to dismantle assumptions about paradoxes.
 
 The litmus test of these speculations will be the *quantum measurement problem* — a mystery that has haunted physics for a century.
-If we learn how to think about paradox, does it remove a blocking paradigm; might it permit progress on this long standing conundrum?
+If we learn how to think about paradox, does it remove a blocking paradigm? Might it permit progress on this long standing conundrum?
 
 This is an exploration; it ranges across ideas that resist neat classification: 
 constraints, invariants, self-reference, feedback, how do these shape what is possible?
 Do these fundamental concepts link disparate fields?
 Are there structural similarities in
-quantum physics, games, logic, mathematics, computation, metaphysics, philosophy, even theology.
+quantum physics, games, logic, mathematics, computation, metaphysics, philosophy, even theology?
 
 The work is organized as a set of projects that appear independent on the surface but are connected at a deeper structural level. 
 The aim is not to offer premature answers, but to develop concepts and tools for thinking clearly in domains where the rules themselves are unstable. 
