@@ -11,19 +11,23 @@ The PoP forest:
 | 07 | Entanglement               | SCME                |  1260 -- 25 |    0 |    5 | Entanglement conflics with relativity
 | 08 | QTP                        | Zombies             |  1258 -- 29 |    0 |    0 | Quantum Temporal Paradox
 | 09 | R&D                        | Quest               |  1253 -- 25 |    0 |    0 | Invitation to a quest
+|||||||
 | 10 | Objections                 | Journal             |  1256 -- 29 |    0 |    0 | Devil's advocate
 | 11 | QT3                        | Outsmarted          | 18845 -- 33 |    2 |    0 | Quantum tic-tac-toe
 | 12 | By Contradiction           | Paired Correlations |   565 -- 25 |    2 |    1 | FTL by correlated noise
 | 13 | Light Seconds              | Red, White and Blue |  1337 -- 29 |    4 |   18 | 12 light-second thought experiment
 | 14 | World Ribbons              | Barrier Boxes       |   221 -- 25 |    1 |    8 | Collapse and fat world lines
-| 15 | SSI                        | Surf Beach          |   356 -- 127 |    2 |    0 | Symmetric Spacetime Intervals
-| 16 | Bowtie                     | Art Show            |   532 -- 119 |    3 |    0 | The 6 Bowtie Thought Experiments
-| 17 | ACP                        | Royally Confused    |   356 -- 119 |    0 |   11  | Question the desire for one and only one cause
+| 15 | SSI                        | Surf Beach          |   356 - 127 |    2 |    0 | Symmetric Spacetime Intervals
+| 16 | Bowtie                     | Art Show            |   532 - 119 |    3 |    0 | The 6 Bowtie Thought Experiments
+| 17 | ACP                        | Royally Confused    |   356 - 119 |    0 |   11  | Question the desire for one and only one cause
 | 18 | Indistinguishable          | Bingo Bos           |   713 -- 25 |    8 |    0 | Indistinguishability
 | 19 | Quantum Optics             | Halfway There       |  1255 -- 29 |    0 |    0 | 
 | 20 | FTL by Indistinguisability | Faster Than Letter  |   225 -- 29 |    2 |    0 | The quantum optics indistinguishability experiment
 | 21 | Now and Then               | There and Back      |  1044 -- 25 |    0 |    0 | Are past and future entangled?
 | 22 | QTI                        | Numbskull           |  1161 -- 29 |    0 |    0 | Indeterminate closed causal loops in spacetime
 | 23 | Critique                   | Friends             |    82 -- 33 |    0 |   10 | Critique of QTP/QTI
-| 24 | Frame                      | Search Party        |  1253 -- 29 |    0 |    0 | Uncertain end state, but SR likely
-
+|||||||
+| 24 | Frame                      | Search Party        |  1253 - 123 |    0 |    0 | Uncertain end state, but SR likely
+| 25 | LOF                        | In the Beginning    |   471 - 119 |    0 |  16+ | Ground in LOF, SR, NOR, & imaginary truthvalues
+| 26 | Engineering                | Circle of Truth     |  1699 - 135 |  18+ |    0 | The 5 tools, scaling law.
+| 27 | Infinity                   | Title Without End   |  1545 - 127 |   14 |    8 | SR coupling to completed infinities, versus potential

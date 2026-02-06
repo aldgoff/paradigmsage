@@ -10,6 +10,8 @@
 ├── COMICS-PORTENTS.md
 ├── content
 │   ├── _index.md
+│   ├── contact
+│   │   └── _index.md
 │   ├── instrument
 │   │   ├── _index.md
 │   │   └── red-herrings
@@ -44,6 +46,7 @@
 │   │   ├── ch-25-nll.md
 │   │   ├── ch-26-digital-circuits.md
 │   │   ├── ch-26-engineering.md
+│   │   ├── ch-27-infinity.md
 │   │   ├── ch-tbd-81-ACP.md
 │   │   ├── ch-tbd-82-epiphany.md
 │   │   ├── ch-tbd-83-cot.md
@@ -163,9 +166,11 @@
 │       │   │   ├── Ch25-LOF_04.pdf
 │       │   │   ├── Ch26-Engineering_08.pdf
 │       │   │   ├── Ch26-Engineering_08a.pdf
+│       │   │   ├── Ch27-Infinity_03.pdf
 │       │   │   ├── PD24-Search-Party_05.pdf
 │       │   │   ├── PD25-InTheBeginning_03.pdf
-│       │   │   └── PD26-CircleOfTruth_05.pdf
+│       │   │   ├── PD26-CircleOfTruth_05.pdf
+│       │   │   └── PD27-TitleWithoutEnd_01.pdf
 │       │   └── tbd
 │       │       ├── Ch81-ACP_01.pdf
 │       │       ├── ChatGPT Image Jan 23, 2026, 10_15_35 AM.png
@@ -178,4 +183,4 @@
 ├── themes
 └── WORK-INVENTORY.md
 
-35 directories, 143 files
+36 directories, 147 files

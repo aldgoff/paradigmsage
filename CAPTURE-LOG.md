@@ -220,3 +220,59 @@
 
   - The lost-pointer failure mode: base data still exists, but the reference to it is corrupted. Collapse is instantaneous and total.
   - Robust systems minimize semantic indirection at boundaries. When meaning depends on too many interpreters, failure becomes discontinuous.
+
+56. **Constraint Density as Performance Load**
+  * Conversation slowdown correlates with accumulated invariants, not turn count or memory exhaustion.
+  * Increased constraint density raises baseline cognitive cost (higher y-intercept), producing linear drag rather than sudden collapse.
+
+57. **Constraint Normalization Imperative**
+  * Verbose, late-stage constraints signal maturity but require refactoring.
+  * Optimization should factor axioms, interpretations, and case law without deleting historical captures.
+
+58. **Navigation Invariants Refactoring Principle**
+  * Navigation rules must protect meaning, not mechanism.
+  * Presentation-level details (e.g., typography, spacing) should not masquerade as axioms.
+
+59. **Navigation Axes Orthogonality (Reduced Form)**
+  * The site contains multiple conceptual axes:
+    * Topic (PoP, QT3, QTP, etc.)
+    * Navigation mode (serial vs analytic)
+  * **Invariant:** No navigation element may implicitly entangle more than one axis.
+
+60. **Hugo Template Hostility Invariant**
+  * Hugo layout files using `{{ define }}` are hostile to extraneous output.
+  * Any content (comments, whitespace) outside a define block silently breaks template resolution.
+
+61. **Safe Commenting Rule (Hugo)**
+  * Documentation in Hugo block templates must use Go template comments (`{{/* */}}`) placed *inside* the define block, or live externally.
+
+62. **Delegation Boundary Clarification**
+  * The author should not be required to master Hugo internals.
+  * Tooling complexity that blocks minor edits is a systemic risk and must be constrained or externalized.
+
+63. **Global Nav Coupling (Architectural Fact)**
+  * PoP navigation is globally defined in `baseof.html` and cannot be separated from pages without architectural refactor.
+  * Local layout files affect prose only, not navigation.
+
+64. **Low-Visibility Layout Files**
+  * Certain Hugo layouts (e.g., `terms.html`, `list.html`) may appear inert due to low traffic, not misconfiguration.
+
+65. **Lost-Pointer Failure Mode (Concrete)**
+  * Minor syntactic changes (e.g., comments) can invalidate semantic references while leaving data intact.
+  * This exemplifies indirection fragility: builds succeed, meaning collapses.
+
+66. **Tool-Induced Cognitive Debt**
+  * Static-site generators can impose hidden cognitive load that competes with domain expertise.
+  * This debt must be explicitly bounded to protect primary research focus (QTP / PoP).
+
+67. **Refactoring Strategy (One Bite at a Time)**
+  * Large structural cleanups must proceed artifact-by-artifact.
+  * Establish a trusted baseline, then simplify manually before requesting tightening.
+
+68. **Navigation Debugging Priority**
+  * When nav behavior changes, inspect `baseof.html` first.
+  * Prose spacing changes belong in section or `_default` layouts only.
+
+69. **Constraint Governance Reaffirmed**
+  * Captures record assistant obligations and shared invariants, not transient troubleshooting notes.
+  * Any change to capture structure or semantics requires explicit renegotiation.
