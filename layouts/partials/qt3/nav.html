@@ -1,7 +1,7 @@
 <nav>
   {{ $current := .RelPermalink }}
 
-  {{ range .CurrentSection.Pages.ByParam "order" }}
+  {{ range .CurrentSection.Pages.ByWeight }}
     {{ $active := eq .RelPermalink $current }}
 
     <div style="margin-bottom:0.4rem;">
@@ -12,10 +12,10 @@
           color:inherit;
           {{ if $active }}font-weight:600;{{ else }}opacity:0.8;{{ end }}
         ">
-        <span>{{ .Date.Format "2006/01/02" }} – {{ .Params.nickname }}</span>
+        {{ .Title }}
       </a>
     </div>
-    
+
   {{ end }}
 
 </nav>
