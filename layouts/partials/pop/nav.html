@@ -6,14 +6,16 @@
 
     <div style="margin-bottom:0.4rem;">
       <a href="{{ .RelPermalink }}"
-         title="{{ .Title }}"
-         style="
-           text-decoration:none;
-           color:inherit;
-           {{ if $active }}font-weight:600;{{ else }}opacity:0.8;{{ end }}
-         ">
-        {{ .Date.Format "2006/01/02" }} – {{ .Params.nickname }}
+        title="{{ .Title }}"
+        style="
+          text-decoration:none;
+          color:inherit;
+          {{ if $active }}font-weight:600;{{ else }}opacity:0.8;{{ end }}
+        ">
+        <span>{{ .Date.Format "2006/01/02" }} – {{ .Params.nickname }}</span>
       </a>
     </div>
+    
   {{ end }}
+
 </nav>
