@@ -630,3 +630,7 @@ Five prompts, five responses.
   - What does it suggest about how to use them well?
   - Can we use them, or even get them, to think out of the box?
   - What would you ask an AI about this subject?
+
+---
+
+  **Now apply self-reference. Take the above dialog and ask an AI to evaluate it.**
