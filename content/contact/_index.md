@@ -19,7 +19,7 @@ consent.
 
 **Email**
 
-contact [at] paradigmsage [dot] com
+  ```contact [at] paradigmsage [dot] com```
 
 (Please include a sentence or two about what you were reading and why
 you decided to reach out.)
