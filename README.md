@@ -144,6 +144,7 @@
     Commit msg: "PoP 3D Chess: holding complete."
     Commit msg: "PoP TLA: holding complete."
     Commit msg: "PoP Debate: holding complete."
+    Commit msg: "QT3 content: staging complete."
   git push -u origin pop-staging-04
   git push -u origin pop-staging-26-eng
   git push -u origin pop-holding
@@ -156,6 +157,8 @@
     Merge msg: "Merge PoP Chapter 26 (Digital Circuits)."
     Merge msg: "Merge PoP Chapter 26 (Engineering)."
     Merge msg: "Merge PoP Chapter 27 (Infinity)."
+    Merge msg: "Merge QT3 nav."
+    Merge msg: "Merge QT3 content."
   git log --oneline --decorate --graph --all --boundary -n 50
   git push origin main
   Some glitch hit on chapter 22, don't know what.
