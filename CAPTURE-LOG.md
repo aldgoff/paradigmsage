@@ -276,3 +276,13 @@
 69. **Constraint Governance Reaffirmed**
   * Captures record assistant obligations and shared invariants, not transient troubleshooting notes.
   * Any change to capture structure or semantics requires explicit renegotiation.
+
+70. **Blink-Comparator Hardening**
+  - Wrapping inline template output (e.g., PoP dates) into a single semantic unit (such as `<span>`) restores blink-comparator reliability.
+  - Prevents invisible whitespace or template-boundary semantics from leaking into behavior.
+  - Formatting-only diffs remain truth-preserving.
+
+71. **Ensemble ≠ History**
+  - In IQT3, the classical ensemble is a quotient by indistinguishability, not a multiset of histories.
+  - Probability emerges from symmetry after erasing identity, not from counting branches.
+  - Aligns the QT3/IQT3 metaphor with quantum statistics rather than many-worlds intuition.

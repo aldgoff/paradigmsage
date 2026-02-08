@@ -56,16 +56,13 @@
 │   │   └── ch-tbd-88-debate.md
 │   ├── qt3
 │   │   ├── _index.md
-│   │   ├── expos
-│   │   │   ├── _index.md
-│   │   │   ├── AJP-paper-2006.md
-│   │   │   └── superposition.md
-│   │   ├── limits
-│   │   │   └── _index.md
-│   │   ├── play
-│   │   │   └── _index.md
-│   │   └── variants
-│   │       └── _index.md
+│   │   ├── AJP-paper-2006.md
+│   │   ├── expos.md
+│   │   ├── iqt3.md
+│   │   ├── limits.md
+│   │   ├── play.md
+│   │   ├── superposition.md
+│   │   └── variants.md
 │   ├── qtp
 │   │   └── _index.md
 │   ├── quantum
@@ -88,9 +85,14 @@
 │   ├── partials
 │   │   ├── instrument
 │   │   │   └── nav.html
-│   │   └── pop
+│   │   ├── pop
+│   │   │   └── nav.html
+│   │   └── qt3
 │   │       └── nav.html
-│   └── pop
+│   ├── pop
+│   │   ├── list.html
+│   │   └── single.html
+│   └── qt3
 │       ├── list.html
 │       └── single.html
 ├── NAV-INVARIANTS.md
@@ -183,4 +185,4 @@
 ├── themes
 └── WORK-INVENTORY.md
 
-36 directories, 147 files
+34 directories, 151 files
