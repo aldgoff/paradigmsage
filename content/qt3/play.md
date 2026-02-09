@@ -56,9 +56,93 @@ Ask your own questions of the game.
   - X1+(1,2); O2+(2,5); X3+(5,1)[125]; O4!X3(5)@X1(1); 
   O4+(6,9); X5+(3,9); O6+(3,7); X7+(7,8); O8+(6,8)[3786|9]; X9!O8(6)@O4(9); X9+(4,4); X9!(4)[4]
 
+  Still need final score.
 
-## Bring up the Game
+## QT3 State String – Draft Spec (Draft)
+
+1. QT3 uses a **single, linear, human‑readable string** to encode both history and final state.
+
+2. The string is an **action transcript**, not a snapshot; it records player actions in order.
+
+3. There are two primary action types:
+   * **Placement**: `Xn+(a,b)` places spooky‑marks for move *n* in squares *a* and *b*.
+   * **Collapse**: `On!Xm(s)` collapses an existing cyclic entanglement, resolving move *m* into square *s*.
+
+4. Each turn number *n* belongs to exactly one player (X odd, O even) and may contain:
+   * zero or one collapse action, followed by
+   * exactly one placement action (unless the game ends).
+
+5. Collapse actions always precede placement actions within the same turn.
+
+6. Collapse actions are **first‑class actions** and must appear explicitly in the string.
+
+7. Placement actions always reference the **current turn number**; collapse actions may reference **earlier moves**.
+
+8. The canonical form of a collapse references the **placement move that closed the cycle**, regardless of which spooky‑mark the player clicked.
+
+9. Player click intent during collapse is recorded as an **annotation**, separated by `@`, and has no effect on game semantics.
+   * Example: `O4!X3(5)@X1(1)`
+
+10. Annotations (`@…`) are optional, ignorable, and must not affect parsing, comparison, or game logic.
+
+11. Optional **loop annotations** may be added using square brackets `[…]` immediately after the placement move that completes a cycle.
+
+12. Loop annotations list **move numbers**, not squares, and may optionally include stems using `|`.
+  * Example: `[4658|7]`
+
+13. Loop annotations are **purely informational**; they are not used for rule enforcement.
+
+14. Canonical loop representation rules:
+  * Only move numbers are listed.
+  * Cycles are rotated so the **lowest move number appears first**.
+  * Stems (after `|`) are sorted ascending.
+  * Direction encodes no causal claim; causality is inferred from the surrounding transcript.
+
+15. Loop annotations indicate **chronoblock structure** (sequential, overlapping, nested) at a glance.
+
+16. Spooky‑mark square pairs in placement actions are written in **canonical order** `(min,max)`.
+
+17. Canonical comparison of QT3 strings ignores:
+  * annotations (`@…`)
+  * loop annotations (`[…]`)
+
+18. The model layer consumes only the **canonical content** of the string; annotations are for replay and visualization only.
+
+19. The view/controller layer may visualize collapse propagation starting from any spooky‑mark without affecting the canonical transcript.
+
+20. Classical tic‑tac‑toe games are represented as QT3 transcripts with only placement actions and no collapse actions.
+
+21. The state string is intended to be:
+  * editable by humans
+  * stable under comparison
+  * suitable for regression tests
+  * sufficient to answer queries such as turn ownership, move count, and whether a collapse is required.
+
+22. An optional **score annotation** may appear at the end of the transcript using curly braces `{}`.
+
+23. Score annotations record final outcomes as `{Xn,Om}`, where values are limited to `{0, 0.5, 1.0, 1.5, 2.0}`.
+
+24. Score semantics:
+  * `{X0,O0}` : cat's game (draw)
+  * `{X1,O0}` : X wins
+  * `{X0,O1}` : O wins
+  * `{X1,O0.5}` or `{X0.5,O1}` : mixed win (chronoblock overlap)
+  * `{X2.0,O0}` : double win (possible for X only)
+
+25. Decimal notation (e.g. `2.0`, `0.5`, `1.5`) is preferred to emphasize departures from classical tic-tac-toe.
+
+26. Score annotations are optional, terminal, and do not affect game semantics or replay; they summarize outcomes only.
+
+
+## Proof of Concept - JS in a Canvas, state changes via mouse clicks.
 <canvas id="qt3-demo" width="200" height="100"></canvas>
 
 <script type="module" src="/paradigmsage/qt3/poc/poc.js"></script>
+
+
+
+## The QT3 Game - inwork...
+<canvas id="qt3-demo" width="400" height="250"></canvas>
+
+<script type="module" src="/paradigmsage/qt3/js/main.js"></script>
 
