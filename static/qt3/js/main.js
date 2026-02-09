@@ -1,8 +1,7 @@
 // main.js — simplest possible QT3 test
 // Goal: prove one placement move produces a state string
 
-import { addPlacementMove } from "./model/addPlacementMove.js";
-import { addCollapseMove } from "./model/addCollapseMove.js";
+import { addPlacementMove } from "./model/barrel.js";
 
 let state = "";
 let state1 = "";
@@ -15,7 +14,6 @@ console.log("QT3 state after one move:", state);
 
 // Expected output:
 // QT3 state after one move: X1+(1,2)
-
 
 
 // Hard-coded three moves creating a cyclic entanglement.
