@@ -1,5 +1,6 @@
 // QT3: add a collapse move to a state string
 // Pure function: does not mutate input state
+// Caller is responsible for correct use - must be after a cyclic entanglement.
 
 /**
  * @typedef {Object} Trigger
@@ -48,5 +49,5 @@ export function addCollapseMove(
 
 // Example:
 // state = "X1+(1,2); O2+(2,5); X3+(1,5);";
-// state = addCollapseMove(state, 'O', 4, 'X', 3, 5, { player: 'X', turn: 1, square: 1 });
+// state = addCollapseMove(state, 'O',4, 'X',3, 5, { player: 'X', turn: 1, square: 1 });
 // -> "X1+(1,2); O2+(2,5); X3+(1,5); O4!X3(5)@X1(1);"

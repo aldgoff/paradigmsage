@@ -1,5 +1,6 @@
 // QT3: add a placement move to a state string
 // Pure function: does not mutate input state
+// Caller is responsible for correct use.
 
 /**
  * Adds a placement move to a QT3 state string.
@@ -26,5 +27,5 @@ export function addPlacementMove(state, player, turn, a, b) {
 
 // Example:
 // state = "";
-// state = addPlacementMove(state, 'X', 1, 2, 1);
-// -> "X1+(1,2)"
+// state = addPlacementMove(state, 'X',1, 2,1);
+// -> "X1+(1,2);"
