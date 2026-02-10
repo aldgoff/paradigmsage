@@ -6,6 +6,7 @@
 │   └── default.md
 ├── assets
 │   └── qt3
+├── CAP-LOG.md
 ├── CAPTURE-LOG.md
 ├── COMICS-PORTENTS.md
 ├── content
@@ -70,6 +71,7 @@
 │   └── start-here.md
 ├── GOAT-COUNTER.md
 ├── GUIDANCE.md
+├── GUIDE.md
 ├── hugo.toml
 ├── i18n
 ├── layouts
@@ -101,88 +103,108 @@
 ├── QM-QFT-RED-HERRINGS.md
 ├── README.md
 ├── static
-│   └── assets
-│       ├── 12ls
-│       │   └── JPC06_2_12ls-Paper_6.pdf
-│       ├── NLL
-│       │   ├── CTB alias
-│       │   ├── JPC06NLL1.pdf
-│       │   ├── LOF alias
-│       │   ├── Multi-Basis Logic alias
-│       │   ├── Recursive Logic alias
-│       │   ├── Schema alias
-│       │   ├── TCF alias
-│       │   └── TCL alias
-│       ├── pop
-│       │   ├── act1
-│       │   │   ├── Ch01-Paradigms_18.pdf
-│       │   │   ├── Ch02-Paradox_14.pdf
-│       │   │   ├── Ch03-Relativity_11.pdf
-│       │   │   ├── Ch04-QM_11.pdf
-│       │   │   ├── Ch05-Uncertainty_07.pdf
-│       │   │   ├── Ch06-Interference_08.pdf
-│       │   │   ├── Ch07-Entanglement_08.pdf
-│       │   │   ├── Ch08-QTP_08.pdf
-│       │   │   ├── Ch09-R&D_06.pdf
-│       │   │   ├── PD01-Boxes_14.pdf
-│       │   │   ├── PD02-SelfReference_10.pdf
-│       │   │   ├── PD03-Causality_11.pdf
-│       │   │   ├── PD04-FirmColor_09.pdf
-│       │   │   ├── PD05-Ignoring_11.pdf
-│       │   │   ├── PD06-CrestValley_04.pdf
-│       │   │   ├── PD07-SCME_11.pdf
-│       │   │   ├── PD08-Zombies_16.pdf
-│       │   │   └── PD09-Quest_08.pdf
-│       │   ├── act2
-│       │   │   ├── Ch10-Objections_05.pdf
-│       │   │   ├── Ch11-QT3_09.pdf
-│       │   │   ├── Ch12-By-Contradiction_05.pdf
-│       │   │   ├── Ch13-12-Light-Seconds_10.pdf
-│       │   │   ├── Ch14-WorldRibbons_04.pdf
-│       │   │   ├── Ch15-SSI_12.pdf
-│       │   │   ├── Ch16-Bowtie_03.pdf
-│       │   │   ├── Ch17-Teleportation_02.pdf
-│       │   │   ├── Ch18-Indistinguishable_02.pdf
-│       │   │   ├── Ch19-Quantum-Optics_03.pdf
-│       │   │   ├── Ch20-FTL_04.pdf
-│       │   │   ├── Ch20-FTLbyIndistinguishability_04.pdf
-│       │   │   ├── Ch21-Now-and-Then_04.pdf
-│       │   │   ├── Ch22-QTI_13.pdf
-│       │   │   ├── Ch23-Critique_07.pdf
-│       │   │   ├── PD10-Journal_04.pdf
-│       │   │   ├── PD11-Out-Smarted_09.pdf
-│       │   │   ├── PD12-Paired-Correlations_03.pdf
-│       │   │   ├── PD13-Red-White-Blue_06.pdf
-│       │   │   ├── PD14-BarrierBoxes_02.pdf
-│       │   │   ├── PD15-Surf-Beach_03.pdf
-│       │   │   ├── PD16-Art-Show_03.pdf
-│       │   │   ├── PD17-Cloning_03.pdf
-│       │   │   ├── PD18-Bingo-Bos_02.pdf
-│       │   │   ├── PD19-Halfway-There_02.pdf
-│       │   │   ├── PD20-Faster-Than-Letter_05.pdf
-│       │   │   ├── PD21-There-and-Back_02.pdf
-│       │   │   ├── PD22-Numbskull_08.pdf
-│       │   │   └── PD23-Friends_12.pdf
-│       │   ├── act3
-│       │   │   ├── Ch24-Frame_03.pdf
-│       │   │   ├── Ch25-LOF_04.pdf
-│       │   │   ├── Ch26-Engineering_08.pdf
-│       │   │   ├── Ch26-Engineering_08a.pdf
-│       │   │   ├── Ch27-Infinity_03.pdf
-│       │   │   ├── PD24-Search-Party_05.pdf
-│       │   │   ├── PD25-InTheBeginning_03.pdf
-│       │   │   ├── PD26-CircleOfTruth_05.pdf
-│       │   │   └── PD27-TitleWithoutEnd_01.pdf
-│       │   └── tbd
-│       │       ├── Ch81-ACP_01.pdf
-│       │       ├── ChatGPT Image Jan 23, 2026, 10_15_35 AM.png
-│       │       └── PD81-Royally-Confused_01.pdf
-│       ├── qt3
-│       │   └── QT3-AJP-2006.pdf
-│       └── ssi
-│           └── JPC06_3_SSI-Paper_5.pdf
+│   ├── assets
+│   │   ├── 12ls
+│   │   │   └── JPC06_2_12ls-Paper_6.pdf
+│   │   ├── NLL
+│   │   │   ├── CTB alias
+│   │   │   ├── JPC06NLL1.pdf
+│   │   │   ├── LOF alias
+│   │   │   ├── Multi-Basis Logic alias
+│   │   │   ├── Recursive Logic alias
+│   │   │   ├── Schema alias
+│   │   │   ├── TCF alias
+│   │   │   └── TCL alias
+│   │   ├── pop
+│   │   │   ├── act1
+│   │   │   │   ├── Ch01-Paradigms_18.pdf
+│   │   │   │   ├── Ch02-Paradox_14.pdf
+│   │   │   │   ├── Ch03-Relativity_11.pdf
+│   │   │   │   ├── Ch04-QM_11.pdf
+│   │   │   │   ├── Ch05-Uncertainty_07.pdf
+│   │   │   │   ├── Ch06-Interference_08.pdf
+│   │   │   │   ├── Ch07-Entanglement_08.pdf
+│   │   │   │   ├── Ch08-QTP_08.pdf
+│   │   │   │   ├── Ch09-R&D_06.pdf
+│   │   │   │   ├── PD01-Boxes_14.pdf
+│   │   │   │   ├── PD02-SelfReference_10.pdf
+│   │   │   │   ├── PD03-Causality_11.pdf
+│   │   │   │   ├── PD04-FirmColor_09.pdf
+│   │   │   │   ├── PD05-Ignoring_11.pdf
+│   │   │   │   ├── PD06-CrestValley_04.pdf
+│   │   │   │   ├── PD07-SCME_11.pdf
+│   │   │   │   ├── PD08-Zombies_16.pdf
+│   │   │   │   └── PD09-Quest_08.pdf
+│   │   │   ├── act2
+│   │   │   │   ├── Ch10-Objections_05.pdf
+│   │   │   │   ├── Ch11-QT3_09.pdf
+│   │   │   │   ├── Ch12-By-Contradiction_05.pdf
+│   │   │   │   ├── Ch13-12-Light-Seconds_10.pdf
+│   │   │   │   ├── Ch14-WorldRibbons_04.pdf
+│   │   │   │   ├── Ch15-SSI_12.pdf
+│   │   │   │   ├── Ch16-Bowtie_03.pdf
+│   │   │   │   ├── Ch17-Teleportation_02.pdf
+│   │   │   │   ├── Ch18-Indistinguishable_02.pdf
+│   │   │   │   ├── Ch19-Quantum-Optics_03.pdf
+│   │   │   │   ├── Ch20-FTL_04.pdf
+│   │   │   │   ├── Ch20-FTLbyIndistinguishability_04.pdf
+│   │   │   │   ├── Ch21-Now-and-Then_04.pdf
+│   │   │   │   ├── Ch22-QTI_13.pdf
+│   │   │   │   ├── Ch23-Critique_07.pdf
+│   │   │   │   ├── PD10-Journal_04.pdf
+│   │   │   │   ├── PD11-Out-Smarted_09.pdf
+│   │   │   │   ├── PD12-Paired-Correlations_03.pdf
+│   │   │   │   ├── PD13-Red-White-Blue_06.pdf
+│   │   │   │   ├── PD14-BarrierBoxes_02.pdf
+│   │   │   │   ├── PD15-Surf-Beach_03.pdf
+│   │   │   │   ├── PD16-Art-Show_03.pdf
+│   │   │   │   ├── PD17-Cloning_03.pdf
+│   │   │   │   ├── PD18-Bingo-Bos_02.pdf
+│   │   │   │   ├── PD19-Halfway-There_02.pdf
+│   │   │   │   ├── PD20-Faster-Than-Letter_05.pdf
+│   │   │   │   ├── PD21-There-and-Back_02.pdf
+│   │   │   │   ├── PD22-Numbskull_08.pdf
+│   │   │   │   └── PD23-Friends_12.pdf
+│   │   │   ├── act3
+│   │   │   │   ├── Ch24-Frame_03.pdf
+│   │   │   │   ├── Ch25-LOF_04.pdf
+│   │   │   │   ├── Ch26-Engineering_08.pdf
+│   │   │   │   ├── Ch26-Engineering_08a.pdf
+│   │   │   │   ├── Ch27-Infinity_03.pdf
+│   │   │   │   ├── PD24-Search-Party_05.pdf
+│   │   │   │   ├── PD25-InTheBeginning_03.pdf
+│   │   │   │   ├── PD26-CircleOfTruth_05.pdf
+│   │   │   │   └── PD27-TitleWithoutEnd_01.pdf
+│   │   │   └── tbd
+│   │   │       ├── Ch81-ACP_01.pdf
+│   │   │       ├── ChatGPT Image Jan 23, 2026, 10_15_35 AM.png
+│   │   │       └── PD81-Royally-Confused_01.pdf
+│   │   ├── qt3
+│   │   │   └── QT3-AJP-2006.pdf
+│   │   └── ssi
+│   │       └── JPC06_3_SSI-Paper_5.pdf
+│   └── qt3
+│       ├── js
+│       │   ├── controller
+│       │   ├── main.js
+│       │   ├── model
+│       │   │   ├── addCollapseMove.js
+│       │   │   ├── addPlacementMove.js
+│       │   │   ├── addScore.js
+│       │   │   ├── barrel.js
+│       │   │   └── insertLoop.js
+│       │   ├── tests
+│       │   │   ├── addCollapseMove.test.js
+│       │   │   ├── addPlacementMove.test.js
+│       │   │   ├── addScore.test.js
+│       │   │   ├── classicalT3.test.js
+│       │   │   ├── helpers.js
+│       │   │   └── insertLoop.test.js
+│       │   └── view
+│       └── poc
+│           └── poc.js
 ├── TECH-DEBT.md
 ├── themes
 └── WORK-INVENTORY.md
 
-34 directories, 151 files
+41 directories, 166 files
