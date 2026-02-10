@@ -9,7 +9,8 @@ This is where the Intrepid Reader can (soon) interact with a playable version of
 Ask your own questions of the game.
 
 ## TODO
-  1. Have AI prove it can write python code which implements an interactive game on the web site.
+  1. POC: Have AI prove it can write python code which implements an interactive game on the web site.
+  1. Canonical state string.
   1. A quantum board, doubled lines, labeled squares.
   1. Placement moves, pairs of X's and O's subscripted with the number of the move.
   1. List of quantum moves with prev & next buttons.
@@ -25,8 +26,10 @@ Ask your own questions of the game.
   1. Scores a completed game.
 
 ## TADONE
-  1. 2/7/26 - Todo list.
+  0. 2/7/26 - Todo list.
   1. 2/8/26 - POC.
+  1. 2/9/26 - Canonical state string.
+
 
 ## Design & Specs
   Use the MVC design pattern.
@@ -134,21 +137,61 @@ Ask your own questions of the game.
 26. Score annotations are optional, terminal, and do not affect game semantics or replay; they summarize outcomes only.
 
 
+## MVC specs:
+  The controller reasons about time, the view reasons about space, and the model reasons about truth.
+
+  ### Model
+    For the moment this is pretty much just the state string, see above.
+
+  ### View
+    Two modes:
+    1. Update view to match passed in state string (new state).
+      - We don't want to draw from scratch, but from the previous state.
+    2. Update view to match a different point on the existing state string interpreted as history.
+    Some logic:
+    - When it adds a visual element that is clickable, it has to update the canvas?
+    - Ditto when it deletes a visual element.
+    Class;
+      - The View should be a base class.
+      - Daughter classes instantiate different visual behaviors.
+    Behavior:
+      view.render({
+        stateString,
+        cursorIndex,
+        modeFlags
+        });
+
+  ### Controller
+    Responds to clicks from the canvas and strokes from the keyboard.
+    Issues commands to the View (just two?)
+    Edits the state string (generally additions only, but undo, branch, etc., may be exceptions).
+    Almost all logic lives in this layer.
+
+  ### Transitions
+    Transition {
+      fromState
+      toState
+      phases[]   // ordered, reversible micro-steps
+    }
+
+    State is conserved achievement; transition is experiential process.
+
+
 ## Proof of Concept - JS in a Canvas, state changes via mouse clicks.
-<canvas id="qt3-demo" width="200" height="100"></canvas>
-
-<script type="module" src="/paradigmsage/qt3/poc/poc.js"></script>
-
-
+  <!-- 
+  -->
+  <canvas id="qt3-demo" width="200" height="100"></canvas>
+  <script type="module" src="/paradigmsage/qt3/poc/poc.js"></script>
 
 ## The QT3 Game - inwork...
-<canvas id="qt3-demo" width="400" height="250"></canvas>
+  <canvas id="qt3-game" width="900" height="900"></canvas>
+  <!-- Entry URL, update (vN) when page fails to update because of ES caching. -->
+  <script type="module" src="/paradigmsage/qt3/js/main.js?v2"></script>
 
-<script type="module" src="/paradigmsage/qt3/js/main.js"></script>
-
-<script type="module" src="/paradigmsage/qt3/js/tests/addPlacementMove.test.js"></script>
-<script type="module" src="/paradigmsage/qt3/js/tests/addCollapseMove.test.js"></script>
-<script type="module" src="/paradigmsage/qt3/js/tests/insertLoop.test.js"></script>
-<script type="module" src="/paradigmsage/qt3/js/tests/addScore.test.js"></script>
-<script type="module" src="/paradigmsage/qt3/js/tests/classicalT3.test.js"></script>
+## Regressionsn tests - inwork...
+  <script type="module" src="/paradigmsage/qt3/js/tests/addPlacementMove.test.js"></script>
+  <script type="module" src="/paradigmsage/qt3/js/tests/addCollapseMove.test.js"></script>
+  <script type="module" src="/paradigmsage/qt3/js/tests/insertLoop.test.js"></script>
+  <script type="module" src="/paradigmsage/qt3/js/tests/addScore.test.js"></script>
+  <script type="module" src="/paradigmsage/qt3/js/tests/classicalT3.test.js"></script>
 
