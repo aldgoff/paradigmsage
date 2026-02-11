@@ -178,18 +178,11 @@ Ask your own questions of the game.
 
 
 ## Proof of Concept - JS in a Canvas, state changes via mouse clicks.
-  <!-- 
-  -->
   <canvas id="qt3-demo" width="200" height="100"></canvas>
   <script type="module" src="/paradigmsage/qt3/poc/poc.js"></script>
 
 ## The QT3 Game - inwork...
   <canvas id="qt3-game" width="900" height="900"></canvas>
-  <!-- Entry URL, update (vN) when page fails to update because of ES caching. -->
-  <!-- <script type="module" src="/paradigmsage/qt3/js/main.js?v15"></script> -->
-
-  <!-- {{ $js := resources.Get "qt3/js/main.js" | js.Build | fingerprint }}
-  <script type="module" src="{{ $js.RelPermalink }}"></script> -->
 
 ## Regressionsn tests - inwork...
   <script type="module" src="/paradigmsage/qt3/js/tests/addPlacementMove.test.js"></script>

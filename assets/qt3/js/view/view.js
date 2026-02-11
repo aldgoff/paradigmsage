@@ -1,8 +1,5 @@
 // qt3/view/view.js
 
-const canvas = document.getElementById("qt3-game");
-const ctx = canvas.getContext("2d");
-
 import { QT3_LAYOUT } from "../layout.js";
 import {
   drawControls,
@@ -11,6 +8,9 @@ import {
   handlePointerUp,
   setControlHandler
 } from "./controlsView.js";
+
+const canvas = document.getElementById("qt3-game");
+const ctx = canvas.getContext("2d");
 
 export function initView() {
   render();
@@ -40,8 +40,8 @@ function installPointerHandlers() {
 
   canvas.addEventListener("mouseup", e => {
     const { x, y } = getCanvasCoords(e);
-    if (handlePointerUp(x, y)) render();
-    else render(); // reset highlight
+    handlePointerUp(x, y);
+    render();
   });
 }
 

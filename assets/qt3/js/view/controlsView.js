@@ -65,8 +65,8 @@ function hitTestButton(x, y) {
   for (let i = 0; i < BUTTONS.length; i++) {
     const top = by + i * (BTN_H + GAP);
 
-    if ((bx <= x && x <= bx + w) &&
-        (top <= y && y <= top + BTN_H)) {
+    if ((bx <= x && x <= bx + w)
+    && (top <= y && y <= top + BTN_H)) {
       return i;
     }
   }

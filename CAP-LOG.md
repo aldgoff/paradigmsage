@@ -59,3 +59,12 @@
 
 20. **Act II Completion Criterion**
     A successful Act II leaves a fair critic concluding: “This isn’t junk science. It’s incomplete. Show me something testable.”
+
+21. **Geometric Predicate Readability Convention**
+    Use the between-form predicate style `(a <= x && x <= b)` rather than `(x >= a && x <= b)` for canvas geometry. This emphasizes bounded-interval semantics as a single conceptual unit and reduces cognitive parsing overhead during hit-testing.
+
+22. **Intentional Trailing Brace Indentation**
+    Function closing braces may be indented to align with internal structure in order to enable preferred VSC code-folding compression. This formatting is deliberate and not cosmetic.
+
+23. **Preserve Intentional Visual Formatting**
+    Deliberate vertical alignment, interval symmetry formatting, and non-standard indentation used for rapid human scanning must be preserved during refactors. Visual structure encodes semantic grouping and must not be normalized without explicit instruction.

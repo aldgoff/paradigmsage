@@ -5,7 +5,29 @@
 ├── archetypes
 │   └── default.md
 ├── assets
+│   ├── jsconfig.json
 │   └── qt3
+│       └── js
+│           ├── controller
+│           │   └── controller.js
+│           ├── layout.js
+│           ├── main.js
+│           ├── model
+│           │   ├── addCollapseMove.js
+│           │   ├── addPlacementMove.js
+│           │   ├── addScore.js
+│           │   ├── barrel.js
+│           │   └── insertLoop.js
+│           ├── tests
+│           │   ├── addCollapseMove.test.js
+│           │   ├── addPlacementMove.test.js
+│           │   ├── addScore.test.js
+│           │   ├── classicalT3.test.js
+│           │   ├── helpers.js
+│           │   └── insertLoop.test.js
+│           └── view
+│               ├── controlsView.js
+│               └── view.js
 ├── CAP-LOG.md
 ├── CAPTURE-LOG.md
 ├── COMICS-PORTENTS.md
@@ -184,33 +206,10 @@
 │   │   └── ssi
 │   │       └── JPC06_3_SSI-Paper_5.pdf
 │   └── qt3
-│       ├── js
-│       │   ├── controller
-│       │   │   └── controller.js
-│       │   ├── layout_0.js
-│       │   ├── layout_01.js
-│       │   ├── layout.js
-│       │   ├── main.js
-│       │   ├── model
-│       │   │   ├── addCollapseMove.js
-│       │   │   ├── addPlacementMove.js
-│       │   │   ├── addScore.js
-│       │   │   ├── barrel.js
-│       │   │   └── insertLoop.js
-│       │   ├── tests
-│       │   │   ├── addCollapseMove.test.js
-│       │   │   ├── addPlacementMove.test.js
-│       │   │   ├── addScore.test.js
-│       │   │   ├── classicalT3.test.js
-│       │   │   ├── helpers.js
-│       │   │   └── insertLoop.test.js
-│       │   └── view
-│       │       ├── controlsView.js
-│       │       └── view.js
 │       └── poc
 │           └── poc.js
 ├── TECH-DEBT.md
 ├── themes
 └── WORK-INVENTORY.md
 
-41 directories, 172 files
+41 directories, 171 files
