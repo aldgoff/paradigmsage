@@ -186,7 +186,7 @@ Ask your own questions of the game.
 ## The QT3 Game - inwork...
   <canvas id="qt3-game" width="900" height="900"></canvas>
   <!-- Entry URL, update (vN) when page fails to update because of ES caching. -->
-  <script type="module" src="/paradigmsage/qt3/js/main.js?v12"></script>
+  <script type="module" src="/paradigmsage/qt3/js/main.js?v15"></script>
 
 ## Regressionsn tests - inwork...
   <script type="module" src="/paradigmsage/qt3/js/tests/addPlacementMove.test.js"></script>

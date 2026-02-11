@@ -186,6 +186,10 @@
 │   └── qt3
 │       ├── js
 │       │   ├── controller
+│       │   │   └── controller.js
+│       │   ├── layout_0.js
+│       │   ├── layout_01.js
+│       │   ├── layout.js
 │       │   ├── main.js
 │       │   ├── model
 │       │   │   ├── addCollapseMove.js
@@ -201,10 +205,12 @@
 │       │   │   ├── helpers.js
 │       │   │   └── insertLoop.test.js
 │       │   └── view
+│       │       ├── controlsView.js
+│       │       └── view.js
 │       └── poc
 │           └── poc.js
 ├── TECH-DEBT.md
 ├── themes
 └── WORK-INVENTORY.md
 
-41 directories, 166 files
+41 directories, 172 files
