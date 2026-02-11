@@ -9,9 +9,9 @@ export const QT3_LAYOUT = {
   },
 
   controls: {  // Controls (meta-actions, left column)
-    x: 0,
+    x: 5,
     y: 100,
-    w: 140,
+    w: 145,
     h: 260
     },
 
