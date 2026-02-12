@@ -12,10 +12,18 @@ import {
 const canvas = document.getElementById("qt3-game");
 const ctx = canvas.getContext("2d");
 
+let currentStateString = "";
+
 export function initView() {
   render();
   installPointerHandlers();
 }
+
+export function setStateString(str) {
+  currentStateString = str;
+  render();
+}
+
 
 export function setViewControlHandler(fn) {
   setControlHandler(fn);
@@ -25,6 +33,7 @@ function render() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawLayoutBounds(ctx);
   drawControls(ctx);
+  drawStateString(ctx);
 }
 
 function installPointerHandlers() {
@@ -165,4 +174,32 @@ function handleSquareClicks(x, y) {
   }
 
   return false;
+}
+
+// Code to update the state string:
+
+function drawStateString(ctx) {
+  const { x, y, w, h } = QT3_LAYOUT.stateBox;
+
+  ctx.save();
+
+  // Box background
+  ctx.fillStyle = "#111";
+  ctx.fillRect(x, y, w, h);
+
+  ctx.strokeStyle = "#555";
+  ctx.strokeRect(x, y, w, h);
+
+  // Text
+  ctx.fillStyle = "#0f0";
+  ctx.font = "16px monospace";
+  ctx.textBaseline = "middle";
+  ctx.textAlign = "left";
+
+  const padding = 10;
+  const textY = y + h / 2;
+
+  ctx.fillText(currentStateString, x + padding, textY);
+
+  ctx.restore();
 }
