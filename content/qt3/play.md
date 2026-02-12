@@ -185,9 +185,5 @@ Ask your own questions of the game.
   <canvas id="qt3-game" width="900" height="900"></canvas>
 
 ## Regressionsn tests - inwork...
-  <script type="module" src="/paradigmsage/qt3/js/tests/addPlacementMove.test.js"></script>
-  <script type="module" src="/paradigmsage/qt3/js/tests/addCollapseMove.test.js"></script>
-  <script type="module" src="/paradigmsage/qt3/js/tests/insertLoop.test.js"></script>
-  <script type="module" src="/paradigmsage/qt3/js/tests/addScore.test.js"></script>
-  <script type="module" src="/paradigmsage/qt3/js/tests/classicalT3.test.js"></script>
+  See main.js
 

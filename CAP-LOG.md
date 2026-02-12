@@ -68,3 +68,21 @@
 
 23. **Preserve Intentional Visual Formatting**
     Deliberate vertical alignment, interval symmetry formatting, and non-standard indentation used for rapid human scanning must be preserved during refactors. Visual structure encodes semantic grouping and must not be normalized without explicit instruction.
+
+24. View-Owned Input Pipeline Invariant
+    All canvas pointer listeners live exclusively in `view.js`. The view performs ordered dispatch (controls → board → future regions). The controller must never perform geometry, hit testing, or DOM interaction.
+
+25. Structured Semantic Event Contract
+    The view emits structured semantic event objects (e.g., `{ type, square, cell }`) rather than raw identifiers. The controller consumes semantic intent, not geometric artifacts. This defines the canonical view→controller interface.
+
+26. Spooky Cell Identity Binding Principle
+    Each square contains nine fixed subcells (`m1–m9`) bound to move identity, not render order. Spatial slots represent persistent move IDs, reinforcing ontological continuity and collapse semantics.
+
+27. Static Layout Trust & Fail-Fast Policy
+    Layout geometry is treated as internally sovereign. Defensive null-guards for controlled layout structures are removed in favor of immediate failure on structural corruption. Internal integrity outweighs silent tolerance.
+
+28. Single Event Entry, Ordered Dispatch Rule
+    Input handling follows a single entry point with priority routing. Controls receive first right of refusal; board receives second. No parallel listener trees may be introduced without explicit architectural renegotiation.
+
+29. Clean Pipeline as Architectural Milestone Marker
+    The phrase “clean pipeline” denotes a completed boundary stabilization between layers. When adopted in commit messages, it signifies that event flow is deterministic, layered, and leak-free.
