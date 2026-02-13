@@ -11,21 +11,20 @@
  * @param {number} b - second square (1–9)
  * @returns {string} new QT3 state string
  */
-export function addPlacementMove(state, player, turn, a, b) {
+export function addPlacementMove(state, player, turn, sq1, sq2) {
   // canonicalize square order
-  const x = Math.min(a, b);
-  const y = Math.max(a, b);
-
-  const move = `${player}${turn}+((${x},${y}));`.replace('+((', '+(').replace('))', ')');
-
-  if (!state || state.trim() === "") {
-    return move;
+  if (sq1 < sq2) {            // "(1,5)"
+    state += `,${sq2})`
+    }
+  else {     // Canonical order: "(5,1)"
+    state = state.slice(0, -1);
+    state += `${sq2},${sq1})`
   }
 
-  return `${state} ${move}`;
+  return state;
 }
 
 // Example:
-// state = "";
+// state = "X1+(2";
 // state = addPlacementMove(state, 'X',1, 2,1);
 // -> "X1+(1,2);"

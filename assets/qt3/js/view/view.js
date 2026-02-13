@@ -12,31 +12,57 @@ import {
 const canvas = document.getElementById("qt3-game");
 const ctx = canvas.getContext("2d");
 
-let currentStateString = "";
-
 export function initView() {
   render();
   installPointerHandlers();
 }
 
-export function setStateString(str) {
-  currentStateString = str;
-  render();
-}
-
-export function setViewControlHandler(fn) {
-  setControlHandler(fn);
-}
-
 function render() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawLayoutBounds(ctx);
-  drawControls(ctx);
+  drawControls(ctx);              // Imported from controlsView.js.
   drawBoardGrid(ctx, QT3_LAYOUT);
   drawSquareNumbers(ctx, QT3_LAYOUT);
   drawStateString(ctx);
 }
 
+// Outline the visual objets to facilitate arranging them.
+export function drawLayoutBounds(ctx, layout = QT3_LAYOUT) {
+  ctx.save();
+  ctx.setLineDash([6, 4]);
+  ctx.strokeStyle = "#888";
+  ctx.lineWidth = 1;
+
+  for (const layout_key in layout) { // Outline each graphical element in layout.
+    if (layout_key === "board") {  // Outline & label QT3 squares and spooky cells..
+      const squares = layout.board.squares;
+      for (const squares_key in squares) {
+        const sq = squares[squares_key];  // Square1, square2, square3, ... square9.
+
+        // The grid of spooky cells within each square.
+        const cell = sq.spookyCells;
+        for (const cells_key in cell) {
+          const sub = cell[cells_key];
+          ctx.strokeRect(sub.x, sub.y, sub.w, sub.h);
+          ctx.fillStyle = "#ccc";
+          ctx.font = "12px sans-serif";
+          ctx.fillText(cells_key, sub.x + 7, sub.y + 19);
+       }
+      }
+      }
+    else {                  // Outline & label graphical elements.
+      const element = layout[layout_key];
+      ctx.strokeRect(element.x, element.y, element.w, element.h);
+      ctx.fillStyle = "#888";
+      ctx.font = "12px sans-serif";
+      ctx.fillText(layout_key, element.x + 4, element.y + 14);
+    }
+  }
+
+  ctx.restore();
+}
+
+/* Draw and manage the control buttons. */
 function installPointerHandlers() {
   canvas.addEventListener("mousedown", e => {
     const { x, y } = getCanvasCoords(e);
@@ -69,7 +95,7 @@ function installPointerHandlers() {
     handlePointerUp(x, y);
     render();
   });
-}
+  }
 
 function getCanvasCoords(e) {
   const rect = canvas.getBoundingClientRect();
@@ -77,8 +103,13 @@ function getCanvasCoords(e) {
     x: Math.round(e.clientX - rect.left),
     y: Math.round(e.clientY - rect.top)
   };
+  }
+
+export function setViewControlHandler(fn) {
+  setControlHandler(fn);
 }
 
+/* Draw board and square numbers. */
 function drawBoardGrid(ctx, layout) {
   const { x, y, w, h, gridLines } = layout.board;
   const { gap, thickness, separation, color } = gridLines;
@@ -132,7 +163,7 @@ function drawBoardGrid(ctx, layout) {
   }
 
   ctx.restore();
-}
+  }
 
 function drawSquareNumbers(ctx, layout) {
   ctx.save();
@@ -155,49 +186,13 @@ function drawSquareNumbers(ctx, layout) {
   ctx.restore();
 }
 
-export function drawLayoutBounds(ctx, layout = QT3_LAYOUT) {
-  ctx.save();
-  ctx.setLineDash([6, 4]);
-  ctx.strokeStyle = "#888";
-  ctx.lineWidth = 1;
-
-  for (const layout_key in layout) { // Outline each graphical element in layout.
-    if (layout_key === "board") {  // Outline & label QT3 squares and spooky cells..
-      const squares = layout.board.squares;
-      for (const squares_key in squares) {
-        const sq = squares[squares_key];  // Square1, square2, square3, ... square9.
-
-        // The grid of spooky cells within each square.
-        const cell = sq.spookyCells;
-        for (const cells_key in cell) {
-          const sub = cell[cells_key];
-          ctx.strokeRect(sub.x, sub.y, sub.w, sub.h);
-          ctx.fillStyle = "#ccc";
-          ctx.font = "12px sans-serif";
-          ctx.fillText(cells_key, sub.x + 7, sub.y + 19);
-       }
-      }
-      }
-    else {                  // Outline & label graphical elements.
-      const element = layout[layout_key];
-      ctx.strokeRect(element.x, element.y, element.w, element.h);
-      ctx.fillStyle = "#888";
-      ctx.font = "12px sans-serif";
-      ctx.fillText(layout_key, element.x + 4, element.y + 14);
-    }
+/* Code to respond to square/cell clicks. */
+let squareHandler = null;                 // Event triggered callback to
+export function setSquareHandler(fn) {    // respond to square/cell clicks.
+  squareHandler = fn;
   }
 
-  ctx.restore();
-}
-
-// Event code to notify controller that a QT3 square has been selected.
-let squareHandler = null;   // Call back function, set by controller.
-
-export function setSquareHandler(fn) {  // Controller registers its function.
-  squareHandler = fn;
-}
-
-function handleSquareClicks(x, y) {     // Event driven, called by listener.
+function handleSquareClicks(x, y) {       // Event driven, called by listener, invokes squareHandler.
   const squares = QT3_LAYOUT.board.squares;
 
   for (const squareKey in squares) {  // 9 squares.
@@ -225,7 +220,13 @@ function handleSquareClicks(x, y) {     // Event driven, called by listener.
   return false;
 }
 
-// Code to update the state string:
+/* Code to set and draw the state string. */
+let currentStateString = ""; 
+
+export function setStateString(str) {
+  currentStateString = str;
+  render();
+  }
 
 function drawStateString(ctx) {
   const { x, y, w, h } = QT3_LAYOUT.stateBox;

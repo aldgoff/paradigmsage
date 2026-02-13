@@ -6,9 +6,9 @@ title: "Play Specs"
 
 ## TODO
   1. POC: Have AI prove it can write python code which implements an interactive game on the web site.
-  1. Canonical state string.
-  1. Detects cyclic entanglements.
-  1. A quantum board, doubled lines, labeled squares.
+  2. Canonical state string.
+  3. Detects cyclic entanglements.
+  4. A quantum board, doubled lines, labeled squares.
   1. Placement moves, pairs of X's and O's subscripted with the number of the move.
   1. List of quantum moves with prev & next buttons.
   1. The classical ensemble, classical board, classical marks.
@@ -24,8 +24,9 @@ title: "Play Specs"
 ## TADONE
   0. 2/07/26 - Todo list.
   1. 2/08/26 - POC.
-  1. 2/09/26 - Canonical state string.
-  1. 2/12/26 - Detects cyclic entanglements.
+  2. 2/09/26 - Canonical state string.
+  3. 2/12/26 - Detects cyclic entanglements.
+  4. 2/12/26 - A quantum board, doubled lines, labeled squares.
 
 ## Design & Specs
   Use the MVC design pattern.

@@ -3,6 +3,12 @@
 import { initView } from "../view/view.js";
 import { setSquareHandler } from "../view/view.js";
 import { setStateString } from "../view/view.js";
+import {addSpookyMove,
+        addPlacementMove,
+        addLoop,
+        addCollapseMove,
+        addScore,
+  } from "../model/barrel.js";
 
 import {buildGraph,
         findPath,
@@ -31,9 +37,10 @@ let placements = [];   // [{ move, player, squares:[a,b] }]
 function handleSquareCellClick(event) {  // Respond to clicks in squares down to the cell level.
   // event - {square: 'square1', cell: 'm1'}
   console.log("Controller received:", event);
-  // TODO:
+  // TADONE:
   // Creates canonical string, alternating players, correct move numbers, ordered squares.
   // Also detects cyclic entanglements, and stems, and appends canonical loop string.
+  // TODO:
   // Need collapse, spooky undo, and prevent moves into classical squares.
 
   const square = event.square;
@@ -42,19 +49,12 @@ function handleSquareCellClick(event) {  // Respond to clicks in squares down to
   if (spooky === 1) { // First spooky mark - "X1+(1".
     pendingMove += 1;
     sq1 = lastChar;
-    stateString += `${player}${pendingMove}+(${sq1}`;
+    stateString = addSpookyMove(stateString, player, pendingMove, sq1);
     spooky = 2;
     }
   else {             // Second spooky mark - "X1+(1,2)"
     sq2 = lastChar;
-    if (sq1 < sq2) {            // "(1,5)"
-      stateString += `,${sq2})`
-      }
-    else {     // Canonical order: "(5,1)"
-      stateString = stateString.slice(0, -1);
-      stateString += `${sq2},${sq1})`
-    }
-
+    stateString = addPlacementMove(stateString, player, pendingMove, sq1, sq2);
     spooky = 1;
 
     // Check for cyclic entanglement.
@@ -62,19 +62,17 @@ function handleSquareCellClick(event) {  // Respond to clicks in squares down to
     const path = findPath(graph, sq1, sq2);
 
     if (path !== null) { // Sq1 & sq2 already connected.
-      let cycleMoves = extractCycle(path, placements, pendingMove);
+      let cycleMoves = extractCycle(path, placements, pendingMove); // [].
       let loop = cycleMoves.join("");
 
       const backboneNodes = path;
-      const stemMoves = extractStems(graph, backboneNodes, placements, cycleMoves);
+      const stemMoves = extractStems(graph, backboneNodes, placements, cycleMoves); // [].
 
-      if (stemMoves.length > 0) {
-        loop += "|" + stemMoves.join("");
-      }
-
-      stateString += `[${loop}]`;
+      stateString = addLoop(stateString, cycleMoves, stemMoves);
     }
-    stateString += `; `;
+    else {
+      stateString += `; `;
+    }
 
     placements.push({
       move: pendingMove,
