@@ -6,8 +6,12 @@
       {{ partial "qt3/nav.html" . }}
     </aside>
 
-    <section style="flex:1; min-width:0; max-width:70ch;">
+    <section style="flex:1; min-width:0; max-width:86ch;">
       {{ .Content }}
+
+      {{/* Avoid cache churn. */}}
+      {{ $js := resources.Get "qt3/js/main.js" | js.Build | fingerprint }}
+      <script type="module" src="{{ $js.RelPermalink }}"></script>
     </section>
 
   </div>
