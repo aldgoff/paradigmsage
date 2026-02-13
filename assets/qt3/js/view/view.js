@@ -190,24 +190,21 @@ export function drawLayoutBounds(ctx, layout = QT3_LAYOUT) {
   ctx.restore();
 }
 
-// Code to notify controller that a QT3 square has been selected.
-let squareHandler = null;
+// Event code to notify controller that a QT3 square has been selected.
+let squareHandler = null;   // Call back function, set by controller.
 
-export function setSquareHandler(fn) {
+export function setSquareHandler(fn) {  // Controller registers its function.
   squareHandler = fn;
 }
 
-function handleSquareClicks(x, y) {
+function handleSquareClicks(x, y) {     // Event driven, called by listener.
   const squares = QT3_LAYOUT.board.squares;
 
-  for (const squareKey in squares) {
-    const sq = squares[squareKey];
+  for (const squareKey in squares) {  // 9 squares.
+    const spookyCells = squares[squareKey].spookyCells;
 
-    // First: test spooky cells (higher precision).
-    const cells = sq.spookyCells;
-
-    for (const cellKey in cells) {
-      const cell = cells[cellKey];
+    for (const cellKey in spookyCells) {  // 9 spooky cells in each square.
+      const cell = spookyCells[cellKey];
 
       const hit =
         cell.x <= x && x <= cell.x + cell.w &&
@@ -215,31 +212,13 @@ function handleSquareClicks(x, y) {
 
       if (hit) {
         if (squareHandler) {
-          squareHandler({
-            type: "spooky",
+          squareHandler({     // event - {square: 'square1', cell: 'm1'}
             square: squareKey,
             cell: cellKey
           });
         }
         return true;
       }
-    }
-
-    // Second: test full square.
-    const square = sq.square;
-
-    const squareHit =
-      square.x <= x && x <= square.x + square.w &&
-      square.y <= y && y <= square.y + square.h;
-
-    if (squareHit) {
-      if (squareHandler) {
-        squareHandler({
-          type: "square",
-          square: squareKey
-        });
-      }
-      return true;
     }
   }
 
@@ -262,7 +241,7 @@ function drawStateString(ctx) {
 
   // Text
   ctx.fillStyle = "#0f0";
-  ctx.font = "16px monospace";
+  ctx.font = "13px monospace";
   ctx.textBaseline = "middle";
   ctx.textAlign = "left";
 
@@ -273,3 +252,4 @@ function drawStateString(ctx) {
 
   ctx.restore();
 }
+

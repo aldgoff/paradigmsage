@@ -14,7 +14,7 @@ export function initController () {
   console.log("Controller: qt3/js/controller/controller.js");
 
   setSquareHandler( squareKey => {  // Registers function with view so it can be called on square events.
-    realHonestToGoodnessLogicCode(squareKey);
+    handleSquareCellClick(squareKey);
   });
 
   initView(); // Dev scaffolding.
@@ -28,7 +28,8 @@ let sq1 = 0;
 let sq2 = 0;
 let placements = [];   // [{ move, player, squares:[a,b] }]
 
-function realHonestToGoodnessLogicCode(event) {  // This is where the logic lies, keep registration and logic separate.
+function handleSquareCellClick(event) {  // Respond to clicks in squares down to the cell level.
+  // event - {square: 'square1', cell: 'm1'}
   console.log("Controller received:", event);
   // TODO:
   // Creates canonical string, alternating players, correct move numbers, ordered squares.
@@ -89,3 +90,4 @@ function realHonestToGoodnessLogicCode(event) {  // This is where the logic lies
   // Diagnostic
   console.log(stateString);
 }
+

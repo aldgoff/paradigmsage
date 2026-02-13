@@ -185,12 +185,12 @@ export const QT3_LAYOUT = {
     x: 0,
     y: 420,
     w: 900,
-    h: 50
+    h: 30
   },
 
   ensemble: {  // Classical ensemble (variable content, full width)
     x: 0,
-    y: 490,
+    y: 470,
     w: 900,
     h: 320
   }
