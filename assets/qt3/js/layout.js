@@ -28,6 +28,13 @@ export const QT3_LAYOUT = {
         cols: 3
       }
     },
+    gridLines: {
+      gap: 10,          // space between 3x3 square blocks
+      thickness: 3,     // thickness of each line
+      separation: 4,    // spacing between the doubled lines
+      offset: 4,        // Better placement of the doubled lines.
+      color: "#000000"
+    },
     squares: {
       square1: {
         square: { x: 160, y: 100,  w: 90, h: 90 },
