@@ -14,7 +14,7 @@ import {buildGraph,
         findPath,
         extractCycle,
         movesForEdge,
-        extractStems } from "../controller/cycles.js";
+        extractStems } from "../model/cycles.js";
 
 export function initController () {
   console.log("Controller: qt3/js/controller/controller.js");

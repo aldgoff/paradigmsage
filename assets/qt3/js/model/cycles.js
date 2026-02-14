@@ -14,7 +14,7 @@ export function buildGraph(placements) {
     graph[b].push(a);
   }
 
-  return graph;
+  return graph;  // { 1:[2,5], 2:[1], ..., 9:[] }
 }
 
 export function findPath(graph, start, target, visited = new Set(), path = []) {

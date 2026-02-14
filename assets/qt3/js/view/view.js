@@ -8,6 +8,7 @@ import {
   handlePointerUp,
   setControlHandler
 } from "./controlsView.js";
+import { drawMoves } from "./moves.js";
 
 const canvas = document.getElementById("qt3-game");
 const ctx = canvas.getContext("2d");
@@ -20,10 +21,11 @@ export function initView() {
 function render() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawLayoutBounds(ctx);
-  drawControls(ctx);              // Imported from controlsView.js.
+  drawControls(ctx);                      // Imported from controlsView.js.
   drawBoardGrid(ctx, QT3_LAYOUT);
   drawSquareNumbers(ctx, QT3_LAYOUT);
   drawStateString(ctx);
+  drawMoves(ctx, currentStateString);     // Imported from moves.js.
 }
 
 // Outline the visual objets to facilitate arranging them.
@@ -69,13 +71,12 @@ function installPointerHandlers() {
 
     // Controls get first priority.
     if (handlePointerDown(x, y)) {
-      render();
+      drawControls(ctx);
       return;
       }
 
     // Board is next.
     if (handleSquareClicks(x, y)) {
-      render();
       return;
     }
 
@@ -87,13 +88,15 @@ function installPointerHandlers() {
 
   canvas.addEventListener("mousemove", e => {
     const { x, y } = getCanvasCoords(e);
-    if (handlePointerMove(x, y)) render();
+    if (handlePointerMove(x, y)) {
+      drawControls(ctx);
+    }
   });
 
   canvas.addEventListener("mouseup", e => {
     const { x, y } = getCanvasCoords(e);
     handlePointerUp(x, y);
-    render();
+    drawControls(ctx);
   });
   }
 
