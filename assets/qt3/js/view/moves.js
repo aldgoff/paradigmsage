@@ -20,13 +20,13 @@ export function drawMoves(ctx, stateString) {
   colorMap = overrideCycleColors(stateString, colorMap);
 
   console.log("drawMoves()", moveSets);
-  console.log("graph = buildEntanglementGraph(moveSets.unresolved)", graph);
-  console.log("components = computeConnectedComponents(graph)", components);
-  console.log("colorMap = assignComponentColors(components, moveSets.unresolved)", colorMap);
+  // console.log("graph = buildEntanglementGraph(moveSets.unresolved)", graph);
+  // console.log("components = computeConnectedComponents(graph)", components);
+  // console.log("colorMap = assignComponentColors(components, moveSets.unresolved)", colorMap);
 
   drawSpookyMarks(ctx, moveSets.unresolved, colorMap);
 
-  drawClassicalMarks(ctx, moveSets.resolved);
+  drawClassicalMarks(ctx, placements, stateString);
 }
 
 function parsePlacements(stateString) {
@@ -256,7 +256,64 @@ function drawSpookyMarks(ctx, unresolved, colorMap) {
   }
 
   ctx.restore();
+  }
+
+
+
+function drawClassicalMarks(ctx, placements, stateString) {
+  // Build resolved move → square map from stateString
+  const collapseRegex = /!([XO])(\d+)\((\d)\)/g;
+
+  const resolvedMap = {};   // move → square
+
+  let match;
+  while ((match = collapseRegex.exec(stateString)) !== null) {
+    const move   = Number(match[2]);
+    const square = Number(match[3]);
+    resolvedMap[move] = square;
+  }
+
+  if (Object.keys(resolvedMap).length === 0) return;
+
+  ctx.save();
+
+  for (const moveStr in resolvedMap) {
+
+    const move = Number(moveStr);
+    const squareNum = resolvedMap[move];
+
+    const p = placements.find(p => p.move === move);
+    if (!p) continue;
+
+    const player = p.player;
+
+    const squareKey = `square${squareNum}`;
+    const squareData = QT3_LAYOUT.board.squares[squareKey];
+    if (!squareData) continue;
+
+    const square = squareData.square;
+
+    const centerX = square.x + square.w / 2;
+    const centerY = square.y + square.h / 2;
+
+    // Main classical letter
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.font = "64px monospace";
+    ctx.fillStyle = "#000";
+
+    ctx.fillText(player, centerX - 4, centerY + 4);
+
+    // Subscript move number
+    ctx.font = "20px monospace";
+    ctx.textBaseline = "alphabetic";
+
+    ctx.fillText(
+      move.toString(),
+      centerX + 24,
+      centerY + 26
+    );
+  }
+
+  ctx.restore();
 }
-
-function drawClassicalMarks(ctx, resolved) {}
-

@@ -25,6 +25,7 @@ function render() {
   drawBoardGrid(ctx, QT3_LAYOUT);
   drawSquareNumbers(ctx, QT3_LAYOUT);
   drawStateString(ctx);
+  drawStatusString(ctx);
   drawMoves(ctx, currentStateString);     // Imported from moves.js.
 }
 
@@ -257,3 +258,37 @@ function drawStateString(ctx) {
   ctx.restore();
 }
 
+
+/* Code to set and draw the status string. */
+let currentStatusString = "Welcome to quantum tic-tac-toe (QT3). X moves first, a placement move; click in two squares."; 
+
+export function setStatusString(str) {
+  currentStatusString = str;
+  render();
+  }
+
+function drawStatusString(ctx) {
+  const { x, y, w, h } = QT3_LAYOUT.statusBox;
+
+  ctx.save();
+
+  // Box background
+  ctx.fillStyle = "#fff";
+  ctx.fillRect(x, y, w, h);
+
+  ctx.strokeStyle = "#555";
+  ctx.strokeRect(x, y, w, h);
+
+  // Text
+  ctx.fillStyle = "#000";
+  ctx.font = "16px monospace";
+  ctx.textBaseline = "top";
+  ctx.textAlign = "left";
+
+  const padding = 10;
+  const textY = y + 4
+
+  ctx.fillText(currentStatusString, x + padding, textY);
+
+  ctx.restore();
+}
