@@ -176,7 +176,11 @@ function overrideCycleColors(stateString, baseColorMap) {
   // Match bracket section: [243|1] or [243]
   const bracketRegex = /\[(\d+)(?:\|(\d+))?\]/;
 
-  const match = stateString.match(bracketRegex);
+  const matches = [...stateString.matchAll(/\[(\d+)(?:\|(\d+))?\]/g)];
+  if (matches.length === 0) return colorMap;
+
+  const match = matches[matches.length - 1];
+
 
   if (!match) {
     return colorMap;  // no cycle annotation present
