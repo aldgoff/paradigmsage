@@ -1,4 +1,7 @@
-// QT3: add a loop annotation as part of the most recent move.
+// ./assets/qt3/js/model/addLoop.js
+
+// QT3 state: "[357|12]"".
+// Add a loop annotation as part of the most recent move.
 // Pure function: does not mutate input state.
 // Caller is responsible for correct use - must occur after a cyclic entanglement but before collapse.
 
@@ -13,7 +16,7 @@
 
 export function addLoop(state, cycle, stems = []) {
   if (cycle.length === 0) {   // No loop, just add semicolon and space.
-    return state += "; ";
+    return `${state}; `;
   }
 
   // Build loop string with stems (if any).
@@ -25,8 +28,6 @@ export function addLoop(state, cycle, stems = []) {
   return `${state}${loopStr}; `;
 }
 
-// Example:
-// state = "...X7+(1,5);";
-// state = insertLoop(state, [3,5,7], [1,2]);
-// -> "X7+(1,5)[357|12];"
+// Before: "...X7+(1,5); ".
+// After : "...X7+(1,5)[357|12]; ".
 
