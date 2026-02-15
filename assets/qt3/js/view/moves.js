@@ -19,17 +19,11 @@ export function drawMoves(ctx, stateString) {
   let colorMap = assignComponentColors(components, moveSets.unresolved);
   colorMap = overrideCycleColors(stateString, colorMap);
 
-  console.log("drawMoves()", moveSets);
-  // console.log("graph = buildEntanglementGraph(moveSets.unresolved)", graph);
-  // console.log("components = computeConnectedComponents(graph)", components);
-  // console.log("colorMap = assignComponentColors(components, moveSets.unresolved)", colorMap);
-
   drawSpookyMarks(ctx, moveSets.unresolved, colorMap);
-
   drawClassicalMarks(ctx, placements, stateString);
 }
 
-function parsePlacements(stateString) {
+export function parsePlacements(stateString) { // Might should move into module.
   const placements = [];  // [{ move, player, squares:[a,b] }]
 
   if (!stateString || stateString.trim() === "") {

@@ -258,7 +258,6 @@ function drawStateString(ctx) {
   ctx.restore();
 }
 
-
 /* Code to set and draw the status string. */
 let currentStatusString = "Welcome to quantum tic-tac-toe (QT3). X moves first, a placement move; click in two squares."; 
 
