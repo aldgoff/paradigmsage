@@ -69,20 +69,38 @@
 23. **Preserve Intentional Visual Formatting**
     Deliberate vertical alignment, interval symmetry formatting, and non-standard indentation used for rapid human scanning must be preserved during refactors. Visual structure encodes semantic grouping and must not be normalized without explicit instruction.
 
-24. View-Owned Input Pipeline Invariant
+24. **View-Owned Input Pipeline Invariant**
     All canvas pointer listeners live exclusively in `view.js`. The view performs ordered dispatch (controls → board → future regions). The controller must never perform geometry, hit testing, or DOM interaction.
 
-25. Structured Semantic Event Contract
+25. **Structured Semantic Event Contract**
     The view emits structured semantic event objects (e.g., `{ type, square, cell }`) rather than raw identifiers. The controller consumes semantic intent, not geometric artifacts. This defines the canonical view→controller interface.
 
-26. Spooky Cell Identity Binding Principle
+26. **Spooky Cell Identity Binding Principle**
     Each square contains nine fixed subcells (`m1–m9`) bound to move identity, not render order. Spatial slots represent persistent move IDs, reinforcing ontological continuity and collapse semantics.
 
-27. Static Layout Trust & Fail-Fast Policy
+27. **Static Layout Trust & Fail-Fast Policy**
     Layout geometry is treated as internally sovereign. Defensive null-guards for controlled layout structures are removed in favor of immediate failure on structural corruption. Internal integrity outweighs silent tolerance.
 
-28. Single Event Entry, Ordered Dispatch Rule
+28. **Single Event Entry, Ordered Dispatch Rule**
     Input handling follows a single entry point with priority routing. Controls receive first right of refusal; board receives second. No parallel listener trees may be introduced without explicit architectural renegotiation.
 
-29. Clean Pipeline as Architectural Milestone Marker
+29. **Clean Pipeline as Architectural Milestone Marker**
     The phrase “clean pipeline” denotes a completed boundary stabilization between layers. When adopted in commit messages, it signifies that event flow is deterministic, layered, and leak-free.
+
+30. **Architecture-First Implementation Discipline**
+    Before writing new feature code, explicitly settle architectural boundaries and layer responsibilities. Define the pipeline and function names first; implement functions only after structural agreement. This reduces churn, duplication, and corrective rewrites.
+
+31. **Canonical String Authority Principle**
+    If semantic structure (e.g., cycles, stems) is already encoded in the canonical state string, the view must parse and trust that encoding rather than re-derive structure from graph analysis. The canonical string is the single authoritative representation of game state.
+
+32. **Temporal–Structural Separation Rule**
+    Temporal semantics (e.g., move order, cycle triggering) belong to the model/controller. Structural interpretation and rendering belong to the view. The view must not infer temporal meaning from structural graphs when time is already encoded in the canonical state.
+
+33. **Commit-at-Plateau Discipline**
+    Commits should occur at stable architectural plateaus where a vertical slice is complete (e.g., full entanglement rendering) rather than at arbitrary stopping points or fatigue thresholds. Each commit should represent a stabilized layer boundary.
+
+34. **Structural Logging Convention**
+    When debugging structural systems, log structural artifacts (graphs, components, color maps) rather than surface symptoms. Debugging proceeds from structural invariants downward, not from visual anomalies upward.
+
+35. **Refinement Deferral Principle**
+    Non-blocking behavioral refinements (e.g., partial-move color nuance) must be explicitly marked and deferred rather than patched mid-feature. Momentum and architectural integrity take precedence over speculative polish.

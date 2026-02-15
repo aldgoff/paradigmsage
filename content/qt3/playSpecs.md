@@ -6,26 +6,33 @@ title: "Play Specs"
 
 ## TODO
   1. POC: Have AI prove it can write python code which implements an interactive game on the web site.
-  1. Canonical state string.
-  1. Detects cyclic entanglements.
-  1. A quantum board, doubled lines, labeled squares.
-  1. Placement moves, pairs of X's and O's subscripted with the number of the move.
+  2. Canonical state string.
+  3. Detects cyclic entanglements.
+  4. A quantum board, doubled lines, labeled squares.
+  5. Placement moves, pairs of X's and O's subscripted with the number of the move.
+  6. Color coding of separate entanglements.
+  7. Collapse spooky-marks to classical marks.
+  8. Prohibits illegal moves.
   1. List of quantum moves with prev & next buttons.
   1. The classical ensemble, classical board, classical marks.
   1. Selectable classical game, populates a classical listing.
   1. Prompts placement moves.
-  1. Prohibits illegal moves.
-  1. Color coding of separate entanglements.
   1. Prompts collapse moves.
-  1. Collapse spooky-marks to classical marks.
   1. Standard buttons: Start, Undo, Redo.
   1. Scores a completed game.
 
 ## TADONE
   0. 2/07/26 - Todo list.
   1. 2/08/26 - POC.
-  1. 2/09/26 - Canonical state string.
-  1. 2/12/26 - Detects cyclic entanglements.
+  2. 2/09/26 - Canonical state string.
+  3. 2/12/26 - Detects cyclic entanglements.
+  4. 2/12/26 - A quantum board, doubled lines, labeled squares.
+  5. 2/13/26 - Placement moves, pairs of X's and O's subscripted with the number of the move.
+  6. 2/13/26 - Color coding of separate entanglements.
+  7. 2/14/26 - Collapse spooky-marks to classical marks.
+  8. 2/15/26 - Prohibits illegal moves.
+
+
 
 ## Design & Specs
   Use the MVC design pattern.
@@ -130,6 +137,23 @@ title: "Play Specs"
     * `{X2.0,O0}` : double win (possible for X only)
   25. Decimal notation (e.g. `2.0`, `0.5`, `1.5`) is preferred to emphasize departures from classical tic-tac-toe.
   26. Score annotations are optional, terminal, and do not affect game semantics or replay; they summarize outcomes only.
+  27. X1+(1,2); O2+(2,3); X3+(4,5); O4+(5,6); X5+(6,9); O6+(7,8); X7+(4,6)[374|5]; O7@X3(4)O4(5)X5(9)X7(6); O8+(7,8)[68]; X8@O6(7)O8(8); X9+(2,3)[29|1]; O9@X9(2); {score}
+  28. Quantum move listing should be easy...
+
+    | # |   X   | # |   O   |
+    | - | ----- | - | ----- |
+    | 1 | 1 - 2 | 2 | 2 - 3 |
+    | 3 | 4 - 5 | 4 | 5 - 6 |
+    | 5 | 6 - 9 | 6 | 7 - 8 |
+    | 7 | 4 > 6 | 8 | 7 > 8 |
+    | 9 | 2 < 3 |   |{score}|
+
+  29. But this has benefits...
+  - X1+(1,2); O2+(2,3); X3+(4,5); O4+(5,6); X5+(6,9); O6+(7,8); X7+(4,6)[347|5]; @X3(4)!X3(4)!O4(5)!X5(9)!X7(6); 
+  30. From a real game...
+  - X1+(1,2); O2+(2,3); X3+(4,5); O4+(5,6); X5+(6,9); O6+(7,8); X7+(4,6)[347|5]; @X3(4)!X3(4)!O4(5)!X5(9)!X7(6); O8+(7,8)[68]; @O6(8)!O6(8)!O8(7); X9+(1,3)[192]; @O2(2)!X1(1)!O2(2)!X9(3); 
+  - O wins.
+
 
 ## MVC specs:
   The controller reasons about time, the view reasons about space, and the model reasons about truth.
@@ -173,3 +197,19 @@ title: "Play Specs"
 
   State is conserved achievement; transition is experiential process.
 
+  Status messages:
+  - "Welcome to quantum tic-tac-toe (QT3).'
+  - "X moves first, a placement move; click in two squares."
+  - `${player}: place first spooky mark (click on it again to change your mind.)`
+  - `${player}: place second spooky mark (commits to the move).`
+  - "Second spooky mark must be in a different square (unless only one uncollapsed square left.)"
+  - `${collapsePlayer} needs to make a collapse move - select one purple spooky mark.`
+  - "That square has collapsed. Choose another."
+  - "Game is over. New Game, Restart, Undo."
+
+
+## Placements Array...
+placements: (3) [{…}, {…}, {…}]
+0: move: 1 player: "X" squares: (2) [4, 5][[Prototype]]: Object
+1: move: 2 player: "O" squares: (2) [5, 6][[Prototype]]: Object
+2: move: 3 player: "X" squares: (2) [5, 4][[Prototype]]: Objectlength: 3[[Prototype]]: Array(0)

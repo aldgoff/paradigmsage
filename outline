@@ -14,19 +14,23 @@
 │           ├── main.js
 │           ├── model
 │           │   ├── addCollapseMove.js
+│           │   ├── addLoop.js
 │           │   ├── addPlacementMove.js
 │           │   ├── addScore.js
+│           │   ├── addSpookyMove.js
 │           │   ├── barrel.js
-│           │   └── insertLoop.js
+│           │   └── cycles.js
 │           ├── tests
 │           │   ├── addCollapseMove.test.js
+│           │   ├── addLoop.test.js
 │           │   ├── addPlacementMove.test.js
 │           │   ├── addScore.test.js
+│           │   ├── addSpookyMove.test.js
 │           │   ├── classicalT3.test.js
-│           │   ├── helpers.js
-│           │   └── insertLoop.test.js
+│           │   └── helpers.js
 │           └── view
 │               ├── controlsView.js
+│               ├── moves.js
 │               └── view.js
 ├── CAP-LOG.md
 ├── CAPTURE-LOG.md
@@ -84,6 +88,7 @@
 │   │   ├── iqt3.md
 │   │   ├── limits.md
 │   │   ├── play.md
+│   │   ├── playSpecs.md
 │   │   ├── superposition.md
 │   │   └── variants.md
 │   ├── qtp
@@ -206,10 +211,12 @@
 │   │   └── ssi
 │   │       └── JPC06_3_SSI-Paper_5.pdf
 │   └── qt3
+│       ├── js
+│       │   └── tests
 │       └── poc
 │           └── poc.js
 ├── TECH-DEBT.md
 ├── themes
 └── WORK-INVENTORY.md
 
-41 directories, 171 files
+43 directories, 176 files
