@@ -12,7 +12,7 @@ export const QT3_LAYOUT = {
     x: 5,
     y: 100,
     w: 145,
-    h: 260
+    h: 290
     },
 
   board: {  // QT3 board (spatial truth, centered)
@@ -185,7 +185,7 @@ export const QT3_LAYOUT = {
     x: 0,
     y: 420,
     w: 900,
-    h: 30
+    h: 40
   },
 
   ensemble: {  // Classical ensemble (variable content, full width)

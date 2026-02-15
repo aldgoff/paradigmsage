@@ -18,6 +18,31 @@ export function initView() {
   installPointerHandlers();
 }
 
+function drawWrappedText(ctx, text, x, y, maxWidth, lineHeight) {
+  const words = text.split(" ");
+  let line = "";
+  let lines = [];
+
+  for (let n = 0; n < words.length; n++) {
+    const testLine = line + words[n] + " ";
+    const metrics = ctx.measureText(testLine);
+    const testWidth = metrics.width;
+
+    if (testWidth > maxWidth && n > 0) {
+      lines.push(line);
+      line = words[n] + " ";
+    } else {
+      line = testLine;
+    }
+  }
+
+  lines.push(line);
+
+  for (let i = 0; i < lines.length; i++) {
+    ctx.fillText(lines[i], x, y + i * lineHeight);
+  }
+}
+
 function render() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawLayoutBounds(ctx);
@@ -253,7 +278,8 @@ function drawStateString(ctx) {
   const padding = 10;
   const textY = y + h / 2;
 
-  ctx.fillText(currentStateString, x + padding, textY);
+  // ctx.fillText(currentStateString, x + padding, textY);
+  drawWrappedText(ctx, currentStateString, x + padding, y + 10, w-2 * padding, 20);
 
   ctx.restore();
 }
@@ -287,7 +313,8 @@ function drawStatusString(ctx) {
   const padding = 10;
   const textY = y + 4
 
-  ctx.fillText(currentStatusString, x + padding, textY);
+  // ctx.fillText(currentStatusString, x + padding, textY);
+  drawWrappedText(ctx, currentStatusString, x + padding, y + 10, w-2 * padding, 20);
 
   ctx.restore();
 }

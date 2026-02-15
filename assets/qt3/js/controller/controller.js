@@ -17,6 +17,8 @@ import {initView,
         setStateString,
         setStatusString,
 } from "../view/view.js";
+import {setControlHandler,
+} from "../view/controlsView.js";
 import {parsePlacements
 } from "../view/moves.js"
 import {cellInLoop,
@@ -45,11 +47,49 @@ let stemMoves = [];
 export function initController () {
   console.log("Controller: qt3/js/controller/controller.js");
 
+  setControlHandler( button => {    // Registers function with view so it can be called on button events.
+    handleButtonRelease(button);
+  });
+
   setSquareHandler( squareKey => {  // Registers function with view so it can be called on square events.
     handleSquareCellClick(squareKey);
   });
 
   initView(); // Dev scaffolding.
+}
+
+function handleButtonRelease(button) {
+  switch (button) {
+    case "New Game":
+      console.log(button);
+      setStatusString(`Player ${player}: place first spooky mark (click on it again to change your mind (in-work)).`);
+      break;
+    case "Restart":
+      console.log(button);
+      setStatusString(`Player ${player}: place first spooky mark (click on it again to change your mind (in-work)).`);
+      break;
+    case "Undo":
+      console.log(button);
+      break;
+    case "Redo":
+      console.log(button);
+      break;
+    case "Load":
+      console.log(button);
+      break;
+    case "Help":
+      console.log(button);
+      let helpString = "";
+      helpString = "QT3 is the simplest possible toy universe which can demonstrate superposition. ";
+      helpString += "It has an objective measurement mechanism (cyclic entanglements). "
+      helpString += "It has a clear interpretation - a quantum game implies "
+      helpString += "a set of simultaneous classical games; the classical ensemble."
+      setStatusString(helpString);
+      break;
+    default:
+      console.log("default - unknown button.");
+      break;
+  }
 }
 
 // State changes:
@@ -93,7 +133,7 @@ function handleSquareCellClick(event) {  // Respond to clicks in squares down to
       setStateString(stateString);
 
       collapse = false;
-      setStatusString(`${player}: place first spooky mark (click on it again to change your mind (in-work).)`);
+      setStatusString(`Player ${player}: place first spooky mark (click on it again to change your mind (in-work)).`);
       gameOver = (turn == 9) && (spooky === 1);
     }
     else {
@@ -106,7 +146,7 @@ function handleSquareCellClick(event) {  // Respond to clicks in squares down to
     sq1 = squareNum; // Last char of 'square1' is the move number.
     console.log("Engine", spooky, sq1, sq2);
     stateString = addSpookyMove(stateString, player, turn, sq1);
-    setStatusString(`${player}: place second spooky mark (commits to the move).`);
+    setStatusString(`Player ${player}: place second spooky mark (commits to the move).`);
     spooky = 2;
     }
   else if(spooky === 2) {       // Second spooky mark - "X1+(1,2)" - Completes a placement move.
@@ -130,7 +170,7 @@ function handleSquareCellClick(event) {  // Respond to clicks in squares down to
       let collapsePlayer = (player === 'X') ? 'O' : 'X'; // Must be other player who chooses the collapse..
 
       stateString = addLoop(stateString, cycleMoves, stemMoves);
-      setStatusString(`${collapsePlayer} needs to make a collapse move - select one purple spooky mark.`);
+      setStatusString(`Player ${collapsePlayer} needs to make a collapse move - select one purple spooky mark.`);
     }
     else {
       stateString += `; `;
@@ -145,7 +185,7 @@ function handleSquareCellClick(event) {  // Respond to clicks in squares down to
     spooky = 1;   // Ready for next placement move.
     player = (player === 'X') ? 'O' : 'X'; // Toggle player.
     if(!collapse) {
-      setStatusString(`${player}: place first spooky mark (click on it again to change your mind (in-work).)`);
+      setStatusString(`Player ${player}: place first spooky mark (click on it again to change your mind (in-work)).`);
     }
     }
   else {                        // Can't happen.
