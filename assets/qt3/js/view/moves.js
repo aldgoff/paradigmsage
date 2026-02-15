@@ -290,6 +290,8 @@ function drawClassicalMarks(ctx, placements, stateString) {
     if (!squareData) continue;
 
     const square = squareData.square;
+    ctx.fillStyle = "#fff";  // board background color
+    ctx.fillRect(square.x, square.y, square.w, square.h);
 
     const centerX = square.x + square.w / 2;
     const centerY = square.y + square.h / 2;

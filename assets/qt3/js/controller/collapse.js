@@ -27,7 +27,7 @@ export function computeCollapseResolution(
   stemMoves,
   triggerMove,
   triggerSquare
-) {
+  ) {
 
   const componentMoves = new Set([
     ...cycleMoves,
@@ -62,4 +62,16 @@ export function computeCollapseResolution(
   }
 
   return resolved;
+}
+
+export function isSquareClassical(stateString, squareNum) {
+  const collapseRegex = /!([XO])(\d+)\((\d)\)/g;
+  let match;
+
+  while ((match = collapseRegex.exec(stateString)) !== null) {
+    const collapsedSquare = Number(match[3]);
+    if (collapsedSquare === squareNum) return true;
+  }
+
+  return false;
 }

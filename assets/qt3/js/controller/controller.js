@@ -20,7 +20,8 @@ import {initView,
 import {parsePlacements
 } from "../view/moves.js"
 import {cellInLoop,
-        computeCollapseResolution
+        computeCollapseResolution,
+        isSquareClassical
 } from "../controller/collapse.js"
 
 /* State string example.  
@@ -70,6 +71,13 @@ function handleSquareCellClick(event) {  // Respond to clicks in squares down to
 
   const square = event.square;
   const cell = event.cell;
+  const squareNum = Number(square.slice(-1)); // Last char of 'square' is the move number.
+
+  // Prevent placement into classical squares (but allow collapse selection).
+  if (isSquareClassical(stateString, squareNum)) {
+    setStatusString("That square has collapsed. Choose another.");
+    return;
+  }
 
   if(     gameOver) {           // Game over.
     setStatusString("Game is over. New Game, Restart, Undo.");
@@ -94,12 +102,12 @@ function handleSquareCellClick(event) {  // Respond to clicks in squares down to
     }
   else if(spooky === 1) {       // First spooky mark - "X1+(1".
     turn += 1;
-    sq1 = Number(square.slice(-1)); // Last char of 'square1' is the move number.
+    sq1 = squareNum; // Last char of 'square1' is the move number.
     stateString = addSpookyMove(stateString, player, turn, sq1);
     spooky = 2;
     }
   else if(spooky === 2) {       // Second spooky mark - "X1+(1,2)" - Completes a placement move.
-    sq2 = Number(square.slice(-1)); // Last char 'square2';
+    sq2 = squareNum; // Last char 'square2';
     stateString = addPlacementMove(stateString, player, turn, sq1, sq2);
 
     // Check for cyclic entanglement.
