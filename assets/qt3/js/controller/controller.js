@@ -93,6 +93,7 @@ function handleSquareCellClick(event) {  // Respond to clicks in squares down to
       setStateString(stateString);
 
       collapse = false;
+      setStatusString(`${player}: place first spooky mark (click on it again to change your mind (in-work).)`);
       gameOver = (turn == 9) && (spooky === 1);
     }
     else {
@@ -103,11 +104,17 @@ function handleSquareCellClick(event) {  // Respond to clicks in squares down to
   else if(spooky === 1) {       // First spooky mark - "X1+(1".
     turn += 1;
     sq1 = squareNum; // Last char of 'square1' is the move number.
+    console.log("Engine", spooky, sq1, sq2);
     stateString = addSpookyMove(stateString, player, turn, sq1);
+    setStatusString(`${player}: place second spooky mark (commits to the move).`);
     spooky = 2;
     }
   else if(spooky === 2) {       // Second spooky mark - "X1+(1,2)" - Completes a placement move.
     sq2 = squareNum; // Last char 'square2';
+    if(sq1 === sq2) {
+      setStatusString("Second spooky mark must be in a different square (unless only one uncollapsed square left.)");
+      return;
+    }
     stateString = addPlacementMove(stateString, player, turn, sq1, sq2);
 
     // Check for cyclic entanglement.
@@ -121,9 +128,9 @@ function handleSquareCellClick(event) {  // Respond to clicks in squares down to
       collapse = true;
 
       let collapsePlayer = (player === 'X') ? 'O' : 'X'; // Must be other player who chooses the collapse..
-      setStatusString(`${collapsePlayer} needs to make a collapse move - select one purple spooky mark.`);
 
       stateString = addLoop(stateString, cycleMoves, stemMoves);
+      setStatusString(`${collapsePlayer} needs to make a collapse move - select one purple spooky mark.`);
     }
     else {
       stateString += `; `;
@@ -136,7 +143,10 @@ function handleSquareCellClick(event) {  // Respond to clicks in squares down to
     });
 
     spooky = 1;   // Ready for next placement move.
-    player = (player === 'X') ? 'O' : 'X'; // Toggle player..
+    player = (player === 'X') ? 'O' : 'X'; // Toggle player.
+    if(!collapse) {
+      setStatusString(`${player}: place first spooky mark (click on it again to change your mind (in-work).)`);
+    }
     }
   else {                        // Can't happen.
     console.log("CAN'T HAPPEN - OOPS!");

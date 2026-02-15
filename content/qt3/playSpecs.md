@@ -12,11 +12,11 @@ title: "Play Specs"
   5. Placement moves, pairs of X's and O's subscripted with the number of the move.
   6. Color coding of separate entanglements.
   7. Collapse spooky-marks to classical marks.
+  8. Prohibits illegal moves.
   1. List of quantum moves with prev & next buttons.
   1. The classical ensemble, classical board, classical marks.
   1. Selectable classical game, populates a classical listing.
   1. Prompts placement moves.
-  1. Prohibits illegal moves.
   1. Prompts collapse moves.
   1. Standard buttons: Start, Undo, Redo.
   1. Scores a completed game.
@@ -30,7 +30,7 @@ title: "Play Specs"
   5. 2/13/26 - Placement moves, pairs of X's and O's subscripted with the number of the move.
   6. 2/13/26 - Color coding of separate entanglements.
   7. 2/14/26 - Collapse spooky-marks to classical marks.
-
+  8. 2/15/26 - Prohibits illegal moves.
 
 
 
@@ -196,6 +196,17 @@ title: "Play Specs"
   }
 
   State is conserved achievement; transition is experiential process.
+
+  Status messages:
+  - "Welcome to quantum tic-tac-toe (QT3).'
+  - "X moves first, a placement move; click in two squares."
+  - `${player}: place first spooky mark (click on it again to change your mind.)`
+  - `${player}: place second spooky mark (commits to the move).`
+  - "Second spooky mark must be in a different square (unless only one uncollapsed square left.)"
+  - `${collapsePlayer} needs to make a collapse move - select one purple spooky mark.`
+  - "That square has collapsed. Choose another."
+  - "Game is over. New Game, Restart, Undo."
+
 
 ## Placements Array...
 placements: (3) [{…}, {…}, {…}]
