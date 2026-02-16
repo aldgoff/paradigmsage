@@ -62,7 +62,7 @@ export function drawLayoutBounds(ctx, layout = QT3_LAYOUT) {
   ctx.lineWidth = 1;
 
   for (const layout_key in layout) { // Outline each graphical element in layout.
-    if (layout_key === "board") {  // Outline & label QT3 squares and spooky cells..
+    if (layout_key === "board") {  // Outline & label QT3 squares and spooky cells.
       const squares = layout.board.squares;
       for (const squares_key in squares) {
         const sq = squares[squares_key];  // Square1, square2, square3, ... square9.
@@ -75,8 +75,11 @@ export function drawLayoutBounds(ctx, layout = QT3_LAYOUT) {
           ctx.fillStyle = "#ccc";
           ctx.font = "12px sans-serif";
           ctx.fillText(cells_key, sub.x + 7, sub.y + 19);
-       }
+        }
       }
+      }
+    else if (layout_key === "controls") {
+      console.log("// Don't draw outline of controls region.");
       }
     else {                  // Outline & label graphical elements.
       const element = layout[layout_key];
@@ -285,7 +288,7 @@ function drawStateString(ctx) {
 }
 
 /* Code to set and draw the status string. */
-let currentStatusString = "Welcome to quantum tic-tac-toe (QT3). X moves first, a placement move; click in two squares."; 
+let currentStatusString = "Welcome to quantum tic-tac-toe (QT3). Click on New Game to begin."; 
 
 export function setStatusString(str) {
   currentStatusString = str;

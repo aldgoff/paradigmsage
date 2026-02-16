@@ -38,11 +38,16 @@ let stateString = ""; // X1+(1,2); O2+(...
 let turn = 0;  // 1 - 9.
 let player = "X";     // 'X'|'O'.
 let sq1, sq2 = 0;     // 1 - 9.
-let placements = [];  // [{ move, player, squares:[a,b] }]
+let placements = [];  // [{ move, player, squares:[a,b] }].
 
 /* Code for collapse moves. */
 let cycleMoves = [];
 let stemMoves = [];
+
+// State changes:
+let gameOver = false;
+let collapse = false;
+let spooky = 1;       // 1, 2.
 
 export function initController () {
   console.log("Controller: qt3/js/controller/controller.js");
@@ -62,7 +67,21 @@ function handleButtonRelease(button) {
   switch (button) {
     case "New Game":
       console.log(button);
+      stateString = ""; // X1+(1,2); O2+(...
+      turn = 0;  // 1 - 9.
+      player = "X";     // 'X'|'O'.
+      sq1, sq2 = 0;     // 1 - 9.
+      placements = [];  // [{ move, player, squares:[a,b] }].
+
+      cycleMoves = [];  // Spooky marks on the loop.
+      stemMoves = [];   // Spooky marks on the stems.
+
+      gameOver = false; // State changes:
+      collapse = false;
+      spooky = 1;       // 1, 2.
+
       setStatusString(`Player ${player}: place first spooky mark (click on it again to change your mind (in-work)).`);
+      setStateString("");
       break;
     case "Restart":
       console.log(button);
@@ -91,11 +110,6 @@ function handleButtonRelease(button) {
       break;
   }
 }
-
-// State changes:
-let gameOver = false;
-let collapse = false;
-let spooky = 1;       // 1, 2.
 
 function handleSquareCellClick(event) {  // Respond to clicks in squares down to the cell level.
   // event - {square: 'square1', cell: 'm1'}
