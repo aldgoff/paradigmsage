@@ -158,7 +158,6 @@ function handleSquareCellClick(event) {  // Respond to clicks in squares down to
   else if(spooky === 1) {       // First spooky mark - "X1+(1".
     turn += 1;
     sq1 = squareNum; // Last char of 'square1' is the move number.
-    console.log("Engine", spooky, sq1, sq2);
     stateString = addSpookyMove(stateString, player, turn, sq1);
     setStatusString(`Player ${player}: place second spooky mark (commits to the move).`);
     spooky = 2;
