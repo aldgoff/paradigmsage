@@ -5,7 +5,7 @@ import { QT3_LAYOUT } from "../layout.js";
 // Button geometry (view-owned).
 const BUTTONS = [
   { label: "New Game", enabled: true  },
-  { label: "Restart",  enabled: true  },
+  { label: "Restart",  enabled: false },
   { label: "Undo",     enabled: false },
   { label: "Redo",     enabled: false },
   { label: "Load",     enabled: false },
