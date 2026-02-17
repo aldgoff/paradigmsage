@@ -12,6 +12,6 @@ if (import.meta.env?.DEV ?? true) {
   import("./tests/addLoop.test.js");
   import("./tests/addCollapseMove.test.js");
   import("./tests/analyzeStateString.test.js");
-  // import("./tests/addScore.test.js");
-  // import("./tests/classicalT3.test.js");
+  import("./tests/addScore.test.js");
+  import("./tests/classicalT3.test.js");
 }

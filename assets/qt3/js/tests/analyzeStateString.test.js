@@ -2,7 +2,8 @@
 
 import { assertEqual } from "./helpers.js";
 
-import { addPlacementMove, analyzeStateString } from "../model/barrel.js";
+import { addPlacementMove } from "../model/barrel.js";
+import { analyzeStateString } from "../model/barrel.js";
 
 let state = "";
 let res = null;

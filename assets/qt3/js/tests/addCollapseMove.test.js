@@ -1,6 +1,7 @@
 // Regression tests for addCollapseMove().
 
 import { assertEqual } from "./helpers.js";
+
 import { addSpookyMove } from "../model/barrel.js";
 import { addPlacementMove } from "../model/barrel.js";
 import { addLoop } from "../model/barrel.js";
@@ -33,3 +34,4 @@ assertEqual(state, "X1+(1,2); O2+(2,3); X3+(3,6); O4+(1,3)[123|6]; ", "collapse 
 // --------- --------- --------- --------- //
 
 console.log("addCollapseMove() tests passed");
+

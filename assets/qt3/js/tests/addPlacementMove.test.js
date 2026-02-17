@@ -1,6 +1,7 @@
 // Regression tests for addPlacementMove().
 
 import { assertEqual } from "./helpers.js";
+
 import { addSpookyMove } from "../model/barrel.js";
 import { addPlacementMove } from "../model/barrel.js";
 import { addLoop } from "../model/barrel.js";
