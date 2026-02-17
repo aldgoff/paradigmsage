@@ -104,3 +104,18 @@
 
 35. **Refinement Deferral Principle**
     Non-blocking behavioral refinements (e.g., partial-move color nuance) must be explicitly marked and deferred rather than patched mid-feature. Momentum and architectural integrity take precedence over speculative polish.
+
+36. **Collapse Squares Are Terminal**
+    Once a square collapses to a classical mark, it is permanently closed to further spooky placement. Classical reality is irreversible within a game instance. Enforcement derives solely from the canonical state string via isSquareClassical().
+
+37. **Declarative Rendering Invariant**
+    Canvas rendering must remain a pure function of stateString. No partial clearRect mutation or temporal canvas state may encode game logic. All visual state must be derivable from canonical transcript alone.
+
+38. **Collapse Serialization Completeness Rule**
+    All resolved moves in a collapse event must be explicitly serialized in the canonical string. Collapse resolution is not recomputed on load; the transcript fully determines classical outcomes.
+
+39. **Move-Order Canonical Collapse Listing**
+    Resolved moves within a collapse block are listed in move-number order, not causal propagation order. Causal structure remains encoded in loop notation; collapse listing encodes final classical truth.
+
+40. **Classical Mark Subscript Requirement**
+    Classical marks must retain move-number subscripts. Chronological precedence is semantically meaningful and must remain visible in the classical board state.

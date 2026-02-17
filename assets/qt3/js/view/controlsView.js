@@ -8,7 +8,7 @@ const BUTTONS = [
   { label: "Restart",  enabled: false },
   { label: "Undo",     enabled: false },
   { label: "Redo",     enabled: false },
-  { label: "Load",     enabled: false },
+  { label: "Load",     enabled: true  },
   { label: "Help",     enabled: true  }
   ];
 

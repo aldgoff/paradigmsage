@@ -9,6 +9,7 @@
 │   └── qt3
 │       └── js
 │           ├── controller
+│           │   ├── collapse.js
 │           │   └── controller.js
 │           ├── layout.js
 │           ├── main.js
@@ -19,7 +20,8 @@
 │           │   ├── addScore.js
 │           │   ├── addSpookyMove.js
 │           │   ├── barrel.js
-│           │   └── cycles.js
+│           │   ├── cycles.js
+│           │   └── model.js
 │           ├── tests
 │           │   ├── addCollapseMove.test.js
 │           │   ├── addLoop.test.js
@@ -30,6 +32,7 @@
 │           │   └── helpers.js
 │           └── view
 │               ├── controlsView.js
+│               ├── listings.js
 │               ├── moves.js
 │               └── view.js
 ├── CAP-LOG.md
@@ -219,4 +222,4 @@
 ├── themes
 └── WORK-INVENTORY.md
 
-43 directories, 176 files
+43 directories, 179 files
