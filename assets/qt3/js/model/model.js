@@ -30,7 +30,7 @@ export function slipHistptr (steps) {  // Undo (-1), Redo (+1).
   if(histPtr > numberOfMoves) histPtr = numberOfMoves;
 }
 
-export function analyzeGame1(stateString) {
+export function analyzeGame_1(stateString) {
   // TODO: code to analyze a stateString.
 
   return {
@@ -169,8 +169,10 @@ function emptyAnalysis() {
     placementMoves: 0,
     collapseMoves: 0,
     numberOfMoves: 0,
+
     numberOfSeparables: 0,
     numberOfEntanglements: 0,
+    
     collapsedMoves: [],
     collapsedSquares: [],
     numberOfLoopMoves: 0,
