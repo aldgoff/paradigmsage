@@ -1,5 +1,7 @@
 // Controller.js.
 
+import {analyzeGame,
+} from "../model/model.js";
 import {addSpookyMove,
         addPlacementMove,
         addLoop,
@@ -95,6 +97,40 @@ function handleButtonRelease(button) {
       break;
     case "Load":
       console.log(button);
+      let stateString = "";
+      let analysis = {};
+
+      stateString = "X1+(1,2); ";         // Correct.
+        analysis = analyzeGame(stateString);
+        console.log(analysis);
+
+      stateString = "X1+(1,2); O2+(4,5); X3+(7,8); O4+(6,9); ";                   // 4 separables.
+        analysis = analyzeGame(stateString);
+        console.log(analysis);
+
+      stateString = "X1+(1,2); O2+(4,5); X3+(7,8); O4+(6,9); X5+(1,4); O6+(8,9); "; // 4 separables.
+        analysis = analyzeGame(stateString);
+        console.log(analysis);
+
+      stateString =  "X1+(1,2); O2+(2,3); X3+(3,6); O4+(6,9); X5+(8,9); O6+(7,8); "
+      stateString += "X7+(4,7); O8+(4,5); X9+(1,5)[198765432]; ";
+        analysis = analyzeGame(stateString);
+        console.log(analysis);
+
+      stateString = "X1+(1,2); O2+(2,3); X3+(4,5); O4+(5,6); X5+(7,8); O6+(8,9); X7+(4,5)[37|4];"
+        analysis = analyzeGame(stateString);
+        console.log(analysis);
+
+      
+
+
+      // stateString = "X1+(1,2); O2+(2,3); ";         // pending.
+      // analysis = analyzeGame(stateString);
+      // console.log(analysis);
+      
+      // stateString = "X1+(1,2); O2+(2,3); X3+(4,5); O4+(5,6); X5+(6,9); O6+(7,8); X7+(4,6)[347|5]; O7@O4(5)!X3(4)!O4(5)!X5(9)!X7(6);";
+      // analysis = analyzeGame(stateString);  // Not so good.
+      
       break;
     case "Help":
       console.log(button);
