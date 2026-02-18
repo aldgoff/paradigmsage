@@ -119,3 +119,27 @@
 
 40. **Classical Mark Subscript Requirement**
     Classical marks must retain move-number subscripts. Chronological precedence is semantically meaningful and must remain visible in the classical board state.
+
+41. **Model Layer Purity Invariant**
+    All QT3 model-layer analysis functions must be pure, stateless, and derived solely from the canonical `stateString`. No module-scope mutable state, hidden regex state, or controller coupling is permitted.
+
+42. **Canonical Grammar SPOT Principle**
+    All canonical string syntax definitions must reside in a single centralized grammar section. No duplicated regex literals or scattered syntax definitions are allowed.
+
+43. **Structural Ontology Definitions**
+    The following structural terms are canonical within QT3 analysis:
+    • Separable — an uncollapsed placement move belonging to a connected component of size 1.
+    • Entangled Move — an uncollapsed placement move belonging to a connected component of size ≥2.
+    • Entanglement — a connected component of size ≥2 among uncollapsed placement moves.
+    • Collapsed Move — a placement move resolved via `!Xn(s)` serialization.
+
+44. **Structural Count Invariant**
+    For any valid state string:
+    `separables + entangledMoves + collapsedMoves = placementMoves`
+    This invariant is enforced in the model layer and is never optional.
+
+45. **QT3 Entanglement Bound**
+    The maximum number of entanglement components is ≤3. This bound is guaranteed by board topology and square constraints, not by rule enforcement logic.
+
+46. **Progressive Suite Idempotency Pattern**
+    A progressive state test sequence (empty → spooky → placement → semi-entanglement → loop → collapse) implicitly validates statelessness and idempotency. Repeated analysis of increasing states must not depend on prior calls.
