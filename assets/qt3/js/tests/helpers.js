@@ -3,3 +3,16 @@ export function assertEqual(actual, expected, label) {
     throw new Error(`${label}\nExpected: ${expected}\nActual:   ${actual}`);
   }
 }
+
+export function assertThrows(fn, label) {
+  let threw = false;
+  try {
+    fn();
+  } catch (e) {
+    threw = true;
+  }
+  if (!threw) {
+    throw new Error(`Expected invariant failure: ${label}`);
+  }
+}
+

@@ -2,20 +2,96 @@
 
 // Analyze a state string for multiple perameters of interest.
 
-/**
- * Adds a collapse move to a QT3 state string.
- * @param {string} state - existing QT3 state string (must not be empty).
+/** Analyzes a QT3 state string.
+ * @param {string} state - existing QT3 state string.
  * 
- * @returns {movesPlacement}  // 0 - 9.
- */
+ * @returns {moves, counts}  // 
+*/
 
-/**
- * Returns the number of incomplete (spooky) placement moves.
- * There can be at most 1.
- *
- * Example: "X1+(5"
- */
+const noMoves = {
+  spooky: 0,    // 0 - 1.
+  placement: 0, // 0 - 9.
+  collapse: 0,  // 0 - 4.
+  number: 0,    // 0 - 13.
+  };
+  Object.freeze(noMoves);
+
+const noCounts = {
+  separables: 0,     // 0 - 4.
+  entanglements: 0,  // 0 - 3.
+  entangledMoves: 0, // 0 - 9.
+  collapsedMoves: 0, // 0 - 9.
+  };
+  Object.freeze(noCounts);
+
+  /*** QT3 Grammar ***/
+
+const GRAMMAR = {
+  placement:        /([XO])(\d+)\+\((\d),(\d)\)/g,
+  collapseEvent:    /@([XO])(\d+)\((\d)\)/g,
+  collapseResolve:  /!([XO])(\d+)\((\d)\)/g,
+  spooky:           /([XO])(\d+)\+\((\d)$/
+  // loop:          /\[(\d+)(?:\|(\d+))?\]/g;
+};
+
+
+/*** Helpers ***/
+
+function invariant(message, condition) {
+  if (!condition) {
+    throw new Error(`Invariant failed: ${message}`);
+  }
+}
+
+export function parseState(state) {
+  /**
+   * Parses a QT3 state string into structural components.
+   *
+   * Returns:
+   * {
+   *   placements: [ { move, sq1, sq2 } ],
+   *   collapsedMoves: Set<number>
+   * }
+   */
+
+  const result = {
+    placements: [],
+    collapsedMoves: new Set()
+  };
+
+  if (!state || state.trim() === "") {
+    return result;
+  }
+
+  const placementRegex = new RegExp(GRAMMAR.placement);
+  const collapseRegex  = new RegExp(GRAMMAR.collapseResolve);
+
+  let match;
+
+  // Collect placements
+  while ((match = placementRegex.exec(state)) !== null) {
+    result.placements.push({
+      move: Number(match[2]),
+      sq1:  Number(match[3]),
+      sq2:  Number(match[4])
+    });
+  }
+
+  // Collect collapsed moves
+  while ((match = collapseRegex.exec(state)) !== null) {
+    result.collapsedMoves.add(Number(match[2]));
+  }
+
+  return result;
+}
+
 export function countSpookyMoves(state) {
+  /** Returns the number of incomplete (spooky) placement moves.
+   * There can be at most 1.
+   *
+   * Example: "X1+(5"
+   */
+
   if (!state || state.trim() === "") return 0;
 
   // Match trailing incomplete placement:
@@ -27,77 +103,38 @@ export function countSpookyMoves(state) {
   return match ? 1 : 0;
 }
 
-export function analyzeStateString(state) {
-  if (!state || state.trim() === "") {
-    return emptyAnalysis();
-  }
+export function countMoves(state) {
+  const placementRegex     = new RegExp(GRAMMAR.placement);
+  const collapseEventRegex = new RegExp(GRAMMAR.collapseEvent);
 
-  // --- Count the types of moves made. ---
-
-  // Generate raw data.
-  const loopRegex      = /\[(\d+)(?:\|(\d+))?\]/g;
-
-  let movesSpooky = 0; // 0 - 1.
-  let movesPlacement = 0; // 0 - 9.
-  let movesCollapse  = 0; // 0 - 4.
-  let movesNumber  = 0;   // 0 - 13.
+  let moves = { ...noMoves };
 
   let match;
 
   // Spooky events (player decisions).
-  movesSpooky = countSpookyMoves(state);
+  moves.spooky = countSpookyMoves(state);
 
   // Placement events (player decisions).
-  const placementRegex = /([XO])(\d+)\+\((\d),(\d)\)/g;
   while ((match = placementRegex.exec(state)) !== null) {
-    movesPlacement++;
+    moves.placement++;
   }
 
   // Collapse events (player decisions).
-  const collapseEventRegex = /@([XO])(\d+)\((\d)\)/g;
   while ((match = collapseEventRegex.exec(state)) !== null) {
-    movesCollapse++;
+    moves.collapse++;
   }
 
   // Total number of moves.
-  movesNumber = movesPlacement + movesCollapse;
+  moves.number = moves.placement + moves.collapse;
 
-  let countOfSeparables    = 0;
-  let numberOfEntangledMoves    = 0;
-  let numberOfCollapsedMoves    = 0;
+  return moves;
+}
 
-
-  // --- Derive separables / entangleds / collapseds ---
-
-  // 1️⃣ Collect all placements
-  const placements = [];   // { move, sq1, sq2 }
-
-  placementRegex.lastIndex = 0;
-
-  while ((match = placementRegex.exec(state)) !== null) {
-    placements.push({
-      move: Number(match[2]),
-      sq1:  Number(match[3]),
-      sq2:  Number(match[4])
-    });
-  }
-
-  // 2️⃣ Collect collapsed moves (from !Xn(s))
-  const collapsedMoves = new Set();
-  const collapseResolutionRegex = /!([XO])(\d+)\((\d)\)/g;
-
-  while ((match = collapseResolutionRegex.exec(state)) !== null) {
-    collapsedMoves.add(Number(match[2]));
-  }
-
-  numberOfCollapsedMoves = collapsedMoves.size;
-
-  // 3️⃣ Build square → uncollapsed move map
-  const squareMap = new Map();  // square → Set(move)
+function buildSquareMap(placements, collapsedMoves) {
+  const squareMap = new Map();
 
   for (const p of placements) {
-
-    if (collapsedMoves.has(p.move)) continue; // skip collapsed
+    if (collapsedMoves.has(p.move)) continue;
 
     if (!squareMap.has(p.sq1)) squareMap.set(p.sq1, new Set());
     if (!squareMap.has(p.sq2)) squareMap.set(p.sq2, new Set());
@@ -106,38 +143,20 @@ export function analyzeStateString(state) {
     squareMap.get(p.sq2).add(p.move);
   }
 
-  // 4️⃣ Count separables & entanglements
-  countOfSeparables = 0;
-  numberOfEntangledMoves = 0;
+  return squareMap;
+}
 
-  for (const p of placements) {
+export function countEntanglements(placements, collapsedMoves) {
+  const squareMap = buildSquareMap(placements, collapsedMoves);
 
-    if (collapsedMoves.has(p.move)) continue;
-
-    const sq1Shared = squareMap.get(p.sq1)?.size > 1;
-    const sq2Shared = squareMap.get(p.sq2)?.size > 1;
-
-    if (!sq1Shared && !sq2Shared) {
-      countOfSeparables++;
-    } else {
-      numberOfEntangledMoves++;
-    }
-  }
-
-
-  // --- Compute countOfEntanglements (connected components ≥ 2) ---
-
-  let countOfEntanglements = 0;
-
-  // 1️⃣ Build adjacency map of uncollapsed moves
-  const adjacency = new Map();  // move → Set(neighborMoves)
+  // 4️⃣ Build adjacency
+  const adjacency = new Map();
 
   for (const p of placements) {
     if (collapsedMoves.has(p.move)) continue;
     adjacency.set(p.move, new Set());
   }
 
-  // Connect moves that share a square
   for (const movesAtSquare of squareMap.values()) {
     const moves = [...movesAtSquare];
 
@@ -149,86 +168,105 @@ export function analyzeStateString(state) {
     }
   }
 
-  // 2️⃣ Count connected components of size ≥ 2
+  // 5️⃣ Count connected components ≥ 2
   const visited = new Set();
+  let count = 0;
 
   for (const move of adjacency.keys()) {
 
     if (visited.has(move)) continue;
 
     const stack = [move];
-    const component = [];
+    let size = 0;
 
     while (stack.length > 0) {
       const m = stack.pop();
       if (visited.has(m)) continue;
 
       visited.add(m);
-      component.push(m);
+      size++;
 
       for (const neighbor of adjacency.get(m)) {
-        if (!visited.has(neighbor)) {
-          stack.push(neighbor);
-        }
+        if (!visited.has(neighbor)) stack.push(neighbor);
       }
     }
 
-    if (component.length >= 2) {
-      countOfEntanglements++;
+    if (size >= 2) count++;
+  }
+
+  return count;
+}
+
+export function countStructures(state) {
+  let counts = { ...noCounts };
+
+  let parse = parseState(state);
+
+  counts.collapsedMoves = parse.collapsedMoves.size;
+
+  // 3️⃣ Build square → uncollapsed move map
+  const squareMap = buildSquareMap(parse.placements, parse.collapsedMoves); // square → Set(move)
+
+  // 4️⃣ Count separables & entanglements
+  counts.separables = 0;
+  counts.entangledMoves = 0;
+
+  for (const p of parse.placements) {
+    if (parse.collapsedMoves.has(p.move)) continue;
+
+    const sq1Shared = squareMap.get(p.sq1)?.size > 1;
+    const sq2Shared = squareMap.get(p.sq2)?.size > 1;
+
+    if (!sq1Shared && !sq2Shared) {
+      counts.separables++;
+    } else {
+      counts.entangledMoves++;
     }
   }
 
-  return {
-    movesSpooky,
-    movesPlacement,
-    movesCollapse,
-    movesNumber,
+  counts.entanglements = countEntanglements(parse.placements, parse.collapsedMoves);
 
-    countOfSeparables,
-    countOfEntanglements,
+  return counts;
+}
 
-    numberOfEntangledMoves,
-    numberOfCollapsedMoves,
+export function analyzeStateString(state) {
+  if (!state || state.trim() === "") {
+    return emptyAnalysis();
+  }
 
-    // collapsedMoves: [...collapsedMovesSet],
-    // collapsedSquares: [...collapsedSquaresSet],
+  let moves  = countMoves(state);   // Basically count events.
+  let counts = countStructures(state); // Count structural elements.
 
-    // numberOfLoopMoves: loopMovesSet.size,
-    // numberOfStemMoves: stemMovesSet.size,
+  // --- Invariants ---
 
-    // numberOfClassicalRealities,
-    // fieldOfClassicalRealities,
+  invariant("Structural counts must equal placement moves",
+    counts.separables +
+    counts.entangledMoves +
+    counts.collapsedMoves === moves.placement,
+    );
 
-    // sequentialChronoBlocks: movesCollapse,
-    // overlappingChronoBlocks: 0,  // TODO
-    // nestedChronoBlocks: 0        // TODO
-  };
+  invariant("QT3 allows at most 3 entanglement components",
+    counts.entanglements <= 3,
+  );
+
+  return { moves, counts };
 }
 
 function emptyAnalysis() {
   return {
-    movesSpooky: 0,   // 0, 1.
-    movesPlacement: 0,
-    movesCollapse: 0,
-    movesNumber: 0,
+    moves:  {...noMoves},
+    counts: {...noCounts},
 
-    countOfSeparables: 0,
-    countOfEntanglements: 0,
+    // countOfCyclicEntanglements: 0, // 0, 1.
+    // collapsedSquares: [],
+    // numberOfLoopMoves: 0,
+    // numberOfStemMoves: 0,
 
-    numberOfEntangledMoves: 0,
-    numberOfCollapsedMoves: 0,
+    // numberOfClassicalRealities: 1,
+    // fieldOfClassicalRealities: 1,
 
-    countOfCyclicEntanglements: 0, // 0, 1.
-    collapsedMoves: [],
-    collapsedSquares: [],
-    numberOfLoopMoves: 0,
-    numberOfStemMoves: 0,
-
-    numberOfClassicalRealities: 1,
-    fieldOfClassicalRealities: 1,
-
-    sequentialChronoBlocks: 0,
-    overlappingChronoBlocks: 0,
-    nestedChronoBlocks: 0
+    // sequentialChronoBlocks: 0,
+    // overlappingChronoBlocks: 0,
+    // nestedChronoBlocks: 0
   };
 }
