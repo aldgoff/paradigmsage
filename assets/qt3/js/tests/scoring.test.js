@@ -53,7 +53,7 @@ let tests = [
 ];
 
 for(let test of tests) {
-  console.log("test", test);
+  // console.log("test", test);
   outcome = evaluateGame(test.str); 
   assertEqual(outcome.over, test.over);
   assertEqual(outcome.score.X, test.X);

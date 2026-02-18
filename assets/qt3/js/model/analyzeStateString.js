@@ -8,6 +8,9 @@
  * @returns {moves, counts}  // 
 */
 
+import {GRAMMAR} from "./grammer.js";
+import {buildSquareMap} from "./structure.js";
+
 const noMoves = {
   spooky: 0,    // 0 - 1.
   placement: 0, // 0 - 9.
@@ -17,23 +20,25 @@ const noMoves = {
   Object.freeze(noMoves);
 
 const noCounts = {
-  separables: 0,     // 0 - 4.
-  entanglements: 0,  // 0 - 3.
+  separables:     0, // 0 - 4.
+  entanglements:  0, // 0 - 3.
+  cyclics:        0, // 0 - 1.
   entangledMoves: 0, // 0 - 9.
   collapsedMoves: 0, // 0 - 9.
   };
   Object.freeze(noCounts);
 
-  /*** QT3 Grammar ***/
+const noIllegals = {
+  playPastEnd: false,
+  };
+  Object.freeze(noIllegals);
 
-const GRAMMAR = {
-  placement:        /([XO])(\d+)\+\((\d),(\d)\)/g,
-  collapseEvent:    /@([XO])(\d+)\((\d)\)/g,
-  collapseResolve:  /!([XO])(\d+)\((\d)\)/g,
-  spooky:           /([XO])(\d+)\+\((\d)$/
-  // loop:          /\[(\d+)(?:\|(\d+))?\]/g;
-};
-
+const noOutcome = {
+  over: false,
+  score: {X: 0, O: 0},
+  wins: {}
+  };
+  Object.freeze(noOutcome);
 
 /*** Helpers ***/
 
@@ -130,22 +135,6 @@ export function countMoves(state) {
   return moves;
 }
 
-function buildSquareMap(placements, collapsedMoves) {
-  const squareMap = new Map();
-
-  for (const p of placements) {
-    if (collapsedMoves.has(p.move)) continue;
-
-    if (!squareMap.has(p.sq1)) squareMap.set(p.sq1, new Set());
-    if (!squareMap.has(p.sq2)) squareMap.set(p.sq2, new Set());
-
-    squareMap.get(p.sq1).add(p.move);
-    squareMap.get(p.sq2).add(p.move);
-  }
-
-  return squareMap;
-}
-
 export function countEntanglements(placements, collapsedMoves) {
   const squareMap = buildSquareMap(placements, collapsedMoves);
 
@@ -197,6 +186,67 @@ export function countEntanglements(placements, collapsedMoves) {
   return count;
 }
 
+export function countCyclics(placements, collapsedMoves) {
+
+  // Track seen edges
+  const edgeSet = new Set();
+
+  for (const p of placements) {
+    if (collapsedMoves.has(p.move)) continue;
+
+    const a = Math.min(p.sq1, p.sq2);
+    const b = Math.max(p.sq1, p.sq2);
+
+    const key = `${a}-${b}`;
+
+    if (edgeSet.has(key)) {
+      return 1; // parallel edge → 2-cycle
+    }
+
+    edgeSet.add(key);
+  }
+
+  // ---- Existing DFS logic for 3+ cycles ----
+
+  const graph = new Map();
+
+  for (const p of placements) {
+    if (collapsedMoves.has(p.move)) continue;
+
+    const { sq1, sq2 } = p;
+
+    if (!graph.has(sq1)) graph.set(sq1, new Set());
+    if (!graph.has(sq2)) graph.set(sq2, new Set());
+
+    graph.get(sq1).add(sq2);
+    graph.get(sq2).add(sq1);
+  }
+
+  const visited = new Set();
+
+  function dfs(node, parent) {
+    visited.add(node);
+
+    for (const neighbor of graph.get(node) || []) {
+      if (!visited.has(neighbor)) {
+        if (dfs(neighbor, node)) return true;
+      } else if (neighbor !== parent) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  for (const node of graph.keys()) {
+    if (!visited.has(node)) {
+      if (dfs(node, null)) return 1;
+    }
+  }
+
+  return 0;
+}
+
 export function countStructures(state) {
   let counts = { ...noCounts };
 
@@ -225,6 +275,7 @@ export function countStructures(state) {
   }
 
   counts.entanglements = countEntanglements(parse.placements, parse.collapsedMoves);
+  counts.cyclics = countCyclics(parse.placements, parse.collapsedMoves);
 
   return counts;
 }
@@ -236,6 +287,8 @@ export function analyzeStateString(state) {
 
   let moves  = countMoves(state);   // Basically count events.
   let counts = countStructures(state); // Count structural elements.
+  let illegals = {};
+  let outcome = {};
 
   // --- Invariants ---
 
@@ -245,19 +298,26 @@ export function analyzeStateString(state) {
     counts.collapsedMoves === moves.placement,
     );
 
-  invariant("QT3 allows at most 3 entanglement components",
+  invariant("QT3 allows at most 3 simultaneous entanglements",
     counts.entanglements <= 3,
   );
 
-  return { moves, counts };
+  // --- Game Over? ---
+
+  if(counts.collapse > 0 && moves.number >= 5) {
+    outcome = evaluateGame(state);
+  }
+
+  return { moves, counts, outcome };
 }
 
 function emptyAnalysis() {
   return {
     moves:  {...noMoves},
     counts: {...noCounts},
+    illegals: {...noIllegals},
+    outcome: {...noOutcome},
 
-    // countOfCyclicEntanglements: 0, // 0, 1.
     // collapsedSquares: [],
     // numberOfLoopMoves: 0,
     // numberOfStemMoves: 0,

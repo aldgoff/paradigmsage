@@ -9,6 +9,8 @@
   The history pointer (histPtr) - where we are in the game, undo/redo/restart.
 */
 
+import {buildSquareMap} from "./structure.js";
+
 let stateString = "";
 let histPtr = 0;
 
@@ -28,27 +30,6 @@ export function slipHistptr (steps) {  // Undo (-1), Redo (+1).
   histPtr += steps;
   if(histPtr < 0) histPtr = 0;
   if(histPtr > numberOfMoves) histPtr = numberOfMoves;
-}
-
-export function analyzeGame_1(stateString) {
-  // TODO: code to analyze a stateString.
-
-  return {
-    placementMoves: 0, 
-    collapseMoves: 0, 
-    numberOfMoves: 0,           // Should equal placementMoves + collapseMoves.
-    numberOfSeparables: 0,      // Number of separables (max of 4), unentangled spooky pairs.
-    numberOfEntanglements: 0,   // Number of entanglements (max of 3).
-    collapsedMoves: 0,          // Array of moves which have collapsed.
-    collapsedSquares: 0,        // Array of squares with classical marks.
-    numberOfLoopMoves: 0,       // Number of moves/squares in the loop part of all cyclic entanglements.
-    numberOfStemMoves: 0,       // Number of moves/squares on the stem part of all cyclic entanglements.
-    numberOfClassicalRealities: 0,  // Max of 27.
-    fieldOfClassicalRealities: 0,   // 2^n.
-    sequentialChronoBlocks: 0,      // Max of 4.
-    overlappingChronoBlocks: 0,     // Ambiguous - todo.
-    nestedChronoBlocks: 0,          // Ambiguous - depth?
-  };
 }
 
 export function analyzeGame(stateString) {

@@ -15,64 +15,86 @@ X9+(1,9)[198765432]; O9@X1(1)!X1(1)!O2(2)!X3(3)!O4(4)!X5(5)!O6(6)!X7(7)!O8(8)!X9
 let tests = [
   { str: "", // Empty.
     movesSpooky: 0, movesPlacement: 0, movesCollapse: 0, movesNumber: 0,
-    countOfSeparables: 0, countOfEntanglements: 0, numberOfEntangledMoves: 0, numberOfCollapsedMoves: 0,
+    countOfSeparables: 0, countOfEntanglements: 0, countOfCyclics: 0,
+    numberOfEntangledMoves: 0, numberOfCollapsedMoves: 0,
     },
   { str: "X1+(1", // Spooky.
     movesSpooky: 1, movesPlacement: 0, movesCollapse: 0, movesNumber: 0,
-    countOfSeparables: 0, countOfEntanglements: 0, numberOfEntangledMoves: 0, numberOfCollapsedMoves: 0,
+    countOfSeparables: 0, countOfEntanglements: 0, countOfCyclics: 0,
+    numberOfEntangledMoves: 0, numberOfCollapsedMoves: 0,
     },
   { str: "X1+(1,2); ", // Placement.
     movesSpooky: 0, movesPlacement: 1, movesCollapse: 0, movesNumber: 1,
-    countOfSeparables: 1, countOfEntanglements: 0, numberOfEntangledMoves: 0, numberOfCollapsedMoves: 0,
+    countOfSeparables: 1, countOfEntanglements: 0, countOfCyclics: 0,
+    numberOfEntangledMoves: 0, numberOfCollapsedMoves: 0,
     },
   { str: "X1+(1,2); O2+(2,3); ", // A semi-entanglement.
     movesSpooky: 0, movesPlacement: 2, movesCollapse: 0, movesNumber: 2,
-    countOfSeparables: 0, countOfEntanglements: 1, numberOfEntangledMoves: 2, numberOfCollapsedMoves: 0,
+    countOfSeparables: 0, countOfEntanglements: 1, countOfCyclics: 0,
+    numberOfEntangledMoves: 2, numberOfCollapsedMoves: 0,
+    },
+  { str: "X1+(1,2); O2+(2,3); X3+(1,3)[132]; ", // Triple loop.
+    movesSpooky: 0, movesPlacement: 3, movesCollapse: 0, movesNumber: 3,
+    countOfSeparables: 0, countOfEntanglements: 1, countOfCyclics: 1,
+    numberOfEntangledMoves: 3, numberOfCollapsedMoves: 0,
+    },
+  { str: "X1+(1,2); O2+(1,2)[12]; ", // EPR loop.
+    movesSpooky: 0, movesPlacement: 2, movesCollapse: 0, movesNumber: 2,
+    countOfSeparables: 0, countOfEntanglements: 1, countOfCyclics: 1,
+    numberOfEntangledMoves: 2, numberOfCollapsedMoves: 0,
     },
   { str: "X1+(1,2); O2+(2,3); X3+(4,5); O4+(5,6); ", // Two semi-entanglements.
     movesSpooky: 0, movesPlacement: 4, movesCollapse: 0, movesNumber: 4,
-    countOfSeparables: 0, countOfEntanglements: 2, numberOfEntangledMoves: 4, numberOfCollapsedMoves: 0,
+    countOfSeparables: 0, countOfEntanglements: 2, countOfCyclics: 0,
+    numberOfEntangledMoves: 4, numberOfCollapsedMoves: 0,
   },
 
   { str: "X1+(1,2); O2+(2,3); X3+(3,4); O4+(4,5); X5+(5,6); O6+(6,7); X7+(7,8); O8+(8,9); " // Loop.
        + "X9+(1,9)[198765432]; ", 
     movesSpooky: 0, movesPlacement: 9, movesCollapse: 0, movesNumber: 9,
-    countOfSeparables: 0, countOfEntanglements: 1, numberOfEntangledMoves: 9, numberOfCollapsedMoves: 0,
+    countOfSeparables: 0, countOfEntanglements: 1, countOfCyclics: 1,
+    numberOfEntangledMoves: 9, numberOfCollapsedMoves: 0,
     },
   { str: "X1+(1,2); O2+(2,3); X3+(3,4); O4+(4,5); X5+(5,6); O6+(6,7); X7+(7,8); O8+(8,9); " // Collapse.
        + "X9+(1,9)[198765432]; O9@X1(1)!X1(1)!O2(2)!X3(3)!O4(4)!X5(5)!O6(6)!X7(7)!O8(8)!X9(9); ", 
     movesSpooky: 0, movesPlacement: 9, movesCollapse: 1, movesNumber: 10,
-    countOfSeparables: 0, countOfEntanglements: 0, numberOfEntangledMoves: 0, numberOfCollapsedMoves: 9,
+    countOfSeparables: 0, countOfEntanglements: 0, countOfCyclics: 0,
+    numberOfEntangledMoves: 0, numberOfCollapsedMoves: 9,
   },
 
-  { str: "X1+(1,2); O2+(4,5); X3+(7,8); O4+(3,6); ", // Four separable pairs of spooky marks.
+  { str: "X1+(1,2); O2+(4,5); X3+(7,8); O4+(3,6); ", // Four separable pairs of spooky marks, the max possible.
     movesSpooky: 0, movesPlacement: 4, movesCollapse: 0, movesNumber: 4,
-    countOfSeparables: 4, countOfEntanglements: 0, numberOfEntangledMoves: 0, numberOfCollapsedMoves: 0,
+    countOfSeparables: 4, countOfEntanglements: 0, countOfCyclics: 0,
+    numberOfEntangledMoves: 0, numberOfCollapsedMoves: 0,
     },
 
   { str: "X1+(1,2); O2+(4,5); X3+(7,8); O4+(3,6); X5+(6,9);", // Join one pair.
     movesSpooky: 0, movesPlacement: 5, movesCollapse: 0, movesNumber: 5,
-    countOfSeparables: 3, countOfEntanglements: 1, numberOfEntangledMoves: 2, numberOfCollapsedMoves: 0,
+    countOfSeparables: 3, countOfEntanglements: 1, countOfCyclics: 0,
+    numberOfEntangledMoves: 2, numberOfCollapsedMoves: 0,
     },
 
   { str: "X1+(1,2); O2+(4,5); X3+(7,8); O4+(3,6); X5+(6,9); O6+(4,7);", // Join two pairs.
     movesSpooky: 0, movesPlacement: 6, movesCollapse: 0, movesNumber: 6,
-    countOfSeparables: 1, countOfEntanglements: 2, numberOfEntangledMoves: 5, numberOfCollapsedMoves: 0,
+    countOfSeparables: 1, countOfEntanglements: 2, countOfCyclics: 0,
+    numberOfEntangledMoves: 5, numberOfCollapsedMoves: 0,
   },
 
   { str: "X1+(1,2); O2+(2,3); X3+(4,5); O4+(5,6); X5+(7,8); O6+(8,9);", // Three entanglements, the max possible.
     movesSpooky: 0, movesPlacement: 6, movesCollapse: 0, movesNumber: 6,
-    countOfSeparables: 0, countOfEntanglements: 3, numberOfEntangledMoves: 6, numberOfCollapsedMoves: 0,
+    countOfSeparables: 0, countOfEntanglements: 3, countOfCyclics: 0,
+    numberOfEntangledMoves: 6, numberOfCollapsedMoves: 0,
   },
 
   { str: "", 
     movesSpooky: 0, movesPlacement: 0, movesCollapse: 0, movesNumber: 0,
-    countOfSeparables: 0, countOfEntanglements: 0, numberOfEntangledMoves: 0, numberOfCollapsedMoves: 0,
+    countOfSeparables: 0, countOfEntanglements: 0, countOfCyclics: 0,
+    numberOfEntangledMoves: 0, numberOfCollapsedMoves: 0,
   },
 ];
 
 for (let test of tests) {
-  // console.log("test", test);
+  console.log("test", test);
   res = analyzeStateString(test.str);
   assertEqual(res.moves.spooky,    test.movesSpooky,    "movesSpooky");
   assertEqual(res.moves.placement, test.movesPlacement, "movesPlacement");
@@ -81,6 +103,7 @@ for (let test of tests) {
 
   assertEqual(res.counts.separables,    test.countOfSeparables,     "counts.separables");
   assertEqual(res.counts.entanglements, test.countOfEntanglements,  "countOfEntanglements");
+  assertEqual(res.counts.cyclics,       test.countOfCyclics,  "countOfCyclics");
 
   assertEqual(res.counts.entangledMoves, test.numberOfEntangledMoves,  "numberOfEntangledMoves");
   assertEqual(res.counts.collapsedMoves, test.numberOfCollapsedMoves,  "numberOfCollapsedMoves");

@@ -1,12 +1,6 @@
 // ./assets/qt3/js/model/scoring.js
 
-const GRAMMAR = {
-  placement:        /([XO])(\d+)\+\((\d),(\d)\)/g,
-  collapseEvent:    /@([XO])(\d+)\((\d)\)/g,
-  collapseResolve:  /!([XO])(\d+)\((\d)\)/g,
-  spooky:           /([XO])(\d+)\+\((\d)$/
-  // loop:          /\[(\d+)(?:\|(\d+))?\]/g;
-};
+import {GRAMMAR} from "./grammer.js";
 
 function extractClassicalSquares(state) {
   const classicalMap = new Map();
