@@ -72,7 +72,7 @@ let tests = [
 ];
 
 for (let test of tests) {
-  console.log("test", test);
+  // console.log("test", test);
   res = analyzeStateString(test.str);
   assertEqual(res.moves.spooky,    test.movesSpooky,    "movesSpooky");
   assertEqual(res.moves.placement, test.movesPlacement, "movesPlacement");

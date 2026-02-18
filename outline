@@ -19,17 +19,21 @@
 │           │   ├── addPlacementMove.js
 │           │   ├── addScore.js
 │           │   ├── addSpookyMove.js
+│           │   ├── analyzeStateString.js
 │           │   ├── barrel.js
 │           │   ├── cycles.js
-│           │   └── model.js
+│           │   ├── model.js
+│           │   └── scoring.js
 │           ├── tests
 │           │   ├── addCollapseMove.test.js
 │           │   ├── addLoop.test.js
 │           │   ├── addPlacementMove.test.js
 │           │   ├── addScore.test.js
 │           │   ├── addSpookyMove.test.js
+│           │   ├── analyzeStateString.test.js
 │           │   ├── classicalT3.test.js
-│           │   └── helpers.js
+│           │   ├── helpers.js
+│           │   └── scoring.test.js
 │           └── view
 │               ├── controlsView.js
 │               ├── listings.js
@@ -222,4 +226,4 @@
 ├── themes
 └── WORK-INVENTORY.md
 
-43 directories, 179 files
+43 directories, 183 files
