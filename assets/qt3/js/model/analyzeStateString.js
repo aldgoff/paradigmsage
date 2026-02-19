@@ -36,7 +36,8 @@ const noIllegals = {
 const noOutcome = {
   over: false,
   score: {X: 0, O: 0},
-  wins: {}
+  wins: {},
+  desc: "",
   };
   Object.freeze(noOutcome);
 

@@ -24,3 +24,4 @@ export function buildSquareMap(placements, collapsedMoves) {
 
   return squareMap;
 }
+

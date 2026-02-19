@@ -1,5 +1,7 @@
 // Collapse.js.
 
+import {GRAMMAR} from "../model/grammer.js";
+
 export function cellInLoop(event, placements, cycleMoves) {  // { cell: cellNum, square: squareNum }.
   const squareNum = Number(event.square.slice(-1));
   const cellNum   = Number(event.cell.slice(-1));  // m3 → 3
@@ -65,10 +67,9 @@ export function computeCollapseResolution(
 }
 
 export function isSquareClassical(stateString, squareNum) {
-  const collapseRegex = /!([XO])(\d+)\((\d)\)/g;
   let match;
 
-  while ((match = collapseRegex.exec(stateString)) !== null) {
+  while ((match = GRAMMAR.collapseResolve.exec(stateString)) !== null) {
     const collapsedSquare = Number(match[3]);
     if (collapsedSquare === squareNum) return true;
   }
