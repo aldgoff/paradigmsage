@@ -11,6 +11,17 @@
 import {GRAMMAR} from "./grammer.js";
 import {buildSquareMap} from "./structure.js";
 
+const noProgress = {
+  turn: 0,            // 0 - 9.
+  player: 0,          // 'X' or 'O'.
+  sq1: 0,             // 0 - 9.
+  sq2: 0,             // 0 - 9.
+  firstSpooky: true,  // true/false.
+  placement: false,   // true/false.
+  collapse: false,    // true/false.
+  };
+  Object.freeze(noProgress );
+
 const noMoves = {
   spooky: 0,    // 0 - 1.
   placement: 0, // 0 - 9.
@@ -20,6 +31,7 @@ const noMoves = {
   Object.freeze(noMoves);
 
 const noCounts = {
+  loneSpooky:     0, // 0 - 1.
   separables:     0, // 0 - 4.
   entanglements:  0, // 0 - 3.
   cyclics:        0, // 0 - 1.
@@ -91,6 +103,26 @@ export function parseState(state) {
   return result;
 }
 
+export function trackProgress(stateString) {
+  let progress = {
+    turn: 0,            // 0 - 9.
+    player: 0,          // 'X' or 'O'.
+    sq1: 0,             // 0 - 9.
+    sq2: 0,             // 0 - 9.
+    firstSpooky: true,  // true/false.
+    placement: false,   // true/false.
+    collapse: false,    // true/false.
+    };
+
+    if(stateString == "" || stateString.slice(-2) === "; ") {
+      progress.firstSpooky = true;
+    }
+
+    // TODO: trackProgress().
+    
+    return progress;
+}
+
 export function countSpookyMoves(state) {
   /** Returns the number of incomplete (spooky) placement moves.
    * There can be at most 1.
@@ -107,7 +139,7 @@ export function countSpookyMoves(state) {
   const match = state.match(spookyRegex);
 
   return match ? 1 : 0;
-}
+  }
 
 export function countMoves(state) {
   const placementRegex     = new RegExp(GRAMMAR.placement);
@@ -134,7 +166,7 @@ export function countMoves(state) {
   moves.number = moves.placement + moves.collapse;
 
   return moves;
-}
+  }
 
 export function countEntanglements(placements, collapsedMoves) {
   const squareMap = buildSquareMap(placements, collapsedMoves);
@@ -185,7 +217,7 @@ export function countEntanglements(placements, collapsedMoves) {
   }
 
   return count;
-}
+  }
 
 export function countCyclics(placements, collapsedMoves) {
 
@@ -246,7 +278,7 @@ export function countCyclics(placements, collapsedMoves) {
   }
 
   return 0;
-}
+  }
 
 export function countStructures(state) {
   let counts = { ...noCounts };
@@ -281,15 +313,16 @@ export function countStructures(state) {
   return counts;
 }
 
-export function analyzeStateString(state) {
-  if (!state || state.trim() === "") {
+export function analyzeStateString(stateString) {
+  if (!stateString || stateString.trim() === "") {
     return emptyAnalysis();
   }
 
-  let moves  = countMoves(state);   // Basically count events.
-  let counts = countStructures(state); // Count structural elements.
-  let illegals = {};
-  let outcome = {};
+  let progress  = trackProgress(stateString);
+  let moves     = countMoves(stateString);   // Basically count events.
+  let counts    = countStructures(stateString); // Count structural elements.
+  let illegals  = {};
+  let outcome   = {};
 
   // --- Invariants ---
 
@@ -309,15 +342,16 @@ export function analyzeStateString(state) {
     outcome = evaluateGame(state);
   }
 
-  return { moves, counts, outcome };
+  return { progress, moves, counts, outcome };
 }
 
 function emptyAnalysis() {
   return {
-    moves:  {...noMoves},
-    counts: {...noCounts},
+    progress: {...noProgress},
+    moves:    {...noMoves},
+    counts:   {...noCounts},
     illegals: {...noIllegals},
-    outcome: {...noOutcome},
+    outcome:  {...noOutcome},
 
     // collapsedSquares: [],
     // numberOfLoopMoves: 0,

@@ -1,5 +1,7 @@
 // ./assets/qt3/js/model/structure.js
 
+import {GRAMMAR} from "./grammer.js";
+
 export function buildSquareMap(placements, collapsedMoves) {
   /** Builds a square → uncollapsed move map.
    *
@@ -25,3 +27,13 @@ export function buildSquareMap(placements, collapsedMoves) {
   return squareMap;
 }
 
+export function isSquareClassical(stateString, squareNum) {
+  let match;
+
+  while ((match = GRAMMAR.collapseResolve.exec(stateString)) !== null) {
+    const collapsedSquare = Number(match[3]);
+    if (collapsedSquare === squareNum) return true;
+  }
+
+  return false;
+}

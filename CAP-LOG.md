@@ -143,3 +143,9 @@
 
 46. **Progressive Suite Idempotency Pattern**
     A progressive state test sequence (empty → spooky → placement → semi-entanglement → loop → collapse) implicitly validates statelessness and idempotency. Repeated analysis of increasing states must not depend on prior calls.
+
+47. **Model Sovereignty & Thin Controller Commitment**
+    The canonical `stateString` is the single source of truth for QT3. All rule evaluation, legality checks, collapse logic, and turn derivation reside exclusively in the model layer (`processClick`). The controller is a thin adapter that delegates to the model and projects results to the view without interpreting game semantics.
+
+48. **Ensemble Growth as Structural Projection**
+    The classical ensemble is not brute-force enumerated but grown incrementally via spooky-branch duplication (1×2 → … → 16×32 = 512). Legality constraints carve a sparse, structured subset of valid classical games from this exponentially expanding branch lattice. Move-by-move growth visualization is a research instrument for observing decoherence-like structural pruning.

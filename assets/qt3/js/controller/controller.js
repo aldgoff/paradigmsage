@@ -1,6 +1,10 @@
 // Controller.js.
 
 import {analyzeGame} from "../model/model.js";  // DEPRECATED.
+import {analyzeStateString} from "../model/analyzeStateString.js";
+// import {undoFirstSpookyMark} from "../model/process.js";
+// import {evaluateGame} from "../model/scoring.js";
+// import {isSquareClassical} from "../model/structure.js";
 
 // Model layer.
 import { processClick } from "../model/process.js";
@@ -47,6 +51,8 @@ import {cellInLoop,
 
 // Progressive changes:
 let stateString = ""; // X1+(1,2); O2+(...
+let statusString = ""; // "Can;t do that!"
+
 let turn = 0;  // 1 - 9.
 let player = "X";     // 'X'|'O'.
 let sq1, sq2 = 0;     // 1 - 9.
@@ -69,7 +75,8 @@ export function initController () {
   });
 
   setSquareHandler( squareKey => {  // Registers function with view so it can be called on square events.
-    handleSquareCellClick(squareKey);
+    handleSquareCellClick(squareKey);    // Working, lousy architecture.
+    // handleSquareCellClick3(squareKey);   // Refactored: in progress, better architecture.
   });
 
   initView(); // Dev scaffolding.
@@ -157,136 +164,63 @@ function handleButtonRelease(button) {
   }
 }
 
+// Replacement function for handling mouse clicks - better architecture.
 function handleSquareCellClick3(event) {  // Respond to clicks in squares down to the cell level.
   // event - {square: 'square1', cell: 'm1'}
+  const square = event.square;
+  const squareNum = Number(square.slice(-1)); // Last char of 'square' is the move number.
+  const cellNum = event.cell;
 
-  const result = processClick(stateString, event);  // {state: str, status: str}.
+  let intent = { squareNum: squareNum, cellNum: cellNum };
 
-  stateString  = result.state;          // "X1+(1,2); O2+(2,3); X3+(1,3)[132]; "
-  statusString = result.status;         // "Player O to collapse cyclic entanglement."
+  const result = processClick(stateString, intent);  // {state: str, status: str}.
+
+  stateString  = result.stateStr;       // "X1+(1,2); O2+(2,3); X3+(1,3)[132]; "
+  statusString = result.statusStr;      // "Player O to collapse cyclic entanglement."
 
   setStateString(stateString);          // Stores the state string in the model layer.
 
   updateStatusString(statusString);     // Update the status box in the view layer.
 
-  updateBoard(stateString);             // Update spooky and classical marks on the QT3 board.
+  const state = analyzeStateString(stateString);
+
+  updateBoard(stateString, state);      // Update spooky and classical marks on the QT3 board.
   updateQuantumListing(stateString);    // Update listing of quantum moves.
   updateClassicalListing(stateString);  // Update listing of classical moves. (Clicking in ensemble overrides.)
   updateStateString(stateString);       // Update the state box in the view layer.
   updateEnsemble(stateString);          // Update ensemble of classical games.
 }
 
-function handleSquareCellClick2(event) {  // Respond to clicks in squares down to the cell level.
-  // event - {square: 'square1', cell: 'm1'}
-  // console.log("Click", event);
-
-  const square = event.square;
-  const cell = event.cell;
-  const squareNum = Number(square.slice(-1)); // Last char of 'square' is the move number.
-
-  const state = analyzeStateString(stateString);
-
-  let statStr = `X: make your first placement move, `   // New Game, or start up.
-              + `place a spooky mark in any uncollapsed square.`
-
-  if(evaluateGame(stateString).over) {                  // Game over.
-    setStatusString("Game is over. New Game, Restart, Undo, Load.");
-    return;
-    }
-  else if(isSquareClassical(stateString, squareNum)) {  // Illegal move.
-    setStatusString("That square has collapsed. Choose another.");
-    return;
-    }
-  else if(reClickSpooky(state)) {                       // Undo 1st spooky mark.
-    stateString = undoFirstSpookyMark(stateString);
-    setStateString(stateString);
-    updateView(stateString);
-    statStr = `Spooky mark undone. ${player}: restart your placement move, `
-            + `place a spooky mark in any uncollapsed square.`
-    setStatusString(statStr);
-    }
-  else if(isDegenerateLastMove(state)) {                // Self-collapse last move of game.
-    // "X9+(n,n); O9@X9(n)!X9(n); "
-    stateString = selfCollapseLastMove(stateString, player, turn, sq1);
-    outcome = evaluateGame(stateString);
-    stateString += `{X${outcome.score.X},O${outcome.score.O}}`;
-    updateView(stateString);
-    setStatusString(`Game over: ${outcome.desc}.`);
-    }
-  else if(isFirstSpooky(state)) {                       // Place 1st spooky mark.
-    turn += 1;
-    player = (turn%2) ? 'X' : 'O';
-    sq1 = squareNum;
-    stateString = addSpookyMove(stateString, player, turn, sq1);
-    updateView(stateString);
-    statStr = `Continue with rest of placement move, `
-            + `${player}: place your second spooky mark or undo the first one.`
-    setStatusString(statStr);
-    }
-  else if(isSecondSpooky(state)) {                      // Place 2nd spooky mark.
-    sq2 = squareNum;
-    stateString = addPlacementMove(stateString, player, turn, sq1, sq2);
-    updateView(stateString);
-    if(isCycleEntanglement(stateString)) {
-      collapsePlayer = (player === 'X') ? 'O' : 'X';
-      statStr = `${collapsePlayer} must first collapse the cyclic entanglement. `
-              + `Click on a purple spooky mark.`
-      setStatusString(statStr);
-    }
-    else {
-      statStr = `${player}: begin your next placement move, `
-              + `place a spooky mark in any uncollapsed square.`
-      setStatusString(statStr);
-    }
-    }
-  else if(offCyclicEntanglement(state)) {               // Failed to click on loop.
-    setStatusString(`Must first collapse the cyclic entanglement.`);
-    }
-  else if(onStem(state)) {                              // Clicked on stem.
-    statStr = "Must choose a spooky mark on the loop of the cyclic entanglement "
-            + "(purple), not on the stem (orange)."
-    setStatusString(statStr);
-    }
-  else if(onLoop(state)) {                              // Collapse cyclic entanglement.
-    stateString = collapseCyclicEntanglement(state, square, cell);
-    updateView(stateString);
-    outcome = evaluateGame(stateString);
-    if(outcome.over) {
-      stateString += `{X${outcome.score.X},O${outcome.score.O}}`;
-      updateView(stateString);
-      setStatusString(`Game over: ${outcome.desc}.`);
-      }
-    else {
-      nextPlayer = (player === 'X') ? 'O' : 'X';
-      setStatusString(`${nextPlayer}'s turn to make a placement move.`);
-    }
-    }
-  else {                                                // Can't happen.
-    console.log("CAN'T HAPPEN - OOPS!");
+function updateStatusString(statusString) {   // Done.
+  setStatusString(statusString);  // View layer.
   }
-  
-  setStateString(stateString);  // Update state string so view can show it.
-  console.log(stateString);     // Diagnostic.
 
-  return stateString;
+function updateBoard(statusString, state) {   // draft
+  console.log("updateBoard(): state:", state);
+  // TODO: updateBoard().
+  }
+
+function updateQuantumListing(statusString) {  // draft
+  console.log("updateQuantumListing():");
+  // TODO: updateQuantumListing().
+  }
+
+function updateClassicalListing(statusString) {  // draft
+  console.log("updateClassicalListing():");
+  // TODO: updateClassicalListing().
+  }
+
+function updateStateString(statusString) {  // draft
+  console.log("updateStateString():");
+  // TODO: updateStateString().
+  }
+
+function updateEnsemble(statusString) {  // draft
+  console.log("updateEnsemble():");
+  // TODO: updateEnsemble().
 }
 
-// --- Decision functions. ---
-function reClickSpooky(state) {}
-function isDegenerateLastMove(state) {}
-function isFirstSpooky(state) {}
-function isSecondSpooky(state) {}
-function isCycleEntanglement(stateString) {}
-function offCyclicEntanglement(state) {}
-function onStem(state) {}
-function onLoop(state) {}
-
-// --- Action functions. ---
-function undoFirstSpookyMark(stateString) {}
-function selfCollapseLastMove(stateString, player, turn, sq1) {}
-function collapseCyclicEntanglement(state, square, cell) {}
-
-
+// Currently working, just a lousy architecture.
 function handleSquareCellClick(event) {  // Respond to clicks in squares down to the cell level.
   // event - {square: 'square1', cell: 'm1'}
   // console.log("Click", event);
@@ -296,7 +230,7 @@ function handleSquareCellClick(event) {  // Respond to clicks in squares down to
   // Also detects cyclic entanglements, stems, and appends canonical loop string.
   // Supports collapse and appends canonical collapse string.
   // Enforces end of game.
-  // TODO:
+  // TODO: DEPRECATED.
   // Spooky undo, and prevent moves into classical squares.
 
   const square = event.square;

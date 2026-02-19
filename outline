@@ -22,8 +22,11 @@
 │           │   ├── analyzeStateString.js
 │           │   ├── barrel.js
 │           │   ├── cycles.js
+│           │   ├── grammer.js
 │           │   ├── model.js
-│           │   └── scoring.js
+│           │   ├── process.js
+│           │   ├── scoring.js
+│           │   └── structure.js
 │           ├── tests
 │           │   ├── addCollapseMove.test.js
 │           │   ├── addLoop.test.js
@@ -226,4 +229,4 @@
 ├── themes
 └── WORK-INVENTORY.md
 
-43 directories, 183 files
+43 directories, 186 files
