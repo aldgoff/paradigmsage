@@ -75,8 +75,8 @@ export function initController () {
   });
 
   setSquareHandler( squareKey => {  // Registers function with view so it can be called on square events.
-    handleSquareCellClick(squareKey);    // Working, lousy architecture.
-    // handleSquareCellClick3(squareKey);   // Refactored: in progress, better architecture.
+    // handleSquareCellClick(squareKey);    // Working, lousy architecture.
+    handleSquareCellClick3(squareKey);   // Refactored: in progress, better architecture.
   });
 
   initView(); // Dev scaffolding.
@@ -169,16 +169,18 @@ function handleSquareCellClick3(event) {  // Respond to clicks in squares down t
   // event - {square: 'square1', cell: 'm1'}
   const square = event.square;
   const squareNum = Number(square.slice(-1)); // Last char of 'square' is the move number.
-  const cellNum = event.cell;
+  const cellNum = Number(event.cell.slice(-1)); // Last char of 'cell' is the move number.
+  // const cellNum = event.cell;
 
   let intent = { squareNum: squareNum, cellNum: cellNum };
 
-  const result = processClick(stateString, intent);  // {state: str, status: str}.
+  const result = processClick(intent);  // {state: str, status: str}.
 
   stateString  = result.stateStr;       // "X1+(1,2); O2+(2,3); X3+(1,3)[132]; "
   statusString = result.statusStr;      // "Player O to collapse cyclic entanglement."
 
-  setStateString(stateString);          // Stores the state string in the model layer.
+  // console.log("hs_CellClick:", stateString);
+  setStateString(stateString);          // Stores the state string in the view layer.
 
   updateStatusString(statusString);     // Update the status box in the view layer.
 
@@ -196,27 +198,27 @@ function updateStatusString(statusString) {   // Done.
   }
 
 function updateBoard(statusString, state) {   // draft
-  console.log("updateBoard(): state:", state);
+  // console.log("updateBoard(): state:", state);
   // TODO: updateBoard().
   }
 
 function updateQuantumListing(statusString) {  // draft
-  console.log("updateQuantumListing():");
+  // console.log("updateQuantumListing():");
   // TODO: updateQuantumListing().
   }
 
 function updateClassicalListing(statusString) {  // draft
-  console.log("updateClassicalListing():");
+  // console.log("updateClassicalListing():");
   // TODO: updateClassicalListing().
   }
 
 function updateStateString(statusString) {  // draft
-  console.log("updateStateString():");
+  // console.log("updateStateString():");
   // TODO: updateStateString().
   }
 
 function updateEnsemble(statusString) {  // draft
-  console.log("updateEnsemble():");
+  // console.log("updateEnsemble():");
   // TODO: updateEnsemble().
 }
 
@@ -296,7 +298,7 @@ function handleSquareCellClick(event) {  // Respond to clicks in squares down to
       setStatusString(`Player ${collapsePlayer} needs to make a collapse move - select one purple spooky mark.`);
     }
     else {
-      stateString += `; `;
+      // stateString += `; `;
     }
 
     placements.push({ // Add connecting move.

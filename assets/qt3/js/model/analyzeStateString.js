@@ -11,17 +11,6 @@
 import {GRAMMAR} from "./grammer.js";
 import {buildSquareMap} from "./structure.js";
 
-const noProgress = {
-  turn: 0,            // 0 - 9.
-  player: 0,          // 'X' or 'O'.
-  sq1: 0,             // 0 - 9.
-  sq2: 0,             // 0 - 9.
-  firstSpooky: true,  // true/false.
-  placement: false,   // true/false.
-  collapse: false,    // true/false.
-  };
-  Object.freeze(noProgress );
-
 const noMoves = {
   spooky: 0,    // 0 - 1.
   placement: 0, // 0 - 9.
@@ -103,7 +92,7 @@ export function parseState(state) {
   return result;
 }
 
-export function trackProgress(stateString) {
+export function trackProgress1(stateString) {
   let progress = {
     turn: 0,            // 0 - 9.
     player: 0,          // 'X' or 'O'.
@@ -119,7 +108,7 @@ export function trackProgress(stateString) {
     }
 
     // TODO: trackProgress().
-    
+
     return progress;
 }
 
@@ -313,12 +302,15 @@ export function countStructures(state) {
   return counts;
 }
 
-export function analyzeStateString(stateString) {
+// import { analyzeStateString } from "./analyzeStateString.js";
+import { evaluateGame } from "./scoring.js";
+
+export function analyzeStateString1(stateString) {
   if (!stateString || stateString.trim() === "") {
     return emptyAnalysis();
   }
 
-  let progress  = trackProgress(stateString);
+  let progress;
   let moves     = countMoves(stateString);   // Basically count events.
   let counts    = countStructures(stateString); // Count structural elements.
   let illegals  = {};
@@ -364,4 +356,97 @@ function emptyAnalysis() {
     // overlappingChronoBlocks: 0,
     // nestedChronoBlocks: 0
   };
+}
+
+export function analyzeStateString(stateString) {
+
+  if (!stateString || stateString.trim() === "") {
+    return emptyAnalysis();
+  }
+
+  let moves    = countMoves(stateString);
+  let counts   = countStructures(stateString);
+  let illegals = { ...noIllegals };
+  let outcome  = evaluateGame(stateString);
+
+  // --- Invariants ---
+
+  invariant("Structural counts must equal placement moves",
+    counts.separables +
+    counts.entangledMoves +
+    counts.collapsedMoves === moves.placement,
+  );
+
+  invariant("QT3 allows at most 3 simultaneous entanglements",
+    counts.entanglements <= 3,
+  );
+
+  // --- Progress ---
+  let progress = trackProgress(stateString, moves, counts, outcome);
+
+  return {
+    progress,
+    moves,
+    counts,
+    illegals,
+    outcome
+  };
+}
+
+const noProgress = {
+  turn: 0,            // 0 - 9.
+  player: 0,          // 'X' or 'O'.
+  sq1: 0,             // 0 - 9.
+  sq2: 0,             // 0 - 9.
+  firstSpooky: true,  // true/false.
+  placement: false,   // true/false.
+  loop: false,        // true/false.
+  collapse: false,    // true/false.
+  };
+  Object.freeze(noProgress );
+
+function trackProgress(stateString, moves, counts, outcome) {
+  let progress = { ...noProgress };
+
+  // --- Determine last completed placement turn ---
+  // Placement moves define turns.
+  const lastTurn = moves.placement;
+
+  progress.turn = lastTurn;
+
+  if (lastTurn > 0) {
+    progress.player = (lastTurn % 2 === 1) ? 'X' : 'O';
+  }
+
+  // --- Game Over ---
+  if (outcome.over) {
+    progress.firstSpooky = false;
+    progress.placement   = false;
+    progress.collapse    = false;
+    return progress;
+  }
+
+  // --- Collapse required if cyclic exists ---
+  if (counts.cyclics > 0) {
+    progress.firstSpooky = false;
+    progress.placement   = false;
+    progress.collapse    = true;
+    return progress;
+  }
+
+  // --- Incomplete spooky mark? ---
+  if (moves.spooky === 1) {
+    progress.firstSpooky = false;
+    progress.placement   = true;   // awaiting second spooky
+    progress.collapse    = false;
+    progress.sq1 = Number(stateString.slice(-1));
+    return progress;
+  }
+
+  // --- Otherwise awaiting first spooky ---
+  progress.firstSpooky = true;
+  progress.placement   = false;
+  progress.collapse    = false;
+
+  return progress;
 }
