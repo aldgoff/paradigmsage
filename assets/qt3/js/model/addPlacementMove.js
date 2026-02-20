@@ -17,11 +17,11 @@
 
 export function addPlacementMove(state, player, turn, sq1, sq2) {
   if (sq1 < sq2) {            // "(1,5)"
-    state += `,${sq2})`
+    state += `,${sq2}); `
     }
   else {     // Canonical order: "(5,1)"
     state = state.slice(0, -1);
-    state += `${sq2},${sq1})`
+    state += `${sq2},${sq1}); `
   }
 
   return state;

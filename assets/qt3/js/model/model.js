@@ -55,7 +55,7 @@ export function analyzeGame(stateString) {
   while ((match = placementRegex.exec(stateString)) !== null) {
     placementMoves++;
   }
-  console.log("placementMoves", placementMoves);
+  // console.log("placementMoves", placementMoves);
 
   // Collapses
   while ((match = collapseRegex.exec(stateString)) !== null) {
