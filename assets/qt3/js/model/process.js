@@ -6,6 +6,7 @@ import {analyzeStateString} from "./analyzeStateString.js";
 import {evaluateGame} from "./scoring.js";
 import {isSquareClassical} from "./structure.js";
 import {addSpookyMove,
+        subSpookyMove,
         addPlacementMove,
         addLoop,
         addCollapseMove,
@@ -46,17 +47,17 @@ export function processClick(intent) {
   else if(isSquareClassical(stateString, squareNum)) {  // Illegal move.
     statusString = "That square has collapsed. Choose another.";
     }
-  else if(isReClickSpooky(stateString)) {               // Undo 1st spooky mark.
-    stateString = undoFirstSpookyMark(stateString);
-    statusString = `Spooky mark undone. ${player}: restart your placement move, `
-                 + `place a spooky mark in any uncollapsed square.`
-    }
   else if(isDegenerateLastMove(stateString, state)) {   // Self-collapse last move of game.
     // "X9+(n,n); O9@X9(n)!X9(n); "
-    stateString = selfCollapseLastMove(stateString, state);
-    let outcome = evaluateGame(newstateStringState);
+    stateString = selfCollapseLastMove(stateString, state, intent);
+    let outcome = evaluateGame(stateString);
     stateString += `{X${outcome.score.X},O${outcome.score.O}}`;
     statusString = `Game over: ${outcome.desc}.`;
+    }
+  else if(isReClickSpooky(stateString, state, intent)) {               // Undo 1st spooky mark.
+    stateString = subSpookyMove(stateString);
+    statusString = `Spooky mark undone. ${player}: restart your placement move, `
+                 + `place a spooky mark in any uncollapsed square.`
     }
   else if(isSpooky(stateString, state)) {               // Place 1st spooky mark.
     stateString = addSpookyMove(stateString, player, turn, squareNum);
@@ -69,7 +70,7 @@ export function processClick(intent) {
     const sq2 = squareNum;
 
     const graph = buildGraph(placements);
-    console.log("graph", graph);
+    // console.log("graph", graph);
 
     const path = findPath(graph, sq1, sq2);
 
@@ -77,7 +78,7 @@ export function processClick(intent) {
       cycleMoves = extractCycle(path, placements, turn); // [] - just the path, does not include connecting move.
       stemMoves  = extractStems(graph, path, placements, cycleMoves); // [].
 
-      console.log("it is a cycle");
+      // console.log("it is a cycle");
       stateString = addLoop(stateString, cycleMoves, stemMoves);
 
       let collapsePlayer = (player === 'X') ? 'O' : 'X'; // Must be other player who chooses the collapse..
@@ -98,7 +99,7 @@ export function processClick(intent) {
     }
   else if(isCollapse(stateString, state)) {       // Collapse move.
     let cellSq = cellInLoop(intent, placements, cycleMoves);
-    console.log("cellSq", cellSq);
+    // console.log("cellSq", cellSq);
     if (cellSq != null) {
       let triggerSquare = cellSq.square;
       let resolved = computeCollapseResolution(placements, cycleMoves, stemMoves, cellSq.cell, triggerSquare);
@@ -106,9 +107,9 @@ export function processClick(intent) {
 
       statusString = `Player ${player}: place first spooky mark (click on it again to change your mind (in-work)).`;
     }
-    else {
-      console.log ("No spooky mark in cell", cellNum, "in square", squareNum);
-    }
+    // else {
+    //   console.log ("No spooky mark in cell", cellNum, "in square", squareNum);
+    // }
     }
   else if(isOffCyclicEntanglement(stateString)) {       // Failed to click on loop.
     statusString = `Must first collapse the cyclic entanglement.`;
@@ -133,27 +134,36 @@ export function processClick(intent) {
     console.log("CAN'T HAPPEN - OOPS!");
   }
 
-  console.log("process: stateString", stateString);
+  // console.log("process: stateString", stateString);
+  console.log(stateString);
   
   return {stateStr: stateString, statusStr: statusString};
 }
 
 /** Decision functions which query state: */
 
-function isReClickSpooky(stateString) { // draft
-  let reClicked = false;
-
-  // TODO: fill in decision function isReClickSpooky().
-
-  return reClicked;
-  }
-
-function isDegenerateLastMove(stateString) { // draft
+function isDegenerateLastMove(stateString, state) { // draft
   let degenerateLastMove = false;
 
-  // TODO: fill in decision function isDegenerateLastMove().
+  // console.log("isDegenerateLastMove", state);
+
+  if(state.counts.collapsedMoves === 8)
+    degenerateLastMove = true;
 
   return degenerateLastMove;
+  }
+
+function isReClickSpooky(stateString, state, intent) { // draft
+  let reClicked = false;
+  
+  if(state.progress.sq1 != 0
+  && state.progress.sq2 === 0) {  // There is a trailing spooky mark.
+    if(intent.squareNum === state.progress.sq1) {
+      reClicked = true;
+    }
+  }
+
+  return reClicked;
   }
 
 function isSpooky(stateString, state) {    // Done.
@@ -191,15 +201,16 @@ function isOnLoop(stateString, state) { // draft
 
 /** Action functions which change stage. */
 
-export function undoFirstSpookyMark(stateString) { // draft
-  let newState = stateString.slice(0, -5);  // "Xn+(1"
+function selfCollapseLastMove(stateString, state, intent) {
+  // "X9+(n,n); O9@X9(n)!X9(n); "
 
-  // TODO: fill in action functionundoFirstSpookyMark().
+  let n = intent.squareNum;
+  let selfCollapseString = `X9+(${n},${n}); O9@X9(${n})!X9(${n}); `;
 
-  return newState;
+  // console.log("selfCollapseLastMove() - selfCollapseString", selfCollapseString);
+
+  return state = stateString + selfCollapseString;
 }
-
-// TODO: Add rest of action functions to model.
 
 /** Other helper functions. */
 
@@ -207,20 +218,20 @@ export function cellInLoop(intent, placements, cycleMoves) {  // { cell: cellNum
   const squareNum = intent.squareNum;
   const cellNum   = intent.cellNum;
 
-  console.log("intent", intent);
-  console.log("placements",  placements);
-  console.log("cycleMoves", cycleMoves);
+  // console.log("intent", intent);
+  // console.log("placements",  placements);
+  // console.log("cycleMoves", cycleMoves);
   
   // Must be one of the loop moves.
   if (!cycleMoves.includes(cellNum)) {
-    console.log("cycleMoves includes");
+    // console.log("cycleMoves includes");
     return null;
   }
 
   // Find the placement for that move.
   const p = placements.find(p => p.move === cellNum);
   if (!p) {
-    console.log("no placeents", p);
+    // console.log("no placeents", p);
     return null;
   }
 

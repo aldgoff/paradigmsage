@@ -1,4 +1,4 @@
-// main.js
+// ./assets/qt3/js/main.js
 
 import { initController } from "./controller/controller.js";
 
@@ -8,6 +8,7 @@ initController();
 
 if (import.meta.env?.DEV ?? true) {
   import("./tests/addSpookyMove.test.js");
+  import("./tests/subSpookyMove.test.js");
   import("./tests/addPlacementMove.test.js");
   import("./tests/addLoop.test.js");
   import("./tests/addCollapseMove.test.js");

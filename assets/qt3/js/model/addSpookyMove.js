@@ -1,4 +1,4 @@
-// ./assets/qt3/js/model/addLoop.js
+// ./assets/qt3/js/model/addSpooky.js
 
 // QT3 state: "X1+(1".
 // Add the first spooky mark to a state string.
@@ -15,7 +15,7 @@
  */
 
 export function addSpookyMove(state, player, turn, sq1, sq2=null) {
-  return state += `${player}${turn}+(${sq1}`;
+  return state = `${state}${player}${turn}+(${sq1}`;
 }
 
 // Before "".

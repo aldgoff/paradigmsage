@@ -209,7 +209,6 @@ export function countEntanglements(placements, collapsedMoves) {
   }
 
 export function countCyclics(placements, collapsedMoves) {
-
   // Track seen edges
   const edgeSet = new Set();
 
