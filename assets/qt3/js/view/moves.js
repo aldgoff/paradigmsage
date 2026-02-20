@@ -23,7 +23,8 @@ export function drawMoves(ctx, stateString) {
   drawClassicalMarks(ctx, placements, stateString);
 }
 
-export function parsePlacements(stateString) { // Might should move into module.
+// Local functions called by drawMoves().
+function parsePlacements(stateString) { // Might should move into module.
   const placements = [];  // [{ move, player, squares:[a,b] }]
 
   if (!stateString || stateString.trim() === "") {

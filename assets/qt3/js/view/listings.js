@@ -1,28 +1,43 @@
 // qt3/view/listings.js
 
-import { QT3_LAYOUT } from "../layout.js";
-import { analyzeStateString } from "../model/analyzeStateString.js";
 import { listPlacementsWithCollapse } from "../model/analyzeStateString.js";
 
 const canvas = document.getElementById("qt3-game");
 const ctx = canvas.getContext("2d");
 
+// Public functions used by render in view.js.
+export function drawQuantumListing(layout, stateString) {
+  setGlobalListStyles();
+
+  drawTitle(layout, "       Quantum Moves");
+  drawHeader(layout, "Spooky");
+  drawMoveNums(layout);
+  drawQuantumMoves(layout, stateString);
+  }
+export function drawClassicalListing(layout, stateString) {
+  setGlobalListStyles();
+  drawTitle(layout, "       Classical Moves");
+  drawHeader(layout, "  Move");
+  drawMoveNums(layout);
+  drawClassicalMoves(layout, stateString);
+}
+
+// Formatting: fonts, colors, line widths, etc.
 function setGlobalListStyles() {
   ctx.setLineDash([0, 0]);
   ctx.strokeStyle = "#000";
   ctx.fillStyle = "#000";
   ctx.font = "16px sans-serif";
 }
-function drawTitle(layout, title) {
-  setGlobalListStyles();
 
+// Local functions called by the draw listing functions.
+function drawTitle(layout, title) {
   // Bound box for title.
   ctx.strokeRect(layout.title.x, layout.title.y, layout.title.w, layout.title.h); 
   ctx.fillText(title, layout.title.x + 7, layout.title.y + 19);
   }
-function drawHeader(layout, header) {
-  setGlobalListStyles();
 
+function drawHeader(layout, header) {
   // Shorthand for layout elements.
   let row = layout.header;
   let x_offset = row.h;
@@ -40,9 +55,8 @@ function drawHeader(layout, header) {
   ctx.strokeRect(row.x + x_offset + o_offset, row.y, row.w, row.h);
   ctx.fillText(header, row.x + x_offset + o_offset + 8, row.y + 20);
   }
-function drawMoveNums(layout) {
-  setGlobalListStyles();
 
+function drawMoveNums(layout) {
   // Shorthand for layout elements.
   let row = layout.rows;
   let sep = row.h;
@@ -59,9 +73,8 @@ function drawMoveNums(layout) {
     ctx.strokeRect(row.x + row.h + o_offset, row.y + (i-2)*(sep/2), row.w, row.h);
   }
   }
+
 function drawQuantumMoves(layout, stateString) {
-  setGlobalListStyles();
-  let state = analyzeStateString(stateString);  
   const moves = listPlacementsWithCollapse(stateString); //  sq1: p.sq1, sq2: p.sq2, collapse
 
   let row = layout.rows;  // Graphical layout.
@@ -90,9 +103,6 @@ function drawQuantumMoves(layout, stateString) {
   }
 
 function drawClassicalMoves(layout, stateString) {
-  setGlobalListStyles();
-  let state = analyzeStateString(stateString);
-  
   const moves = listPlacementsWithCollapse(stateString); //  sq1: p.sq1, sq2: p.sq2, collapse
 
   let row = layout.rows;  // Graphical layout.
@@ -118,18 +128,5 @@ function drawClassicalMoves(layout, stateString) {
     }
     xory += 1;
   }
-}
-
-export function drawQuantumListing(layout, stateString) {
-  drawTitle(layout, "       Quantum Moves");
-  drawHeader(layout, "Spooky");
-  drawMoveNums(layout);
-  drawQuantumMoves(layout, stateString);
-  }
-export function drawClassicalListing(layout, stateString) {
-  drawTitle(layout, "       Classical Moves");
-  drawHeader(layout, "  Move");
-  drawMoveNums(layout);
-  drawClassicalMoves(layout, stateString);
 }
 

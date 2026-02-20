@@ -1,6 +1,7 @@
 // qt3/view/view.js
 
 import { QT3_LAYOUT } from "../layout.js";
+
 import {
   drawControls,
   handlePointerDown,
@@ -8,7 +9,9 @@ import {
   handlePointerUp,
   setControlHandler
 } from "./controlsView.js";
-import { drawMoves } from "./moves.js";
+import { 
+  drawMoves 
+} from "./moves.js";
 import {
   drawQuantumListing,
   drawClassicalListing,
@@ -20,31 +23,6 @@ const ctx = canvas.getContext("2d");
 export function initView() {
   render();
   installPointerHandlers();
-}
-
-function drawWrappedText(ctx, text, x, y, maxWidth, lineHeight) {
-  const words = text.split(" ");
-  let line = "";
-  let lines = [];
-
-  for (let n = 0; n < words.length; n++) {
-    const testLine = line + words[n] + " ";
-    const metrics = ctx.measureText(testLine);
-    const testWidth = metrics.width;
-
-    if (testWidth > maxWidth && n > 0) {
-      lines.push(line);
-      line = words[n] + " ";
-    } else {
-      line = testLine;
-    }
-  }
-
-  lines.push(line);
-
-  for (let i = 0; i < lines.length; i++) {
-    ctx.fillText(lines[i], x, y + i * lineHeight);
-  }
 }
 
 function render() {
@@ -62,7 +40,7 @@ function render() {
 }
 
 // Outline the visual objets to facilitate arranging them.
-export function drawLayoutBounds(ctx, layout = QT3_LAYOUT) {
+function drawLayoutBounds(ctx, layout = QT3_LAYOUT) {
   ctx.save();
   ctx.setLineDash([6, 4]);
   ctx.strokeStyle = "#888";
@@ -149,7 +127,7 @@ function getCanvasCoords(e) {
     x: Math.round(e.clientX - rect.left),
     y: Math.round(e.clientY - rect.top)
   };
-  }
+}
 
 export function setViewControlHandler(fn) {
   setControlHandler(fn);
@@ -268,7 +246,6 @@ function handleSquareClicks(x, y) {       // Event driven, called by listener, i
 
 /* Code to set and draw the state string. */
 let currentStateString = ""; 
-
 export function setStateString(str) {
   currentStateString = str;
   render();
@@ -295,7 +272,6 @@ function drawStateString(ctx) {
   const padding = 10;
   const textY = y + h / 2;
 
-  // ctx.fillText(currentStateString, x + padding, textY);
   drawWrappedText(ctx, currentStateString, x + padding, y + 10, w-2 * padding, 20);
 
   ctx.restore();
@@ -303,7 +279,6 @@ function drawStateString(ctx) {
 
 /* Code to set and draw the status string. */
 let currentStatusString = "Welcome to quantum tic-tac-toe (QT3). Click on New Game to begin."; 
-
 export function setStatusString(str) {
   currentStatusString = str;
   render();
@@ -330,9 +305,33 @@ function drawStatusString(ctx) {
   const padding = 10;
   const textY = y + 4
 
-  // ctx.fillText(currentStatusString, x + padding, textY);
   drawWrappedText(ctx, currentStatusString, x + padding, y + 10, w-2 * padding, 20);
 
   ctx.restore();
+}
+
+function drawWrappedText(ctx, text, x, y, maxWidth, lineHeight) {
+  const words = text.split(" ");
+  let line = "";
+  let lines = [];
+
+  for (let n = 0; n < words.length; n++) {
+    const testLine = line + words[n] + " ";
+    const metrics = ctx.measureText(testLine);
+    const testWidth = metrics.width;
+
+    if (testWidth > maxWidth && n > 0) {
+      lines.push(line);
+      line = words[n] + " ";
+    } else {
+      line = testLine;
+    }
+  }
+
+  lines.push(line);
+
+  for (let i = 0; i < lines.length; i++) {
+    ctx.fillText(lines[i], x, y + i * lineHeight);
+  }
 }
 
