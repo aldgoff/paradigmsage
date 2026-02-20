@@ -29,6 +29,17 @@ let placements = [];  // [{ move, player, squares:[a,b] }].
 let cycleMoves = [];
 let stemMoves = [];
 
+export function newGame() {
+  stateString = "";
+  placements = [];
+  cycleMoves = [];
+  stemMoves = [];
+
+  // setStateString("");    // This will clear the board.
+  let state = analyzeStateString(stateString);
+
+}
+
 export function processClick(intent) {
   const squareNum = intent.squareNum;
   const cellNum   = intent.cellNum;
@@ -36,7 +47,6 @@ export function processClick(intent) {
   let statusString = "";
 
   const state = analyzeStateString(stateString);
-  console.log(state);
 
   let turn = state.progress.turn + 1;
   let player = (turn%2) ? 'X' : 'O'
