@@ -1,15 +1,26 @@
 // ./assets/qt3/js/model/analyzeStateString.js
 
-// Analyze a state string for multiple perameters of interest.
-
-/** Analyzes a QT3 state string.
+/** Analyzes a QT3 state string for multiple perameters of interest.
  * @param {string} state - existing QT3 state string.
  * 
- * @returns {moves, counts}  // 
+ * @returns {progress, moves, counts, outcome}  // 
 */
 
 import {GRAMMAR} from "./grammer.js";
 import {buildSquareMap} from "./structure.js";
+import { evaluateGame } from "./scoring.js";
+
+const noProgress = {
+  turn: 0,            // 0 - 9.
+  player: 0,          // 'X' or 'O'.
+  sq1: 0,             // 0 - 9.
+  sq2: 0,             // 0 - 9.
+  firstSpooky: true,  // true/false.
+  placement: false,   // true/false.
+  loop: false,        // true/false.
+  collapse: false,    // true/false.
+  };
+  Object.freeze(noProgress );
 
 const noMoves = {
   spooky: 0,    // 0 - 1.
@@ -29,18 +40,63 @@ const noCounts = {
   };
   Object.freeze(noCounts);
 
-const noIllegals = {
-  playPastEnd: false,
-  };
-  Object.freeze(noIllegals);
-
 const noOutcome = {
   over: false,
   score: {X: 0, O: 0},
   wins: {},
   desc: "",
   };
-  Object.freeze(noOutcome);
+Object.freeze(noOutcome);
+
+export function analyzeStateString(stateString) {
+  if (!stateString || stateString.trim() === "") {
+    return emptyAnalysis();
+  }
+
+  let moves    = countMoves(stateString);
+  let counts   = countStructures(stateString);
+  let outcome  = evaluateGame(stateString);
+  let progress = trackProgress(stateString, moves, counts, outcome);
+
+  // --- Invariants ---
+
+  invariant("Structural counts must equal placement moves",
+    counts.separables +
+    counts.entangledMoves +
+    counts.collapsedMoves === moves.placement,
+    );
+
+  invariant("QT3 allows at most 3 simultaneous entanglements",
+    counts.entanglements <= 3,
+  );
+
+  return {
+    progress,
+    moves,
+    counts,
+    outcome
+  };
+}
+
+function emptyAnalysis() {
+  return {
+    progress: {...noProgress},
+    moves:    {...noMoves},
+    counts:   {...noCounts},
+    outcome:  {...noOutcome},
+
+    // collapsedSquares: [],
+    // numberOfLoopMoves: 0,
+    // numberOfStemMoves: 0,
+
+    // numberOfClassicalRealities: 1,
+    // fieldOfClassicalRealities: 1,
+
+    // sequentialChronoBlocks: 0,
+    // overlappingChronoBlocks: 0,
+    // nestedChronoBlocks: 0
+  };
+}
 
 /*** Helpers ***/
 
@@ -90,26 +146,6 @@ export function parseState(state) {
   }
 
   return result;
-}
-
-export function trackProgress1(stateString) {
-  let progress = {
-    turn: 0,            // 0 - 9.
-    player: 0,          // 'X' or 'O'.
-    sq1: 0,             // 0 - 9.
-    sq2: 0,             // 0 - 9.
-    firstSpooky: true,  // true/false.
-    placement: false,   // true/false.
-    collapse: false,    // true/false.
-    };
-
-    if(stateString == "" || stateString.slice(-2) === "; ") {
-      progress.firstSpooky = true;
-    }
-
-    // TODO: trackProgress().
-
-    return progress;
 }
 
 export function countSpookyMoves(state) {
@@ -300,109 +336,6 @@ export function countStructures(state) {
 
   return counts;
 }
-
-// import { analyzeStateString } from "./analyzeStateString.js";
-import { evaluateGame } from "./scoring.js";
-
-export function analyzeStateString1(stateString) {
-  if (!stateString || stateString.trim() === "") {
-    return emptyAnalysis();
-  }
-
-  let progress;
-  let moves     = countMoves(stateString);   // Basically count events.
-  let counts    = countStructures(stateString); // Count structural elements.
-  let illegals  = {};
-  let outcome   = {};
-
-  // --- Invariants ---
-
-  invariant("Structural counts must equal placement moves",
-    counts.separables +
-    counts.entangledMoves +
-    counts.collapsedMoves === moves.placement,
-    );
-
-  invariant("QT3 allows at most 3 simultaneous entanglements",
-    counts.entanglements <= 3,
-  );
-
-  // --- Game Over? ---
-
-  if(counts.collapse > 0 && moves.number >= 5) {
-    outcome = evaluateGame(state);
-  }
-
-  return { progress, moves, counts, outcome };
-}
-
-function emptyAnalysis() {
-  return {
-    progress: {...noProgress},
-    moves:    {...noMoves},
-    counts:   {...noCounts},
-    illegals: {...noIllegals},
-    outcome:  {...noOutcome},
-
-    // collapsedSquares: [],
-    // numberOfLoopMoves: 0,
-    // numberOfStemMoves: 0,
-
-    // numberOfClassicalRealities: 1,
-    // fieldOfClassicalRealities: 1,
-
-    // sequentialChronoBlocks: 0,
-    // overlappingChronoBlocks: 0,
-    // nestedChronoBlocks: 0
-  };
-}
-
-export function analyzeStateString(stateString) {
-
-  if (!stateString || stateString.trim() === "") {
-    return emptyAnalysis();
-  }
-
-  let moves    = countMoves(stateString);
-  let counts   = countStructures(stateString);
-  let illegals = { ...noIllegals };
-  let outcome  = evaluateGame(stateString);
-
-  // --- Invariants ---
-
-  invariant("Structural counts must equal placement moves",
-    counts.separables +
-    counts.entangledMoves +
-    counts.collapsedMoves === moves.placement,
-  );
-
-  invariant("QT3 allows at most 3 simultaneous entanglements",
-    counts.entanglements <= 3,
-  );
-
-  // --- Progress ---
-  let progress = trackProgress(stateString, moves, counts, outcome);
-
-  return {
-    progress,
-    moves,
-    counts,
-    illegals,
-    outcome
-  };
-}
-
-const noProgress = {
-  turn: 0,            // 0 - 9.
-  player: 0,          // 'X' or 'O'.
-  sq1: 0,             // 0 - 9.
-  sq2: 0,             // 0 - 9.
-  firstSpooky: true,  // true/false.
-  placement: false,   // true/false.
-  loop: false,        // true/false.
-  collapse: false,    // true/false.
-  };
-  Object.freeze(noProgress );
 
 function trackProgress(stateString, moves, counts, outcome) {
   let progress = { ...noProgress };

@@ -32,7 +32,7 @@ export function slipHistptr (steps) {  // Undo (-1), Redo (+1).
   if(histPtr > numberOfMoves) histPtr = numberOfMoves;
 }
 
-export function analyzeGame(stateString) {
+export function analyzeGame(stateString) {  // Deprecating in favor of analyzeStateString(stateString).
   if (!stateString || stateString.trim() === "") {
     return emptyAnalysis();
   }

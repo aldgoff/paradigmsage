@@ -2,12 +2,12 @@
 
 import {GRAMMAR} from "./grammer.js";
 
-function extractClassicalSquares(state) {
+function extractClassicalSquares(stateString) {
   const classicalMap = new Map();
   const collapseRegex = new RegExp(GRAMMAR.collapseResolve);
   let match;
 
-  while ((match = collapseRegex.exec(state)) !== null) {
+  while ((match = collapseRegex.exec(stateString)) !== null) {
     const player = match[1];
     const move   = Number(match[2]);
     const square = Number(match[3]);
@@ -92,11 +92,11 @@ function computeScoreFromWins(wins) {
   return result;
   }
 
-function isBoardExhausted(state) {
-  return !hasLegalMoves(state);
+function isBoardExhausted(stateString) {
+  return !hasLegalMoves(stateString);
 }
 
-export function hasLegalMoves(state) {
+export function hasLegalMoves(stateString) {
   /**
    * Returns true if at least one legal placement move remains.
    *
@@ -104,7 +104,7 @@ export function hasLegalMoves(state) {
    * that is not classical (i.e., not collapsed).
    */
 
-  const classicalMap = extractClassicalSquares(state);
+  const classicalMap = extractClassicalSquares(stateString);
 
   // If all 9 squares are classical, no legal moves remain
   if (classicalMap.size === 9) {
@@ -114,7 +114,7 @@ export function hasLegalMoves(state) {
   return true;
 }
 
-export function evaluateGame(state) {
+export function evaluateGame(stateString) {
   /** Computes the QT3 game result from a canonical state string.
    *
    * A win requires three classical marks in a row (row, column, or diagonal),
@@ -133,18 +133,19 @@ export function evaluateGame(state) {
    *
    * @returns {over: true, score: { X: number, O: number }, wins: lines}
    */
-  let classicalMap = extractClassicalSquares(state);
+  let classicalMap = extractClassicalSquares(stateString);
   let win3rows     = detectWinningLines(classicalMap);
   let score = {X:0,O:0};
+  let desc = "TBD";
 
   if(win3rows != null) {
-    return { over: true, score: computeScoreFromWins(win3rows), wins: win3rows};
+    return { over: true, score: computeScoreFromWins(win3rows), wins: win3rows, desc: desc};
   }
 
-  if(isBoardExhausted(state)) {
-    return { over: true, score: {X:0,O:0}, wins: win3rows};
+  if(isBoardExhausted(stateString)) {
+    return { over: true, score: {X:0,O:0}, wins: win3rows, desc: desc};
   }
 
-  return { over: false, score: {X:0,O:0}, wins: win3rows };
+  return { over: false, score: {X:0,O:0}, wins: win3rows, desc: desc};
 }
 
