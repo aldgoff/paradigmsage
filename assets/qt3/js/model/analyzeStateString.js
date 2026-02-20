@@ -382,3 +382,55 @@ function trackProgress(stateString, moves, counts, outcome) {
 
   return progress;
 }
+
+export function listPlacementsWithCollapse(stateString) { // Used in view/listings.js.
+  /**
+   * Returns ordered list of placement moves with collapse info:
+   *
+   * [
+   *   { sq1, sq2, collapse: 'none' | 'left' | 'right' }
+   * ]
+   */
+
+  const { placements } = parseState(stateString);
+
+  if (!stateString || stateString.trim() === "") {
+    return [];
+  }
+
+  // Build map: moveNumber -> collapsedSquare
+  const collapseMap = new Map();
+  const collapseRegex = new RegExp(GRAMMAR.collapseResolve);
+
+  let match;
+  while ((match = collapseRegex.exec(stateString)) !== null) {
+    const moveNum = Number(match[2]);
+    const square  = Number(match[3]);
+    collapseMap.set(moveNum, square);
+  }
+
+  // Build result in canonical move order
+  return placements
+    .sort((a, b) => a.move - b.move)
+    .map(p => {
+
+      const collapsedSquare = collapseMap.get(p.move);
+
+      let collapse = 'none';
+
+      if (collapsedSquare !== undefined) {
+        if (collapsedSquare === p.sq1) {
+          collapse = 'left';
+        } else if (collapsedSquare === p.sq2) {
+          collapse = 'right';
+        }
+      }
+
+      return {
+        sq1: p.sq1,
+        sq2: p.sq2,
+        collapse
+      };
+    });
+}
+

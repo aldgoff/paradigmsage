@@ -145,7 +145,7 @@ export function analyzeGame(stateString) {  // Deprecating in favor of analyzeSt
   };
 }
 
-function emptyAnalysis() {
+function emptyAnalysis() {  // Deprecating in favor of analyzeStateString(stateString).
   return {
     placementMoves: 0,
     collapseMoves: 0,

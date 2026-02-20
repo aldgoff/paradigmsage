@@ -1,6 +1,8 @@
 // qt3/view/listings.js
 
 import { QT3_LAYOUT } from "../layout.js";
+import { analyzeStateString } from "../model/analyzeStateString.js";
+import { listPlacementsWithCollapse } from "../model/analyzeStateString.js";
 
 const canvas = document.getElementById("qt3-game");
 const ctx = canvas.getContext("2d");
@@ -59,45 +61,59 @@ function drawMoveNums(layout) {
   }
 function drawQuantumMoves(layout, stateString) {
   setGlobalListStyles();
-  // Need to derive moves from the stateString.
-  let moves = [[4,5], [5,6], [6,4], [7,8], [8,9]];
+  let state = analyzeStateString(stateString);  
+  const moves = listPlacementsWithCollapse(stateString); //  sq1: p.sq1, sq2: p.sq2, collapse
 
-  let row = layout.rows;
+  let row = layout.rows;  // Graphical layout.
   let sep = 0;
   let xory = 1;
   let offset = 0;
 
-  for(const move of moves) { // X moves.
-    if (xory%2) {
+  for(const move of moves) {  // For each move.
+    let symbol = "";
+    if(     move.collapse === 'none')  {  symbol = "---"; }
+    else if(move.collapse === 'left')  {  symbol = "<<"; }
+    else if(move.collapse === 'right') {  symbol = ">>"; }
+    else { /* TODO: How to throw an exception? */ }
+
+    if (xory%2) {           // X moves.
       offset = 0;
-      ctx.fillText(`${move[0]} --- ${move[1]}`, row.x + row.h + offset + 12, row.y + sep + 19);
+      ctx.fillText(`${move.sq1} ${symbol} ${move.sq2}`, row.x + row.h + offset + 12, row.y + sep + 19);
     } 
     else {                  // O moves.
       offset = row.w + row.h;
-      ctx.fillText(`${move[0]} --- ${move[1]}`, row.x + row.h + offset + 12, row.y + sep + 19);
+      ctx.fillText(`${move.sq1} ${symbol} ${move.sq2}`, row.x + row.h + offset + 12, row.y + sep + 19);
       sep += row.h;
     }
     xory += 1;
   }
   }
+
 function drawClassicalMoves(layout, stateString) {
   setGlobalListStyles();
-  // Need to derive moves from the stateString.
-  let moves = [4, 5, 6, '--', '--', 1, 3, 2];
+  let state = analyzeStateString(stateString);
+  
+  const moves = listPlacementsWithCollapse(stateString); //  sq1: p.sq1, sq2: p.sq2, collapse
 
-  let row = layout.rows;
+  let row = layout.rows;  // Graphical layout.
   let sep = 0;
   let xory = 1;
   let offset = 0;
 
-  for(const move of moves) { // X moves.
-    if (xory%2) {
+  for(const move of moves) { // For each move.
+    let symbol = "";
+    if(     move.collapse === 'none')  {  symbol = "-"; }
+    else if(move.collapse === 'left')  {  symbol = move.sq1; }
+    else if(move.collapse === 'right') {  symbol = move.sq2; }
+    else { /* TODO: How to throw an exception? */ }
+
+    if (xory%2) {    // X moves.
       offset = 0;
-      ctx.fillText(`    ${move}`, row.x + row.h + offset + 12, row.y + sep + 19);
+      ctx.fillText(`    ${symbol}`, row.x + row.h + offset + 12, row.y + sep + 19);
     } 
-    else {                  // O moves.
+    else {           // O moves.
       offset = row.w + row.h;
-      ctx.fillText(`    ${move}`, row.x + row.h + offset + 12, row.y + sep + 19);
+      ctx.fillText(`    ${symbol}`, row.x + row.h + offset + 12, row.y + sep + 19);
       sep += row.h;
     }
     xory += 1;
