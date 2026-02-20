@@ -1,7 +1,5 @@
 // ./assets/qt3/js/model/process.js
 
-// import {GRAMMAR} from "./grammer.js";
-
 import {analyzeStateString} from "./analyzeStateString.js";
 import {evaluateGame} from "./scoring.js";
 import {isSquareClassical} from "./structure.js";
@@ -51,30 +49,30 @@ export function processClick(intent) {
   let turn = state.progress.turn + 1;
   let player = (turn%2) ? 'X' : 'O'
 
-  if(evaluateGame(state).over) {                  // Game over.
+  if(evaluateGame(state).over) {                          // Game over.
     statusString = "Game is over. New Game, Restart, Undo, Load.";
     }
-  else if(isSquareClassical(stateString, squareNum)) {  // Illegal move.
+  else if(isSquareClassical(stateString, squareNum)) {    // Illegal move.
     statusString = "That square has collapsed. Choose another.";
     }
-  else if(isDegenerateLastMove(stateString, state)) {   // Self-collapse last move of game.
+  else if(isDegenerateLastMove(stateString, state)) {     // Self-collapse last move of game.
     // "X9+(n,n); O9@X9(n)!X9(n); "
     stateString = selfCollapseLastMove(stateString, state, intent);
     let outcome = evaluateGame(stateString);
     stateString += `{X${outcome.score.X},O${outcome.score.O}}`;
     statusString = `Game over: ${outcome.desc}.`;
     }
-  else if(isReClickSpooky(stateString, state, intent)) {               // Undo 1st spooky mark.
+  else if(isReClickSpooky(stateString, state, intent)) {  // Undo 1st spooky mark.
     stateString = subSpookyMove(stateString);
     statusString = `Spooky mark undone. ${player}: restart your placement move, `
                  + `place a spooky mark in any uncollapsed square.`
     }
-  else if(isSpooky(stateString, state)) {               // Place 1st spooky mark.
+  else if(isSpooky(stateString, state)) {                 // Spooky move.
     stateString = addSpookyMove(stateString, player, turn, squareNum);
     statusString = `Continue with rest of placement move, `
                  + `${player}: place your second spooky mark or undo the first one.`
     }
-  else if(isPlacement(stateString, state)) {            // Place 2nd spooky mark.
+  else if(isPlacement(stateString, state)) {              // Placement move.
     stateString = addPlacementMove(stateString, player, turn, state.progress.sq1, squareNum);
     const sq1 = state.progress.sq1;
     const sq2 = squareNum;
@@ -105,7 +103,7 @@ export function processClick(intent) {
     });
 
     }
-  else if(isCollapse(stateString, state)) {       // Collapse move.
+  else if(isCollapse(stateString, state)) {               // Collapse move.
     let cellSq = cellInLoop(intent, placements, cycleMoves);
     if (cellSq != null) {
       let triggerSquare = cellSq.square;
@@ -122,26 +120,7 @@ export function processClick(intent) {
       }
     }
     }
-  else if(isOffCyclicEntanglement(stateString)) {       // Failed to click on loop.
-    statusString = `Must first collapse the cyclic entanglement.`;
-    }
-  else if(isOnStem(stateString)) {                      // Clicked on stem.
-    statusString = "Must choose a spooky mark on the loop of the cyclic entanglement "
-                 + "(purple), not on the stem (orange)."
-    }
-  else if(isOnLoop(stateString, state)) {               // Collapse cyclic entanglement.
-    stateString = collapseCyclicEntanglement(stateString, squareNum, cellNum);
-    let outcome = evaluateGame(newState);
-    if(outcome.over) {
-      stateString += `{X${outcome.score.X},O${outcome.score.O}}`;
-      statusString = `Game over: ${outcome.desc}.`;
-      }
-    else {
-      let nextPlayer = (player === 'X') ? 'O' : 'X';
-      statusString = `${nextPlayer}'s turn to make a placement move.`;
-    }
-    }
-  else {                                                // Can't happen.
+  else {                                                  // Can't happen.
     console.log("CAN'T HAPPEN - OOPS!");
   }
 
@@ -185,28 +164,6 @@ function isCollapse(stateString, state) { // Done.
   return state.progress.collapse;
 }
   
-function isOffCyclicEntanglement(stateString) { // draft
-  let notOnCycle = false;
-
-  // TODO: fill in decision function isOffCyclicEntanglement().
-
-  return notOnCycle;
-  }
-function isOnStem(stateString) { // draft
-  let onStem = false;
-
-  // TODO: fill in decision function isOnStem().
-
-  return onStem;
-  }
-function isOnLoop(stateString, state) { // draft
-  let onLoop = false;
-
-  // TODO: fill in decision function isOnLoop().
-
-  return onLoop;
-}
-
 /** Action functions which change stage. */
 
 function selfCollapseLastMove(stateString, state, intent) {
@@ -218,9 +175,9 @@ function selfCollapseLastMove(stateString, state, intent) {
   return state = stateString + selfCollapseString;
 }
 
-/** Other helper functions. */
+/** Helper functions: */
 
-export function cellInLoop(intent, placements, cycleMoves) {  // { cell: cellNum, square: squareNum }.
+function cellInLoop(intent, placements, cycleMoves) {  // { cell: cellNum, square: squareNum }.
   const squareNum = intent.squareNum;
   const cellNum   = intent.cellNum;
   
@@ -245,7 +202,7 @@ export function cellInLoop(intent, placements, cycleMoves) {  // { cell: cellNum
   };
 }
 
-export function computeCollapseResolution(
+function computeCollapseResolution(
   placements,
   cycleMoves,
   stemMoves,
