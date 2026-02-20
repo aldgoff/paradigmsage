@@ -2,7 +2,9 @@
 
 // Model layer.
 import {analyzeStateString} from "../model/analyzeStateString.js";
-import {processClick}       from "../model/process.js";
+import {processClick,
+        newGame,
+}       from "../model/process.js";
 
 // View layer.
 import {initView,
@@ -39,11 +41,8 @@ function handleButtonRelease(button) {
   switch (button) {
     case "New Game":
       setStatusString("Player X: place first spooky mark (click on it again to change your mind).");
-      
-      setStateString("");    // This will clear the board.
-      let state = analyzeStateString("");
-      console.log("state", state);
-
+      setStateString("");   // Stores the state string in the view layer.
+      newGame();
       break;
     case "Restart":
       setStatusString("Player X: place first spooky mark (click on it again to change your mind).");
@@ -93,12 +92,12 @@ function handleSquareCellClick(event) {  // Respond to clicks in squares down to
 
   let intent = { squareNum: squareNum, cellNum: cellNum };
 
-  const result = processClick(intent);  // {state: str, status: str}.
+  const result = processClick(intent);      // {state: str, status: str}.
 
   let stateString  = result.stateStr;       // "X1+(1,2); O2+(2,3); X3+(1,3)[132]; "
   let statusString = result.statusStr;      // "Player O to collapse cyclic entanglement."
 
-  setStateString(stateString);          // Stores the state string in the view layer.
-  setStatusString(statusString);        // Stores the status string in the view layer.
+  setStateString(stateString);              // Stores the state string in the view layer.
+  setStatusString(statusString);            // Stores the status string in the view layer.
 }
 
