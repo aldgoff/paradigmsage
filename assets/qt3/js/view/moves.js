@@ -1,7 +1,6 @@
 // qt3/view/moves.js
 
 import { QT3_LAYOUT } from "../layout.js";
-import { buildGraph } from "../model/cycles.js";
 
 const QT3_PALETTE = {
   separable: "black",
@@ -13,10 +12,8 @@ const QT3_PALETTE = {
 export function drawMoves(ctx, stateString) {
   let placements = parsePlacements(stateString);
   let moveSets = separateResolvedAndUnresolved(placements, stateString);
+  let colorMap = assignComponentColors(moveSets.unresolved);
 
-  let graph = buildEntanglementGraph(moveSets.unresolved);
-  let components = computeConnectedComponents(graph);
-  let colorMap = assignComponentColors(components, moveSets.unresolved);
   colorMap = overrideCycleColors(stateString, colorMap);
 
   drawSpookyMarks(ctx, moveSets.unresolved, colorMap);
@@ -24,7 +21,7 @@ export function drawMoves(ctx, stateString) {
 }
 
 // Local functions called by drawMoves().
-function parsePlacements(stateString) { // Might should move into module.
+function parsePlacements(stateString) { 
   const placements = [];  // [{ move, player, squares:[a,b] }]
 
   if (!stateString || stateString.trim() === "") {
@@ -59,7 +56,7 @@ function parsePlacements(stateString) { // Might should move into module.
   }
 
   return placements;
-  }
+}
 
 function separateResolvedAndUnresolved(placements, stateString) {
   const resolvedMoves = new Set();
@@ -85,90 +82,162 @@ function separateResolvedAndUnresolved(placements, stateString) {
   }
 
   return { resolved, unresolved };
-  }
+}
 
-function buildEntanglementGraph(unresolved) {
-  // Only complete placements form edges
-  const completePlacements = unresolved
+function assignComponentColors(unresolved) {
+  /**
+   * Chronological entanglement reconstruction.
+   *
+   * Rules:
+   *  - Separable → black
+   *  - First entanglement born → red
+   *  - Second → green
+   *  - Third → blue
+   *  - Extending keeps color
+   *  - Merging keeps earlier-born color
+   */
+
+  const palette = QT3_PALETTE.entanglement;
+
+  const moveColorMap = {};                 // move → color
+  const moveToComponent = new Map();       // move → componentId
+  const components = new Map();            // componentId → {moves:Set, color, birthMove}
+
+  const squareMap = new Map();             // square → Set<moves>
+  let nextComponentId = 1;
+  let nextPaletteIndex = 0;
+
+  // Only complete placements participate
+  const placements = unresolved
     .filter(p => !p.partial && p.squares.length === 2)
-    .map(p => ({
-      move: p.move,
-      squares: p.squares
-    }));
+    .sort((a, b) => a.move - b.move);
 
-  let graph = buildGraph(completePlacements); // { 1:[2,5], 2:[1], ..., 9:[] }
-  return graph;
-  }
+  for (const placement of placements) {
 
-function computeConnectedComponents(graph) {
-  const visited = new Set();
-  const components = [];
+    const { move, squares } = placement;
+    const [a, b] = squares;
 
-  for (let node = 1; node <= 9; node++) {
+    // Find prior moves sharing square a or b
+    const neighbors = new Set();
 
-    if (visited.has(node)) continue;
-
-    const stack = [node];
-    const component = [];
-
-    while (stack.length > 0) {
-      const current = stack.pop();
-
-      if (visited.has(current)) continue;
-
-      visited.add(current);
-      component.push(current);
-
-      const neighbors = graph[current] || [];
-
-      for (const neighbor of neighbors) {
-        if (!visited.has(neighbor)) {
-          stack.push(neighbor);
+    for (const sq of squares) {
+      const movesAtSquare = squareMap.get(sq);
+      if (movesAtSquare) {
+        for (const m of movesAtSquare) {
+          neighbors.add(m);
         }
       }
     }
 
-    components.push(component);
-  }
+    // Determine which components those neighbors belong to
+    const touchedComponents = new Set();
 
-  return components;
-  }
-
-function assignComponentColors(components, unresolved) {
-  const colorMap = {};
-
-  let entanglementIndex = 0;
-
-  for (const component of components) {
-
-    // Collect moves belonging to this square component
-    const movesInComponent = unresolved.filter(p =>
-      p.squares.some(sq => component.includes(sq))
-    );
-
-    // Ignore isolated squares with no moves
-    if (movesInComponent.length === 0) continue;
-
-    // If component has only one move → separable
-    if (movesInComponent.length === 1) {
-      colorMap[movesInComponent[0].move] = QT3_PALETTE.separable;
-      continue;
+    for (const neighborMove of neighbors) {
+      const compId = moveToComponent.get(neighborMove);
+      if (compId !== undefined) {
+        touchedComponents.add(compId);
+      }
     }
 
-    // Entangled component
-    const color = QT3_PALETTE.entanglement[entanglementIndex] 
-                  || QT3_PALETTE.entanglement[QT3_PALETTE.entanglement.length - 1];
-
-    for (const p of movesInComponent) {
-      colorMap[p.move] = color;
+    // CASE 1 — No neighbors → separable
+    if (neighbors.size === 0) {
+      moveColorMap[move] = QT3_PALETTE.separable;
     }
 
-    entanglementIndex++;
+    // CASE 2 — Neighbors exist but none in components → birth of new entanglement
+    else if (touchedComponents.size === 0) {
+
+      const color = palette[nextPaletteIndex] ||
+                    palette[palette.length - 1];
+
+      const compId = nextComponentId++;
+
+      components.set(compId, {
+        moves: new Set([...neighbors, move]),
+        color,
+        birthMove: move
+      });
+
+      for (const m of neighbors) {
+        moveToComponent.set(m, compId);
+        moveColorMap[m] = color;
+      }
+
+      moveToComponent.set(move, compId);
+      moveColorMap[move] = color;
+
+      nextPaletteIndex++;
+    }
+
+    // CASE 3 — Extends exactly one existing component
+    else if (touchedComponents.size === 1) {  // Test game: X1+(1,2); O2+(2,3); X3+(4,5); O4+(7,8); X5+(8,9); O6+(5,9);
+      const compId = [...touchedComponents][0];
+      const comp = components.get(compId);
+
+      // Absorb any separable neighbors
+      for (const neighborMove of neighbors) {
+        if (!moveToComponent.has(neighborMove)) {
+          comp.moves.add(neighborMove);
+          moveToComponent.set(neighborMove, compId);
+          moveColorMap[neighborMove] = comp.color;
+        }
+      }
+
+      // Add current move
+      comp.moves.add(move);
+      moveToComponent.set(move, compId);
+      moveColorMap[move] = comp.color;
+    }
+
+    // CASE 4 — Connects multiple components → merge
+    else {
+
+      // Find earliest-born component
+      let earliestCompId = null;
+      let earliestBirth = Infinity;
+
+      for (const compId of touchedComponents) {
+        const comp = components.get(compId);
+        if (comp.birthMove < earliestBirth) {
+          earliestBirth = comp.birthMove;
+          earliestCompId = compId;
+        }
+      }
+
+      const primary = components.get(earliestCompId);
+
+      // Merge others into primary
+      for (const compId of touchedComponents) {
+        if (compId === earliestCompId) continue;
+
+        const comp = components.get(compId);
+
+        for (const m of comp.moves) {
+          primary.moves.add(m);
+          moveToComponent.set(m, earliestCompId);
+          moveColorMap[m] = primary.color;
+        }
+
+        components.delete(compId);
+      }
+
+      // Add new move to primary
+      primary.moves.add(move);
+      moveToComponent.set(move, earliestCompId);
+      moveColorMap[move] = primary.color;
+    }
+
+    // Update square map AFTER processing
+    for (const sq of squares) {
+      if (!squareMap.has(sq)) {
+        squareMap.set(sq, new Set());
+      }
+      squareMap.get(sq).add(move);
+    }
   }
 
-  return colorMap;
-  }
-
+  return moveColorMap;
+}
 
 function overrideCycleColors(stateString, baseColorMap) {
   // Clone base map so we do not mutate it
@@ -205,8 +274,7 @@ function overrideCycleColors(stateString, baseColorMap) {
   }
 
   return colorMap;
-  }
-
+}
 
 function drawSpookyMarks(ctx, unresolved, colorMap) {
   if (!unresolved || unresolved.length === 0) return;
@@ -219,7 +287,6 @@ function drawSpookyMarks(ctx, unresolved, colorMap) {
     const cellKey = `m${move}`;
     // const color   = palette.separable;  // black for now
     const color = colorMap?.[move] || QT3_PALETTE.separable;
-
 
     ctx.fillStyle = color;
 
@@ -255,9 +322,7 @@ function drawSpookyMarks(ctx, unresolved, colorMap) {
   }
 
   ctx.restore();
-  }
-
-
+}
 
 function drawClassicalMarks(ctx, placements, stateString) {
   // Build resolved move → square map from stateString
@@ -318,3 +383,4 @@ function drawClassicalMarks(ctx, placements, stateString) {
 
   ctx.restore();
 }
+
