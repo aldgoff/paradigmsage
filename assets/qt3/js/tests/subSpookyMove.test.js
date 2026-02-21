@@ -1,17 +1,19 @@
-// Regression tests for addSpookyMove().
+// Regression tests for subSpookyMove().
 
 import { assertEqual } from "./helpers.js";
 
 import { addSpookyMove } from "../model/barrel.js";
+import { subSpookyMove } from "../model/barrel.js";
 
 let state = "";
 
 // --------- --------- --------- --------- //
 
 state = addSpookyMove(state, 'X',1, 1);
-assertEqual(state, "X1+(1", "spooky placement, reversible");
+state = subSpookyMove(state);
+assertEqual(state, "", "spooky removement");
 
 // --------- --------- --------- --------- //
 
-console.log("addSpookyMove() tests passed");
+console.log("subSpookyMove() tests passed");
 

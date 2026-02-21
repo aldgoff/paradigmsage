@@ -104,3 +104,48 @@
 
 35. **Refinement Deferral Principle**
     Non-blocking behavioral refinements (e.g., partial-move color nuance) must be explicitly marked and deferred rather than patched mid-feature. Momentum and architectural integrity take precedence over speculative polish.
+
+36. **Collapse Squares Are Terminal**
+    Once a square collapses to a classical mark, it is permanently closed to further spooky placement. Classical reality is irreversible within a game instance. Enforcement derives solely from the canonical state string via isSquareClassical().
+
+37. **Declarative Rendering Invariant**
+    Canvas rendering must remain a pure function of stateString. No partial clearRect mutation or temporal canvas state may encode game logic. All visual state must be derivable from canonical transcript alone.
+
+38. **Collapse Serialization Completeness Rule**
+    All resolved moves in a collapse event must be explicitly serialized in the canonical string. Collapse resolution is not recomputed on load; the transcript fully determines classical outcomes.
+
+39. **Move-Order Canonical Collapse Listing**
+    Resolved moves within a collapse block are listed in move-number order, not causal propagation order. Causal structure remains encoded in loop notation; collapse listing encodes final classical truth.
+
+40. **Classical Mark Subscript Requirement**
+    Classical marks must retain move-number subscripts. Chronological precedence is semantically meaningful and must remain visible in the classical board state.
+
+41. **Model Layer Purity Invariant**
+    All QT3 model-layer analysis functions must be pure, stateless, and derived solely from the canonical `stateString`. No module-scope mutable state, hidden regex state, or controller coupling is permitted.
+
+42. **Canonical Grammar SPOT Principle**
+    All canonical string syntax definitions must reside in a single centralized grammar section. No duplicated regex literals or scattered syntax definitions are allowed.
+
+43. **Structural Ontology Definitions**
+    The following structural terms are canonical within QT3 analysis:
+    • Separable — an uncollapsed placement move belonging to a connected component of size 1.
+    • Entangled Move — an uncollapsed placement move belonging to a connected component of size ≥2.
+    • Entanglement — a connected component of size ≥2 among uncollapsed placement moves.
+    • Collapsed Move — a placement move resolved via `!Xn(s)` serialization.
+
+44. **Structural Count Invariant**
+    For any valid state string:
+    `separables + entangledMoves + collapsedMoves = placementMoves`
+    This invariant is enforced in the model layer and is never optional.
+
+45. **QT3 Entanglement Bound**
+    The maximum number of entanglement components is ≤3. This bound is guaranteed by board topology and square constraints, not by rule enforcement logic.
+
+46. **Progressive Suite Idempotency Pattern**
+    A progressive state test sequence (empty → spooky → placement → semi-entanglement → loop → collapse) implicitly validates statelessness and idempotency. Repeated analysis of increasing states must not depend on prior calls.
+
+47. **Model Sovereignty & Thin Controller Commitment**
+    The canonical `stateString` is the single source of truth for QT3. All rule evaluation, legality checks, collapse logic, and turn derivation reside exclusively in the model layer (`processClick`). The controller is a thin adapter that delegates to the model and projects results to the view without interpreting game semantics.
+
+48. **Ensemble Growth as Structural Projection**
+    The classical ensemble is not brute-force enumerated but grown incrementally via spooky-branch duplication (1×2 → … → 16×32 = 512). Legality constraints carve a sparse, structured subset of valid classical games from this exponentially expanding branch lattice. Move-by-move growth visualization is a research instrument for observing decoherence-like structural pruning.

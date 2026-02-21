@@ -1,4 +1,4 @@
-// ./assets/qt3/js/model/addLoop.js
+// ./assets/qt3/js/model/addCollapseMove.js
 
 // QT3 state: "[357|12]"".
 // Add a collapse move to a state string

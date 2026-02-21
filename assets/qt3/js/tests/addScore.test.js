@@ -3,13 +3,14 @@
 import { assertEqual } from "./helpers.js";
 import { addScore } from "../model/barrel.js";
 
-let state = "X1+(1,2); O2=(4,5); X3+(2,3); O4+(5,6); X5+(3,1); O6!X5(3);";
+let state = "X1+(1,2); O2=(4,5); X3+(2,3); O4+(5,6); X5+(3,1); O6!X5(3); ";
 
 // --------- --------- --------- --------- //
 
-state = addScore(state, { X: 1, O: 0 });
-assertEqual(state, "X1+(1,2); O2=(4,5); X3+(2,3); O4+(5,6); X5+(3,1); O6!X5(3); {X1,O0}", "quantum score");
+state = addScore(state, { X: 1, O: 0.5 });
+assertEqual(state, "X1+(1,2); O2=(4,5); X3+(2,3); O4+(5,6); X5+(3,1); O6!X5(3); {X1,O0.5}", "X quantum win (chronoblock overlap)");
 
 // --------- --------- --------- --------- //
 
 console.log("addScore() tests passed");
+

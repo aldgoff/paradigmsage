@@ -15,6 +15,7 @@
  */
 
 export function addLoop(state, cycle, stems = []) {
+  state = state.slice(0, -2); // Pull off trailing "; " from the state string.
   if (cycle.length === 0) {   // No loop, just add semicolon and space.
     return `${state}; `;
   }

@@ -2,13 +2,19 @@
 
 import { QT3_LAYOUT } from "../layout.js";
 
+// Public hook for controller (passed through view.js).
+export function setControlHandler(fn) {
+  onControlCommit = fn;
+}
+let onControlCommit = null;          // callback supplied by parent view
+
 // Button geometry (view-owned).
 const BUTTONS = [
   { label: "New Game", enabled: true  },
   { label: "Restart",  enabled: false },
   { label: "Undo",     enabled: false },
   { label: "Redo",     enabled: false },
-  { label: "Load",     enabled: false },
+  { label: "Load",     enabled: true  },
   { label: "Help",     enabled: true  }
   ];
 
@@ -18,14 +24,8 @@ const GAP   = 10;
 // Gesture state.
 let gestureState = "IDLE";           // IDLE | PRESSED_INSIDE | PRESSED_OUTSIDE
 let activeButton = null;             // index into BUTTONS
-let onControlCommit = null;          // callback supplied by parent view
 
-// Public hook for controller (passed through view.js).
-export function setControlHandler(fn) {
-  onControlCommit = fn;
-}
-
-// Drawing.
+// Drawing: only used in view.js.
 export function drawControls(ctx) {
   const { x, y, w } = QT3_LAYOUT.controls;
 
@@ -59,22 +59,7 @@ export function drawControls(ctx) {
   ctx.restore();
 }
 
-// Hit testing.
-function hitTestButton(x, y) {
-  const { x: bx, y: by, w } = QT3_LAYOUT.controls;
-
-  for (let i = 0; i < BUTTONS.length; i++) {
-    const top = by + i * (BTN_H + GAP);
-
-    if ((bx <= x && x <= bx + w)
-    && (top <= y && y <= top + BTN_H)) {
-      return i;
-    }
-  }
-  return null;
-}
-
-// Pointer lifecycle:
+// Pointer lifecycle: only used in view.js.
 export function handlePointerDown(x, y) {
   const hit = hitTestButton(x, y);
   if (hit !== null && BUTTONS[hit].enabled) {
@@ -116,4 +101,20 @@ export function handlePointerUp(x, y) {
   activeButton = null;
 
   return committed;
+}
+
+// Hit testing.
+function hitTestButton(x, y) {
+  const { x: bx, y: by, w } = QT3_LAYOUT.controls;
+
+  for (let i = 0; i < BUTTONS.length; i++) {
+    const top = by + i * (BTN_H + GAP);
+
+    if ((bx <= x && x <= bx + w)
+    && (top <= y && y <= top + BTN_H)) {
+      return i;
+    }
   }
+  return null;
+}
+

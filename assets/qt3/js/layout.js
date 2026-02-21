@@ -171,14 +171,50 @@ export const QT3_LAYOUT = {
     x: 480,
     y: 100,
     w: 200,
-    h: 300
+    h: 300,
+    title: {
+      x: 480,
+      y: 100,
+      w: 200,
+      h:  30,
+    },
+    header: {
+      x: 480,
+      y: 130,
+      w:  70,
+      h:  30,
+      },
+    rows: {
+      x: 480,
+      y: 160,
+      w:  70,
+      h:  30,
+    },
     },
 
   moveListCT3: {  // Classical move listing (conditional, fixed anchor)
     x: 700,
     y: 100,
     w: 200,
-    h: 300
+    h: 300,
+    title: {
+      x: 700,
+      y: 100,
+      w: 200,
+      h:  30,
+      },
+    header: {
+      x: 700,
+      y: 130,
+      w:  70,
+      h:  30,
+      },
+    rows: {
+      x: 700,
+      y: 160,
+      w:  70,
+      h:  30,
+    },
   },
 
   stateBox: {  // Canonical state string (ledger)

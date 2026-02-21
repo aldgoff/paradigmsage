@@ -15,7 +15,7 @@ export function buildGraph(placements) {
   }
 
   return graph;  // { 1:[2,5], 2:[1], ..., 9:[] }
-}
+  }
 
 export function findPath(graph, start, target, visited = new Set(), path = []) {
 
@@ -35,7 +35,7 @@ export function findPath(graph, start, target, visited = new Set(), path = []) {
 
   path.pop();
   return null;
-}
+  }
 
 export function extractCycle(path, placements, pendingMove) {
   let cycleMoves = [];
@@ -55,14 +55,14 @@ export function extractCycle(path, placements, pendingMove) {
   ];
 
   return cycleMoves;
-}
+  }
 
 export function movesForEdge(placements, x, y) {
   return placements.find(p => {
     const [a, b] = p.squares;
     return (a === x && b === y) || (a === y && b === x);
   })?.move;
-}
+  }
 
 export function extractStems(graph, backboneNodes, placements, cycleMoves) {
 
