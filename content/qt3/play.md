@@ -15,7 +15,7 @@ Ask your own questions of the game.
 -->
 
 ## The QT3 Game - inwork...
-  <canvas id="qt3-game" width="900" height="900"></canvas>
+  <canvas id="qt3-game" width="900" height="2300"></canvas>
 
 ## Regression tests - inwork...
   See main.js

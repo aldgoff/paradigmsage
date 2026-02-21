@@ -22,7 +22,7 @@
 
 export function addCollapseMove(state, player, turn, cell, square, resolved) {
   let trigger = (cell%2) ? 'X': 'O';    // "O3@X3(1)".
-  let triggerString = `${player}${turn}@${trigger}${cell}(${square})`;
+  let triggerString = `${player}${turn-1}@${trigger}${cell}(${square})`;
 
   let resString = "";                   // !X1(2)!O2(3)!X3(1); 
   for (const key in resolved) {

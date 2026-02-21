@@ -228,6 +228,28 @@ export const QT3_LAYOUT = {
     x: 0,
     y: 470,
     w: 900,
-    h: 320
+    h: 2300, 
+    box: {
+      grid: 55,
+      board: {
+        size: { w: 15, h: 15 },
+        cells: [
+          { x:  0, y:  0 },
+          { x: 15, y:  0 },
+          { x: 30, y:  0 },
+          { x:  0, y: 15 },
+          { x: 15, y: 15 },
+          { x: 30, y: 15 },
+          { x:  0, y: 30 },
+          { x: 15, y: 30 },
+          { x: 30, y: 30 },
+          ]
+        }
+      },
+    gridLines: {
+      gap: 0,          // space between 3x3 square blocks
+      thickness: 1.5,     // thickness of each line
+      offset: 0,        // Better placement of the doubled lines.
+    },
   }
 };

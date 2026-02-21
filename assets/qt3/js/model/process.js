@@ -38,6 +38,27 @@ export function newGame() {
 
 }
 
+/* List of status strings: 
+  statusString = "Game is over. New Game, Restart, Undo, Load.";
+  statusString = "That square has collapsed. Choose another.";
+  statusString = `Last move self-collapsed (degenerate). Game over: ${outcome.desc}.`;
+  statusString = `Spooky mark undone. ${player}: restart your placement move, place a spooky mark in any uncollapsed square.`
+  statusString = `Continue with rest of placement move, ${player}: place your second spooky mark or undo the first one.`
+    statusString = `${collapsePlayer} must first collapse the cyclic entanglement. Click on a purple spooky mark.`
+    statusString = `${nextPlayer}: begin your next placement move, place a spooky mark in any uncollapsed square.`
+      statusString = `Game over: ${outcome.desc}.`;
+      statusString = `Player ${player}: place first spooky mark (click it again to change your mind).`;
+ */
+
+/* Major bug...
+  X1+(1,2); O2+(1,2)[12]; X3@O2(1)!X1(2)!O2(1); 
+  X3+(4,5); O4+(5,6); X5+(4,5)[35|4]; O6@X3(5)!X3(5)!O4(6)!X5(4); 
+  O6+(5,6)[46|35]; X7+(7,8); O8+(8,9); X9+(7,8)[79|8]; O10@X9(8)!X7(7)!O8(9)!X9(8); 
+  {X1,O0}X9+(3,3); O9@X9(3)!X9(3); {X2,O0}
+
+  Clicking on classical squares is not working correctly.
+ */
+
 export function processClick(intent) {
   const squareNum = intent.squareNum;
   const cellNum   = intent.cellNum;
@@ -60,7 +81,7 @@ export function processClick(intent) {
     stateString = selfCollapseLastMove(stateString, state, intent);
     let outcome = evaluateGame(stateString);
     stateString += `{X${outcome.score.X},O${outcome.score.O}}`;
-    statusString = `Game over: ${outcome.desc}.`;
+    statusString = `Last move self-collapsed (degenerate). Game over: ${outcome.desc}.`;
     }
   else if(isReClickSpooky(stateString, state, intent)) {  // Undo 1st spooky mark.
     stateString = subSpookyMove(stateString);
@@ -92,7 +113,8 @@ export function processClick(intent) {
                    + `Click on a purple spooky mark.`
     }
     else {
-      statusString = `${player}: begin your next placement move, `
+      let nextPlayer = (player === 'X') ? 'O' : 'X'; // Must be other player who chooses the collapse..
+      statusString = `${nextPlayer}: begin your next placement move, `
                    + `place a spooky mark in any uncollapsed square.`
     }
 
@@ -104,6 +126,7 @@ export function processClick(intent) {
 
     }
   else if(isCollapse(stateString, state)) {               // Collapse move.
+    console.log("isCollapse() state", state);
     let cellSq = cellInLoop(intent, placements, cycleMoves);
     if (cellSq != null) {
       let triggerSquare = cellSq.square;
@@ -116,8 +139,15 @@ export function processClick(intent) {
         statusString = `Game over: ${outcome.desc}.`;
       }
       else {
-        statusString = `Player ${player}: place first spooky mark (click on it again to change your mind (in-work)).`;
+        if(state.progress.turn == 8) {
+          statusString = `Player ${player}: click in lone empty square, move will self-collapse.`;
+        } else {
+          statusString = `Player ${player}: place first spooky mark (click it again to change your mind).`;
+        }
       }
+    }
+    else {
+      statusString = "You must click on a purple spooky mark, orange marks are stems, their classical value predetermined."
     }
     }
   else {                                                  // Can't happen.

@@ -16,6 +16,10 @@ import {
   drawQuantumListing,
   drawClassicalListing,
 } from "./listings.js";
+import {
+  drawBounds,
+  drawEnsemble,
+} from "./ensemble.js";
 
 const canvas = document.getElementById("qt3-game");
 const ctx = canvas.getContext("2d");
@@ -27,21 +31,28 @@ export function initView() {
 
 function render() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  drawLayoutBounds(ctx);
+
+  drawLayoutBounds(ctx);                  // Local.
+
   drawControls(ctx);                      // Imported from controlsView.js.
-  drawBoardGrid(ctx, QT3_LAYOUT);
+
+  drawBoardGrid(ctx, QT3_LAYOUT);         // Local.
   drawSquareNumbers(ctx, QT3_LAYOUT);
   drawStateString(ctx);
   drawStatusString(ctx);
+
   drawMoves(ctx, currentStateString);     // Imported from moves.js.
-  drawQuantumListing(QT3_LAYOUT.moveListQT3, currentStateString);
+
+  drawQuantumListing(QT3_LAYOUT.moveListQT3, currentStateString); //Imported from listings.js
   drawClassicalListing(QT3_LAYOUT.moveListCT3, currentStateString);
-  // ...
+
+  drawEnsemble(currentStateString);
 }
 
 // Outline the visual objets to facilitate arranging them.
 function drawLayoutBounds(ctx, layout = QT3_LAYOUT) {
   ctx.save();
+
   ctx.setLineDash([6, 4]);
   ctx.strokeStyle = "#888";
   ctx.lineWidth = 1;
@@ -69,10 +80,25 @@ function drawLayoutBounds(ctx, layout = QT3_LAYOUT) {
       }
     else if (layout_key === "moveListQT3") {
       // console.log("// Don't draw moveListQT3 outline.");
-    }
+      }
     else if (layout_key === "moveListCT3") {
       // console.log("// Don't draw moveListCT3 outline.");
-    }
+      }
+    else if (layout_key === "ensemble") {
+      // console.log("// Don't draw ensemble outline.");
+      const element = layout[layout_key]
+      const box = element.box;
+      const grid = Number(box.grid);
+
+      const moves = ['X','','', 'O','','X', '','',''];
+      for(let i=0; i<16; i++) {
+        const X = element.x + i*grid;
+        for(let j=0; j<32; j++) {
+          const Y = element.y + j*grid;
+          drawBounds(X, Y);
+        }
+      }
+      }
     else {                  // Outline & label graphical elements.
       const element = layout[layout_key];
       ctx.strokeRect(element.x, element.y, element.w, element.h);
@@ -139,7 +165,7 @@ function drawBoardGrid(ctx, layout) {
   const { gap, thickness, separation, color } = gridLines;
 
   const squareSize = 90;  // matches layout squares
-  const total = squareSize * 3 + gap * 2;
+  const length = squareSize * 3 + gap * 2;
 
   ctx.save();
   ctx.fillStyle = color;
@@ -148,20 +174,20 @@ function drawBoardGrid(ctx, layout) {
   for (let col = 1; col <= 2; col++) {
     const offset = x + gridLines.offset + col * squareSize + (col - 1) * gap;
 
-    // first line
+    // first vertical line
     ctx.fillRect(
       offset,
       y,
       thickness,
-      total
+      length
     );
 
-    // second line
+    // second vertical line
     ctx.fillRect(
       offset + separation,
       y,
       thickness,
-      total
+      length
     );
   }
 
@@ -169,19 +195,19 @@ function drawBoardGrid(ctx, layout) {
   for (let row = 1; row <= 2; row++) {
     const offset = y + gridLines.offset + row * squareSize + (row - 1) * gap;
 
-    // first line
+    // first horizontal line
     ctx.fillRect(
       x,
       offset,
-      total,
+      length,
       thickness
     );
 
-    // second line
+    // second horizontal line
     ctx.fillRect(
       x,
       offset + separation,
-      total,
+      length,
       thickness
     );
   }
