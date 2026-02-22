@@ -9,7 +9,6 @@
 │   └── qt3
 │       └── js
 │           ├── controller
-│           │   ├── collapse.js
 │           │   └── controller.js
 │           ├── layout.js
 │           ├── main.js
@@ -26,7 +25,8 @@
 │           │   ├── model.js
 │           │   ├── process.js
 │           │   ├── scoring.js
-│           │   └── structure.js
+│           │   ├── structure.js
+│           │   └── subSpookyMove.js
 │           ├── tests
 │           │   ├── addCollapseMove.test.js
 │           │   ├── addLoop.test.js
@@ -36,9 +36,11 @@
 │           │   ├── analyzeStateString.test.js
 │           │   ├── classicalT3.test.js
 │           │   ├── helpers.js
-│           │   └── scoring.test.js
+│           │   ├── scoring.test.js
+│           │   └── subSpookyMove.test.js
 │           └── view
 │               ├── controlsView.js
+│               ├── ensemble.js
 │               ├── listings.js
 │               ├── moves.js
 │               └── view.js
@@ -207,6 +209,7 @@
 │   │   │   │   ├── Ch25-LOF_04.pdf
 │   │   │   │   ├── Ch26-Engineering_08.pdf
 │   │   │   │   ├── Ch26-Engineering_08a.pdf
+│   │   │   │   ├── Ch26-Engineering_08b.pdf
 │   │   │   │   ├── Ch27-Infinity_03.pdf
 │   │   │   │   ├── PD24-Search-Party_05.pdf
 │   │   │   │   ├── PD25-InTheBeginning_03.pdf
@@ -229,4 +232,4 @@
 ├── themes
 └── WORK-INVENTORY.md
 
-43 directories, 186 files
+43 directories, 189 files

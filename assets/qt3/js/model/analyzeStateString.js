@@ -106,6 +106,55 @@ function invariant(message, condition) {
   }
 }
 
+export function parseHalfState(state) {
+  /**
+   * Parses a QT3 state string including incomplete (spooky-only) moves.
+   *
+   * Returns:
+   * {
+   *   placements: [ { move, sq1, sq2 } ]
+   * }
+   *
+   * For incomplete spooky move:
+   *   sq2 === 0
+   */
+
+  const result = {
+    placements: []
+  };
+
+  if (!state || state.trim() === "") {
+    return result;
+  }
+
+  const placementRegex = new RegExp(GRAMMAR.placement);
+  const spookyRegex    = /([XO])(\d+)\+\((\d)$/;  // trailing incomplete
+
+  let match;
+
+  // --- Complete placements ---
+  while ((match = placementRegex.exec(state)) !== null) {
+    result.placements.push({
+      move: Number(match[2]),
+      sq1:  Number(match[3]),
+      sq2:  Number(match[4])
+    });
+  }
+
+  // --- Trailing incomplete spooky move ---
+  const spookyMatch = state.match(spookyRegex);
+
+  if (spookyMatch) {
+    result.placements.push({
+      move: Number(spookyMatch[2]),
+      sq1:  Number(spookyMatch[3]),
+      sq2:  0
+    });
+  }
+
+  return result;
+}
+
 export function parseState(state) {
   /**
    * Parses a QT3 state string into structural components.

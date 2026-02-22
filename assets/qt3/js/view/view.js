@@ -19,6 +19,9 @@ import {
 import {
   drawBounds,
   drawEnsemble,
+  drawBackground,
+  drawLines,
+  drawGame,
 } from "./ensemble.js";
 
 const canvas = document.getElementById("qt3-game");
@@ -46,7 +49,7 @@ function render() {
   drawQuantumListing(QT3_LAYOUT.moveListQT3, currentStateString); //Imported from listings.js
   drawClassicalListing(QT3_LAYOUT.moveListCT3, currentStateString);
 
-  drawEnsemble(currentStateString);
+  drawEnsemble(currentStateString);       // Imported from ensemble.
 }
 
 // Outline the visual objets to facilitate arranging them.
@@ -90,7 +93,11 @@ function drawLayoutBounds(ctx, layout = QT3_LAYOUT) {
       const box = element.box;
       const grid = Number(box.grid);
 
-      const moves = ['X','','', 'O','','X', '','',''];
+      const moves = [' ',' ',' ',  ' ',' ',' ',  ' ',' ',' '];
+
+      const X = element.x;
+      const Y = element.y;
+
       for(let i=0; i<16; i++) {
         const X = element.x + i*grid;
         for(let j=0; j<32; j++) {
@@ -98,6 +105,9 @@ function drawLayoutBounds(ctx, layout = QT3_LAYOUT) {
           drawBounds(X, Y);
         }
       }
+      drawBackground(element.x, element.y); 
+      drawLines(element.x, element.y); 
+      drawGame(element.x, element.y, moves);
       }
     else {                  // Outline & label graphical elements.
       const element = layout[layout_key];
@@ -307,7 +317,9 @@ function drawStateString(ctx) {
 let currentStatusString = "Welcome to quantum tic-tac-toe (QT3). Click on New Game to begin."; 
 export function setStatusString(str) {
   currentStatusString = str;
-  render();
+  // render();
+    drawStatusString(ctx);
+
   }
 
 function drawStatusString(ctx) {
