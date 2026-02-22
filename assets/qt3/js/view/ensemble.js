@@ -63,8 +63,8 @@ export function drawEnsemble(stateString) {
     {w: 16, h: 32},
   ];
   
-  // const moves = [' ',' ',' ',  ' ',' ',' ',  ' ',' ',' '];
-  const ensemble = generateClassicalEnsemble(stateString);  // [ [], [], [], ... [] ]
+  // moves = [' ',' ',' ',  ' ',' ',' ',  ' ',' ',' '];
+  const ensemble = generateClassicalEnsemble(stateString);  // [ moves, moves, moves, ... moves ]
 
   const turns = Math.log2(ensemble.length);
 
@@ -180,10 +180,15 @@ export function drawGame(x, y, moves) { // moves: ['X','','', 'O','','X', '','',
     const X = x + cells[i].x + 3;
     const Y = y + cells[i].y + 13;
 
-    if(move === ' ' || move === 'X' || move === 'O') 
+    if(move === ' ' || move === 'X' || move === 'O') {
       ctx.fillText(move, X, Y);
-    else
+    }
+    else {
+      ctx.fillStyle = "#000";
+      ctx.font = "12px sans-serif";
+      ctx.fillText('@', X-2, Y);
       pruned = true;
+    }
   }
 
   ctx.restore();
@@ -194,8 +199,8 @@ export function drawGame(x, y, moves) { // moves: ['X','','', 'O','','X', '','',
 function drawPruned(x, y) {
   ctx.save();
 
-  ctx.globalAlpha = 0.8;
-  ctx.fillStyle = "#ccc";
+  ctx.globalAlpha = 0.6;
+  ctx.fillStyle = "#eee";
   ctx.fillRect(x, y, grid - 10, grid - 10);
 
   ctx.strokeStyle = "#fff";
@@ -213,7 +218,6 @@ export function generateClassicalEnsemble(stateString) {
 
   // Always process chronologically
   // const moves = placements.slice().sort((a, b) => a.move - b.move);
-  // const moves = placements.slice().sort((a, b) => a.move - b.move);
   const moves = placements.slice();
 
   // console.log("generateClassicalEnsemble() moves", moves);
@@ -228,7 +232,6 @@ export function generateClassicalEnsemble(stateString) {
 
     // --- HALF MOVE (first spooky click) ---
     if (move.sq2 === 0) {
-
       const marked = [];
       const unmarked = [];
 
@@ -251,24 +254,11 @@ export function generateClassicalEnsemble(stateString) {
     }
 
     // --- FULL PLACEMENT (second spooky click completed) ---
-    // Duplicate and apply both branches simultaneously
+    // Duplicate and apply both branches individually.
 
     const size = ensemble.length;
     const duplicated = [];
 
-    // for (let i = 0; i < size; i++) {
-    //   const original = ensemble[i];
-
-    //   // Branch A → sq1
-    //   const board1 = original.slice();
-    //   applyMark(board1, sq1, player);
-    //   duplicated.push(board1);
-
-    //   // Branch B → sq2
-    //   const board2 = original.slice();
-    //   applyMark(board2, sq2, player);
-    //   duplicated.push(board2);
-    // }
     for (let i = 0; i < size; i++) {
       const original = ensemble[i];
 
@@ -295,7 +285,6 @@ export function generateClassicalEnsemble(stateString) {
 }
 
 function applyMark(board, index, player) {
-
   const current = board[index];
 
   if (current === ' ') {
