@@ -14,15 +14,12 @@
   Ensemble branch positions must remain identity-stable across replay and pruning.
 
   State analysis should return a 9-element array per classical game containing '', 'X', 'O', '@'.
+ */
 
-  Contradictory squares (multiple marks) require special representation beyond simple overlap.
-  Mixed X and O in one square can visually overlap acceptably.
-  Double O could be represented by '@'.
-
-  Double X could be represented by '+'.
-  Mixed conflict (X and O) could be represented by '±'.
-  Three or more conflicts should display digits 3–8.
-  Counts 3–8 should be rendered white-on-black for visual emphasis.
+/* Science result:
+ * This 6 move sequence yeilded the fractal pattern I suspected.
+ * X1+(1,2); O2+(2,3); X3+(4,5); O4+(5,6); X5+(7,8); O6+(8,9); 
+ *
  */
 
 import { QT3_LAYOUT } from "../layout.js";
@@ -53,7 +50,7 @@ export function drawEnsemble(stateString) {
   ctx.save();
 
   const state = analyzeStateString(stateString);
-  const matrixSquare = [ 
+  const matrix = [ 
     {w:  1, h:  1},
     {w:  1, h:  2},
     {w:  2, h:  2},
@@ -65,74 +62,21 @@ export function drawEnsemble(stateString) {
     {w: 16, h: 16},
     {w: 16, h: 32},
   ];
-  const matrixHorizontal = [ 
-    {w:  1, h:  1},
-    {w:  2, h:  1},
-    {w:  4, h:  1},
-    {w:  8, h:  1},
-    {w: 16, h:  1},
-    {w: 16, h:  2},
-    {w: 16, h:  4},
-    {w: 16, h:  8},
-    {w: 16, h: 16},
-    {w: 16, h: 32},
-  ];
-  const matrix = matrixSquare
   
   // const moves = [' ',' ',' ',  ' ',' ',' ',  ' ',' ',' '];
   const ensemble = generateClassicalEnsemble(stateString);  // [ [], [], [], ... [] ]
 
   const turns = Math.log2(ensemble.length);
-  // const morton = generateOrder(turns);
-
-  // console.log("ensemble.length", ensemble.length);
-  // console.log("morton.length", morton.length);
-  // console.log("turns", turns);
-
-  // const turns = Math.log2(ensemble.length);
 
   for (let i = 0; i < ensemble.length; i++) {
     const { row, col } = indexToCoord7(i, turns);
     console.log("{ row, col }", { row, col });
-    // const [ row, col ] = order[i];
-    // console.log("{ row, col }", [row, col]);
 
     const X = element.x + col * grid;
     const Y = element.y + row * grid;
 
     drawClassicalGame(ensemble[i], X, Y);
   }
-
-  let k = 0;
-  // for( const loc of morton) {
-  //   const [mx, my] = loc;
-
-  //   const moves = ensemble[k++];
-  //   const X = element.x + mx*grid;
-  //   const Y = element.y + my*grid;
-  //   drawClassicalGame(moves, X, Y);
-  // }
-
-  // const I = matrix[turns].w;
-  // const J = matrix[turns].h;
-  
-  // // moves = ['X',' ',' ', 'O',' ','X', ' ','@',' '];  // +, ±, 2-8.
-  // // TODO: compute games, moves, and prunes from the stateString.
-
-  // k = 0;
-  // // console.log("Drawing classical ensemble.")
-  // for(let i=0; i<I; i++) {
-  //   const X = element.x + i*grid;
-  //   for(let j=0; j<J; j++) {
-  //     let moves = ensemble[k++];
-  //     const Y = element.y + j*grid;
-  //     drawBackground(X, Y); 
-  //     drawLines(X, Y); 
-  //     let pruned = drawGame(X, Y, moves);
-  //     if(pruned) 
-  //       drawPruned(X, Y);
-  //   }
-  // }
 
   ctx.restore();
 }
@@ -146,7 +90,6 @@ function drawClassicalGame(moves, X, Y) {
 }
 
 function indexToCoord7(index, turns) {
-
   let row = 0;
   let col = 0;
 
@@ -154,7 +97,6 @@ function indexToCoord7(index, turns) {
   let height = 1;
 
   for (let t = 0; t < turns; t++) {
-
     // NEWEST DUPLICATION = lowest bit
     const bit = (index >> t) & 1;
 
@@ -172,163 +114,7 @@ function indexToCoord7(index, turns) {
   return { row, col };
 }
 
-function indexToCoord6(index, turns) {
-
-  let row = 0;
-  let col = 0;
-
-  let width = 1;
-  let height = 1;
-
-  for (let t = 0; t < turns; t++) {
-
-    const bitIndex = turns - 1 - t;
-    const bit = (index >> bitIndex) & 1;
-
-    if (width === height) {
-      // Square → copy below → affect row
-      row = row * 2 + bit;
-      height *= 2;
-    } else {
-      // Rectangle → copy right → affect column
-      col = col * 2 + bit;
-      width *= 2;
-    }
-  }
-
-  return { row, col };
-}
-
-function indexToCoord5(index, turns) {
-
-  let row = 0;
-  let col = 0;
-
-  let width = 1;
-  let height = 1;
-
-  for (let t = 0; t < turns; t++) {
-
-    const bitIndex = turns - 1 - t;
-    const bit = (index >> bitIndex) & 1;
-
-    if (width === height) {
-      // Square → grow downward
-      row = row * 2 + bit;
-      height *= 2;
-    } else {
-      // Rectangle → grow right
-      col = col * 2 + bit;
-      width *= 2;
-    }
-  }
-
-  return { row, col };
-}
-
-function indexToCoord4(index, turns) {
-
-  let row = 0;
-  let col = 0;
-
-  let vPos = Math.ceil(turns / 2) - 1;
-  let hPos = Math.floor(turns / 2) - 1;
-
-  for (let t = 0; t < turns; t++) {
-
-    const bitIndex = turns - 1 - t;
-    const bit = (index >> bitIndex) & 1;
-
-    if (t % 2 === 0) {
-      row |= bit << vPos;
-      vPos--;
-    } else {
-      col |= bit << hPos;
-      hPos--;
-    }
-  }
-
-  return { row, col };
-}
-
-function indexToCoord3(index, turns) {
-  let row = 0;
-  let col = 0;
-
-  let rowShift = 0;
-  let colShift = 0;
-
-  for (let t = 0; t < turns; t++) {
-    // Newer moves are more significant bits
-    const bitIndex = turns - 1 - t;
-    const bit = (index >> bitIndex) & 1;
-
-    const isXTurn = (t % 2 === 0); // move1 = t=0
-
-    if (isXTurn) {
-      row = (row << 1) | bit;
-      rowShift++;
-    } else {
-      col = (col << 1) | bit;
-      colShift++;
-    }
-  }
-
-  return { row, col };
-}
-
-function indexToCoord2(index, turns) {
-  let row = 0;
-  let col = 0;
-
-  let rowShift = 0;
-  let colShift = 0;
-
-  for (let t = 0; t < turns; t++) {
-
-    const bit = (index >> t) & 1;  // LSB first
-
-    const isXTurn = (t % 2 === 0); // Turn 0 = move 1 = X
-
-    if (isXTurn) {
-      row |= (bit << rowShift);
-      rowShift++;
-    } else {
-      col |= (bit << colShift);
-      colShift++;
-    }
-  }
-
-  return { row, col };
-}
-
-function indexToCoord1(index, turns) {
-  let row = 0;
-  let col = 0;
-
-  let rowBit = 0;
-  let colBit = 0;
-
-  for (let t = 0; t < turns; t++) {
-    // Extract bit for this turn (from MSB to LSB)
-    const shift = turns - 1 - t;
-    const bit = (index >> shift) & 1;
-
-    const isXTurn = (t % 2 === 0); // Turn 0 = move 1 = X
-
-    if (isXTurn) {
-      row = (row << 1) | bit;
-      rowBit++;
-    } else {
-      col = (col << 1) | bit;
-      colBit++;
-    }
-  }
-
-  return { row, col };
-}
-
-const order = [ // Width x heigth.
+const order = [ // Width x heigth - Example only, not used.
   //w, h
   [ 0, 0],  // 1.
 
@@ -353,38 +139,6 @@ const order = [ // Width x heigth.
 
   // ...    // 512.
 ]
-function squareLoop(ensemble) {
-    let k = 0;
-
-}
-
-function generateOrder(n) {
-  if (n === 0) return [[0, 0]];
-
-  const prev = generateOrder(n - 1);
-  const size = 1 << (n - 1); // 2^(n-1)
-
-  const result = [];
-
-  // Q1: top-left
-  for (const [x, y] of prev)
-    result.push([x, y]);
-
-  // Q2: top-right
-  for (const [x, y] of prev)
-    result.push([x, y + size]);
-
-  // Q3: bottom-left
-  for (const [x, y] of prev)
-    result.push([x + size, y]);
-
-  // Q4: bottom-right
-  for (const [x, y] of prev)
-    result.push([x + size, y + size]);
-
-  return result;  // [ [x,y], [x,y], [x,y], ... [x,y] ];
-}
-
 /* ----------------------------------------- */
 
 export function drawBackground(x, y) {
@@ -435,18 +189,6 @@ export function drawGame(x, y, moves) { // moves: ['X','','', 'O','','X', '','',
   ctx.restore();
 
   return pruned;
-}
-
-function reverseText(move, x, y, X, Y) {  // Questionable visual effectiveness.
-  ctx.save();
-
-  ctx.fillStyle = "#000";
-  ctx.fillRect(x+2, y+2, size-4, size-4);
-
-  ctx.fillStyle = "#fff";
-  ctx.fillText(move, X, Y);
-
-  ctx.restore();
 }
 
 function drawPruned(x, y) {
@@ -539,66 +281,6 @@ export function generateClassicalEnsemble(stateString) {
       const original = ensemble[i];
 
       // Branch B → sq2
-      const board2 = original.slice();
-      applyMark(board2, sq2, player);
-      duplicated.push(board2);
-    }
-
-    ensemble = duplicated;
-  }
-
-  console.log("ensemble", ensemble);
-
-  return ensemble;
-}
-
-import { parseState } from "../model/analyzeStateString.js";
-
-export function generateClassicalEnsemble1(stateString) {
-  const { placements } = parseState(stateString); // [{move, sq1, sq2}];
-  
-  // const moves = placements.slice().sort((a, b) => a.move - b.move);
-  const moves = placements.slice();
-
-  console.log("moves", moves);
-
-  // Start with one empty classical board
-  let ensemble = [new Array(9).fill(' ')];
-
-  for (const move of moves) {
-    console.log("move", move);
-    const player = (move.move%2) ? 'X' : 'O';        // 'X' or 'O'
-    const sq1 = move.sq1 - 1;          // convert to 0–8 index
-    const sq2 = move.sq2 - 1;
-
-    const collapsed = move.collapsed;  // assume analyzeStateString exposes this
-
-    // COLLAPSE
-    if (collapsed) {
-      const target = collapsed === 'left' ? sq1 : sq2;
-
-      ensemble = ensemble.map(board => {
-        const next = board.slice();
-        applyMark(next, target, player);
-        return next;
-      });
-
-      continue;
-    }
-
-    // SPOOKY MOVE → DUPLICATE
-    const size = ensemble.length;
-    const duplicated = [];
-
-    for (let i = 0; i < size; i++) {
-      const original = ensemble[i];
-
-      // First branch → sq1
-      const board1 = original.slice();
-      applyMark(board1, sq1, player);
-      duplicated.push(board1);
-
-      // Second branch → sq2
       const board2 = original.slice();
       applyMark(board2, sq2, player);
       duplicated.push(board2);

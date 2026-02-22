@@ -155,7 +155,7 @@ export function parseHalfState(state) {
   return result;
 }
 
-export function parseState(state) {
+function parseState(state) {
   /**
    * Parses a QT3 state string into structural components.
    *
