@@ -48,7 +48,7 @@ export function drawBounds(x, y) {
 export function drawEnsemble(stateString) {
   ctx.save();
 
-  const state = analyzeStateString(stateString);
+  const state = analyzeStateString(stateString);  // {progress, moves, counts, outcome}.
   const matrix = [ 
     {w:  1, h:  1},
     {w:  1, h:  2},
@@ -63,7 +63,7 @@ export function drawEnsemble(stateString) {
   ];
   
   // { board: ['X','','', 'O','','X', '','',''], prunedBy: null }.
-  const ensemble = generateClassicalEnsemble(stateString);  // [{ board: [9], prunedBy: null }, { board: [9], prunedBy: null }, ..{ board: [9], prunedBy: null }];
+  const ensemble = generateClassicalEnsemble(stateString);  // [{ board: [9], prunedBy: null }, { board: [9], prunedBy: null }, ... { board: [9], prunedBy: null }];
 
   const turns = Math.log2(ensemble.length);
 
@@ -73,13 +73,13 @@ export function drawEnsemble(stateString) {
     const X = element.x + col * grid;
     const Y = element.y + row * grid;
 
-    drawClassicalGame1(ensemble[i], X, Y); // { board: [9], prunedBy: null }.
+    drawClassicalGame(ensemble[i], X, Y); // { board: [9], prunedBy: null }.
   }
 
   ctx.restore();
 }
 
-function drawClassicalGame1(moves, X, Y) {  // { board: [9], prunedBy: null }.
+function drawClassicalGame(moves, X, Y) {  // { board: [9], prunedBy: null }.
   drawBackground(X, Y); 
   drawLines(X, Y); 
   let pruned = drawGame(X, Y, moves);
@@ -199,6 +199,19 @@ function drawPruned(x, y) {
 
   ctx.globalAlpha = 0.6;
   ctx.fillStyle = "#eee";
+  ctx.fillRect(x, y, grid - 10, grid - 10);
+
+  ctx.strokeStyle = "#fff";
+  ctx.strokeRect(x, y, grid - 10, grid - 10);
+
+  ctx.restore();
+}
+
+function drawCollapsed(x, y) {
+  ctx.save();
+
+  ctx.globalAlpha = 0.6;
+  ctx.fillStyle = "#f8f880";
   ctx.fillRect(x, y, grid - 10, grid - 10);
 
   ctx.strokeStyle = "#fff";
