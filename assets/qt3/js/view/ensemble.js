@@ -46,7 +46,6 @@ export function drawBounds(x, y) {
 }
 
 export function drawEnsemble(stateString) {
-  // console.log("drawEnsemble()");
   ctx.save();
 
   const state = analyzeStateString(stateString);
@@ -63,25 +62,24 @@ export function drawEnsemble(stateString) {
     {w: 16, h: 32},
   ];
   
-  // moves = [' ',' ',' ',  ' ',' ',' ',  ' ',' ',' '];
-  const ensemble = generateClassicalEnsemble(stateString);  // [ moves, moves, moves, ... moves ]
+  // { board: ['X','','', 'O','','X', '','',''], prunedBy: null }.
+  const ensemble = generateClassicalEnsemble(stateString);  // [{ board: [9], prunedBy: null }, { board: [9], prunedBy: null }, ..{ board: [9], prunedBy: null }];
 
   const turns = Math.log2(ensemble.length);
 
   for (let i = 0; i < ensemble.length; i++) {
     const { row, col } = indexToCoord7(i, turns);
-    console.log("{ row, col }", { row, col });
 
     const X = element.x + col * grid;
     const Y = element.y + row * grid;
 
-    drawClassicalGame(ensemble[i], X, Y);
+    drawClassicalGame1(ensemble[i], X, Y); // { board: [9], prunedBy: null }.
   }
 
   ctx.restore();
 }
 
-function drawClassicalGame(moves, X, Y) {
+function drawClassicalGame1(moves, X, Y) {  // { board: [9], prunedBy: null }.
   drawBackground(X, Y); 
   drawLines(X, Y); 
   let pruned = drawGame(X, Y, moves);
@@ -168,7 +166,7 @@ export function drawLines(x, y) {
   ctx.restore();
 }
 
-export function drawGame(x, y, moves) { // moves: ['X','','', 'O','','X', '','','']
+export function drawGame(x, y, moves) { // { board: ['X','','', 'O','','X', '','',''], prunedBy: null }.
   let pruned = false;
   ctx.save();
 
@@ -176,7 +174,7 @@ export function drawGame(x, y, moves) { // moves: ['X','','', 'O','','X', '','',
   ctx.font = "12px sans-serif";
 
   for(let i=0; i<9; i++) {
-    const move = moves[i];
+    const move = moves.board[i];
     const X = x + cells[i].x + 3;
     const Y = y + cells[i].y + 13;
 
@@ -210,75 +208,74 @@ function drawPruned(x, y) {
 }
 
 /* Functions to generate the games in the classical ensemble. */
+  // Vertical duplication (X) → marked first, then unmarked
+  // Horizontal duplication (O) → same structure; spatial mapping handles direction
+  // const moves = placements.slice().sort((a, b) => a.move - b.move);
 
 import { parseHalfState } from "../model/analyzeStateString.js";
 
-export function generateClassicalEnsemble(stateString) {
+function generateClassicalEnsemble(stateString) {
   const { placements } = parseHalfState(stateString);
+  const moves = placements.slice();  // Always process chronologically.
 
-  // Always process chronologically
-  // const moves = placements.slice().sort((a, b) => a.move - b.move);
-  const moves = placements.slice();
-
-  // console.log("generateClassicalEnsemble() moves", moves);
-
-  let ensemble = [new Array(9).fill(' ')];
+  // ensemble:[{ board: ['X','','', 'O','','X', '','',''], prunedBy: 'null'|'contradiction'|'collapse' }, ...].
+  let ensemble = [{ board: new Array(9).fill(' '), prunedBy: null }]; 
 
   for (const move of moves) {
-    console.log("move", move);
     const player = (move.move % 2 === 1) ? 'X' : 'O';
     const sq1 = move.sq1 - 1;
     const sq2 = move.sq2 - 1;
 
-    // --- HALF MOVE (first spooky click) ---
-    if (move.sq2 === 0) {
+    if(move.sq2 === 0) {    // --- HALF MOVE (first spooky click). ---
+      const size = ensemble.length;
       const marked = [];
       const unmarked = [];
-
-      for (let i = 0; i < ensemble.length; i++) {
+      let pruned;
+      for (let i = 0; i < size; i++) {
         const original = ensemble[i];
 
-        const board1 = original.slice();
-        applyMark(board1, sq1, player);
+        // Branch A.
+        const board1 = original.board.slice();  // Shallow copy.
+        let contradiction1 = applyMark(board1, sq1, player);
+        let pruned1 = original.prunedBy;
+        if (!pruned1 && contradiction1 === '@') {
+            pruned1 = 'contradiction';
+        }
+        marked.push({ board: board1, prunedBy: pruned1 });               // Branch A → sq1.
 
-        marked.push(board1);
-        unmarked.push(original.slice());
+        // Branch B.
+        const board2 = original.board.slice();
+        let pruned2 = original.prunedBy;
+        unmarked.push({ board: board2, prunedBy: pruned2 });             // Branch B → sq2 (not yet chosen).
       }
-
-      // Vertical duplication (X) → marked first, then unmarked
-      // Horizontal duplication (O) → same structure; spatial mapping handles direction
-
       ensemble = marked.concat(unmarked);
-
-      continue;
     }
-
-    // --- FULL PLACEMENT (second spooky click completed) ---
-    // Duplicate and apply both branches individually.
-
-    const size = ensemble.length;
-    const duplicated = [];
-
-    for (let i = 0; i < size; i++) {
-      const original = ensemble[i];
-
-      // Branch A → sq1
-      const board1 = original.slice();
-      applyMark(board1, sq1, player);
-      duplicated.push(board1);
+    else {    // --- FULL PLACEMENT (second spooky click completed). ---
+      const size = ensemble.length;
+      const duplicated = [];
+      for (let i = 0; i < size; i++) {
+        const original = ensemble[i];
+        const board1 = original.board.slice();
+        let contradiction = applyMark(board1, sq1, player);
+        let pruned = original.prunedBy;
+        if (!pruned && contradiction === '@') {
+            pruned = 'contradiction';
+        }
+        duplicated.push({ board: board1, prunedBy: pruned });          // Branch A → sq1.
+      }
+      for (let i = 0; i < size; i++) {
+        const original = ensemble[i];
+        const board2 = original.board.slice();
+        let contradiction = applyMark(board2, sq2, player);
+        let pruned = original.prunedBy;
+        if (!pruned && contradiction === '@') {
+            pruned = 'contradiction';
+        }
+        duplicated.push({ board: board2, prunedBy: pruned });          // Branch B → sq2.
+      }
+      ensemble = duplicated;
     }
-    for (let i = 0; i < size; i++) {
-      const original = ensemble[i];
-
-      // Branch B → sq2
-      const board2 = original.slice();
-      applyMark(board2, sq2, player);
-      duplicated.push(board2);
-    }
-
-    ensemble = duplicated;
   }
-
   console.log("ensemble", ensemble);
 
   return ensemble;
@@ -296,4 +293,7 @@ function applyMark(board, index, player) {
   else {
     board[index] = '@';
   }
+
+  return board[index];
 }
+

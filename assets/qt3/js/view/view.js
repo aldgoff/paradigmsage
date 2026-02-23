@@ -19,9 +19,6 @@ import {
 import {
   drawBounds,
   drawEnsemble,
-  drawBackground,
-  drawLines,
-  drawGame,
 } from "./ensemble.js";
 
 const canvas = document.getElementById("qt3-game");
@@ -93,8 +90,6 @@ function drawLayoutBounds(ctx, layout = QT3_LAYOUT) {
       const box = element.box;
       const grid = Number(box.grid);
 
-      const moves = [' ',' ',' ',  ' ',' ',' ',  ' ',' ',' '];
-
       const X = element.x;
       const Y = element.y;
 
@@ -105,9 +100,6 @@ function drawLayoutBounds(ctx, layout = QT3_LAYOUT) {
           drawBounds(X, Y);
         }
       }
-      drawBackground(element.x, element.y); 
-      drawLines(element.x, element.y); 
-      drawGame(element.x, element.y, moves);
       }
     else {                  // Outline & label graphical elements.
       const element = layout[layout_key];
