@@ -184,7 +184,7 @@ function isReClickSpooky(stateString, state, intent) { // draft
   }
 
 function isSpooky(stateString, state) {    // Done.
-  return state.progress.firstSpooky;
+  return state.progress.spooky;
   }
 
 function isPlacement(stateString, state) { // Done.

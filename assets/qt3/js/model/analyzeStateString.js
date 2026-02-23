@@ -15,10 +15,11 @@ const noProgress = {
   player: 0,          // 'X' or 'O'.
   sq1: 0,             // 0 - 9.
   sq2: 0,             // 0 - 9.
-  firstSpooky: true,  // true/false.
+  spooky: true,       // true/false.
   placement: false,   // true/false.
   loop: false,        // true/false.
   collapse: false,    // true/false.
+  last: "empty",      // "empty" | "spooky" | "placement" | "loop" | "collapse" | "score".
   };
   Object.freeze(noProgress );
 
@@ -155,7 +156,7 @@ export function parseHalfState(state) {
   return result;
 }
 
-export function parseState(state) {
+function parseState(state) {
   /**
    * Parses a QT3 state string into structural components.
    *
@@ -387,12 +388,29 @@ export function countStructures(state) {
 }
 
 function trackProgress(stateString, moves, counts, outcome) {
-  let progress = { ...noProgress };
+  /*
+    const noProgress = {
+      turn: 0,            // 0 - 9.
+      player: 0,          // 'X' or 'O'.
+      sq1: 0,             // 0 - 9.
+      sq2: 0,             // 0 - 9.
+      spooky: true,       // true/false.
+      placement: false,   // true/false.
+      loop: false,        // true/false.
+      collapse: false,    // true/false.
+      last: "empty",      // "empty" | "spooky" | "placement" | "loop" | "collapse" | "score".
+      };
+   */
+
+  let progress = { ...noProgress }; // { turn, player, sq1, sq2, spooky, placement, loop, collapse }.
 
   // --- Determine last completed placement turn ---
+
+  const last = getLastMoveType(stateString);
+  progress.last = last;
+
   // Placement moves define turns.
   const lastTurn = moves.placement;
-
   progress.turn = lastTurn;
 
   if (lastTurn > 0) {
@@ -401,33 +419,33 @@ function trackProgress(stateString, moves, counts, outcome) {
 
   // --- Game Over ---
   if (outcome.over) {
-    progress.firstSpooky = false;
-    progress.placement   = false;
-    progress.collapse    = false;
+    progress.spooky    = false;
+    progress.placement = false;
+    progress.collapse  = false;
     return progress;
   }
 
   // --- Collapse required if cyclic exists ---
   if (counts.cyclics > 0) {
-    progress.firstSpooky = false;
-    progress.placement   = false;
-    progress.collapse    = true;
+    progress.spooky    = false;
+    progress.placement = false;
+    progress.collapse  = true;
     return progress;
   }
 
   // --- Incomplete spooky mark? ---
   if (moves.spooky === 1) {
-    progress.firstSpooky = false;
-    progress.placement   = true;   // awaiting second spooky
-    progress.collapse    = false;
+    progress.spooky    = false;
+    progress.placement = true;   // awaiting second spooky
+    progress.collapse  = false;
     progress.sq1 = Number(stateString.slice(-1));
     return progress;
   }
 
   // --- Otherwise awaiting first spooky ---
-  progress.firstSpooky = true;
-  progress.placement   = false;
-  progress.collapse    = false;
+  progress.spooky    = true;
+  progress.placement = false;
+  progress.collapse  = false;
 
   return progress;
 }
@@ -481,5 +499,50 @@ export function listPlacementsWithCollapse(stateString) { // Used in view/listin
         collapse
       };
     });
+}
+
+export function getLastMoveType(stateString) {
+  if (!stateString || stateString.trim() === '') {
+    return "empty";
+  }
+
+  const elements = stateString
+    .split(';')
+    .map(s => s.trim())
+    .filter(Boolean);
+
+  if (elements.length === 0) {
+    return "empty";
+  }
+
+  const last = elements[elements.length - 1];
+
+  // 1. Score  → contains {...}
+  if (/\{[^}]+\}/.test(last)) {
+    return "score";
+  }
+
+  // 2. Collapse → contains !  OR  contains @
+  if (last.includes('!') || last.includes('@')) {
+    return "collapse";
+  }
+
+  // 3. Loop → contains [...]
+  if (/\[[^\]]+\]/.test(last)) {
+    return "loop";
+  }
+
+  // 4. Spooky → unfinished placement like O4+(5
+  if (/^[XO]\d+\+\(\d+$/.test(last)) {
+    return "spooky";
+  }
+
+  // 5. Placement → full (a,b)
+  if (/^[XO]\d+\+\(\d+,\d+\)$/.test(last)) {
+    return "placement";
+  }
+
+  // Nothing matched → invalid grammar
+  throw new Error("Unrecognized move element: " + last);
 }
 
