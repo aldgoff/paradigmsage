@@ -4,7 +4,15 @@ title: "Limitations"
 
 **Limitations**
 
-Critical discussions of where QT3 is limited as a toy universe.
+  Critical discussions of where QT3 is limited as a toy universe.
+
+## TOC
+  - Bases
+  - Oscillation
+  - Relativity
+  - Weights
+  - Randomness
+  - Phase
 
 ## Only One Basis
   Quantum tic-tac-toe asks the players to place each move 

@@ -4,7 +4,7 @@ title: "Expositions"
 
 **Expositions**
 
-A place for short articles on the principles, premises, promises, and perils of QT3.
+  A place for short articles on the principles, premises, promises, and perils of QT3.
 
 ## Intrepid Reader
   Ask a question.
