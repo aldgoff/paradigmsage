@@ -20,10 +20,10 @@ title: "Play"
   - Classical listing.
   - Classical ensemble.
   - Pruning by contradiction.
+  - GPruning by collapse.
 
 ## Todo:
   - Some illegal move bugs to fix.
-  - Get pruning by collapse to work.
   - Add in the Load, Undo and Redo functionality.
 
 ## The QT3 Game - inwork...

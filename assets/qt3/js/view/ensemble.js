@@ -24,6 +24,7 @@
 
 import { QT3_LAYOUT } from "../layout.js";
 import { analyzeStateString } from "../model/analyzeStateString.js";
+import { listPlacementsWithCollapse } from "../model/analyzeStateString.js";
 
 const canvas = document.getElementById("qt3-game");
 const ctx = canvas.getContext("2d");
@@ -82,9 +83,12 @@ export function drawEnsemble(stateString) {
 function drawClassicalGame(moves, X, Y) {  // { board: [9], prunedBy: null }.
   drawBackground(X, Y); 
   drawLines(X, Y); 
-  let pruned = drawGame(X, Y, moves);
-  if(pruned) 
+  drawGame(X, Y, moves);
+
+  if(moves.prunedBy === "contradiction") 
     drawPruned(X, Y);
+  if(moves.prunedBy === "collapse") 
+    drawCollapsed(X, Y);
 }
 
 function indexToCoord7(index, turns) {
@@ -167,7 +171,6 @@ export function drawLines(x, y) {
 }
 
 export function drawGame(x, y, moves) { // { board: ['X','','', 'O','','X', '','',''], prunedBy: null }.
-  let pruned = false;
   ctx.save();
 
   ctx.fillStyle = "#000";
@@ -185,13 +188,10 @@ export function drawGame(x, y, moves) { // { board: ['X','','', 'O','','X', '','
       ctx.fillStyle = "#000";
       ctx.font = "12px sans-serif";
       ctx.fillText('@', X-2, Y);
-      pruned = true;
     }
   }
 
   ctx.restore();
-
-  return pruned;
 }
 
 function drawPruned(x, y) {
@@ -234,7 +234,7 @@ function generateClassicalEnsemble(stateString) {
   // ensemble:[{ board: ['X','','', 'O','','X', '','',''], prunedBy: 'null'|'contradiction'|'collapse' }, ...].
   let ensemble = [{ board: new Array(9).fill(' '), prunedBy: null }]; 
 
-  for (const move of moves) {
+  for (const move of moves) { // Duplication loop.
     const player = (move.move % 2 === 1) ? 'X' : 'O';
     const sq1 = move.sq1 - 1;
     const sq2 = move.sq2 - 1;
@@ -291,6 +291,21 @@ function generateClassicalEnsemble(stateString) {
   }
   console.log("ensemble", ensemble);
 
+  const required = applyCollapsePruning(ensemble, stateString);
+
+  if (required.size > 0) {
+    for (const branch of ensemble) {
+      if (branch.prunedBy === 'contradiction') continue;
+
+      for (const [square, player] of required) {
+        if (branch.board[square] !== player) {
+          branch.prunedBy = 'collapse';
+          break;
+        }
+      }
+    }
+  }
+
   return ensemble;
 }
 
@@ -310,3 +325,27 @@ function applyMark(board, index, player) {
   return board[index];
 }
 
+function applyCollapsePruning(ensemble, stateString) {
+  console.log("ensemble.js - applyCollapsePruning");
+  // --- APPLY COLLAPSE PRUNING ---
+  const collapseInfo = listPlacementsWithCollapse(stateString);
+
+  // Build required square → player map
+  // e.g. { 0: 'X', 1: 'O' }  (0-based board index)
+  const required = new Map();
+
+  collapseInfo.forEach((p, index) => {
+    if (p.collapse === 'none') return;
+
+    const moveNum = index + 1;
+    const player = (moveNum % 2 === 1) ? 'X' : 'O';
+
+    const square = (p.collapse === 'left')
+      ? p.sq1 - 1
+      : p.sq2 - 1;
+
+    required.set(square, player);
+  });
+
+  return required;
+}
