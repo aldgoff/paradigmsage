@@ -22,6 +22,27 @@ import {modelSetStateString,
 
 /***************************************** */
 
+/* List of status strings: 
+  statusString = "Game is over. New Game, Rerun, Undo, Load.";
+  statusString = "That square has collapsed. Choose another.";
+  statusString = `Last move self-collapsed (degenerate). Game over: ${outcome.desc}.`;
+  statusString = `Spooky mark undone. ${player}: restart your placement move, place a spooky mark in any uncollapsed square.`
+  statusString = `Continue with rest of placement move, ${player}: place your second spooky mark or undo the first one.`
+    statusString = `${collapsePlayer} must first collapse the cyclic entanglement. Click on a purple spooky mark.`
+    statusString = `${nextPlayer}: begin your next placement move, place a spooky mark in any uncollapsed square.`
+      statusString = `Game over: ${outcome.desc}.`;
+      statusString = `Player ${player}: place first spooky mark (click it again to change your mind).`;
+ */
+
+/* Major bug...
+  X1+(1,2); O2+(1,2)[12]; X3@O2(1)!X1(2)!O2(1); 
+  X3+(4,5); O4+(5,6); X5+(4,5)[35|4]; O6@X3(5)!X3(5)!O4(6)!X5(4); 
+  O6+(5,6)[46|35]; X7+(7,8); O8+(8,9); X9+(7,8)[79|8]; O10@X9(8)!X7(7)!O8(9)!X9(8); 
+  {X1,O0}X9+(3,3); O9@X9(3)!X9(3); {X2,O0}
+
+  Clicking on classical squares is not working correctly.
+*/
+
 let placements = [];  // [{ move, player, squares:[a,b] }].
 let cycleMoves = [];  // Code for collapse moves.
 let stemMoves = [];
@@ -53,27 +74,6 @@ export function loadGame(stateString) {
   }
 }
 
-/* List of status strings: 
-  statusString = "Game is over. New Game, Restart, Undo, Load.";
-  statusString = "That square has collapsed. Choose another.";
-  statusString = `Last move self-collapsed (degenerate). Game over: ${outcome.desc}.`;
-  statusString = `Spooky mark undone. ${player}: restart your placement move, place a spooky mark in any uncollapsed square.`
-  statusString = `Continue with rest of placement move, ${player}: place your second spooky mark or undo the first one.`
-    statusString = `${collapsePlayer} must first collapse the cyclic entanglement. Click on a purple spooky mark.`
-    statusString = `${nextPlayer}: begin your next placement move, place a spooky mark in any uncollapsed square.`
-      statusString = `Game over: ${outcome.desc}.`;
-      statusString = `Player ${player}: place first spooky mark (click it again to change your mind).`;
- */
-
-/* Major bug...
-  X1+(1,2); O2+(1,2)[12]; X3@O2(1)!X1(2)!O2(1); 
-  X3+(4,5); O4+(5,6); X5+(4,5)[35|4]; O6@X3(5)!X3(5)!O4(6)!X5(4); 
-  O6+(5,6)[46|35]; X7+(7,8); O8+(8,9); X9+(7,8)[79|8]; O10@X9(8)!X7(7)!O8(9)!X9(8); 
-  {X1,O0}X9+(3,3); O9@X9(3)!X9(3); {X2,O0}
-
-  Clicking on classical squares is not working correctly.
-*/
-
 export function processClick(intent) {
   const squareNum = intent.squareNum;
   const cellNum   = intent.cellNum;
@@ -87,7 +87,7 @@ export function processClick(intent) {
   let player = (turn%2) ? 'X' : 'O'
 
   if(evaluateGame(state).over) {                          // Game over.
-    statusString = "Game is over. New Game, Restart, Undo, Load.";
+    statusString = "Game is over. New Game, Rerun, Undo, Load.";
     }
   else if(isSquareClassical(modelGetStateString(), squareNum)) {    // Illegal move.
     statusString = "That square has collapsed. Choose another.";

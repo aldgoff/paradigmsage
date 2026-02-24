@@ -21,18 +21,18 @@ export function modelGetStateString() {     // Returns modelStateString.
 
 /* -------------------- */
 
-// let histPtr = 0;
+  // let histPtr = 0;
 
-// let numOfMoves = 0; // Potential placement/collapses.
-// const maxNumOfMoves = 9+4; // Potential placement/collapses.
+  // let numOfMoves = 0; // Potential placement/collapses.
+  // const maxNumOfMoves = 9+4; // Potential placement/collapses.
 
-// export function setHistptr (ptr) {  // 0 => Restart.
-//   histPtr = ptr;
-// }
+  // export function setHistptr (ptr) {  // 0 => Rerun.
+  //   histPtr = ptr;
+  // }
 
-// export function slipHistptr (steps) {  // Undo (-1), Redo (+1).
-//   histPtr += steps;
-//   if(histPtr < 0) histPtr = 0;
-//   if(histPtr > numberOfMoves) histPtr = numberOfMoves;
-// }
+  // export function slipHistptr (steps) {  // Undo (-1), Redo (+1).
+  //   histPtr += steps;
+  //   if(histPtr < 0) histPtr = 0;
+  //   if(histPtr > numberOfMoves) histPtr = numberOfMoves;
+  // }
 

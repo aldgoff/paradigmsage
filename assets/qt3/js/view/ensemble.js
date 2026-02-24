@@ -289,7 +289,7 @@ function generateClassicalEnsemble(stateString) {
       ensemble = duplicated;
     }
   }
-  console.log("ensemble", ensemble);
+  // console.log("generateClassicalEnsemble(stateString)", ensemble);
 
   const required = applyCollapsePruning(ensemble, stateString);
 
@@ -326,7 +326,6 @@ function applyMark(board, index, player) {
 }
 
 function applyCollapsePruning(ensemble, stateString) {
-  console.log("ensemble.js - applyCollapsePruning");
   // --- APPLY COLLAPSE PRUNING ---
   const collapseInfo = listPlacementsWithCollapse(stateString);
 

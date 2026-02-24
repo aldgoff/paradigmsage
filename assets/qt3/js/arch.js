@@ -1,0 +1,59 @@
+// ./assets/qt3/js/main.js
+
+/* MVC - Model, View, Controller
+
+  Model: holds the state (and history) of the game.
+    The entire history and state of the game is held in stateString.
+    Other model level variables may hold processed data derived from this string.
+  
+  View: presents the state graphically, on a JS/HTML canvas, to the players.
+    Elements:
+      Status string
+      Buttons
+      Board
+      Quantum listing
+      Classical listing
+      State string
+      Ensemble
+
+  Controller: Changes the state.
+    Causes: Buttons and clicks.
+      Buttons: New Game, Rerun, Undo, Redo, Load, Help.
+      Clicks: Moves in the QT3 main board.
+ */
+
+/* Model (model)
+ */
+
+/* View (view/)
+  Seven visual elements in 4 rows
+  1 - Status string
+  2 - The game proper
+    Buttons (6)
+    QT3 board
+    Quantum listing
+    Classical listing
+  3 - State string
+  4 - Classical ensemble (512)
+ */
+
+/* Controller (controller/)
+  Initialize the game.
+  Respond to buttons.
+  Respond to clicks in the quantum board.
+  Respond to clicks in the ensemble, TODO.
+  Position the HTML state string box (needs to be dynamic), TODO.
+ */
+
+/* Regressions (tests/)
+ * addSpookyMove()       2/ 2 tests passed
+ * addPlacementMove()    3/ 3 tests passed
+ * addLoop()             8/ 8 tests passed
+ * addCollapseMove()     4/ 4 tests passed
+ * addScore()            1/ 1 tests passed
+ * subSpookyMove()       1/ 1 tests passed
+ * analyzeStateString() 27/27 tests passed
+ * scoring()            11/11 tests passed
+ * classical tic-tac-toe 6/ 6 tests passed
+ */
+
