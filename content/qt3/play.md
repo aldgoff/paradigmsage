@@ -20,7 +20,7 @@ title: "Play"
   - Classical listing.
   - Classical ensemble.
   - Pruning by contradiction.
-  - GPruning by collapse.
+  - Pruning by collapse.
 
 ## Todo:
   - Some illegal move bugs to fix.
@@ -28,6 +28,7 @@ title: "Play"
 
 ## The QT3 Game - inwork...
   <canvas id="qt3-game" width="900" height="2230"></canvas>
+  <textarea id="qt3-state-input"></textarea>  <!-- hello state string. -->
 
 <!-- Comments in markdown.
   ## Proof of Concept - JS in a Canvas, state changes via mouse clicks.

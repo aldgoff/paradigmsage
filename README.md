@@ -165,6 +165,9 @@
   git push origin main
   Some glitch hit on chapter 22, don't know what.
 
+## Unix Commands
+  wc -l $(find . -type f)
+
 ## Cleanup Plan (temporary)
   git switch -c cleanup-public-surface
   rm -rf public

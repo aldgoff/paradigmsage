@@ -219,7 +219,7 @@ export const QT3_LAYOUT = {
 
   stateBox: {  // Canonical state string (ledger)
     x: 0,
-    y: 420,
+    y: 400,
     w: 900,
     h: 40
   },

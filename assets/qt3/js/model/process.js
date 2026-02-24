@@ -16,26 +16,41 @@ import {buildGraph,
         movesForEdge,
         extractStems 
 } from "../model/cycles.js";
-
+import {modelSetStateString,
+        modelGetStateString,
+} from "../model/model.js";
 
 /***************************************** */
 
-let stateString = "";
 let placements = [];  // [{ move, player, squares:[a,b] }].
-
-/* Code for collapse moves. */
-let cycleMoves = [];
+let cycleMoves = [];  // Code for collapse moves.
 let stemMoves = [];
 
 export function newGame() {
-  stateString = "";
+  modelSetStateString("");
   placements = [];
   cycleMoves = [];
   stemMoves = [];
 
-  // setStateString("");    // This will clear the board.
-  let state = analyzeStateString(stateString);
+  let state = analyzeStateString(modelGetStateString());
+}
 
+export function loadGame(stateString) {
+  modelSetStateString(stateString);
+  placements = [];
+  cycleMoves = [];
+  stemMoves = [];
+
+  let state = analyzeStateString(modelGetStateString());
+
+  // Reconstruct placements from state.progress or state.moves
+  for (const move of state.placements) {
+    placements.push({
+      move: move.move,
+      player: move.player,
+      squares: move.squares
+    });
+  }
 }
 
 /* List of status strings: 
@@ -57,15 +72,16 @@ export function newGame() {
   {X1,O0}X9+(3,3); O9@X9(3)!X9(3); {X2,O0}
 
   Clicking on classical squares is not working correctly.
- */
+*/
 
 export function processClick(intent) {
   const squareNum = intent.squareNum;
   const cellNum   = intent.cellNum;
 
+  let stateString = "";
   let statusString = "";
 
-  const state = analyzeStateString(stateString);
+  const state = analyzeStateString(modelGetStateString());
 
   let turn = state.progress.turn + 1;
   let player = (turn%2) ? 'X' : 'O'
@@ -73,28 +89,32 @@ export function processClick(intent) {
   if(evaluateGame(state).over) {                          // Game over.
     statusString = "Game is over. New Game, Restart, Undo, Load.";
     }
-  else if(isSquareClassical(stateString, squareNum)) {    // Illegal move.
+  else if(isSquareClassical(modelGetStateString(), squareNum)) {    // Illegal move.
     statusString = "That square has collapsed. Choose another.";
     }
-  else if(isDegenerateLastMove(stateString, state)) {     // Self-collapse last move of game.
+  else if(isDegenerateLastMove(modelGetStateString(), state)) {     // Self-collapse last move of game.
     // "X9+(n,n); O9@X9(n)!X9(n); "
-    stateString = selfCollapseLastMove(stateString, state, intent);
+    stateString = selfCollapseLastMove(state, intent);
     let outcome = evaluateGame(stateString);
     stateString += `{X${outcome.score.X},O${outcome.score.O}}`;
+    modelSetStateString(stateString);
     statusString = `Last move self-collapsed (degenerate). Game over: ${outcome.desc}.`;
     }
-  else if(isReClickSpooky(stateString, state, intent)) {  // Undo 1st spooky mark.
-    stateString = subSpookyMove(stateString);
+  else if(isReClickSpooky(modelGetStateString(), state, intent)) {  // Undo 1st spooky mark.
+    stateString = subSpookyMove(modelGetStateString());
+    modelSetStateString(stateString);
     statusString = `Spooky mark undone. ${player}: restart your placement move, `
                  + `place a spooky mark in any uncollapsed square.`
     }
-  else if(isSpooky(stateString, state)) {                 // Spooky move.
-    stateString = addSpookyMove(stateString, player, turn, squareNum);
+  else if(isSpooky(modelGetStateString(), state)) {                 // Spooky move.
+    stateString = addSpookyMove(modelGetStateString(), player, turn, squareNum);
+    modelSetStateString(stateString);
     statusString = `Continue with rest of placement move, `
                  + `${player}: place your second spooky mark or undo the first one.`
     }
-  else if(isPlacement(stateString, state)) {              // Placement move.
-    stateString = addPlacementMove(stateString, player, turn, state.progress.sq1, squareNum);
+  else if(isPlacement(modelGetStateString(), state)) {              // Placement move.
+    stateString = addPlacementMove(modelGetStateString(), player, turn, state.progress.sq1, squareNum);
+    modelSetStateString(stateString);
     const sq1 = state.progress.sq1;
     const sq2 = squareNum;
 
@@ -106,7 +126,8 @@ export function processClick(intent) {
       cycleMoves = extractCycle(path, placements, turn); // [] - just the path, does not include connecting move.
       stemMoves  = extractStems(graph, path, placements, cycleMoves); // [].
 
-      stateString = addLoop(stateString, cycleMoves, stemMoves);
+      stateString = addLoop(modelGetStateString(), cycleMoves, stemMoves);
+      modelSetStateString(stateString);
 
       let collapsePlayer = (player === 'X') ? 'O' : 'X'; // Must be other player who chooses the collapse..
       statusString = `${collapsePlayer} must first collapse the cyclic entanglement. `
@@ -125,18 +146,20 @@ export function processClick(intent) {
     });
 
     }
-  else if(isCollapse(stateString, state)) {               // Collapse move.
+  else if(isCollapse(modelGetStateString(), state)) {               // Collapse move.
     console.log("isCollapse() state", state);
     let cellSq = cellInLoop(intent, placements, cycleMoves);
     if (cellSq != null) {
       let triggerSquare = cellSq.square;
       let resolved = computeCollapseResolution(placements, cycleMoves, stemMoves, cellSq.cell, triggerSquare);
-      stateString = addCollapseMove(stateString, player, turn, cellSq.cell, cellSq.square, resolved);
+      stateString = addCollapseMove(modelGetStateString(), player, turn, cellSq.cell, cellSq.square, resolved);
+      modelSetStateString(stateString);
 
-      let outcome = evaluateGame(stateString);
+      let outcome = evaluateGame(modelGetStateString());
       if(outcome.over) {
         stateString += `{X${outcome.score.X},O${outcome.score.O}}`;
         statusString = `Game over: ${outcome.desc}.`;
+        modelSetStateString(stateString);
       }
       else {
         if(state.progress.turn == 8) {
@@ -154,9 +177,9 @@ export function processClick(intent) {
     console.log("CAN'T HAPPEN - OOPS!");
   }
 
-  console.log(stateString);
+  console.log(modelGetStateString());
   
-  return {stateStr: stateString, statusStr: statusString};
+  return {stateStr: modelGetStateString(), statusStr: statusString};
 }
 
 /** Decision functions which query state: */
@@ -196,13 +219,13 @@ function isCollapse(stateString, state) { // Done.
   
 /** Action functions which change stage. */
 
-function selfCollapseLastMove(stateString, state, intent) {
+function selfCollapseLastMove(state, intent) {
   // "X9+(n,n); O9@X9(n)!X9(n); "
 
   let n = intent.squareNum;
   let selfCollapseString = `X9+(${n},${n}); O9@X9(${n})!X9(${n}); `;
 
-  return state = stateString + selfCollapseString;
+  return state = modelGetStateString() + selfCollapseString;
 }
 
 /** Helper functions: */
@@ -230,7 +253,7 @@ function cellInLoop(intent, placements, cycleMoves) {  // { cell: cellNum, squar
     cell: cellNum,
     square: squareNum
   };
-}
+  }
 
 function computeCollapseResolution(
   placements,
