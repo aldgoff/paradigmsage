@@ -31,6 +31,9 @@ export function initController () {
     handleSquareCellClick(squareKey);
   });
 
+  setStatusString("Welcome to quantum tic-tac-toe (QT3). Click on New Game to begin.");
+  modelSetStateString("");
+
   initView(); // Dev scaffolding.
 
   positionStateStringBox();
@@ -77,9 +80,10 @@ function handleLoad() {
 
   // TODO: validate correctly formatted state string.
 
-  setStateString(stateString);        // View layer.
-  modelSetStateString(stateString);   // Model layer.
   loadGame(stateString);
+  setStateString(stateString);        // View layer.
+
+  modelSetStateString(stateString);   // Model layer.
   } 
 
 function handleHelp() {
@@ -117,8 +121,6 @@ function handleSquareCellClick(event) {  // Respond to clicks in squares down to
 
   let stateString  = result.stateStr;   // "X1+(1,2); O2+(2,3); X3+(1,3)[132]; "
   let statusString = result.statusStr;  // "Player O to collapse cyclic entanglement."
-
-  modelSetStateString(stateString);     // Stores the state string in the model layer. SHOULD HAVE HAPPENED IN processClick().
 
   setStateString(stateString);          // Set state string in the view layer.
   setStatusString(statusString);        // Set status string in the view layer.

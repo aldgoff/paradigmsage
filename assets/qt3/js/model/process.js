@@ -28,10 +28,10 @@ import {modelSetStateString,
   statusString = `Last move self-collapsed (degenerate). Game over: ${outcome.desc}.`;
   statusString = `Spooky mark undone. ${player}: restart your placement move, place a spooky mark in any uncollapsed square.`
   statusString = `Continue with rest of placement move, ${player}: place your second spooky mark or undo the first one.`
-    statusString = `${collapsePlayer} must first collapse the cyclic entanglement. Click on a purple spooky mark.`
-    statusString = `${nextPlayer}: begin your next placement move, place a spooky mark in any uncollapsed square.`
-      statusString = `Game over: ${outcome.desc}.`;
-      statusString = `Player ${player}: place first spooky mark (click it again to change your mind).`;
+  statusString = `${collapsePlayer} must first collapse the cyclic entanglement. Click on a purple spooky mark.`
+  statusString = `${nextPlayer}: begin your next placement move, place a spooky mark in any uncollapsed square.`
+  statusString = `Game over: ${outcome.desc}.`;
+  statusString = `Player ${player}: place first spooky mark (click it again to change your mind).`;
  */
 
 /* Major bug...

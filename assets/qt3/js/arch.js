@@ -23,6 +23,12 @@
  */
 
 /* Model (model)
+  New game: Model should know stateString = "";
+  Load game: Model should know stateString = loadString.
+  Click intent: Model has to figure out new stateString.
+
+  Given a changed stateString, model can update its state objects.
+  Given a changed stateString and updated state objects, it can deduce its statusString.
  */
 
 /* View (view/)

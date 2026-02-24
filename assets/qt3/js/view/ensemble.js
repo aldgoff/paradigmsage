@@ -69,7 +69,7 @@ export function drawEnsemble(stateString) {
   const turns = Math.log2(ensemble.length);
 
   for (let i = 0; i < ensemble.length; i++) {
-    const { row, col } = indexToCoord7(i, turns);
+    const { row, col } = indexToCoord(i, turns);
 
     const X = element.x + col * grid;
     const Y = element.y + row * grid;
@@ -91,7 +91,7 @@ function drawClassicalGame(moves, X, Y) {  // { board: [9], prunedBy: null }.
     drawCollapsed(X, Y);
 }
 
-function indexToCoord7(index, turns) {
+function indexToCoord(index, turns) {
   let row = 0;
   let col = 0;
 

@@ -22,6 +22,8 @@ import {
 } from "./ensemble.js";
 import {modelSetStateString,  // The state of the game is held in the model layer.
         modelGetStateString,
+        modelSetStatusString,
+        modelGetStatusString,
 } from "../model/model.js";
 
 const canvas = document.getElementById("qt3-game");
@@ -37,17 +39,18 @@ function render() {
 
   drawLayoutBounds(ctx);                  // Local.
 
+  drawStatusString(ctx);
+
   drawControls(ctx);                      // Imported from controlsView.js.
 
   drawBoardGrid(ctx, QT3_LAYOUT);         // Local.
-  drawSquareNumbers(ctx, QT3_LAYOUT);
-  drawStateString();
-  drawStatusString(ctx);
-
-  drawMoves(ctx, modelGetStateString());     // Imported from moves.js.
+  drawSquareNumbers(ctx, QT3_LAYOUT);     // Local.
+  drawMoves(ctx, modelGetStateString());  // Imported from moves.js.
 
   drawQuantumListing(QT3_LAYOUT.moveListQT3, modelGetStateString()); //Imported from listings.js
   drawClassicalListing(QT3_LAYOUT.moveListCT3, modelGetStateString());
+
+  drawStateString();
 
   drawEnsemble(modelGetStateString());       // Imported from ensemble.
 }
@@ -292,10 +295,9 @@ function drawStateString() {
 }
 
 /* Code to set and draw the status string. */
-let currentStatusString = "Welcome to quantum tic-tac-toe (QT3). Click on New Game to begin."; 
 export function setStatusString(str) {
-  currentStatusString = str;
-    drawStatusString(ctx);
+  modelSetStatusString(str);
+  drawStatusString(ctx);
   }
 
 function drawStatusString(ctx) {
@@ -319,7 +321,7 @@ function drawStatusString(ctx) {
   const padding = 10;
   const textY = y + 4
 
-  drawWrappedText(ctx, currentStatusString, x + padding, y + 10, w-2 * padding, 20);
+  drawWrappedText(ctx, modelGetStatusString(), x + padding, y + 10, w-2 * padding, 20);
 
   ctx.restore();
 }

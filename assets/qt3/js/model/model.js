@@ -1,5 +1,8 @@
 // qt3/model/model.js
 
+import {analyzeStateString,
+} from "./analyzeStateString.js";
+
 /* The QT3 model consists a just a handful of items:
   A status string (statusString) - the player's next actions.
   An error string (errorString) - lets players know when they have made a UI mistake.
@@ -9,18 +12,47 @@
   The history pointer (histPtr) - where we are in the game, undo/redo/restart.
 */
 
-let modelStateString = "";  // This is the state of the game.
+let modelStateString  = "";  // This is the state of the game.
+let modelStatusString = "";  // This is the status of the game.
+let modelState;
 
-export function modelSetStateString(str) {
+export function modelSetStateString(str) {  // Sets stateString, model must update its state.
   modelStateString = str;
+  processStateChange(str);
   }
 
-export function modelGetStateString() {     // Returns modelStateString.
+export function modelGetStateString() {     // Gets stateString.
   return modelStateString;
+  }
+
+export function modelSetStatusString(str) { // Sets statusString.
+  modelStatusString = str;
+  }
+
+export function modelGetStatusString() {    // Gets statusString.
+  return modelStatusString;
 }
 
 /* -------------------- */
 
+function processStateChange(str) {
+  modelStateString = str;
+  modelState = analyzeStateString(modelStateString);
+
+  console.log("modelState", modelState);
+}
+
+function updateStateObjects(stateString) {
+
+}
+
+function updateStatusString(stateString, stateOjects) {
+  let statusString = "";
+
+  return statusString;
+}
+
+/* -------------------- */
   // let histPtr = 0;
 
   // let numOfMoves = 0; // Potential placement/collapses.
