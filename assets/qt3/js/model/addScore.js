@@ -7,18 +7,25 @@
 /**
  * Adds a terminal score annotation to a QT3 state string.
  * Score semantics:
- *   {X0,O0}   : draw (cat's game)
- *   {X1,O0}   : X wins
- *   {X0,O1}   : O wins
- *   {X1,O0.5} : X quantum win (chronoblock overlap)
- *   {X0.5,O1} : O quantum win (chronoblock overlap)
- *   {X1.5,O0} : late double win (X only)
- *   {X2,O0}   : double win (X only)
+ *   {X-0, O-0}   : draw (cat's game)
+ *   {X-1, O-0}   : X wins
+ *   {X-0, O-1}   : O wins
+ *   {X-1, O-0.5} : X quantum win (chronoblock overlap)
+ *   {X-0.5, O-1} : O quantum win (chronoblock overlap)
+ *   {X-1.5, O-0} : late double win (X only)
+ *   {X-2.0, O-0} : full double win (X only)
  *
  * The score is appended after the final move and does not end with ';'.
  * @param {string} state - existing QT3 state string (must not be empty)
  * @param {{X:number, O:number}} score - canonical score object
+ * 
  * @returns {string} new QT3 state string with score appended
+ * 
+ * Example:
+ *  state = "X1+(1,2); O2=(4,5); X3+(2,3); O4+(5,6); X5+(3,1); O6!X5(3);";
+ *  state = addScore(state, { X: 1, O: 0 });
+ *  -> "X1+(1,2); O2=(4,5); X3+(2,3); O4+(5,6); X5+(3,1); O6!X5(3); {X-1, O-0}"
+ * X1+(1,2); O2+(4,5); X3+(2,3); O4+(5,6); X5+(1,3)[153]; O5@X5(3)!X1(1)!X3(2)!X5(3); {X-1, O-0}
  */
 
 export function addScore(state, score) {
@@ -39,12 +46,7 @@ export function addScore(state, score) {
     throw new Error("Score must be an object of the form {X:number, O:number}");
   }
 
-  const scoreStr = `{X${score.X},O${score.O}}`;
+  const scoreStr = `{X-${score.X}, O-${score.O}}`;
   return `${state}${scoreStr}`;
 }
-
-// Example:
-// state = "X1+(1,2); O2=(4,5); X3+(2,3); O4+(5,6); X5+(3,1); O6!X5(3);";
-// state = addScore(state, { X: 1, O: 0 });
-// -> "X1+(1,2); O2=(4,5); X3+(2,3); O4+(5,6); X5+(3,1); O6!X5(3); {X1,O0}"
 

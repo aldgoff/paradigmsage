@@ -2,10 +2,11 @@
 
 import { assertEqual } from "./helpers.js";
 
-import { addSpookyMove } from "../model/barrel.js";
-import { addPlacementMove } from "../model/barrel.js";
-import { addLoop } from "../model/barrel.js";
-import { addCollapseMove } from "../model/barrel.js";
+import {addSpookyMove,
+        addPlacementMove,
+        addLoop,
+        addCollapseMove,
+ } from "../model/barrel.js";
 
 let state = "";
 
@@ -32,6 +33,6 @@ state = addLoop(state, [1,2,3],[6]);
 assertEqual(state, "X1+(1,2); O2+(2,3); X3+(3,6); O4+(1,3)[123|6]; ", "collapse loop with stems.");
 
 // --------- --------- --------- --------- //
-
-console.log("addCollapseMove() tests passed");
+console.log("addCollapseMove()     4/ 4 tests passed");
+// --------- --------- --------- --------- //
 

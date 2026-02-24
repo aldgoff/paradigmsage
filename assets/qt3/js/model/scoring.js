@@ -2,7 +2,62 @@
 
 import {GRAMMAR} from "./grammer.js";
 
-function extractClassicalSquares(stateString) {
+export function hasLegalMoves(stateString) {
+  /** Returns true if at least one legal placement move remains.
+   * A move is legal iff there exists at least one square
+   * that is not classical (i.e., not collapsed).
+   *
+   * @param {string} stateString - existing QT3 canonical state string.
+   *
+   * @returns {true|false}
+   */
+
+  const classicalMap = extractClassicalSquares(stateString);
+
+  // If all 9 squares are classical, no legal moves remain
+  if (classicalMap.size === 9) {
+    return false;
+  }
+
+  return true;
+  }
+
+export function evaluateGame(stateString) {
+  /** Computes the QT3 game result from a canonical state string.
+   * A win requires three classical marks in a row (row, column, or diagonal),
+   * or game exhaustion, when no more moves are possible, if there are no
+   * 3-rows on the board, then the game is a draw (cat's game) {X-0, O-0}.
+   * The “time” of a winning line is the highest move index in that line.
+   *
+   * Scoring rules: this is a complete set.
+   * - Cat's game {X-0, O-0}.
+   * - Single win → 1.0 {X-1, O-0}, {X-0, O-1}.
+   * - Earlier win beats later win → 1.0 vs 0.5 {X-1, O-0.5} {X-0.5, O-1}.
+   * - Double win (two lines, no shared move 9) → 1.5  (late double) {X-1.5, O-0.0}
+   * - Double win (two lines sharing move 9) → 2.0     (full double) {X-2.0, O-0.0}
+   *
+   * @param {string} stateString - existing QT3 canonical state string.
+   *
+   * @returns {over: true, score: { X: number, O: number }, wins: lines}
+   */
+  
+  let classicalMap = extractClassicalSquares(stateString);
+  let win3rows     = detectWinningLines(classicalMap);
+  let score = {X:0,O:0};
+  let desc = "TBD";
+
+  if(win3rows != null) {
+    return { over: true, score: computeScoreFromWins(win3rows), wins: win3rows, desc: desc};
+  }
+
+  if(isBoardExhausted(stateString)) {
+    return { over: true, score: {X:0,O:0}, wins: win3rows, desc: desc};
+  }
+
+  return { over: false, score: {X:0,O:0}, wins: win3rows, desc: desc};
+}
+
+function extractClassicalSquares(stateString) { // Returns Map of classical squares: set(square, { player, move }).
   const classicalMap = new Map();
   const collapseRegex = new RegExp(GRAMMAR.collapseResolve);
   let match;
@@ -18,7 +73,7 @@ function extractClassicalSquares(stateString) {
   return classicalMap;
   }
 
-function detectWinningLines(classicalMap) {
+function detectWinningLines(classicalMap) { // Returns wins: { X: [], O: [] }
   const lines = [
     [1,2,3], [4,5,6], [7,8,9],
     [1,4,7], [2,5,8], [3,6,9],
@@ -50,7 +105,7 @@ function detectWinningLines(classicalMap) {
   return wins;
   }
 
-function computeScoreFromWins(wins) {
+function computeScoreFromWins(wins) { // Returns { X: X-score, O: O-score }
   const result = { X: 0, O: 0 };
 
   const allWins = [
@@ -92,60 +147,7 @@ function computeScoreFromWins(wins) {
   return result;
   }
 
-function isBoardExhausted(stateString) {
+function isBoardExhausted(stateString) {  // Returns true|false.
   return !hasLegalMoves(stateString);
-}
-
-export function hasLegalMoves(stateString) {
-  /**
-   * Returns true if at least one legal placement move remains.
-   *
-   * A move is legal iff there exists at least one square
-   * that is not classical (i.e., not collapsed).
-   */
-
-  const classicalMap = extractClassicalSquares(stateString);
-
-  // If all 9 squares are classical, no legal moves remain
-  if (classicalMap.size === 9) {
-    return false;
-  }
-
-  return true;
-}
-
-export function evaluateGame(stateString) {
-  /** Computes the QT3 game result from a canonical state string.
-   *
-   * A win requires three classical marks in a row (row, column, or diagonal),
-   * or game exhaustion, when no more moves are possible, if there are no
-   * 3-rows on the board, then the game is a draw (cat's game) {X0, O0}.
-   * The “time” of a winning line is the highest move index in that line.
-   *
-   * Scoring rules: this is a complete set.
-   * - Cat's game {X0, O0}.
-   * - Single win → 1.0 {X1, O0}, {X0, O1}.
-   * - Earlier win beats later win → 1.0 vs 0.5 {X1, O0.5} {X0.5, O1}.
-   * - Double win (two lines, no shared move 9) → 1.5  (late double) {X1.5, O0}
-   * - Double win (two lines sharing move 9) → 2.0     (full double) {X2.0, O0}
-   *
-   * @param {string} state - existing QT3 canonical state string.
-   *
-   * @returns {over: true, score: { X: number, O: number }, wins: lines}
-   */
-  let classicalMap = extractClassicalSquares(stateString);
-  let win3rows     = detectWinningLines(classicalMap);
-  let score = {X:0,O:0};
-  let desc = "TBD";
-
-  if(win3rows != null) {
-    return { over: true, score: computeScoreFromWins(win3rows), wins: win3rows, desc: desc};
-  }
-
-  if(isBoardExhausted(stateString)) {
-    return { over: true, score: {X:0,O:0}, wins: win3rows, desc: desc};
-  }
-
-  return { over: false, score: {X:0,O:0}, wins: win3rows, desc: desc};
 }
 

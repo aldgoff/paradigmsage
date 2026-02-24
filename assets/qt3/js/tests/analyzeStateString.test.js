@@ -1,17 +1,16 @@
 // Regression tests for analyzeStateString().
 
-import {assertEqual} from "./helpers.js";
-import {assertThrows} from "./helpers.js";
+import {assertEqual,
+        assertThrows,
+ } from "./helpers.js";
 
-import { addPlacementMove } from "../model/barrel.js";
-import { analyzeStateString } from "../model/barrel.js";
+import {addPlacementMove,
+        analyzeStateString,
+} from "../model/barrel.js";
 
 let state = "";
 let res = null;
-/*
-  X1+(1,2); O2+(2,3); X3+(3,4); O4+(4,5); X5+(5,6); O6+(6,7); X7+(7,8); O8+(8,9); 
-  X9+(1,9)[198765432]; O9@X1(1)!X1(1)!O2(2)!X3(3)!O4(4)!X5(5)!O6(6)!X7(7)!O8(8)!X9(9);
- */
+
 let tests = [
   { str: "", // Empty.
     movesSpooky: 0, movesPlacement: 0, movesCollapse: 0, movesNumber: 0,
@@ -107,8 +106,11 @@ for (let test of tests) {
 
   assertEqual(res.counts.entangledMoves, test.numberOfEntangledMoves,  "numberOfEntangledMoves");
   assertEqual(res.counts.collapsedMoves, test.numberOfCollapsedMoves,  "numberOfCollapsedMoves");
-
 }
+
+// console.log("analyzeStateString() - moves & counts: 13/13 tests passed");
+
+// --------- --------- --------- --------- //
 
 const lastMoveType = [
   { str: "", last: "empty" },
@@ -126,6 +128,9 @@ const lastMoveType = [
   { str: "X1+(1,2); O2+(4,5); X3+(2,3); O4+(5,6); X5+(1,3)[135]", last: "loop" },
   { str: "X1+(1,2); O2+(4,5); X3+(2,3); O4+(5,6); X5+(1,3)[135]; O5@X5(1)!X1(2)!X3(3)!X5(1); ", last: "collapse" },
   { str: "X1+(1,2); O2+(4,5); X3+(2,3); O4+(5,6); X5+(1,3)[135]; O5@X5(1)!X1(2)!X3(3)!X5(1); {X1,O0}", last: "score" },
+
+  { str: "X1+(1,2); O2+(2,3); X3+(3,4); O4+(4,5); X5+(5,6); O6+(6,7); X7+(7,8); O8+(8,9); "
+       + "X9+(1,9)[198765432]; O9@X1(1)!X1(1)!O2(2)!X3(3)!O4(4)!X5(5)!O6(6)!X7(7)!O8(8)!X9(9);", last: "collapse" },
 ]
 
 for (let test of lastMoveType) {
@@ -133,6 +138,9 @@ for (let test of lastMoveType) {
   assertEqual(res.progress.last, test.last, "last move type");
 }
 
+// console.log("analyzeStateString() - progress.last: 14/14 tests passed");
+
+// --------- --------- --------- --------- //
 
 /*  TODO: complete analyzeStateString().
     collapsedSquares: [],
@@ -144,8 +152,8 @@ for (let test of lastMoveType) {
     overlappingChronoBlocks: 0,
     nestedChronoBlocks: 0
 */
-// --------- --------- --------- --------- //
 
 // --------- --------- --------- --------- //
+console.log("analyzeStateString() 27/27 tests passed");
+// --------- --------- --------- --------- //
 
-console.log("analyzeStateString() tests passed");
