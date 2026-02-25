@@ -18,6 +18,9 @@ if (import.meta.env?.DEV ?? true) { // Regression tests of the model.
   import("./tests/analyzeStateString.test.js");
   import("./tests/scoring.test.js");
   import("./tests/classicalT3.test.js");
+  
+  import("./tests/parse.test.js");
+  
 }
 
 console.log("--------------------");
