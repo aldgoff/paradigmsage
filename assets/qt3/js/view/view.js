@@ -34,6 +34,11 @@ export function initView() {
   installPointerHandlers();
 }
 
+export function updateView() {
+  modelGetStateString()
+  render();
+}
+
 function render() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -50,7 +55,7 @@ function render() {
   drawQuantumListing(QT3_LAYOUT.moveListQT3, modelGetStateString()); //Imported from listings.js
   drawClassicalListing(QT3_LAYOUT.moveListCT3, modelGetStateString());
 
-  drawStateString();
+  drawStateString(modelGetStateString());
 
   drawEnsemble(modelGetStateString());       // Imported from ensemble.
 }
@@ -287,10 +292,10 @@ export function setStateString(str) {
   render();
   }
 
-function drawStateString() {
+function drawStateString(stateString) {
   const textarea = document.getElementById("qt3-state-input");
   if (textarea) {
-    textarea.value = modelGetStateString();
+    textarea.value = stateString;
   }
 }
 

@@ -1,7 +1,6 @@
 // ./assets/qt3/js/main.js
 
 /* MVC - Model, View, Controller
-
   Model: holds the state (and history) of the game.
     The entire history and state of the game is held in stateString.
     Other model level variables may hold processed data derived from this string.
@@ -62,4 +61,32 @@
  * scoring()            11/11 tests passed
  * classical tic-tac-toe 6/ 6 tests passed
  */
+//
+
+function schema() {
+  changeState();
+  updateView();
+}
+
+function changeState() {
+  newGame();
+  reRun();  // These three will need a historyString and a move number.
+  undo();
+  redo();
+  loadGame();
+  processEvent();
+}
+
+function updateView() {
+  const statusString = modelGetStatusString();
+  const stateString = modelGetStateString();
+
+  drawStatusString(statusString);
+
+  drawMarks(stateString);
+  drawQuantumMoves(stateString);
+  drawClassicalMoves(stateString);
+  drawStateString(stateString);
+  drawEnsemble(stateString);
+}
 

@@ -18,7 +18,6 @@ let modelState;
 
 export function modelSetStateString(str) {  // Sets stateString, model must update its state.
   modelStateString = str;
-  processStateChange(str);
   }
 
 export function modelGetStateString() {     // Gets stateString.
@@ -33,13 +32,19 @@ export function modelGetStatusString() {    // Gets statusString.
   return modelStatusString;
 }
 
+export function validStateString(stateString) {
+  // TODO: write validStateString().
+
+  return true;
+}
+
 /* -------------------- */
 
 function processStateChange(str) {
   modelStateString = str;
   modelState = analyzeStateString(modelStateString);
 
-  console.log("modelState", modelState);
+  console.log("processStateChange() - modelState", modelState);
 }
 
 function updateStateObjects(stateString) {

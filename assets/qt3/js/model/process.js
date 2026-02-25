@@ -18,6 +18,8 @@ import {buildGraph,
 } from "../model/cycles.js";
 import {modelSetStateString,
         modelGetStateString,
+        modelSetStatusString,
+        modelGetStatusString,
 } from "../model/model.js";
 
 /***************************************** */
@@ -48,6 +50,7 @@ let cycleMoves = [];  // Code for collapse moves.
 let stemMoves = [];
 
 export function newGame() {
+  modelSetStatusString("Player X: place first spooky mark (click on it again to change your mind).");
   modelSetStateString("");
   placements = [];
   cycleMoves = [];
@@ -72,6 +75,9 @@ export function loadGame(stateString) {
       squares: move.squares
     });
   }
+}
+
+export function processEvent(intent) {
 }
 
 export function processClick(intent) {

@@ -6,7 +6,7 @@ console.log("main.js: qt3/js/main.js");
 
 initController();
 
-if (import.meta.env?.DEV ?? true) {
+if (import.meta.env?.DEV ?? true) { // Regression tests of the model.
   import("./tests/addSpookyMove.test.js");
   import("./tests/addPlacementMove.test.js");
   import("./tests/addLoop.test.js");
