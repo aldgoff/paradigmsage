@@ -78,11 +78,13 @@ cycleMoves.push(3);
 for (let test of loopTests) {
   placements = parsePlacements(test.str);
   let cellSq = cellInLoop(intent, placements, cycleMoves);
-  console.log("test", test, intent, placements, cycleMoves, cellSq);
+  // console.log("test", test, intent, placements, cycleMoves, cellSq);
+
   assertEqual(cellSq.cell,   test.cell,   "cell");
   assertEqual(cellSq.square, test.square, "square");
 }
 
 // --------- --------- --------- --------- //
-console.log("collapse 1 tests passed");
+console.log("collapse.js           1/ 1 tests passed");
 // --------- --------- --------- --------- //
+

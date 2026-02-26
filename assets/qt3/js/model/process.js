@@ -3,6 +3,19 @@
 import {analyzeStateString} from "./analyzeStateString.js";
 import {evaluateGame} from "./scoring.js";
 import {isSquareClassical} from "./structure.js";
+import {parseStateTranscript,
+        parseSpookyMove,
+        parsePlacementMove,
+        parseLoopMove,
+        parseCollapseMove,
+        parseDegenerateMove,
+        parseScoreBlock,
+} from "./parse.js";
+
+import {cellInLoop,
+        computeCollapseResolution,
+} from "./collapse.js";
+
 import {addSpookyMove,
         subSpookyMove,
         addPlacementMove,
@@ -15,12 +28,14 @@ import {buildGraph,
         extractCycle,
         movesForEdge,
         extractStems 
-} from "../model/cycles.js";
+} from "./cycles.js";
 import {modelSetStateString,
         modelGetStateString,
         modelSetStatusString,
         modelGetStatusString,
-} from "../model/model.js";
+} from "./model.js";
+
+import {processStateString} from "./structure.js";
 
 /***************************************** */
 
@@ -60,25 +75,225 @@ export function newGame() {
 }
 
 export function loadGame(stateString) {
+  let state = processStateString(stateString);
+  /* return {
+      placements,
+      cycleMoves,
+      stemMoves,
+      score,
+      analyzedState
+    };
+   */
+  console.log("loadGame", state);
+
+  placements = state.placements;
+  cycleMoves = state.cycleMoves;
+  stemMoves = state.stemMoves;
+
   modelSetStateString(stateString);
-  placements = [];
-  cycleMoves = [];
-  stemMoves = [];
+}
 
-  let state = analyzeStateString(modelGetStateString());
+/* This state string...
+X1+(1,2); O2+(2,3); X3+(4,5); O4+(5,6); X5+(7,8); O6+(8,9); X7+(6,9); O8+(1,4); X9+(3,7)[183476592]; O9@X5(7)!X1(1)!O2(2)!X3(5)!O4(6)!X5(7)!O6(8)!X7(9)!O8(4)!X9(3); {X-1.5, O-0}
 
-  // Reconstruct placements from state.progress or state.moves
-  for (const move of state.placements) {
-    placements.push({
-      move: move.move,
-      player: move.player,
-      squares: move.squares
-    });
+becomes this array...
+  X1+(1,2); 
+  O2+(2,3); 
+  X3+(4,5); 
+  O4+(5,6); 
+  X5+(7,8); 
+  O6+(8,9); 
+  X7+(6,9); 
+  O8+(1,4); 
+  X9+(3,7)[183476592]; 
+  O9@X5(7)!X1(1)!O2(2)!X3(5)!O4(6)!X5(7)!O6(8)!X7(9)!O8(4)!X9(3); 
+  {X-1.5, O-0}
+*/
+/* More examples:
+X1+(1,2); O2+(1,2)[12]; X2@X1(1)!X1(1)!O2(2); X3+(4,5); O4+(4,5)[34]; X4@X3(5)!X3(5)!O4(4); X5+(7,8); O6+(7,8)[56]; X6@X5(8)!X5(8)!O6(7); X7+(6,9); O8+(6,9)[78]; X8@O8(9)!X7(6)!O8(9); X9+(3,3); O9@X9(3)!X9(3); {X-0, O-0}
+*/
+
+// export function parseStateTranscript(stateString) {
+//   const result = [];
+
+//   if (!stateString || !stateString.trim()) {
+//     return result;
+//   }
+
+//   const trimmed = stateString.trim();
+//   let mainPart = trimmed;
+//   let scoreMatch = trimmed.match(/\{[^}]+\}$/);
+
+//   // 1. Split semicolon blocks
+//   const segments = mainPart
+//     .split(";")
+//     .map(s => s.trim())
+//     .filter(Boolean);
+
+//   for (const seg of segments) {      // "X9+(n,n); O9@X9(n)!X9(n); "
+//     const change = seg + ";";
+
+//     if (seg.includes("+")) {  // Placement.
+//       let parse = parsePlacementMove(change)
+//       if(parse.sq1 === parse.sq2) {
+//         console.log("Found degenerate self-collapse.");
+//       }
+//       else {
+//         result.push({
+//           type: "placement",
+//           change
+//         });
+//       }
+//     }
+//     else if (seg.includes("@")) { // Collapse.
+//       result.push({
+//         type: "collapse",
+//         change
+//       });
+//     }
+//   }
+
+//   // 2. Extract score block (if present)
+//   if (scoreMatch) { // Score.
+//     result.push({
+//       type: "score",
+//       change: scoreMatch[0]
+//     });
+
+//     mainPart = trimmed.slice(0, scoreMatch.index).trim();
+//   }
+
+//   return result;
+// }
+
+export function processString(moves) { // Returns: [ {type, change}, {type, change}... ]
+  console.log("processString", moves.length, "moves");
+
+  let growingStateString = "";
+  let state;
+
+  for(const move of moves) {
+    growingStateString += `${move.change} `;
+    console.log(growingStateString);
+    buildEntanglementNetwork(move); // { type, change }.
   }
 }
 
-export function processEvent(intent) {
+function buildEntanglementNetwork(move) { // { type, change }.
+  let parse;
+  let player;
+  let turn;
+  let sq1;
+  let sq2;
+  let triggerMove = "";
+  let triggerSquare = 0;
+  let cycle = "";
+  let stems = "";
+
+  console.log("buildEntanglementNetwork", move);
+
+  let statusString = "";
+  if(     move.type === "spooky") {     // Working.
+    console.log("spooky");
+
+    // Are any of these even used?
+      parse = parseSpookyMove(move.change);
+      player = parse.player;
+      turn = parse.turn;
+      sq1 = parse.sq1;
+
+    // stateString = addSpookyMove(modelGetStateString(), player, turn, squareNum);
+
+    statusString = `Continue with rest of placement move, `
+                 + `${player}: place your second spooky mark or undo the first one.`
+    }
+  else if(move.type === "placement") {  // Working.
+    console.log("placement");
+
+    parse = parsePlacementMove(move.change);
+
+    placements.push({ // Add connecting move.
+      move: parse.turn,
+      player: parse.player,
+      squares: [parse.sq1, parse.sq2]
+    });
+
+    let nextPlayer = (parse.player === 'X') ? 'O' : 'X'; // Must be other player who chooses the collapse..
+    statusString = `${nextPlayer}: begin your next placement move, `
+                 + `place a spooky mark in any uncollapsed square.`
+    }
+  else if(move.type === "loop") {       // Working.
+    console.log("loop");
+
+    parse = parseLoopMove(move.change);
+
+    const graph = buildGraph(placements);
+    const path = findPath(graph, parse.sq1, parse.sq2);
+
+    if (path !== null) { // Sq1 & sq2 already connected.
+      cycleMoves = extractCycle(path, placements, parse.turn); // [] - just the path, does not include connecting move.
+      stemMoves  = extractStems(graph, path, placements, cycleMoves); // [].
+    }
+
+    placements.push({ // Add connecting move.
+      move: parse.turn,
+      player: parse.player,
+      squares: [parse.sq1, parse.sq2]
+    });
+
+    let collapsePlayer = (parse.player === 'X') ? 'O' : 'X'; // Must be other player who chooses the collapse..
+    statusString = `${collapsePlayer} must first collapse the cyclic entanglement. `
+                 + `Click on a purple spooky mark.`
+
+    // statusString = "You must click on a purple spooky mark, orange marks are stems, their classical value predetermined."
+    }
+  else if(move.type === "collapse") {
+    console.log("collapse");
+
+    }
+  else if(move.type === "degenerate") {
+    console.log("degenerate");
+
+    }
+  else if(move.type === "score") {
+    console.log("score");
+    statusString = "Game is over. New Game|Rerun|Undo|Load.";
+    }
+  else {
+    console.log("Oops");
+  }
+
+  console.log("placements", placements);
+  console.log("cycleMoves", cycleMoves);
+  console.log("stemMoves",  stemMoves );
+
+  modelSetStatusString(statusString);
 }
+
+/*
+  X1+(1,2); O2+(2,3); X3+(2,3)[23|1]; 
+  placements (3) [{…}, {…}, {…}]
+    0: {move: 1, player: 'X', squares: Array(2)}
+    1: {move: 2, player: 'O', squares: Array(2)}
+    2: {move: 3, player: 'X', squares: Array(2)}
+    length: 3
+  cycleMoves (2) [2, 3]
+    0: 2
+    1: 3
+    length: 2
+  stemMoves [1]
+    0: 1
+    length: 1
+ */
+
+/* State
+  {progress: {…}, moves: {…}, counts: {…}, outcome: {…}}
+  counts: {loneSpooky: 0, separables: 0, entanglements: 1, cyclics: 0, entangledMoves: 2, …}
+  moves: {spooky: 1, placement: 2, collapse: 0, number: 2}
+  outcome: {over: false, score: {…}, wins: null, desc: 'TBD'}
+  progress: {turn: 2, player: 'O', sq1: 3, sq2: 0, spooky: false, …}
+  X1+(1,2); O2+(2,3); X3+(2,3)[23|1];  
+ */
 
 export function processClick(intent) {
   const squareNum = intent.squareNum;
@@ -88,6 +303,7 @@ export function processClick(intent) {
   let statusString = "";
 
   const state = analyzeStateString(modelGetStateString());
+  console.log("state", state);
 
   let turn = state.progress.turn + 1;
   let player = (turn%2) ? 'X' : 'O'
@@ -102,7 +318,7 @@ export function processClick(intent) {
     // "X9+(n,n); O9@X9(n)!X9(n); "
     stateString = selfCollapseLastMove(state, intent);
     let outcome = evaluateGame(stateString);
-    stateString += `{X${outcome.score.X},O${outcome.score.O}}`;
+    stateString += `{X-${outcome.score.X}, O-${outcome.score.O}}`;
     modelSetStateString(stateString);
     statusString = `Last move self-collapsed (degenerate). Game over: ${outcome.desc}.`;
     }
@@ -125,7 +341,6 @@ export function processClick(intent) {
     const sq2 = squareNum;
 
     const graph = buildGraph(placements);
-
     const path = findPath(graph, sq1, sq2);
 
     if (path !== null) { // Sq1 & sq2 already connected.
@@ -153,8 +368,8 @@ export function processClick(intent) {
 
     }
   else if(isCollapse(modelGetStateString(), state)) {               // Collapse move.
-    console.log("isCollapse() state", state);
     let cellSq = cellInLoop(intent, placements, cycleMoves);
+    console.log("isCollapse() cellInLoop", cellSq, "=", intent, placements, cycleMoves);
     if (cellSq != null) {
       let triggerSquare = cellSq.square;
       let resolved = computeCollapseResolution(placements, cycleMoves, stemMoves, cellSq.cell, triggerSquare);
@@ -163,7 +378,7 @@ export function processClick(intent) {
 
       let outcome = evaluateGame(modelGetStateString());
       if(outcome.over) {
-        stateString += `{X${outcome.score.X},O${outcome.score.O}}`;
+        stateString += `{X-${outcome.score.X}, O-${outcome.score.O}}`;
         statusString = `Game over: ${outcome.desc}.`;
         modelSetStateString(stateString);
       }
@@ -178,6 +393,24 @@ export function processClick(intent) {
     else {
       statusString = "You must click on a purple spooky mark, orange marks are stems, their classical value predetermined."
     }
+    /* -- console.log("isCollapse() cellInLoop", cellSq, "=", intent, placements, cycleMoves); --
+      isCollapse() cellInLoop {cell: 3, square: 3}
+      cell: 3
+      square: 3
+      [[Prototype]]: Object = {squareNum: 3, cellNum: 3}
+      cellNum: 3
+      squareNum: 3
+      [[Prototype]]: Objectconstructor: ƒ Object()hasOwnProperty: ƒ hasOwnProperty()isPrototypeOf: ƒ isPrototypeOf()propertyIsEnumerable: ƒ propertyIsEnumerable()toLocaleString: ƒ toLocaleString()toString: ƒ toString()valueOf: ƒ valueOf()__defineGetter__: ƒ __defineGetter__()__defineSetter__: ƒ __defineSetter__()__lookupGetter__: ƒ __lookupGetter__()__lookupSetter__: ƒ __lookupSetter__()__proto__: (...)get __proto__: ƒ __proto__()set __proto__: ƒ __proto__() (3) [{…}, {…}, {…}]
+      0: {move: 1, player: 'X', squares: Array(2)}
+      1: {move: 2, player: 'O', squares: Array(2)}
+      2: {move: 3, player: 'X', squares: Array(2)}
+      length: 3
+      [[Prototype]]: Array(0) (2) [2, 3]
+      0: 2
+      1: 3
+      length: 2
+      [[Prototype]]: Array(0)
+     */
     }
   else {                                                  // Can't happen.
     console.log("CAN'T HAPPEN - OOPS!");
@@ -185,6 +418,10 @@ export function processClick(intent) {
 
   console.log(modelGetStateString());
   
+  console.log("placements", placements);
+  console.log("cycleMoves", cycleMoves);
+  console.log("stemMoves",  stemMoves );
+
   return {stateStr: modelGetStateString(), statusStr: statusString};
 }
 
@@ -235,72 +472,4 @@ function selfCollapseLastMove(state, intent) {
 }
 
 /** Helper functions: */
-
-function cellInLoop(intent, placements, cycleMoves) {  // { cell: cellNum, square: squareNum }.
-  const squareNum = intent.squareNum;
-  const cellNum   = intent.cellNum;
-  
-  // Must be one of the loop moves.
-  if (!cycleMoves.includes(cellNum)) {
-    return null;
-  }
-
-  // Find the placement for that move.
-  const p = placements.find(p => p.move === cellNum);
-  if (!p) {
-    return null;
-  }
-
-  // That move must occupy this square.
-  if (!p.squares.includes(squareNum)) return null;
-
-  // Success
-  return {
-    cell: cellNum,
-    square: squareNum
-  };
-  }
-
-function computeCollapseResolution(
-  placements,
-  cycleMoves,
-  stemMoves,
-  triggerMove,
-  triggerSquare
-  ) {
-
-  const componentMoves = new Set([
-    ...cycleMoves,
-    ...stemMoves
-  ]);
-
-  const resolved = {};
-  const stack = [];
-
-  resolved[triggerMove] = triggerSquare;
-  stack.push(triggerMove);
-
-  while (stack.length > 0) {
-
-    const move = stack.pop();
-    const square = resolved[move];
-
-    for (const p of placements) {
-
-      if (!componentMoves.has(p.move)) continue;
-      if (p.move === move) continue;
-      if (resolved[p.move] !== undefined) continue;
-
-      const [a, b] = p.squares;
-
-      if (a === square || b === square) {
-        const forcedSquare = (a === square) ? b : a;
-        resolved[p.move] = forcedSquare;
-        stack.push(p.move);
-      }
-    }
-  }
-
-  return resolved;
-}
 

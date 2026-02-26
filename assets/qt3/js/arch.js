@@ -90,3 +90,22 @@ function updateView() {
   drawEnsemble(stateString);
 }
 
+/* AI's Plan.
+processStateString(stateString)
+    →
+    {
+        placements,
+        cycleMoves,
+        stemMoves,
+        analyzedState,
+        status,
+    }
+
+Then:
+  processClick() becomes:
+    compute next canonical string
+    call processStateString()
+  loadGame() becomes:
+    call processStateString()
+*/
+

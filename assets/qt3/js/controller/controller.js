@@ -89,12 +89,13 @@ function handleLoad() {
   const stateString = textarea.value;
 
   // TODO: validate correctly formatted state string.
-  if(!validStateString(stateString)) {
-    setStatusString("Invalid state string.")
-    return;
-  }
+  // if(!validStateString(stateString)) {
+  //   setStatusString("Invalid state string.")
+  //   return;
+  // }
 
   loadGame(stateString);    // Change state (via model/process.js).
+  setStatusString(modelGetStatusString());  // View layer.
   } 
 
 function handleHelp() {
