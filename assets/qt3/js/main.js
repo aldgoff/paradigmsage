@@ -20,7 +20,7 @@ if (import.meta.env?.DEV ?? true) { // Regression tests of the model.
   import("./tests/classicalT3.test.js");
   
   import("./tests/parse.test.js");
-  
+  import("./tests/collapse.test.js");
 }
 
 console.log("--------------------");
