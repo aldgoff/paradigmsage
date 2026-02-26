@@ -4,7 +4,7 @@ export const QT3_LAYOUT = {
   statusBox: {  // Status / narration (always visible, top)
     x: 0,
     y: 0,
-    w: 900,
+    w: 870,
     h: 80
   },
 
@@ -200,27 +200,27 @@ export const QT3_LAYOUT = {
     title: {
       x: 700,
       y: 100,
-      w: 200,
+      w: 170,
       h:  30,
       },
     header: {
       x: 700,
       y: 130,
-      w:  70,
+      w:  55,
       h:  30,
       },
     rows: {
       x: 700,
       y: 160,
-      w:  70,
+      w:  55,
       h:  30,
     },
   },
 
   stateBox: {  // Canonical state string (ledger)
     x: 0,
-    y: 420,
-    w: 900,
+    y: 400,
+    w: 854,
     h: 40
   },
 

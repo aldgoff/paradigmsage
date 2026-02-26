@@ -11,7 +11,7 @@ let onControlCommit = null;          // callback supplied by parent view
 // Button geometry (view-owned).
 const BUTTONS = [
   { label: "New Game", enabled: true  },
-  { label: "Restart",  enabled: false },
+  { label: "Rerun",    enabled: false },
   { label: "Undo",     enabled: false },
   { label: "Redo",     enabled: false },
   { label: "Load",     enabled: true  },

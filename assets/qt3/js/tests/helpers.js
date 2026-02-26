@@ -4,7 +4,7 @@ export function assertEqual(actual, expected, label) {
   }
 }
 
-export function assertThrows(fn, label) {
+export function assertThrows(fn, label) { // TODO: assertThrows is underutilized.
   let threw = false;
   try {
     fn();

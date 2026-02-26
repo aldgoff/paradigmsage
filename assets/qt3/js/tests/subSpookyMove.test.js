@@ -2,8 +2,9 @@
 
 import { assertEqual } from "./helpers.js";
 
-import { addSpookyMove } from "../model/barrel.js";
-import { subSpookyMove } from "../model/barrel.js";
+import {addSpookyMove,
+        subSpookyMove,
+ } from "../model/barrel.js";
 
 let state = "";
 
@@ -14,6 +15,6 @@ state = subSpookyMove(state);
 assertEqual(state, "", "spooky removement");
 
 // --------- --------- --------- --------- //
-
-console.log("subSpookyMove() tests passed");
+console.log("subSpookyMove()       1/ 1 tests passed");
+// --------- --------- --------- --------- //
 

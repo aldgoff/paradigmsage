@@ -2,6 +2,156 @@
 
 import {GRAMMAR} from "./grammer.js";
 
+import {
+  parseStateTranscript,
+  parseSpookyMove,
+  parsePlacementMove,
+  parseLoopMove,
+  parseCollapseMove,
+  parseDegenerateMove,
+  parseScoreBlock,
+} from "./parse.js";
+
+import {
+  buildGraph,
+  findPath,
+  extractCycle,
+  extractStems
+} from "./cycles.js";
+
+import { analyzeStateString } from "./analyzeStateString.js";
+
+
+export function processStateString(stateString) {
+  const placements = [];
+  let cycleMoves = [];
+  let stemMoves = [];
+  let score = null;
+
+  const transcript = parseStateTranscript(stateString);
+
+  for (const move of transcript) {
+    if (move.type === "spooky") {
+      const parse = parseSpookyMove(move.change);
+
+      // Nothing to do in this case.
+    }
+    else if (move.type === "placement") {
+      const parse = parsePlacementMove(move.change);
+
+      placements.push({
+        move: parse.turn,
+        player: parse.player,
+        squares: [parse.sq1, parse.sq2]
+      });
+    }
+    else if (move.type === "degenerate") {
+      const parse = parseDegenerateMove(move.change);
+
+      placements.push({
+        move: parse.turn,
+        player: parse.player,
+        squares: [parse.sq, parse.sq]
+      });
+    }
+    else if (move.type === "loop") {
+      const parse = parseLoopMove(move.change);
+
+      const graph = buildGraph(placements);
+      const path = findPath(graph, parse.sq1, parse.sq2);
+
+      if (path !== null) {
+        cycleMoves = extractCycle(path, placements, parse.turn);
+        stemMoves  = extractStems(graph, path, placements, cycleMoves);
+      }
+
+      placements.push({
+        move: parse.turn,
+        player: parse.player,
+        squares: [parse.sq1, parse.sq2]
+      });
+    }
+    else if (move.type === "collapse") {
+      const parse = parseCollapseMove(move.change);
+
+      const resolved = computeCollapseResolution(
+        placements,
+        cycleMoves,
+        stemMoves,
+        parse.triggerMove,
+        parse.triggerSquare
+      );
+
+      // Remove component moves from placements
+      const componentMoves = new Set([
+        ...cycleMoves,
+        ...stemMoves
+      ]);
+
+      for (let i = placements.length - 1; i >= 0; i--) {
+        if (componentMoves.has(placements[i].move)) {
+          placements.splice(i, 1);
+        }
+      }
+
+      // Clear entanglement
+      cycleMoves = [];
+      stemMoves = [];
+    }
+    else if (move.type === "score") {
+      score = parseScoreBlock(move.change);
+    }
+  }
+
+  const analyzedState = analyzeStateString(stateString);
+
+  return {
+    placements,
+    cycleMoves,
+    stemMoves,
+    score,
+    analyzedState
+  };
+}
+
+export function parsePlacements(stateString) { // TODO: Duplicate in view.
+  const placements = [];  // [{ move, player, squares:[a,b] }]
+
+  if (!stateString || stateString.trim() === "") {
+    return placements;
+  }
+
+  // 1️⃣ Parse all complete placements: X1+(1,2)
+  const completeRegex = /([XO])(\d+)\+\((\d),(\d)\)/g;
+
+  let match;
+  while ((match = completeRegex.exec(stateString)) !== null) {
+    placements.push({
+      move:   Number(match[2]),
+      player: match[1],
+      squares:[Number(match[3]), Number(match[4])],
+      partial:false
+    });
+  }
+
+  // 2️⃣ Detect trailing partial placement: X1+(1
+  const partialRegex = /([XO])(\d+)\+\((\d)$/;
+
+  const partialMatch = stateString.match(partialRegex);
+
+  if (partialMatch) {
+    placements.push({
+      move:   Number(partialMatch[2]),
+      player: partialMatch[1],
+      squares:[Number(partialMatch[3])],
+      partial:true
+    });
+  }
+
+  return placements;
+}
+
+
 export function buildSquareMap(placements, collapsedMoves) {
   /** Builds a square → uncollapsed move map.
    *

@@ -1,11 +1,14 @@
 ---
-title: "Indistinguishable Quantum Tic-Tac-Toe"
+title: "I-QT3"
 ---
+<!-- title: "Indistinguishable Quantum Tic-Tac-Toe" 
+  Would like as a mouse over.
+-->
 
 **Indistinguishable Quantum Tic-Tac-Toe**
 
-What follows is a Q&A session with ChatGPT on 2/7/26 about Indistinguishable Quantum Tic-Tac-Toe.
-Five prompts, five responses.
+  What follows is a Q&A session with ChatGPT on 2/7/26 about Indistinguishable Quantum Tic-Tac-Toe.
+  Five prompts, five responses.
 
 # Query #1
   End of day, time for some fun. 
@@ -135,7 +138,7 @@ Five prompts, five responses.
 
   Your move.
 
----
+  ---
 ---
 
 # Query #2
@@ -219,7 +222,7 @@ Five prompts, five responses.
 
   Both directions get interesting fast.
 
----
+  ---
 ---
 
 # Query #3
@@ -331,7 +334,7 @@ Five prompts, five responses.
 
   And IQT3 is doing real conceptual work right there.
 
----
+  ---
 ---
 
 # Query #4
@@ -493,7 +496,7 @@ Five prompts, five responses.
 
   This was a very sharp move on your part.
 
----
+  ---
 ---
 
 # Query #5
@@ -622,7 +625,7 @@ Five prompts, five responses.
 
   But this answer — **2/3** — is the right one under your refined ontology.
 
----
+  ---
 ---
 
 # Intrepid Reader
@@ -630,7 +633,6 @@ Five prompts, five responses.
   - What does it suggest about how to use them well?
   - Can we use them, or even get them, to think out of the box?
   - What would you ask an AI about this subject?
-
 ---
 
   **Now apply self-reference. Take the above dialog and ask an AI to evaluate it.**

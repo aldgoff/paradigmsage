@@ -4,12 +4,12 @@ title: "Variations"
 
 **Variations**
 
-Present variations on QT3, such as
-- N-way QT3
-- Unitary evolution
-- Probabilistic collapse
-- Hybrid
-- Indistinguishable QT3
+  Present variations on QT3, such as
+  - N-way QT3
+  - Unitary evolution
+  - Probabilistic collapse
+  - Hybrid
+  - Indistinguishable QT3
 
 ## N-Way QT3
   There are two possibilities here: fixed N (like 3) and variable N (N>1).

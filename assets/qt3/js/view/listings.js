@@ -16,8 +16,8 @@ export function drawQuantumListing(layout, stateString) {
   }
 export function drawClassicalListing(layout, stateString) {
   setGlobalListStyles();
-  drawTitle(layout, "       Classical Moves");
-  drawHeader(layout, "  Move");
+  drawTitle(layout, "     Classical Moves");
+  drawHeader(layout, "Move");
   drawMoveNums(layout);
   drawClassicalMoves(layout, stateString);
 }
@@ -119,11 +119,11 @@ function drawClassicalMoves(layout, stateString) {
 
     if (xory%2) {    // X moves.
       offset = 0;
-      ctx.fillText(`    ${symbol}`, row.x + row.h + offset + 12, row.y + sep + 19);
+      ctx.fillText(`    ${symbol}`, row.x + row.h + offset + 6, row.y + sep + 19);
     } 
     else {           // O moves.
       offset = row.w + row.h;
-      ctx.fillText(`    ${symbol}`, row.x + row.h + offset + 12, row.y + sep + 19);
+      ctx.fillText(`    ${symbol}`, row.x + row.h + offset + 6, row.y + sep + 19);
       sep += row.h;
     }
     xory += 1;

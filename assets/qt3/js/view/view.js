@@ -20,6 +20,11 @@ import {
   drawBounds,
   drawEnsemble,
 } from "./ensemble.js";
+import {modelSetStateString,  // The state of the game is held in the model layer.
+        modelGetStateString,
+        modelSetStatusString,
+        modelGetStatusString,
+} from "../model/model.js";
 
 const canvas = document.getElementById("qt3-game");
 const ctx = canvas.getContext("2d");
@@ -29,24 +34,30 @@ export function initView() {
   installPointerHandlers();
 }
 
+export function updateView() {
+  modelGetStateString()
+  render();
+}
+
 function render() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   drawLayoutBounds(ctx);                  // Local.
 
+  drawStatusString(ctx);
+
   drawControls(ctx);                      // Imported from controlsView.js.
 
   drawBoardGrid(ctx, QT3_LAYOUT);         // Local.
-  drawSquareNumbers(ctx, QT3_LAYOUT);
-  drawStateString(ctx);
-  drawStatusString(ctx);
+  drawSquareNumbers(ctx, QT3_LAYOUT);     // Local.
+  drawMoves(ctx, modelGetStateString());  // Imported from moves.js.
 
-  drawMoves(ctx, currentStateString);     // Imported from moves.js.
+  drawQuantumListing(QT3_LAYOUT.moveListQT3, modelGetStateString()); //Imported from listings.js
+  drawClassicalListing(QT3_LAYOUT.moveListCT3, modelGetStateString());
 
-  drawQuantumListing(QT3_LAYOUT.moveListQT3, currentStateString); //Imported from listings.js
-  drawClassicalListing(QT3_LAYOUT.moveListCT3, currentStateString);
+  drawStateString(modelGetStateString());
 
-  drawEnsemble(currentStateString);       // Imported from ensemble.
+  drawEnsemble(modelGetStateString());       // Imported from ensemble.
 }
 
 // Outline the visual objets to facilitate arranging them.
@@ -83,6 +94,9 @@ function drawLayoutBounds(ctx, layout = QT3_LAYOUT) {
       }
     else if (layout_key === "moveListCT3") {
       // console.log("// Don't draw moveListCT3 outline.");
+      }
+    else if (layout_key === "stateBox") {
+      // console.log("// Don't draw stateBox outline.");
       }
     else if (layout_key === "ensemble") {
       // console.log("// Don't draw ensemble outline.");
@@ -273,45 +287,22 @@ function handleSquareClicks(x, y) {       // Event driven, called by listener, i
 }
 
 /* Code to set and draw the state string. */
-let currentStateString = ""; 
 export function setStateString(str) {
-  currentStateString = str;
+  modelSetStateString(str);
   render();
   }
 
-function drawStateString(ctx) {
-  const { x, y, w, h } = QT3_LAYOUT.stateBox;
-
-  ctx.save();
-
-  // Box background
-  ctx.fillStyle = "#111";
-  ctx.fillRect(x, y, w, h);
-
-  ctx.strokeStyle = "#555";
-  ctx.strokeRect(x, y, w, h);
-
-  // Text
-  ctx.fillStyle = "#0f0";
-  ctx.font = "13px monospace";
-  ctx.textBaseline = "middle";
-  ctx.textAlign = "left";
-
-  const padding = 10;
-  const textY = y + h / 2;
-
-  drawWrappedText(ctx, currentStateString, x + padding, y + 10, w-2 * padding, 20);
-
-  ctx.restore();
+function drawStateString(stateString) {
+  const textarea = document.getElementById("qt3-state-input");
+  if (textarea) {
+    textarea.value = stateString;
+  }
 }
 
 /* Code to set and draw the status string. */
-let currentStatusString = "Welcome to quantum tic-tac-toe (QT3). Click on New Game to begin."; 
 export function setStatusString(str) {
-  currentStatusString = str;
-  // render();
-    drawStatusString(ctx);
-
+  modelSetStatusString(str);
+  drawStatusString(ctx);
   }
 
 function drawStatusString(ctx) {
@@ -335,7 +326,7 @@ function drawStatusString(ctx) {
   const padding = 10;
   const textY = y + 4
 
-  drawWrappedText(ctx, currentStatusString, x + padding, y + 10, w-2 * padding, 20);
+  drawWrappedText(ctx, modelGetStatusString(), x + padding, y + 10, w-2 * padding, 20);
 
   ctx.restore();
 }
