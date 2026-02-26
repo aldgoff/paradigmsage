@@ -501,7 +501,7 @@ export function listPlacementsWithCollapse(stateString) { // Used in view/listin
     });
 }
 
-export function getLastMoveType(stateString) {
+export function getLastMoveType(stateString) {  // empty|spooky|placement|loop|collapse|score.
   if (!stateString || stateString.trim() === '') {
     return "empty";
   }

@@ -1,6 +1,7 @@
 // ./assets/qt3/js/model/process.js
 
 import {analyzeStateString} from "./analyzeStateString.js";
+import {getLastMoveType} from "./analyzeStateString.js";
 import {evaluateGame} from "./scoring.js";
 import {isSquareClassical} from "./structure.js";
 import {parseStateTranscript,
@@ -90,7 +91,38 @@ export function loadGame(stateString) {
   cycleMoves = state.cycleMoves;
   stemMoves = state.stemMoves;
 
+  const len = placements.length;
+  let player = (len%2) ? 'X' : 'O' ;
+
   modelSetStateString(stateString);
+  // empty|spooky|placement|loop|collapse|score.
+  const last = getLastMoveType(stateString);
+  let statusString = "";
+  switch(last) {
+    case 'empty':
+      player = (len%2) ? 'O' : 'X' ;
+      statusString = `Player ${player}: place first spooky mark (click it again to change your mind).`;
+      break;
+    case 'spooky':
+      player = (len%2) ? 'O' : 'X' ;
+      statusString = `Continue with rest of placement move, ${player}: place your second spooky mark or undo the first one.`;
+      break;
+    case 'placement':
+      player = (len%2) ? 'O' : 'X' ;
+      statusString = `${player}: begin your next placement move, place a spooky mark in any uncollapsed square.`;
+      break;
+    case 'loop':
+      player = (len%2) ? 'O' : 'X' ;
+      statusString = `${player} must first collapse the cyclic entanglement. Click on a purple spooky mark.`;
+      break;
+    case 'collapse':
+      statusString = `${player}: begin your next placement move, place a spooky mark in any uncollapsed square.`;
+      break;
+    case 'score':
+      statusString = "Game is over. New Game, Rerun, Undo, Load.";
+      break;
+  }
+  modelSetStatusString(statusString);
 }
 
 /* This state string...
@@ -113,58 +145,60 @@ becomes this array...
 X1+(1,2); O2+(1,2)[12]; X2@X1(1)!X1(1)!O2(2); X3+(4,5); O4+(4,5)[34]; X4@X3(5)!X3(5)!O4(4); X5+(7,8); O6+(7,8)[56]; X6@X5(8)!X5(8)!O6(7); X7+(6,9); O8+(6,9)[78]; X8@O8(9)!X7(6)!O8(9); X9+(3,3); O9@X9(3)!X9(3); {X-0, O-0}
 */
 
-// export function parseStateTranscript(stateString) {
-//   const result = [];
+/*
+  // export function parseStateTranscript(stateString) {
+  //   const result = [];
 
-//   if (!stateString || !stateString.trim()) {
-//     return result;
-//   }
+  //   if (!stateString || !stateString.trim()) {
+  //     return result;
+  //   }
 
-//   const trimmed = stateString.trim();
-//   let mainPart = trimmed;
-//   let scoreMatch = trimmed.match(/\{[^}]+\}$/);
+  //   const trimmed = stateString.trim();
+  //   let mainPart = trimmed;
+  //   let scoreMatch = trimmed.match(/\{[^}]+\}$/);
 
-//   // 1. Split semicolon blocks
-//   const segments = mainPart
-//     .split(";")
-//     .map(s => s.trim())
-//     .filter(Boolean);
+  //   // 1. Split semicolon blocks
+  //   const segments = mainPart
+  //     .split(";")
+  //     .map(s => s.trim())
+  //     .filter(Boolean);
 
-//   for (const seg of segments) {      // "X9+(n,n); O9@X9(n)!X9(n); "
-//     const change = seg + ";";
+  //   for (const seg of segments) {      // "X9+(n,n); O9@X9(n)!X9(n); "
+  //     const change = seg + ";";
 
-//     if (seg.includes("+")) {  // Placement.
-//       let parse = parsePlacementMove(change)
-//       if(parse.sq1 === parse.sq2) {
-//         console.log("Found degenerate self-collapse.");
-//       }
-//       else {
-//         result.push({
-//           type: "placement",
-//           change
-//         });
-//       }
-//     }
-//     else if (seg.includes("@")) { // Collapse.
-//       result.push({
-//         type: "collapse",
-//         change
-//       });
-//     }
-//   }
+  //     if (seg.includes("+")) {  // Placement.
+  //       let parse = parsePlacementMove(change)
+  //       if(parse.sq1 === parse.sq2) {
+  //         console.log("Found degenerate self-collapse.");
+  //       }
+  //       else {
+  //         result.push({
+  //           type: "placement",
+  //           change
+  //         });
+  //       }
+  //     }
+  //     else if (seg.includes("@")) { // Collapse.
+  //       result.push({
+  //         type: "collapse",
+  //         change
+  //       });
+  //     }
+  //   }
 
-//   // 2. Extract score block (if present)
-//   if (scoreMatch) { // Score.
-//     result.push({
-//       type: "score",
-//       change: scoreMatch[0]
-//     });
+  //   // 2. Extract score block (if present)
+  //   if (scoreMatch) { // Score.
+  //     result.push({
+  //       type: "score",
+  //       change: scoreMatch[0]
+  //     });
 
-//     mainPart = trimmed.slice(0, scoreMatch.index).trim();
-//   }
+  //     mainPart = trimmed.slice(0, scoreMatch.index).trim();
+  //   }
 
-//   return result;
-// }
+  //   return result;
+  // }
+*/
 
 export function processString(moves) { // Returns: [ {type, change}, {type, change}... ]
   console.log("processString", moves.length, "moves");

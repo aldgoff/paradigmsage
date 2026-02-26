@@ -21,6 +21,9 @@ import {
 
 import { analyzeStateString } from "./analyzeStateString.js";
 
+import {cellInLoop,
+        computeCollapseResolution,
+} from "./collapse.js";
 
 export function processStateString(stateString) {
   const placements = [];
