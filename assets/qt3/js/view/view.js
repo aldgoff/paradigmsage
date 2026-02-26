@@ -78,9 +78,12 @@ function drawLayoutBounds(ctx, layout = QT3_LAYOUT) {
         // The grid of spooky cells within each square.
         const cell = sq.spookyCells;
         for (const cells_key in cell) {
+          // ctx.fillStyle = "#ccc";  // Visible cells.
+          ctx.strokeStyle = "#fff";   // Invisible cells.
+          ctx.fillStyle = "#fff";
+
           const sub = cell[cells_key];
           ctx.strokeRect(sub.x, sub.y, sub.w, sub.h);
-          ctx.fillStyle = "#ccc";
           ctx.font = "12px sans-serif";
           ctx.fillText(cells_key, sub.x + 7, sub.y + 19);
         }
