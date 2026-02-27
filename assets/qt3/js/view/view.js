@@ -3,11 +3,11 @@
 import { QT3_LAYOUT } from "../layout.js";
 
 import {
-  drawControls,
+  drawButtons,
   handlePointerDown,
   handlePointerMove,
   handlePointerUp,
-  setControlHandler
+  setButtonHandler
 } from "./controlsView.js";
 import { 
   drawMoves 
@@ -20,6 +20,7 @@ import {
   drawBounds,
   drawEnsemble,
 } from "./ensemble.js";
+
 import {modelSetStateString,  // The state of the game is held in the model layer.
         modelGetStateString,
         modelSetStatusString,
@@ -30,8 +31,8 @@ const canvas = document.getElementById("qt3-game");
 const ctx = canvas.getContext("2d");
 
 export function initView() {
-  render();
   installPointerHandlers();
+  render();
 }
 
 export function updateView() {
@@ -44,15 +45,15 @@ function render() {
 
   drawLayoutBounds(ctx);                  // Local.
 
-  drawStatusString(ctx);
+  drawStatusString(ctx);                  // Local.
 
-  drawControls(ctx);                      // Imported from controlsView.js.
+  drawButtons(ctx);                       // Imported from controlsView.js.
 
   drawBoardGrid(ctx, QT3_LAYOUT);         // Local.
   drawSquareNumbers(ctx, QT3_LAYOUT);     // Local.
   drawMoves(ctx, modelGetStateString());  // Imported from moves.js.
 
-  drawQuantumListing(QT3_LAYOUT.moveListQT3, modelGetStateString()); //Imported from listings.js
+  drawQuantumListing(  QT3_LAYOUT.moveListQT3, modelGetStateString()); // Imported from listings.js.
   drawClassicalListing(QT3_LAYOUT.moveListCT3, modelGetStateString());
 
   drawStateString(modelGetStateString());
@@ -60,7 +61,7 @@ function render() {
   drawEnsemble(modelGetStateString());       // Imported from ensemble.
 }
 
-// Outline the visual objets to facilitate arranging them.
+// Outline visual objects (facilitates arranging them).
 function drawLayoutBounds(ctx, layout = QT3_LAYOUT) {
   ctx.save();
 
@@ -76,13 +77,11 @@ function drawLayoutBounds(ctx, layout = QT3_LAYOUT) {
         const sq = squares[squares_key];  // Square1, square2, square3, ... square9.
 
         // The grid of spooky cells within each square.
-        const cell = sq.spookyCells;
+        // const cell = sq.spookyCells; // Draw cells.
+        const cell = [];  // Don't.
         for (const cells_key in cell) {
-          // ctx.fillStyle = "#ccc";  // Visible cells.
-          ctx.strokeStyle = "#fff";   // Invisible cells.
-          ctx.fillStyle = "#fff";
-
           const sub = cell[cells_key];
+          ctx.fillStyle = "#ccc";  // Visible cells.
           ctx.strokeRect(sub.x, sub.y, sub.w, sub.h);
           ctx.font = "12px sans-serif";
           ctx.fillText(cells_key, sub.x + 7, sub.y + 19);
@@ -120,6 +119,7 @@ function drawLayoutBounds(ctx, layout = QT3_LAYOUT) {
       }
     else {                  // Outline & label graphical elements.
       const element = layout[layout_key];
+      // console.log("layout_key", layout_key); // statusBox only.
       ctx.strokeRect(element.x, element.y, element.w, element.h);
       ctx.fillStyle = "#888";
       ctx.font = "12px sans-serif";
@@ -135,34 +135,30 @@ function installPointerHandlers() {
   canvas.addEventListener("mousedown", e => {
     const { x, y } = getCanvasCoords(e);
 
-    // Controls get first priority.
-    if (handlePointerDown(x, y)) {
-      drawControls(ctx);
+    if (handlePointerDown(x, y)) {  // Buttons controlsView.js.
+      drawButtons(ctx);
       return;
       }
 
-    // Board is next.
-    if (handleSquareClicks(x, y)) {
+    if (handleSquareClicks(x, y)) { // Board clicks.
       return;
     }
 
     /* Next step planning */
-      // Move list (jump to a point in the game history, maybe just prev and next buttons?
-      // Ensemble (for classical game selection - populates the classical listing)?
-      // State string (for pasting before loading)?
+      // TODO: Ensemble (for classical game selection - populates the classical listing)?
   });
 
   canvas.addEventListener("mousemove", e => {
     const { x, y } = getCanvasCoords(e);
     if (handlePointerMove(x, y)) {
-      drawControls(ctx);
+      drawButtons(ctx);
     }
   });
 
   canvas.addEventListener("mouseup", e => {
     const { x, y } = getCanvasCoords(e);
     handlePointerUp(x, y);
-    drawControls(ctx);
+    drawButtons(ctx);
   });
   }
 
@@ -175,7 +171,7 @@ function getCanvasCoords(e) {
 }
 
 export function setViewControlHandler(fn) {
-  setControlHandler(fn);
+  setButtonHandler(fn);
 }
 
 /* Draw board and square numbers. */
@@ -189,46 +185,18 @@ function drawBoardGrid(ctx, layout) {
   ctx.save();
   ctx.fillStyle = color;
 
-  // --- Vertical double lines ---
-  for (let col = 1; col <= 2; col++) {
+  for (let col = 1; col <= 2; col++) {  // Vertical double lines.
     const offset = x + gridLines.offset + col * squareSize + (col - 1) * gap;
 
-    // first vertical line
-    ctx.fillRect(
-      offset,
-      y,
-      thickness,
-      length
-    );
-
-    // second vertical line
-    ctx.fillRect(
-      offset + separation,
-      y,
-      thickness,
-      length
-    );
+    ctx.fillRect(offset,              y, thickness, length);  // 1st line.
+    ctx.fillRect(offset + separation, y, thickness, length);  // 2nd line.
   }
 
-  // --- Horizontal double lines ---
-  for (let row = 1; row <= 2; row++) {
+  for (let row = 1; row <= 2; row++) {  // Horizontal double lines.
     const offset = y + gridLines.offset + row * squareSize + (row - 1) * gap;
 
-    // first horizontal line
-    ctx.fillRect(
-      x,
-      offset,
-      length,
-      thickness
-    );
-
-    // second horizontal line
-    ctx.fillRect(
-      x,
-      offset + separation,
-      length,
-      thickness
-    );
+    ctx.fillRect(x, offset,              length, thickness);  // 1st line.
+    ctx.fillRect(x, offset + separation, length, thickness);  // 2nd line.
   }
 
   ctx.restore();
@@ -255,13 +223,13 @@ function drawSquareNumbers(ctx, layout) {
   ctx.restore();
 }
 
-/* Code to respond to square/cell clicks. */
+/* Square/cell clicks. */
 let squareHandler = null;                 // Event triggered callback to
 export function setSquareHandler(fn) {    // respond to square/cell clicks.
   squareHandler = fn;
   }
 
-function handleSquareClicks(x, y) {       // Event driven, called by listener, invokes squareHandler.
+function handleSquareClicks(x, y) {       // View layer: event driven, called by canvas listener, invokes squareHandler.
   const squares = QT3_LAYOUT.board.squares;
 
   for (const squareKey in squares) {  // 9 squares.
@@ -289,10 +257,10 @@ function handleSquareClicks(x, y) {       // Event driven, called by listener, i
   return false;
 }
 
-/* Code to set and draw the state string. */
+/* State string. */
 export function setStateString(str) {
   modelSetStateString(str);
-  render();
+  render(); // Calls drawStateString(str).
   }
 
 function drawStateString(stateString) {
@@ -302,7 +270,7 @@ function drawStateString(stateString) {
   }
 }
 
-/* Code to set and draw the status string. */
+/* Status string. */
 export function setStatusString(str) {
   modelSetStatusString(str);
   drawStatusString(ctx);
@@ -332,7 +300,7 @@ function drawStatusString(ctx) {
   drawWrappedText(ctx, modelGetStatusString(), x + padding, y + 10, w-2 * padding, 20);
 
   ctx.restore();
-}
+  }
 
 function drawWrappedText(ctx, text, x, y, maxWidth, lineHeight) {
   const words = text.split(" ");
