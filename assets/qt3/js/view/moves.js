@@ -2,22 +2,26 @@
 
 import { QT3_LAYOUT } from "../layout.js";
 
+// The js-website drawing canvas.
+const canvas = document.getElementById("qt3-game");
+const ctx = canvas.getContext("2d");
+
 const QT3_PALETTE = {
   separable: "black",
-  entanglement: ["red","green","blue"],
+  entanglement: ["red", "green", "blue"],
   cycle: "purple",
   stem: "orange"
 };
 
-export function drawMoves(ctx, stateString) {
+export function drawMoves(stateString) {
   let placements = parsePlacements(stateString);
   let moveSets = separateResolvedAndUnresolved(placements, stateString);
   let colorMap = assignComponentColors(moveSets.unresolved);
 
   colorMap = overrideCycleColors(stateString, colorMap);
 
-  drawSpookyMarks(ctx, moveSets.unresolved, colorMap);
-  drawClassicalMarks(ctx, placements, stateString);
+  drawSpookyMarks(moveSets.unresolved, colorMap);
+  drawClassicalMarks(placements, stateString);
 }
 
 // Local functions called by drawMoves().
@@ -276,7 +280,7 @@ function overrideCycleColors(stateString, baseColorMap) {
   return colorMap;
 }
 
-function drawSpookyMarks(ctx, unresolved, colorMap) {
+function drawSpookyMarks(unresolved, colorMap) {
   if (!unresolved || unresolved.length === 0) return;
 
   ctx.save();
@@ -324,7 +328,7 @@ function drawSpookyMarks(ctx, unresolved, colorMap) {
   ctx.restore();
 }
 
-function drawClassicalMarks(ctx, placements, stateString) {
+function drawClassicalMarks(placements, stateString) {
   // Build resolved move → square map from stateString
   const collapseRegex = /!([XO])(\d+)\((\d)\)/g;
 

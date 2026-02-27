@@ -27,6 +27,7 @@ import {modelSetStateString,  // The state of the game is held in the model laye
         modelGetStatusString,
 } from "../model/model.js";
 
+// The js-website drawing canvas.
 const canvas = document.getElementById("qt3-game");
 const ctx = canvas.getContext("2d");
 
@@ -43,15 +44,15 @@ export function updateView() {
 function render() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  drawLayoutBounds(ctx);                  // Local.
+  drawLayoutBounds();                // Local.
 
-  drawStatusString(ctx);                  // Local.
+  drawStatusString();                // Local.
 
-  drawButtons(ctx);                       // Imported from controlsView.js.
+  drawButtons();                     // Imported from controlsView.js.
 
-  drawBoardGrid(ctx, QT3_LAYOUT);         // Local.
-  drawSquareNumbers(ctx, QT3_LAYOUT);     // Local.
-  drawMoves(ctx, modelGetStateString());  // Imported from moves.js.
+  drawBoardGrid(QT3_LAYOUT);         // Local.
+  drawSquareNumbers(QT3_LAYOUT);     // Local.
+  drawMoves(modelGetStateString());  // Imported from moves.js.
 
   drawQuantumListing(  QT3_LAYOUT.moveListQT3, modelGetStateString()); // Imported from listings.js.
   drawClassicalListing(QT3_LAYOUT.moveListCT3, modelGetStateString());
@@ -62,7 +63,7 @@ function render() {
 }
 
 // Outline visual objects (facilitates arranging them).
-function drawLayoutBounds(ctx, layout = QT3_LAYOUT) {
+function drawLayoutBounds(layout = QT3_LAYOUT) {
   ctx.save();
 
   ctx.setLineDash([6, 4]);
@@ -136,7 +137,7 @@ function installPointerHandlers() {
     const { x, y } = getCanvasCoords(e);
 
     if (handlePointerDown(x, y)) {  // Buttons controlsView.js.
-      drawButtons(ctx);
+      drawButtons();
       return;
       }
 
@@ -151,14 +152,14 @@ function installPointerHandlers() {
   canvas.addEventListener("mousemove", e => {
     const { x, y } = getCanvasCoords(e);
     if (handlePointerMove(x, y)) {
-      drawButtons(ctx);
+      drawButtons();
     }
   });
 
   canvas.addEventListener("mouseup", e => {
     const { x, y } = getCanvasCoords(e);
     handlePointerUp(x, y);
-    drawButtons(ctx);
+    drawButtons();
   });
   }
 
@@ -175,7 +176,7 @@ export function setViewControlHandler(fn) {
 }
 
 /* Draw board and square numbers. */
-function drawBoardGrid(ctx, layout) {
+function drawBoardGrid(layout) {
   const { x, y, w, h, gridLines } = layout.board;
   const { gap, thickness, separation, color } = gridLines;
 
@@ -202,7 +203,7 @@ function drawBoardGrid(ctx, layout) {
   ctx.restore();
   }
 
-function drawSquareNumbers(ctx, layout) {
+function drawSquareNumbers(layout) {
   ctx.save();
   ctx.fillStyle = "#666";
   ctx.font = "bold 10px monospace";
@@ -273,10 +274,10 @@ function drawStateString(stateString) {
 /* Status string. */
 export function setStatusString(str) {
   modelSetStatusString(str);
-  drawStatusString(ctx);
+  drawStatusString();
   }
 
-function drawStatusString(ctx) {
+function drawStatusString() {
   const { x, y, w, h } = QT3_LAYOUT.statusBox;
 
   ctx.save();
@@ -297,12 +298,12 @@ function drawStatusString(ctx) {
   const padding = 10;
   const textY = y + 4
 
-  drawWrappedText(ctx, modelGetStatusString(), x + padding, y + 10, w-2 * padding, 20);
+  drawWrappedText(modelGetStatusString(), x + padding, y + 10, w-2 * padding, 20);
 
   ctx.restore();
   }
 
-function drawWrappedText(ctx, text, x, y, maxWidth, lineHeight) {
+function drawWrappedText(text, x, y, maxWidth, lineHeight) {
   const words = text.split(" ");
   let line = "";
   let lines = [];

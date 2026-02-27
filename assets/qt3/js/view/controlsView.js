@@ -2,6 +2,10 @@
 
 import { QT3_LAYOUT } from "../layout.js";
 
+// The js-website drawing canvas.
+const canvas = document.getElementById("qt3-game");
+const ctx = canvas.getContext("2d");
+
 // Public hook for controller (passed through view.js).
 let onControlCommit = null;          // callback supplied by parent view
 export function setButtonHandler(fn) {
@@ -26,7 +30,7 @@ let gestureState = "IDLE";           // IDLE | PRESSED_INSIDE | PRESSED_OUTSIDE
 let activeButton = null;             // index into BUTTONS
 
 // Drawing: only used in view.js.
-export function drawButtons(ctx) {
+export function drawButtons() {
   const { x, y, w, gap, buttons } = QT3_LAYOUT.controls;
   console.log("Button", buttons, gap);
 
