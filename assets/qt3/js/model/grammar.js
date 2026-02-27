@@ -1,14 +1,17 @@
 // ./assets/qt3/js/model/grammar.js
 
-export const GRAMMAR = {  // TODO: deprecate.
-  placement:        /([XO])(\d)\+\((\d),(\d)\)/g,         // Under test.
-  collapseEvent:    /@([XO])(\d+)\((\d)\)/g,
-  collapseResolve:  /!([XO])(\d+)\((\d)\)/g,
-  spooky:           /([XO])(\d)\+\((\d)$/                 // Under test (dup of spooky in GRAMAR2).
-  // loop:          /\[(\d+)(?:\|(\d+))?\]/g;
-};
+export const GRAMMAR = {  // TODO: expand and condense the grammar for regex.
+  // ORIGINAL
+    spooky:           /([XO])(\d)\+\((\d)$/,          // Example: "X1(2" - player, turn, square. Under test (dup of spooky in GRAMAR2).
+    placement:        /([XO])(\d)\+\((\d),(\d)\)/g,   // Example: "X1(1,2); " - player, turn, sq1, sq2. Under test.
+    // loop:          /\[(\d+)(?:\|(\d+))?\]/g;
+    collapseEvent:    /@([XO])(\d+)\((\d)\)/g,
+    collapseResolve:  /!([XO])(\d)\((\d)\)/g,         // Example: "!X1(1)!O2(2); " - player, turn, square.
+    // trigger:
+    // collapse:
+    // degenerate:
+    // score:
 
-export const GRAMMAR2 = {
   // TOKEN-LEVEL (anchored)
     spookyToken:     /^([XO])(\d+)\+\((\d+)$/,
     placementToken:  /^([XO])(\d+)\+\((\d+),(\d+)\)$/,

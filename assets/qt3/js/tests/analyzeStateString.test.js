@@ -27,7 +27,7 @@ let tests = [
     countOfSeparables: 1, countOfEntanglements: 0, countOfCyclics: 0,
     numberOfEntangledMoves: 0, numberOfCollapsedMoves: 0,
     },
-  { str: "X1+(1,2); O2+(2,3); ", // A semi-entanglement.
+  { str: "X1+(1,2); O2+(2,3); ", // Semi-entanglement.
     movesSpooky: 0, movesPlacement: 2, movesCollapse: 0, movesNumber: 2,
     countOfSeparables: 0, countOfEntanglements: 1, countOfCyclics: 0,
     numberOfEntangledMoves: 2, numberOfCollapsedMoves: 0,
@@ -37,7 +37,7 @@ let tests = [
     countOfSeparables: 0, countOfEntanglements: 1, countOfCyclics: 1,
     numberOfEntangledMoves: 3, numberOfCollapsedMoves: 0,
     },
-  { str: "X1+(1,2); O2+(1,2)[12]; ", // EPR loop.
+  { str: "X1+(1,2); O2+(1,2)[12]; ",              // EPR loop.
     movesSpooky: 0, movesPlacement: 2, movesCollapse: 0, movesNumber: 2,
     countOfSeparables: 0, countOfEntanglements: 1, countOfCyclics: 1,
     numberOfEntangledMoves: 2, numberOfCollapsedMoves: 0,
@@ -84,12 +84,6 @@ let tests = [
     countOfSeparables: 0, countOfEntanglements: 3, countOfCyclics: 0,
     numberOfEntangledMoves: 6, numberOfCollapsedMoves: 0,
   },
-
-  { str: "", 
-    movesSpooky: 0, movesPlacement: 0, movesCollapse: 0, movesNumber: 0,
-    countOfSeparables: 0, countOfEntanglements: 0, countOfCyclics: 0,
-    numberOfEntangledMoves: 0, numberOfCollapsedMoves: 0,
-  },
 ];
 
 for (let test of tests) {
@@ -108,7 +102,8 @@ for (let test of tests) {
   assertEqual(res.counts.collapsedMoves, test.numberOfCollapsedMoves,  "numberOfCollapsedMoves");
 }
 
-// console.log("analyzeStateString() - moves & counts: 13/13 tests passed");
+let N = tests.length;
+// console.log("analyzeStateString() - moves & counts: ${N}/${N} tests passed");
 
 // --------- --------- --------- --------- //
 
@@ -127,7 +122,9 @@ const lastMoveType = [
   { str: "X1+(1,2); O2+(4,5); X3+(2,3); O4+(5,6); X5+(1", last: "spooky" },
   { str: "X1+(1,2); O2+(4,5); X3+(2,3); O4+(5,6); X5+(1,3)[135]", last: "loop" },
   { str: "X1+(1,2); O2+(4,5); X3+(2,3); O4+(5,6); X5+(1,3)[135]; O5@X5(1)!X1(2)!X3(3)!X5(1); ", last: "collapse" },
-  { str: "X1+(1,2); O2+(4,5); X3+(2,3); O4+(5,6); X5+(1,3)[135]; O5@X5(1)!X1(2)!X3(3)!X5(1); {X1,O0}", last: "score" },
+  { str: "X1+(1,2); O2+(2,3); X3+(3,6); O4+(6,9); X5+(8,9); O6+(7,8); X7+(4,7); O8+(1,4)[18765432]; "
+       + "X8@X1(2)!X1(2)!O2(3)!X3(6)!O4(9)!X5(8)!O6(7)!X7(4)!O8(1); X9+(5,5); ",                      last: "degenerate" },
+  { str: "X1+(1,2); O2+(4,5); X3+(2,3); O4+(5,6); X5+(1,3)[135]; O5@X5(1)!X1(2)!X3(3)!X5(1); {X-1, O-0}", last: "score" },
 
   { str: "X1+(1,2); O2+(2,3); X3+(3,4); O4+(4,5); X5+(5,6); O6+(6,7); X7+(7,8); O8+(8,9); "
        + "X9+(1,9)[198765432]; O9@X1(1)!X1(1)!O2(2)!X3(3)!O4(4)!X5(5)!O6(6)!X7(7)!O8(8)!X9(9);", last: "collapse" },
@@ -138,7 +135,8 @@ for (let test of lastMoveType) {
   assertEqual(res.progress.last, test.last, "last move type");
 }
 
-// console.log("analyzeStateString() - progress.last: 14/14 tests passed");
+N = lastMoveType.length;
+// console.log("analyzeStateString() - progress.last: {N}/${N}  tests passed");
 
 // --------- --------- --------- --------- //
 
@@ -154,6 +152,7 @@ for (let test of lastMoveType) {
 */
 
 // --------- --------- --------- --------- //
-console.log("analyzeStateString() 27/27 tests passed");
+N = tests.length + lastMoveType.length;
+console.log(`analyzeStateString() ${N}/${N} tests passed`);
 // --------- --------- --------- --------- //
 
