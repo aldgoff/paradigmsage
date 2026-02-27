@@ -77,16 +77,34 @@ function changeState() {
   processEvent();
 }
 
+/* Need these at top of every view file.
+  view.js           - 57
+  controlsView.js   - 25
+  ensemble.js       - 39
+  listings.js       - 25
+  moves.js          - 27
+  squareClicks.js   -  0
+ */
+const canvas = document.getElementById("qt3-game");
+const ctx = canvas.getContext("2d");
+
 function updateView() {
   const statusString = modelGetStatusString();
   const stateString = modelGetStateString();
 
-  drawStatusString(statusString);
+  drawLayoutBounds(ctx);
+  drawStatusString(ctx, statusString);
+  drawButtons(ctx)
 
-  drawMarks(stateString);
-  drawQuantumMoves(stateString);
-  drawClassicalMoves(stateString);
+  drawBoardGrid(ctx, QT3_LAYOUT);
+  drawSquareNumbers(ctx, QT3_LAYOUT);
+  drawMarks(ctx, stateString);
+
+  drawQuantumMoves(QT3_LAYOUT.moveListQT3, stateString);
+  drawClassicalMoves(QT3_LAYOUT.moveListQT3, stateString);
+
   drawStateString(stateString);
+
   drawEnsemble(stateString);
 }
 
@@ -108,4 +126,11 @@ Then:
   loadGame() becomes:
     call processStateString()
 */
+
+/* State string validity hierarchy according to AI:
+  Syntax only           - grammar.js
+  Token extraction      - parse.js
+  Structural Derivation - processStateString.js
+  Game law              - validateStateString.js
+ */
 

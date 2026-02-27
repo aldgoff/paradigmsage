@@ -6,7 +6,7 @@
  * @returns {progress, moves, counts, outcome}  // 
 */
 
-import {GRAMMAR} from "./grammer.js";
+import {GRAMMAR} from "./grammar.js";
 import {buildSquareMap} from "./structure.js";
 import { evaluateGame } from "./scoring.js";
 
@@ -129,7 +129,7 @@ export function parseHalfState(state) {
   }
 
   const placementRegex = new RegExp(GRAMMAR.placement);
-  const spookyRegex    = /([XO])(\d+)\+\((\d)$/;  // trailing incomplete
+  const spookyRegex    = new RegExp(GRAMMAR.spooky);
 
   let match;
 
@@ -209,7 +209,7 @@ export function countSpookyMoves(state) {
 
   // Match trailing incomplete placement:
   // X1+(5
-  const spookyRegex = /([XO])(\d+)\+\((\d)$/;
+  const spookyRegex = new RegExp(GRAMMAR.spooky);
 
   const match = state.match(spookyRegex);
 
@@ -501,48 +501,48 @@ export function listPlacementsWithCollapse(stateString) { // Used in view/listin
     });
 }
 
-export function getLastMoveType(stateString) {  // empty|spooky|placement|loop|collapse|score.
-  if (!stateString || stateString.trim() === '') {
-    return "empty";
+export function getLastMoveType(stateString) { // empty|spooky|placement|loop|collapse|degenerate|score.
+  if (!stateString) return "empty";
+
+  const trimmed = stateString.trim();
+  if (!trimmed) return "empty";
+
+  // Extract last segment without full split
+  let last;
+  const idx = trimmed.lastIndexOf(';');
+
+  if (idx === -1) {
+    last = trimmed;
+  } else {
+    last = trimmed.slice(idx + 1).trim();
+    if (!last) {
+      const before = trimmed.slice(0, idx);
+      const prev = before.lastIndexOf(';');
+      last = before.slice(prev + 1).trim();
+    }
   }
 
-  const elements = stateString
-    .split(';')
-    .map(s => s.trim())
-    .filter(Boolean);
+  if (!last) return "empty";
 
-  if (elements.length === 0) {
-    return "empty";
-  }
+  if (GRAMMAR.spookyToken.test(last))    return "spooky";
+  if (GRAMMAR.placementToken.test(last)) {  // Placement or degenerate
+    const match = GRAMMAR.placementToken.exec(last);
+    const player = match[1];
+    const turn   = Number(match[2]);
+    const sq1    = Number(match[3]);
+    const sq2    = Number(match[4]);
 
-  const last = elements[elements.length - 1];
+    if( (player === 'X')
+    &&  (turn === 9)
+    &&  (sq1 === sq2))
+      return "degenerate";
 
-  // 1. Score  → contains {...}
-  if (/\{[^}]+\}/.test(last)) {
-    return "score";
-  }
-
-  // 2. Collapse → contains !  OR  contains @
-  if (last.includes('!') || last.includes('@')) {
-    return "collapse";
-  }
-
-  // 3. Loop → contains [...]
-  if (/\[[^\]]+\]/.test(last)) {
-    return "loop";
-  }
-
-  // 4. Spooky → unfinished placement like O4+(5
-  if (/^[XO]\d+\+\(\d+$/.test(last)) {
-    return "spooky";
-  }
-
-  // 5. Placement → full (a,b)
-  if (/^[XO]\d+\+\(\d+,\d+\)$/.test(last)) {
     return "placement";
-  }
+    }
+  if (GRAMMAR.loopToken.test(last))      return "loop";
+  if (GRAMMAR.collapseToken.test(last))  return "collapse";
+  if (GRAMMAR.scoreToken.test(last))     return "score";
 
-  // Nothing matched → invalid grammar
   throw new Error("Unrecognized move element: " + last);
 }
 

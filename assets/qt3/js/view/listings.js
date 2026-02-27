@@ -2,6 +2,7 @@
 
 import { listPlacementsWithCollapse } from "../model/analyzeStateString.js";
 
+// The js-website drawing canvas.
 const canvas = document.getElementById("qt3-game");
 const ctx = canvas.getContext("2d");
 

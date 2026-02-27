@@ -12,7 +12,16 @@ export const QT3_LAYOUT = {
     x: 5,
     y: 100,
     w: 145,
-    h: 290
+    h: 290,
+    gap: 10,
+    buttons: [
+      { label: "New Game",  x: 5, y: 100, w: 130, h: 40, enabled: true },
+      { label: "Rerun (R)", x: 5, y: 150, w: 130, h: 30, enabled: false },
+      { label: "Undo (Z)",  x: 5, y: 190, w: 130, h: 30, enabled: false },
+      { label: "Redo (^Z)", x: 5, y: 230, w: 130, h: 30, enabled: false },
+      { label: "Load",      x: 5, y: 270, w: 130, h: 40, enabled: true },
+      { label: "Help",      x: 5, y: 320, w: 130, h: 40, enabled: true },
+    ]
     },
 
   board: {  // QT3 board (spatial truth, centered)

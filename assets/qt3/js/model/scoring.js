@@ -1,6 +1,6 @@
 // ./assets/qt3/js/model/scoring.js
 
-import {GRAMMAR} from "./grammer.js";
+import {GRAMMAR} from "./grammar.js";
 
 export function hasLegalMoves(stateString) {
   /** Returns true if at least one legal placement move remains.

@@ -2,66 +2,61 @@
 
 import { QT3_LAYOUT } from "../layout.js";
 
+// The js-website drawing canvas.
+const canvas = document.getElementById("qt3-game");
+const ctx = canvas.getContext("2d");
+
 // Public hook for controller (passed through view.js).
-export function setControlHandler(fn) {
+let onControlCommit = null;          // callback supplied by parent view
+export function setButtonHandler(fn) {
   onControlCommit = fn;
 }
-let onControlCommit = null;          // callback supplied by parent view
 
 // Button geometry (view-owned).
-const BUTTONS = [
-  { label: "New Game", enabled: true  },
-  { label: "Rerun",    enabled: false },
-  { label: "Undo",     enabled: false },
-  { label: "Redo",     enabled: false },
-  { label: "Load",     enabled: true  },
-  { label: "Help",     enabled: true  }
-  ];
-
-const BTN_H = 40;
-const GAP   = 10;
+const BUTTONS = QT3_LAYOUT.controls.buttons;
 
 // Gesture state.
 let gestureState = "IDLE";           // IDLE | PRESSED_INSIDE | PRESSED_OUTSIDE
 let activeButton = null;             // index into BUTTONS
 
 // Drawing: only used in view.js.
-export function drawControls(ctx) {
-  const { x, y, w } = QT3_LAYOUT.controls;
+export function drawButtons() {
+  const { x, y, w, gap, buttons } = QT3_LAYOUT.controls;
 
   ctx.save();
+
   ctx.font = "14px sans-serif";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
 
-  BUTTONS.forEach((btn, i) => {
-    const bx = x;
-    const by = y + i * (BTN_H + GAP);
+  buttons.forEach((button, i) => {
+    const isActive = (gestureState === "PRESSED_INSIDE" && activeButton === i);
 
-    const isActive =
-      (gestureState === "PRESSED_INSIDE" && activeButton === i);
-
-    ctx.fillStyle = btn.enabled
-      ? (isActive ? "#dbe9ff" : "#f4f4f4")
-      : "#dddddd";
-
-    ctx.strokeStyle = btn.enabled
-      ? (isActive ? "#4a90e2" : "#999999")
-      : "#bbbbbb";
-
-    ctx.fillRect(bx, by, w, BTN_H);
-    ctx.strokeRect(bx, by, w, BTN_H);
-
-    ctx.fillStyle = btn.enabled ? "#000" : "#777";
-    ctx.fillText(btn.label, bx + w / 2, by + BTN_H / 2);
+    drawButton(button, isActive);
   });
 
   ctx.restore();
 }
 
+function drawButton(button, isActive) {
+  ctx.fillStyle = button.enabled
+    ? (isActive ? "#dbe9ff" : "#f4f4f4")
+    : "#dddddd";
+
+  ctx.strokeStyle = button.enabled
+    ? (isActive ? "#4a90e2" : "#999999")
+    : "#bbbbbb";
+
+  ctx.fillRect(button.x, button.y, button.w, button.h);
+  ctx.strokeRect(button.x, button.y, button.w, button.h);
+
+  ctx.fillStyle = button.enabled ? "#000" : "#777";
+  ctx.fillText(button.label, button.x + button.w / 2, button.y + button.h / 2);
+}
+
 // Pointer lifecycle: only used in view.js.
 export function handlePointerDown(x, y) {
-  const hit = hitTestButton(x, y);
+  const hit = hitButtonQ(x, y);
   if (hit !== null && BUTTONS[hit].enabled) {
     activeButton = hit;
     gestureState = "PRESSED_INSIDE";
@@ -74,7 +69,7 @@ export function handlePointerMove(x, y) {
   if (gestureState === "IDLE") return false;
 
   const prevState = gestureState;
-  const hit = hitTestButton(x, y);
+  const hit = hitButtonQ(x, y);
 
   if (gestureState === "PRESSED_INSIDE" && hit !== activeButton) {
     gestureState = "PRESSED_OUTSIDE";
@@ -103,18 +98,17 @@ export function handlePointerUp(x, y) {
   return committed;
 }
 
-// Hit testing.
-function hitTestButton(x, y) {
-  const { x: bx, y: by, w } = QT3_LAYOUT.controls;
-
+// Hit button?
+function hitButtonQ(x_pt, y_pt) {
   for (let i = 0; i < BUTTONS.length; i++) {
-    const top = by + i * (BTN_H + GAP);
+    const { x, y, w, h } = BUTTONS[i];
 
-    if ((bx <= x && x <= bx + w)
-    && (top <= y && y <= top + BTN_H)) {
+    if((x <= x_pt && x_pt <= x + w)
+    && (y <= y_pt && y_pt <= y + h)) {
       return i;
     }
   }
+
   return null;
 }
 

@@ -20,7 +20,7 @@ import {initView,
         setStatusString,
 } from "../view/view.js";
 import {setSquareHandler} from "../view/view.js";
-import {setControlHandler} from "../view/controlsView.js";
+import {setButtonHandler} from "../view/controlsView.js";
 
 export function initController () {
   console.log("Controller: qt3/js/controller/controller.js");
@@ -31,7 +31,7 @@ export function initController () {
   modelSetStateString("");
 
   // Callbacks so controller can change state by button or by mouse clicks.
-  setControlHandler( button => {    // Registers function with view so it can be called on button events.
+  setButtonHandler( button => {    // Registers function with view so it can be called on button events.
     handleButtonRelease(button);
     });
 

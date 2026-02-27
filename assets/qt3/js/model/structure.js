@@ -1,6 +1,6 @@
 // ./assets/qt3/js/model/structure.js
 
-import {GRAMMAR} from "./grammer.js";
+import {GRAMMAR} from "./grammar.js";
 
 import {
   parseStateTranscript,

@@ -201,14 +201,14 @@ X1+(1,2); O2+(1,2)[12]; X2@X1(1)!X1(1)!O2(2); X3+(4,5); O4+(4,5)[34]; X4@X3(5)!X
 */
 
 export function processString(moves) { // Returns: [ {type, change}, {type, change}... ]
-  console.log("processString", moves.length, "moves");
+  // console.log("processString", moves.length, "moves");
 
   let growingStateString = "";
   let state;
 
   for(const move of moves) {
     growingStateString += `${move.change} `;
-    console.log(growingStateString);
+    // console.log(growingStateString);
     buildEntanglementNetwork(move); // { type, change }.
   }
 }
@@ -224,11 +224,11 @@ function buildEntanglementNetwork(move) { // { type, change }.
   let cycle = "";
   let stems = "";
 
-  console.log("buildEntanglementNetwork", move);
+  // console.log("buildEntanglementNetwork", move);
 
   let statusString = "";
   if(     move.type === "spooky") {     // Working.
-    console.log("spooky");
+    // console.log("spooky");
 
     // Are any of these even used?
       parse = parseSpookyMove(move.change);
@@ -242,7 +242,7 @@ function buildEntanglementNetwork(move) { // { type, change }.
                  + `${player}: place your second spooky mark or undo the first one.`
     }
   else if(move.type === "placement") {  // Working.
-    console.log("placement");
+    // console.log("placement");
 
     parse = parsePlacementMove(move.change);
 
@@ -257,7 +257,7 @@ function buildEntanglementNetwork(move) { // { type, change }.
                  + `place a spooky mark in any uncollapsed square.`
     }
   else if(move.type === "loop") {       // Working.
-    console.log("loop");
+    // console.log("loop");
 
     parse = parseLoopMove(move.change);
 
@@ -282,24 +282,24 @@ function buildEntanglementNetwork(move) { // { type, change }.
     // statusString = "You must click on a purple spooky mark, orange marks are stems, their classical value predetermined."
     }
   else if(move.type === "collapse") {
-    console.log("collapse");
+    // console.log("collapse");
 
     }
   else if(move.type === "degenerate") {
-    console.log("degenerate");
+    // console.log("degenerate");
 
     }
   else if(move.type === "score") {
-    console.log("score");
+    // console.log("score");
     statusString = "Game is over. New Game|Rerun|Undo|Load.";
     }
   else {
-    console.log("Oops");
+    // console.log("Oops");
   }
 
-  console.log("placements", placements);
-  console.log("cycleMoves", cycleMoves);
-  console.log("stemMoves",  stemMoves );
+  // console.log("placements", placements);
+  // console.log("cycleMoves", cycleMoves);
+  // console.log("stemMoves",  stemMoves );
 
   modelSetStatusString(statusString);
 }
@@ -337,7 +337,7 @@ export function processClick(intent) {
   let statusString = "";
 
   const state = analyzeStateString(modelGetStateString());
-  console.log("state", state);
+  // console.log("state", state);
 
   let turn = state.progress.turn + 1;
   let player = (turn%2) ? 'X' : 'O'
@@ -452,9 +452,9 @@ export function processClick(intent) {
 
   console.log(modelGetStateString());
   
-  console.log("placements", placements);
-  console.log("cycleMoves", cycleMoves);
-  console.log("stemMoves",  stemMoves );
+  // console.log("placements", placements);
+  // console.log("cycleMoves", cycleMoves);
+  // console.log("stemMoves",  stemMoves );
 
   return {stateStr: modelGetStateString(), statusStr: statusString};
 }
