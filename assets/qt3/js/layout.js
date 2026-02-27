@@ -1,11 +1,13 @@
 // qt3/layout.js
 
 export const QT3_LAYOUT = {
-  statusBox: {  // Status / narration (always visible, top)
+  statusBox: {  // Status / narration (always visible, top). Implicit error box as well.
     x: 0,
     y: 0,
     w: 870,
-    h: 80
+    h: 76,
+    pad: 10,
+    lineHeight: 20,
   },
 
   controls: {  // Controls (meta-actions, left column)

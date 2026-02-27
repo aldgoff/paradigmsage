@@ -42,7 +42,10 @@ function render() {
 
   drawLayoutBounds();                // Local.
 
-  drawStatusString();                // Local.
+  // const errorStringTest = "Testing error string..."
+  const errorStringTest = ""
+  drawStatusString2(errorStringTest, modelGetStatusString());                // Local.
+  // drawStatusString();                // Local.
 
   drawButtons();                     // Imported from controlsView.js.
 
@@ -273,6 +276,37 @@ export function setStatusString(str) {
   drawStatusString();
   }
 
+function drawStatusString2(errorText, statusText) {
+  const { x, y, w, h, pad, lineHeight } = QT3_LAYOUT.statusBox;
+
+  ctx.save();
+
+  // Box background
+  ctx.fillStyle = "#fff";
+  ctx.fillRect(x, y, w, h);
+  ctx.strokeStyle = "#555";
+  ctx.strokeRect(x, y, w, h);
+
+  // Text
+  ctx.font = "14px monospace";
+  ctx.textBaseline = "top";
+  ctx.textAlign = "left";
+
+  let currentY = y + pad;
+
+  if (errorText) {
+    ctx.fillStyle = "#aa0000";
+    ctx.fillText(errorText, x + pad, currentY);
+    currentY += lineHeight;
+  }
+
+  ctx.fillStyle = "#000000";
+  // ctx.fillText(statusText, x + pad, y + pad + skipOverError);
+  drawWrappedText(statusText, x + pad, currentY, w-2 * pad, lineHeight);
+
+  ctx.restore();
+}
+
 function drawStatusString() {
   const { x, y, w, h } = QT3_LAYOUT.statusBox;
 
@@ -297,7 +331,7 @@ function drawStatusString() {
   drawWrappedText(modelGetStatusString(), x + padding, y + 10, w-2 * padding, 20);
 
   ctx.restore();
-  }
+}
 
 function drawWrappedText(text, x, y, maxWidth, lineHeight) {
   const words = text.split(" ");

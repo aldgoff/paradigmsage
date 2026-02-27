@@ -1,4 +1,5 @@
 .
+├── ~$project.xlsx
 ├── AI
 │   ├── builder_instructions.md
 │   └── custom_gpt_link
@@ -8,6 +9,7 @@
 │   ├── jsconfig.json
 │   └── qt3
 │       └── js
+│           ├── arch.js
 │           ├── controller
 │           │   └── controller.js
 │           ├── layout.js
@@ -20,11 +22,14 @@
 │           │   ├── addSpookyMove.js
 │           │   ├── analyzeStateString.js
 │           │   ├── barrel.js
+│           │   ├── collapse.js
 │           │   ├── cycles.js
-│           │   ├── grammer.js
+│           │   ├── grammar.js
 │           │   ├── model.js
+│           │   ├── parse.js
 │           │   ├── process.js
 │           │   ├── scoring.js
+│           │   ├── status.js
 │           │   ├── structure.js
 │           │   └── subSpookyMove.js
 │           ├── tests
@@ -35,7 +40,10 @@
 │           │   ├── addSpookyMove.test.js
 │           │   ├── analyzeStateString.test.js
 │           │   ├── classicalT3.test.js
+│           │   ├── collapse.test.js
+│           │   ├── grammar.test.js
 │           │   ├── helpers.js
+│           │   ├── parse.test.js
 │           │   ├── scoring.test.js
 │           │   └── subSpookyMove.test.js
 │           └── view
@@ -43,6 +51,7 @@
 │               ├── ensemble.js
 │               ├── listings.js
 │               ├── moves.js
+│               ├── squareClicks.js
 │               └── view.js
 ├── CAP-LOG.md
 ├── CAPTURE-LOG.md
@@ -139,6 +148,7 @@
 ├── NAV-INVARIANTS.md
 ├── outline
 ├── POP-MAP.md
+├── project.xlsx
 ├── QM-QFT-RED-HERRINGS.md
 ├── README.md
 ├── static
@@ -232,4 +242,4 @@
 ├── themes
 └── WORK-INVENTORY.md
 
-43 directories, 189 files
+43 directories, 199 files
