@@ -127,3 +127,10 @@ Then:
     call processStateString()
 */
 
+/* State string validity hierarchy according to AI:
+  Syntax only           - grammar.js
+  Token extraction      - parse.js
+  Structural Derivation - processStateString.js
+  Game law              - validateStateString.js
+ */
+
