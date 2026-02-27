@@ -14,13 +14,21 @@ export const QT3_LAYOUT = {
     w: 145,
     h: 290,
     gap: 10,
+    // buttons: [
+    //   { label: "New Game", x: 5, y: 100, w: 130, h: 40, enabled: true },
+    //   { label: "Rerun",    x: 5, y: 150, w: 130, h: 40, enabled: false },
+    //   { label: "Undo",     x: 5, y: 200, w: 130, h: 40, enabled: false },
+    //   { label: "Redo",     x: 5, y: 250, w: 130, h: 40, enabled: false },
+    //   { label: "Load",     x: 5, y: 300, w: 130, h: 40, enabled: true },
+    //   { label: "Help",     x: 5, y: 350, w: 130, h: 40, enabled: true },
+    // ],
     buttons: [
-      { label: "New Game", x: 5, y:   0, w: 130, h: 40, enabled: true },
-      { label: "Rerun",    x: 5, y:  50, w: 130, h: 30, enabled: true },
-      { label: "Undo",     x: 5, y:  90, w: 130, h: 30, enabled: true },
-      { label: "Redo",     x: 5, y: 130, w: 130, h: 30, enabled: true },
-      { label: "Load",     x: 5, y: 170, w: 130, h: 40, enabled: true },
-      { label: "Help",     x: 5, y: 220, w: 130, h: 40, enabled: true },
+      { label: "New Game", x: 5, y: 100, w: 130, h: 40, enabled: true },
+      { label: "Rerun (R)",    x: 5, y: 150, w: 130, h: 30, enabled: false },
+      { label: "Undo (Z)",     x: 5, y: 190, w: 130, h: 30, enabled: false },
+      { label: "Redo (^Z)",     x: 5, y: 230, w: 130, h: 30, enabled: false },
+      { label: "Load",     x: 5, y: 270, w: 130, h: 40, enabled: true },
+      { label: "Help",     x: 5, y: 320, w: 130, h: 40, enabled: true },
     ]
     },
 
