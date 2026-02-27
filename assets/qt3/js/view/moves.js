@@ -25,7 +25,7 @@ export function drawMoves(stateString) {
 }
 
 // Local functions called by drawMoves().
-function parsePlacements(stateString) { 
+function parsePlacements(stateString) {                           // return placements
   const placements = [];  // [{ move, player, squares:[a,b] }]
 
   if (!stateString || stateString.trim() === "") {
@@ -60,9 +60,9 @@ function parsePlacements(stateString) {
   }
 
   return placements;
-}
+  } 
 
-function separateResolvedAndUnresolved(placements, stateString) {
+function separateResolvedAndUnresolved(placements, stateString) { // return { resolved, unresolved }
   const resolvedMoves = new Set();
 
   // Find all collapse targets: !X3(5)
@@ -85,13 +85,11 @@ function separateResolvedAndUnresolved(placements, stateString) {
     }
   }
 
-  return { resolved, unresolved };
-}
+  return { resolved, unresolved };  // Unresolved is used, but not resolved.
+  }
 
-function assignComponentColors(unresolved) {
-  /**
-   * Chronological entanglement reconstruction.
-   *
+function assignComponentColors(unresolved) {                      // return moveColorMap
+  /* Chronological entanglement reconstruction.
    * Rules:
    *  - Separable → black
    *  - First entanglement born → red
@@ -117,7 +115,6 @@ function assignComponentColors(unresolved) {
     .sort((a, b) => a.move - b.move);
 
   for (const placement of placements) {
-
     const { move, squares } = placement;
     const [a, b] = squares;
 
@@ -150,7 +147,6 @@ function assignComponentColors(unresolved) {
 
     // CASE 2 — Neighbors exist but none in components → birth of new entanglement
     else if (touchedComponents.size === 0) {
-
       const color = palette[nextPaletteIndex] ||
                     palette[palette.length - 1];
 
@@ -195,7 +191,6 @@ function assignComponentColors(unresolved) {
 
     // CASE 4 — Connects multiple components → merge
     else {
-
       // Find earliest-born component
       let earliestCompId = null;
       let earliestBirth = Infinity;
@@ -241,11 +236,11 @@ function assignComponentColors(unresolved) {
   }
 
   return moveColorMap;
-}
+  }
 
-function overrideCycleColors(stateString, baseColorMap) {
+function overrideCycleColors(stateString, moveColorMap) {         // Return color map.
   // Clone base map so we do not mutate it
-  const colorMap = { ...baseColorMap };
+  const colorMap = { ...moveColorMap };
 
   // Match bracket section: [243|1] or [243]
   const bracketRegex = /\[(\d+)(?:\|(\d+))?\]/;
@@ -254,7 +249,6 @@ function overrideCycleColors(stateString, baseColorMap) {
   if (matches.length === 0) return colorMap;
 
   const match = matches[matches.length - 1];
-
 
   if (!match) {
     return colorMap;  // no cycle annotation present
@@ -278,7 +272,7 @@ function overrideCycleColors(stateString, baseColorMap) {
   }
 
   return colorMap;
-}
+  }
 
 function drawSpookyMarks(unresolved, colorMap) {
   if (!unresolved || unresolved.length === 0) return;
@@ -326,7 +320,7 @@ function drawSpookyMarks(unresolved, colorMap) {
   }
 
   ctx.restore();
-}
+  }
 
 function drawClassicalMarks(placements, stateString) {
   // Build resolved move → square map from stateString
@@ -346,7 +340,6 @@ function drawClassicalMarks(placements, stateString) {
   ctx.save();
 
   for (const moveStr in resolvedMap) {
-
     const move = Number(moveStr);
     const squareNum = resolvedMap[move];
 

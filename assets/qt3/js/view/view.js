@@ -2,23 +2,19 @@
 
 import { QT3_LAYOUT } from "../layout.js";
 
-import {
-  drawButtons,
-  handlePointerDown,
-  handlePointerMove,
-  handlePointerUp,
-  setButtonHandler
+import {drawButtons,
+        handlePointerDown,
+        handlePointerMove,
+        handlePointerUp,
+        setButtonHandler
 } from "./controlsView.js";
-import { 
-  drawMoves 
+import {drawMoves 
 } from "./moves.js";
-import {
-  drawQuantumListing,
-  drawClassicalListing,
+import {drawQuantumListing,
+        drawClassicalListing,
 } from "./listings.js";
-import {
-  drawBounds,
-  drawEnsemble,
+import {drawBounds,
+        drawEnsemble,
 } from "./ensemble.js";
 
 import {modelSetStateString,  // The state of the game is held in the model layer.
