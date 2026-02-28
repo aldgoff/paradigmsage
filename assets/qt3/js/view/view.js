@@ -21,6 +21,8 @@ import {modelSetStateString,  // The state of the game is held in the model laye
         modelGetStateString,
         modelSetStatusString,
         modelGetStatusString,
+        modelSetErrorString,
+        modelGetErrorString,
 } from "../model/model.js";
 
 // The js-website drawing canvas.
@@ -42,9 +44,7 @@ function render() {
 
   drawLayoutBounds();                // Local.
 
-  // const errorStringTest = "Testing error string..."
-  const errorStringTest = ""
-  drawStatusString2(errorStringTest, modelGetStatusString());                // Local.
+  drawStatusString2(modelGetErrorString(), modelGetStatusString());                // Local.
   // drawStatusString();                // Local.
 
   drawButtons();                     // Imported from controlsView.js.
@@ -273,10 +273,10 @@ function drawStateString(stateString) {
 /* Status string. */
 export function setStatusString(str) {
   modelSetStatusString(str);
-  drawStatusString();
+  render();
   }
 
-function drawStatusString2(errorText, statusText) {
+export function drawStatusString2(errorText, statusText) {
   const { x, y, w, h, pad, lineHeight } = QT3_LAYOUT.statusBox;
 
   ctx.save();

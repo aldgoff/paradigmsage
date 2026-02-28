@@ -2,6 +2,7 @@
 
 import {analyzeStateString} from "./analyzeStateString.js";
 import {getLastMoveType} from "./analyzeStateString.js";
+import {getLastMove} from "./analyzeStateString.js";
 import {evaluateGame} from "./scoring.js";
 import {isSquareClassical} from "./structure.js";
 import {parseStateTranscript,
@@ -34,7 +35,12 @@ import {modelSetStateString,
         modelGetStateString,
         modelSetStatusString,
         modelGetStatusString,
+        modelSetErrorString,
+        modelGetErrorString,
 } from "./model.js";
+import {ERROR,
+        STATUS,
+} from "./status.js";
 
 import {processStateString} from "./structure.js";
 
@@ -45,7 +51,6 @@ import {processStateString} from "./structure.js";
   statusString = "That square has collapsed. Choose another.";
   statusString = `Last move self-collapsed (degenerate). Game over: ${outcome.desc}.`;
   statusString = `Spooky mark undone. ${player}: restart your placement move, place a spooky mark in any uncollapsed square.`
-  statusString = `Continue with rest of placement move, ${player}: place your second spooky mark or undo the first one.`
   statusString = `${collapsePlayer} must first collapse the cyclic entanglement. Click on a purple spooky mark.`
   statusString = `${nextPlayer}: begin your next placement move, place a spooky mark in any uncollapsed square.`
   statusString = `Game over: ${outcome.desc}.`;
@@ -77,6 +82,7 @@ export function newGame() {
 
 export function loadGame(stateString) {
   let state = processStateString(stateString);
+  console.log("state", state);
   /* return {
       placements,
       cycleMoves,
@@ -94,35 +100,54 @@ export function loadGame(stateString) {
   const len = placements.length;
   let player = (len%2) ? 'X' : 'O' ;
 
-  modelSetStateString(stateString);
+  // modelSetStateString(stateString);
+  
   // empty|spooky|placement|loop|collapse|score.
   const last = getLastMoveType(stateString);
+
+  console.log("last", last);
+  /* List of errors we can't trap for yet.
+    X1+(1,2); O2+(1,2) - missing loop
+    X1+(1,2); O2+(1,2)[12]; X2@X1(1)!X1(1)!O2(2); X3+(4,5); O4+(4,5)[34]; X4@O4(4)! - missing collapse
+    Basically, any incomplete token.
+    */
+
   let statusString = "";
+  let errorString = "";
   switch(last) {
     case 'empty':
+      errorString = ERROR["emptyLoad"]();
       player = (len%2) ? 'O' : 'X' ;
-      statusString = `Player ${player}: place first spooky mark (click it again to change your mind).`;
+      statusString = STATUS["playOrLoad"](player);
       break;
     case 'spooky':
       player = (len%2) ? 'O' : 'X' ;
-      statusString = `Continue with rest of placement move, ${player}: place your second spooky mark or undo the first one.`;
+      statusString = STATUS["spooky2"](player);
       break;
     case 'placement':
       player = (len%2) ? 'O' : 'X' ;
-      statusString = `${player}: begin your next placement move, place a spooky mark in any uncollapsed square.`;
+      statusString = STATUS["placement"](player);
       break;
     case 'loop':
       player = (len%2) ? 'O' : 'X' ;
-      statusString = `${player} must first collapse the cyclic entanglement. Click on a purple spooky mark.`;
+      statusString = STATUS["collapse"](player);
       break;
     case 'collapse':
-      statusString = `${player}: begin your next placement move, place a spooky mark in any uncollapsed square.`;
+      statusString = STATUS["placement"](player);
       break;
     case 'score':
-      statusString = "Game is over. New Game, Rerun, Undo, Load.";
+      let scoreStr = getLastMove(stateString);
+      let score = STATUS["score"](scoreStr);
+      let options = STATUS["gameOver"]();
+      statusString = score + ". Options: " + options;
+      break;
+    case 'invalid':
+      statusString = ERROR["invalidStateString"]();
       break;
   }
-  modelSetStatusString(statusString);
+  modelSetStatusString(statusString); // Erases error string.
+  modelSetErrorString(errorString);
+  modelSetStateString(stateString);
 }
 
 /* This state string...
