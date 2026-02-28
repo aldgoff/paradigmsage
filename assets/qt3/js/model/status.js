@@ -24,6 +24,10 @@ export const ERROR = Object.freeze({
     "Game is over.",
 
   // These will not occur during play, but may occur during load.
+  emptyLoad: () =>
+    "No game in the state string box to load.",
+
+  // Still to put under test.
   illegalDegenerate: () =>
     "Illegal degenerate placement.",
 
@@ -52,7 +56,7 @@ export const STATUS = Object.freeze({
     `Continue with rest of placement move. ${player}, place your second spooky mark, or undo the first one.`,
 
   placement: (player) =>
-    `${player}, begin your next placement move, place a spooky mark in any uncollapsed square.`,
+    `${player}, begin your next placement move, place a pair of spooky marks in any pair of uncollapsed squares.`,
 
   collapse: (player) =>
     `Loop detected. ${player}, select a purple spooky mark to collapse it into that square.`,
@@ -80,6 +84,10 @@ export const STATUS = Object.freeze({
 
   gameOver: () =>
     "New Game|Rerun|Undo|Load.",
+
+  // Load specific.
+  playOrLoad: () =>
+    "Start playing or try something like this, 'X1+(1,2); O2+(2,3); '.",
 });
 
 /* List of status strings: 
@@ -98,7 +106,7 @@ export const STATUS = Object.freeze({
   statusString = `Player ${player}: place first spooky mark (click it again to change your mind).`;
   statusString = `Continue with rest of placement move, ${player}: place your second spooky mark or undo the first one.`;
   statusString = `${player}: begin your next placement move, place a spooky mark in any uncollapsed square.`;
-  
+
   errorString = `${player} must first collapse the cyclic entanglement.`;
   statusString = `Click on a purple spooky mark.`;
 

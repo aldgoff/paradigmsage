@@ -17,6 +17,7 @@ let errorTests = [
   { condition: "loop", player: 'X', errorString: "X must first collapse the cyclic entanglement." },
   { condition: "squareCollapsed", errorString: "That square has collapsed." },
   { condition: "gameOver", errorString: "Game is over." },
+  { condition: "emptyLoad", errorString: "No game in the state string box to load." },
   ];
 
 for (let test of errorTests) {
@@ -47,7 +48,7 @@ let statusTests = [
     statusString: "Continue with rest of placement move. X, place your second spooky mark, or undo the first one."
     },
   { condition: "placement", player: 'O',
-    statusString: "O, begin your next placement move, place a spooky mark in any uncollapsed square."
+    statusString: "O, begin your next placement move, place a pair of spooky marks in any pair of uncollapsed squares."
     },
   { condition: "collapse", player: 'X',
     statusString: "Loop detected. X, select a purple spooky mark to collapse it into that square."
@@ -75,6 +76,10 @@ let statusTests = [
     },
   { condition: "gameOver",
     statusString: "New Game|Rerun|Undo|Load.",
+    },
+  // Load specific.
+  { condition: "playOrLoad",
+    statusString: "Start playing or try something like this, 'X1+(1,2); O2+(2,3); '.",
     },
   ];
 

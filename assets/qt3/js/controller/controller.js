@@ -3,7 +3,7 @@
 import { QT3_LAYOUT } from "../layout.js";
 
 // Model layer.
-import {modelSetStateString,
+import {modelSetStateString,  // The state of the game is held in the model layer.
         modelGetStateString,
         modelSetStatusString,
         modelGetStatusString,
@@ -95,7 +95,6 @@ function handleLoad() {
   // }
 
   loadGame(stateString);    // Change state (via model/process.js).
-  setStatusString(modelGetStatusString());  // View layer.
   } 
 
 function handleHelp() {
