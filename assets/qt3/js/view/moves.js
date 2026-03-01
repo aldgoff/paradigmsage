@@ -1,6 +1,7 @@
 // qt3/view/moves.js
 
 import { QT3_LAYOUT } from "../layout.js";
+import { GRAMMAR } from "../model/grammar.js";
 
 // The js-website drawing canvas.
 const canvas = document.getElementById("qt3-game");
@@ -33,27 +34,23 @@ function parsePlacements(stateString) {                           // return plac
   }
 
   // 1️⃣ Parse all complete placements: X1+(1,2)
-  const completeRegex = /([XO])(\d+)\+\((\d),(\d)\)/g;
-
   let match;
-  while ((match = completeRegex.exec(stateString)) !== null) {
+  while ((match = GRAMMAR.placement.exec(stateString)) !== null) {
     placements.push({
-      move:   Number(match[2]),
       player: match[1],
+      move:   Number(match[2]),
       squares:[Number(match[3]), Number(match[4])],
       partial:false
     });
   }
 
   // 2️⃣ Detect trailing partial placement: X1+(1
-  const partialRegex = /([XO])(\d+)\+\((\d)$/;
-
-  const partialMatch = stateString.match(partialRegex);
+  const partialMatch = stateString.match(GRAMMAR.spooky);
 
   if (partialMatch) {
     placements.push({
-      move:   Number(partialMatch[2]),
       player: partialMatch[1],
+      move:   Number(partialMatch[2]),
       squares:[Number(partialMatch[3])],
       partial:true
     });
@@ -66,11 +63,12 @@ function separateResolvedAndUnresolved(placements, stateString) { // return { re
   const resolvedMoves = new Set();
 
   // Find all collapse targets: !X3(5)
-  const collapseRegex = /!([XO])(\d+)\(/g;
   let match;
 
-  while ((match = collapseRegex.exec(stateString)) !== null) {
+  while ((match = GRAMMAR.collapseResolve.exec(stateString)) !== null) {
+    const player  = match[1];
     const moveNum = Number(match[2]);
+    const square  = Number(match[3]);
     resolvedMoves.add(moveNum);
   }
 
@@ -243,9 +241,8 @@ function overrideCycleColors(stateString, moveColorMap) {         // Return colo
   const colorMap = { ...moveColorMap };
 
   // Match bracket section: [243|1] or [243]
-  const bracketRegex = /\[(\d+)(?:\|(\d+))?\]/;
 
-  const matches = [...stateString.matchAll(/\[(\d+)(?:\|(\d+))?\]/g)];
+  const matches = [...stateString.matchAll(GRAMMAR.loop)];
   if (matches.length === 0) return colorMap;
 
   const match = matches[matches.length - 1];
@@ -324,12 +321,12 @@ function drawSpookyMarks(unresolved, colorMap) {
 
 function drawClassicalMarks(placements, stateString) {
   // Build resolved move → square map from stateString
-  const collapseRegex = /!([XO])(\d+)\((\d)\)/g;
 
   const resolvedMap = {};   // move → square
 
   let match;
-  while ((match = collapseRegex.exec(stateString)) !== null) {
+  while ((match = GRAMMAR.collapseResolve.exec(stateString)) !== null) {
+    const player = match[1];
     const move   = Number(match[2]);
     const square = Number(match[3]);
     resolvedMap[move] = square;

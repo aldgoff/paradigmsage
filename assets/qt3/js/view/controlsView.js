@@ -36,7 +36,7 @@ export function drawButtons() {
   });
 
   ctx.restore();
-}
+  }
 
 function drawButton(button, isActive) {
   ctx.fillStyle = button.enabled
@@ -96,10 +96,10 @@ export function handlePointerUp(x, y) {
   activeButton = null;
 
   return committed;
-}
+  }
 
-// Hit button?
-function hitButtonQ(x_pt, y_pt) {
+
+function hitButtonQ(x_pt, y_pt) { // Hit button?
   for (let i = 0; i < BUTTONS.length; i++) {
     const { x, y, w, h } = BUTTONS[i];
 

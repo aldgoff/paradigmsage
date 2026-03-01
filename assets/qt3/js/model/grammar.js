@@ -1,10 +1,17 @@
 // ./assets/qt3/js/model/grammar.js
 
+/* Usage Examples:
+  let match = GRAMMAR.placement.exec(stateString);
+  player:  match[1],
+  move:    Number(match[2]),
+  squares: [Number(match[3]), Number(match[4])],
+ */
+
 export const GRAMMAR = {  // TODO: expand and condense the grammar for regex.
   // ORIGINAL
     spooky:           /([XO])(\d)\+\((\d)$/,          // Example: "X1(2" - player, turn, square. Under test (dup of spooky in GRAMAR2).
     placement:        /([XO])(\d)\+\((\d),(\d)\)/g,   // Example: "X1(1,2); " - player, turn, sq1, sq2. Under test.
-    // loop:          /\[(\d+)(?:\|(\d+))?\]/g;
+    loop:             /\[(\d+)(?:\|(\d+))?\]/g,
     collapseEvent:    /@([XO])(\d+)\((\d)\)/g,
     collapseResolve:  /!([XO])(\d)\((\d)\)/g,         // Example: "!X1(1)!O2(2); " - player, turn, square.
     // trigger:
@@ -29,4 +36,4 @@ export const GRAMMAR = {  // TODO: expand and condense the grammar for regex.
     collapseResolveGlobal: /!([XO])(\d+)\((\d+)\)/g,
     collapseEventGlobal:   /@([XO])(\d+)\((\d+)\)/g,
 };
-
+  
