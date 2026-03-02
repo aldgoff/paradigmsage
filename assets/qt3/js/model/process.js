@@ -80,6 +80,13 @@ export function newGame() {
   let state = analyzeStateString(modelGetStateString());
 }
 
+/* 
+  let state    = analyzeStateString(modelGetStateString());
+  let state    = processStateString(stateString);
+  const last   = getLastMoveType(stateString);
+  let scoreStr = getLastMove(stateString);
+  */
+
 export function loadGame(stateString) {
   let state = processStateString(stateString);
   console.log("state", state);
@@ -99,8 +106,6 @@ export function loadGame(stateString) {
 
   const len = placements.length;
   let player = (len%2) ? 'X' : 'O' ;
-
-  // modelSetStateString(stateString);
   
   // empty|spooky|placement|loop|collapse|score.
   const last = getLastMoveType(stateString);
