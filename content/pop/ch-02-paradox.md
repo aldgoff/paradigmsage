@@ -31,7 +31,7 @@ params:
 
 ## Primary Docs
   **Paradigm Discourse:**  
-  <a href="/paradigmsage/assets/pop/act1/PD02-SelfReference_10.pdf" target="_blank" rel="noopener">
+  <a href="/paradigmsage/assets/pop/act1/PD02-SelfReference_11.pdf" target="_blank" rel="noopener">
     Open the *Self-Reference* discourse in the next tab
   </a>
 
