@@ -125,29 +125,25 @@ export function parsePlacements(stateString) { // TODO: Duplicate in view.
   }
 
   // 1️⃣ Parse all complete placements: X1+(1,2)
-  const completeRegex = /([XO])(\d+)\+\((\d),(\d)\)/g;
-
   let match;
-  while ((match = completeRegex.exec(stateString)) !== null) {
+  while ((match = GRAMMAR.placement.exec(stateString)) !== null) {
     placements.push({
-      move:   Number(match[2]),
-      player: match[1],
-      squares:[Number(match[3]), Number(match[4])],
+      player:  match[1],
+      move:    Number(match[2]),
+      squares:[ Number(match[3]), Number(match[4])],
       partial:false
     });
   }
 
   // 2️⃣ Detect trailing partial placement: X1+(1
-  const partialRegex = /([XO])(\d+)\+\((\d)$/;
-
-  const partialMatch = stateString.match(partialRegex);
+  const partialMatch = stateString.match(GRAMMAR.spooky);
 
   if (partialMatch) {
     placements.push({
-      move:   Number(partialMatch[2]),
-      player: partialMatch[1],
-      squares:[Number(partialMatch[3])],
-      partial:true
+      player:  partialMatch[1],
+      move:    Number(partialMatch[2]),
+      squares: [Number(partialMatch[3])],
+      partial: true
     });
   }
 

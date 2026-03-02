@@ -15,16 +15,16 @@ export function drawQuantumListing(layout, stateString) {
   drawMoveNums(layout);
   drawQuantumMoves(layout, stateString);
   }
+
 export function drawClassicalListing(layout, stateString) {
   setGlobalListStyles();
   drawTitle(layout, "     Classical Moves");
   drawHeader(layout, "Move");
   drawMoveNums(layout);
   drawClassicalMoves(layout, stateString);
-}
+  }
 
-// Formatting: fonts, colors, line widths, etc.
-function setGlobalListStyles() {
+function setGlobalListStyles() {      // Formatting: fonts, colors, line widths, etc.
   ctx.setLineDash([0, 0]);
   ctx.strokeStyle = "#000";
   ctx.fillStyle = "#000";

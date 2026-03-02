@@ -407,6 +407,7 @@ function trackProgress(stateString, moves, counts, outcome) {
   // --- Determine last completed placement turn ---
 
   const last = getLastMoveType(stateString);
+
   progress.last = last;
 
   // Placement moves define turns.
@@ -501,7 +502,7 @@ export function listPlacementsWithCollapse(stateString) { // Used in view/listin
     });
 }
 
-export function getLastMoveType(stateString) { // empty|spooky|placement|loop|collapse|degenerate|score.
+export function getLastMove(stateString) { // empty|spooky|placement|loop|collapse|degenerate|score.
   if (!stateString) return "empty";
 
   const trimmed = stateString.trim();
@@ -521,6 +522,12 @@ export function getLastMoveType(stateString) { // empty|spooky|placement|loop|co
       last = before.slice(prev + 1).trim();
     }
   }
+
+  return last;
+}
+
+export function getLastMoveType(stateString) { // empty|spooky|placement|loop|collapse|degenerate|score.
+  let last = getLastMove(stateString);
 
   if (!last) return "empty";
 
@@ -542,6 +549,8 @@ export function getLastMoveType(stateString) { // empty|spooky|placement|loop|co
   if (GRAMMAR.loopToken.test(last))      return "loop";
   if (GRAMMAR.collapseToken.test(last))  return "collapse";
   if (GRAMMAR.scoreToken.test(last))     return "score";
+
+  return "invalid";
 
   throw new Error("Unrecognized move element: " + last);
 }
