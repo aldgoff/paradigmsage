@@ -61,6 +61,13 @@ let stringTests = [
     type: ["placement", "invalid", "collapse", "degenerate", "selfCollapse", "score"]},
   { str: "X7(4,7); O8+(4,7)[78]; X8@X7(7)!X7(7)!O8(4); X9+(5,5); O9@X9(5)!X9(5); {X-2, O-0}", 
     type: ["invalid", "pureLoop", "collapse", "degenerate", "selfCollapse", "score"]},
+
+  // Corruption pairs:
+  { str: "X1+(1,2); O2+(2,3); X3+(2,3)[23|1]; O3@O2(2)!X1(1)!O2(2)!X3(3); O4+(4,5); X5+(5,6); O6+(9", 
+    type: ["placement", "placement", "stemLoop", "collapse", "placement", "placement", "spooky"]},
+  { str: "X1+(1,2); O2+(2,3); X3+(2,3)[23|1]; O3@O2(2)!X1(1)!O2(2)!X3(3); O4+(); X5+(5,6); O6+(9", 
+    type: ["placement", "placement", "stemLoop", "collapse", "invalid", "placement", "spooky"]},
+
   ];
 N = stringTests.length;
 

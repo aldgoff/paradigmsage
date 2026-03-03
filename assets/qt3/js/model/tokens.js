@@ -2,7 +2,7 @@
 
 import { GRAMMAR } from "../model/grammar.js";
 
-export function tokenize(stateString) {
+export function tokenize(stateString) {   // Returns: [{ type: "spooky", token: "" }];
   const trimmed = stateString.trim();
 
   const tokens = [];
@@ -11,7 +11,7 @@ export function tokenize(stateString) {
   // --- Deal with the empty string edge case.
   if (trimmed === "") {
     tokens.push({ type: "empty", token: "" });
-    console.log("tokens", tokens);
+    // console.log("tokens", tokens);
     return tokens;
   }
 
@@ -38,8 +38,6 @@ export function tokenize(stateString) {
     }
   }
 
-  // console.log("scoreToken ", scoreToken);
-
   // --- Parse move fragments.
   if (working !== "") {
     const parts = working.split(";");
@@ -64,21 +62,16 @@ export function tokenize(stateString) {
       }
 
       tokens.push({ type, token: fragment });
-
-      // if(type === "invalid") {
-      //   return tokens;
-      // }
     }
   }
 
   // --- Append score last (if present).
   if (scoreToken.type != "missing") {
     tokens.push(scoreToken);
-    // tokens.push(scoreToken);
   }
 
-  console.log("tokens", tokens);
+  // console.log("tokens", tokens);
 
   // --- Return list of token types and strings.
-  return tokens;
+  return tokens;   // Returns: [{ type: "spooky", token: "" }];
 }

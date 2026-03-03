@@ -5,7 +5,8 @@ import {getLastMoveType} from "./analyzeStateString.js";
 import {getLastMove} from "./analyzeStateString.js";
 import {evaluateGame} from "./scoring.js";
 import {isSquareClassical} from "./structure.js";
-import {parseStateTranscript,
+import {validateSyntax,
+        parseStateTranscript,
         parseSpookyMove,
         parsePlacementMove,
         parseLoopMove,
@@ -85,9 +86,162 @@ export function newGame() {
   let state    = processStateString(stateString);
   const last   = getLastMoveType(stateString);
   let scoreStr = getLastMove(stateString);
-  */
+*/
+
+
+function tokenize1(stateString) {
+  let tokens = [{type: "invalid", token: ""}];  // Returns: [ {type, token}, {type, token}... ].
+  /* Where type is empty|spooky|placement|loop|collapse|degenerate|selfCollapse|score|invalid.
+    empty        - ""
+    spooky       - "X1+(1"
+    placement    - "X1+(1,2); "
+    loop         - "O2+(1,2)[12]; "
+    collapse     - "X2@X1(1)!X1(1)!O2(2); "
+    degenerate   - "X9+(5,5); "
+    selfCollapse - "O9@X9(5)!X9(5); "
+    score        - "{X-1, O-0.5}"
+    invalid      - "X7+"
+   */
+
+  // Tokenization aborts on the first invalid token.
+  
+  return tokens;  // Returns: [ {type, token}, {type, token}... ].
+}
+
+import { GRAMMAR } from "./grammar.js";
+import { tokenize } from "./tokens.js";
+
+function assembleTruncatedString(tokens) {
+  let truncated = "";  // Returns: valid state string.
+  
+  // TODO: write assembleTruncatedString().
+
+  return truncated;  // Returns: valid state string.
+}
 
 export function loadGame(stateString) {
+  console.log("loadGame()", stateString);
+
+  modelSetErrorString("");
+  let allValidTokens = true;
+
+  const tokens = tokenize(stateString);  // Returns: [ {type, token}, ..., {"invalid", token} ]
+  const lastToken = tokens[tokens.length-1];
+
+  let tokenString = "";
+  for( const token of tokens) {   // tokens: [{ type: "spooky", token: "" }];
+    if(token.type != "invalid")
+      if(token.type === "score") tokenString += token.token;
+      else                       tokenString += token.token + "; ";
+    else {
+      allValidTokens = false;
+      tokenString += token.token + "; ";
+      break;
+    }
+  }
+
+  console.log("tokenString", tokenString);  
+
+  modelSetStatusString("loadGame in progress...");
+  if(allValidTokens) {
+    modelSetStateString(tokenString);
+    modelSetErrorString("");
+  }
+  else {
+    let truncated = tokenString;
+    modelSetStateString(truncated);
+    modelSetErrorString("Invalid state string, truncated at point of corruption.");
+  }
+
+  let state = processStateString(modelGetStateString());
+  /* return {
+      placements,
+      cycleMoves,
+      stemMoves,
+      score,
+      analyzedState
+    };
+   */
+  console.log("state", state);
+
+  placements = state.placements;
+  cycleMoves = state.cycleMoves;
+  stemMoves = state.stemMoves;
+
+  const len = placements.length;
+  let player = ((+1)%2) ? 'X' : 'O' ;
+  
+  // empty|spooky|placement|loop|collapse|score.
+  let last;
+  if(state.placements.validSyntax) {
+    last = getLastMoveType(stateString);
+  } else {
+    last = getLastMoveType(modelGetStateString());
+  }
+
+  console.log("last", last);
+
+  let errorString = "";
+  switch(last) {
+    case 'empty':
+      errorString = ERROR["emptyLoad"]();
+      statusString = STATUS["playOrLoad"](player);
+      break;
+    case 'spooky':
+      statusString = STATUS["spooky2"](player);
+      break;
+    case 'placement':
+      statusString = STATUS["placement"](player);
+      break;
+    case 'loop':
+      statusString = STATUS["collapse"](player);
+      break;
+    case 'collapse':
+      player = (len%2) ? 'X' : 'O' ;
+      statusString = STATUS["placement"](player);
+      break;
+    case 'score':
+      let scoreStr = getLastMove(stateString);
+      let score = STATUS["score"](scoreStr);
+      let options = STATUS["gameOver"]();
+      statusString = score + ". Options: " + options;
+      break;
+    case 'invalid':
+      // statusString = ERROR["invalidStateString"]();
+      break;
+  }
+  const error = modelGetErrorString();
+  console.log("error", error);
+
+  modelSetStatusString(statusString); // Erases error string.
+  if(error.length > 0) {
+    modelSetErrorString(error);
+  }
+  // else {
+  //   modelSetStatusString(statusString); // Erases error string.
+  // }
+}
+
+
+
+
+
+
+let prevStatusString = "";
+let statusString = "";
+
+export function loadGame1(stateString) {
+  console.log("loadGame", stateString);
+  modelSetErrorString("");
+
+  // If pasted string is not a valid game, keep as much as possible.
+  // let {valid, truncated} = validateSyntax(stateString);
+  // if(!valid) {
+  //   modelSetStateString(truncated);
+  //   stateString = modelGetStateString();  // Bug - why?
+  //   console.log("loadGame() - truncated", truncated);
+  // }
+
   let state = processStateString(stateString);
   console.log("state", state);
   /* return {
@@ -98,46 +252,41 @@ export function loadGame(stateString) {
       analyzedState
     };
    */
-  console.log("loadGame", state);
 
   placements = state.placements;
   cycleMoves = state.cycleMoves;
   stemMoves = state.stemMoves;
 
   const len = placements.length;
-  let player = (len%2) ? 'X' : 'O' ;
+  let player = ((+1)%2) ? 'X' : 'O' ;
   
   // empty|spooky|placement|loop|collapse|score.
-  const last = getLastMoveType(stateString);
+  let last;
+  if(state.placements.validSyntax) {
+    last = getLastMoveType(stateString);
+  } else {
+    last = getLastMoveType(modelGetStateString());
+  }
 
   console.log("last", last);
-  /* List of errors we can't trap for yet.
-    X1+(1,2); O2+(1,2) - missing loop
-    X1+(1,2); O2+(1,2)[12]; X2@X1(1)!X1(1)!O2(2); X3+(4,5); O4+(4,5)[34]; X4@O4(4)! - missing collapse
-    Basically, any incomplete token.
-    */
 
-  let statusString = "";
   let errorString = "";
   switch(last) {
     case 'empty':
       errorString = ERROR["emptyLoad"]();
-      player = (len%2) ? 'O' : 'X' ;
       statusString = STATUS["playOrLoad"](player);
       break;
     case 'spooky':
-      player = (len%2) ? 'O' : 'X' ;
       statusString = STATUS["spooky2"](player);
       break;
     case 'placement':
-      player = (len%2) ? 'O' : 'X' ;
       statusString = STATUS["placement"](player);
       break;
     case 'loop':
-      player = (len%2) ? 'O' : 'X' ;
       statusString = STATUS["collapse"](player);
       break;
     case 'collapse':
+      player = (len%2) ? 'X' : 'O' ;
       statusString = STATUS["placement"](player);
       break;
     case 'score':
@@ -147,12 +296,21 @@ export function loadGame(stateString) {
       statusString = score + ". Options: " + options;
       break;
     case 'invalid':
-      statusString = ERROR["invalidStateString"]();
+      // statusString = ERROR["invalidStateString"]();
       break;
   }
-  modelSetStatusString(statusString); // Erases error string.
-  modelSetErrorString(errorString);
-  modelSetStateString(stateString);
+  const error = modelGetErrorString();
+  console.log("error", error);
+
+  if(error.length > 0) {
+    modelSetErrorString(error);
+  }
+  else {
+    modelSetStatusString(statusString); // Erases error string.
+  }
+
+  // console.log("modelGetStateString()", modelGetStateString());
+
 }
 
 /* This state string...
@@ -194,24 +352,24 @@ X1+(1,2); O2+(1,2)[12]; X2@X1(1)!X1(1)!O2(2); X3+(4,5); O4+(4,5)[34]; X4@X3(5)!X
   //     .filter(Boolean);
 
   //   for (const seg of segments) {      // "X9+(n,n); O9@X9(n)!X9(n); "
-  //     const change = seg + ";";
+  //     const token = seg + ";";
 
   //     if (seg.includes("+")) {  // Placement.
-  //       let parse = parsePlacementMove(change)
+  //       let parse = parsePlacementMove(token)
   //       if(parse.sq1 === parse.sq2) {
   //         console.log("Found degenerate self-collapse.");
   //       }
   //       else {
   //         result.push({
   //           type: "placement",
-  //           change
+  //           token
   //         });
   //       }
   //     }
   //     else if (seg.includes("@")) { // Collapse.
   //       result.push({
   //         type: "collapse",
-  //         change
+  //         token
   //       });
   //     }
   //   }
@@ -220,7 +378,7 @@ X1+(1,2); O2+(1,2)[12]; X2@X1(1)!X1(1)!O2(2); X3+(4,5); O4+(4,5)[34]; X4@X3(5)!X
   //   if (scoreMatch) { // Score.
   //     result.push({
   //       type: "score",
-  //       change: scoreMatch[0]
+  //       token: scoreMatch[0]
   //     });
 
   //     mainPart = trimmed.slice(0, scoreMatch.index).trim();
@@ -230,20 +388,20 @@ X1+(1,2); O2+(1,2)[12]; X2@X1(1)!X1(1)!O2(2); X3+(4,5); O4+(4,5)[34]; X4@X3(5)!X
   // }
 */
 
-export function processString(moves) { // Returns: [ {type, change}, {type, change}... ]
+export function processString(moves) { // Returns: [ {type, token}, {type, token}... ]
   // console.log("processString", moves.length, "moves");
 
   let growingStateString = "";
   let state;
 
   for(const move of moves) {
-    growingStateString += `${move.change} `;
+    growingStateString += `${move.token} `;
     // console.log(growingStateString);
-    buildEntanglementNetwork(move); // { type, change }.
+    buildEntanglementNetwork(move); // { type, token }.
   }
 }
 
-function buildEntanglementNetwork(move) { // { type, change }.
+function buildEntanglementNetwork(move) { // { type, token }.
   let parse;
   let player;
   let turn;
@@ -261,7 +419,7 @@ function buildEntanglementNetwork(move) { // { type, change }.
     // console.log("spooky");
 
     // Are any of these even used?
-      parse = parseSpookyMove(move.change);
+      parse = parseSpookyMove(move.token);
       player = parse.player;
       turn = parse.turn;
       sq1 = parse.sq1;
@@ -274,7 +432,7 @@ function buildEntanglementNetwork(move) { // { type, change }.
   else if(move.type === "placement") {  // Working.
     // console.log("placement");
 
-    parse = parsePlacementMove(move.change);
+    parse = parsePlacementMove(move.token);
 
     placements.push({ // Add connecting move.
       move: parse.turn,
@@ -289,7 +447,7 @@ function buildEntanglementNetwork(move) { // { type, change }.
   else if(move.type === "loop") {       // Working.
     // console.log("loop");
 
-    parse = parseLoopMove(move.change);
+    parse = parseLoopMove(move.token);
 
     const graph = buildGraph(placements);
     const path = findPath(graph, parse.sq1, parse.sq2);
