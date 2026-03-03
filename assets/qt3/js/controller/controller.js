@@ -47,7 +47,7 @@ export function initController () {
 
 // Change state and update view.
 function handleButtonRelease(button) {
-  console.log(button);
+  console.log(button, "button");
 
   // Change state.
   switch (button) {
@@ -88,13 +88,8 @@ function handleLoad() {
   const textarea = document.getElementById("qt3-state-input");
   const stateString = textarea.value;
 
-  // TODO: validate correctly formatted state string.
-  // if(!validStateString(stateString)) {
-  //   setStatusString("Invalid state string.")
-  //   return;
-  // }
-
   loadGame(stateString);    // Change state (via model/process.js).
+  updateView();
   } 
 
 function handleHelp() {

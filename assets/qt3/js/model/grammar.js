@@ -20,12 +20,15 @@ export const GRAMMAR = {  // TODO: expand and condense the grammar for regex.
     // score:
 
   // TOKEN-LEVEL (anchored)
-    spookyToken:     /^([XO])(\d+)\+\((\d+)$/,
-    placementToken:  /^([XO])(\d+)\+\((\d+),(\d+)\)$/,
-    loopToken:       /^([XO])(\d+)\+\((\d+),(\d+)\)\[([^|\]]+)(?:\|([^\]]+))?\]$/,
-    collapseToken:   /^([XO])(\d+)@([XO]\d+)\((\d+)\)(!.*)?$/,
-    degenerateToken: /^([XO])(\d+)\+\((\d+),(\d+)\)$/,
-    scoreToken:      /^\{\s*X-([^,}]+)\s*,\s*O-([^}]+)\s*\}$/,
+    spookyToken:        /^([XO])(\d)\+\((\d)$/,
+    placementToken:     /^([XO])(\d)\+\((\d),(\d)\)$/,
+    loopToken:          /^([XO])(\d)\+\((\d),(\d)\)\[([^|\]]+)(?:\|([^\]]+))?\]$/,
+    pureLoopToken:      /^([XO])(\d)\+\((\d),(\d)\)\[([^\|\]]+)\]$/,
+    stemLoopToken:      /^([XO])(\d)\+\((\d),(\d)\)\[([^\|\]]+)\|([^\]]+)\]$/,
+    collapseToken:      /^([XO])(\d)@([XO]\d)\((\d)\)(!([XO]\d)\((\d)\)){2,}$/,
+    selfCollapseToken:  /^O9@X9\((\d)\)!X9\((\d)\)/,
+    degenerateToken:    /^([X])(9)\+\((\d),(\d)\)$/,
+    scoreToken:         /^\{\s*X-([^,}]+)\s*,\s*O-([^}]+)\s*\}$/,
 
   // SINGLE-MATCH SCANNERS
     spookyTrailing:        /([XO])(\d)\+\((\d)$/,         // Under test (dup of spooky).

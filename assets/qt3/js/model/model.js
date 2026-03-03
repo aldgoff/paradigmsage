@@ -42,7 +42,7 @@ export function modelGetErrorString() {    // Gets errorString.
   return modelErrorString;
 }
 
-export function validStateString(stateString) {
+function validStateString(stateString) {
   // TODO: write validStateString().
 
   return true;
