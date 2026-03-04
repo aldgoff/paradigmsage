@@ -45,7 +45,7 @@ export function drawBounds(x, y) {
   ctx.strokeStyle = "#888";
 
   ctx.strokeRect(x, y, grid - 10, grid - 10);
-}
+  }
 
 export function drawEnsemble(stateString) {
   ctx.save();
@@ -90,7 +90,7 @@ function drawClassicalGame(moves, X, Y) {  // { board: [9], prunedBy: null }.
     drawPruned(X, Y);
   if(moves.prunedBy === "collapse") 
     drawCollapsed(X, Y);
-}
+  }
 
 function indexToCoord(index, turns) {
   let row = 0;
@@ -154,7 +154,7 @@ export function drawBackground(x, y) {
   ctx.strokeRect(x, y, grid - 10, grid - 10);
 
   ctx.restore();
-}
+  }
 
 export function drawLines(x, y) {
   ctx.save();
@@ -169,7 +169,7 @@ export function drawLines(x, y) {
   }
 
   ctx.restore();
-}
+  }
 
 export function drawGame(x, y, moves) { // { board: ['X','','', 'O','','X', '','',''], prunedBy: null }.
   ctx.save();
@@ -206,7 +206,7 @@ function drawPruned(x, y) {
   ctx.strokeRect(x, y, grid - 10, grid - 10);
 
   ctx.restore();
-}
+  }
 
 function drawCollapsed(x, y) {
   ctx.save();
@@ -308,7 +308,7 @@ function generateClassicalEnsemble(stateString) {
   }
 
   return ensemble;
-}
+  }
 
 function applyMark(board, index, player) {
   const current = board[index];
@@ -324,7 +324,7 @@ function applyMark(board, index, player) {
   }
 
   return board[index];
-}
+  }
 
 function applyCollapsePruning(ensemble, stateString) {
   // --- APPLY COLLAPSE PRUNING ---

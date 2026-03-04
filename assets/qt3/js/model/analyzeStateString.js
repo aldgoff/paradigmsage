@@ -500,7 +500,7 @@ export function listPlacementsWithCollapse(stateString) { // Used in view/listin
         collapse
       };
     });
-}
+  }
 
 export function getLastMove(stateString) { // empty|spooky|placement|loop|collapse|degenerate|score.
   if (!stateString) return "empty";
@@ -524,7 +524,7 @@ export function getLastMove(stateString) { // empty|spooky|placement|loop|collap
   }
 
   return last;
-}
+  }
 
 export function getLastMoveType(stateString) { // empty|spooky|placement|loop|collapse|degenerate|score.
   let last = getLastMove(stateString);

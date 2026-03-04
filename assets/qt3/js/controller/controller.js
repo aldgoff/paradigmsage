@@ -22,7 +22,7 @@ import {initView,
 import {setSquareHandler} from "../view/view.js";
 import {setButtonHandler} from "../view/controlsView.js";
 
-export function initController () {
+export function initController() {
   console.log("Controller: qt3/js/controller/controller.js");
   console.log("View informs controller of button and board clicks.");
 

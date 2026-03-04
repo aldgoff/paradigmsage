@@ -32,7 +32,7 @@ export function modelSetStatusString(str) { // Sets statusString.
 
 export function modelGetStatusString() {    // Gets statusString.
   return modelStatusString;
-}
+  }
 
 export function modelSetErrorString(str) { // Sets errorString.
   modelErrorString = str;
@@ -58,10 +58,9 @@ function processStateChange(str) {
 }
 
 function updateStateObjects(stateString) {
-
 }
 
-function updateStatusString(stateString, stateOjects) {
+function updateStatusString(stateString, stateObjects) {
   let statusString = "";
 
   return statusString;
