@@ -69,6 +69,7 @@ function handleButtonRelease(button) {
 // Methods with change state.
 function handleNewGame() {
   newGame();    // model/process.js.
+  updateView();
   }
 
 function handleRerun() {
