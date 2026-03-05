@@ -1,19 +1,14 @@
 // ./assets/qt3/js/model/process.js
 
+import { GRAMMAR } from "./grammar.js";
+import { tokenize } from "./tokens.js";
+import { tokensToString } from "./tokens.js";
+
 import {analyzeStateString} from "./analyzeStateString.js";
 import {getLastMoveType} from "./analyzeStateString.js";
 import {getLastMove} from "./analyzeStateString.js";
 import {evaluateGame} from "./scoring.js";
-import {isSquareClassical} from "./structure.js";
-import {validateSyntax,
-        parseStateTranscript,
-        parseSpookyMove,
-        parsePlacementMove,
-        parseLoopMove,
-        parseCollapseMove,
-        parseDegenerateMove,
-        parseScoreBlock,
-} from "./parse.js";
+// import {isSquareClassical} from "./structure.js";
 
 import {cellInLoop,
         computeCollapseResolution,
@@ -47,17 +42,6 @@ import {processStateString} from "./structure.js";
 
 /***************************************** */
 
-/* List of status strings: 
-  statusString = "Game is over. New Game, Rerun, Undo, Load.";
-  statusString = "That square has collapsed. Choose another.";
-  statusString = `Last move self-collapsed (degenerate). Game over: ${outcome.desc}.`;
-  statusString = `Spooky mark undone. ${player}: restart your placement move, place a spooky mark in any uncollapsed square.`
-  statusString = `${collapsePlayer} must first collapse the cyclic entanglement. Click on a purple spooky mark.`
-  statusString = `${nextPlayer}: begin your next placement move, place a spooky mark in any uncollapsed square.`
-  statusString = `Game over: ${outcome.desc}.`;
-  statusString = `Player ${player}: place first spooky mark (click it again to change your mind).`;
- */
-
 /* Major bug...
   X1+(1,2); O2+(1,2)[12]; X3@O2(1)!X1(2)!O2(1); 
   X3+(4,5); O4+(5,6); X5+(4,5)[35|4]; O6@X3(5)!X3(5)!O4(6)!X5(4); 
@@ -70,6 +54,7 @@ import {processStateString} from "./structure.js";
 let placements = [];  // [{ move, player, squares:[a,b] }].
 let cycleMoves = [];  // Code for collapse moves.
 let stemMoves = [];
+let statusString = "";
 
 export function newGame() {
   modelSetStatusString("Player X: place first spooky mark (click on it again to change your mind).");
@@ -81,79 +66,24 @@ export function newGame() {
   let state = analyzeStateString(modelGetStateString());
 }
 
-/* 
-  let state    = analyzeStateString(modelGetStateString());
-  let state    = processStateString(stateString);
-  const last   = getLastMoveType(stateString);
-  let scoreStr = getLastMove(stateString);
-*/
-
-
-function tokenize1(stateString) {
-  let tokens = [{type: "invalid", token: ""}];  // Returns: [ {type, token}, {type, token}... ].
-  /* Where type is empty|spooky|placement|loop|collapse|degenerate|selfCollapse|score|invalid.
-    empty        - ""
-    spooky       - "X1+(1"
-    placement    - "X1+(1,2); "
-    loop         - "O2+(1,2)[12]; "
-    collapse     - "X2@X1(1)!X1(1)!O2(2); "
-    degenerate   - "X9+(5,5); "
-    selfCollapse - "O9@X9(5)!X9(5); "
-    score        - "{X-1, O-0.5}"
-    invalid      - "X7+"
-   */
-
-  // Tokenization aborts on the first invalid token.
-  
-  return tokens;  // Returns: [ {type, token}, {type, token}... ].
-}
-
-import { GRAMMAR } from "./grammar.js";
-import { tokenize } from "./tokens.js";
-
-function assembleTruncatedString(tokens) {
-  let truncated = "";  // Returns: valid state string.
-  
-  // TODO: write assembleTruncatedString().
-
-  return truncated;  // Returns: valid state string.
-}
-
-export function loadGame(stateString) {
-  console.log("loadGame()", stateString);
-
-  modelSetErrorString("");
-  let allValidTokens = true;
+export function loadGame(stateString) { // Returns nothing.
+  console.log("loadGame() ", stateString);
 
   const tokens = tokenize(stateString);  // Returns: [ {type, token}, ..., {"invalid", token} ]
   const lastToken = tokens[tokens.length-1];
 
-  let tokenString = "";
-  for( const token of tokens) {   // tokens: [{ type: "spooky", token: "" }];
-    if(token.type != "invalid")
-      if(token.type === "score") tokenString += token.token;
-      else                       tokenString += token.token + "; ";
-    else {
-      allValidTokens = false;
-      tokenString += token.token + "; ";
-      break;
-    }
-  }
+  const tokenString = tokensToString(tokens);
 
-  console.log("tokenString", tokenString);  
-
-  modelSetStatusString("loadGame in progress...");
-  if(allValidTokens) {
-    modelSetStateString(tokenString);
-    modelSetErrorString("");
-  }
-  else {
-    let truncated = tokenString;
-    modelSetStateString(truncated);
+  modelSetStateString(tokenString);
+  modelSetErrorString("");
+  if(lastToken.type === "invalid") {
     modelSetErrorString("Invalid state string, truncated at point of corruption.");
   }
 
-  let state = processStateString(modelGetStateString());
+  console.log("tokenString", tokenString);  
+  console.log("----- ----- ----- ----- ");
+  
+  let state = processStateString(modelGetStateString());  // Overwrites errorString.
   /* return {
       placements,
       cycleMoves,
@@ -168,21 +98,17 @@ export function loadGame(stateString) {
   cycleMoves = state.cycleMoves;
   stemMoves = state.stemMoves;
 
-  const len = placements.length;
-  let player = ((+1)%2) ? 'X' : 'O' ;
+  let lastPlayer = state.analyzedState.progress.player;
   
-  // empty|spooky|placement|loop|collapse|score.
-  let last;
-  if(state.placements.validSyntax) {
-    last = getLastMoveType(stateString);
-  } else {
-    last = getLastMoveType(modelGetStateString());
-  }
+  let lastStr = getLastMove(modelGetStateString());
+  let lastType = getLastMoveType(modelGetStateString());
 
-  console.log("last", last);
+  console.log("lastStr", lastStr, "lastType", lastType, "lastPlayer", lastPlayer);
+
+  let player = (lastPlayer === 'X' ? 'O' : 'X');
 
   let errorString = "";
-  switch(last) {
+  switch(lastType) {
     case 'empty':
       errorString = ERROR["emptyLoad"]();
       statusString = STATUS["playOrLoad"](player);
@@ -217,176 +143,7 @@ export function loadGame(stateString) {
   if(error.length > 0) {
     modelSetErrorString(error);
   }
-  // else {
-  //   modelSetStatusString(statusString); // Erases error string.
-  // }
 }
-
-
-
-
-
-
-let prevStatusString = "";
-let statusString = "";
-
-export function loadGame1(stateString) {
-  console.log("loadGame", stateString);
-  modelSetErrorString("");
-
-  // If pasted string is not a valid game, keep as much as possible.
-  // let {valid, truncated} = validateSyntax(stateString);
-  // if(!valid) {
-  //   modelSetStateString(truncated);
-  //   stateString = modelGetStateString();  // Bug - why?
-  //   console.log("loadGame() - truncated", truncated);
-  // }
-
-  let state = processStateString(stateString);
-  console.log("state", state);
-  /* return {
-      placements,
-      cycleMoves,
-      stemMoves,
-      score,
-      analyzedState
-    };
-   */
-
-  placements = state.placements;
-  cycleMoves = state.cycleMoves;
-  stemMoves = state.stemMoves;
-
-  const len = placements.length;
-  let player = ((+1)%2) ? 'X' : 'O' ;
-  
-  // empty|spooky|placement|loop|collapse|score.
-  let last;
-  if(state.placements.validSyntax) {
-    last = getLastMoveType(stateString);
-  } else {
-    last = getLastMoveType(modelGetStateString());
-  }
-
-  console.log("last", last);
-
-  let errorString = "";
-  switch(last) {
-    case 'empty':
-      errorString = ERROR["emptyLoad"]();
-      statusString = STATUS["playOrLoad"](player);
-      break;
-    case 'spooky':
-      statusString = STATUS["spooky2"](player);
-      break;
-    case 'placement':
-      statusString = STATUS["placement"](player);
-      break;
-    case 'loop':
-      statusString = STATUS["collapse"](player);
-      break;
-    case 'collapse':
-      player = (len%2) ? 'X' : 'O' ;
-      statusString = STATUS["placement"](player);
-      break;
-    case 'score':
-      let scoreStr = getLastMove(stateString);
-      let score = STATUS["score"](scoreStr);
-      let options = STATUS["gameOver"]();
-      statusString = score + ". Options: " + options;
-      break;
-    case 'invalid':
-      // statusString = ERROR["invalidStateString"]();
-      break;
-  }
-  const error = modelGetErrorString();
-  console.log("error", error);
-
-  if(error.length > 0) {
-    modelSetErrorString(error);
-  }
-  else {
-    modelSetStatusString(statusString); // Erases error string.
-  }
-
-  // console.log("modelGetStateString()", modelGetStateString());
-
-}
-
-/* This state string...
-X1+(1,2); O2+(2,3); X3+(4,5); O4+(5,6); X5+(7,8); O6+(8,9); X7+(6,9); O8+(1,4); X9+(3,7)[183476592]; O9@X5(7)!X1(1)!O2(2)!X3(5)!O4(6)!X5(7)!O6(8)!X7(9)!O8(4)!X9(3); {X-1.5, O-0}
-
-becomes this array...
-  X1+(1,2); 
-  O2+(2,3); 
-  X3+(4,5); 
-  O4+(5,6); 
-  X5+(7,8); 
-  O6+(8,9); 
-  X7+(6,9); 
-  O8+(1,4); 
-  X9+(3,7)[183476592]; 
-  O9@X5(7)!X1(1)!O2(2)!X3(5)!O4(6)!X5(7)!O6(8)!X7(9)!O8(4)!X9(3); 
-  {X-1.5, O-0}
-*/
-/* More examples:
-X1+(1,2); O2+(1,2)[12]; X2@X1(1)!X1(1)!O2(2); X3+(4,5); O4+(4,5)[34]; X4@X3(5)!X3(5)!O4(4); X5+(7,8); O6+(7,8)[56]; X6@X5(8)!X5(8)!O6(7); X7+(6,9); O8+(6,9)[78]; X8@O8(9)!X7(6)!O8(9); X9+(3,3); O9@X9(3)!X9(3); {X-0, O-0}
-*/
-
-/*
-  // export function parseStateTranscript(stateString) {
-  //   const result = [];
-
-  //   if (!stateString || !stateString.trim()) {
-  //     return result;
-  //   }
-
-  //   const trimmed = stateString.trim();
-  //   let mainPart = trimmed;
-  //   let scoreMatch = trimmed.match(/\{[^}]+\}$/);
-
-  //   // 1. Split semicolon blocks
-  //   const segments = mainPart
-  //     .split(";")
-  //     .map(s => s.trim())
-  //     .filter(Boolean);
-
-  //   for (const seg of segments) {      // "X9+(n,n); O9@X9(n)!X9(n); "
-  //     const token = seg + ";";
-
-  //     if (seg.includes("+")) {  // Placement.
-  //       let parse = parsePlacementMove(token)
-  //       if(parse.sq1 === parse.sq2) {
-  //         console.log("Found degenerate self-collapse.");
-  //       }
-  //       else {
-  //         result.push({
-  //           type: "placement",
-  //           token
-  //         });
-  //       }
-  //     }
-  //     else if (seg.includes("@")) { // Collapse.
-  //       result.push({
-  //         type: "collapse",
-  //         token
-  //       });
-  //     }
-  //   }
-
-  //   // 2. Extract score block (if present)
-  //   if (scoreMatch) { // Score.
-  //     result.push({
-  //       type: "score",
-  //       token: scoreMatch[0]
-  //     });
-
-  //     mainPart = trimmed.slice(0, scoreMatch.index).trim();
-  //   }
-
-  //   return result;
-  // }
-*/
 
 export function processString(moves) { // Returns: [ {type, token}, {type, token}... ]
   // console.log("processString", moves.length, "moves");
@@ -648,6 +405,16 @@ export function processClick(intent) {
 }
 
 /** Decision functions which query state: */
+function isSquareClassical(stateString, squareNum) {
+  let match;
+
+  while ((match = GRAMMAR.collapseResolve.exec(stateString)) !== null) {
+    const collapsedSquare = Number(match[3]);
+    if (collapsedSquare === squareNum) return true;
+  }
+
+  return false;
+  }
 
 function isDegenerateLastMove(stateString, state) { // draft
   let degenerateLastMove = false;

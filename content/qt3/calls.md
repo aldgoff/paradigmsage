@@ -7,29 +7,60 @@ title: "Call Structure"
 ## MVC
   Capture the call structure so I can refactor deprecated code out of here.
 
-    | Controller              | Model                                                 | View                  |
-    | :---------------------- | :---------------------------------------------------- | :-------------------- | 
-    | handleNewGame()         | process.newGame()                                     | view.updateView()     |
-    |                         |   analyzeStateString(modelGetStateString())           |                       |
-    | handleLoad(stateString) | process.loadGame(stateString)                         | view.updateView()     |
-    |                         |   process.tokenize(stateString)                       |                       |
-    |                         |   structure.processStateString(modelGetStateString()) |                       |
-    |                         |   process.getLastMoveType(stateString)                |                       |
-    |                         |   process.getLastMoveType(modelGetStateString())      |                       |
+    | Controller                   | Model                                                   | View                  |
+    | :--------------------------- | :------------------------------------------------------ | :-------------------- | 
+    | handleNewGame()              | process.newGame()                                       | view.updateView()     |
+    |                              |   state = analyzeStateString(modelGetStateString())     |                       |
+    |                              |                                                         |                       |
+    | handleLoad(stateString)      | process.loadGame(stateString)                           | view.updateView()     |
+    |                              |   tokens = process.tokenize(stateString)                |                       |
+    |                              |   structure.processStateString(modelGetStateString())   |                       |
+    |                              |     parseStateTranscript(stateString)                   |                       |
+    |                              |     parsePlacementMove(move.change)                     |                       |
+    |                              |     parseLoopMove(move.change)                          |                       |
+    |                              |     buildGraph(placements)                              |                       |
+    |                              |     findPath(graph, parse.sq1, parse.sq2)               |                       |
+    |                              |     extractCycle(path, placements, parse.turn);         |                       |
+    |                              |     extractStems(graph, path, placements, cycleMoves)   |                       |
+    |                              |     parseCollapseMove(move.change)                      |                       |
+    |                              |     computeCollapseResolution(...)                      |                       |
+    |                              |     parseDegenerateMove(move.change)                    |                       |
+    |                              |     parseScoreBlock(move.change)                        |                       |
+    |                              |     state = analyzeStateString(modelGetStateString())   |                       |
+    |                              |   process.getLastMove(stateString)                      |                       |
+    |                              |   process.getLastMoveType(modelGetStateString())        |                       |
+    |                              |                                                         |                       |
+    | handleSquareCellClick(event) | process.processClick(intent)                            |                       |
+    |                              |   state = analyzeStateString(modelGetStateString())     |                       |
+    |                              |   evaluateGame(state).over                              |                       |
+    |                              |   isSquareClassical(modelGetStateString(), squareNum)   |                       |
+    |                              |   isDegenerateLastMove(modelGetStateString(), state)    |                       |
+    |                              |   isReClickSpooky(modelGetStateString(), state, intent) |                       |
+    |                              |   isSpooky(modelGetStateString(), state)                |                       |
+    |                              |   isPlacement(modelGetStateString(), state)             |                       |
+    |                              |   isCollapse(modelGetStateString(), state)              |                       |
+    |                              |                                                         |                       |
 
 ## Controller
 
-    | controller.js (export) | controller.js (local)        |
-    | :--------------------- | :--------------------------- | 
-    | initController()       | handleButtonRelease(button)  |
+    | controller.js (export) | controller.js (local)        | process.js         |
+    | :--------------------- | :--------------------------- | :--------------------------- | 
+    | initController()       | handleButtonRelease(button)  |    |
     |                        | handleNewGame()              |
     |                        | handleRerun()                |
     |                        | handleUndo()                 |
     |                        | handleRedo()                 |
     |                        | handleLoad()                 |
     |                        | handleHelp()                 |
-    |                        | handleSquareCellClick(event) |
-    |                        | positionStateStringBox()     |
+    |                        | handleSquareCellClick(event) | processClick(intent)
+    |                        | positionStateStringBox()     |   state = analyzeStateString(modelGetStateString())     |
+    |                        |                              |   evaluateGame(state).over                              |
+    |                        |                              |   isSquareClassical(modelGetStateString(), squareNum)   |
+    |                        |                              |   isDegenerateLastMove(modelGetStateString(), state)    |
+    |                        |                              |   isReClickSpooky(modelGetStateString(), state, intent) |
+    |                        |                              |   isSpooky(modelGetStateString(), state)                |
+    |                        |                              |   isPlacement(modelGetStateString(), state)             |
+    |                        |                              |   isCollapse(modelGetStateString(), state)              |
 
 ## Model
 
@@ -45,9 +76,10 @@ title: "Call Structure"
     | process.js (export)            | process.js (local)                            |
     | :----------------------------- | :-------------------------------------------- | 
     | newGame()                      | buildEntanglementNetwork(move)                |
-    | loadGame(stateString)          | isDegenerateLastMove(stateString, state)      |
-    | processString(moves)           | isReClickSpooky(stateString, state, intent)   |
-    | processClick(intent)           | isSpooky(stateString, state)                  |
+    | loadGame(stateString)          | isSquareClassical(stateString, squareNum)     |
+    | processString(moves)           | isDegenerateLastMove(stateString, state)      |
+    | processClick(intent)           | isReClickSpooky(stateString, state, intent)   |
+    |                                | isSpooky(stateString, state)                  |
     |                                | isPlacement(stateString, state)               |
     |                                | isCollapse(stateString, state)                |
     |                                | selfCollapseLastMove(state, intent)           |
@@ -57,7 +89,6 @@ title: "Call Structure"
     | processStateString(stateString)            |                       |
     | parsePlacements(stateString)               |                       |
     | buildSquareMap(placements, collapsedMoves) |                       |
-    | isSquareClassical(stateString, squareNum)  |                       |
 
     | parse.js (export)                 | parse.js (local)      |
     | :-------------------------------- | :-------------------- | 

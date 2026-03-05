@@ -2,7 +2,7 @@
 
 import { GRAMMAR } from "../model/grammar.js";
 
-export function tokenize(stateString) {   // Returns: [{ type: "spooky", token: "" }];
+export function tokenize(stateString) {   // Returns: [{ type: "spooky", token: "" }, ...];
   const trimmed = stateString.trim();
 
   const tokens = [];
@@ -11,7 +11,6 @@ export function tokenize(stateString) {   // Returns: [{ type: "spooky", token: 
   // --- Deal with the empty string edge case.
   if (trimmed === "") {
     tokens.push({ type: "empty", token: "" });
-    // console.log("tokens", tokens);
     return tokens;
   }
 
@@ -54,7 +53,7 @@ export function tokenize(stateString) {   // Returns: [{ type: "spooky", token: 
       } else if (GRAMMAR.placementToken.test(fragment)) {    type = "placement";
       } else if (GRAMMAR.pureLoopToken.test(fragment)) {     type = "pureLoop";
       } else if (GRAMMAR.stemLoopToken.test(fragment)) {     type = "stemLoop";
-      } else if (GRAMMAR.loopToken.test(fragment)) {         type = "loop"; // Shadowed, can't happen.
+      } else if (GRAMMAR.loopToken.test(fragment)) {         type = "loop"; // Shadowed by previous pair of blocks.
       } else if (GRAMMAR.selfCollapseToken.test(fragment)) { type = "selfCollapse";
       } else if (GRAMMAR.collapseToken.test(fragment)) {     type = "collapse";
       } else if (GRAMMAR.scoreToken.test(fragment)) {        type = "score";  // Path taken only on multiple tokens.
@@ -70,8 +69,25 @@ export function tokenize(stateString) {   // Returns: [{ type: "spooky", token: 
     tokens.push(scoreToken);
   }
 
-  // console.log("tokens", tokens);
-
   // --- Return list of token types and strings.
   return tokens;   // Returns: [{ type: "spooky", token: "" }];
 }
+
+export function tokensToString(tokens) {  // return tokenString.
+  let tokenString = "";
+
+  for( const token of tokens) {   // tokens: [{ type: "spooky", token: "" }];
+    if(token.type != "invalid") {
+      if(     token.type === "score")  tokenString += token.token;
+      else if(token.type === "spooky") tokenString += token.token;
+      else                             tokenString += token.token + "; ";
+    }
+    else {
+      tokenString += token.token + "; ";
+      break;
+    }
+  }
+
+  return tokenString; // "X9+(2,3); ", "{X=2.0, O=0.0}", "X9+(2", etc.
+}
+
