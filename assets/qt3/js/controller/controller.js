@@ -128,7 +128,7 @@ function handleSquareCellClick(event) {  // Respond to clicks in squares down to
 
   let intent = { squareNum: squareNum, cellNum: cellNum };
 
-  const token = processClick2(intent);  // New arch.
+  // const token = processClick2(intent);  // New arch - TODO: interfers with the old?!?
   const strings = processClick(intent);  // {state: str, status: str}.
 
   // Update view.

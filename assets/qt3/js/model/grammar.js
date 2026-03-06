@@ -28,7 +28,7 @@ export const GRAMMAR = {  // TODO: expand and condense the grammar for regex.
     collapseToken:      /^([XO])(\d)@([XO]\d)\((\d)\)(!([XO]\d)\((\d)\)){2,}$/,
     selfCollapseToken:  /^O9@X9\((\d)\)!X9\((\d)\)/,
     degenerateToken:    /^([X])(9)\+\((\d),(\d)\)$/,
-    scoreToken:         /^\{\s*X-([^,}]+)\s*,\s*O-([^}]+)\s*\}$/,
+    scoreToken:         /^\{\s*X=([^,}]+)\s*,\s*O=([^}]+)\s*\}$/,
 
   // SINGLE-MATCH SCANNERS
     spookyTrailing:        /([XO])(\d)\+\((\d)$/,         // Under test (dup of spooky).

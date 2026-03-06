@@ -72,7 +72,7 @@ let statusTests = [
     statusString: "Last move self-collapsed (degenerate). Game over: X=2.0, O=0.0."
     },
   { condition: "score", score: "X=1.5, O=0.0",
-    statusString: "Game over: X=1.5, O=0.0"
+    statusString: "Game is over: X=1.5, O=0.0"
     },
   { condition: "gameOver",
     statusString: "New Game|Rerun|Undo|Load.",

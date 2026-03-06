@@ -397,31 +397,127 @@ function buildEntanglementNetwork(move) { // { type, token }.
   X1+(1,2); O2+(2,3); X3+(2,3)[23|1];  
 */
 
-export function processClick2(intent) { // Just extend the state string.
-  let token = "";    // Return token, a string, ala "X1+(1,2)".
+function isGameOver(stateString) {
+  let over = false;
+
+  let lastType = getLastMoveType(stateString);
+
+  return (lastType === "score");
+}
+
+export function processClick2(intent) { // Just extends the state string. Not sure this can be made to work.
+  let token = { type: "empty", str: "" }; // token = { "placement", "X1+(1,2); " };
 
   const squareNum = intent.squareNum;
   const cellNum   = intent.cellNum;
 
   const state = analyzeStateString(modelGetStateString());
+  console.log("state", state);
 
   let turn = state.progress.turn + 1;
   let player = (turn%2) ? 'X' : 'O'
 
-  if(evaluateGame(state).over) {                          // Game over.
+  if(isGameOver(modelGetStateString())) {                           // Game over.
+    token = { type: "over", str: "" };
     }
   else if(isSquareClassical(modelGetStateString(), squareNum)) {    // Illegal move.
+    token = { type: "classical", str: "" };
     }
-  else if(isDegenerateLastMove(modelGetStateString(), state)) {     // Self-collapse last move of game.
-    // "X9+(n,n); O9@X9(n)!X9(n); "
-    // stateString = selfCollapseLastMove(state, intent);
-    let n = intent.squareNum;
-    token = `X9+(${n},${n}); O9@X9(${n})!X9(${n}); `;
+  else if(isDegenerateLastMove(modelGetStateString(), state)) {     // Self-collapse last move of game; need to add score.  // TODO: returning two tokens is a problem for this architecture.
+    let n = intent.squareNum;                           // Trigger and self-collapse.
+    token = { type: "degenerate", str: `X9+(${n},${n}); O9@X9(${n})!X9(${n}); `};
+    // TODO: returning two tokens is a problem for this architecture.
 
-    let stateString = modelGetStateString() + token;
-
+    let stateString = modelGetStateString() + token;    // Score.
     let outcome = evaluateGame(stateString);
-    token += `{X-${outcome.score.X}, O-${outcome.score.O}}`;
+    // token += { type: "score", str: `{X=${outcome.score.X}, O=${outcome.score.O}}`};
+    }
+  else if(isReClickSpooky(modelGetStateString(), state, intent)) {  // Undo 1st spooky mark. // TODO: undoing a spooky mark is a problem for this architecture.
+    // stateString = subSpookyMove(modelGetStateString());
+    // modelSetStateString(stateString);
+
+    token = { type: "reClickSpooky", str: "" };
+
+    // TODO: undoing a spooky mark is a problem for this architecture.
+    }
+  else if(isSpooky(modelGetStateString(), state)) {                 // Spooky move.
+    const sq1 = squareNum;
+    token = { type: "spooky", str: `${player}${turn}+(${sq1}`};
+    }
+  else if(isPlacement(modelGetStateString(), state)) {              // Placement move with possible loop.
+    // const sq2 = squareNum;
+    // token = `,${sq2}); `
+
+    const sq1 = state.progress.sq1;
+    const sq2 = squareNum;
+    let placementStr = `${player}${turn}+(${sq1},${sq2})`;
+
+    // Determine if this created a cyclic entanglement.
+    const graph = buildGraph(placements);
+    const path = findPath(graph, sq1, sq2);
+
+    if(path === null) {   // No path => a simple placement move.
+      token = { type: "placement", str: `${placementStr}; `};
+      }
+    else {                // Sq1 & sq2 already connected => loop created.
+      cycleMoves = extractCycle(path, placements, turn); // [] - just the path, does not include connecting move.
+      stemMoves  = extractStems(graph, path, placements, cycleMoves); // [].
+
+      // Build loop string with stems (if any).
+      const cycleStr = cycleMoves.join('');
+      const stemsStr = stemMoves.length > 0 ? `|${stemMoves.join('')}` : '';
+      const loopStr = `[${cycleStr}${stemsStr}]`;
+
+      token = { type: "loop", str: `${placementStr}${loopStr}; `};
+    }
+    }
+  else if(isCollapse(modelGetStateString(), state)) {               // Collapse move with possible score. // TODO: returning two tokens is a problem for this architecture.
+    let cellSq = cellInLoop(intent, placements, cycleMoves);
+    // console.log("isCollapse() cellInLoop", cellSq, "=", intent, placements, cycleMoves);
+    if (cellSq != null) {
+      let triggerSquare = cellSq.square;
+      let resolved = computeCollapseResolution(placements, cycleMoves, stemMoves, cellSq.cell, triggerSquare);
+
+      // stateString = addCollapseMove(modelGetStateString(), player, turn, cellSq.cell, cellSq.square, resolved);
+      // export function addCollapseMove(state, player, turn, cell, square, resolved) {
+
+      let trigger = (cellSq.cell%2) ? 'X': 'O';    // "O3@X3(1)".
+      let triggerString = `${player}${turn-1}@${trigger}${cellSq.cell}(${cellSq.square})`;
+
+      let resString = "";                   // !X1(2)!O2(3)!X3(1); 
+      for (const key in resolved) {
+        let player = (key%2) ? 'X': 'O';
+        let square = resolved[key];
+        resString += `!${player}${key}(${square})`;
+      }
+
+      token = { type: "collapse", str: `${triggerString}${resString}; `};  // state + "O3@X3(1)!X1(2)!O2(3)!X3(1); "
+
+      // TODO: returning two tokens is a problem for this architecture.
+
+      let outcome = evaluateGame(modelGetStateString());
+      if(outcome.over) {
+        // token = {type: "score", str: `{X=${outcome.score.X}, O=${outcome.score.O}}`};
+      }
+    }
+    /* -- console.log("isCollapse() cellInLoop", cellSq, "=", intent, placements, cycleMoves); --
+      isCollapse() cellInLoop {cell: 3, square: 3}
+      cell: 3
+      square: 3
+      [[Prototype]]: Object = {squareNum: 3, cellNum: 3}
+      cellNum: 3
+      squareNum: 3
+      [[Prototype]]: Objectconstructor: ƒ Object()hasOwnProperty: ƒ hasOwnProperty()isPrototypeOf: ƒ isPrototypeOf()propertyIsEnumerable: ƒ propertyIsEnumerable()toLocaleString: ƒ toLocaleString()toString: ƒ toString()valueOf: ƒ valueOf()__defineGetter__: ƒ __defineGetter__()__defineSetter__: ƒ __defineSetter__()__lookupGetter__: ƒ __lookupGetter__()__lookupSetter__: ƒ __lookupSetter__()__proto__: (...)get __proto__: ƒ __proto__()set __proto__: ƒ __proto__() (3) [{…}, {…}, {…}]
+      0: {move: 1, player: 'X', squares: Array(2)}
+      1: {move: 2, player: 'O', squares: Array(2)}
+      2: {move: 3, player: 'X', squares: Array(2)}
+      length: 3
+      [[Prototype]]: Array(0) (2) [2, 3]
+      0: 2
+      1: 3
+      length: 2
+      [[Prototype]]: Array(0)
+     */
     }
   else {                                                  // Can't happen.
     console.log("processClick2 in work!");
@@ -434,7 +530,7 @@ X1+(1,2); O2+(2,3); X3+(3,6); O4+(6,9); X5+(8,9); O6+(7,8); X7+(4,7); O8+(1,4)[1
   return token;
 }
 
-export function processClick(intent) {
+export function processClick(intent) {  // This now seems solid - except for scoring.
   const squareNum = intent.squareNum;
   const cellNum   = intent.cellNum;
 
@@ -447,8 +543,8 @@ export function processClick(intent) {
   let turn = state.progress.turn + 1;
   let player = (turn%2) ? 'X' : 'O'
 
-  if(evaluateGame(state).over) {                          // Game over.
-    statusString = "Game is over. New Game, Rerun, Undo, Load.";
+  if(isGameOver(modelGetStateString())) {                           // Game over.
+    statusString = "Game is over. New Game, Rerun, Undo, Redo, Load.";
     }
   else if(isSquareClassical(modelGetStateString(), squareNum)) {    // Illegal move.
     statusString = "That square has collapsed. Choose another.";
@@ -457,7 +553,7 @@ export function processClick(intent) {
     // "X9+(n,n); O9@X9(n)!X9(n); "
     stateString = selfCollapseLastMove(state, intent);
     let outcome = evaluateGame(stateString);
-    stateString += `{X-${outcome.score.X}, O-${outcome.score.O}}`;
+    stateString += `{X=${outcome.score.X}, O=${outcome.score.O}}`;
     modelSetStateString(stateString);
     statusString = `Last move self-collapsed (degenerate). Game over: ${outcome.desc}.`;
     }
@@ -474,10 +570,12 @@ export function processClick(intent) {
                  + `${player}: place your second spooky mark or undo the first one.`
     }
   else if(isPlacement(modelGetStateString(), state)) {              // Placement move.
-    stateString = addPlacementMove(modelGetStateString(), player, turn, state.progress.sq1, squareNum);
-    modelSetStateString(stateString);
     const sq1 = state.progress.sq1;
     const sq2 = squareNum;
+
+    stateString = modelGetStateString() + `,${sq2}); `
+
+    modelSetStateString(stateString);
 
     const graph = buildGraph(placements);
     const path = findPath(graph, sq1, sq2);
@@ -508,7 +606,7 @@ export function processClick(intent) {
     }
   else if(isCollapse(modelGetStateString(), state)) {               // Collapse move.
     let cellSq = cellInLoop(intent, placements, cycleMoves);
-    console.log("isCollapse() cellInLoop", cellSq, "=", intent, placements, cycleMoves);
+    // console.log("isCollapse() cellInLoop", cellSq, "=", intent, placements, cycleMoves);
     if (cellSq != null) {
       let triggerSquare = cellSq.square;
       let resolved = computeCollapseResolution(placements, cycleMoves, stemMoves, cellSq.cell, triggerSquare);
@@ -517,8 +615,8 @@ export function processClick(intent) {
 
       let outcome = evaluateGame(modelGetStateString());
       if(outcome.over) {
-        stateString += `{X-${outcome.score.X}, O-${outcome.score.O}}`;
-        statusString = `Game over: ${outcome.desc}.`;
+        stateString += `{X=${outcome.score.X}, O=${outcome.score.O}}`;
+        statusString = `Game is over: ${outcome.desc}.`;
         modelSetStateString(stateString);
       }
       else {

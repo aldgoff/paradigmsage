@@ -150,6 +150,7 @@
   git push -u origin pop-holding
   git switch main
   git merge --no-ff qt3-game
+  Merge: load code working through syntax tokenization.
   Merge: complete use of GRAMMAR, error & status strings.
   Merge: get ensemble pruning by contradiction working!
   Merge: QT3 cell, button, grammar, and test improvements.
