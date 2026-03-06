@@ -1,5 +1,9 @@
 // ./assets/qt3/js/model/parse.js
 
+// TODO: more regex to extract into GRAMMAR.
+import { GRAMMAR } from "../model/grammar.js";
+
+
 //--- AI prompts ---//
 /* Specs
   Draft a method that given a state string will return an array of objects { type, string } where
@@ -47,18 +51,20 @@
     ] 
 */
 
+/* Test Strings:
+X1+(1,2); O2+(1,2)[12]; X2@X1(1)!X1(1)!O2(2); X3+(4,5); O4+(5
+X1+(1,2); O2+(1,2)[12]; X2@X1(1)!X1(1)!O2(2); X3+(4,5); O4+(5,6); X5+(4,5)[35|4]; O5@X5(4)!X3(5)!O4(6)!X5(4); O6+(8,9); X7+(3,9); O8+(3,8)[687]; X8@O6(9)!O6(9)!X7(3)!O8(8); X9+(7,7); O9@X9(7)!X9(7); {X-2, O-0}
+ */
+
 export function parseStateTranscript(stateString) { // Returns: [ {type, change}, {type, change}... ]
-  const result = [];  // type: "spooky|placement|loop|collapse|degenerate|score".
+  const result = [];  // type: "spooky|placement|loop|collapse|degenerate|score|invalid".
 
   if (!stateString || typeof stateString !== "string") {
     return result;
   }
-
   const trimmed = stateString.trim();
 
-  // ---------------------------------------------------
   // 1. Extract score block (must be final if present)
-  // ---------------------------------------------------
   let mainPart = trimmed;
   const scoreMatch = trimmed.match(/\{[^}]+\}$/);
 
@@ -66,9 +72,7 @@ export function parseStateTranscript(stateString) { // Returns: [ {type, change}
     mainPart = trimmed.slice(0, scoreMatch.index).trim();
   }
 
-  // ---------------------------------------------------
   // 2. Split by semicolons, preserving incomplete tail
-  // ---------------------------------------------------
   const rawSegments = mainPart.split(";");
 
   rawSegments.forEach((seg, index) => {
@@ -78,18 +82,15 @@ export function parseStateTranscript(stateString) { // Returns: [ {type, change}
     const hasSemicolon = index < rawSegments.length - 1 || mainPart.endsWith(";");
     const change = hasSemicolon ? s + ";" : s;
 
-    // -----------------------------------------------
     // Collapse
-    // -----------------------------------------------
     if (s.includes("@")) {
       result.push({ type: "collapse", change });
       return;
     }
 
-    // -----------------------------------------------
     // Placement-family ( + )
-    // -----------------------------------------------
     if (s.includes("+")) {
+
       // Incomplete placement (spooky)
       if (!s.includes(")") || !s.includes("(")) {
         result.push({ type: "spooky", change });
@@ -120,14 +121,9 @@ export function parseStateTranscript(stateString) { // Returns: [ {type, change}
     }
   });
 
-  // ---------------------------------------------------
   // 3. Score (always last if present)
-  // ---------------------------------------------------
   if (scoreMatch) {
-    result.push({
-      type: "score",
-      change: scoreMatch[0]
-    });
+    result.push({ type: "score", change: scoreMatch[0] });
   }
 
   return result;

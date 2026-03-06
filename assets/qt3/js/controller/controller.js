@@ -11,6 +11,7 @@ import {modelSetStateString,  // The state of the game is held in the model laye
 import {newGame,
         loadGame,
         processClick,
+        processClick2,
 } from "../model/process.js";
 
 // View layer.
@@ -22,7 +23,7 @@ import {initView,
 import {setSquareHandler} from "../view/view.js";
 import {setButtonHandler} from "../view/controlsView.js";
 
-export function initController () {
+export function initController() {
   console.log("Controller: qt3/js/controller/controller.js");
   console.log("View informs controller of button and board clicks.");
 
@@ -47,7 +48,7 @@ export function initController () {
 
 // Change state and update view.
 function handleButtonRelease(button) {
-  console.log(button);
+  console.log(button, "button");
 
   // Change state.
   switch (button) {
@@ -69,6 +70,7 @@ function handleButtonRelease(button) {
 // Methods with change state.
 function handleNewGame() {
   newGame();    // model/process.js.
+  updateView();
   }
 
 function handleRerun() {
@@ -88,13 +90,8 @@ function handleLoad() {
   const textarea = document.getElementById("qt3-state-input");
   const stateString = textarea.value;
 
-  // TODO: validate correctly formatted state string.
-  // if(!validStateString(stateString)) {
-  //   setStatusString("Invalid state string.")
-  //   return;
-  // }
-
   loadGame(stateString);    // Change state (via model/process.js).
+  updateView();
   } 
 
 function handleHelp() {
@@ -131,6 +128,7 @@ function handleSquareCellClick(event) {  // Respond to clicks in squares down to
 
   let intent = { squareNum: squareNum, cellNum: cellNum };
 
+  const token = processClick2(intent);  // New arch.
   const strings = processClick(intent);  // {state: str, status: str}.
 
   // Update view.

@@ -2,6 +2,14 @@
 
 import {GRAMMAR} from "./grammar.js";
 
+import {modelSetStateString,
+        modelGetStateString,
+        modelSetStatusString,
+        modelGetStatusString,
+        modelSetErrorString,
+        modelGetErrorString,
+} from "./model.js";
+
 import {
   parseStateTranscript,
   parseSpookyMove,
@@ -30,35 +38,49 @@ export function processStateString(stateString) {
   let cycleMoves = [];
   let stemMoves = [];
   let score = null;
+  let validSyntax = true;
 
-  const transcript = parseStateTranscript(stateString);
-
+  const transcript = parseStateTranscript(stateString); // Returns: [ {type, change}, {type, change}... ]
+  console.log("transcript", transcript);
+  let parse;
+  let truncated = "";
   for (const move of transcript) {
     if (move.type === "spooky") {
-      const parse = parseSpookyMove(move.change);
+      try {
+        parse = parseSpookyMove(move.change);
+      } catch (err) {
+        validSyntax = false;
+      }
 
-      // Nothing to do in this case.
-    }
+      if(!validSyntax) break;
+        
+      truncated += move.change + " ";
+      }
     else if (move.type === "placement") {
-      const parse = parsePlacementMove(move.change);
+      try {
+        parse = parsePlacementMove(move.change);
+      } catch (err) {
+        validSyntax = false;
+      }
+
+      if(!validSyntax) break;
 
       placements.push({
         move: parse.turn,
         player: parse.player,
         squares: [parse.sq1, parse.sq2]
       });
-    }
-    else if (move.type === "degenerate") {
-      const parse = parseDegenerateMove(move.change);
 
-      placements.push({
-        move: parse.turn,
-        player: parse.player,
-        squares: [parse.sq, parse.sq]
-      });
-    }
+      truncated += move.change + " ";
+      }
     else if (move.type === "loop") {
-      const parse = parseLoopMove(move.change);
+      try {
+        parse = parseLoopMove(move.change);
+      } catch (err) {
+        validSyntax = false;
+      }
+
+      if(!validSyntax) break;
 
       const graph = buildGraph(placements);
       const path = findPath(graph, parse.sq1, parse.sq2);
@@ -73,9 +95,17 @@ export function processStateString(stateString) {
         player: parse.player,
         squares: [parse.sq1, parse.sq2]
       });
-    }
+
+      truncated += move.change + " ";
+      }
     else if (move.type === "collapse") {
-      const parse = parseCollapseMove(move.change);
+      try {
+        parse = parseCollapseMove(move.change);
+      } catch (err) {
+        validSyntax = false;
+      }
+
+      if(!validSyntax) break;
 
       const resolved = computeCollapseResolution(
         placements,
@@ -100,22 +130,61 @@ export function processStateString(stateString) {
       // Clear entanglement
       cycleMoves = [];
       stemMoves = [];
-    }
+
+      truncated += move.change + " ";
+      }
+    else if (move.type === "degenerate") {
+      try {
+        parse = parseDegenerateMove(move.change);
+      } catch (err) {
+        validSyntax = false;
+      }
+
+      if(!validSyntax) break;
+
+      placements.push({
+        move: parse.turn,
+        player: parse.player,
+        squares: [parse.sq, parse.sq]
+      });
+
+      truncated += move.change + " ";
+      }
     else if (move.type === "score") {
-      score = parseScoreBlock(move.change);
+      try {
+        parse = parseScoreBlock(move.change);
+      } catch (err) {
+        validSyntax = false;
+      }
+
+      if(!validSyntax) break;
+
+      truncated += move.change;
+      }
+    else if (move.type === "invalid") {
+      validSyntax = false;
     }
   }
 
-  const analyzedState = analyzeStateString(stateString);
+  modelSetErrorString("");
+  console.log("truncated  ", truncated);
+  if(!validSyntax) {
+    modelSetStateString(truncated);
+    modelSetErrorString("Invalid state string, truncated at point of corruption.");
+    console.log("modelGetStateString()", modelGetStateString());
+  }
+
+  const analyzedState = analyzeStateString(modelGetStateString());
 
   return {
     placements,
     cycleMoves,
     stemMoves,
     score,
-    analyzedState
+    analyzedState,
+    validSyntax,
   };
-}
+  }
 
 export function parsePlacements(stateString) { // TODO: Duplicate in view.
   const placements = [];  // [{ move, player, squares:[a,b] }]
@@ -148,8 +217,7 @@ export function parsePlacements(stateString) { // TODO: Duplicate in view.
   }
 
   return placements;
-}
-
+  }
 
 export function buildSquareMap(placements, collapsedMoves) {
   /** Builds a square → uncollapsed move map.
@@ -174,15 +242,5 @@ export function buildSquareMap(placements, collapsedMoves) {
   }
 
   return squareMap;
-}
-
-export function isSquareClassical(stateString, squareNum) {
-  let match;
-
-  while ((match = GRAMMAR.collapseResolve.exec(stateString)) !== null) {
-    const collapsedSquare = Number(match[3]);
-    if (collapsedSquare === squareNum) return true;
   }
 
-  return false;
-}

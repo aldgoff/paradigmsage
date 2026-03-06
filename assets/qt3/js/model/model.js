@@ -32,17 +32,17 @@ export function modelSetStatusString(str) { // Sets statusString.
 
 export function modelGetStatusString() {    // Gets statusString.
   return modelStatusString;
-}
+  }
 
-export function modelSetErrorString(str) { // Sets errorString.
+export function modelSetErrorString(str) {  // Sets errorString.
   modelErrorString = str;
   }
 
-export function modelGetErrorString() {    // Gets errorString.
+export function modelGetErrorString() {     // Gets errorString.
   return modelErrorString;
 }
 
-export function validStateString(stateString) {
+function validStateString(stateString) {
   // TODO: write validStateString().
 
   return true;
@@ -58,10 +58,9 @@ function processStateChange(str) {
 }
 
 function updateStateObjects(stateString) {
-
 }
 
-function updateStatusString(stateString, stateOjects) {
+function updateStatusString(stateString, stateObjects) {
   let statusString = "";
 
   return statusString;
