@@ -61,7 +61,6 @@ title: "Play"
   - Load working... -->
 
 ## Todo:
-  - Some illegal move bugs to fix.
   - Add in the Rerun, Undo and Redo functionality.
 
 <!-- Comments in markdown.
