@@ -56,6 +56,131 @@ let cycleMoves = [];  // Code for collapse moves.
 let stemMoves = [];
 let statusString = "";
 
+// function tokenize()      // Returns: [ {type, token}, ..., | {"invalid", token} ].
+// {
+//   // TODO: code tokenize().
+// }
+
+function openMoves()      // Returns: [ {type, token}, ..., | {"invalid", token} ].
+{
+  // TODO: code openMoves().
+}
+
+function unblockedMoves()   // Returns: [ {type, token}, ..., | {"invalid", token} ].
+{
+  // TODO: code unblockedMoves().
+}
+
+// AI did not like this architecture - it's proposed arch is below.
+export function archTemplate(stateString) {  // This should be the core logic flow of the model layer for games like QT3 and 3D Chess.
+  const tokens = tokenize(stateString); // Validates syntax, truncates at first malformed token.
+  const opens  = openMoves(tokens);     // Validates play patterns, truncates at first invalid step.
+  const moves  = unblockedMoves(opens); // Validates play, truncates at first blocked move.
+
+  let newStateString = stateString; // Default if original state string had correct syntax, and represented open, unblocked play.
+
+  const lastToken = tokens[tokens.length-1];
+  const lastOpen  = opens[opens.length-1];
+  const lastMove  = moves[moves.length-1];
+
+  if((lastToken.type == "invalid")
+  || (lastOpen.type  == "invalid")
+  || (lastMove.type  == "invalid")
+  ) {
+    newStateString = assembleStrFromMoves(moves);
+  }
+
+  return newStateString;  // Guarenteed valid state string: list of grammatical, open, unblocked moves.
+}
+
+// AI's propose architecture.
+function validate(stateString) {
+  const tokens = tokenize(stateString);
+
+  const state = initialState();
+
+  for (const token of tokens) {
+    if (!isOpen(token, state))
+      break;
+
+    if (!isUnblocked(token, state))
+      break;
+
+    apply(token, state);
+  }
+
+  return assemble(state); // Returns a state string.
+}
+
+/* Example bad strings; the click UI enforces most of these automatically, but the load UI can violate them all.
+  No guarentee this list is exhaustive, but it's close, and has high coverage.
+
+  Example bad syntax;
+    "sam i am"  // Nonsense.
+    "Y1+(1" // Invalid player [X|O].
+    "X0+(1" // Invalid turn (1-9).
+    "X1*(1" // Invalid move type (placement +, collapse @).
+
+    "X1+("   // Malformed spooky.
+    "X1+(3," // Malformed spooky.
+    "X1+(10" // Malformed spooky.
+
+    "X1+(3.8)" // Malformed placement.
+    "X1+(38)"  // Malformed placement.
+    "X1+(3,8"  // Malformed placement.
+
+    "O2+(1,2)[12"    // Mallformed loop.
+    "O2+(1,2)12]"    // Mallformed loop.
+    "O2+(1,2)[12||]" // Mallformed loop.
+    "O2+(1,2)[3|12]" // Mallformed loop.
+    "O2+(1,2)[5]"    // Mallformed loop.
+    "O2+(1,2)[|12]"  // Mallformed loop.
+
+    "X2O2(1)!X1(2)!O2(1)   // Malformed trigger.
+    "X2@O2(12)!X1(2)!O2(1) // Malformed trigger.
+    "X2@O2(12!X1(2)!O2(1)  // Malformed trigger.
+
+    "X2@O2(1)X1(2)!O2(1) // Malformed collapse.
+    "X2@O2(1)!X1(2)O2(1) // Malformed collapse.
+    "X2@O2(1)!X1(2!O2(1) // Malformed collapse.
+    "X2@O2(1)!X1(2)!O21) // Malformed collapse.
+
+    "X8+(5,5)" // Malformed degenerate.
+    "O9+(5,5)" // Malformed degenerate.
+    "X9+(5)"   // Malformed degenerate.
+
+    "O8@X9(5)!X9(5)"  // Malformed selfCollapse.
+    "O9@X8(5)!X9(5)"  // Malformed selfCollapse.
+    "O9@X9(55)!X9(5)" // Malformed selfCollapse.
+    "O9@X9(5)!X8(5)"  // Malformed selfCollapse.
+    "O9@X9(5)!O9(5)"  // Malformed selfCollapse.
+    "O9@X9(5)!X9(4)"  // Malformed selfCollapse.
+    
+    "{X1,O0}"         // Malformed score.
+    "{X-1, O=0}"      // Malformed score.
+    "{O=0, X=1}"      // Malformed score.
+    "{X=3, O=0}"      // Malformed score.
+    "{X=1.0, O=0.5}"  // Malformed score.
+
+  Example bad open moves;
+    X1+(1,2); X3+(1,2); // A player can't make two moves in a row.
+    X1+(1,2); O4+(4,5); // Moves must occur sequentially.
+    O2+(4,5); X1+(1,2); // Moves cannot occur out of order.
+    X1+(1,2); O3+(1,2); // X's placement moves are on odd turns, O's on even turns.
+    X1+(1,2); O2+(1,2)[12]; O2@X1(1) // X's collapse moves are on even turns, O's on odd turns.
+
+  Example blocked moves;
+    X1+(1,2); O2+(1,2)[12]; X2@X1(1)!X1(1)!O2(2); X3+(1); // Can't place spooky marks in collapsed squares.
+    X1+(1,2); O2+(1,2)[12]; X2@X1(1)!X1(1)!O2(2); X3+(3,2); // Can't place spooky marks in collapsed squares.
+    X1+(1,2); O2+(2,3); X3+(2,3)[23|1]; O3@O2(4)  // Can't collapse a square not involved with the cyclic entanglement.
+    X1+(1,2); O2+(2,3); X3+(2,3)[23|1]; O3@O2(2)  // Can't collapse a cell without a spooky mark (requires cell info).
+    X1+(1,2); O2+(2,3); X3+(2,3)[23|1]; O3@O2(2)  // Can't collapse a stem spooky mark (requires cell info).
+    X1+(1,2); O2+(2,3); X3+(2,3)[23|1]; O3@O1(1)  // Can't collapse a move to a square it has no spooky marks in.
+    X1+(1,2); O2+(2,3); X3+(2,3)[23|1]; O3@O4(2)  // Can't collapse a move not involved with the cyclic entanglement.
+    X1+(1,2); O2+(4,5); X3+(2,3); O4+(5,6); X5+(1,3)[153]; O5@X1(1)!X1(1)!X3(2)!X5(3); {X-1, O-0} 06+(4,6) // Can't make placement moves after a game is over.
+    X1+(1,2); O2+(4,5); X3+(2,3); O4+(5,6); X5+(1,3)[153]; O5@X1(1)!X1(1)!X3(2)!X5(3); {X-1, O-0} X6@O2(4) // Can't make collapse moves after a game is over.
+*/
+
 export function newGame() {
   modelSetStatusString("Player X: place first spooky mark (click on it again to change your mind).");
   modelSetStateString("");
@@ -63,7 +188,7 @@ export function newGame() {
   cycleMoves = [];
   stemMoves = [];
 
-  let state = analyzeStateString(modelGetStateString());
+  let state = analyzeStateString(modelGetStateString());  // Generates meta data about the state.
 }
 
 export function loadGame(stateString) { // Returns nothing.
@@ -123,7 +248,6 @@ export function loadGame(stateString) { // Returns nothing.
       statusString = STATUS["collapse"](player);
       break;
     case 'collapse':
-      player = (len%2) ? 'X' : 'O' ;
       statusString = STATUS["placement"](player);
       break;
     case 'score':
@@ -249,8 +373,7 @@ function buildEntanglementNetwork(move) { // { type, token }.
   modelSetStatusString(statusString);
 }
 
-/*
-  X1+(1,2); O2+(2,3); X3+(2,3)[23|1]; 
+/* X1+(1,2); O2+(2,3); X3+(2,3)[23|1]; 
   placements (3) [{…}, {…}, {…}]
     0: {move: 1, player: 'X', squares: Array(2)}
     1: {move: 2, player: 'O', squares: Array(2)}
@@ -272,7 +395,44 @@ function buildEntanglementNetwork(move) { // { type, token }.
   outcome: {over: false, score: {…}, wins: null, desc: 'TBD'}
   progress: {turn: 2, player: 'O', sq1: 3, sq2: 0, spooky: false, …}
   X1+(1,2); O2+(2,3); X3+(2,3)[23|1];  
- */
+*/
+
+export function processClick2(intent) { // Just extend the state string.
+  let token = "";    // Return token, a string, ala "X1+(1,2)".
+
+  const squareNum = intent.squareNum;
+  const cellNum   = intent.cellNum;
+
+  const state = analyzeStateString(modelGetStateString());
+
+  let turn = state.progress.turn + 1;
+  let player = (turn%2) ? 'X' : 'O'
+
+  if(evaluateGame(state).over) {                          // Game over.
+    }
+  else if(isSquareClassical(modelGetStateString(), squareNum)) {    // Illegal move.
+    }
+  else if(isDegenerateLastMove(modelGetStateString(), state)) {     // Self-collapse last move of game.
+    // "X9+(n,n); O9@X9(n)!X9(n); "
+    // stateString = selfCollapseLastMove(state, intent);
+    let n = intent.squareNum;
+    token = `X9+(${n},${n}); O9@X9(${n})!X9(${n}); `;
+
+    let stateString = modelGetStateString() + token;
+
+    let outcome = evaluateGame(stateString);
+    token += `{X-${outcome.score.X}, O-${outcome.score.O}}`;
+    }
+  else {                                                  // Can't happen.
+    console.log("processClick2 in work!");
+  }
+
+  console.log("processClick2() - token", token);
+/*
+X1+(1,2); O2+(2,3); X3+(3,6); O4+(6,9); X5+(8,9); O6+(7,8); X7+(4,7); O8+(1,4)[18765432]; X8@X1(1)!X1(1)!O2(2)!X3(3)!O4(6)!X5(9)!O6(8)!X7(7)!O8(4);
+*/
+  return token;
+}
 
 export function processClick(intent) {
   const squareNum = intent.squareNum;

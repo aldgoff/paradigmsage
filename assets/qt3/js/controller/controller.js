@@ -11,6 +11,7 @@ import {modelSetStateString,  // The state of the game is held in the model laye
 import {newGame,
         loadGame,
         processClick,
+        processClick2,
 } from "../model/process.js";
 
 // View layer.
@@ -127,6 +128,7 @@ function handleSquareCellClick(event) {  // Respond to clicks in squares down to
 
   let intent = { squareNum: squareNum, cellNum: cellNum };
 
+  const token = processClick2(intent);  // New arch.
   const strings = processClick(intent);  // {state: str, status: str}.
 
   // Update view.

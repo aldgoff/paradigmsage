@@ -34,11 +34,11 @@ export function modelGetStatusString() {    // Gets statusString.
   return modelStatusString;
   }
 
-export function modelSetErrorString(str) { // Sets errorString.
+export function modelSetErrorString(str) {  // Sets errorString.
   modelErrorString = str;
   }
 
-export function modelGetErrorString() {    // Gets errorString.
+export function modelGetErrorString() {     // Gets errorString.
   return modelErrorString;
 }
 
