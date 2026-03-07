@@ -66,6 +66,7 @@ export function parseStateTranscript(stateString) { // Returns: [ {type, change}
 
   // 1. Extract score block (must be final if present)
   let mainPart = trimmed;
+  // TODO: Not using GRAMMAR.
   const scoreMatch = trimmed.match(/\{[^}]+\}$/);
 
   if (scoreMatch) {
@@ -98,12 +99,14 @@ export function parseStateTranscript(stateString) { // Returns: [ {type, change}
       }
 
       // Loop (has bracket annotation)
+  // TODO: Not using GRAMMAR.
       if (/\[[^\]]+\]/.test(s)) {
         result.push({ type: "loop", change });
         return;
       }
 
       // Extract squares for degenerate check
+  // TODO: Not using GRAMMAR.
       const sqMatch = s.match(/\((\d+),(\d+)\)/);
       if (sqMatch) {
         const sq1 = Number(sqMatch[1]);
@@ -144,9 +147,11 @@ export function parseSpookyMove(moveString) {     // Given "X1+(3:"             
     : trimmed;
 
   // Remove optional loop annotation if partially present
+  // TODO: Not using GRAMMAR.
   const core = noSemicolon.replace(/\[[^\]]*$/, "");
 
   // Match incomplete placement pattern
+  // TODO: Not using GRAMMAR.
   const match = core.match(/^([XO])(\d+)\+\((\d+)$/);
 
   if (!match) {
@@ -180,9 +185,11 @@ export function parsePlacementMove(moveString) {  // Given "X1+(3,5):"          
     : trimmed;
 
   // Remove optional loop annotation [....]
+  // TODO: Not using GRAMMAR.
   const core = noSemicolon.replace(/\[[^\]]+\]$/, "");
 
   // Match placement pattern
+  // TODO: Not using GRAMMAR.
   const match = core.match(/^([XO])(\d+)\+\((\d+),(\d+)\)$/);
 
   if (!match) {
@@ -226,6 +233,7 @@ export function parseLoopMove(moveString) {       // Given "O6+(3,7)[165|432];" 
 
   // Pattern:
   // Player + turn + +(sq1,sq2)[cycle(|stems)?]
+  // TODO: Not using GRAMMAR.
   const match = noSemicolon.match(
     /^([XO])(\d+)\+\((\d+),(\d+)\)\[([^|\]]+)(?:\|([^\]]+))?\]$/
   );
@@ -275,6 +283,7 @@ export function parseCollapseMove(moveString) {   // Given "X2@X1(1)!X1(1)!O2(2)
 
   // Pattern:
   // InitiatorPlayer InitiatorTurn @ TriggerMove(Square) RestOfSequence
+  // TODO: Not using GRAMMAR.
   const match = noSemicolon.match(
     /^([XO])(\d+)@([XO]\d+)\((\d+)\)(!.*)?$/
   );
@@ -324,9 +333,11 @@ export function parseDegenerateMove(moveString) { // Given "X9+(5,5);"          
     : trimmed;
 
   // Remove optional loop annotation [....]
+  // TODO: Not using GRAMMAR.
   const core = noSemicolon.replace(/\[[^\]]+\]$/, "");
 
   // Match degenerate pattern (same square twice)
+  // TODO: Not using GRAMMAR.
   const match = core.match(/^([XO])(\d+)\+\((\d+),(\d+)\)$/);
 
   if (!match) {
@@ -371,8 +382,9 @@ export function parseScoreBlock(scoreString) {    // Given "{X-1, O-0.5}"       
 
   // Strict pattern:
   // {X-<value>, O-<value>}
+  // TODO: Not using GRAMMAR.
   const match = trimmed.match(
-    /^\{\s*X-([^,}]+)\s*,\s*O-([^}]+)\s*\}$/
+    /^\{\s*X=([^,}]+)\s*, \s*O=([^}]+)\s*\}$/
   );
 
   if (!match) {

@@ -44,7 +44,7 @@ export function evaluateGame(stateString) {
   let classicalMap = extractClassicalSquares(stateString);
   let win3rows     = detectWinningLines(classicalMap);
   let score = {X:0,O:0};
-  let desc = "TBD";
+  let desc = "New Game, Rerun, Undo, Redo, Load";
 
   if(win3rows != null) {
     return { over: true, score: computeScoreFromWins(win3rows), wins: win3rows, desc: desc};

@@ -26,10 +26,10 @@ let tests = [       // "X1+(1,2); O2+(2,3); X3+(4,5); O4+(6": return [ {type, ch
   { str: "X1+(1,2); O2+(2,3); X3+(4,5); O4+(6", // type: "spooky"|"placement", change: "O4+(6"|"X3+(4,5)"
     length: 4, spooky: "spooky", placement: "placement"
     },
-  { str: "X1+(1,2); O2+(1,2)[12]; X2@X1(1)!X1(1)!O2(2); X3+(4,5); O4+(4,5)[34]; X4@X3(4)!X3(4)!O4(5); X5+(7,8); O6+(7,8)[56]; X6@X5(7)!X5(7)!O6(8); {X-1, O-0.5}", // Collapse, score.
+  { str: "X1+(1,2); O2+(1,2)[12]; X2@X1(1)!X1(1)!O2(2); X3+(4,5); O4+(4,5)[34]; X4@X3(4)!X3(4)!O4(5); X5+(7,8); O6+(7,8)[56]; X6@X5(7)!X5(7)!O6(8); {X=1, O=0.5}", // Collapse, score.
     length: 10, placement: "placement", loop: "loop", collapse: "collapse", score: "score"
     },
-  { str: "X1+(1,2); O2+(2,3); X3+(3,6); O4+(6,9); X5+(8,9); O6+(7,8); X7+(4,7); O8+(1,4)[18765432]; X8@X1(1)!X1(1)!O2(2)!X3(3)!O4(6)!X5(9)!O6(8)!X7(7)!O8(4); X9+(5,5); O9@X9(5)!X9(5); {X-2, O-0}", // Degenerate.
+  { str: "X1+(1,2); O2+(2,3); X3+(3,6); O4+(6,9); X5+(8,9); O6+(7,8); X7+(4,7); O8+(1,4)[18765432]; X8@X1(1)!X1(1)!O2(2)!X3(3)!O4(6)!X5(9)!O6(8)!X7(7)!O8(4); X9+(5,5); O9@X9(5)!X9(5); {X=2, O=0}", // Degenerate.
     length: 12, placement: "placement", loop: "loop", collapse: "collapse", degenerate: "degenerate", score: "score"
     },
   ];
@@ -86,7 +86,6 @@ let spookyTests = [           // "X1+(3": return {player, turn:, sq1, null}.
 
 for (let test of spookyTests) {
   const parse = parseSpookyMove(test.str);
-  // console.log("parse", parse);
 
   assertEqual(parse.player, test.player);
   assertEqual(parse.turn,   test.turn);
@@ -103,7 +102,6 @@ let placementTests = [        // "X1+(3,6);": return {player, turn:, sq1, null}.
 
 for (let test of placementTests) {
   const parse = parsePlacementMove(test.str); // "X1+(3,6);": return {player, turn:, sq1, null}.
-  // console.log("parse", parse);
 
   assertEqual(parse.player, test.player);
   assertEqual(parse.turn,   test.turn);
@@ -121,7 +119,6 @@ let loopTests = [             // "O6+(3,7)[165|432];": return {player, turn:, sq
 
 for (let test of loopTests) {
   const parse = parseLoopMove(test.str);
-  // console.log("parse", parse);
 
   assertEqual(parse.player, test.player);
   assertEqual(parse.turn,   test.turn);
@@ -138,7 +135,6 @@ let collapseTests = [         // "X2@X1(1)!X1(1)!O2(2);": return {player, turn, 
 
 for (let test of collapseTests) {
   const parse = parseCollapseMove(test.str); // "X2@X1(1)!X1(1)!O2(2);": return {player, turn, triggerMove, triggerSquare, sequence}.
-  // console.log("parse", parse);
 
   assertEqual(parse.player,        test.player);
   assertEqual(parse.turn,          test.turn);
@@ -155,7 +151,6 @@ let degenerateTests = [       // "X9+(5,5);" return { player, turn, sq }
 
 for (let test of degenerateTests) {
   const parse = parseDegenerateMove(test.str); // "X9+(5,5);": return { player, turn, sq }.
-  // console.log("parse", parse);
 
   assertEqual(parse.player, test.player);
   assertEqual(parse.turn,   test.turn);
@@ -165,14 +160,13 @@ for (let test of degenerateTests) {
 // console.log("parseDegenerateMove()  1/ 1 tests passed");
 
 let scoreTests = [            // "{X-1, O-0.5}" // return { X: "1", O: "0.5" }
-  { str: "{X-0, O-0}",     X: "0", O: "0" },
-  { str: "{X-1, O-0.5}",   X: "1", O: "0.5" },
-  { str: "{X-2.0, O-0.0}", X: "2.0", O: "0.0" },
+  { str: "{X=0, O=0}",     X: "0", O: "0" },
+  { str: "{X=1, O=0.5}",   X: "1", O: "0.5" },
+  { str: "{X=2.0, O=0.0}", X: "2.0", O: "0.0" },
   ];
 
 for (let test of scoreTests) {
   const parse = parseScoreBlock(test.str); // "": return {}.
-  // console.log("parse", parse);
 
   assertEqual(parse.X, test.X);
   assertEqual(parse.O,   test.O);

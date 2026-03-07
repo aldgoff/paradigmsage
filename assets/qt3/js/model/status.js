@@ -80,7 +80,7 @@ export const STATUS = Object.freeze({
     `Last move self-collapsed (degenerate). Game over: ${score}.`,
 
   score: (score) =>
-    `Game over: ${score}`,
+    `Game is over: ${score}`,
 
   gameOver: () =>
     "New Game|Rerun|Undo|Load.",
@@ -91,7 +91,7 @@ export const STATUS = Object.freeze({
 });
 
 /* List of status strings: 
-  statusString = "Game is over. New Game, Rerun, Undo, Load.";
+  statusString = "Game is over. New Game, Rerun, Undo, Redo, Load.";
   statusString = "That square has collapsed. Choose another.";
   statusString = `Last move self-collapsed (degenerate). Game over: ${outcome.desc}.`;
   statusString = `Spooky mark undone. ${player}: restart your placement move, place a spooky mark in any uncollapsed square.`

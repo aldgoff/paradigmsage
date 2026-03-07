@@ -43,16 +43,16 @@ title: "Call Structure"
 
 ## Controller
 
-    | controller.js (export) | controller.js (local)        | process.js         |
-    | :--------------------- | :--------------------------- | :--------------------------- | 
-    | initController()       | handleButtonRelease(button)  |    |
-    |                        | handleNewGame()              |
-    |                        | handleRerun()                |
-    |                        | handleUndo()                 |
-    |                        | handleRedo()                 |
-    |                        | handleLoad()                 |
-    |                        | handleHelp()                 |
-    |                        | handleSquareCellClick(event) | processClick(intent)
+    | controller.js (export) | controller.js (local)        | process.js                                              |
+    | :--------------------- | :--------------------------- | :------------------------------------------------------ | 
+    | initController()       | handleButtonRelease(button)  |                                                         |
+    |                        | handleNewGame()              |                                                         |
+    |                        | handleRerun()                |                                                         |
+    |                        | handleUndo()                 |                                                         |
+    |                        | handleRedo()                 |                                                         |
+    |                        | handleLoad()                 |                                                         |
+    |                        | handleHelp()                 |                                                         |
+    |                        | handleSquareCellClick(event) | processClick(intent)                                    |
     |                        | positionStateStringBox()     |   state = analyzeStateString(modelGetStateString())     |
     |                        |                              |   evaluateGame(state).over                              |
     |                        |                              |   isSquareClassical(modelGetStateString(), squareNum)   |

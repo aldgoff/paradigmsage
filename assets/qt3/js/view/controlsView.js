@@ -12,12 +12,11 @@ export function setButtonHandler(fn) {
   onControlCommit = fn;
 }
 
-// Button geometry (view-owned).
 const BUTTONS = QT3_LAYOUT.controls.buttons;
 
 // Gesture state.
-let gestureState = "IDLE";           // IDLE | PRESSED_INSIDE | PRESSED_OUTSIDE
-let activeButton = null;             // index into BUTTONS
+let gestureState = "IDLE";     // IDLE | PRESSED_INSIDE | PRESSED_OUTSIDE
+let activeButton = null;       // index into BUTTONS
 
 // Drawing: only used in view.js.
 export function drawButtons() {
@@ -51,10 +50,65 @@ function drawButton(button, isActive) {
   ctx.strokeRect(button.x, button.y, button.w, button.h);
 
   ctx.fillStyle = button.enabled ? "#000" : "#777";
-  ctx.fillText(button.label, button.x + button.w / 2, button.y + button.h / 2);
+  underlineKeyboardShortcuts(button);
+  }
+
+function underlineKeyboardShortcuts(button) {
+  const label = button.label;
+  const key   = button.key?.toLowerCase();
+
+  const centerX = button.x + button.w / 2;
+  const centerY = button.y + button.h / 2;
+
+  // No shortcut defined → normal draw
+  if (!key) {
+    ctx.fillText(label, centerX, centerY);
+    return;
+  }
+
+  const index = label.toLowerCase().indexOf(key);
+
+  // If key not found in label → normal draw
+  if (index === -1) {
+    ctx.fillText(label, centerX, centerY);
+    return;
+  }
+
+  const before = label.slice(0, index);
+  const char   = label[index];
+  const after  = label.slice(index + 1);
+
+  const beforeWidth = ctx.measureText(before).width;
+  const charWidth   = ctx.measureText(char).width;
+  const afterWidth  = ctx.measureText(after).width;
+  const totalWidth  = beforeWidth + charWidth + afterWidth;
+
+  const startX = centerX - totalWidth / 2;
+
+  // Draw text parts
+  ctx.fillText(before, startX + beforeWidth / 2, centerY);
+  ctx.fillText(char,   startX + beforeWidth + charWidth / 2, centerY);
+  ctx.fillText(after,  startX + beforeWidth + charWidth + afterWidth / 2, centerY);
+
+  // Draw underline
+  const underlineY = centerY + 8;
+
+  ctx.beginPath();
+  ctx.moveTo(startX + beforeWidth, underlineY);
+  ctx.lineTo(startX + beforeWidth + charWidth, underlineY);
+  ctx.stroke();
 }
 
-// Pointer lifecycle: only used in view.js.
+export function commitButtonByLabel(label) {
+  if (!onControlCommit) return;
+
+  const button = QT3_LAYOUT.controls.buttons.find(b => b.label === label);
+
+  if (button && button.enabled) {
+    onControlCommit(label);
+  }
+  }
+
 export function handlePointerDown(x, y) {
   const hit = hitButtonQ(x, y);
   if (hit !== null && BUTTONS[hit].enabled) {
@@ -97,7 +151,6 @@ export function handlePointerUp(x, y) {
 
   return committed;
   }
-
 
 function hitButtonQ(x_pt, y_pt) { // Hit button?
   for (let i = 0; i < BUTTONS.length; i++) {

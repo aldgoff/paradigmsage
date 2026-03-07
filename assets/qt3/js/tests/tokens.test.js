@@ -23,7 +23,7 @@ let fragmentTests = [
   { str: "X2@O2(1)!X1(2)!O2(1)", type: "collapse"},
   { str: "X9+(5,5)", type: "degenerate"},
   { str: "O9@X9(5)!X9(5)", type: "selfCollapse"},
-  { str: "{X-1, O-0}", type: "score"},
+  { str: "{X=1, O=0}", type: "score"},
   ];
 N = fragmentTests.length;
 
@@ -39,27 +39,27 @@ console.log(`tokenize(fragments)   ${N}/${N} tests passed`);
 let stringTests = [ 
   // Valid strings.
   { str: "", type: ["empty"]},
-  { str: "{X-2, O-0}", type: ["score"]},
-  { str: "X9+(5,5); {X-2, O-0}", type: ["degenerate", "score"]},
+  { str: "{X=2, O=0}", type: ["score"]},
+  { str: "X9+(5,5); {X=2, O=0}", type: ["degenerate", "score"]},
   { str: "X1+(1,2); O2+(1;", type: ["placement", "spooky"]},
   { str: "X1+(1,2); O2+(1,2)[12]; X2@O2(2)!X1(1)!O2(2); ", type: ["placement", "pureLoop", "collapse"]},
   { str: "X1+(1,2); O2+(2,3); X3+(2,3)[23|1]; O3@O2(2)!X1(1)!O2(2)!X3(3); ", 
     type: ["placement", "placement", "stemLoop", "collapse"]},
-  { str: "X7+(4,7); O8+(4,7)[78]; X8@X7(7)!X7(7)!O8(4); X9+(5,5); O9@X9(5)!X9(5); {X-2, O-0}", 
+  { str: "X7+(4,7); O8+(4,7)[78]; X8@X7(7)!X7(7)!O8(4); X9+(5,5); O9@X9(5)!X9(5); {X=2, O=0}", 
     type: ["placement", "pureLoop", "collapse", "degenerate", "selfCollapse", "score"]},
 
   // Invalid strings.
-  { str: "X7+(4,7); O8+(4,7)[78]; X8@X7(7)!X7(7)!O8(4); X9+(5,5); O9@X9(5)!X9(5); {X-2, O-}", 
+  { str: "X7+(4,7); O8+(4,7)[78]; X8@X7(7)!X7(7)!O8(4); X9+(5,5); O9@X9(5)!X9(5); {X=2, O=}", 
     type: ["placement", "pureLoop", "collapse", "degenerate", "selfCollapse", "invalid"]},
-  { str: "X7+(4,7); O8+(4,7)[78]; X8@X7(7)!X7(7)!O8(4); X9+(5,5); O9@X9(5)!X95); {X-2, O-0}", 
+  { str: "X7+(4,7); O8+(4,7)[78]; X8@X7(7)!X7(7)!O8(4); X9+(5,5); O9@X9(5)!X95); {X=2, O=0}", 
     type: ["placement", "pureLoop", "collapse", "degenerate", "invalid", "score"]},
-  { str: "X7+(4,7); O8+(4,7)[78]; X8@X7(7)!X7(7)!O8(4); X9+(5); O9@X9(5)!X9(5); {X-2, O-0}", 
+  { str: "X7+(4,7); O8+(4,7)[78]; X8@X7(7)!X7(7)!O8(4); X9+(5); O9@X9(5)!X9(5); {X=2, O=0}", 
     type: ["placement", "pureLoop", "collapse", "invalid", "selfCollapse", "score"]},
-  { str: "X7+(4,7); O8+(4,7)[78]; X87)!X7(7)!O8(4); X9+(5,5); O9@X9(5)!X9(5); {X-2, O-0}", 
+  { str: "X7+(4,7); O8+(4,7)[78]; X87)!X7(7)!O8(4); X9+(5,5); O9@X9(5)!X9(5); {X=2, O=0}", 
     type: ["placement", "pureLoop", "invalid", "degenerate", "selfCollapse", "score"]},
-  { str: "X7+(4,7); O8+(4,7)[7; X8@X7(7)!X7(7)!O8(4); X9+(5,5); O9@X9(5)!X9(5); {X-2, O-0}", 
+  { str: "X7+(4,7); O8+(4,7)[7; X8@X7(7)!X7(7)!O8(4); X9+(5,5); O9@X9(5)!X9(5); {X=2, O=0}", 
     type: ["placement", "invalid", "collapse", "degenerate", "selfCollapse", "score"]},
-  { str: "X7(4,7); O8+(4,7)[78]; X8@X7(7)!X7(7)!O8(4); X9+(5,5); O9@X9(5)!X9(5); {X-2, O-0}", 
+  { str: "X7(4,7); O8+(4,7)[78]; X8@X7(7)!X7(7)!O8(4); X9+(5,5); O9@X9(5)!X9(5); {X=2, O=0}", 
     type: ["invalid", "pureLoop", "collapse", "degenerate", "selfCollapse", "score"]},
 
   // Corruption pairs:

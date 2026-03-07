@@ -3,10 +3,11 @@
 import { QT3_LAYOUT } from "../layout.js";
 
 import {drawButtons,
+        commitButtonByLabel,
         handlePointerDown,
         handlePointerMove,
         handlePointerUp,
-        setButtonHandler
+        setButtonHandler,
 } from "./controlsView.js";
 import {drawMoves 
 } from "./moves.js";
@@ -31,8 +32,27 @@ const ctx = canvas.getContext("2d");
 
 export function initView() {
   installPointerHandlers();
+  installKeyboardHandler();
   render();
   }
+
+function installKeyboardHandler() {
+  window.addEventListener("keydown", (e) => {
+    if (e.ctrlKey || e.metaKey || e.altKey) return;  // Ignore modifier combinations.
+    if (e.target.tagName === "INPUT") return;        // Ignore typing in input fields.
+
+    const key = e.key.toLowerCase();
+
+    const button = QT3_LAYOUT.controls.buttons
+      .find(b => b.key === key);
+
+    if (!button || !button.enabled) return;
+
+    commitButtonByLabel(button.label);
+
+    e.preventDefault();
+  });
+}
 
 export function updateView() {
   modelGetStateString()

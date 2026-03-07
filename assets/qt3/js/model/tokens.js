@@ -73,21 +73,53 @@ export function tokenize(stateString) {   // Returns: [{ type: "spooky", token: 
   return tokens;   // Returns: [{ type: "spooky", token: "" }];
 }
 
-export function tokensToString(tokens) {  // return tokenString.
+export function tokensToString(tokens, tokenLimit = null) {
   let tokenString = "";
 
-  for( const token of tokens) {   // tokens: [{ type: "spooky", token: "" }];
-    if(token.type != "invalid") {
-      if(     token.type === "score")  tokenString += token.token;
-      else if(token.type === "spooky") tokenString += token.token;
-      else                             tokenString += token.token + "; ";
-    }
-    else {
+  const limit = (tokenLimit === null)
+    ? tokens.length
+    : Math.min(tokenLimit, tokens.length);
+
+  for (let i = 0; i < limit; i++) {
+    const token = tokens[i];
+
+    if (token.type !== "invalid") {
+      if (token.type === "empty") {
+        tokenString = "";
+        }
+      else if (token.type === "score") {
+        tokenString += token.token;
+        }
+      else if (token.type === "spooky") {
+        tokenString += token.token;
+        }
+      else {
+        tokenString += token.token + "; ";
+      }
+    } else {
       tokenString += token.token + "; ";
       break;
     }
   }
 
-  return tokenString; // "X9+(2,3); ", "{X=2.0, O=0.0}", "X9+(2", etc.
+  return tokenString;
 }
+
+// export function tokensToString1(tokens, tokenLimit = null) {  // return tokenString.
+//   let tokenString = "";
+
+//   for( const token of tokens) {   // tokens: [{ type: "spooky", token: "" }];
+//     if(token.type != "invalid") {
+//       if(     token.type === "score")  tokenString += token.token;
+//       else if(token.type === "spooky") tokenString += token.token;
+//       else                             tokenString += token.token + "; ";
+//     }
+//     else {
+//       tokenString += token.token + "; ";
+//       break;
+//     }
+//   }
+
+//   return tokenString; // "X9+(2,3); ", "{X=2.0, O=0.0}", "X9+(2", etc.
+// }
 

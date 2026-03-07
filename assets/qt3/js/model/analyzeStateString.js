@@ -7,6 +7,7 @@
 */
 
 import {GRAMMAR} from "./grammar.js";
+import {invariant} from "./core/invariants.js";
 import {buildSquareMap} from "./structure.js";
 import { evaluateGame } from "./scoring.js";
 
@@ -100,12 +101,6 @@ function emptyAnalysis() {
 }
 
 /*** Helpers ***/
-
-function invariant(message, condition) {
-  if (!condition) {
-    throw new Error(`Invariant failed: ${message}`);
-  }
-}
 
 export function parseHalfState(state) {
   /**
@@ -550,8 +545,7 @@ export function getLastMoveType(stateString) { // empty|spooky|placement|loop|co
   if (GRAMMAR.collapseToken.test(last))  return "collapse";
   if (GRAMMAR.scoreToken.test(last))     return "score";
 
-  return "invalid";
-
-  throw new Error("Unrecognized move element: " + last);
+  // return "invalid";  // TODO: make invalid a viable option.
+  return "empty";
 }
 
