@@ -228,7 +228,7 @@ export function loadGame(stateString) { // Returns nothing.
   let lastStr = getLastMove(modelGetStateString());
   let lastType = getLastMoveType(modelGetStateString());
 
-  // console.log("lastStr", lastStr, "lastType", lastType, "lastPlayer", lastPlayer);
+  console.log("lastStr", lastStr, "lastType", lastType, "lastPlayer", lastPlayer);
 
   let player = (lastPlayer === 'X' ? 'O' : 'X');
 

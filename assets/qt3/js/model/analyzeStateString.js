@@ -545,6 +545,7 @@ export function getLastMoveType(stateString) { // empty|spooky|placement|loop|co
   if (GRAMMAR.collapseToken.test(last))  return "collapse";
   if (GRAMMAR.scoreToken.test(last))     return "score";
 
-  return "invalid";
+  // return "invalid";  // TODO: make invalid a viable option.
+  return "empty";
 }
 

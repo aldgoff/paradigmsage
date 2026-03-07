@@ -2,7 +2,7 @@
 title: "Play"
 ---
 
-**Play (inwork)**
+**Play**
 
   An implementation of QT3.
   This is where the Intrepid Reader can interact with a playable version of QT3.
@@ -42,7 +42,7 @@ title: "Play"
 <!-- | Degenerate    | X1+(1,2); O2+(2,3); X3+(3,6); O4+(6,9); X5+(8,9); O6+(7,8); X7+(4,7); O8+(1,4)[18765432]; X8@X1(2)!X1(2)!O2(3)!X3(6)!O4(9)!X5(8)!O6(7)!X7(4)!O8(1); 
 | Dual wins     | X1+(1,2); O2+(2,3); X3+(3,6); O4+(6,9); X5+(8,9); O6+(7,8); X7+(4,7); O8+(4,5); X9+(1,5)[198765432]; O9@X9(5)!X1(1)!O2(2)!X3(3)!O4(6)!X5(9)!O6(8)!X7(7)!O8(4)!X9(5); {X-2, O-0} -->
 
-## The QT3 Game - inwork...
+## The QT3 Game
   <canvas id="qt3-game" width="900" height="2230"></canvas>
   <textarea id="qt3-state-input"></textarea>  <!-- hello state string. -->
 
@@ -58,10 +58,9 @@ title: "Play"
   - Classical ensemble.
   - Pruning by contradiction.
   - Pruning by collapse.
-  - Load working... -->
-
-## Todo:
-  - Add in the Rerun, Undo and Redo functionality.
+  - Load working.
+  - Undo functionality.
+  -->
 
 <!-- Comments in markdown.
   ## Proof of Concept - JS in a Canvas, state changes via mouse clicks.
