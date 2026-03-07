@@ -41,7 +41,7 @@ export function processStateString(stateString) {
   let validSyntax = true;
 
   const transcript = parseStateTranscript(stateString); // Returns: [ {type, change}, {type, change}... ]
-  console.log("transcript", transcript);
+  // console.log("transcript", transcript);
   let parse;
   let truncated = "";
   for (const move of transcript) {
@@ -167,11 +167,9 @@ export function processStateString(stateString) {
   }
 
   modelSetErrorString("");
-  console.log("truncated  ", truncated);
   if(!validSyntax) {
     modelSetStateString(truncated);
     modelSetErrorString("Invalid state string, truncated at point of corruption.");
-    console.log("modelGetStateString()", modelGetStateString());
   }
 
   const analyzedState = analyzeStateString(modelGetStateString());

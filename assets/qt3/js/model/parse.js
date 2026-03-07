@@ -384,7 +384,7 @@ export function parseScoreBlock(scoreString) {    // Given "{X-1, O-0.5}"       
   // {X-<value>, O-<value>}
   // TODO: Not using GRAMMAR.
   const match = trimmed.match(
-    /^\{\s*X-([^,}]+)\s*,\s*O-([^}]+)\s*\}$/
+    /^\{\s*X=([^,}]+)\s*, \s*O=([^}]+)\s*\}$/
   );
 
   if (!match) {

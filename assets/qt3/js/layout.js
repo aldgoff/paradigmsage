@@ -18,7 +18,7 @@ export const QT3_LAYOUT = {
     gap: 10,
     buttons: [
       { label: "New Game",  key: "n", x: 5, y: 100, w: 130, h: 40, enabled: true },
-      { label: "Rerun",     key: "r", x: 5, y: 150, w: 130, h: 30, enabled: true },
+      { label: "Rerun",     key: "r", x: 5, y: 150, w: 130, h: 30, enabled: false },
       { label: "Undo",      key: "u", x: 5, y: 190, w: 130, h: 30, enabled: false },
       { label: "Redo",      key: "d", x: 5, y: 230, w: 130, h: 30, enabled: false },
       { label: "Load",      key: "l", x: 5, y: 270, w: 130, h: 40, enabled: true },
