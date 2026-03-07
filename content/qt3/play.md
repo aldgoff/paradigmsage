@@ -11,7 +11,7 @@ title: "Play"
 
 ## Some Interesting Games:
   Copy and paste into the state string box (black edit box below the QT3 board),
-  then hit load.
+  then hit load. Keyboard shortcuts for the buttons are indicated with underscores.
 
   <!-- Fractal patterns in the classical ensemble:
   - X1+(1,2); O2+(2,3); X3+(4,5); O4+(5,6); X5+(7,8); O6+(8,9);

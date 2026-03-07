@@ -23,9 +23,18 @@ import {initView,
 import {setSquareHandler} from "../view/view.js";
 import {setButtonHandler} from "../view/controlsView.js";
 
+let peakStateString = "";
+let undoIndex = 0;
+let buttons = QT3_LAYOUT.controls.buttons;
+
 export function initController() {
   console.log("Controller: qt3/js/controller/controller.js");
   console.log("View informs controller of button and board clicks.");
+  console.log("buttons", buttons);
+
+  let btn;
+  btn = buttons.find(b => b.label === "Undo"); if (btn) btn.enabled = true;
+  btn = buttons.find(b => b.label === "Redo"); if (btn) btn.enabled = true;
 
   // Change state.
   modelSetStatusString("Welcome to quantum tic-tac-toe (QT3). Click on New Game to begin.");
@@ -55,7 +64,7 @@ function handleButtonRelease(button) {
     case "New Game": handleNewGame(); break;
     case "Rerun":    handleRerun(); break;
     case "Undo":     handleUndo(); break;
-    case "Redo":     handleRerun(); break;
+    case "Redo":     handleRedo(); break;
     case "Load":     handleLoad(); break;
     case "Help":     handleHelp(); break;
     default:
@@ -63,11 +72,10 @@ function handleButtonRelease(button) {
       break;
   }
 
-  // Update view.
   updateView();
 }
 
-// Methods with change state.
+// Methods which change state.
 function handleNewGame() {
   newGame();    // model/process.js.
   updateView();
@@ -76,14 +84,17 @@ function handleNewGame() {
 function handleRerun() {
   setStatusString("Player X: place first spooky mark (click on it again to change your mind).");
   // TODO: write handleRerun().
+  console.log("handleRerun()");
   }
 
 function handleUndo() {
   // TODO: write handleUndo().
+  console.log("handleUndo()");
   }
 
 function handleRedo() {
   // TODO: write handleRedo().
+  console.log("handleRedo()");
   }
 
 function handleLoad() {

@@ -17,12 +17,12 @@ export const QT3_LAYOUT = {
     h: 290,
     gap: 10,
     buttons: [
-      { label: "New Game",  x: 5, y: 100, w: 130, h: 40, enabled: true },
-      { label: "Rerun (R)", x: 5, y: 150, w: 130, h: 30, enabled: false },
-      { label: "Undo (Z)",  x: 5, y: 190, w: 130, h: 30, enabled: false },
-      { label: "Redo (^Z)", x: 5, y: 230, w: 130, h: 30, enabled: false },
-      { label: "Load",      x: 5, y: 270, w: 130, h: 40, enabled: true },
-      { label: "Help",      x: 5, y: 320, w: 130, h: 40, enabled: true },
+      { label: "New Game",  key: "n", x: 5, y: 100, w: 130, h: 40, enabled: true },
+      { label: "Rerun",     key: "r", x: 5, y: 150, w: 130, h: 30, enabled: true },
+      { label: "Undo",      key: "u", x: 5, y: 190, w: 130, h: 30, enabled: false },
+      { label: "Redo",      key: "d", x: 5, y: 230, w: 130, h: 30, enabled: false },
+      { label: "Load",      key: "l", x: 5, y: 270, w: 130, h: 40, enabled: true },
+      { label: "Help",      key: "h", x: 5, y: 320, w: 130, h: 40, enabled: true },
     ]
     },
 
