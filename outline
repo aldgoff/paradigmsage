@@ -23,6 +23,8 @@
 │           │   ├── analyzeStateString.js
 │           │   ├── barrel.js
 │           │   ├── collapse.js
+│           │   ├── core
+│           │   │   └── invariants.js
 │           │   ├── cycles.js
 │           │   ├── grammar.js
 │           │   ├── model.js
@@ -31,7 +33,8 @@
 │           │   ├── scoring.js
 │           │   ├── status.js
 │           │   ├── structure.js
-│           │   └── subSpookyMove.js
+│           │   ├── subSpookyMove.js
+│           │   └── tokens.js
 │           ├── tests
 │           │   ├── addCollapseMove.test.js
 │           │   ├── addLoop.test.js
@@ -45,13 +48,14 @@
 │           │   ├── helpers.js
 │           │   ├── parse.test.js
 │           │   ├── scoring.test.js
-│           │   └── subSpookyMove.test.js
+│           │   ├── status.test.js
+│           │   ├── subSpookyMove.test.js
+│           │   └── tokens.test.js
 │           └── view
 │               ├── controlsView.js
 │               ├── ensemble.js
 │               ├── listings.js
 │               ├── moves.js
-│               ├── squareClicks.js
 │               └── view.js
 ├── CAP-LOG.md
 ├── CAPTURE-LOG.md
@@ -105,6 +109,7 @@
 │   ├── qt3
 │   │   ├── _index.md
 │   │   ├── AJP-paper-2006.md
+│   │   ├── calls.md
 │   │   ├── expos.md
 │   │   ├── iqt3.md
 │   │   ├── limits.md
@@ -167,6 +172,7 @@
 │   │   ├── pop
 │   │   │   ├── act1
 │   │   │   │   ├── Ch01-Paradigms_18.pdf
+│   │   │   │   ├── Ch01-Paradigms_19.pdf
 │   │   │   │   ├── Ch02-Paradox_14.pdf
 │   │   │   │   ├── Ch03-Relativity_11.pdf
 │   │   │   │   ├── Ch04-QM_11.pdf
@@ -177,6 +183,7 @@
 │   │   │   │   ├── Ch09-R&D_06.pdf
 │   │   │   │   ├── PD01-Boxes_14.pdf
 │   │   │   │   ├── PD02-SelfReference_10.pdf
+│   │   │   │   ├── PD02-SelfReference_11.pdf
 │   │   │   │   ├── PD03-Causality_11.pdf
 │   │   │   │   ├── PD04-FirmColor_09.pdf
 │   │   │   │   ├── PD05-Ignoring_11.pdf
@@ -242,4 +249,4 @@
 ├── themes
 └── WORK-INVENTORY.md
 
-43 directories, 199 files
+44 directories, 205 files
