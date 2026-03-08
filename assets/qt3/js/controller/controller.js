@@ -3,9 +3,9 @@
 import { QT3_LAYOUT } from "../layout.js";
 
 import {modelSetStateString,  // Model layer.
-        modelGetStateString,
+        modelGetStateString,  // Not used.
         modelSetStatusString,
-        modelGetStatusString,
+        modelGetStatusString,  // Not used.
 } from "../model/model.js";
 import {newGame,
         loadGame,
@@ -73,10 +73,7 @@ export function initController() {
 
 // Change state and update view.
 function handleButtonRelease(button) {
-  // console.log(button, "button");
-
-  // Change state.
-  switch (button) {
+  switch (button) {  // Change state.
     case "New Game": handleNewGame(); break;
     case "Rerun":    handleRerun(); break;
     case "Undo":     handleUndo(); break;
@@ -124,7 +121,8 @@ function handleUndo() {   // Decrement undo index.
 function handleRedo() {   // Increment undo index.
   if (undoIndex < peakTokens.length) {
     undoIndex++;
-    if(peakTokens[undoIndex].type === "score") {
+    if((undoIndex < peakTokens.length)
+    && (peakTokens[undoIndex].type === "score")) {
       undoIndex++;
     }
     rebuildFromHistory();
