@@ -11,6 +11,10 @@
   ## 7. PoP Chapter 12 - DEPRECATE?
     Need an emancipation paper, or delete the section.
 
+  ## 10. Bugs
+    TODO: All redos fail on the last token.
+
+
   ## --------------------------------------------------
 
 # Tadone
