@@ -69,7 +69,9 @@ export function initController() {
   initView();
 
   positionStateStringBox();
-}
+  window.addEventListener("resize", positionStateStringBox);
+  window.addEventListener("scroll", positionStateStringBox);
+  }
 
 // Change state and update view.
 function handleButtonRelease(button) {
@@ -85,7 +87,7 @@ function handleButtonRelease(button) {
       break;
   }
 
-  updateView();
+  updateView(); // Covers all the button induced changes.
 }
 
 // Button methods tend to change state.
@@ -96,8 +98,6 @@ function handleNewGame() {
   undoIndex = 0;
   rebuildFromHistory();
   manageUndoButtons();
-
-  updateView();
   }
 
 function handleRerun() {  // Set undo index to first token.
@@ -109,10 +109,14 @@ function handleRerun() {  // Set undo index to first token.
 
 function handleUndo() {   // Decrement undo index.
   if (undoIndex > 0) {
-    // [{ type: "spooky", token: "" }, ...]
-    if(peakTokens[undoIndex-1].type === "score")
-      undoIndex--;
-    undoIndex--;
+    const last = peakTokens[undoIndex - 1];    // [{ type: "spooky", token: "" }, ...]
+
+    if (last.type === "score") {  // Loops get incorportated into placement token, 
+      undoIndex -= 2;             // but scores do not get incorporated into collapse token.
+    } else {
+      undoIndex -= 1;
+    }
+
     rebuildFromHistory();
     manageUndoButtons();
   }
@@ -125,6 +129,7 @@ function handleRedo() {   // Increment undo index.
     && (peakTokens[undoIndex].type === "score")) {
       undoIndex++;
     }
+
     rebuildFromHistory();
     manageUndoButtons();
   }
@@ -132,15 +137,13 @@ function handleRedo() {   // Increment undo index.
 
 function handleLoad() {   // Set peak token list to new token list from stateString.
   const textarea = document.getElementById("qt3-state-input");
-  const stateString = textarea.value;
+  const inputString = textarea.value;
 
-  loadGame(stateString);    // Change state (via model/process.js).
+  const canonicalString = loadGame(inputString);    // Change state (via model/process.js).
 
-  peakTokens = tokenize(stateString);
+  peakTokens = tokenize(canonicalString);
   undoIndex  = peakTokens.length;
   manageUndoButtons();
-
-  updateView();
   } 
 
 function handleHelp() {
