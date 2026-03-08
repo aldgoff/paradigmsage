@@ -186,4 +186,6 @@
 ## Auto Publish Isn't
   Requires a post date commit to publish.
   Post date commit to force publish - 1/26/26.
-  
+
+## 3D Engine for 3D Chess
+  AI recommended three.js.

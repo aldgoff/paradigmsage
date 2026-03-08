@@ -109,12 +109,10 @@
 │   ├── qt3
 │   │   ├── _index.md
 │   │   ├── AJP-paper-2006.md
-│   │   ├── calls.md
 │   │   ├── expos.md
-│   │   ├── iqt3.md
+│   │   ├── instructions.md
 │   │   ├── limits.md
 │   │   ├── play.md
-│   │   ├── playSpecs.md
 │   │   ├── superposition.md
 │   │   └── variants.md
 │   ├── qtp
@@ -122,6 +120,11 @@
 │   ├── quantum
 │   │   └── first.md
 │   └── start-here.md
+├── dev
+│   ├── calls.md
+│   └── playSpecs.md
+├── drafts
+│   └── iqt3.md
 ├── GOAT-COUNTER.md
 ├── GUIDANCE.md
 ├── GUIDE.md
@@ -249,4 +252,4 @@
 ├── themes
 └── WORK-INVENTORY.md
 
-44 directories, 205 files
+46 directories, 206 files

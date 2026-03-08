@@ -4,7 +4,7 @@ import {assertEqual,
         assertThrows,
  } from "./helpers.js";
 
-import {GRAMMAR} from "../model/grammar.js";
+import { GRAMMAR } from "../model/grammar.js";
 
 const diag = false;
 

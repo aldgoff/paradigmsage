@@ -11,10 +11,6 @@
   ## 7. PoP Chapter 12 - DEPRECATE?
     Need an emancipation paper, or delete the section.
 
-  ## 10. Bugs
-    TODO: All redos fail on the last token.
-
-
   ## --------------------------------------------------
 
 # Tadone
@@ -39,3 +35,6 @@
 
   ## 4. No visitor stats yet.
     This is how we validate the site is engaging our target demographic.
+
+  ## 10. Bugs
+    All redos fail on the last token.

@@ -8,16 +8,16 @@
  */
 
 export const GRAMMAR = {  // TODO: expand and condense the grammar for regex.
-  // ORIGINAL
+  // ORIGINAL (used in moves.js)
     spooky:           /([XO])(\d)\+\((\d)$/,         // Example: "X1(2" - player, turn, square.
     placement:        /([XO])(\d)\+\((\d),(\d)\)/g,  // Example: "X1(1,2); " - player, turn, sq1, sq2.
     loop:             /\[(\d+)(?:\|(\d+))?\]/g,
-    collapseEvent:    /@([XO])(\d+)\((\d)\)/g,
     collapseResolve:  /!([XO])(\d)\((\d)\)/g,        // Example: "!X1(1)!O2(2); " - player, turn, square.
     // trigger:
     // collapse:
     // degenerate:
     // score:
+    collapseEvent:    /@([XO])(\d+)\((\d)\)/g,  // Used in model/analyzeStateString.
 
   // TOKEN-LEVEL (anchored)
     spookyToken:        /^([XO])(\d)\+\((\d)$/,
