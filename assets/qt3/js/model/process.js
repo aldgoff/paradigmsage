@@ -212,7 +212,8 @@ export function loadGame(stateString) { // Returns state string, potentially tru
       analyzedState
     };
    */
-  console.log("state", state);
+  // console.log("state", state);
+  console.log(tokenString);
 
   placements = state.placements;
   cycleMoves = state.cycleMoves;
@@ -223,7 +224,7 @@ export function loadGame(stateString) { // Returns state string, potentially tru
   let lastStr = getLastMove(modelGetStateString());
   let lastType = getLastMoveType(modelGetStateString());
 
-  console.log("lastStr", lastStr, "lastType", lastType, "lastPlayer", lastPlayer);
+  // console.log("lastStr", lastStr, "lastType", lastType, "lastPlayer", lastPlayer);
 
   let player = (lastPlayer === 'X' ? 'O' : 'X');
 
