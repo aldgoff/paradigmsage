@@ -105,21 +105,3 @@ export function tokensToString(tokens, tokenLimit = null) {
   return tokenString;
 }
 
-// export function tokensToString1(tokens, tokenLimit = null) {  // return tokenString.
-//   let tokenString = "";
-
-//   for( const token of tokens) {   // tokens: [{ type: "spooky", token: "" }];
-//     if(token.type != "invalid") {
-//       if(     token.type === "score")  tokenString += token.token;
-//       else if(token.type === "spooky") tokenString += token.token;
-//       else                             tokenString += token.token + "; ";
-//     }
-//     else {
-//       tokenString += token.token + "; ";
-//       break;
-//     }
-//   }
-
-//   return tokenString; // "X9+(2,3); ", "{X=2.0, O=0.0}", "X9+(2", etc.
-// }
-

@@ -1,6 +1,6 @@
 // ./assets/qt3/js/model/structure.js
 
-import {GRAMMAR} from "./grammar.js";
+import { GRAMMAR } from "./grammar.js";
 
 import {modelSetStateString,
         modelGetStateString,
@@ -10,24 +10,22 @@ import {modelSetStateString,
         modelGetErrorString,
 } from "./model.js";
 
-import {
-  parseStateTranscript,
-  parseSpookyMove,
-  parsePlacementMove,
-  parseLoopMove,
-  parseCollapseMove,
-  parseDegenerateMove,
-  parseScoreBlock,
+import {parseStateTranscript,
+        parseSpookyMove,
+        parsePlacementMove,
+        parseLoopMove,
+        parseCollapseMove,
+        parseDegenerateMove,
+        parseScoreBlock,
 } from "./parse.js";
 
-import {
-  buildGraph,
-  findPath,
-  extractCycle,
-  extractStems
+import {buildGraph,
+        findPath,
+        extractCycle,
+        extractStems
 } from "./cycles.js";
 
-import { analyzeStateString } from "./analyzeStateString.js";
+import {analyzeStateString} from "./analyzeStateString.js";
 
 import {cellInLoop,
         computeCollapseResolution,
@@ -182,7 +180,7 @@ export function processStateString(stateString) {
     analyzedState,
     validSyntax,
   };
-  }
+}
 
 export function parsePlacements(stateString) { // TODO: Duplicate in view.
   const placements = [];  // [{ move, player, squares:[a,b] }]

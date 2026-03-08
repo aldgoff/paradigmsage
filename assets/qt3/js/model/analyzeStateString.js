@@ -6,7 +6,7 @@
  * @returns {progress, moves, counts, outcome}  // 
 */
 
-import {GRAMMAR} from "./grammar.js";
+import { GRAMMAR } from "./grammar.js";
 import {invariant} from "./core/invariants.js";
 import {buildSquareMap} from "./structure.js";
 import { evaluateGame } from "./scoring.js";

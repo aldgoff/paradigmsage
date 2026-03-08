@@ -154,6 +154,7 @@
   Merge: complete use of GRAMMAR, error & status strings.
   Merge: get ensemble pruning by contradiction working!
   Merge: QT3 cell, button, grammar, and test improvements.
+  Merge: QT3 undo functionality.
   git merge --no-ff pop-staging-04
     Merge msg: "Merge PoP Chapter 7 (Entanglement)."
     Merge msg: "Merge PoP Chapter 23 (Critique)."
@@ -185,4 +186,6 @@
 ## Auto Publish Isn't
   Requires a post date commit to publish.
   Post date commit to force publish - 1/26/26.
-  
+
+## 3D Engine for 3D Chess
+  AI recommended three.js.

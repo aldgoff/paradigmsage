@@ -66,10 +66,10 @@ title: "Call Structure"
 
     | model.js (export)         | model.js (local)                              |
     | :------------------------ | :-------------------------------------------- | 
-    | modelSetStateString(str)  | validStateString(stateString)                 |
-    | modelGetStateString()     | processStateChange(str)                       |
-    | modelSetStatusString(str) | updateStateObjects(stateString)               |
-    | modelGetStatusString()    | updateStatusString(stateString, stateObjects) |
+    | modelSetStateString(str)  |                                               |
+    | modelGetStateString()     |                                               |
+    | modelSetStatusString(str) |                                               |
+    | modelGetStatusString()    |                                               |
     | modelSetErrorString(str)  |                                               |
     | modelGetErrorString()     |                                               |
 

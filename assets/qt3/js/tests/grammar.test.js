@@ -4,13 +4,12 @@ import {assertEqual,
         assertThrows,
  } from "./helpers.js";
 
-import {GRAMMAR} from "../model/grammar.js";
+import { GRAMMAR } from "../model/grammar.js";
 
 const diag = false;
 
 let N = 0;
 N += spookyTests(diag);
-N += spookyTrailingTests(diag);
 N += placementTests(diag);
 N += collapseTests(diag);
 
@@ -26,7 +25,10 @@ function spookyTests(diagnostic=false) {          // spooky:          /([XO])(\d
     { str: "X1+(1", // Spooky X1.
       index: 0, length: 4, values: ['X', '1', '1'],
       },
-    { str: "X1+(1,2); O2+(2,3); X3+(4,5); O4+(9", // Spooky O.
+    { str: "X1+(1,2); O2+(2; X3+(4,5); ", // Incompleted spooky.
+      invalid: null,
+      },
+    { str: "X1+(1,2); O2+(2,3); X3+(4,5); O4+(9", // Spooky O4.
       index: 30, length: 4, values: ['O', '4', '9'],
       },
     { str: "X1+(1,2); ", // Placement X1.
@@ -35,7 +37,10 @@ function spookyTests(diagnostic=false) {          // spooky:          /([XO])(\d
     { str: "X1+(1,2); O2+(1,2)[12]; X2@X1(1)!X1(1)!O2(2); ", // Collapse.
       invalid: null,
       },
-    { str: "X12+(1", // Bad spooky X12.
+    { str: "X12+(1", // Bad spooky, no move X12.
+      invalid: null,
+      },
+    { str: "X1+(12", // Bad spooky, no square 12.
       invalid: null,
       },
   ];
@@ -61,53 +66,6 @@ function spookyTests(diagnostic=false) {          // spooky:          /([XO])(\d
 
   const N = tests.length;
   console.log(`Spooky regex          ${N}/ ${N} tests passed`);
-
-  return N;
-  }
-
-function spookyTrailingTests(diagnostic=false) {  // spookyTrailing:  /([XO])(\d)\+\((\d+)$/,
-  let tests = [ // String, player, turm. sq1.
-    { str: "", // Empty.
-      invalid: null,
-      },
-    { str: "X1+(1", // Spooky X1.
-      index: 0, length: 4, values: ['X', '1', '1'],
-      },
-    { str: "X1+(1,2); O2+(2,3); X3+(4,5); O4+(9", // Spooky O.
-      index: 30, length: 4, values: ['O', '4', '9'],
-      },
-    { str: "X1+(1,2); O2+(2; X3+(4,5); ", // Incompleted spooky.
-      invalid: null,
-      },
-    { str: "X1+(1,2); O2+(1,2)[12]; X2@X1(1)!X1(1)!O2(2); ", // Collapse.
-      invalid: null,
-      },
-    { str: "X1+(12", // Bad spookyTrailing, no square 12.
-      invalid: null,
-      },
-  ];
-  
-  const regex = new RegExp(GRAMMAR.spookyTrailing); // spookyTrailing: /([XO])(\d)\+\((\d+)$/,
-  if(diagnostic) console.log("SpookyTrailing regex tests:");
-
-  for (let test of tests) {
-    const match = regex.exec(test.str);
-    if(match === null) {
-      if(diagnostic) console.log(`${regex}`, match);
-      assertEqual(match,    test.invalid,    "empty|placement|collapse");
-    }
-    else {
-      if(diagnostic) console.log(`${regex}`, match);
-      assertEqual(match.index,  test.index,     "index");
-      assertEqual(match.length, test.length,    "length");
-      assertEqual(match[1],     test.values[0], "player");
-      assertEqual(match[2],     test.values[1], "turn");
-      assertEqual(match[3],     test.values[2], "square");
-    }
-  }
-
-  const N = tests.length;
-  console.log(`Spooky Trailing regex ${N}/ ${N} tests passed`);
 
   return N;
   }

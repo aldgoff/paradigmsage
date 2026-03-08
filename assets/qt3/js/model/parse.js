@@ -5,7 +5,7 @@ import { GRAMMAR } from "../model/grammar.js";
 
 
 //--- AI prompts ---//
-/* Specs
+/* Specs - parseStateTranscript(stateString):
   Draft a method that given a state string will return an array of objects { type, string } where
   type is "spooky|placement|loop|collapse|degenerate|score" and
   string is a move element "X1+(1,2);". 
@@ -51,11 +51,7 @@ import { GRAMMAR } from "../model/grammar.js";
     ] 
 */
 
-/* Test Strings:
-X1+(1,2); O2+(1,2)[12]; X2@X1(1)!X1(1)!O2(2); X3+(4,5); O4+(5
-X1+(1,2); O2+(1,2)[12]; X2@X1(1)!X1(1)!O2(2); X3+(4,5); O4+(5,6); X5+(4,5)[35|4]; O5@X5(4)!X3(5)!O4(6)!X5(4); O6+(8,9); X7+(3,9); O8+(3,8)[687]; X8@O6(9)!O6(9)!X7(3)!O8(8); X9+(7,7); O9@X9(7)!X9(7); {X-2, O-0}
- */
-
+// Assumes a valid string, uses internal RegEx expressions, cheasy ones.
 export function parseStateTranscript(stateString) { // Returns: [ {type, change}, {type, change}... ]
   const result = [];  // type: "spooky|placement|loop|collapse|degenerate|score|invalid".
 
@@ -76,7 +72,7 @@ export function parseStateTranscript(stateString) { // Returns: [ {type, change}
   // 2. Split by semicolons, preserving incomplete tail
   const rawSegments = mainPart.split(";");
 
-  rawSegments.forEach((seg, index) => {
+  rawSegments.forEach((seg, index) => { // Collapse, spooky, loop, degnerate, placement
     const s = seg.trim();
     if (!s) return;
 
@@ -99,14 +95,14 @@ export function parseStateTranscript(stateString) { // Returns: [ {type, change}
       }
 
       // Loop (has bracket annotation)
-  // TODO: Not using GRAMMAR.
+      // TODO: Not using GRAMMAR.
       if (/\[[^\]]+\]/.test(s)) {
         result.push({ type: "loop", change });
         return;
       }
 
       // Extract squares for degenerate check
-  // TODO: Not using GRAMMAR.
+      // TODO: Not using GRAMMAR.
       const sqMatch = s.match(/\((\d+),(\d+)\)/);
       if (sqMatch) {
         const sq1 = Number(sqMatch[1]);

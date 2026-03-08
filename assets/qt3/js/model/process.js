@@ -191,9 +191,7 @@ export function newGame() {
   let state = analyzeStateString(modelGetStateString());  // Generates meta data about the state.
 }
 
-export function loadGame(stateString) { // Returns nothing.
-  // console.log("loadGame() ", stateString);
-
+export function loadGame(stateString) { // Returns state string, potentially truncated.
   const tokens = tokenize(stateString);  // Returns: [ {type, token}, ..., {"invalid", token} ]
   const lastToken = tokens[tokens.length-1];
 
@@ -204,9 +202,6 @@ export function loadGame(stateString) { // Returns nothing.
   if(lastToken.type === "invalid") {
     modelSetErrorString("Invalid state string, truncated at point of corruption.");
   }
-
-  // console.log("tokenString", tokenString);  
-  // console.log("----- ----- ----- ----- ");
   
   let state = processStateString(modelGetStateString());  // Overwrites errorString.
   /* return {
@@ -217,7 +212,8 @@ export function loadGame(stateString) { // Returns nothing.
       analyzedState
     };
    */
-  console.log("state", state);
+  // console.log("state", state);
+  console.log(tokenString);
 
   placements = state.placements;
   cycleMoves = state.cycleMoves;
@@ -228,7 +224,7 @@ export function loadGame(stateString) { // Returns nothing.
   let lastStr = getLastMove(modelGetStateString());
   let lastType = getLastMoveType(modelGetStateString());
 
-  console.log("lastStr", lastStr, "lastType", lastType, "lastPlayer", lastPlayer);
+  // console.log("lastStr", lastStr, "lastType", lastType, "lastPlayer", lastPlayer);
 
   let player = (lastPlayer === 'X' ? 'O' : 'X');
 
@@ -266,6 +262,8 @@ export function loadGame(stateString) { // Returns nothing.
   if(error.length > 0) {
     modelSetErrorString(error);
   }
+
+  return modelGetStateString();
 }
 
 export function processString(moves) { // Returns: [ {type, token}, {type, token}... ]
