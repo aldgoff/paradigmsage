@@ -6,14 +6,14 @@ import {assertEqual,
 
 import {ERROR,
         STATUS,
-} from "../model/status.js";
+} from "../model/statusMsgs.js";
 
 let state = "";
 let res = null;
 let N = 0;
 
 let errorTests = [
-  { condition: "stem", errorString: "Cannot collapse spooky marks on stems." },
+  { condition: "stem", errorString: "Cannot collapse spooky marks on stems (shown in orange), their classical value is determined." },
   { condition: "loop", player: 'X', errorString: "X must first collapse the cyclic entanglement." },
   { condition: "squareCollapsed", errorString: "That square has collapsed." },
   { condition: "gameOver", errorString: "Game is over." },
@@ -21,7 +21,6 @@ let errorTests = [
   ];
 
 for (let test of errorTests) {
-  // console.log("errorTests", test);
   res = ERROR[test.condition](test.player);
   assertEqual(res, test.errorString, test.condition);
 }
@@ -84,7 +83,6 @@ let statusTests = [
   ];
 
 for (let test of statusTests) {
-  // console.log("statusTests", test);
   if(test.score != null)
     res =  STATUS[test.condition](test.score);
   else

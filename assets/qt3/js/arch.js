@@ -47,7 +47,6 @@
   Respond to buttons.
   Respond to clicks in the quantum board.
   Respond to clicks in the ensemble, TODO.
-  Position the HTML state string box (needs to be dynamic), TODO.
  */
 
 /* Regressions (tests/)

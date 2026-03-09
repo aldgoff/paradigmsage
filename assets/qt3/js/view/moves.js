@@ -2,6 +2,7 @@
 
 import { QT3_LAYOUT } from "../layout.js";
 import { GRAMMAR } from "../model/grammar.js";
+import { parsePlacements } from "../model/structure.js";
 
 // The js-website drawing canvas.
 const canvas = document.getElementById("qt3-game");
@@ -26,39 +27,6 @@ export function drawMoves(stateString) {
 }
 
 // Local functions called by drawMoves().
-function parsePlacements(stateString) {                           // return placements
-  const placements = [];  // [{ move, player, squares:[a,b] }]
-
-  if (!stateString || stateString.trim() === "") {
-    return placements;
-  }
-
-  // 1️⃣ Parse all complete placements: X1+(1,2)
-  let match;
-  while ((match = GRAMMAR.placement.exec(stateString)) !== null) {
-    placements.push({
-      player: match[1],
-      move:   Number(match[2]),
-      squares:[Number(match[3]), Number(match[4])],
-      partial:false
-    });
-  }
-
-  // 2️⃣ Detect trailing partial placement: X1+(1
-  const partialMatch = stateString.match(GRAMMAR.spooky);
-
-  if (partialMatch) {
-    placements.push({
-      player: partialMatch[1],
-      move:   Number(partialMatch[2]),
-      squares:[Number(partialMatch[3])],
-      partial:true
-    });
-  }
-
-  return placements;
-  } 
-
 function separateResolvedAndUnresolved(placements, stateString) { // return { resolved, unresolved }
   const resolvedMoves = new Set();
 

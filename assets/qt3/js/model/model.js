@@ -10,28 +10,28 @@ let modelStateString  = "";  // This is the state of the game.
 let modelStatusString = "";  // This is the status of the game.
 let modelErrorString  = "";  // Errors if any.
 
-export function modelSetStateString(str) {  // Sets stateString.
+export function modelSetStateString(str) {  // StateString.
   modelStateString = str;
   }
 
-export function modelGetStateString() {     // Gets stateString.
+export function modelGetStateString() {
   return modelStateString;
 }
 
-export function modelSetStatusString(str) { // Sets statusString.
+export function modelSetStatusString(str) { // StatusString.
   modelStatusString = str;
   modelErrorString = "";
   }
 
-export function modelGetStatusString() {    // Gets statusString.
+export function modelGetStatusString() {
   return modelStatusString;
 }
 
-export function modelSetErrorString(str) {  // Sets errorString.
+export function modelSetErrorString(str) {  // ErrorString.
   modelErrorString = str;
   }
 
-export function modelGetErrorString() {     // Gets errorString.
+export function modelGetErrorString() {
   return modelErrorString;
 }
 

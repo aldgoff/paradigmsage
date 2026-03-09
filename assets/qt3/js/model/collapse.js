@@ -6,20 +6,17 @@ export function cellInLoop(intent, placements, cycleMoves) {  // { cell: cellNum
   
   // Must be one of the loop moves.
   if (!cycleMoves.includes(cellNum)) {
-    console.log("Not in cycle.");
     return null;
   }
 
   // Find the placement for that move.
   const p = placements.find(p => p.move === cellNum);
   if (!p) {
-    console.log("Could not find in placements.");
     return null;
   }
 
   // That move must occupy this square.
   if (!p.squares.includes(squareNum)) {
-    console.log("Not in square.");
     return null;
   }
 
@@ -30,14 +27,8 @@ export function cellInLoop(intent, placements, cycleMoves) {  // { cell: cellNum
   };
 }
 
-export function computeCollapseResolution(  // TODO: put under test.
-  placements,
-  cycleMoves,
-  stemMoves,
-  triggerMove,
-  triggerSquare
-  ) {
-
+export function computeCollapseResolution(placements,cycleMoves,stemMoves,
+                                          triggerMove,triggerSquare) {
   const componentMoves = new Set([
     ...cycleMoves,
     ...stemMoves
@@ -50,12 +41,10 @@ export function computeCollapseResolution(  // TODO: put under test.
   stack.push(triggerMove);
 
   while (stack.length > 0) {
-
     const move = stack.pop();
     const square = resolved[move];
 
     for (const p of placements) {
-
       if (!componentMoves.has(p.move)) continue;
       if (p.move === move) continue;
       if (resolved[p.move] !== undefined) continue;

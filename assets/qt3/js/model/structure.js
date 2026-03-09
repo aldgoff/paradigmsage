@@ -1,5 +1,7 @@
 // ./assets/qt3/js/model/structure.js
 
+// This appears to be the execution path from load().
+
 import { GRAMMAR } from "./grammar.js";
 
 import {modelSetStateString,
@@ -27,8 +29,7 @@ import {buildGraph,
 
 import {analyzeStateString} from "./analyzeStateString.js";
 
-import {cellInLoop,
-        computeCollapseResolution,
+import {computeCollapseResolution,
 } from "./collapse.js";
 
 export function processStateString(stateString) {
@@ -182,7 +183,7 @@ export function processStateString(stateString) {
   };
 }
 
-export function parsePlacements(stateString) { // TODO: Duplicate in view.
+export function parsePlacements(stateString) {
   const placements = [];  // [{ move, player, squares:[a,b] }]
 
   if (!stateString || stateString.trim() === "") {

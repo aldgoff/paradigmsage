@@ -64,3 +64,32 @@ title: "Instructions"
   | Shared wins         | X1+(1,2); O2+(4,5); X3+(2,3); O4+(5,6); X5+(3,6); O6+(1,4)[135426]; X6@O6(4)!X1(1)!O2(5)!X3(2)!O4(6)!X5(3)!O6(4); {X=1, O=0.5}                      |
   | Dual wins           | X1+(1,2); O2+(2,3); X3+(3,6); O4+(6,9); X5+(9,8); O6+(8,7); X7+(7,4); O8+(4,5); X9+(5,1)[198765432]; O9@X9(5)!X1(1)!O2(2)!X3(3)!O4(6)!X5(9)!O6(8)!X7(7)!O8(4)!X9(5); {X=2, O=0} |
 
+  
+## My Favorite Game
+  - Load this up, then look at the classical ensemble.
+
+    ```X1+(2,5); O2+(1,5); X3+(3,5); O4+(4,5); X5+(6,5); O6+(7,5); X7+(9,5); ```
+
+  - Note that by move 7, X has a win in the 3rd column in 5 of the 8 classical games.
+  - O needs to make a play that makes all five of these realities self-contradictory,
+  so they are *pruned* from the classical ensemble by *contradiction*.
+  - Here is one of three moves (move 8 of the game) that accomplishes that objective.
+
+      ```O8+(3,6)[358|12467];```
+
+  - While X gets to collapse this cyclic entanglement, note that neither of his choices prevent O from winning.
+
+      ```X8@O8(6)!X1(2)!O2(1)!X3(3)!O4(4)!X5(5)!O6(7)!X7(9)!O8(6); {X=0, O=1}```
+      ```X8@O8(3)!X1(2)!O2(1)!X3(5)!O4(4)!X5(6)!O6(7)!X7(9)!O8(3); {X=0, O=1}```
+
+  - O wins by attacking X's past.
+  - And that is not even the best part; his wins would have been on move 7, but hers occur on move 6.
+    - Moves 2, 4, 6, in the first column.
+
+  So let's review. At timestep 7, we detected an unfavorable outcome,
+  took action after that, at timestep 8, to make the bad thing never happen,
+  replacing it at timestep 6, *before it never happened*, with an outcome favorable to us.
+  Note the creative use of tense.
+
+  Practical, paradox free time travel.
+

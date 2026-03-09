@@ -1,5 +1,7 @@
 // ./assets/qt3/js/model/process.js
 
+// This appears to be the execution path from processClick().
+
 import { GRAMMAR } from "./grammar.js";
 import { tokenize } from "./tokens.js";
 import { tokensToString } from "./tokens.js";
@@ -16,101 +18,41 @@ import {cellInLoop,
 
 import {addSpookyMove,
         subSpookyMove,
-        addPlacementMove,
+        addPlacementMove, // Not used.
         addLoop,
         addCollapseMove,
-        addScore,
+        addScore, // Not used.
 } from "./barrel.js";
 import {buildGraph,
         findPath,
         extractCycle,
-        movesForEdge,
+        movesForEdge, // Not used.
         extractStems 
 } from "./cycles.js";
 import {modelSetStateString,
         modelGetStateString,
         modelSetStatusString,
-        modelGetStatusString,
+        modelGetStatusString, // Not used.
         modelSetErrorString,
         modelGetErrorString,
 } from "./model.js";
 import {ERROR,
         STATUS,
-} from "./status.js";
+} from "./statusMsgs.js";
 
 import {processStateString} from "./structure.js";
 
 /***************************************** */
 
-/* Major bug...
-  X1+(1,2); O2+(1,2)[12]; X3@O2(1)!X1(2)!O2(1); 
+/* Illegal moves trigger bugs...
   X3+(4,5); O4+(5,6); X5+(4,5)[35|4]; O6@X3(5)!X3(5)!O4(6)!X5(4); 
-  O6+(5,6)[46|35]; X7+(7,8); O8+(8,9); X9+(7,8)[79|8]; O10@X9(8)!X7(7)!O8(9)!X9(8); 
-  {X1,O0}X9+(3,3); O9@X9(3)!X9(3); {X2,O0}
-
-  Clicking on classical squares is not working correctly.
+  O6+(5,6)[46|35]; X7+(7,8); O8+(8,9); X9+(7,8)[79|8]; O10@X9(8)!X7(7)!O8(9)!X9(8); {X1,O0}X9+(3,3); O9@X9(3)!X9(3); {X2,O0}
 */
 
 let placements = [];  // [{ move, player, squares:[a,b] }].
 let cycleMoves = [];  // Code for collapse moves.
 let stemMoves = [];
 let statusString = "";
-
-// function tokenize()      // Returns: [ {type, token}, ..., | {"invalid", token} ].
-// {
-//   // TODO: code tokenize().
-// }
-
-function openMoves()      // Returns: [ {type, token}, ..., | {"invalid", token} ].
-{
-  // TODO: code openMoves().
-}
-
-function unblockedMoves()   // Returns: [ {type, token}, ..., | {"invalid", token} ].
-{
-  // TODO: code unblockedMoves().
-}
-
-// AI did not like this architecture - it's proposed arch is below.
-export function archTemplate(stateString) {  // This should be the core logic flow of the model layer for games like QT3 and 3D Chess.
-  const tokens = tokenize(stateString); // Validates syntax, truncates at first malformed token.
-  const opens  = openMoves(tokens);     // Validates play patterns, truncates at first invalid step.
-  const moves  = unblockedMoves(opens); // Validates play, truncates at first blocked move.
-
-  let newStateString = stateString; // Default if original state string had correct syntax, and represented open, unblocked play.
-
-  const lastToken = tokens[tokens.length-1];
-  const lastOpen  = opens[opens.length-1];
-  const lastMove  = moves[moves.length-1];
-
-  if((lastToken.type == "invalid")
-  || (lastOpen.type  == "invalid")
-  || (lastMove.type  == "invalid")
-  ) {
-    newStateString = assembleStrFromMoves(moves);
-  }
-
-  return newStateString;  // Guarenteed valid state string: list of grammatical, open, unblocked moves.
-}
-
-// AI's propose architecture.
-function validate(stateString) {
-  const tokens = tokenize(stateString);
-
-  const state = initialState();
-
-  for (const token of tokens) {
-    if (!isOpen(token, state))
-      break;
-
-    if (!isUnblocked(token, state))
-      break;
-
-    apply(token, state);
-  }
-
-  return assemble(state); // Returns a state string.
-}
 
 /* Example bad strings; the click UI enforces most of these automatically, but the load UI can violate them all.
   No guarentee this list is exhaustive, but it's close, and has high coverage.
@@ -189,7 +131,7 @@ export function newGame() {
   stemMoves = [];
 
   let state = analyzeStateString(modelGetStateString());  // Generates meta data about the state.
-}
+  }
 
 export function loadGame(stateString) { // Returns state string, potentially truncated.
   const tokens = tokenize(stateString);  // Returns: [ {type, token}, ..., {"invalid", token} ]
@@ -264,143 +206,7 @@ export function loadGame(stateString) { // Returns state string, potentially tru
   }
 
   return modelGetStateString();
-}
-
-export function processString(moves) { // Returns: [ {type, token}, {type, token}... ]
-  // console.log("processString", moves.length, "moves");
-
-  let growingStateString = "";
-  let state;
-
-  for(const move of moves) {
-    growingStateString += `${move.token} `;
-    // console.log(growingStateString);
-    buildEntanglementNetwork(move); // { type, token }.
   }
-}
-
-function buildEntanglementNetwork(move) { // { type, token }.
-  let parse;
-  let player;
-  let turn;
-  let sq1;
-  let sq2;
-  let triggerMove = "";
-  let triggerSquare = 0;
-  let cycle = "";
-  let stems = "";
-
-  // console.log("buildEntanglementNetwork", move);
-
-  let statusString = "";
-  if(     move.type === "spooky") {     // Working.
-    // console.log("spooky");
-
-    // Are any of these even used?
-      parse = parseSpookyMove(move.token);
-      player = parse.player;
-      turn = parse.turn;
-      sq1 = parse.sq1;
-
-    // stateString = addSpookyMove(modelGetStateString(), player, turn, squareNum);
-
-    statusString = `Continue with rest of placement move, `
-                 + `${player}: place your second spooky mark or undo the first one.`
-    }
-  else if(move.type === "placement") {  // Working.
-    // console.log("placement");
-
-    parse = parsePlacementMove(move.token);
-
-    placements.push({ // Add connecting move.
-      move: parse.turn,
-      player: parse.player,
-      squares: [parse.sq1, parse.sq2]
-    });
-
-    let nextPlayer = (parse.player === 'X') ? 'O' : 'X'; // Must be other player who chooses the collapse..
-    statusString = `${nextPlayer}: begin your next placement move, `
-                 + `place a spooky mark in any uncollapsed square.`
-    }
-  else if(move.type === "loop") {       // Working.
-    // console.log("loop");
-
-    parse = parseLoopMove(move.token);
-
-    const graph = buildGraph(placements);
-    const path = findPath(graph, parse.sq1, parse.sq2);
-
-    if (path !== null) { // Sq1 & sq2 already connected.
-      cycleMoves = extractCycle(path, placements, parse.turn); // [] - just the path, does not include connecting move.
-      stemMoves  = extractStems(graph, path, placements, cycleMoves); // [].
-    }
-
-    placements.push({ // Add connecting move.
-      move: parse.turn,
-      player: parse.player,
-      squares: [parse.sq1, parse.sq2]
-    });
-
-    let collapsePlayer = (parse.player === 'X') ? 'O' : 'X'; // Must be other player who chooses the collapse..
-    statusString = `${collapsePlayer} must first collapse the cyclic entanglement. `
-                 + `Click on a purple spooky mark.`
-
-    // statusString = "You must click on a purple spooky mark, orange marks are stems, their classical value predetermined."
-    }
-  else if(move.type === "collapse") {
-    // console.log("collapse");
-
-    }
-  else if(move.type === "degenerate") {
-    // console.log("degenerate");
-
-    }
-  else if(move.type === "score") {
-    // console.log("score");
-    statusString = "Game is over. New Game|Rerun|Undo|Load.";
-    }
-  else {
-    // console.log("Oops");
-  }
-
-  // console.log("placements", placements);
-  // console.log("cycleMoves", cycleMoves);
-  // console.log("stemMoves",  stemMoves );
-
-  modelSetStatusString(statusString);
-}
-
-/* X1+(1,2); O2+(2,3); X3+(2,3)[23|1]; 
-  placements (3) [{…}, {…}, {…}]
-    0: {move: 1, player: 'X', squares: Array(2)}
-    1: {move: 2, player: 'O', squares: Array(2)}
-    2: {move: 3, player: 'X', squares: Array(2)}
-    length: 3
-  cycleMoves (2) [2, 3]
-    0: 2
-    1: 3
-    length: 2
-  stemMoves [1]
-    0: 1
-    length: 1
- */
-
-/* State
-  {progress: {…}, moves: {…}, counts: {…}, outcome: {…}}
-  counts: {loneSpooky: 0, separables: 0, entanglements: 1, cyclics: 0, entangledMoves: 2, …}
-  moves: {spooky: 1, placement: 2, collapse: 0, number: 2}
-  outcome: {over: false, score: {…}, wins: null, desc: 'TBD'}
-  progress: {turn: 2, player: 'O', sq1: 3, sq2: 0, spooky: false, …}
-  X1+(1,2); O2+(2,3); X3+(2,3)[23|1];  
-*/
-
-function isGameOver(stateString) {
-  let over = false;
-
-  let lastType = getLastMoveType(stateString);
-
-  return (lastType === "score");
-}
 
 export function processClick(intent) {  // This now seems solid - except for scoring.
   const squareNum = intent.squareNum;
@@ -408,9 +214,9 @@ export function processClick(intent) {  // This now seems solid - except for sco
 
   let stateString = "";
   let statusString = "";
+  let errorString = "";
 
   const state = analyzeStateString(modelGetStateString());
-  // console.log("state", state);
 
   let turn = state.progress.turn + 1;
   let player = (turn%2) ? 'X' : 'O'
@@ -478,7 +284,6 @@ export function processClick(intent) {  // This now seems solid - except for sco
     }
   else if(isCollapse(modelGetStateString(), state)) {               // Collapse move.
     let cellSq = cellInLoop(intent, placements, cycleMoves);
-    // console.log("isCollapse() cellInLoop", cellSq, "=", intent, placements, cycleMoves);
     if (cellSq != null) {
       let triggerSquare = cellSq.square;
       let resolved = computeCollapseResolution(placements, cycleMoves, stemMoves, cellSq.cell, triggerSquare);
@@ -500,7 +305,9 @@ export function processClick(intent) {  // This now seems solid - except for sco
       }
     }
     else {
-      statusString = "You must click on a purple spooky mark, orange marks are stems, their classical value predetermined."
+      const nextPlayer = (player === 'X') ? 'O' : 'X'; 
+      errorString = ERROR["loop"](nextPlayer);  // TODO: error string fails to show.
+      statusString = STATUS["uncollapsed"]();
     }
     /* -- console.log("isCollapse() cellInLoop", cellSq, "=", intent, placements, cycleMoves); --
       isCollapse() cellInLoop {cell: 3, square: 3}
@@ -526,15 +333,19 @@ export function processClick(intent) {  // This now seems solid - except for sco
   }
 
   console.log(modelGetStateString());
-  
-  // console.log("placements", placements);
-  // console.log("cycleMoves", cycleMoves);
-  // console.log("stemMoves",  stemMoves );
 
-  return {stateStr: modelGetStateString(), statusStr: statusString};
+  return {stateStr: modelGetStateString(), statusStr: statusString, errorString: errorString};
 }
 
 /** Decision functions which query state: */
+function isGameOver(stateString) {
+  let over = false;
+
+  let lastType = getLastMoveType(stateString);
+
+  return (lastType === "score");
+  }
+
 function isSquareClassical(stateString, squareNum) {
   let match;
 
@@ -580,7 +391,6 @@ function isCollapse(stateString, state) { // Done.
 }
   
 /** Action functions which change stage. */
-
 function selfCollapseLastMove(state, intent) {
   // "X9+(n,n); O9@X9(n)!X9(n); "
 
@@ -590,5 +400,27 @@ function selfCollapseLastMove(state, intent) {
   return state = modelGetStateString() + selfCollapseString;
 }
 
-/** Helper functions: */
+/* X1+(1,2); O2+(2,3); X3+(2,3)[23|1]; 
+  placements (3) [{…}, {…}, {…}]
+    0: {move: 1, player: 'X', squares: Array(2)}
+    1: {move: 2, player: 'O', squares: Array(2)}
+    2: {move: 3, player: 'X', squares: Array(2)}
+    length: 3
+  cycleMoves (2) [2, 3]
+    0: 2
+    1: 3
+    length: 2
+  stemMoves [1]
+    0: 1
+    length: 1
+ */
+
+/* State
+  {progress: {…}, moves: {…}, counts: {…}, outcome: {…}}
+  counts: {loneSpooky: 0, separables: 0, entanglements: 1, cyclics: 0, entangledMoves: 2, …}
+  moves: {spooky: 1, placement: 2, collapse: 0, number: 2}
+  outcome: {over: false, score: {…}, wins: null, desc: 'TBD'}
+  progress: {turn: 2, player: 'O', sq1: 3, sq2: 0, spooky: false, …}
+  X1+(1,2); O2+(2,3); X3+(2,3)[23|1];  
+*/
 

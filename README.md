@@ -156,6 +156,7 @@
   Merge: QT3 cell, button, grammar, and test improvements.
   Merge: QT3 undo functionality.
   Merge: QT3 fixes and code cleanup.
+  Merge: My favorite game, more code cleanup.
   git merge --no-ff pop-staging-04
     Merge msg: "Merge PoP Chapter 7 (Entanglement)."
     Merge msg: "Merge PoP Chapter 23 (Critique)."
