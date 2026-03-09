@@ -27,7 +27,6 @@ export function cellInLoop(intent, placements, cycleMoves) {  // { cell: cellNum
   };
 }
 
-// TODO: put under test.
 export function computeCollapseResolution(placements,cycleMoves,stemMoves,
                                           triggerMove,triggerSquare) {
   const componentMoves = new Set([

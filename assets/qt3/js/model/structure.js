@@ -1,5 +1,7 @@
 // ./assets/qt3/js/model/structure.js
 
+// This appears to be the execution path from load().
+
 import { GRAMMAR } from "./grammar.js";
 
 import {modelSetStateString,

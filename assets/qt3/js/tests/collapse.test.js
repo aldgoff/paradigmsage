@@ -102,7 +102,28 @@ for (let test of offLoopTests) {
   assertEqual(cellSq, null, "stem");
 }
 
-const N = loopTests.length + offLoopTests.length;
+let collapseTests = [
+  { str: "X1+(1,2); O2+(2,3); X3+(3,6); O4+(6,9); X5+(9,3)[354|12]; O5@X5(3)!X1(1)!O2(2)!X3(6)!O4(9)!X5(3); ",
+    cycleMoves: [3,4,5], stemMoves: [1,2], triggerMove: 5, triggerSquare: 3,
+    resolved: { 1: 1, 2: 2, // Pretty much just the classical listing.
+                3: 6, 4: 9, 
+                5: 3 }, 
+    },
+  ];
+
+for (let test of collapseTests) {
+  let placements = parsePlacements(test.str);
+  let resolved = computeCollapseResolution(placements, // { moveNum, square }, but this way {4: 6}?!?
+                    test.cycleMoves, test.stemMoves, test.triggerMove, test.triggerSquare);
+
+  assertEqual(resolved[1], test.resolved[1], "Move 1");
+  assertEqual(resolved[2], test.resolved[2], "Move 2");
+  assertEqual(resolved[3], test.resolved[3], "Move 3");
+  assertEqual(resolved[4], test.resolved[4], "Move 4");
+  assertEqual(resolved[5], test.resolved[5], "Move 5");
+}
+
+const N = loopTests.length + offLoopTests.length + collapseTests.length;
 
 // --------- --------- --------- --------- //
 console.log(`collapse.js           ${N}/ ${N} tests passed`);

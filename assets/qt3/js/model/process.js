@@ -1,5 +1,7 @@
 // ./assets/qt3/js/model/process.js
 
+// This appears to be the execution path from processClick().
+
 import { GRAMMAR } from "./grammar.js";
 import { tokenize } from "./tokens.js";
 import { tokensToString } from "./tokens.js";
