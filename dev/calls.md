@@ -14,6 +14,7 @@ title: "Call Structure"
     |                              |                                                         |                       |
     | handleLoad(stateString)      | process.loadGame(stateString)                           | view.updateView()     |
     |                              |   tokens = process.tokenize(stateString)                |                       |
+    |                              |   tokenString = tokensToString(tokens);
     |                              |   structure.processStateString(modelGetStateString())   |                       |
     |                              |     parseStateTranscript(stateString)                   |                       |
     |                              |     parsePlacementMove(move.change)                     |                       |
@@ -63,7 +64,6 @@ title: "Call Structure"
     |                        |                              |   isCollapse(modelGetStateString(), state)              |
 
 ## Model
-
     | model.js (export)         | model.js (local)                              |
     | :------------------------ | :-------------------------------------------- | 
     | modelSetStateString(str)  |                                               |
@@ -75,10 +75,10 @@ title: "Call Structure"
 
     | process.js (export)            | process.js (local)                            |
     | :----------------------------- | :-------------------------------------------- | 
-    | newGame()                      | buildEntanglementNetwork(move)                |
+    | newGame()                      | isGameOver(stateString)                       |
     | loadGame(stateString)          | isSquareClassical(stateString, squareNum)     |
-    | processString(moves)           | isDegenerateLastMove(stateString, state)      |
-    | processClick(intent)           | isReClickSpooky(stateString, state, intent)   |
+    | processClick(intent)           | isDegenerateLastMove(stateString, state)      |
+    |                                | isReClickSpooky(stateString, state, intent)   |
     |                                | isSpooky(stateString, state)                  |
     |                                | isPlacement(stateString, state)               |
     |                                | isCollapse(stateString, state)                |
@@ -137,6 +137,11 @@ title: "Call Structure"
     | listPlacementsWithCollapse(stateString)        |                                                    |
     | getLastMove(stateString)                       |                                                    |
     | getLastMoveType(stateString)                   |                                                    |
+
+    | statusMsgs.js (export)   | statusMsgs.js (local) |
+    | :----------------------- | :-------------------- | 
+    | ERROR = Object.freeze()  |                       |
+    | STATUS = Object.freeze() |                       |
 
     | template.js (export)  | template.js (local)   |
     | :-------------------- | :-------------------- | 

@@ -71,7 +71,7 @@ export function initController() {
   positionStateStringBox();
   window.addEventListener("resize", positionStateStringBox);
   window.addEventListener("scroll", positionStateStringBox);
-  }
+}
 
 // Change state and update view.
 function handleButtonRelease(button) {

@@ -22,7 +22,7 @@ if (import.meta.env?.DEV ?? true) { // Regression tests of the model.
   import("./tests/parse.test.js");
   import("./tests/collapse.test.js");
   import("./tests/grammar.test.js");
-  import("./tests/status.test.js");
+  import("./tests/statusMsgs.test.js");
   import("./tests/tokens.test.js");
 }
 
