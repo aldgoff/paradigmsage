@@ -17,12 +17,6 @@ let cycleMoves = [];
 
 // --------- --------- --------- --------- //
 
-let loopTests = [
-  { str: "X1+(1,2); O2+(2,3); X3+(2,3)[23|1];", // tbd.
-    cell: 3, square: 3,
-    },
-  ];
-
 /* Data Types:
   cellSq {
     cell: cellNum,
@@ -70,21 +64,47 @@ let loopTests = [
     });
 */
 
-intent = { squareNum: 3, cellNum: 3 };
-
-cycleMoves.push(2);
-cycleMoves.push(3);
+// All tests use the same state string, 3 move cyclic entanglement with one stem.
+let loopTests = [
+  { str: "X1+(1,2); O2+(2,3); X3+(1,2)[13|2]; ",            // In loop.
+    cycleMoves: [1,1], intent: { squareNum: 1, cellNum: 1 },
+    cellSq: { squareNum: 1, cellNum: 1 },
+    },
+  { str: "X1+(1,2); O2+(2,3); X3+(1,2)[13|2]; ",            // In loop.
+    cycleMoves: [1,2], intent: { squareNum: 2, cellNum: 2 },
+    cellSq: { squareNum: 2, cellNum: 2 },
+    },
+  ];
 
 for (let test of loopTests) {
   placements = parsePlacements(test.str);
-  let cellSq = cellInLoop(intent, placements, cycleMoves);
-  // console.log("test", test, intent, placements, cycleMoves, cellSq);
+  let cellSq = cellInLoop(test.intent, placements, test.cycleMoves);
 
-  assertEqual(cellSq.cell,   test.cell,   "cell");
-  assertEqual(cellSq.square, test.square, "square");
+  assertEqual(cellSq.cell, test.cellSq.cellNum, "cell");
+  assertEqual(cellSq.square, test.cellSq.squareNum, "square");
 }
 
+let offLoopTests = [
+  { str: "X1+(1,2); O2+(2,3); X3+(1,2)[13|2]; ",            // On stem.
+    cycleMoves: [1,2], intent: { squareNum: 3, cellNum: 3 },
+    cellSq: null,
+    },
+  { str: "X1+(1,2); O2+(2,3); X3+(1,2)[13|2]; ",            // Off entanglement.
+    cycleMoves: [1,2], intent: { squareNum: 4, cellNum: 4 },
+    cellSq: null,
+    },
+  ];
+
+for (let test of offLoopTests) {
+  placements = parsePlacements(test.str);
+  let cellSq = cellInLoop(test.intent, placements, test.cycleMoves);
+
+  assertEqual(cellSq, null, "stem");
+}
+
+const N = loopTests.length + offLoopTests.length;
+
 // --------- --------- --------- --------- //
-console.log("collapse.js           1/ 1 tests passed");
+console.log(`collapse.js           ${N}/ ${N} tests passed`);
 // --------- --------- --------- --------- //
 

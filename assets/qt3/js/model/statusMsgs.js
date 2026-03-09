@@ -8,10 +8,10 @@
 
 export const ERROR = Object.freeze({
   /* Example pairs of error and status strings: 
-    errorString = "Cannot collapse spooky marks on stems (shown in orange), their classical value is determined."
+    errorString = `${collapsePlayer} must first collapse the cyclic entanglement.`
     statusString = "Click on a purple spooky mark."
 
-    errorString = `${collapsePlayer} must first collapse the cyclic entanglement.`
+    errorString = "Cannot collapse spooky marks on stems (shown in orange), their classical value is determined."
     statusString = "Click on a purple spooky mark."
 
     errorString = "That square has collapsed.";
@@ -46,7 +46,7 @@ export const STATUS = Object.freeze({
   placement:  (player) => `${player}, begin your next placement move, place a pair of spooky marks in any pair of uncollapsed squares.`,
 
   collapse: (player) =>         `Loop detected. ${player}, select a purple spooky mark to collapse it into that square.`,
-  uncollapsed: (player) =>      `Click on a purple spooky mark.`,
+  uncollapsed: () =>            `Click on a purple spooky mark.`,
   orange: (player) =>           `${player} must click on a purple spooky mark, orange marks are stems, their classical value predetermined.`,
   spookyAfterError: (player) => `${player}, place first spooky mark in any uncollapsed square.`,
   alreadyCollapsed: () =>       "Choose another.",

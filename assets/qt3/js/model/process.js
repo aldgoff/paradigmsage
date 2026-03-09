@@ -212,6 +212,7 @@ export function processClick(intent) {  // This now seems solid - except for sco
 
   let stateString = "";
   let statusString = "";
+  let errorString = "";
 
   const state = analyzeStateString(modelGetStateString());
 
@@ -281,7 +282,6 @@ export function processClick(intent) {  // This now seems solid - except for sco
     }
   else if(isCollapse(modelGetStateString(), state)) {               // Collapse move.
     let cellSq = cellInLoop(intent, placements, cycleMoves);
-    // console.log("isCollapse() cellInLoop", cellSq, "=", intent, placements, cycleMoves);
     if (cellSq != null) {
       let triggerSquare = cellSq.square;
       let resolved = computeCollapseResolution(placements, cycleMoves, stemMoves, cellSq.cell, triggerSquare);
@@ -303,7 +303,9 @@ export function processClick(intent) {  // This now seems solid - except for sco
       }
     }
     else {
-      statusString = "You must click on a purple spooky mark, orange marks are stems, their classical value predetermined."
+      const nextPlayer = (player === 'X') ? 'O' : 'X'; 
+      errorString = ERROR["loop"](nextPlayer);  // TODO: error string fails to show.
+      statusString = STATUS["uncollapsed"]();
     }
     /* -- console.log("isCollapse() cellInLoop", cellSq, "=", intent, placements, cycleMoves); --
       isCollapse() cellInLoop {cell: 3, square: 3}
@@ -330,7 +332,7 @@ export function processClick(intent) {  // This now seems solid - except for sco
 
   console.log(modelGetStateString());
 
-  return {stateStr: modelGetStateString(), statusStr: statusString};
+  return {stateStr: modelGetStateString(), statusStr: statusString, errorString: errorString};
 }
 
 /** Decision functions which query state: */

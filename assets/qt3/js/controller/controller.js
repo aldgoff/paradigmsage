@@ -6,6 +6,8 @@ import {modelSetStateString,  // Model layer.
         modelGetStateString,  // Not used.
         modelSetStatusString,
         modelGetStatusString,  // Not used.
+        modelSetErrorString,
+        modelGetErrorString,  // Not used.
 } from "../model/model.js";
 import {newGame,
         loadGame,
@@ -174,9 +176,11 @@ function handleSquareCellClick(event) {  // Respond to clicks in squares down to
   // Update view and undo system.
   let stateString  = strings.stateStr;   // "X1+(1,2); O2+(2,3); X3+(1,3)[132]; "
   let statusString = strings.statusStr;  // "Player O to collapse cyclic entanglement."
+  let errorString = "example error";
 
   setStateString(stateString);           // Set state string in the view layer.
   setStatusString(statusString);         // Set status string in the view layer.
+  modelSetErrorString(errorString);           // Oops!
 
   peakTokens = tokenize(stateString);    // Capture new peak tokens for undo functionality.
   undoIndex = peakTokens.length;
