@@ -181,7 +181,7 @@ export function processStateString(stateString) {
   };
 }
 
-export function parsePlacements(stateString) { // TODO: Duplicate in view.
+export function parsePlacements(stateString) {
   const placements = [];  // [{ move, player, squares:[a,b] }]
 
   if (!stateString || stateString.trim() === "") {

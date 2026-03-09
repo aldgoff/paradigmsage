@@ -76,7 +76,7 @@ function drawMoveNums(layout) {
   }
 
 function drawQuantumMoves(layout, stateString) {
-  const moves = listPlacementsWithCollapse(stateString); //  sq1: p.sq1, sq2: p.sq2, collapse
+  const moves = listPlacementsWithCollapse(stateString); // [ { sq1, sq2, collapse: 'none' | 'left' | 'right' } ]
 
   let row = layout.rows;  // Graphical layout.
   let sep = 0;
@@ -88,7 +88,9 @@ function drawQuantumMoves(layout, stateString) {
     if(     move.collapse === 'none')  {  symbol = "---"; }
     else if(move.collapse === 'left')  {  symbol = "<<"; }
     else if(move.collapse === 'right') {  symbol = ">>"; }
-    else { /* TODO: How to throw an exception? */ }
+    else {
+       throw new Error("Impossible state for move collapse in listings.js/drawQuantumMoves()");
+      }
 
     if (xory%2) {           // X moves.
       offset = 0;
@@ -116,7 +118,9 @@ function drawClassicalMoves(layout, stateString) {
     if(     move.collapse === 'none')  {  symbol = "-"; }
     else if(move.collapse === 'left')  {  symbol = move.sq1; }
     else if(move.collapse === 'right') {  symbol = move.sq2; }
-    else { /* TODO: How to throw an exception? */ }
+    else {
+      throw new Error("Impossible state for move collapse in listings.js/drawClassicalMoves().");
+    }
 
     if (xory%2) {    // X moves.
       offset = 0;

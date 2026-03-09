@@ -192,8 +192,7 @@ title: "Call Structure"
 
     | moves.js (export)      | moves.js (local)                                       |
     | :--------------------- | :----------------------------------------------------- | 
-    | drawMoves(stateString) | parsePlacements(stateString)                           |
-    |                        | separateResolvedAndUnresolved(placements, stateString) |
+    | drawMoves(stateString) | separateResolvedAndUnresolved(placements, stateString) |
     |                        | assignComponentColors(unresolved)                      |
     |                        | overrideCycleColors(stateString, moveColorMap)         |
     |                        | drawSpookyMarks(unresolved, colorMap)                  |
