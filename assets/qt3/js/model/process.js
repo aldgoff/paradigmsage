@@ -5,6 +5,7 @@
 import { GRAMMAR } from "./grammar.js";
 import { tokenize } from "./tokens.js";
 import { tokensToString } from "./tokens.js";
+import { resetGlobals } from "./tokens.js";
 
 import {analyzeStateString} from "./analyzeStateString.js";
 import {getLastMoveType} from "./analyzeStateString.js";
@@ -129,6 +130,8 @@ export function newGame() {
   placements = [];
   cycleMoves = [];
   stemMoves = [];
+
+  resetGlobals();
 
   let state = analyzeStateString(modelGetStateString());  // Generates meta data about the state.
   }

@@ -190,3 +190,26 @@
 
 ## 3D Engine for 3D Chess
   AI recommended three.js.
+
+## An AI Assessment of N-way QT3.
+Instead of a smooth transition like:
+
+draw → X → balanced → O
+
+we might see something like:
+
+N	speculative result
+  1	draw
+  2	X win
+  3	X win
+  4	draw
+  5	X win
+  6	O edge
+  7	draw
+  8	O win
+  9	O win
+
+Not monotonic — oscillatory pockets of advantage.
+
+This would make QT3 a rare example of a **finite game family with tunable quantum complexity**.
+

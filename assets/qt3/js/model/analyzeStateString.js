@@ -498,7 +498,7 @@ export function listPlacementsWithCollapse(stateString) { // Used in view/listin
   }
 
 export function getLastMove(stateString) { // empty|spooky|placement|loop|collapse|degenerate|score.
-  if (!stateString) return "empty";
+  if (!stateString) return "";
 
   const trimmed = stateString.trim();
   if (!trimmed) return "empty";

@@ -1,6 +1,8 @@
 // Controller.js.
 
 import { QT3_LAYOUT } from "../layout.js";
+import { GRAMMAR } from "../model/grammar.js";
+import { processIntent } from "../model/tokens.js";
 
 import {modelSetStateString,  // Model layer.
         modelGetStateString,  // Not used.
@@ -17,6 +19,8 @@ import {tokenize,
         tokensToString,
  } from "../model/tokens.js";
 import {invariant} from "../model/core/invariants.js";
+import {getLastMove} from "../model/analyzeStateString.js";
+import {getLastMoveType} from "../model/analyzeStateString.js";
 
 import {initView,             // View layer.
         updateView,
@@ -170,6 +174,41 @@ function handleSquareCellClick(event) {  // Respond to clicks in squares down to
     peakTokens = peakTokens.slice(0, undoIndex);
     rebuildFromHistory();
   }
+
+ // --- Experimental Code --- //
+
+  let square = squareNum;
+  let cell   = cellNum;
+
+  // Should be a function { player, turn }.
+  const currentStateString = modelGetStateString();
+  const lastMove = getLastMove(currentStateString); // { "X1+(1" }
+  const lastMoveType = getLastMoveType(currentStateString); // { type: spooky, str: "X1+(1" }
+
+  let player = 'X';
+  let turn   = 1;
+  if(lastMoveType === "empty") {
+    turn   = 1;
+    player = 'X';
+    }
+  else if(lastMoveType === "spooky") {
+    turn   = Number(lastMove[1]);
+    player = (turn%2) ? 'X' : 'O';
+    }
+  else if(lastMoveType === "loop") {
+    turn   = Number(lastMove[1]);
+    player = (turn%2) ? 'O' : 'X';
+    }
+  else {
+    turn   = Number(lastMove[1]) + 1;
+    player = (turn%2) ? 'X' : 'O';
+  }
+  let newIntent = { player: player, turn: turn, square: square, cell: cell };
+  console.log("newIntent", newIntent);
+
+  const newStateString = processIntent(currentStateString, newIntent);
+
+ // ------------------------- //
 
   const strings = processClick(intent);  // {state: str, status: str}.
 

@@ -25,6 +25,8 @@ export const ERROR = Object.freeze({
   stem: () =>               "Cannot collapse spooky marks on stems (shown in orange), their classical value is determined.",
   squareCollapsed: () =>    "That square has collapsed.",
   gameOver: () =>           "Game is over.",
+  badStart: () =>           "Invalid spooky intent.",
+  badPlacement: () =>       "Invalid completion of placement move.",
 
   /* Example pairs: will not occur during play, but may occur during load.
     errorString = "No game in the state string box to load."
