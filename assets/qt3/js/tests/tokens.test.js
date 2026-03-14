@@ -1,17 +1,18 @@
 // Regression tests for tokens().
 
-import { assertEqual } from "./helpers.js";
-import { GRAMMAR } from "../model/grammar.js";
+import {assertEqual,
+        assertThrows,
+ } from "./helpers.js";
+
+import { tokenize } from "../model/tokens.js";
 
 /* Method that given a state string will return an array of objects { type, token } where
-   type is "empty|spooky|placement|loop|collapse|degenerate|selfCollapse|score|invalid" and 
+   type is "empty|invalid|spooky|placement|pureLoop|stemLoop|collapse|degenerate|selfCollapse|score" and 
    token is a string, typically a move element "X1+(1,2);". 
 */
 
-import {tokenize,
-} from "../model/tokens.js";
-
 let N = 0;
+// --------- --------- --------- --------- //
 
 let fragmentTests = [ 
   { str: "", type: "empty"},
@@ -31,10 +32,11 @@ for (let test of fragmentTests) {
   const parse = tokenize(test.str);   // Returns: [{ type: "spooky", token: "" }];
 
   assertEqual(parse[0].type, test.type);
-  }
+}
 
-console.log(`tokenize(fragments)   ${N}/${N} tests passed`);
+// console.log(`tokenize(fragments)   ${N}/${N} tests passed`);
 // --------- --------- --------- --------- //
+
 
 let stringTests = [ 
   // Valid strings.
@@ -79,11 +81,11 @@ for (let test of stringTests) {
   }
 }
 
-console.log(`tokenize(strings  )   ${N}/${N} tests passed`);
+// console.log(`tokenize(strings  )   ${N}/${N} tests passed`);
 // --------- --------- --------- --------- //
 
+
 N = fragmentTests.length + stringTests.length;
-// --------- --------- --------- --------- //
-console.log(`tokenize()            ${N}/${N} tests passed`);
+console.log(`tokenize()           ${N}/${N} tests passed`);
 // --------- --------- --------- --------- //
 

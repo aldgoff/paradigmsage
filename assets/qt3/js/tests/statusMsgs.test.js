@@ -8,9 +8,8 @@ import {ERROR,
         STATUS,
 } from "../model/statusMsgs.js";
 
-let state = "";
-let res = null;
 let N = 0;
+// --------- --------- --------- --------- //
 
 let errorTests = [
   { condition: "stem", errorString: "Cannot collapse spooky marks on stems (shown in orange), their classical value is determined." },
@@ -19,14 +18,14 @@ let errorTests = [
   { condition: "gameOver", errorString: "Game is over." },
   { condition: "emptyLoad", errorString: "No game in the state string box to load." },
   ];
+N = errorTests.length;
 
 for (let test of errorTests) {
-  res = ERROR[test.condition](test.player);
+  const res = ERROR[test.condition](test.player);
   assertEqual(res, test.errorString, test.condition);
 }
 
-N = errorTests.length;
-console.log(`error                 ${N}/ ${N} tests passed`);
+// console.log(`error                 ${N}/ ${N} tests passed`);
 // --------- --------- --------- --------- //
 
 
@@ -81,8 +80,10 @@ let statusTests = [
     statusString: "Start playing or try something like this, 'X1+(1,2); O2+(2,3); '.",
     },
   ];
+N = statusTests.length;
 
 for (let test of statusTests) {
+  let res = "";
   if(test.score != null)
     res =  STATUS[test.condition](test.score);
   else
@@ -90,8 +91,7 @@ for (let test of statusTests) {
   assertEqual(res, test.statusString, test.condition);
 }
 
-N = statusTests.length;
-console.log(`status               ${N}/${N} tests passed`);
+// console.log(`status               ${N}/${N} tests passed`);
 // --------- --------- --------- --------- //
 
 
@@ -99,3 +99,4 @@ console.log(`status               ${N}/${N} tests passed`);
 N = errorTests.length + statusTests.length;
 console.log(`status & error msgs  ${N}/${N} tests passed`);
 // --------- --------- --------- --------- //
+
