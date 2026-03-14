@@ -219,37 +219,39 @@ export function processClick(intent) {  // This now seems solid - except for sco
   let player = (turn%2) ? 'X' : 'O'
 
   if(isGameOver(modelGetStateString())) {                           // Game over.
-    statusString = "Game is over. New Game, Rerun, Undo, Redo, Load.";
+    let score = getLastMove(modelGetStateString());
+    statusString = STATUS["score"](score) + " Options: " + STATUS["gameOver"]();
     }
   else if(isSquareClassical(modelGetStateString(), squareNum)) {    // Illegal move.
-    statusString = "That square has collapsed. Choose another.";
+    statusString = STATUS["alreadyCollapsed"]();
     }
   else if(isDegenerateLastMove(modelGetStateString(), state)) {     // Self-collapse last move of game.
     // "X9+(n,n); O9@X9(n)!X9(n); "
     stateString = selfCollapseLastMove(state, intent);
     let outcome = evaluateGame(stateString);
-    stateString += `{X=${outcome.score.X}, O=${outcome.score.O}}`;
+
+    stateString = addScore(stateString, { X: outcome.score.X, O: outcome.score.O });
+    let score = getLastMove(stateString);
+
     modelSetStateString(stateString);
-    statusString = `Last move self-collapsed (degenerate). Game over: ${outcome.desc}.`;
+    statusString = STATUS["selfCollapse"](score);
+    // TODO: get outcome desc to mean something.
     }
   else if(isReClickSpooky(modelGetStateString(), state, intent)) {  // Undo 1st spooky mark.
     stateString = subSpookyMove(modelGetStateString());
     modelSetStateString(stateString);
-    statusString = `Spooky mark undone. ${player}: restart your placement move, `
-                 + `place a spooky mark in any uncollapsed square.`
+    statusString = STATUS["undoSpooky"](player);
     }
   else if(isSpooky(modelGetStateString(), state)) {                 // Spooky move.
     stateString = addSpookyMove(modelGetStateString(), player, turn, squareNum);
     modelSetStateString(stateString);
-    statusString = `Continue with rest of placement move, `
-                 + `${player}: place your second spooky mark or undo the first one.`
+    statusString = STATUS["spooky2"](player);
     }
   else if(isPlacement(modelGetStateString(), state)) {              // Placement move.
     const sq1 = state.progress.sq1;
     const sq2 = squareNum;
 
-    stateString = modelGetStateString() + `,${sq2}); `
-
+    stateString = addPlacementMove(modelGetStateString(), player, turn, sq1, sq2);
     modelSetStateString(stateString);
 
     const graph = buildGraph(placements);
@@ -261,15 +263,13 @@ export function processClick(intent) {  // This now seems solid - except for sco
 
       stateString = addLoop(modelGetStateString(), cycleMoves, stemMoves);
       modelSetStateString(stateString);
-
-      let collapsePlayer = (player === 'X') ? 'O' : 'X'; // Must be other player who chooses the collapse..
-      statusString = `${collapsePlayer} must first collapse the cyclic entanglement. `
-                   + `Click on a purple spooky mark.`
+    
+      let collapsePlayer = (player === 'X') ? 'O' : 'X'; // Must be other player who chooses the collapse.
+      statusString = STATUS["loop"](collapsePlayer);
     }
     else {
-      let nextPlayer = (player === 'X') ? 'O' : 'X'; // Must be other player who chooses the collapse..
-      statusString = `${nextPlayer}: begin your next placement move, `
-                   + `place a spooky mark in any uncollapsed square.`
+      let nextPlayer = (player === 'X') ? 'O' : 'X'; // Must be other player who makes the next move.
+      statusString = STATUS["loop"](nextPlayer);
     }
 
     placements.push({ // Add connecting move.
@@ -289,15 +289,16 @@ export function processClick(intent) {  // This now seems solid - except for sco
 
       let outcome = evaluateGame(modelGetStateString());
       if(outcome.over) {
-        stateString += `{X=${outcome.score.X}, O=${outcome.score.O}}`;
-        statusString = `Game is over: ${outcome.desc}.`;
+        stateString = addScore(stateString, { X: outcome.score.X, O: outcome.score.O });
+        statusString = STATUS["score"](score) + " " + STATUS["gameOver"]();
+        // TODO: get outcome desc to mean something.
         modelSetStateString(stateString);
       }
       else {
         if(state.progress.turn == 8) {
-          statusString = `Player ${player}: click in lone empty square, move will self-collapse.`;
+          statusString = STATUS["degenerate"](player);
         } else {
-          statusString = `Player ${player}: place first spooky mark (click it again to change your mind).`;
+          statusString = STATUS["spooky"](player);
         }
       }
     }
@@ -306,24 +307,6 @@ export function processClick(intent) {  // This now seems solid - except for sco
       errorString = ERROR["loop"](nextPlayer);  // TODO: error string fails to show.
       statusString = STATUS["uncollapsed"]();
     }
-    /* -- console.log("isCollapse() cellInLoop", cellSq, "=", intent, placements, cycleMoves); --
-      isCollapse() cellInLoop {cell: 3, square: 3}
-      cell: 3
-      square: 3
-      [[Prototype]]: Object = {squareNum: 3, cellNum: 3}
-      cellNum: 3
-      squareNum: 3
-      [[Prototype]]: Objectconstructor: ƒ Object()hasOwnProperty: ƒ hasOwnProperty()isPrototypeOf: ƒ isPrototypeOf()propertyIsEnumerable: ƒ propertyIsEnumerable()toLocaleString: ƒ toLocaleString()toString: ƒ toString()valueOf: ƒ valueOf()__defineGetter__: ƒ __defineGetter__()__defineSetter__: ƒ __defineSetter__()__lookupGetter__: ƒ __lookupGetter__()__lookupSetter__: ƒ __lookupSetter__()__proto__: (...)get __proto__: ƒ __proto__()set __proto__: ƒ __proto__() (3) [{…}, {…}, {…}]
-      0: {move: 1, player: 'X', squares: Array(2)}
-      1: {move: 2, player: 'O', squares: Array(2)}
-      2: {move: 3, player: 'X', squares: Array(2)}
-      length: 3
-      [[Prototype]]: Array(0) (2) [2, 3]
-      0: 2
-      1: 3
-      length: 2
-      [[Prototype]]: Array(0)
-     */
     }
   else {                                                  // Can't happen.
     console.log("CAN'T HAPPEN - OOPS!");

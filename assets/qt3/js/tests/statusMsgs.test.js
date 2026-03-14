@@ -61,7 +61,7 @@ let statusTests = [
     statusString: "X, place first spooky mark in any uncollapsed square."
     },
   { condition: "alreadyCollapsed",
-    statusString: "Choose another."
+    statusString: "That square has collapsed. Choose another."
     },
   { condition: "degenerate",
     statusString: "X: click in lone empty square, no room for a pair of spooky marks. Move will self-collapse."
@@ -70,7 +70,7 @@ let statusTests = [
     statusString: "Last move self-collapsed (degenerate). Game over: X=2.0, O=0.0."
     },
   { condition: "score", score: "X=1.5, O=0.0",
-    statusString: "Game is over: X=1.5, O=0.0"
+    statusString: "Game is over: X=1.5, O=0.0."
     },
   { condition: "gameOver",
     statusString: "New Game|Rerun|Undo|Load.",

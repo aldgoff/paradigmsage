@@ -150,6 +150,8 @@
   git push -u origin pop-holding
   git switch main
   git merge --no-ff qt3-game
+  git merge --no-ff qt3-baseline
+  Merge: empty load string undo bug.
   Merge: load code working through syntax tokenization.
   Merge: complete use of GRAMMAR, error & status strings.
   Merge: get ensemble pruning by contradiction working!

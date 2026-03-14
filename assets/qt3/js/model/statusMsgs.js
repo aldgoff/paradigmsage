@@ -48,17 +48,19 @@ export const STATUS = Object.freeze({
   undoSpooky: (player) => `Spooky mark undone. ${player}: restart your placement move, place a spooky mark in any uncollapsed square.`,
   spooky2:    (player) => `Continue with rest of placement move. ${player}, place your second spooky mark, or undo the first one.`,
   placement:  (player) => `${player}, begin your next placement move, place a pair of spooky marks in any pair of uncollapsed squares.`,
+  loop:       (player) => `Loop detected. ${player}, must first collapse the cyclic entanglement. `
+                        + `Select a purple spooky mark to collapse it into that square.`,
 
   collapse: (player) =>         `Loop detected. ${player}, select a purple spooky mark to collapse it into that square.`,
   uncollapsed: () =>            `Click on a purple spooky mark.`,
   orange: (player) =>           `${player} must click on a purple spooky mark, orange marks are stems, their classical value predetermined.`,
   spookyAfterError: (player) => `${player}, place first spooky mark in any uncollapsed square.`,
-  alreadyCollapsed: () =>       "Choose another.",
+  alreadyCollapsed: () =>       "That square has collapsed. Choose another.",
 
   degenerate: () =>        "X: click in lone empty square, no room for a pair of spooky marks. Move will self-collapse.",
   selfCollapse: (score) => `Last move self-collapsed (degenerate). Game over: ${score}.`,
 
-  score: (score) => `Game is over: ${score}`,
+  score: (score) => `Game is over: ${score}.`,
   gameOver: () =>   "New Game|Rerun|Undo|Load.",
 
   rerun: () =>   "Ready to rerun game.",
