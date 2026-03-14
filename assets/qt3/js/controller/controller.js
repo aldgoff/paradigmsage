@@ -3,6 +3,9 @@
 import { QT3_LAYOUT } from "../layout.js";
 import { GRAMMAR } from "../model/grammar.js";
 import { processIntent } from "../model/tokens.js";
+import {ERROR,
+        STATUS,
+} from "../model/statusMsgs.js";
 
 import {modelSetStateString,  // Model layer.
         modelGetStateString,  // Not used.
@@ -13,6 +16,7 @@ import {modelSetStateString,  // Model layer.
 } from "../model/model.js";
 import {newGame,
         loadGame,
+        loadEvent,
         processClick,
 } from "../model/process.js";
 import {tokenize,
@@ -39,6 +43,7 @@ const Redo  = buttons.find(b => b.label === "Redo");
 
 // Undo helpers:
 function rebuildFromHistory() {
+  console.log("rebuildFromHistory():", peakTokens, undoIndex)
   const stateString = tokensToString(peakTokens, undoIndex);
   loadGame(stateString);
   }
@@ -109,6 +114,8 @@ function handleNewGame() {
 function handleRerun() {  // Set undo index to first token.
   undoIndex = 0;
 
+  modelSetStatusString(STATUS.rerun());
+
   rebuildFromHistory();
   manageUndoButtons();
   }
@@ -143,9 +150,10 @@ function handleRedo() {   // Increment undo index.
 
 function handleLoad() {   // Set peak token list to new token list from stateString.
   const textarea = document.getElementById("qt3-state-input");
-  const inputString = textarea.value;
+  const loadString = textarea.value;
 
-  const canonicalString = loadGame(inputString);    // Change state (via model/process.js).
+  const canonicalString = loadGame(loadString);  // Rerun state history (model/process.js).
+  setStateString(canonicalString);    // Updates view layer, state string and moves on the QT3 board.
 
   peakTokens = tokenize(canonicalString);
   undoIndex  = peakTokens.length;
@@ -159,14 +167,27 @@ function handleHelp() {
   helpString += "It has a clear interpretation - a quantum game implies "
   helpString += "a set of simultaneous classical games; the classical ensemble."
   modelSetStatusString(helpString);
-}
+  }
 
-function handleSquareCellClick(event) {  // Respond to clicks in squares down to the cell level.
-  // event - { square: 'square1', cell: 'm1' }.
+function handleSquareCellClick(event) {  // Respond to clicks in squares at the cell level: event - { square: 'square1', cell: 'm1' }.
+  if(undoIndex < peakTokens.length) {    // Branch at current undoIndex.
+    peakTokens = peakTokens.slice(0, undoIndex);
+    rebuildFromHistory(); // Calls loadGame(tokensToString(peakTokens, undoIndex));
+  }
+
+  const canonicalString = loadEvent(event);  // Extend state history (model/process.js).
+  setStateString(canonicalString);    // Updates view layer, state string and moves on the QT3 board.
+
+  peakTokens = tokenize(canonicalString);
+  undoIndex  = peakTokens.length;
+  manageUndoButtons();
+} 
+
+function handleSquareCellClick1(event) {  // Respond to clicks in squares at the cell level: event - { square: 'square1', cell: 'm1' }.
 
   // Change state.
   const squareNum = Number(event.square.slice(-1)); // Last char of 'square' is the move number.
-  const cellNum = Number(event.cell.slice(-1)); // Last char of 'cell' is the move number.
+  const cellNum   = Number(event.cell.slice(-1)); // Last char of 'cell' is the move number.
 
   let intent = { squareNum: squareNum, cellNum: cellNum };
 
@@ -184,29 +205,50 @@ function handleSquareCellClick(event) {  // Respond to clicks in squares down to
   const currentStateString = modelGetStateString();
   const lastMove = getLastMove(currentStateString); // { "X1+(1" }
   const lastMoveType = getLastMoveType(currentStateString); // { type: spooky, str: "X1+(1" }
+  console.log("lastMoveType", lastMoveType);
 
-  let player = 'X';
+  let type   = "";  // empty|spooky|placement|collapse.
   let turn   = 1;
-  if(lastMoveType === "empty") {
+  let player = 'X';
+
+  if(     lastMoveType === "empty") {       type = "spooky";
     turn   = 1;
     player = 'X';
     }
-  else if(lastMoveType === "spooky") {
+  else if(lastMoveType === "spooky") {      type = "placement";
     turn   = Number(lastMove[1]);
     player = (turn%2) ? 'X' : 'O';
     }
-  else if(lastMoveType === "loop") {
+  else if(lastMoveType === "placement") {   type = "spooky";
+    turn   = Number(lastMove[1]) + 1;
+    player = (turn%2) ? 'X' : 'O';
+    }
+  else if(lastMoveType === "loop") {        type = "collapse";
     turn   = Number(lastMove[1]);
     player = (turn%2) ? 'O' : 'X';
     }
-  else {
+  else if(lastMoveType === "collapse") {    type = "spooky";
+    turn   = Number(lastMove[1]) + 1;
+    player = (turn%2) ? 'X' : 'O';
+    }
+  else if(lastMoveType === "degenerate") {  type = "selfCollapse";
+    turn   = Number(lastMove[1]) + 1;
+    player = (turn%2) ? 'X' : 'O';
+    }
+  else {                                    type = "invalid";
     turn   = Number(lastMove[1]) + 1;
     player = (turn%2) ? 'X' : 'O';
   }
-  let newIntent = { player: player, turn: turn, square: square, cell: cell };
-  console.log("newIntent", newIntent);
+  let newIntent = { type, player, turn, square, cell };
 
   const newStateString = processIntent(currentStateString, newIntent);
+  setStateString(newStateString);           // Set state string in the view layer.
+
+  peakTokens = tokenize(newStateString);
+  undoIndex  = peakTokens.length;
+  manageUndoButtons();
+
+  return;
 
  // ------------------------- //
 

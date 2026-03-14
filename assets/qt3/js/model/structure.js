@@ -196,8 +196,8 @@ export function parsePlacements(stateString) {
     placements.push({
       player:  match[1],
       move:    Number(match[2]),
-      squares:[ Number(match[3]), Number(match[4])],
-      partial:false
+      squares: [Number(match[3]), Number(match[4])],
+      partial: false
     });
   }
 

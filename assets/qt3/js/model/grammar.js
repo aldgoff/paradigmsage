@@ -25,7 +25,9 @@ export const GRAMMAR = {  // TODO: expand and condense the grammar for regex.
 
   // TOKEN-LEVEL (anchored). Intended for use on single tokens; "What type of token are you?"
     spookyToken:        /^([XO])(\d)\+\((\d)$/,
-    placementToken:     /^([XO])(\d)\+\((\d),(\d)\)$/,
+    spooky2Token:       /^,(\d)\)$/,
+    placementToken:     /^([XO])(\d)\+\(([1-9]),([1-9])\)$/,
+    // placementToken:     /^([XO])(\d)\+\((\d),(\d)\)$/,
     loopToken:          /^([XO])(\d)\+\((\d),(\d)\)\[([^|\]]+)(?:\|([^\]]+))?\]$/,
     pureLoopToken:      /^([XO])(\d)\+\((\d),(\d)\)\[([^\|\]]+)\]$/,
     stemLoopToken:      /^([XO])(\d)\+\((\d),(\d)\)\[([^\|\]]+)\|([^\]]+)\]$/,
@@ -35,3 +37,25 @@ export const GRAMMAR = {  // TODO: expand and condense the grammar for regex.
     scoreToken:         /^\{\s*X=([^,}]+)\s*,\s*O=([^}]+)\s*\}$/,
 };
   
+/*
+Clicks      Redo        Fragment 
+------------------------------------- 
+spooky                  X1+(1,
+placement   placement   X1+(1,2); 
+spooky
+loop        loop        O2+(2,1)[12]; 
+collpase    collapse    X2@X1(1)!X1(1)!O2(2); 
+spooky
+placement   placement   X3+(3,6); 
+spooky
+placement   placement   O4+(6,9); 
+spooky
+placement   placement   X5+(9,8); 
+
+emptyBoard    addSpooky or addPlacement.
+wasSpooky     stripSpooky, or addSpooky2 check for loop and addPlacement or addLoop.
+wasPlacement  check for loop and addPlacement or addLoop.
+wasLoop       addCollapse, check for over.
+wasCollapse   addSpooky or addPlacement.
+isOver        addScore.
+*/

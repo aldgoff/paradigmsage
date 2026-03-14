@@ -59,6 +59,8 @@ export const STATUS = Object.freeze({
   score: (score) => `Game is over: ${score}`,
   gameOver: () =>   "New Game|Rerun|Undo|Load.",
 
+  rerun: () =>   "Ready to rerun game.",
+
   // Load specific.
   playOrLoad: () => "Start playing or try something like this, 'X1+(1,2); O2+(2,3); '.",
 });
