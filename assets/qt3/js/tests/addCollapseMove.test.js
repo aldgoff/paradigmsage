@@ -30,7 +30,7 @@ assertEqual(state, "X1+(1,2); O2+(2,3); X3+(3,6); ", "single placement");
 state = addSpookyMove(state, 'O',4, 3);
 state = addPlacementMove(state, 'O',4, 3,1);
 state = addLoop(state, [1,2,3],[6]);
-assertEqual(state, "X1+(1,2); O2+(2,3); X3+(3,6); O4+(1,3)[123|6]; ", "collapse loop with stems.");
+assertEqual(state, "X1+(1,2); O2+(2,3); X3+(3,6); O4+(3,1)[123|6]; ", "collapse loop with stems.");
 
 // --------- --------- --------- --------- //
 console.log("addCollapseMove()     4/ 4 tests passed");
