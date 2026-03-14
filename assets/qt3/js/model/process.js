@@ -154,8 +154,8 @@ export function loadGame(stateString) { // Returns state string, potentially tru
       analyzedState
     };
    */
-  // console.log("state", state);
-  console.log(tokenString);
+
+  console.log(tokenString); // Displays process of game...keep.
 
   placements = state.placements;
   cycleMoves = state.cycleMoves;
@@ -166,14 +166,11 @@ export function loadGame(stateString) { // Returns state string, potentially tru
   let lastStr = getLastMove(modelGetStateString());
   let lastType = getLastMoveType(modelGetStateString());
 
-  // console.log("lastStr", lastStr, "lastType", lastType, "lastPlayer", lastPlayer);
-
   let player = (lastPlayer === 'X' ? 'O' : 'X');
 
   let errorString = "";
   switch(lastType) {
     case 'empty':
-      errorString = ERROR["emptyLoad"]();
       statusString = STATUS["playOrLoad"](player);
       break;
     case 'spooky':
@@ -195,14 +192,14 @@ export function loadGame(stateString) { // Returns state string, potentially tru
       statusString = score + ". Options: " + options;
       break;
     case 'invalid':
-      // statusString = ERROR["invalidStateString"]();
+      errorString = ERROR["invalidStateString"]();
+      statusString = STATUS["syntax"]();
       break;
   }
-  const error = modelGetErrorString();
 
   modelSetStatusString(statusString); // Erases error string.
-  if(error.length > 0) {
-    modelSetErrorString(error);
+  if(errorString.length > 0) {
+    modelSetErrorString(errorString);
   }
 
   return modelGetStateString();
