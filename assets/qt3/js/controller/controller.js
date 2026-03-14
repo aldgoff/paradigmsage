@@ -187,7 +187,6 @@ function handleSquareCellClick(event) {  // Respond to clicks in squares down to
   manageUndoButtons();
 }
 
-// TODD: This needs to be dynamic, when user changes size of browser window.
 function positionStateStringBox() { // Editable, copiable, pasteable field.
   const textarea = document.getElementById("qt3-state-input");
   const container = document.getElementById("qt3-container");

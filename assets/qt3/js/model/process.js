@@ -154,7 +154,7 @@ export function loadGame(stateString) { // Returns state string, potentially tru
       analyzedState
     };
    */
-  // console.log("state", state);
+
   console.log(tokenString);
 
   placements = state.placements;
@@ -165,8 +165,6 @@ export function loadGame(stateString) { // Returns state string, potentially tru
   
   let lastStr = getLastMove(modelGetStateString());
   let lastType = getLastMoveType(modelGetStateString());
-
-  // console.log("lastStr", lastStr, "lastType", lastType, "lastPlayer", lastPlayer);
 
   let player = (lastPlayer === 'X' ? 'O' : 'X');
 
@@ -199,11 +197,11 @@ export function loadGame(stateString) { // Returns state string, potentially tru
       statusString = STATUS["syntax"]();
       break;
   }
-  const error = (errorString.length > 0);
+  console.log("Error string", errorString);
 
   modelSetStatusString(statusString); // Erases error string.
-  if(error.length > 0) {
-    modelSetErrorString(error);
+  if(errorString.length > 0) {
+    modelSetErrorString(errorString);
   }
 
   return modelGetStateString();
