@@ -14,29 +14,6 @@ export function tokenize(stateString) {   // Returns: [{ type: "spooky", token: 
     return tokens;
   }
 
-  // --- Detect score (must be at end) ---
-  let scoreMatch = GRAMMAR.scoreToken.exec(working);
-  let scoreToken = { type: "missing", token: "" };
-
-  if (scoreMatch) { // Score must occupy the end of string.
-    const scoreText = scoreMatch[0];
-    const scoreIndex = working.lastIndexOf(scoreText);
-
-    if (scoreIndex + scoreText.length !== working.length) {
-      scoreToken = {      // Append invalid score at the end of the token list.
-        type: "invalid",
-        token: working
-      };
-    }
-    else {    // Remove score portion for earlier parsing
-      working = working.slice(0, scoreIndex).trim();
-      scoreToken = {      // Append valid score at the end of the token list.
-        type: "score",
-        token: scoreText
-      };
-    }
-  }
-
   // --- Parse move fragments.
   if (working !== "") {
     const parts = working.split(";");
@@ -62,11 +39,6 @@ export function tokenize(stateString) {   // Returns: [{ type: "spooky", token: 
 
       tokens.push({ type, token: fragment });
     }
-  }
-
-  // --- Append score last (if present).
-  if (scoreToken.type != "missing") {
-    tokens.push(scoreToken);
   }
 
   // --- Return list of token types and strings.
