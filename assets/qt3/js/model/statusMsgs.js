@@ -65,7 +65,7 @@ export const STATUS = Object.freeze({
   syntax: () =>   "Check syntax of the state string.",
 
   // Load specific.
-  playOrLoad: () => "Start playing or try something like this, 'X1+(1,2); O2+(2,3); '.",
+  playOrLoad: () => "Start playing, or redo (if enabled), or load a game; 'X1+(1,2); O2+(2,3); '.",
 });
 
 export const STATUS2 = {  // Not currently used, but very concise status messages.

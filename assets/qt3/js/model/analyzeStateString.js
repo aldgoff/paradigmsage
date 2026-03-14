@@ -526,6 +526,7 @@ export function getLastMoveType(stateString) {  // empty|spooky|placement|loop|c
   let last = getLastMove(stateString);
 
   if (!last) return "empty";
+  if (last === "empty") return "empty";
 
   if (GRAMMAR.spookyToken.test(last))       return "spooky";
   if (GRAMMAR.degenerateToken.test(last))   return "degenerate";  // Order dependent,

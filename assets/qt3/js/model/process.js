@@ -155,7 +155,7 @@ export function loadGame(stateString) { // Returns state string, potentially tru
     };
    */
 
-  console.log(tokenString);
+  console.log(tokenString); // Displays process of game...keep.
 
   placements = state.placements;
   cycleMoves = state.cycleMoves;
@@ -171,7 +171,6 @@ export function loadGame(stateString) { // Returns state string, potentially tru
   let errorString = "";
   switch(lastType) {
     case 'empty':
-      errorString = ERROR["emptyLoad"]();
       statusString = STATUS["playOrLoad"](player);
       break;
     case 'spooky':

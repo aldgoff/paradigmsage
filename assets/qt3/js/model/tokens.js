@@ -41,7 +41,6 @@ export function tokenize(stateString) {   // Returns: [{ type: "spooky", token: 
     }
   }
 
-  // --- Return list of token types and strings.
   return tokens;   // Returns: [{ type: "spooky", token: "" }];
 }
 
