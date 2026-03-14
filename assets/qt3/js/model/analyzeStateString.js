@@ -497,7 +497,8 @@ export function listPlacementsWithCollapse(stateString) { // Used in view/listin
     });
   }
 
-export function getLastMove(stateString) { // empty|spooky|placement|loop|collapse|degenerate|score.
+export function getLastMove(stateString) {      // empty|spooky|placement|loop|collapse|degenerate|selfCollapse|score|invalid.
+
   if (!stateString) return "empty";
 
   const trimmed = stateString.trim();
@@ -521,31 +522,20 @@ export function getLastMove(stateString) { // empty|spooky|placement|loop|collap
   return last;
   }
 
-export function getLastMoveType(stateString) { // empty|spooky|placement|loop|collapse|degenerate|score.
+export function getLastMoveType(stateString) {  // empty|spooky|placement|loop|collapse|degenerate|selfCollapse|score|invalid.
   let last = getLastMove(stateString);
 
   if (!last) return "empty";
 
-  if (GRAMMAR.spookyToken.test(last))    return "spooky";
-  if (GRAMMAR.placementToken.test(last)) {  // Placement or degenerate
-    const match = GRAMMAR.placementToken.exec(last);
-    const player = match[1];
-    const turn   = Number(match[2]);
-    const sq1    = Number(match[3]);
-    const sq2    = Number(match[4]);
-
-    if( (player === 'X')
-    &&  (turn === 9)
-    &&  (sq1 === sq2))
-      return "degenerate";
-
-    return "placement";
-    }
-  if (GRAMMAR.loopToken.test(last))      return "loop";
-  if (GRAMMAR.collapseToken.test(last))  return "collapse";
-  if (GRAMMAR.scoreToken.test(last))     return "score";
+  if (GRAMMAR.spookyToken.test(last))       return "spooky";
+  if (GRAMMAR.degenerateToken.test(last))   return "degenerate";  // Order dependent,
+  if (GRAMMAR.placementToken.test(last))    return "placement";   // must be prior to placement.
+  if (GRAMMAR.loopToken.test(last))         return "loop";
+  if (GRAMMAR.collapseToken.test(last))     return "collapse";
+  if (GRAMMAR.selfCollapseToken.test(last)) return "selfCollapse";
+  if (GRAMMAR.scoreToken.test(last))        return "score";
 
   // return "invalid";  // TODO: make invalid a viable option.
-  return "empty";
+  return "invalid";
 }
 

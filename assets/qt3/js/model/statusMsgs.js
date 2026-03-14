@@ -26,6 +26,10 @@ export const ERROR = Object.freeze({
   squareCollapsed: () =>    "That square has collapsed.",
   gameOver: () =>           "Game is over.",
 
+  // Potentiall useful...
+  badStart: () =>           "Invalid spooky intent.",
+  badPlacement: () =>       "Invalid completion of placement move.",
+
   /* Example pairs: will not occur during play, but may occur during load.
     errorString = "No game in the state string box to load."
     statusString = "Start playing or try something like this, 'X1+(1,2); O2+(2,3); '."
@@ -57,6 +61,9 @@ export const STATUS = Object.freeze({
   score: (score) => `Game is over: ${score}`,
   gameOver: () =>   "New Game|Rerun|Undo|Load.",
 
+  rerun: () =>   "Ready to rerun game.",
+  syntax: () =>   "Check syntax of the state string.",
+
   // Load specific.
   playOrLoad: () => "Start playing or try something like this, 'X1+(1,2); O2+(2,3); '.",
 });
@@ -71,3 +78,4 @@ export const STATUS2 = {  // Not currently used, but very concise status message
   degenerate: "Forced collapse — no choice available.",
   score:      "Game over.",
 };
+

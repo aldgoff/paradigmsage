@@ -195,10 +195,11 @@ export function loadGame(stateString) { // Returns state string, potentially tru
       statusString = score + ". Options: " + options;
       break;
     case 'invalid':
-      // statusString = ERROR["invalidStateString"]();
+      errorString = ERROR["invalidStateString"]();
+      statusString = STATUS["syntax"]();
       break;
   }
-  const error = modelGetErrorString();
+  const error = (errorString.length > 0);
 
   modelSetStatusString(statusString); // Erases error string.
   if(error.length > 0) {
