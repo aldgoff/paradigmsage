@@ -170,6 +170,15 @@
   git push origin main
   Some glitch hit on chapter 22, don't know what.
 
+## Abort QT3 Experimental Code
+  checkout main (823ccdd (orign/main, main))
+  git checkout -b qt3-baseline
+  git add.
+  git commit -m "QT3 baseline cleanup/fixes."
+  git checkout main
+  git merge --no-ff qt3-baseline
+    Merge msg: Bypass experimental qt3 code.
+
 ## Unix Commands
   wc -l $(find . -type f)
 
