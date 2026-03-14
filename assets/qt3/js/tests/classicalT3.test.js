@@ -39,7 +39,7 @@ state = addLoop(state, [9], []);
 assertEqual(state, "X1+(1,1)[1]; O2+(2,2)[2]; X3+(5,5)[5]; O4+(6,6)[6]; X5+(9,9)[9]; ", "classical placement");
 
 state = addScore(state, { X: 1, O: 0 });
-assertEqual(state, "X1+(1,1)[1]; O2+(2,2)[2]; X3+(5,5)[5]; O4+(6,6)[6]; X5+(9,9)[9]; {X-1, O-0}", "classial score");
+assertEqual(state, "X1+(1,1)[1]; O2+(2,2)[2]; X3+(5,5)[5]; O4+(6,6)[6]; X5+(9,9)[9]; {X=1,O=0}", "classial score");
 
 // --------- --------- --------- --------- //
 console.log("classical tic-tac-toe 6/ 6 tests passed");
