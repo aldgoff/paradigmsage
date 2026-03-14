@@ -196,7 +196,6 @@ export function loadGame(stateString) { // Returns state string, potentially tru
       statusString = STATUS["syntax"]();
       break;
   }
-  console.log("Error string", errorString);
 
   modelSetStatusString(statusString); // Erases error string.
   if(errorString.length > 0) {
