@@ -1,4 +1,7 @@
-So, I'm sensing a pattern in my work with you. At the end of the chat, when you have a pretty large context, that is when I like taking a detour for fun, it leverages your current context for a deeper analysis. So, review your training on QM and QFT. Do you see any candidate red-herrings in the current formalism?
+So, I'm sensing a pattern in my work with you. 
+At the end of the chat, when you have a pretty large context, that is when I like taking a detour for fun, it leverages your current context for a deeper analysis. 
+So, review your training on QM and QFT. 
+Do you see any candidate red-herrings in the current formalism?
 
 Turn 84
 
