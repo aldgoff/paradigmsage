@@ -37,7 +37,7 @@ export const ERROR = Object.freeze({
   emptyLoad: () =>          "No game in the state string box to load.",
 
   // Still to put under test.
-  invalidStateString: () => "Invalid state string.",
+  invalidStateString: () => "Invalid state string, truncated at point of corruption.",
 });
 
 export const STATUS = Object.freeze({
@@ -62,6 +62,8 @@ export const STATUS = Object.freeze({
 
   score: (score) => `Game is over: ${score}.`,
   gameOver: () =>   "New Game|Rerun|Undo|Load.",
+
+  emptyLoadString: () =>   "No game to load. Need a game string, something like 'X1+(1,2); O2+(2,3); '.",
 
   rerun: () =>   "Ready to rerun game.",
   syntax: () =>   "Check syntax of the state string.",

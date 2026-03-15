@@ -34,7 +34,7 @@ for (let test of fragmentTests) {
   assertEqual(parse[0].type, test.type);
 }
 
-// console.log(`tokenize(fragments)   ${N}/${N} tests passed`);
+console.log(`tokenize(fragments)   ${N}/${N} tests passed`);
 // --------- --------- --------- --------- //
 
 
@@ -81,7 +81,7 @@ for (let test of stringTests) {
   }
 }
 
-// console.log(`tokenize(strings  )   ${N}/${N} tests passed`);
+console.log(`tokenize(strings  )   ${N}/${N} tests passed`);
 // --------- --------- --------- --------- //
 
 
