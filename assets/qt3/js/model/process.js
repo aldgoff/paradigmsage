@@ -184,7 +184,12 @@ export function loadGame(stateString) { // Returns state string, potentially tru
       statusString = STATUS["collapse"](player);
       break;
     case 'collapse':
-      statusString = STATUS["placement"](player);
+      // statusString = STATUS["placement"](player);
+      if(state.analyzedState.progress.turn == 8) {
+        statusString = STATUS["degenerate"](player);
+      } else {
+        statusString = STATUS["spooky"](player);
+      }
       break;
     case 'score':
       let scoreStr = getLastMove(stateString);
