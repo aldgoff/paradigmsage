@@ -1,6 +1,10 @@
 // Controller.js.
 
 import { QT3_LAYOUT } from "../layout.js";
+import { GRAMMAR } from "../model/grammar.js";
+import {ERROR,
+        STATUS,
+} from "../model/statusMsgs.js";
 
 import {modelSetStateString,  // Model layer.
         modelGetStateString,  // Not used.
@@ -143,8 +147,15 @@ function handleLoad() {   // Set peak token list to new token list from stateStr
 
   const canonicalString = loadGame(inputString);    // Change state (via model/process.js).
 
-  peakTokens = tokenize(canonicalString);
-  undoIndex  = peakTokens.length;
+  if(inputString.length > 0) {
+    peakTokens = tokenize(canonicalString);
+    undoIndex  = peakTokens.length;
+  }
+  else {
+    let statusString = STATUS["emptyLoadString"]();
+    modelSetStatusString(statusString);
+  }
+
   manageUndoButtons();
   } 
 

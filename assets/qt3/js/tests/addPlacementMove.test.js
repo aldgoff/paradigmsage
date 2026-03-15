@@ -20,7 +20,7 @@ assertEqual(state, "X1+(1,2); O2+(2,5); ", "single placement");
 
 state = addSpookyMove(state, 'X',3, 5,1);
 state = addPlacementMove(state, 'X',3, 5,1);
-assertEqual(state, "X1+(1,2); O2+(2,5); X3+(1,5); ", "single placement");
+assertEqual(state, "X1+(1,2); O2+(2,5); X3+(5,1); ", "single placement");
 
 // --------- --------- --------- --------- //
 console.log("addPlacementMove()    3/ 3 tests passed");

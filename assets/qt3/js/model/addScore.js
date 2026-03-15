@@ -46,7 +46,7 @@ export function addScore(state, score) {
     throw new Error("Score must be an object of the form {X:number, O:number}");
   }
 
-  const scoreStr = `{X-${score.X}, O-${score.O}}`;
+  const scoreStr = `{X=${score.X},O=${score.O}}`;
   return `${state}${scoreStr}`;
 }
 

@@ -376,12 +376,7 @@ export function parseScoreBlock(scoreString) {    // Given "{X-1, O-0.5}"       
 
   const trimmed = scoreString.trim();
 
-  // Strict pattern:
-  // {X-<value>, O-<value>}
-  // TODO: Not using GRAMMAR.
-  const match = trimmed.match(
-    /^\{\s*X=([^,}]+)\s*, \s*O=([^}]+)\s*\}$/
-  );
+  const match = trimmed.match(GRAMMAR["scoreToken"]);
 
   if (!match) {
     throw new Error(`Malformed score block: ${scoreString}`);

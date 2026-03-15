@@ -37,7 +37,7 @@ export const ERROR = Object.freeze({
   emptyLoad: () =>          "No game in the state string box to load.",
 
   // Still to put under test.
-  invalidStateString: () => "Invalid state string.",
+  invalidStateString: () => "Invalid state string, truncated at point of corruption.",
 });
 
 export const STATUS = Object.freeze({
@@ -48,24 +48,28 @@ export const STATUS = Object.freeze({
   undoSpooky: (player) => `Spooky mark undone. ${player}: restart your placement move, place a spooky mark in any uncollapsed square.`,
   spooky2:    (player) => `Continue with rest of placement move. ${player}, place your second spooky mark, or undo the first one.`,
   placement:  (player) => `${player}, begin your next placement move, place a pair of spooky marks in any pair of uncollapsed squares.`,
+  loop:       (player) => `Loop detected. ${player}, must first collapse the cyclic entanglement. `
+                        + `Select a purple spooky mark to collapse it into that square.`,
 
   collapse: (player) =>         `Loop detected. ${player}, select a purple spooky mark to collapse it into that square.`,
   uncollapsed: () =>            `Click on a purple spooky mark.`,
   orange: (player) =>           `${player} must click on a purple spooky mark, orange marks are stems, their classical value predetermined.`,
   spookyAfterError: (player) => `${player}, place first spooky mark in any uncollapsed square.`,
-  alreadyCollapsed: () =>       "Choose another.",
+  alreadyCollapsed: () =>       "That square has collapsed. Choose another.",
 
   degenerate: () =>        "X: click in lone empty square, no room for a pair of spooky marks. Move will self-collapse.",
   selfCollapse: (score) => `Last move self-collapsed (degenerate). Game over: ${score}.`,
 
-  score: (score) => `Game is over: ${score}`,
+  score: (score) => `Game is over: ${score}.`,
   gameOver: () =>   "New Game|Rerun|Undo|Load.",
+
+  emptyLoadString: () =>   "No game to load. Need a game string, something like 'X1+(1,2); O2+(2,3); '.",
 
   rerun: () =>   "Ready to rerun game.",
   syntax: () =>   "Check syntax of the state string.",
 
   // Load specific.
-  playOrLoad: () => "Start playing, or redo (if enabled), or load a game; 'X1+(1,2); O2+(2,3); '.",
+  playOrLoad: () => "Start playing (X gets first move), or redo (if enabled), or load a game; X1+(1,2); O2+(2,3); ...",
 });
 
 export const STATUS2 = {  // Not currently used, but very concise status messages.
