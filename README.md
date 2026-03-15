@@ -151,6 +151,7 @@
   git switch main
   git merge --no-ff qt3-game
   git merge --no-ff qt3-baseline
+  Merge: release version (1.0.0), pre code cleanup.
   Merge: empty load string undo bug.
   Merge: load code working through syntax tokenization.
   Merge: complete use of GRAMMAR, error & status strings.

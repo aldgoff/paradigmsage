@@ -21,7 +21,8 @@ Then re-run the game by using the *redo* button.
 A *placement move* requires a pair of *spooky marks*.
 A *cyclic entanglement* forces a choice, a *collapse move*.
 Note how the quantum and classical listings differ.
-Note how the classical ensemble grows.
+Note how the *classical ensemble* grows (x2), but also how it shrinks;
+*pruned by contradiction* (gray) and *pruned by collapse* (yellow.)
 
 ## The QT3 Game
   <canvas id="qt3-game" width="900" height="2230"></canvas>
