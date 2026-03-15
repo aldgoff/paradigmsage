@@ -77,7 +77,7 @@ let statusTests = [
     },
   // Load specific.
   { condition: "playOrLoad",
-    statusString: "Start playing, or redo (if enabled), or load a game; 'X1+(1,2); O2+(2,3); '.",
+    statusString: "Start playing (X gets first move), or redo (if enabled), or load a game; X1+(1,2); O2+(2,3); ...",
     },
   ];
 N = statusTests.length;
