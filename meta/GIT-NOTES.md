@@ -1,0 +1,114 @@
+# ParadigmSage - Git Notes
+
+## Branching and Publishing Model
+  For serialization topics (like PoP), use git branches to stage release publications.
+  Content for upcoming releases are developed on stage branches.
+
+  ```
+    - <topic>-staging-01
+    - <topic>-staging-02
+    - <topic>-staging-03
+    - ---
+    - <topic>-staging-nn
+  ```
+
+  - Release strategy is to develop content on the stage branch.
+  - Pages are dated for Monday, but can be viewed locally with 'hugo server --buildfuture'
+  - Merge into main over the weekend (or Friday, or whenever).
+  - Hugo Pages will publish on the date trigger (UTC).
+  - Could actually prepare weeks in advance with this strategy.
+  - In the case of PoP, stage one is empty, as this workflow was not established yet,
+  but I want the full sequence to be obvious.
+
+## Git commands:
+ ### Git Basic Commands
+  ```
+  git status
+  git branch
+  git checkout -b <branch>
+  git diff (or VSC diff)
+  git push -u origin <branch>
+  git switch main
+  git merge --no-ff <branch>
+  ```
+
+ ### Git Workflow
+  ```
+  git switch main
+  git checkout -b <newBranch>
+  git switch <branch>
+  Use VSC to commit and sync the changes most of the time.
+  add .
+  git commit -m "Commit message."
+  git push -u origin <branch>
+  git switch main
+  git merge --no-ff <branch>
+  vi: Merge bug fix|feature add|whatever.
+  git log --oneline --decorate --graph --all --boundary -n 50
+  git push origin main
+  ```
+
+ ### Git Tags
+  ```
+  git tag
+  git tag -a v0.1-<desc> -m "Tag label."
+  git tag -a v1.0.1 -m "Tag label."
+  git show v0.1-<desc>
+  git push --tags
+  ```
+
+ ### Git History (sort of)
+  - Commit msg: "PoP Ch01: staging complete."
+  - Commit msg: "..."
+  - Commit msg: "PoP Ch23: staging complete."
+  - Commit msg: "PoP Ch24: staging complete."
+  - Commit msg: "PoP Ch25: staging complete."
+  - Commit msg: "PoP Ch26: staging complete."
+  - Commit msg: "PoP Ch27: staging complete."
+  - Commit msg: "..."
+  - Commit msg: "QT3 content: staging complete."
+  - 
+  - Merge: release version (1.0.0), pre code cleanup.
+  - Merge: empty load string undo bug.
+  - Merge: load code working through syntax tokenization.
+  - Merge: complete use of GRAMMAR, error & status strings.
+  - Merge: get ensemble pruning by contradiction working!
+  - Merge: QT3 cell, button, grammar, and test improvements.
+  - Merge: QT3 undo functionality.
+  - Merge: QT3 fixes and code cleanup.
+  - Merge: My favorite game, more code cleanup.
+  - 
+  - Merge msg: "Merge PoP Chapter 7 (Entanglement)."
+  - Merge msg: "Merge PoP Chapter 23 (Critique)."
+  - Merge msg: "Merge PoP Chapter 24 (Frame)."
+  - Merge msg: "Merge PoP Chapter 25 (LOF)."
+  - Merge msg: "Merge PoP Chapter 26 (Digital Circuits)."
+  - Merge msg: "Merge PoP Chapter 26 (Engineering)."
+  - Merge msg: "Merge PoP Chapter 27 (Infinity)."
+  - Merge msg: "Merge QT3 nav."
+  - Merge msg: "Merge QT3 content."
+
+## Abort QT3 Experimental Code
+  ```
+  checkout main (823ccdd (orign/main, main))
+  git checkout -b qt3-baseline
+  git add.
+  git commit -m "QT3 baseline cleanup/fixes."
+  git checkout main
+  git merge --no-ff qt3-baseline
+    Merge msg: Bypass experimental qt3 code.
+  ```
+
+## Cleanup Plan (temporary)
+  ```
+  git switch -c cleanup-public-surface
+  rm -rf public
+  hugo
+  git status        # sanity check: only expected files changed
+  git commit -am "Clean public surface; remove early quantum section"
+  git switch main
+  git merge --no-ff cleanup-public-surface
+  git branch -d cleanup-public-surface
+  git push
+  ```
+

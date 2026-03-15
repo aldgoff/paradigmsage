@@ -8,24 +8,6 @@
   Hugo based.
   Content and nav layouts behave like orthogonal axes in the hypercube programming idiom.
 
-## Branching and Publishing Model
-  For serialization topics (like PoP), use git branches to stage release publications.
-  Content for upcoming releases are developed on stage branches.
-    ```
-      - <topic>-staging-01
-      - <topic>-staging-02
-      - <topic>-staging-03
-      - ---
-      - <topic>-staging-nn
-      ```
-  Release strategy is to develop content on the stage branch.
-  Pages are dated for Monday, but can be viewed locally with 'hugo server --buildfuture'
-  Merge into main over the weekend (or Friday, or whenever).
-  Hugo Pages will publish on the date trigger (UTC).
-  Could actually prepare weeks in advance with this strategy.
-  In the case of PoP, stage one is empty, as this workflow was not established yet,
-  but I want the full sequence to be obvious.
-
 ## User Experience
   UX should be ultra clear; you are here, by topic, by post, by concept.
   Make it easy for the Intrepid Reader to revisit site without getting lost with a clear idea of what is new.
@@ -123,79 +105,11 @@
 ### See the Work Inventory Page
   It provides a more indepth capture.
 
-## Git commands:
-  git status
-  git branch
-  git checkout -b pop-staging-04
-  git diff (or VSC diff)
-  "Probably used VSC to commit the changes."
-    Commit msg: "PoP Ch07: staging complete."
-    Commit msg: "PoP Ch23: staging complete."
-    Commit msg: "PoP Ch24: staging complete."
-    Commit msg: "PoP Ch25: staging complete."
-    Commit msg: "PoP Ch26: staging complete."
-    Commit msg: "PoP Ch27: staging complete."
-    Commit msg: "PoP Ch77: staging complete."
-    Commit msg: "PoP ACP: holding complete."
-    Commit msg: "PoP Epiphany: holding complete."
-    Commit msg: "PoP Circles of Truth: holding complete."
-    Commit msg: "PoP Laws of Form: holding complete."
-    Commit msg: "PoP Assumptions: holding complete."
-    Commit msg: "PoP 3D Chess: holding complete."
-    Commit msg: "PoP TLA: holding complete."
-    Commit msg: "PoP Debate: holding complete."
-    Commit msg: "QT3 content: staging complete."
-  git push -u origin pop-staging-04
-  git push -u origin pop-staging-26-eng
-  git push -u origin pop-holding
-  git switch main
-  git merge --no-ff qt3-game
-  git merge --no-ff qt3-baseline
-  Merge: release version (1.0.0), pre code cleanup.
-  Merge: empty load string undo bug.
-  Merge: load code working through syntax tokenization.
-  Merge: complete use of GRAMMAR, error & status strings.
-  Merge: get ensemble pruning by contradiction working!
-  Merge: QT3 cell, button, grammar, and test improvements.
-  Merge: QT3 undo functionality.
-  Merge: QT3 fixes and code cleanup.
-  Merge: My favorite game, more code cleanup.
-  git merge --no-ff pop-staging-04
-    Merge msg: "Merge PoP Chapter 7 (Entanglement)."
-    Merge msg: "Merge PoP Chapter 23 (Critique)."
-    Merge msg: "Merge PoP Chapter 24 (Frame)."
-    Merge msg: "Merge PoP Chapter 25 (LOF)."
-    Merge msg: "Merge PoP Chapter 26 (Digital Circuits)."
-    Merge msg: "Merge PoP Chapter 26 (Engineering)."
-    Merge msg: "Merge PoP Chapter 27 (Infinity)."
-    Merge msg: "Merge QT3 nav."
-    Merge msg: "Merge QT3 content."
-  git log --oneline --decorate --graph --all --boundary -n 50
-  git push origin main
-  Some glitch hit on chapter 22, don't know what.
-
-## Abort QT3 Experimental Code
-  checkout main (823ccdd (orign/main, main))
-  git checkout -b qt3-baseline
-  git add.
-  git commit -m "QT3 baseline cleanup/fixes."
-  git checkout main
-  git merge --no-ff qt3-baseline
-    Merge msg: Bypass experimental qt3 code.
-
 ## Unix Commands
+  ```
   wc -l $(find . -type f)
-
-## Cleanup Plan (temporary)
-  git switch -c cleanup-public-surface
-  rm -rf public
-  hugo
-  git status        # sanity check: only expected files changed
-  git commit -am "Clean public surface; remove early quantum section"
-  git switch main
-  git merge --no-ff cleanup-public-surface
-  git branch -d cleanup-public-surface
-  git push
+  grep
+  ```
 
 ## Auto Publish Isn't
   Requires a post date commit to publish.
@@ -203,3 +117,4 @@
 
 ## 3D Engine for 3D Chess
   AI recommended three.js.
+
