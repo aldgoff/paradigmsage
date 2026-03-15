@@ -1,5 +1,4 @@
 .
-├── ~$project.xlsx
 ├── AI
 │   ├── builder_instructions.md
 │   └── custom_gpt_link
@@ -31,7 +30,7 @@
 │           │   ├── parse.js
 │           │   ├── process.js
 │           │   ├── scoring.js
-│           │   ├── status.js
+│           │   ├── statusMsgs.js
 │           │   ├── structure.js
 │           │   ├── subSpookyMove.js
 │           │   └── tokens.js
@@ -48,7 +47,7 @@
 │           │   ├── helpers.js
 │           │   ├── parse.test.js
 │           │   ├── scoring.test.js
-│           │   ├── status.test.js
+│           │   ├── statusMsgs.test.js
 │           │   ├── subSpookyMove.test.js
 │           │   └── tokens.test.js
 │           └── view
@@ -57,9 +56,6 @@
 │               ├── listings.js
 │               ├── moves.js
 │               └── view.js
-├── CAP-LOG.md
-├── CAPTURE-LOG.md
-├── COMICS-PORTENTS.md
 ├── content
 │   ├── _index.md
 │   ├── contact
@@ -120,14 +116,18 @@
 │   ├── quantum
 │   │   └── first.md
 │   └── start-here.md
+├── context
+│   ├── COMICS-PORTENTS.md
+│   ├── outline
+│   ├── POP-MAP.md
+│   └── WORK-INVENTORY.md
 ├── dev
 │   ├── calls.md
 │   └── playSpecs.md
+├── dialogs
+│   └── QM-QFT-RED-HERRINGS.md
 ├── drafts
 │   └── iqt3.md
-├── GOAT-COUNTER.md
-├── GUIDANCE.md
-├── GUIDE.md
 ├── hugo.toml
 ├── i18n
 ├── layouts
@@ -153,11 +153,17 @@
 │   └── qt3
 │       ├── list.html
 │       └── single.html
-├── NAV-INVARIANTS.md
-├── outline
-├── POP-MAP.md
-├── project.xlsx
-├── QM-QFT-RED-HERRINGS.md
+├── meta
+│   ├── GIT-NOTES.md
+│   ├── GOAT-COUNTER.md
+│   ├── project.xlsx
+│   └── TECH-DEBT.md
+├── persona
+│   ├── CAP-LOG.md
+│   ├── CAPTURE-LOG.md
+│   ├── GUIDANCE.md
+│   ├── GUIDE.md
+│   └── NAV-INVARIANTS.md
 ├── README.md
 ├── static
 │   ├── assets
@@ -248,8 +254,6 @@
 │       │   └── tests
 │       └── poc
 │           └── poc.js
-├── TECH-DEBT.md
-├── themes
-└── WORK-INVENTORY.md
+└── themes
 
-46 directories, 206 files
+50 directories, 206 files
