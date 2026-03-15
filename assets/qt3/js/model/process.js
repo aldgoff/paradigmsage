@@ -140,9 +140,10 @@ export function loadGame(stateString) { // Returns state string, potentially tru
   const tokenString = tokensToString(tokens);
 
   modelSetStateString(tokenString);
-  modelSetErrorString("");
+  let errorString = "";
+
   if(lastToken.type === "invalid") {
-    modelSetErrorString("Invalid state string, truncated at point of corruption.");
+    errorString = ERROR["invalidStateString"]();
   }
   
   let state = processStateString(modelGetStateString());  // Overwrites errorString.
@@ -162,13 +163,13 @@ export function loadGame(stateString) { // Returns state string, potentially tru
   stemMoves = state.stemMoves;
 
   let lastPlayer = state.analyzedState.progress.player;
+  let lastTurn = state.analyzedState.progress.turn;
   
   let lastStr = getLastMove(modelGetStateString());
   let lastType = getLastMoveType(modelGetStateString());
 
   let player = (lastPlayer === 'X' ? 'O' : 'X');
 
-  let errorString = "";
   switch(lastType) {
     case 'empty':
       statusString = STATUS["playOrLoad"](player);
@@ -189,7 +190,7 @@ export function loadGame(stateString) { // Returns state string, potentially tru
       let scoreStr = getLastMove(stateString);
       let score = STATUS["score"](scoreStr);
       let options = STATUS["gameOver"]();
-      statusString = score + ". Options: " + options;
+      statusString = score + " Options: " + options;
       break;
     case 'invalid':
       errorString = ERROR["invalidStateString"]();
@@ -290,6 +291,7 @@ export function processClick(intent) {  // This now seems solid - except for sco
       let outcome = evaluateGame(modelGetStateString());
       if(outcome.over) {
         stateString = addScore(stateString, { X: outcome.score.X, O: outcome.score.O });
+        let score = getLastMove(stateString);
         statusString = STATUS["score"](score) + " " + STATUS["gameOver"]();
         // TODO: get outcome desc to mean something.
         modelSetStateString(stateString);
