@@ -149,3 +149,6 @@ Used WordPress to make these changes.
 
 ## History
   3/16/26 - Transfer DNS records from WordPress to Hugo.
+
+
+Bookbub
