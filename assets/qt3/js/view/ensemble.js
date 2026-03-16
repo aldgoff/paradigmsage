@@ -27,8 +27,7 @@ import { analyzeStateString } from "../model/analyzeStateString.js";
 import { listPlacementsWithCollapse } from "../model/analyzeStateString.js";
 
 // The js-website drawing canvas.
-const canvas = document.getElementById("qt3-game");
-const ctx = canvas.getContext("2d");
+import { initCanvas, canvas, ctx } from "./canvas.js";
 
 const layout = QT3_LAYOUT;
 const element = layout["ensemble"]

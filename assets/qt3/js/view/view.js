@@ -27,14 +27,15 @@ import {modelSetStateString,  // The state of the game is held in the model laye
 } from "../model/model.js";
 
 // The js-website drawing canvas.
-const canvas = document.getElementById("qt3-game");
-const ctx = canvas.getContext("2d");
+import { initCanvas, canvas, ctx } from "./canvas.js";
 
 export function initView() {
+  if (!initCanvas()) return;
+
   installPointerHandlers();
   installKeyboardHandler();
   render();
-  }
+}
 
 function installKeyboardHandler() {
   window.addEventListener("keydown", (e) => {
