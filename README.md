@@ -43,7 +43,6 @@
   Custom chatgpt (paradigmsage), tailored as a website development assistant
 
 ## Operational Notes
-  Structure is still a work in progress.
   Use custom AI to assist in web site architecture and development, not for content.
   An example script for Word -> markdown (in ~/bin)
     docx-to-md
@@ -65,9 +64,6 @@
         style="width: 100%; height: auto;"
       />
       ```
-
-  ### 3. Extract Equations (DEPRECATED)
-    yada
 
 ## Development Plan (1/14/26)
   1. Pre-publish PoP Ch 3 for the 19th (PDF-first, staged).
@@ -114,7 +110,42 @@
 ## Auto Publish Isn't
   Requires a post date commit to publish.
   Post date commit to force publish - 1/26/26.
+  After 1900 CDT Sunday night.
 
 ## 3D Engine for 3D Chess
   AI recommended three.js.
 
+## DNS records
+Used WordPress to make these changes.
+
+| Type  | Name  | Value
+| :---- | :---- | :---------------
+| MX    | @     | Mail handled by WordPress.com email forwarding. Learn more.
+| CNAME | www   | paradigmsage.com
+| A     | @     | ```185.199.108.153```
+| A     | @     | ```185.199.109.153```
+| A     | @     | ```185.199.110.153```
+| A     | @     | ```185.199.111.153```
+| TXT   | _domainconnect | public-api.wordpress.com/rest/v1.3/domain-connect
+
+ ### GitHub Pages
+  **Custom domain**
+  Custom domains allow you to serve your site from a domain other than aldgoff.github.io. Learn more about configuring custom domains.
+
+  paradigmsage.com
+  
+  DNS check successful
+
+  Enforce HTTPS 
+  HTTPS provides a layer of encryption that prevents others from snooping on or tampering with traffic to your site.
+  When HTTPS is enforced, your site will only be served over HTTPS. Learn more about securing your GitHub Pages site with HTTPS.
+
+ ### BaseURL
+  Must change the base URL in config.toml from
+  ```baseURL = "https://aldgoff.github.io/paradigmsage/"```
+  to
+  ```baseURL = "https://paradigmsage.com"```
+
+
+## History
+  3/16/26 - Transfer DNS records from WordPress to Hugo.
