@@ -151,14 +151,11 @@
 │   │   ├── list.html
 │   │   └── single.html
 │   ├── partials
-│   │   ├── 3dc
-│   │   │   └── nav.html
 │   │   ├── instrument
 │   │   │   └── nav.html
 │   │   ├── pop
 │   │   │   └── nav.html
-│   │   └── qt3
-│   │       └── nav.html
+│   │   └── section-nav.html
 │   ├── pop
 │   │   ├── list.html
 │   │   └── single.html
@@ -271,4 +268,4 @@
 │           └── poc.js
 └── themes
 
-56 directories, 215 files
+54 directories, 214 files

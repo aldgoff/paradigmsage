@@ -1,5 +1,6 @@
 ---
 title: "3D Chess"
+type: "3dc"
 ---
 
 This version of 3D chess uses planar moves and advancement squares.
