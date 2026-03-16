@@ -1,0 +1,21 @@
+<nav>
+  {{ $current := .RelPermalink }}
+
+  {{ $section := cond .IsSection . .CurrentSection }}
+
+  {{ range $section.RegularPages.ByWeight }}
+    {{ $active := eq .RelPermalink $current }}
+
+    <div style="margin-bottom:0.4rem;">
+      <a href="{{ .RelPermalink }}"
+         title="{{ .Title }}"
+         style="
+           text-decoration:none;
+           color:inherit;
+           {{ if $active }}font-weight:600;{{ else }}opacity:0.8;{{ end }}
+         ">
+         {{ .Title }}
+      </a>
+    </div>
+  {{ end }}
+</nav>

@@ -1,5 +1,6 @@
 ---
 title: "Quantum Tic-TacToe"
+type: "qt3"
 ---
 
 Quantum tic-tac-toe is based on the classic children's game of tic-tac-toe.

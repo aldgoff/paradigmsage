@@ -5,6 +5,9 @@
 ├── archetypes
 │   └── default.md
 ├── assets
+│   ├── 3dc
+│   │   └── js
+│   │       └── main.js
 │   ├── jsconfig.json
 │   └── qt3
 │       └── js
@@ -58,6 +61,9 @@
 │               └── view.js
 ├── content
 │   ├── _index.md
+│   ├── 3dc
+│   │   ├── _index.md
+│   │   └── rationale.md
 │   ├── contact
 │   │   └── _index.md
 │   ├── instrument
@@ -122,6 +128,7 @@
 │   ├── POP-MAP.md
 │   └── WORK-INVENTORY.md
 ├── dev
+│   ├── 3dc-arch.md
 │   ├── calls.md
 │   └── playSpecs.md
 ├── dialogs
@@ -137,6 +144,9 @@
 │   │   ├── list.html
 │   │   ├── single.html
 │   │   └── terms.html
+│   ├── 3dc
+│   │   ├── list.html
+│   │   └── single.html
 │   ├── instrument
 │   │   ├── list.html
 │   │   └── single.html
@@ -145,8 +155,7 @@
 │   │   │   └── nav.html
 │   │   ├── pop
 │   │   │   └── nav.html
-│   │   └── qt3
-│   │       └── nav.html
+│   │   └── section-nav.html
 │   ├── pop
 │   │   ├── list.html
 │   │   └── single.html
@@ -154,6 +163,7 @@
 │       ├── list.html
 │       └── single.html
 ├── meta
+│   ├── ~$project.xlsx
 │   ├── GIT-NOTES.md
 │   ├── GOAT-COUNTER.md
 │   ├── project.xlsx
@@ -164,6 +174,8 @@
 │   ├── GUIDANCE.md
 │   ├── GUIDE.md
 │   └── NAV-INVARIANTS.md
+├── promotion
+│   └── sites.md
 ├── README.md
 ├── static
 │   ├── assets
@@ -256,4 +268,4 @@
 │           └── poc.js
 └── themes
 
-50 directories, 206 files
+54 directories, 214 files
