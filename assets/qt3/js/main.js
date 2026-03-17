@@ -4,9 +4,15 @@ import { initController } from "./controller/controller.js";
 
 console.log("main.js: qt3/js/main.js");
 
-initController();
+// initController();
+const isPlayPage = document.getElementById("qt3-game");
 
-if (import.meta.env?.DEV ?? true) { // Regression tests of the model.
+if (isPlayPage) {
+  initController();
+}
+
+// if (import.meta.env?.DEV ?? true) { // Regression tests of the model.
+if (location.hostname === "localhost") {
   import("./tests/addSpookyMove.test.js");
   import("./tests/addPlacementMove.test.js");
   import("./tests/addLoop.test.js");
