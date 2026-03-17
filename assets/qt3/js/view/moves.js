@@ -5,8 +5,7 @@ import { GRAMMAR } from "../model/grammar.js";
 import { parsePlacements } from "../model/structure.js";
 
 // The js-website drawing canvas.
-const canvas = document.getElementById("qt3-game");
-const ctx = canvas.getContext("2d");
+import { initCanvas, canvas, ctx } from "./canvas.js";
 
 const QT3_PALETTE = {
   separable: "black",

@@ -200,8 +200,10 @@ function handleSquareCellClick(event) {  // Respond to clicks in squares down to
 
 function positionStateStringBox() { // Editable, copiable, pasteable field.
   const textarea = document.getElementById("qt3-state-input");
-  const container = document.getElementById("qt3-container");
   const canvas = document.getElementById("qt3-game");
+
+  if (!textarea || !canvas) return;
+
   const rect = canvas.getBoundingClientRect();
 
   const { x, y, w, h } = QT3_LAYOUT.stateBox;
