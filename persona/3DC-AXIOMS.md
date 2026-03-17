@@ -41,6 +41,14 @@
  ## C8. Projection Invariance
   * Projection of a D-dimensional move onto a (D−1)-dimensional subspace yields the corresponding lower-dimensional move.
 
+ ## C9. Layered Ontology
+  * The system is partitioned into three ordered layers:
+    * Foundation → defines space (coordinates, rays, equivalence classes).
+    * Geometry → defines manifolds and advancement structures within that space.
+    * Model → defines piece behavior and game semantics.
+  * The transition from trajectory to manifold-based movement is fully contained within the geometry layer.
+  * Each layer depends only on those below it; no upward or lateral dependency is permitted.
+
 # II. 3D Specialization (D = 3)
 
  ## A1. Tile Equivalence Classes

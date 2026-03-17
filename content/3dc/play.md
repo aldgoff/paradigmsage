@@ -6,6 +6,7 @@ layout: "play"
 **Play (INWORK)**
 
   Eventually, a playable version of 3D Chess with planar moves and advancement squares.
+  (Game has not yet been introduced in the PoP narrative.)
 
 ## Log
   1/17/26 - AI axioms, directory structure, hello world.

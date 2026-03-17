@@ -7,7 +7,32 @@
 ├── assets
 │   ├── 3dc
 │   │   └── js
-│   │       └── main.js
+│   │       ├── controller
+│   │       │   ├── _tbd.md
+│   │       │   └── controller.js
+│   │       ├── foundation
+│   │       │   ├── _tbd.md
+│   │       │   ├── colors
+│   │       │   ├── coords
+│   │       │   └── rays
+│   │       ├── geometry
+│   │       │   └── _tbd.md
+│   │       ├── main.js
+│   │       ├── model
+│   │       │   ├── _tbd.md
+│   │       │   ├── model.js
+│   │       │   └── notation
+│   │       │       └── notation.js
+│   │       ├── tests
+│   │       │   ├── _tbd.md
+│   │       │   ├── foundation
+│   │       │   ├── geometry
+│   │       │   ├── integration
+│   │       │   ├── model
+│   │       │   └── tests.js
+│   │       └── view
+│   │           ├── _tbd.md
+│   │           └── view.js
 │   ├── jsconfig.json
 │   └── qt3
 │       └── js
@@ -64,6 +89,7 @@
 │   ├── _index.md
 │   ├── 3dc
 │   │   ├── _index.md
+│   │   ├── play.md
 │   │   └── rationale.md
 │   ├── contact
 │   │   └── _index.md
@@ -147,6 +173,7 @@
 │   │   └── terms.html
 │   ├── 3dc
 │   │   ├── list.html
+│   │   ├── play.html
 │   │   └── single.html
 │   ├── instrument
 │   │   ├── list.html
@@ -170,6 +197,7 @@
 │   ├── project.xlsx
 │   └── TECH-DEBT.md
 ├── persona
+│   ├── 3DC-AXIOMS.md
 │   ├── AXIOMS.md
 │   ├── BOOT.md
 │   ├── CAP-LOG.md
@@ -184,6 +212,8 @@
 │   ├── assets
 │   │   ├── 12ls
 │   │   │   └── JPC06_2_12ls-Paper_6.pdf
+│   │   ├── 3dc
+│   │   │   └── Dis3D Chess Ch-1 188.pdf
 │   │   ├── NLL
 │   │   │   ├── CTB alias
 │   │   │   ├── JPC06NLL1.pdf
@@ -271,4 +301,4 @@
 │           └── poc.js
 └── themes
 
-54 directories, 217 files
+69 directories, 232 files
