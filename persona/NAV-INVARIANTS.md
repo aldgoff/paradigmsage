@@ -74,3 +74,4 @@
   6. You stop thinking about navigation while writing content.
 
   “Nav fixes only. Treat the above as axioms.”
+
