@@ -2,16 +2,12 @@
 
   <div style="display:flex; gap:2rem;">
 
-    <aside style="width:12rem; flex-shrink:0; font-size:0.9rem;">
+    <aside>
       {{ partial "section-nav.html" . }}
     </aside>
 
-    <section style="flex:1; min-width:0; max-width:86ch;">
+    <section>
       {{ .Content }}
-
-      {{/* Avoid cache churn. */}}
-      {{ $js := resources.Get "3dc/js/main.js" | js.Build | fingerprint }}
-      <script type="module" src="{{ $js.RelPermalink }}"></script>
     </section>
 
   </div>

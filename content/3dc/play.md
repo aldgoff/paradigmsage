@@ -1,5 +1,6 @@
 ---
 title: "Play"
+layout: "play"
 ---
 
 **Play (INWORK)**
