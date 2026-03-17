@@ -54,6 +54,7 @@
 │           │   ├── subSpookyMove.test.js
 │           │   └── tokens.test.js
 │           └── view
+│               ├── canvas.js
 │               ├── controlsView.js
 │               ├── ensemble.js
 │               ├── listings.js
@@ -169,6 +170,8 @@
 │   ├── project.xlsx
 │   └── TECH-DEBT.md
 ├── persona
+│   ├── AXIOMS.md
+│   ├── BOOT.md
 │   ├── CAP-LOG.md
 │   ├── CAPTURE-LOG.md
 │   ├── GUIDANCE.md
@@ -268,4 +271,4 @@
 │           └── poc.js
 └── themes
 
-54 directories, 214 files
+54 directories, 217 files
