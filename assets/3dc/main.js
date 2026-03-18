@@ -2,7 +2,7 @@
 
 // import { initController } from "./controller/controller.js";
 
-console.log("main.js: 3dc/js/main.js");
+console.log("main.js: 3dc/main.js");
 
 // initController();
 
