@@ -1,0 +1,60 @@
+// ./3dc/tests/core/asserts.js
+
+let PASS = 0;
+let FAIL = 0;
+
+let TOTAL_PASS = 0;
+let TOTAL_FAIL = 0;
+
+export function assertEqual(actual, expected, label) {
+  const ok = JSON.stringify(actual) === JSON.stringify(expected);
+
+  if (ok) {
+    PASS++;
+  } else {
+    FAIL++;
+    console.error(`FAIL: ${label}`);
+    console.error("  expected:", expected);
+    console.error("  actual:  ", actual);
+  }
+}
+
+export function report(name) {
+  const padded = name.padEnd(12);
+  console.log(`${padded} ${PASS}/${PASS + FAIL} tests passed`);
+
+  TOTAL_PASS += PASS;
+  TOTAL_FAIL += FAIL;
+
+  PASS = 0;
+  FAIL = 0;
+}
+
+export function finalReport() {
+  let name = "TOTAL";
+  const padded = name.padEnd(11);
+  console.log(`${padded} ${TOTAL_PASS}/${TOTAL_PASS + TOTAL_FAIL} tests passed`);
+
+  TOTAL_PASS = 0;
+  TOTAL_FAIL = 0;
+}
+
+export function assertThrows(fn, label) {
+  let threw = false;
+
+  try {
+    fn();
+  } catch (e) {
+    threw = true;
+  }
+
+  if (threw) {
+    PASS++;
+  } else {
+    FAIL++;
+    console.error(`FAIL: ${label}`);
+    console.error("  expected: throw");
+    console.error("  actual:   no throw");
+  }
+}
+

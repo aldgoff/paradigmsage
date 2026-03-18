@@ -1,0 +1,9 @@
+{{ define "main" }}
+
+{{ .Content }}
+
+{{ $js := resources.Get "3dc/main.js" | js.Build | fingerprint }}
+<script type="module" src="{{ $js.RelPermalink }}"></script>
+
+{{ end }}
+

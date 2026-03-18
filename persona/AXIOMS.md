@@ -79,3 +79,13 @@
 
   No duplication across layers.
 
+## A18. Test Structure
+  Pattern:
+    run() → orchestrates test_* functions
+
+  Rules:
+    - One test function per unit (test_<name>)
+    - No logic in run()
+    - Seam points explicitly marked
+    - Tests are additive, not modified
+
