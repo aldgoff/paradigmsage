@@ -1,4 +1,4 @@
-// ./assets/3dc/js/main.js
+// ./3dc/main.js
 
 // import { initController } from "./controller/controller.js";
 

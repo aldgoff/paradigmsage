@@ -9,5 +9,5 @@ layout: "play"
   (Game has not yet been introduced in the PoP narrative.)
 
 ## Log
-  1/17/26 - AI axioms, directory structure, hello world.
+  1/17/26 - AI axioms, directory structure, hello world, python port plan.
 

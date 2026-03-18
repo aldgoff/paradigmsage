@@ -1,0 +1,13 @@
+8x8x8 Board: Q4,4 > RCS: (4, 4, 4) VTS: (0, 0, 0) Back: (4, 4, 4) Board: Q4,4
+8x8x8 Board: QR1,1 > RCS: (1, 1, 1) VTS: (-3, -3, -3) Back: (1, 1, 1) Board: QR1,1
+10x10x10 Board: KR2,1 > RCS: (10, 2, 1) VTS: (5, -3, -4) Back: (10, 2, 1) Board: KR2,1
+10x10x10 Board: K6,6 > RCS: (6, 6, 6) VTS: (1, 1, 1) Back: (6, 6, 6) Board: K6,6
+
+True
+False
+True
+True
+False
+True
+coords.py smoke test passed.
+

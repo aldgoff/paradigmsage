@@ -1,0 +1,94 @@
+{
+  "coords_module": {
+    "coordinate_system": {
+      "Status": "Not used.",
+      "left_handed": true,
+      "integral": true,
+      "even_dimensions_required": true
+      },
+    "board_specs": [
+      { "name": "8x8x8",
+        "Nz": 8,
+        "Nx": 8,
+        "Ny": 8,
+        "level_prefixes": ["QR","QN","QB","Q","K","KB","KN","KR"],
+        "level_map": {
+          "QR": 1, "QN": 2, "QB": 3, "Q": 4,
+          "K": 5, "KB": 6, "KN": 7, "KR": 8
+        },
+        "inverse_level_map": {
+          "1": "QR", "2": "QN", "3": "QB", "4": "Q",
+          "5": "K", "6": "KB", "7": "KN", "8": "KR"
+        },
+        "anchor_board": "Q4,4",
+        "anchor_vts": [0, 0, 0]
+        },
+      { "name": "10x8x8",
+        "Nz": 10,
+        "Nx": 8,
+        "Ny": 8,
+        "level_prefixes": ["QR","QN","QB","QD","Q","K","KD","KB","KN","KR"],
+        "level_map": {
+          "QR": 1, "QN": 2, "QB": 3, "QD": 4, "Q": 5,
+          "K": 6, "KD": 7, "KB": 8, "KN": 9, "KR": 10
+        },
+        "inverse_level_map": {
+          "1": "QR", "2": "QN", "3": "QB", "4": "QD", "5": "Q",
+          "6": "K", "7": "KD", "8": "KB", "9": "KN", "10": "KR"
+        },
+        "anchor_board": "Q4,4",
+        "anchor_vts": [0, 0, 0]
+        },
+      { "name": "10x10x10",
+        "Nz": 10,
+        "Nx": 10,
+        "Ny": 10,
+        "level_prefixes": ["QR","QN","QB","QD","Q","K","KD","KB","KN","KR"],
+        "level_map": {
+          "QR": 1, "QN": 2, "QB": 3, "QD": 4, "Q": 5,
+          "K": 6, "KD": 7, "KB": 8, "KN": 9, "KR": 10
+        },
+        "inverse_level_map": {
+          "1": "QR", "2": "QN", "3": "QB", "4": "QD", "5": "Q",
+          "6": "K", "7": "KD", "8": "KB", "9": "KN", "10": "KR"
+        },
+        "anchor_board": "Q5,5",
+        "anchor_vts": [0, 0, 0]
+        }
+      ],
+    "vts": {
+      "Status": "Not used.",
+      "range_formula": "-N - N/2 ≤ coord < N + N/2 (integers only)",
+      "shell_description": "Virtual tile space is 3N x 3N x 3N, board centered within",
+      "coordinates": "(z,x,y) are integers",
+      "examples": {
+        "8x8x8_KR8,8": {"board": [8,8,8], "vts": [4,4,4]},
+        "8x8x8_QR1,1": {"board": [1,1,1], "vts": [-3,-3,-3]}
+        }
+      },
+    "conversions": {
+      "Status": "Not used.",
+      "board_to_vts": {
+        "z": "Z - Nz/2",
+        "x": "X - Nx/2",
+        "y": "Y - Ny/2"
+        },
+      "vts_to_board": {
+        "Z": "z + Nz/2",
+        "X": "x + Nx/2",
+        "Y": "y + Ny/2"
+        }
+      },
+    "membership": {
+      "Status": "Not used.",
+      "on_board_condition": "1 ≤ Z ≤ Nz and 1 ≤ X ≤ Nx and 1 ≤ Y ≤ Ny"
+      },
+    "parsing": {
+      "Status": "Not used.",
+      "board_format": "<LL>X,Y",
+      "vts_format": "(z,x,y)",
+      "LL_lookup": "Z determined by level_map",
+      "parsed_output": "(Z,X,Y)"
+      }
+  } 
+}
