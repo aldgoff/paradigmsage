@@ -22,3 +22,53 @@ export function getBoardSpec(specName) {
   return spec;
 }
 
+export function boardToRcs(loc, specName) {
+  const spec = getBoardSpec(specName);
+  const levelMap = spec.level_map;
+
+  // Match: <LL>X,Y
+  const match = loc.match(/^([A-Z]+)(\d+),(\d+)$/);
+
+  if (!match) {
+    throw new Error(`Invalid board location: ${loc}`);
+  }
+
+  const [, LL, xStr, yStr] = match;
+
+  const Z = levelMap[LL];
+  if (!Z) {
+    throw new Error(`Unknown level prefix: ${LL}`);
+  }
+
+  const X = parseInt(xStr, 10);
+  const Y = parseInt(yStr, 10);
+
+  return [Z, X, Y];
+  }
+
+export function rcsToVts(rcs, specName) {
+  const spec = getBoardSpec(specName);
+
+  // Anchor defines origin in VTS
+  const anchorRcs = boardToRcs(spec.anchor_board, specName);
+
+  const z = rcs[0] - anchorRcs[0];
+  const x = rcs[1] - anchorRcs[1];
+  const y = rcs[2] - anchorRcs[2];
+
+  return [z, x, y];
+  }
+
+export function vtsToRcs(vts, specName) {
+  const spec = getBoardSpec(specName);
+
+  // Anchor defines origin in VTS
+  const anchorRcs = boardToRcs(spec.anchor_board, specName);
+
+  const Z = vts[0] + anchorRcs[0];
+  const X = vts[1] + anchorRcs[1];
+  const Y = vts[2] + anchorRcs[2];
+
+  return [Z, X, Y];
+}
+
