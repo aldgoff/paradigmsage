@@ -6,33 +6,48 @@
 │   └── default.md
 ├── assets
 │   ├── 3dc
-│   │   └── js
-│   │       ├── controller
-│   │       │   ├── _tbd.md
-│   │       │   └── controller.js
-│   │       ├── foundation
-│   │       │   ├── _tbd.md
-│   │       │   ├── colors
-│   │       │   ├── coords
-│   │       │   └── rays
-│   │       ├── geometry
-│   │       │   └── _tbd.md
-│   │       ├── main.js
-│   │       ├── model
-│   │       │   ├── _tbd.md
-│   │       │   ├── model.js
-│   │       │   └── notation
-│   │       │       └── notation.js
-│   │       ├── tests
-│   │       │   ├── _tbd.md
-│   │       │   ├── foundation
-│   │       │   ├── geometry
-│   │       │   ├── integration
-│   │       │   ├── model
-│   │       │   └── tests.js
-│   │       └── view
-│   │           ├── _tbd.md
-│   │           └── view.js
+│   │   ├── controller
+│   │   │   ├── _tbd.md
+│   │   │   └── controller.js
+│   │   ├── dev
+│   │   │   ├── devNotes.md
+│   │   │   └── symbols.js
+│   │   ├── foundation
+│   │   │   ├── _tbd.md
+│   │   │   ├── colors
+│   │   │   ├── coords
+│   │   │   │   ├── coords.js
+│   │   │   │   ├── coords.json
+│   │   │   │   ├── coords.md
+│   │   │   │   ├── coords.py
+│   │   │   │   └── coords.ref.out
+│   │   │   └── rays
+│   │   ├── geometry
+│   │   │   └── _tbd.md
+│   │   ├── js
+│   │   ├── main.js
+│   │   ├── model
+│   │   │   ├── _tbd.md
+│   │   │   ├── model.js
+│   │   │   └── notation
+│   │   │       └── notation.js
+│   │   ├── tests
+│   │   │   ├── _tbd.md
+│   │   │   ├── core
+│   │   │   │   ├── asserts.js
+│   │   │   │   └── invariants.js
+│   │   │   ├── foundation
+│   │   │   │   ├── colors
+│   │   │   │   └── coords
+│   │   │   │       ├── coords.gen.out
+│   │   │   │       └── coords.test.js
+│   │   │   ├── geometry
+│   │   │   ├── integration
+│   │   │   ├── model
+│   │   │   └── tests.js
+│   │   └── view
+│   │       ├── _tbd.md
+│   │       └── view.js
 │   ├── jsconfig.json
 │   └── qt3
 │       └── js
@@ -301,4 +316,4 @@
 │           └── poc.js
 └── themes
 
-69 directories, 232 files
+73 directories, 243 files

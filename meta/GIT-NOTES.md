@@ -49,12 +49,45 @@
   ```
 
  ### Git Tags
+  Basic commands.
   ```
   git tag
   git tag -a v0.1-<desc> -m "Tag label."
   git tag -a v1.0.1 -m "Tag label."
   git show v0.1-<desc>
   git push --tags
+  git push origin <tag>  (Better)
+  ```
+  History (a little muddled - all associated with qt3).
+  ```
+  v0.1
+  v0.1-topology
+  v1.0.1
+  ```
+  Canonical Use Going Forward
+  ```
+  git tag <project>-<layer>-<milestone>
+  ...
+  git tag 3dc-foundation-bootstrap
+  ...
+  git push origin 3dc-foundation-coords
+  ```
+
+ ### Git Tag Taxonomy
+  ```
+  Tag format:
+    <project>-<layer>-<milestone>
+
+  Where:
+    layer ∈ {foundation, geometry, model, view, controller, tests, integration}
+    milestone ∈ {bootstrap, port, validate, generalize, refactor, complete}
+
+  Examples:
+    git tag 3dc-foundation-bootstrap
+    git tag 3dc-foundation-coords-port
+    git tag 3dc-geometry-bootstrap
+
+  Tags represent completed, stable milestones — not work-in-progress.
   ```
 
  ### Git History (sort of)
@@ -87,6 +120,8 @@
   - Merge msg: "Merge PoP Chapter 27 (Infinity)."
   - Merge msg: "Merge QT3 nav."
   - Merge msg: "Merge QT3 content."
+  - 
+  - Merge 3dc-dirs; regression test harnes, and ported 3 coord functions.
 
 ## Abort QT3 Experimental Code
   ```
