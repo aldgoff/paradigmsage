@@ -12,6 +12,8 @@ import coordsData from "./coords.json" assert { type: "json" };
 
 const boardSpecs = coordsData.coords_module.board_specs;
 
+// -- Helpers --
+
 export function getBoardSpec(specName) {
   const spec = boardSpecs.find(s => s.name === specName);
 
@@ -20,10 +22,34 @@ export function getBoardSpec(specName) {
   }
 
   return spec;
+  }
+
+export function normalizeTileToVts(tile, specOrName = "8x8x8") {
+  if (typeof tile === "string") {
+    const rcs = boardToRcs(tile, specOrName);
+    return rcsToVts(rcs, specOrName);
+  }
+
+  return tile;
+  }
+
+export function tileToRcs(tile, specOrName = "8x8x8") {
+  if (typeof tile === "string") {
+    return boardToRcs(tile, specOrName);
+  }
+
+  return vtsToRcs(tile, specOrName);
 }
 
-export function boardToRcs(loc, specName) {
-  const spec = getBoardSpec(specName);
+// -- Canonical --
+
+export function boardToRcs(loc, specOrName) {
+  let spec = specOrName;
+
+  if (typeof spec === "string") {
+    spec = getBoardSpec(spec);
+  }
+
   const levelMap = spec.level_map;
 
   // Match: <LL>X,Y
@@ -36,7 +62,7 @@ export function boardToRcs(loc, specName) {
   const [, LL, xStr, yStr] = match;
 
   const Z = levelMap[LL];
-  if (!Z) {
+  if (Z === undefined) {
     throw new Error(`Unknown level prefix: ${LL}`);
   }
 
@@ -46,29 +72,86 @@ export function boardToRcs(loc, specName) {
   return [Z, X, Y];
   }
 
-export function rcsToVts(rcs, specName) {
-  const spec = getBoardSpec(specName);
+export function rcsToVts(rcs, specOrName) {
+  let spec = specOrName;
 
-  // Anchor defines origin in VTS
-  const anchorRcs = boardToRcs(spec.anchor_board, specName);
+  if (typeof spec === "string") {
+    spec = getBoardSpec(spec);
+  }
 
-  const z = rcs[0] - anchorRcs[0];
-  const x = rcs[1] - anchorRcs[1];
-  const y = rcs[2] - anchorRcs[2];
+  // VTS origin defined by board center (Nz/2, Nx/2, Ny/2)  
+  const { Nz, Nx, Ny } = spec;
+
+  const z = rcs[0] - Nz / 2;
+  const x = rcs[1] - Nx / 2;
+  const y = rcs[2] - Ny / 2;
 
   return [z, x, y];
   }
 
-export function vtsToRcs(vts, specName) {
-  const spec = getBoardSpec(specName);
+export function vtsToRcs(vts, specOrName) {
+  let spec = specOrName;
 
-  // Anchor defines origin in VTS
-  const anchorRcs = boardToRcs(spec.anchor_board, specName);
+  if (typeof spec === "string") {
+    spec = getBoardSpec(spec);
+  }
 
-  const Z = vts[0] + anchorRcs[0];
-  const X = vts[1] + anchorRcs[1];
-  const Y = vts[2] + anchorRcs[2];
+  // VTS origin defined by board center (Nz/2, Nx/2, Ny/2)  
+  const { Nz, Nx, Ny } = spec;
+
+  const Z = vts[0] + Nz / 2;
+  const X = vts[1] + Nx / 2;
+  const Y = vts[2] + Ny / 2;
 
   return [Z, X, Y];
+  }
+
+export function rcsToBoard(rcs, specOrName) {
+  let spec = specOrName;
+
+  if (typeof spec === "string") {
+    spec = getBoardSpec(spec);
+  }
+
+  const inv = spec.inverse_level_map;
+
+  const [Z, X, Y] = rcs;
+
+  const LL = inv[String(Z)];
+  if (LL === undefined) {
+    throw new Error(`Invalid Z level: ${Z}`);
+  }
+
+  return `${LL}${X},${Y}`;
+}
+
+// -- On board tests --
+
+export function onBoardRcs(rcs, specName = "8x8x8") {
+  let spec = specName;
+
+  if (typeof spec === "string") {
+    spec = getBoardSpec(spec);
+  }
+
+  const [Z, X, Y] = rcs;
+
+  return (
+    (1 <= Z && Z <= spec.Nz) &&
+    (1 <= X && X <= spec.Nx) &&
+    (1 <= Y && Y <= spec.Ny)
+  );
+  }
+
+export function onBoardVts(vts, specName = "8x8x8") {
+  let spec = specName;
+
+  if (typeof spec === "string") {
+    spec = getBoardSpec(spec);
+  }
+
+  const rcs = vtsToRcs(vts, spec);
+
+  return onBoardRcs(rcs, spec);
 }
 

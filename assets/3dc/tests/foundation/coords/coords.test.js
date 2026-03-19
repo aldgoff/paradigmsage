@@ -6,46 +6,113 @@
   UI: the export functions.
 */
 
-import {assertEqual,
+import {TEST_MODE,
+        assertEqual,
         assertThrows,
         report,
+        snapshotTotals,
         finalReport,
  } from "../../core/asserts.js";
 
 import { invariant } from "../../core/invariants.js";
 
 import {getBoardSpec,
+        normalizeTileToVts,
+        tileToRcs,
         boardToRcs,
         rcsToVts,
         vtsToRcs,
+        rcsToBoard,
+        onBoardRcs,
+        onBoardVts,
+        // Seam point: more tests...
 } from "../../../foundation/coords/coords.js";
 
 export function run() {
-  const specName = "8x8x8"; // "8x8x8", "10x8x8", "10x10x10".
+  const specNames = ["8x8x8", "10x8x8", "10x10x10"];
 
-  if (true) console.log(getBoardSpec(specName));
-  
-  test_boardToRcs(specName);
-  test_rcsToVts(specName);
-  test_vtsToRcs(specName);
+  let prev = snapshotTotals();
 
-  test_roundTrip(specName);
+  for (const specName of specNames) {
+    // console.log(`\n=== Testing ${specName} ===`);
+    if (TEST_MODE.foundation === "VERBOSE") {
+      console.log(getBoardSpec(specName));
+    }
+
+    test_normalizeTileToVts(specName);
+    test_tileToRcs(specName);
+
+    test_boardToRcs(specName);
+    test_rcsToVts(specName);
+    test_vtsToRcs(specName);
+    test_rcsToBoard(specName);
+
+    test_onBoardRcs(specName);
+    test_onBoardVts(specName);
+    // Seam point: more tests...
+
+    test_roundTrip(specName);
+
+    let curr = snapshotTotals();
+
+    const pass = curr.pass - prev.pass;
+    const fail = curr.fail - prev.fail;
+
+    if (TEST_MODE.foundation !== "VERBOSE") {
+      console.log(`Foundation/coords (${specName}) ${pass}/${pass + fail}`);
+    }
+
+    prev = curr;
+  }
 
   finalReport();
+}
 
-  // Seam point: more tests...
+function test_normalizeTileToVts(specName) {
+  const cases = [
+    { input: "QR1,1", expected: rcsToVts(boardToRcs("QR1,1", specName), specName), label: "string input" },
+    { input: [0,0,0], expected: [0,0,0],                                           label: "vts passthrough" },
+  ];
+
+  for (const { input, expected, label } of cases) {
+    const result = normalizeTileToVts(input, specName);
+
+    assertEqual(result, expected, `${label} → vts`);
+  }
+
+  report("normalizeTileToVts", "foundation");
+  }
+
+function test_tileToRcs(specName) {
+  const spec = getBoardSpec(specName);
+
+  const center = [spec.Nz/2, spec.Nx/2, spec.Ny/2];
+
+  const cases = [
+    { input: "QR1,1", expected: boardToRcs("QR1,1", specName), label: "string input" },
+    { input: [0,0,0], expected: center, label: "vts input" },
+  ];
+
+  for (const { input, expected, label } of cases) {
+    const result = tileToRcs(input, spec);
+
+    assertEqual(result, expected, `${label} → rcs`);
+  }
+
+  report("tileToRcs", "foundation");
 }
 
 function test_boardToRcs(specName) {
+  const spec = getBoardSpec(specName);
+  const levelMap = spec.level_map;
+
   const validCases = [
-    ["QR1,1", 1, 1, 1, "QR"],
-    ["K4,4",  5, 4, 4, "K"],
-    // Seam point: more valid tiles.
-    ];
+    { loc: "QR1,1", expected: [levelMap["QR"], 1, 1], label: "QR"},
+    { loc: "Q1,1",  expected: [levelMap["Q"], 1, 1],  label: "Q"},
+    { loc: "K4,4",  expected: [levelMap["K"], 4, 4],  label: "K"},
+  ];
+
   const invalidCases = [
-    // Off the board errors:
-      // ["QR11,11", "out of bounds high"],
-      // ["QR0,0",   "out of bounds low"],
     // Format errors:
       ["QR1-1", "wrong delimiter"],
       ["QR1 1", "missing comma"],
@@ -55,60 +122,139 @@ function test_boardToRcs(specName) {
       ["ZZ1,1", "invalid prefix"],
       ["",      "empty input"],
     // Numeric errors: Save for the onBoard functions.
-      // ["QR0,1",   "X below range"],
-      // ["QR1,0",   "Y below range"],
-      // ["QR-1,1",  "negative X"],
-      // ["QR1,-1",  "negative Y"],
-      // ["QR1.5,1", "non-integer"],
-    // Bounds errors (spec-dependent): Save for the onBoard functions.
-      // ["QR9,1", "X > Nx"],
-      // ["QR1,9", "Y > Ny"],
-    // Seam point: more invalid  tiles.
+      ["QR-1,1",  "negative X"],
+      ["QR1,-1",  "negative Y"],
+      ["QR1.5,1", "non-integer"],
   ];
 
-  for (const [loc, z, x, y, label] of validCases) {
+  for (const { loc, expected, label } of validCases) {
     const rcs = boardToRcs(loc, specName);
 
-    assertEqual(rcs, [z, x, y], `rcs → ${label}`);
-    }
-  
-  for (const [loc, label] of invalidCases) {
-    assertThrows( () => boardToRcs(loc, specName), label);
+    assertEqual(rcs, expected, `rcs → ${label}`);
   }
-  report("boardToRcs");
+
+  for (const [loc, label] of invalidCases) {
+    assertThrows(() => boardToRcs(loc, specName), label);
+  }
+
+  report("boardToRcs", "foundation");
   }
 
 function test_rcsToVts(specName) {
+  const spec = getBoardSpec(specName);
+
+  const center = [  spec.Nz/2,   spec.Nx/2,   spec.Ny/2];
+  const corner = [1-spec.Nz/2, 1-spec.Nx/2, 1-spec.Ny/2];
+
   const cases = [
-    ["Q4,4",   0,  0,  0, "anchor"],
-    ["QR1,1", -3, -3, -3, "corner"],
-    ["K4,4",   1,  0,  0, "mid level"],
-    // Seam point: more cases.
+    { rcs: center,                            expected: [0, 0, 0],                       label: "anchor"},
+    { rcs: [1, 1, 1],                         expected: [corner[0],corner[1],corner[2]], label: "corner"},
+    { rcs: [center[0]+1,center[1],center[2]], expected: [1, 0, 0],                       label: "mid level"},
   ];
 
-  for (const [loc, z, x, y, label] of cases) {
-    const rcs = boardToRcs(loc, specName);
-    const vts = rcsToVts(rcs, specName);
+  for (const { rcs, expected, label } of cases) {
+    const vts = rcsToVts(rcs, spec);
 
-    assertEqual(vts, [z, x, y], `${label} → vts`);
+    assertEqual(vts, expected, `${label} → vts`);
   }
-  report("rcsToVts");
+
+  report("rcsToVts", "foundation");
   }
 
 function test_vtsToRcs(specName) {
+  const spec = getBoardSpec(specName);
+
+  const center = [  spec.Nz/2,   spec.Nx/2,   spec.Ny/2];
+  const corner = [1-spec.Nz/2, 1-spec.Nx/2, 1-spec.Ny/2];
+
   const cases = [
-    [[ 0,  0,  0], 4, 4, 4, "anchor"],
-    [[-3, -3, -3], 1, 1, 1, "corner"],
-    [[ 1,  0,  0], 5, 4, 4, "mid level"],
-    // Seam point: more cases.
+    { vts: [0, 0, 0],                       expected: center,                            label: "anchor"},
+    { vts: [corner[0],corner[1],corner[2]], expected: [1, 1, 1],                         label: "corner"},
+    { vts: [1, 0, 0],                       expected: [center[0]+1,center[1],center[2]], label: "mid level"},
   ];
 
-  for (const [vts, z, x, y, label] of cases) {
-    const rcs = vtsToRcs(vts, specName);
+  for (const { vts, expected, label } of cases) {
+    const rcs = vtsToRcs(vts, spec);
 
-    assertEqual(rcs, [z, x, y], `rcs → ${label}`);
+    assertEqual(rcs, expected, `rcs → ${label}`);
   }
-  report("vtsToRcs");
+
+  report("vtsToRcs", "foundation");
+  }
+
+function test_rcsToBoard(specName) {
+  const spec = getBoardSpec(specName);
+  const inv = spec.inverse_level_map;
+
+  const center = [spec.Nz/2, spec.Nx/2, spec.Ny/2];
+
+  const cases = [
+    { rcs: [1, 1, 1],                         expected: `${inv["1"]}1,1`,                                       label: "corner"},
+    { rcs: center,                            expected: `${inv[String(center[0])]}${center[1]},${center[2]}`,   label: "anchor"},
+    { rcs: [center[0]+1,center[1],center[2]], expected: `${inv[String(center[0]+1)]}${center[1]},${center[2]}`, label: "mid level"},
+  ];
+
+  for (const { rcs, expected, label } of cases) {
+    const result = rcsToBoard(rcs, specName);
+
+    assertEqual(result, expected, `${label} → board`);
+  }
+
+  report("rcsToBoard", "foundation");
+}
+
+function test_onBoardRcs(specName) {
+  const spec = getBoardSpec(specName);
+
+  const cases = [
+    // In-bounds
+    { rcs: [1, 1, 1],                   expected: true, label: "corner in"},
+    { rcs: [spec.Nz, spec.Nx, spec.Ny], expected: true, label: "opposite corner in"},
+
+    // Below bounds
+    { rcs: [0, 1, 1], expected: false, label: "Z below"},
+    { rcs: [1, 0, 1], expected: false, label: "X below"},
+    { rcs: [1, 1, 0], expected: false, label: "Y below"},
+
+    // Above bounds (spec-driven)
+    { rcs: [spec.Nz + 1, 1, 1], expected: false, label: "Z above"},
+    { rcs: [1, spec.Nx + 1, 1], expected: false, label: "X above"},
+    { rcs: [1, 1, spec.Ny + 1], expected: false, label: "Y above"},
+  ];
+
+  for (const { rcs, expected, label } of cases) {
+    const result = onBoardRcs(rcs, spec);
+
+    assertEqual(result, expected, `${label} → onBoardRcs`);
+  }
+
+  report("onBoardRcs", "foundation");
+  }
+
+function test_onBoardVts(specName) {
+  const spec = getBoardSpec(specName);
+
+  const hz = spec.Nz / 2;
+  const hx = spec.Nx / 2;
+  const hy = spec.Ny / 2;
+
+  const cases = [
+    // In-bounds (corners)
+    { vts: [1 - hz, 1 - hx, 1 - hy], expected: true, label: "corner in"},
+    { vts: [hz, hx, hy], expected: true, label: "opposite corner in"},
+
+    // Out of bounds (just outside)
+    { vts: [1 - hz - 1, 1 - hx - 1, 1 - hy - 1], expected: false, label: "outside low"},
+    { vts: [hz + 1, hx + 1, hy + 1], expected: false, label: "outside high"},
+  ];
+
+  for (const { vts, expected, label } of cases) {
+    const result = onBoardVts(vts, spec);
+
+    assertEqual(result, expected, `${label} → onBoardVts`);
+  }
+
+  report("onBoardVts", "foundation");
 }
 
 function test_roundTrip(specName) {
@@ -118,10 +264,12 @@ function test_roundTrip(specName) {
     const rcs1 = boardToRcs(loc, specName);
     const vts  = rcsToVts(rcs1, specName);
     const rcs2 = vtsToRcs(vts, specName);
+    const loc2 = rcsToBoard(rcs2, specName);
 
-    assertEqual(rcs2, rcs1, `${loc} roundTrip`);
+    assertEqual(rcs2, rcs1, `${loc} rcs roundTrip`);
+    assertEqual(loc2, loc, `${loc} board roundTrip`);
   }
-  report("roundTrip");
+  report("roundTrip", "foundation");
 }
 
 // Seam point: more tests...
