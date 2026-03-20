@@ -26,6 +26,11 @@
 │   │   │   │   ├── coords.md
 │   │   │   │   └── coords.py
 │   │   │   └── rays
+│   │   │       ├── rays.js
+│   │   │       ├── rays.json
+│   │   │       ├── rays.md
+│   │   │       ├── rays.out
+│   │   │       └── rays.py
 │   │   ├── geometry
 │   │   │   └── _tbd.md
 │   │   ├── js
@@ -42,7 +47,8 @@
 │   │   │   │   └── invariants.js
 │   │   │   ├── foundation
 │   │   │   │   ├── colors.test.js
-│   │   │   │   └── coords.test.js
+│   │   │   │   ├── coords.test.js
+│   │   │   │   └── rays.test.js
 │   │   │   ├── geometry
 │   │   │   ├── integration
 │   │   │   ├── model
@@ -320,4 +326,4 @@
 │           └── poc.js
 └── themes
 
-71 directories, 249 files
+71 directories, 255 files

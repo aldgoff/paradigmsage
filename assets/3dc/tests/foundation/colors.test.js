@@ -24,7 +24,7 @@ import {bishopColor,
         dukeColor,
         tileColors,
         tileColorString,
-        // Seam point: more tests...
+        // Seam point: functions to test...
 } from "../../foundation/colors/colors.js";
 
 // ------------------------------------------------------------

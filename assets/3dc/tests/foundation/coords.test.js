@@ -25,7 +25,7 @@ import {getBoardSpec,
         rcsToBoard,
         onBoardRcs,
         onBoardVts,
-        // Seam point: more tests...
+        // Seam point: functions to test...
 } from "../../foundation/coords/coords.js";
 
 // ------------------------------------------------------------
