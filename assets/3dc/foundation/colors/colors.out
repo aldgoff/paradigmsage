@@ -1,0 +1,10 @@
+(0, 0, 0) : white silver white-silver
+(1, 1, 1) : black silver black-silver
+(0, 1, 1) : white gold white-gold
+(1, 0, 0) : black gold black-gold
+(0, 1, 0) : black ruby black-ruby
+(1, 0, 1) : white ruby white-ruby
+(0, 0, 1) : black jade black-jade
+(1, 1, 0) : white jade white-jade
+colors.py smoke test passed.
+

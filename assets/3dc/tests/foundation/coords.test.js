@@ -1,5 +1,5 @@
 /* File: coords.tests.js
-  Path: ./3dc/tests/foundation/coords/
+  Path: ./3dc/tests/foundation/
   Purpose: Test the coords module.
   Author: Allan Goff
   Date: 3/18/26
@@ -12,9 +12,9 @@ import {TEST_MODE,
         report,
         snapshotTotals,
         finalReport,
- } from "../../core/asserts.js";
+  } from "../core/asserts.js";
 
-import { invariant } from "../../core/invariants.js";
+import { invariant } from "../core/invariants.js";
 
 import {getBoardSpec,
         normalizeTileToVts,
@@ -26,7 +26,9 @@ import {getBoardSpec,
         onBoardRcs,
         onBoardVts,
         // Seam point: more tests...
-} from "../../../foundation/coords/coords.js";
+} from "../../foundation/coords/coords.js";
+
+// ------------------------------------------------------------
 
 export function run() {
   const specNames = ["8x8x8", "10x8x8", "10x10x10"];
@@ -34,7 +36,6 @@ export function run() {
   let prev = snapshotTotals();
 
   for (const specName of specNames) {
-    // console.log(`\n=== Testing ${specName} ===`);
     if (TEST_MODE.foundation === "VERBOSE") {
       console.log(getBoardSpec(specName));
     }
@@ -67,6 +68,8 @@ export function run() {
 
   finalReport();
 }
+
+// ------------------------------------------------------------
 
 function test_normalizeTileToVts(specName) {
   const cases = [
@@ -257,6 +260,8 @@ function test_onBoardVts(specName) {
   report("onBoardVts", "foundation");
 }
 
+// Seam point: more tests...
+
 function test_roundTrip(specName) {
   const cases = ["QR1,1", "Q4,4", "K4,4"];
 
@@ -271,6 +276,4 @@ function test_roundTrip(specName) {
   }
   report("roundTrip", "foundation");
 }
-
-// Seam point: more tests...
 

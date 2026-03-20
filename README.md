@@ -150,10 +150,12 @@ Used WordPress to make these changes.
 
 
 ## History
+ ### Week 1:
   3/16/26 - Transfer DNS records from WordPress to Hugo.
   3/17/26 - 3DC: directory architecture.
   3/18/26 - 3DC: regression tests, port half of foundation/coords.py to coord.js.
   3/19/26 - 3DC resolve coord and anchor ambiguity, port rest of coords, improve regression framework.
 
-
+ ### Week 2:
+ 
 Bookbub

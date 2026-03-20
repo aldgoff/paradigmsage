@@ -4,6 +4,9 @@
   Author: Allan Goff
   Date: 3/18/26
   UI: the export functions.
+  Terminology:
+    - "tile" = any valid tile representation (string "<LL>X,Y" OR vts [z,x,y])
+    - "loc"  = strictly board notation string "<LL>X,Y"
  */
 
 import coordsData from "./coords.json" assert { type: "json" };

@@ -1,4 +1,5 @@
 # Coordinate System Spec
+  Specifies the 3 coordinate systems.
 
 # SECTION 1 - HUMAN READABLE EXPLANATION
 
@@ -42,7 +43,6 @@
   This permits easy on/off board calculations.
 
 # 3. Examples
-
 
 # SECTION 2 - MACHINE READABLE REQUIREMENTS AND CONSTRAINTS
 
