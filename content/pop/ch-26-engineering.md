@@ -34,12 +34,12 @@ params:
 
 ## Primary Docs
   **Paradigm Discourse:**  
-  <a href="/paradigmsage/assets/pop/act3/PD26-CircleOfTruth_05.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/act3/PD26-CircleOfTruth_05.pdf" target="_blank" rel="noopener">
     Open the *Circle of Truth* discourse in the next tab
   </a>
 
   **Technical Chapter:**  
-  <a href="/paradigmsage/assets/pop/act3/Ch26-Engineering_08.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/act3/Ch26-Engineering_08.pdf" target="_blank" rel="noopener">
     Open the *Engineering* chapter in the next tab
   </a>
 

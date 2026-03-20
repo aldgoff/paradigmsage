@@ -27,12 +27,12 @@ params:
 
 ## Primary Docs
   **Paradigm Discourse:**  
-  <a href="/paradigmsage/assets/pop/act3/PD24-Search-Party_05.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/act3/PD24-Search-Party_05.pdf" target="_blank" rel="noopener">
     Open the *Search Party* discourse in the next tab
   </a>
 
   **Technical Chapter:**  
-  <a href="/paradigmsage/assets/pop/act3/Ch24-Frame_03.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/act3/Ch24-Frame_03.pdf" target="_blank" rel="noopener">
     Open the *Frame* chapter in the next tab
   </a>
 

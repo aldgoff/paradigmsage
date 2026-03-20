@@ -33,12 +33,12 @@ params:
 
 ## Primary Docs
   **Paradigm Discourse:**  
-  <a href="/paradigmsage/assets/pop/tbd/PD85-Assumptions_03.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/tbd/PD85-Assumptions_03.pdf" target="_blank" rel="noopener">
     Open the *Assumptions* discourse in the next tab
   </a>
 
   **Technical Chapter:**  
-  <a href="/paradigmsage/assets/pop/tbd/Ch85-Assumptions_01.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/tbd/Ch85-Assumptions_01.pdf" target="_blank" rel="noopener">
     Open the *Assumptions* chapter in the next tab
   </a>
 

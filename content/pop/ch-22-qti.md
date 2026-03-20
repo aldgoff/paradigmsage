@@ -30,12 +30,12 @@ params:
 
 ## Primary Docs
   **Paradigm Discourse:**  
-  <a href="/paradigmsage/assets/pop/act2/PD22-Numbskull_08.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/act2/PD22-Numbskull_08.pdf" target="_blank" rel="noopener">
     Open the *Numbskull* discourse in the next tab
   </a>
 
   **Technical Chapter:**  
-  <a href="/paradigmsage/assets/pop/act2/Ch22-QTI_13.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/act2/Ch22-QTI_13.pdf" target="_blank" rel="noopener">
     Open the *QTI* chapter in the next tab
   </a>
 

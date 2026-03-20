@@ -24,12 +24,12 @@ params:
 
 ## Primary Docs
   **Paradigm Discourse:**  
-  <a href="/paradigmsage/assets/pop/act1/PD05-Ignoring_11.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/act1/PD05-Ignoring_11.pdf" target="_blank" rel="noopener">
     Open the *Ignoring* discourse in the next tab
   </a>
 
   **Technical Chapter:**  
-  <a href="/paradigmsage/assets/pop/act1/Ch05-Uncertainty_07.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/act1/Ch05-Uncertainty_07.pdf" target="_blank" rel="noopener">
     Open the *Uncertainty* chapter in the next tab
   </a>
 
@@ -46,6 +46,6 @@ params:
   Questioning hidden assumptions is a *learnable* skill.
 
   This optional instrument offers short diversions that train exactly that ability.  
-  <a href="/paradigmsage/instrument/red-herrings" target="_blank" rel="noopener">
+  <a href="/instrument/red-herrings" target="_blank" rel="noopener">
     Open the *Red Herrings* guide in the next tab
   </a>

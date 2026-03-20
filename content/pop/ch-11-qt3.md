@@ -25,12 +25,12 @@ params:
 
 ## Primary Docs
   **Paradigm Discourse:**  
-  <a href="/paradigmsage/assets/pop/act2/PD11-Out-Smarted_09.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/act2/PD11-Out-Smarted_09.pdf" target="_blank" rel="noopener">
     Open the *Out Smarted* discourse in the next tab
   </a>
 
   **Technical Chapter:**  
-  <a href="/paradigmsage/assets/pop/act2/Ch11-qt3_09.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/act2/Ch11-qt3_09.pdf" target="_blank" rel="noopener">
     Open the *Quantum Tic-Tac-Toe* chapter in the next tab
   </a>
 
@@ -42,6 +42,6 @@ params:
 
 ## Research Lineage - QT3
   The original paper on quantum tic-tac-toe was published in the American Journal of Physics (AJP) in 2006.  
-<a href="/paradigmsage/assets/qt3/QT3-AJP-2006.pdf" target="_blank" rel="noopener">
+<a href="/assets/qt3/QT3-AJP-2006.pdf" target="_blank" rel="noopener">
   Open the *AJP Quantum Tic-Tac-Toe paper* in the next tab
 </a>

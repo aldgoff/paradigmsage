@@ -31,12 +31,12 @@ params:
 
 ## Primary Docs
   **Paradigm Discourse:**  
-  <a href="/paradigmsage/assets/pop/act3/PD25-InTheBeginning_03.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/act3/PD25-InTheBeginning_03.pdf" target="_blank" rel="noopener">
     Open the *In the Beginning* discourse in the next tab
   </a>
 
   **Technical Chapter:**  
-  <a href="/paradigmsage/assets/pop/act3/Ch25-LOF_04.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/act3/Ch25-LOF_04.pdf" target="_blank" rel="noopener">
     Open the *Laws of Form* chapter in the next tab
   </a>
 

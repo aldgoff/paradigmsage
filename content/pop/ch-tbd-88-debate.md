@@ -29,12 +29,12 @@ params:
 
 ## Primary Docs
   **Paradigm Discourse:**  
-  <a href="/paradigmsage/assets/pop/tbd/PD88-Debate_03.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/tbd/PD88-Debate_03.pdf" target="_blank" rel="noopener">
     Open the *Debate* discourse in the next tab
   </a>
 
   **Technical Chapter:**  
-  <a href="/paradigmsage/assets/pop/tbd/Ch88-Debate_00.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/tbd/Ch88-Debate_00.pdf" target="_blank" rel="noopener">
     Open the *Debate* chapter in the next tab
   </a>
 

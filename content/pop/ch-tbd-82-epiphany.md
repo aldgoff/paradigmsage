@@ -27,12 +27,12 @@ params:
 
 ## Primary Docs
   **Paradigm Discourse:**  
-  <a href="/paradigmsage/assets/pop/tbd/PD82-Epiphany_03.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/tbd/PD82-Epiphany_03.pdf" target="_blank" rel="noopener">
     Open the *Epiphany* discourse in the next tab
   </a>
 
   **Technical Chapter:**  
-  <a href="/paradigmsage/assets/pop/tbd/Ch82-ABD_04.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/tbd/Ch82-ABD_04.pdf" target="_blank" rel="noopener">
     Open the *TBD* chapter in the next tab
   </a>
 

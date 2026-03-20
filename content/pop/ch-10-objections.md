@@ -25,12 +25,12 @@ params:
 
 ## Primary Docs
   **Paradigm Discourse:**  
-  <a href="/paradigmsage/assets/pop/act2/PD10-Journal_04.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/act2/PD10-Journal_04.pdf" target="_blank" rel="noopener">
     Open the *Journal* discourse in the next tab
   </a>
 
   **Technical Chapter:**  
-  <a href="/paradigmsage/assets/pop/act2/Ch10-Objections_05.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/act2/Ch10-Objections_05.pdf" target="_blank" rel="noopener">
     Open the *Objections* chapter in the next tab
   </a>
 

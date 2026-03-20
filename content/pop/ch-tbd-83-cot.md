@@ -33,12 +33,12 @@ params:
 
 ## Primary Docs
   **Paradigm Discourse:**  
-  <a href="/paradigmsage/assets/pop/tbd/PD83-Circle-of-Truth_04.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/tbd/PD83-Circle-of-Truth_04.pdf" target="_blank" rel="noopener">
     Open the *Circle of Truth* discourse in the next tab
   </a>
 
   **Technical Chapter:**  
-  <a href="/paradigmsage/assets/pop/tbd/Ch83-TBD_01.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/tbd/Ch83-TBD_01.pdf" target="_blank" rel="noopener">
     Open the *TBD* chapter in the next tab
   </a>
 

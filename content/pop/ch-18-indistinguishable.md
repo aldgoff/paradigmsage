@@ -31,12 +31,12 @@ params:
 
 ## Primary Docs
   **Paradigm Discourse:**  
-  <a href="/paradigmsage/assets/pop/act2/PD18-Bingo-Bos_02.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/act2/PD18-Bingo-Bos_02.pdf" target="_blank" rel="noopener">
     Open the *Bingo Bos* discourse in the next tab
   </a>
 
   **Technical Chapter:**  
-  <a href="/paradigmsage/assets/pop/act2/Ch18-Indistinguishable_02.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/act2/Ch18-Indistinguishable_02.pdf" target="_blank" rel="noopener">
     Open the *Indistinguishable* chapter in the next tab
   </a>
 
