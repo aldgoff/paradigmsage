@@ -28,12 +28,12 @@ params:
 
 ## Primary Docs
   **Paradigm Discourse:**  
-  <a href="/paradigmsage/assets/pop/act2/PD12-Paired-Correlations_03.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/act2/PD12-Paired-Correlations_03.pdf" target="_blank" rel="noopener">
     Open the *Paired Correlations* discourse in the next tab
   </a>
 
   **Technical Chapter:**  
-  <a href="/paradigmsage/assets/pop/act2/Ch12-By-Contradiction_05.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/act2/Ch12-By-Contradiction_05.pdf" target="_blank" rel="noopener">
     Open the *By Contradiction* chapter in the next tab
   </a>
 

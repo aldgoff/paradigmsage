@@ -29,12 +29,12 @@ params:
 
 ## Primary Docs
   **Paradigm Discourse:**  
-  <a href="/paradigmsage/assets/pop/act1/PD04-FirmColor_09.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/act1/PD04-FirmColor_09.pdf" target="_blank" rel="noopener">
     Open the *Firm Color* discourse in the next tab
   </a>
 
   **Technical Chapter:**  
-  <a href="/paradigmsage/assets/pop/act1/Ch04-QM_11.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/act1/Ch04-QM_11.pdf" target="_blank" rel="noopener">
     Open the *Quantum Mechanics* chapter in the next tab
   </a>
 

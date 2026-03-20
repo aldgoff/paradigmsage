@@ -31,12 +31,12 @@ params:
 
 ## Primary Docs
   **Paradigm Discourse:**  
-  <a href="/paradigmsage/assets/pop/act1/PD08-Zombies_16.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/act1/PD08-Zombies_16.pdf" target="_blank" rel="noopener">
     Open the *Zombies* discourse in the next tab
   </a>
 
   **Technical Chapter:**  
-  <a href="/paradigmsage/assets/pop/act1/Ch08-QTP_08.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/act1/Ch08-QTP_08.pdf" target="_blank" rel="noopener">
     Open the *Quantum Temporal Paradox (QTP)* chapter in the next tab
   </a>
 

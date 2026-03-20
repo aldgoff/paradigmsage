@@ -22,12 +22,12 @@ params:
 
 ## Primary Docs
   **Paradigm Discourse:**  
-  <a href="/paradigmsage/assets/pop/act2/PD16-Art-Show_03.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/act2/PD16-Art-Show_03.pdf" target="_blank" rel="noopener">
     Open the *Art Show* discourse in the next tab
   </a>
 
   **Technical Chapter:**  
-  <a href="/paradigmsage/assets/pop/act2/Ch16-Bowtie_03.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/act2/Ch16-Bowtie_03.pdf" target="_blank" rel="noopener">
     Open the *Bowtie* chapter in the next tab
   </a>
 

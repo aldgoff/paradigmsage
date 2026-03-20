@@ -31,12 +31,12 @@ params:
 
 ## Primary Docs
   **Paradigm Discourse:**  
-  <a href="/paradigmsage/assets/pop/act2/PD21-There-and-Back_02.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/act2/PD21-There-and-Back_02.pdf" target="_blank" rel="noopener">
     Open the *There and Back* discourse in the next tab
   </a>
 
   **Technical Chapter:**  
-  <a href="/paradigmsage/assets/pop/act2/Ch21-Now-and-Then_04.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/act2/Ch21-Now-and-Then_04.pdf" target="_blank" rel="noopener">
     Open the *Now and Then* chapter in the next tab
   </a>
 

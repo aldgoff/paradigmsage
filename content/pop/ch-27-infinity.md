@@ -30,12 +30,12 @@ params:
 
 ## Primary Docs
   **Paradigm Discourse:**  
-  <a href="/paradigmsage/assets/pop/act3/PD27-TitleWithoutEnd_01.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/act3/PD27-TitleWithoutEnd_01.pdf" target="_blank" rel="noopener">
     Open the *Title Without End* discourse in the next tab
   </a>
 
   **Technical Chapter:**  
-  <a href="/paradigmsage/assets/pop/act3/Ch27-Infinity_03.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/act3/Ch27-Infinity_03.pdf" target="_blank" rel="noopener">
     Open the *Infinity* chapter in the next tab
   </a>
 

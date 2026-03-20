@@ -35,12 +35,12 @@ params:
 
 ## Primary Docs
   **Paradigm Discourse:**  
-  <a href="/paradigmsage/assets/pop/act2/PD14-BarrierBoxes_02.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/act2/PD14-BarrierBoxes_02.pdf" target="_blank" rel="noopener">
     Open the *Barrier Boxes* discourse in the next tab
   </a>
 
   **Technical Chapter:**  
-  <a href="/paradigmsage/assets/pop/act2/Ch14-WorldRibbons_04.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/act2/Ch14-WorldRibbons_04.pdf" target="_blank" rel="noopener">
     Open the *World Ribbons* chapter in the next tab
   </a>
 

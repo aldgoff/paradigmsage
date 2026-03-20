@@ -31,12 +31,12 @@ params:
 
 ## Primary Docs
   **Paradigm Discourse:**  
-  <a href="/paradigmsage/assets/pop/tbd/PD86-3D-Chess_03.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/tbd/PD86-3D-Chess_03.pdf" target="_blank" rel="noopener">
     Open the *3D Chess* discourse in the next tab
   </a>
 
   **Technical Chapter:**  
-  <a href="/paradigmsage/assets/pop/tbd/Ch86-3D-Chess_01.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/tbd/Ch86-3D-Chess_01.pdf" target="_blank" rel="noopener">
     Open the *3D Chess* chapter in the next tab
   </a>
 

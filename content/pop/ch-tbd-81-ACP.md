@@ -27,12 +27,12 @@ params:
 
 ## Primary Docs
   **Paradigm Discourse:**  
-  <a href="/paradigmsage/assets/pop/tbd/PD81-Royally-Confused_01.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/tbd/PD81-Royally-Confused_01.pdf" target="_blank" rel="noopener">
     Open the *Royally Confused* discourse in the next tab
   </a>
 
   **Technical Chapter:**  
-  <a href="/paradigmsage/assets/pop/tbd/Ch81-ACP_01.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/tbd/Ch81-ACP_01.pdf" target="_blank" rel="noopener">
     Open the *The Ambiguous Collapse Paradigm* chapter in the next tab
   </a>
 

@@ -31,12 +31,12 @@ params:
 
 ## Primary Docs
   **Paradigm Discourse:**  
-  <a href="/paradigmsage/assets/pop/act1/PD02-SelfReference_11.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/act1/PD02-SelfReference_11.pdf" target="_blank" rel="noopener">
     Open the *Self-Reference* discourse in the next tab
   </a>
 
   **Technical Chapter:**  
-  <a href="/paradigmsage/assets/pop/act1/Ch02-Paradox_14.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/act1/Ch02-Paradox_14.pdf" target="_blank" rel="noopener">
     Open the *Paradox* chapter in the next tab
   </a>
 

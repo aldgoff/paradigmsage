@@ -27,12 +27,12 @@ params:
 
 ## Primary Docs
   **Paradigm Discourse:**  
-  <a href="/paradigmsage/assets/pop/tbd/PD87-TLA_03.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/tbd/PD87-TLA_03.pdf" target="_blank" rel="noopener">
     Open the *TLA* discourse in the next tab
   </a>
 
   **Technical Chapter:**  
-  <a href="/paradigmsage/assets/pop/tbd/Ch87-TLA_00.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/tbd/Ch87-TLA_00.pdf" target="_blank" rel="noopener">
     Open the *TLA* chapter in the next tab
   </a>
 

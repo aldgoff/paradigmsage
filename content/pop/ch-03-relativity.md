@@ -28,12 +28,12 @@ params:
 
 ## Primary Docs
   **Paradigm Discourse:**  
-  <a href="/paradigmsage/assets/pop/act1/PD03-Causality_11.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/act1/PD03-Causality_11.pdf" target="_blank" rel="noopener">
     Open the *Causality* discourse in the next tab
   </a>
 
   **Technical Chapter:**  
-  <a href="/paradigmsage/assets/pop/act1/Ch03-Relativity_11.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/act1/Ch03-Relativity_11.pdf" target="_blank" rel="noopener">
     Open the *Relativity* chapter in the next tab
   </a>
 

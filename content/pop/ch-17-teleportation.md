@@ -23,12 +23,12 @@ params:
 
 ## Primary Docs
   **Paradigm Discourse:**  
-  <a href="/paradigmsage/assets/pop/act2/PD17-Cloning_03.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/act2/PD17-Cloning_03.pdf" target="_blank" rel="noopener">
     Open the *Cloning* discourse in the next tab
   </a>
 
   **Technical Chapter:**  
-  <a href="/paradigmsage/assets/pop/act2/Ch17-Teleportation_02.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/act2/Ch17-Teleportation_02.pdf" target="_blank" rel="noopener">
     Open the *Teleportation* chapter in the next tab
   </a>
 
