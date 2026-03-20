@@ -1,0 +1,160 @@
+{
+  "planes_module": {
+    "canonical_rule": {
+      "status": "binding",
+      "description": [
+        "Each plane is uniquely defined by its canonical cyclic ray list.",
+        "Ray adjacency exists only within this cycle.",
+        "Quadrants are defined only by adjacent pairs in this cycle.",
+        "For each cycle, a 'first' ray has to be specified.",
+        "While arbitrary, there is a pattern to the choices made.",
+        "No rotation or reversal of any cycle is permitted.",
+        "Any alternative ordering, rotation, reversal, or ray-pair mapping is invalid.",
+        "All plane, quad, and movement logic MUST reference the canonical planeToRays Table.",
+        "Planes are text-distinct; cube symmetries do NOT identify planes.",
+        "Each rook ray occurs in exactly 2 planes.",
+        "Each bishop ray occurs in exactly 2 planes.",
+        "Each duke ray occurs in exactly 3 planes.",
+        "For every plane, Quad1 = (ray1, ray2) and wrapQuad = (ray-last, ray1).",
+        "Concepts are coupled, think of them as projections of a single relationship."
+        ]
+    },
+
+    "basePieces": {
+      "rook": { "planeType": "orthogonal" },
+      "bishop": { "planeType": "skew" },
+      "duke": { "planeType": "slant" }
+    },
+
+    "planeOrder": [
+      "Horizontal","Left","Right",
+      "Upward","Downward","Leftward","Rightward",
+      "Major","Minor","Upleft","Downleft","Upright","Downright"
+      ],
+
+    "planes": {
+      "Horizontal": { "type": "orthogonal", "rays": ["left_fore","right_fore","left_back","right_back"],
+                                 "anchor": { "ray1": "left_fore", "direction": "opponent", "pov": "player"} },
+      "Left":       { "type": "orthogonal", "rays": ["up","right_fore","down","right_back"],
+                                 "anchor": { "ray1": "up",        "direction": "upward",   "pov": "player"} },
+      "Right":      { "type": "orthogonal", "rays": ["up","left_fore","down","left_back"],
+                                 "anchor": { "ray1": "up",        "direction": "upward",   "pov": "player"} },
+
+      "Upward":     { "type": "skew", "rays": ["LFU","RFU","right","RBD","LBD","left"],
+                           "anchor": { "ray1": "LFU", "direction": "opponent", "pov": "player"} },
+      "Downward":   { "type": "skew", "rays": ["LFD","RFD","right","RBU","LBU","left"],
+                           "anchor": { "ray1": "LFD", "direction": "opponent", "pov": "player"} },
+      "Leftward":   { "type": "skew", "rays": ["LBU","LFU","fore","RFD","RBD","back"],
+                           "anchor": { "ray1": "LBU", "direction": "upward",   "pov": "top"} },
+      "Rightward":  { "type": "skew", "rays": ["RBU","RFU","fore","LFD","LBD","back"],
+                           "anchor": { "ray1": "RBU", "direction": "upward",   "pov": "top"} },
+
+      "Major":      { "type": "slant", "rays": ["fore_down","fore_up","back_up","back_down"], 
+                            "anchor": { "ray1": "fore_down",  "direction": "opponent", "pov": "neutral", "quadType": "edge"} },
+      "Minor":      { "type": "slant", "rays": ["left_up","right_up","right_down","left_down"],
+                            "anchor": { "ray1": "left_up",    "direction": "upward",   "pov": "player",  "quadType": "face"} },
+      "Upleft":     { "type": "slant", "rays": ["left_up","fore_up","right_down","back_down"], 
+                            "anchor": { "ray1": "left_up",    "direction": "opponent", "pov": "neutral", "quadType": "edge"} },
+      "Downleft":   { "type": "slant", "rays": ["left_down","fore_down","right_up","back_up"], 
+                            "anchor": { "ray1": "left_down",  "direction": "opponent", "pov": "neutral", "quadType": "edge"} },
+      "Upright":    { "type": "slant", "rays": ["right_up","fore_up","left_down","back_down"], 
+                            "anchor": { "ray1": "right_up",   "direction": "opponent", "pov": "neutral", "quadType": "edge"} },
+      "Downright":  { "type": "slant", "rays": ["right_down","fore_down","left_up","back_up"], 
+                            "anchor": { "ray1": "right_down", "direction": "opponent", "pov": "neutral", "quadType": "edge"} }
+    },
+
+    "planeToRays": { "_status": "deprecated",
+      "Horizontal": { "rays": ["left_fore","right_fore","left_back","right_back"] },
+      "Left":       { "rays": ["up","right_fore","down","right_back"] },
+      "Right":      { "rays": ["up","left_fore","down","left_back"] },
+
+      "Upward":     { "rays": ["LFU","RFU","right","RBD","LBD","left"] },
+      "Downward":   { "rays": ["LFD","RFD","right","RBU","LBU","left"] },
+      "Leftward":   { "rays": ["LBU","LFU","fore","RFD","RBD","back"] },
+      "Rightward":  { "rays": ["RBU","RFU","fore","LFD","LBD","back"] },
+
+      "Major":      { "rays": ["fore_down","fore_up","back_up","back_down"] },
+      "Minor":      { "rays": ["left_up","right_up","right_down","left_down"] },
+      "Upleft":     { "rays": ["left_up","fore_up","right_down","back_down"] },
+      "Downleft":   { "rays": ["left_down","fore_down","right_up","back_up"] },
+      "Upright":    { "rays": ["right_up","fore_up","left_down","back_down"] },
+      "Downright":  { "rays": ["right_down","fore_down","left_up","back_up"] }
+      },
+
+    "rayToPlanes": { "_status": "deprecated",
+      "left_fore":  ["Horizontal", "Right"],
+      "right_fore": ["Horizontal", "Left"],
+      "left_back":  ["Horizontal", "Right"],
+      "right_back": ["Horizontal", "Left"],
+
+      "up":   ["Left", "Right"],
+      "down": ["Left", "Right"],
+
+      "LFU": ["Upward","Leftward"],
+      "RFU": ["Upward","Rightward"],
+      "LFD": ["Downward","Rightward"],
+      "RFD": ["Downward","Leftward"],
+
+      "LBU": ["Downward","Leftward"],
+      "LBD": ["Upward","Rightward"],
+      "RBU": ["Upward","Downward"],
+      "RBD": ["Downward","Upward"],
+
+      "fore":  ["Leftward","Rightward"],
+      "right": ["Upward","Downward"],
+      "back":  ["Leftward","Rightward"],
+      "left":  ["Upward","Downward"],
+
+      "fore_down": ["Major","Downleft","Downright"],
+      "fore_up":   ["Major","Upleft","Upright"],
+      "back_up":   ["Major","Downleft","Downright"],
+      "back_down": ["Major","Upleft","Upright"],
+
+      "left_up":    ["Minor","Upleft","Downright"],
+      "right_up":   ["Minor","Upright","Downleft"],
+      "right_down": ["Minor","Upleft","Downright"],
+      "left_down":  ["Minor","Downleft","Upright"]
+    },
+
+    "planeGroups": {
+      "orthogonal": ["Horizontal", "Left", "Right"],
+      "skew":       ["Upward", "Downward", "Leftward", "Rightward"],
+      "slant":      ["Major", "Minor", "Upleft", "Downleft", "Upright", "Downright"]
+      },
+
+    "planePairs": {
+      "rook_vertical_planes":      ["Left","Right"],
+      "bishop_forward_planes":     ["Upward","Downward"],
+      "bishop_outward_planes":     ["Leftward","Rightward"],
+      "duke_verticalcross_planes": ["Major","Minor"],
+      "duke_leftcross_planes":     ["Upleft","Downleft"],
+      "duke_rightcross_planes":    ["Upright","Downright"]
+    }
+  },
+
+  "dukeQuadTypes": {
+    "quad_flavor_rule": {
+      "description": [
+        "Duke quads come in two flavors: edge and face.",
+        "Quad flavor is computed strictly from ray deltas."
+      ],
+      "delta_rule": {
+        "delta_formula": "(dz2 - dz1, dx2 - dx1, dy2 - dy1)",
+        "classification": {
+          "two_zeros":  "edge",
+          "one_zero":   "face"
+        }
+      }
+    },
+
+    "plane_patterns": { "_status": "deprecated",
+      "Major":      ["edge","face","edge","face"],
+      "Minor":      ["face","edge","face","edge"],
+      "Upleft":     ["edge","face","edge","face"],
+      "Downleft":   ["edge","face","edge","face"],
+      "Upright":    ["edge","face","edge","face"],
+      "Downright":  ["edge","face","edge","face"]
+    }
+  }
+}
+

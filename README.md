@@ -157,5 +157,10 @@ Used WordPress to make these changes.
   3/19/26 - 3DC resolve coord and anchor ambiguity, port rest of coords, improve regression framework.
 
  ### Week 2:
- 
+
 Bookbub
+
+Sudden link failures in paradigmsage.com
+/Users/adgoff/Documents/Publish/WebSites/HugoExample/paradigmsage
+/Users/adgoff/Documents/Publish/WebSites/HugoExample/paradigmsage/static/assets/pop/act1/PD02-SelfReference_11.pdf
+
