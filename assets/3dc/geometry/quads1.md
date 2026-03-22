@@ -54,7 +54,7 @@
     These cycles are the canonical order; none other exists.
 
   ### 1.3 Capitalization:
-    Plane types are not, there are 3: orthogonal, skew, and slant.
+    Plane types are not capitalized, there are 3: orthogonal, skew, and slant.
     Plane names are, there are 13, such as Horizontal, Upward, Minor, etc.
 
   Summary: 

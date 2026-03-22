@@ -21,9 +21,9 @@
     },
 
     "basePieces": {
-      "rook": { "planeType": "orthogonal" },
+      "rook":   { "planeType": "orthogonal" },
       "bishop": { "planeType": "skew" },
-      "duke": { "planeType": "slant" }
+      "duke":   { "planeType": "slant" }
     },
 
     "planeOrder": [

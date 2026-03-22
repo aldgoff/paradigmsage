@@ -13,7 +13,8 @@ import coordsData from "./coords.json" assert { type: "json" };
 
 // As this is the most foundational layer, no other imports are required.
 
-const boardSpecs = coordsData.coords_module.board_specs;
+const coordsModule = coordsData.coords_module;
+const boardSpecs = coordsModule.board_specs;
 
 // -- Helpers --
 

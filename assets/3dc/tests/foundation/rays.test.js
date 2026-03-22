@@ -24,7 +24,7 @@ import {getRayVector,
         getAllRayNames,
         getAllRays,
         hasRay,
-        // Seam point: functiosns to test...
+        // Seam point: functions to test...
 } from "../../foundation/rays/rays.js";
 
 // ------------------------------------------------------------

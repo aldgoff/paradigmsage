@@ -79,6 +79,9 @@
     Q44 - Port
     Q45-Q60 - none
 
+
+
+
 ## 5. Ray order
   The constructor accepts reversed ray-pairs for convenience,
   but the canonical ordering from quadMap.json is always returned.
