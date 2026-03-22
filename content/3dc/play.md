@@ -17,7 +17,8 @@ layout: "play"
   - 3/18/26 - 3DC: regression tests, port half of foundation/coords.py to coord.js.
   - 3/19/26 - 3DC resolve coord and anchor ambiguity, port rest of coords, improve regression framework.
   - 3/20/26 - Port colors and port rays.
-  - 3/21/26 - Eplore refactor options for quads and quandMaps.
+  - 3/21/26 - Explore refactor options for quads and quandMaps.
 
  ### Week 2:
+  - 3/22/26 - Establish template files (*.md, *.json, *.js, and *.test.js).
 

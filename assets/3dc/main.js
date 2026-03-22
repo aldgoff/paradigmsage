@@ -13,7 +13,8 @@ if (location.hostname === "localhost") {
   import("./tests/foundation/colors.test.js").then(m => m.run());
   import("./tests/foundation/rays.test.js").then(m => m.run());
   import("./tests/geometry/planes.test.js").then(m => m.run());
-  // Seam point: more module tests.
+  // Seampoint: more module tests.
+  import("./tests/templates/module.test.js").then(m => m.run());
 }
 
 console.log("--------------------");

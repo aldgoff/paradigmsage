@@ -1,4 +1,8 @@
 # Planes Spec
+  Desc
+
+## 1. Purpose
+
 
 ## 1. Canonical Plane Rule
   - Each plane is uniquely defined by an ordered cyclic list of rays.

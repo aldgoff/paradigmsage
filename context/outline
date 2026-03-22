@@ -32,14 +32,30 @@
 │   │   │       ├── rays.out
 │   │   │       └── rays.py
 │   │   ├── geometry
-│   │   │   └── _tbd.md
+│   │   │   ├── _tbd.md
+│   │   │   ├── planes.js
+│   │   │   ├── planes.json
+│   │   │   ├── planes.md
+│   │   │   ├── quadMap.json
+│   │   │   ├── quadMap.md
+│   │   │   ├── quadMap.out
+│   │   │   ├── quadMap.py
+│   │   │   ├── quads1.json
+│   │   │   ├── quads1.md
+│   │   │   ├── quads1.out
+│   │   │   └── quads1.py
 │   │   ├── js
 │   │   ├── main.js
 │   │   ├── model
 │   │   │   ├── _tbd.md
+│   │   │   ├── grammar.js
 │   │   │   ├── model.js
 │   │   │   └── notation
 │   │   │       └── notation.js
+│   │   ├── templates
+│   │   │   ├── module.js
+│   │   │   ├── module.json
+│   │   │   └── module.md
 │   │   ├── tests
 │   │   │   ├── _tbd.md
 │   │   │   ├── core
@@ -50,8 +66,11 @@
 │   │   │   │   ├── coords.test.js
 │   │   │   │   └── rays.test.js
 │   │   │   ├── geometry
+│   │   │   │   └── planes.test.js
 │   │   │   ├── integration
 │   │   │   ├── model
+│   │   │   ├── templates
+│   │   │   │   └── module.test.js
 │   │   │   └── tests.js
 │   │   └── view
 │   │       ├── _tbd.md
@@ -326,4 +345,4 @@
 │           └── poc.js
 └── themes
 
-71 directories, 255 files
+73 directories, 272 files
