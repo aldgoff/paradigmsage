@@ -26,7 +26,24 @@ Places AI said might be good for promoting the website.
   - Rule number one, don't call it that, disguise it.
   - Expectation → violation
 
- ## Potential Hooks
+ ## Post Hooks/Links
+  ### 1.
+  - Logic says if one is good, two is better — quantum mechanics says two can be no better than none.
+    - https://paradigmsage.com/pop/ch-06-interference/
+
+  ### 2.
+  - Trap a quantum object in a box - is it hard or soft, or is it white or black?
+    - https://paradigmsage.com/pop/ch-04-qm/
+
+  ### 3.
+  - If more data thwarts insight - don't see more, see less.
+    - https://paradigmsage.com/pop/ch-05-uncertainty/
+
+  ### 4.
+  - Logical paradox disallows contradictions - but imaginary truth-values demand them.
+    - https://paradigmsage.com/pop/ch-02-paradox/
+
+ ## Potential Hooks - DEPRECATED.
   ### 4.
   - What kind of a logic does one get if logical paradox is solved by introducing imaginary truthvalues?
   - Logical paradox disallows contradictions, but imaginary truth values subvert this.

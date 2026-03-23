@@ -29,14 +29,14 @@
     "Q23": {"piece":"bishop", "piece_quad":11, "plane":"Downward",    "plane_quad":5, "ray_pair":["LBU","left"]},
     "Q24": {"piece":"bishop", "piece_quad":12, "plane":"Downward",    "plane_quad":6, "ray_pair":["left","RFD"]},
 
-    "Q25": {"piece":"bishop", "piece_quad":13, "plane":"Leftward",    "plane_quad":1, "ray_pair":["LBU","RFU"],               "nickname":"LUpSling"},
+    "Q25": {"piece":"bishop", "piece_quad":13, "plane":"Leftward",    "plane_quad":1, "ray_pair":["LBU","RFU"],               "nickname":"LeftTop"},
     "Q26": {"piece":"bishop", "piece_quad":14, "plane":"Leftward",    "plane_quad":2, "ray_pair":["RFU","fore"],              "nickname":"LUpSling"},
     "Q27": {"piece":"bishop", "piece_quad":15, "plane":"Leftward",    "plane_quad":3, "ray_pair":["fore","LFD"],              "nickname":"LDnSling"},
     "Q28": {"piece":"bishop", "piece_quad":16, "plane":"Leftward",    "plane_quad":4, "ray_pair":["LFD","RBD"]},
     "Q29": {"piece":"bishop", "piece_quad":17, "plane":"Leftward",    "plane_quad":5, "ray_pair":["RBD","back"]},
     "Q30": {"piece":"bishop", "piece_quad":18, "plane":"Leftward",    "plane_quad":6, "ray_pair":["back","LBU"]},
 
-    "Q31": {"piece":"bishop", "piece_quad":19, "plane":"Rightward",   "plane_quad":1, "ray_pair":["RBU","LFU"],               "nickname":"RUpSling"},
+    "Q31": {"piece":"bishop", "piece_quad":19, "plane":"Rightward",   "plane_quad":1, "ray_pair":["RBU","LFU"],               "nickname":"RightTop"},
     "Q32": {"piece":"bishop", "piece_quad":20, "plane":"Rightward",   "plane_quad":2, "ray_pair":["LFU","fore"],              "nickname":"RUpSling"},
     "Q33": {"piece":"bishop", "piece_quad":21, "plane":"Rightward",   "plane_quad":3, "ray_pair":["fore","RFD"],              "nickname":"RDnSling"},
     "Q34": {"piece":"bishop", "piece_quad":22, "plane":"Rightward",   "plane_quad":4, "ray_pair":["RFD","LBD"]},

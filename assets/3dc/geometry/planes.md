@@ -1,10 +1,111 @@
 # Planes Spec
-  Desc
+  Establish the relationship between rays, quads, and planes.
 
 ## 1. Purpose
+  Because rays and quads form cyclic structures, any linear representation requires a canonical starting point and direction. Without this, adjacency, ordering, and identity become non-deterministic.
+
+  These choices are not inherent to the geometry and must therefore be fixed by rule. Rather than treating them as arbitrary conventions, this spec defines a canonicalization scheme in which the first quad and traversal direction are *discovered* from higher-order constraints, not invented ad hoc.
+
+  The purpose of this spec is to define that scheme and use it to establish a deterministic relationship between rays, quads, and planes.
+
+## 2. Base Piece Plane Correlation
+  - Rooks move in orthogonal planes.
+  - Bishops moves in skew planes.
+  - Duke moves in slant planes.
+
+  - Plane definitions arise from the quadrant definitions which arise from the ray definitions.
+
+## 3. The Plane Groups
+  Vertical planes (rook)
+    Left
+    Right
+  Forward planes (bishop)
+    Upward
+    Downward
+  Outward planes (bishop)
+    Leftward
+    Rightward
+  Verticalcross planes (duke)
+    Major
+    Minor
+  Leftcross planes (duke)
+    Upleft
+    Downleft
+  Rightcross planes (duke)
+    Upright
+    Downright
+
+## 4. Plane First-Quads and Direction
+  * Canonicalization is determined by a hierarchy of constraints:
+  1. For pawn advance planes:
+    1.1 Q1 is chosen toward opponent, rotation is clockwise (relative to pov).
+    1.2 If two quads approach opponent, Q1 is the top most, rotation toward the opponent (second quad).
+  2. For pawn bishop-capture planes:
+    2.1 For a unique pawn-defined forward direction, Q1 is chosen in that direction, rotation is upward.
+    2.2 If two quads approach opponent, Q1 is toward the top, Q2 is the adjacent quad, approaches opponent.
+  3. For pawn duke-capture planes:
+    3.1 Q1 is chosen toward opponent, rotation is clockwise (relative to pov).
+    3.2 If two quads approach, Q1 is top most, rotation toward the opponent (second quad).
+    3.3 If no quads approach opponent, Q1 is top most, rotation is clockwise (relative to pov).
+
+  | #  | Plane      | POV     | Q1 Nickname  | Ray Cycles                                      | Rule |
+  | :- | :--------- | :------ | :----------- | :---------------------------------------------- | :--- |
+  |  1 | Horizontal | White   | Forward      | left_fore > right_fore > left_back > right_back | 1.1  |
+  |  2 | Left       | White   |              | up        > right_fore > down      > right_back | 1.2  |
+  |  3 | Right      | White   |              | up        > left_fore  > down      > left_back  | 1.2  |
+  |  4 | Upward     | White   | UpPredator   | LFU > RFU > right > RBD > LBD > left            | 2.1  |
+  |  5 | Downward   | White   | DownPredator | LFD > RFD > right > RBU > LBU > left            | 2.1  |
+  |  6 | Leftward   | White   |              | LBU > LFU > fore  > RFD > RBD > back            | 2.2  |
+  |  7 | Rightward  | White   |              | RBU > RFU > fore  > LFD > LBD > back            | 2.2  |
+  |  8 | Major      | Neutral | Dart         | fore_down  > fore_up   > back_up    > back_down | 3.1  |
+  |  9 | Minor      | White   | Bridge       | left_up    > right_up  > right_down > left_down | 3.3  |
+  | 10 | Upleft     | Top     |              | left_up    > fore_up   > right_down > back_down | 3.2  |
+  | 11 | Downleft   | Top     |              | left_down  > fore_down > right_up   > back_up   | 3.2  |
+  | 12 | Upright    | Top     |              | right_up   > fore_up   > left_down  > back_down | 3.2  |
+  | 13 | Downright  | Top     |              | right_down > fore_down > left_up    > back_up   | 3.2  |
+
+ ### 4.1 Derived Quad Indexing
+  All quad indexing is derived from the canonical plane definitions above.
+
+  For each plane:
+  * Quads are defined as ordered adjacent ray pairs in the listed cycle.
+  * Quad1 corresponds to the first two rays.
+  * Subsequent quads follow the cycle order, with the final quad wrapping to the first ray.
+
+  **Global** quad numbering (Q1–Q60) is defined by:
+  1. The canonical plane order (table order above)
+  2. The canonical ray-pair order within each plane
+  
+  **Base piece** quad number (1-12, 1-24, 1-24) is defined by:
+  1. The canonical plane order, starting with the first plane of each base piece (table order above)
+  2. The canonical ray-pair order within each plane
+
+  **Plane** quad number (1-4, 1-6, 1-4) is defined by:
+  1. The canonical ray-pair order within each plane
+
+  Within each plane, canonical quad order is the canonical ray-pair order (starting at anchor).
+
+  No additional definitions of quad numbering are permitted.
+
+ ### 4.2 Canonical Adjacency Constraints
+  * Adjacency is defined only between consecutive rays in the listed cycle.
+  * No other ray pair is adjacent.
+  * Quad ordering follows the cycle order and must not be reversed.
+  * The listed ray cycle is the unique canonical ordering for each plane.
+  * All geometry, quad construction, and movement logic must reference these canonical definitions.
+
+ ### 4.3 Naming and Capitalization
+  * Plane *types* are lowercase: `orthogonal`, `skew`, `slant`.
+  * Plane *names* are capitalized: `Horizontal`, `Upward`, `Minor`, etc.
+  * Ray names follow their canonical lowercase identifiers as defined in the rays module.
+
+  These conventions are mandatory and form part of the canonical identity of each element. Any variation in capitalization is considered a distinct and invalid entity.
 
 
-## 1. Canonical Plane Rule
+
+EARLY VERSIONS - RAW MATERIAL FOR THE GROWING SPEC.
+
+## 1. Canonical Plane Rule - DEPRECATE
   - Each plane is uniquely defined by an ordered cyclic list of rays.
   - Adjacency is defined only between consecutive rays in this cycle - no other ray pair is adjacent.
   - Quadrants (quads) are defined as ordered adjacent ray pairs within the cycle.
@@ -16,14 +117,7 @@
   - Any ordering other than the canonical ordering is non-canonical and must not be used for indexing or identity.
   - All plane, quad, and movement logic MUST reference the canonical plane definitions (planes.json).
 
-## 2. Base Piece Plane Correlation
-  - Rooks move in orthogonal planes.
-  - Bishops moves in skew planes.
-  - Duke moves in slant planes.
-
-  - Plane definitions arise from the quadrant definitions which arise from the ray definitions.
-
-## 3. Global Quad Number
+## 3. Global Quad Number - DEPRECATE
   - Quads are assigned a unique global index Q1–Q60.
 
   - Global ordering is defined by:
@@ -33,15 +127,12 @@
   - This ordering is deterministic and must be used for all indexing, labeling, and serialization.
 
 
-## 4. Plane Quad Number 
+## 4. Plane Quad Number  - DEPRECATE, but not quite yet, here to insure code follows the math.
   Rook   (1-4) = (Q<n>-1)%4 + 1
   Bishop (1-6) = (Q<n>-1)%6 + 1
   Duke   (1-4) = (Q<n>-1)%4 + 1
 
-
-
-
-## n. Piece Quad Number
+## n. Piece Quad Number - THIS SHOULD NOW BE DERIVED.
   Rook
     Horizontal (1- 4)  = Q1,Q2,Q3,Q4
     Left       (5- 8)  = Q5,Q6,Q7,Q8 
@@ -60,6 +151,9 @@
     Downleft   (13-16) = Q49,Q50,Q51,Q52
     Upright    (17-20) = Q53,Q54,Q55,Q56
     Downright  (21-24) = Q57,Q58,Q59,Q60
+
+
+DUKE SPECIAL QUAD CASES WILL NEED TO BE TREATED SEPARATELY.
 
 ### 4.1 Duke quads by number and type
   Duke
@@ -124,7 +218,7 @@
   - In all slant planes except the Minor plane, quad1 is an edge quad and quad2 is a face quad.
   - In the Minor plane, quad1 is a face quad and quad2 is an edge quad.
 
-## 5. The Canonical Plane Quad Table
+## 5. The Canonical Plane Quad Table - DEPRECATE
   Each plane is defined ONLY by the following ray sets.
 
   Plane, Ray Set (1st to last)
@@ -189,6 +283,9 @@
     2. Importing that plane’s ray cycle from quads.md.
     3. Assigning quadrants Q1…Qn using the adjacency rule from quads.md.
 
+
+
+
 ## 7. Canonical Quadrant Resolution: Unified Constructor Rule
   Q = Quad(spec)
   spec: any one of...
@@ -199,27 +296,6 @@
     ("<plane>", q) (1-4/6)
     (ray1, ray2)
     "<nickname>"
-
-## 8. The Plane Groups
-  Vertical planes (rook)
-    Left
-    Right
-  Forward planes (bishop)
-    Upward
-    Downward
-  Outward planes (bishop)
-    Leftward
-    Rightward
-  Verticalcross planes (duke)
-    Major
-    Minor
-  Leftcross planes (duke)
-    Upleft
-    Downleft
-  Rightcross planes (duke)
-    Upright
-    Downright
-
 
 
 

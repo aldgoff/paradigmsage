@@ -1,5 +1,43 @@
 {
   "planes_module": {
+    "basePieces": {
+      "rook":   { "planeType": "orthogonal" },
+      "bishop": { "planeType": "skew" },
+      "duke":   { "planeType": "slant" }
+      },
+
+    "planeGroups": {
+      "orthogonal": ["Horizontal", "Left", "Right"],
+      "skew":       ["Upward", "Downward", "Leftward", "Rightward"],
+      "slant":      ["Major", "Minor", "Upleft", "Downleft", "Upright", "Downright"]
+      },
+
+    "planes": {
+      "Horizontal": { "pov": "White",   "quad1": "Forward",      "rays": ["left_fore","right_fore","left_back","right_back"], "rule": "1.1" },
+      "Left":       { "pov": "White",   "quad1": null,           "rays": ["up","right_fore","down","right_back"],             "rule": "1.2" },
+      "Right":      { "pov": "White",   "quad1": null,           "rays": ["up","left_fore","down","left_back"],               "rule": "1.2" },
+      "Upward":     { "pov": "White",   "quad1": "UpPredator",   "rays": ["LFU","RFU","right","RBD","LBD","left"],            "rule": "2.1" },
+      "Downward":   { "pov": "White",   "quad1": "DownPredator", "rays": ["LFD","RFD","right","RBU","LBU","left"],            "rule": "2.1" },
+      "Leftward":   { "pov": "White",   "quad1": null,           "rays": ["LBU","LFU","fore","RFD","RBD","back"],             "rule": "2.2" },
+      "Rightward":  { "pov": "White",   "quad1": null,           "rays": ["RBU","RFU","fore","LFD","LBD","back"],             "rule": "2.2" },
+      "Major":      { "pov": "Neutral", "quad1": "Dart",         "rays": ["fore_down","fore_up","back_up","back_down"],       "rule": "3.1" },
+      "Minor":      { "pov": "White",   "quad1": "Bridge",       "rays": ["left_up","right_up","right_down","left_down"],     "rule": "3.3" },
+      "Upleft":     { "pov": "Top",     "quad1": null,           "rays": ["left_up","fore_up","right_down","back_down"],      "rule": "3.2" },
+      "Downleft":   { "pov": "Top",     "quad1": null,           "rays": ["left_down","fore_down","right_up","back_up"],      "rule": "3.2" },
+      "Upright":    { "pov": "Top",     "quad1": null,           "rays": ["right_up","fore_up","left_down","back_down"],      "rule": "3.2" },
+      "Downright":  { "pov": "Top",     "quad1": null,           "rays": ["right_down","fore_down","left_up","back_up"],      "rule": "3.2" }
+    }
+  },
+
+
+
+
+
+
+
+
+
+  "planes_module1": {
     "canonical_rule": {
       "status": "binding",
       "description": [
@@ -18,12 +56,6 @@
         "For every plane, Quad1 = (ray1, ray2) and wrapQuad = (ray-last, ray1).",
         "Concepts are coupled, think of them as projections of a single relationship."
         ]
-    },
-
-    "basePieces": {
-      "rook":   { "planeType": "orthogonal" },
-      "bishop": { "planeType": "skew" },
-      "duke":   { "planeType": "slant" }
     },
 
     "planeOrder": [
@@ -115,12 +147,6 @@
       "right_down": ["Minor","Upleft","Downright"],
       "left_down":  ["Minor","Downleft","Upright"]
     },
-
-    "planeGroups": {
-      "orthogonal": ["Horizontal", "Left", "Right"],
-      "skew":       ["Upward", "Downward", "Leftward", "Rightward"],
-      "slant":      ["Major", "Minor", "Upleft", "Downleft", "Upright", "Downright"]
-      },
 
     "planePairs": {
       "rook_vertical_planes":      ["Left","Right"],
