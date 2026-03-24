@@ -9,8 +9,15 @@
       "correlations": {
         "side":   { "basePiece": "rook",   "lineType": "orthogonal" },
         "corner": { "basePiece": "bishop", "lineType": "diagonal" }
-      }
       },
+      "advancement": { 
+        "scale": 8,
+        "rank":  { "left":    [0, -1], "right":    [ 0,  1] },
+        "file":  { "forward": [1,  0], "backward": [-1,  0] },
+        "diag":  { "fore":    [1,  1], "aft":      [-1, -1] },
+        "slant": { "fore":    [1, -1], "aft":      [-1,  1] }
+      }
+    },
     "3D": {
       "shape": "cube",
       "rayTypes": {

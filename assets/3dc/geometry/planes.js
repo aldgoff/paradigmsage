@@ -9,30 +9,20 @@
 // --- Load module ---
 import planesData from "./planes.json" assert { type: "json" };
   const planesModule = planesData.planes_module;
-  const basePieces   = planesModule.basePieces;
   const planeGroups  = planesModule.planeGroups;
+  const planePairs   = planesModule.planePairs;
   const planes       = planesModule.planes;
   // Seampoint: more objects.
 
-// --- Build upon the previous layers ---
-import { } from "../foundation/coords/coords.js";
-// Seampoint: more imports.
-
 // --- UI ---
-// Spec paragraph 2 - base pieces.
-export function getBasePieces() {
-  return Object.keys(basePieces);
-  }
-
-export function getPlaneTypeForPiece(piece) {
-  const entry = basePieces[piece];
-  if (!entry) throw new Error(`Unknown piece: ${piece}`);
-  return entry.planeType;
-}
 
 // Spec paragraph 3 - plane groups.
 export function getPlaneGroups() {
   return planeGroups;
+  }
+
+export function getPlanePairs() {
+  return planePairs;
   }
 
 export function getPlanesForType(type) {

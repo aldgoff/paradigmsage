@@ -17,9 +17,6 @@ import {TEST_MODE,
 import { invariant } from "../core/invariants.js";
 
 import {
-  getBasePieces,
-  getPlaneTypeForPiece,
-
   getPlaneGroups,
   getPlanesForType,
   getPlaneTypeForPlane,
@@ -37,21 +34,20 @@ import {
 export function run() {
   let prev = snapshotTotals();
 
-  test_basePieces();          // Spec paragraph 2 - base pieces.
-  test_planeTypeForPiece();
-  test_planeTypeInvariant();
+  // test_planeTypeInvariant();
 
-  test_planeGroups();         // Spec paragraph 3 - plane groups.
+  test_planeGroups();         // Spec section 2.2 - plane groups.
   test_planesForType();
   test_planeTypeForPlane();
-  test_piecePlaneConsistency();  
   
-  test_getPlane();            // Spec paragraph 34- plane/rays/quads.
+  test_getPlane();            // Spec section 3 - plane/rays/quads.
   test_getPlaneRays();
   test_getPlaneQuad1();
   test_getPlanePOV();
   test_getPlaneRule();
   test_planeRayInvariant();
+
+  test_planeCycleClosure();
   // Seampoint: more tests...
 
   let curr = snapshotTotals();  // TODO: refactor as teardown(<module>):
@@ -60,7 +56,7 @@ export function run() {
   const fail = curr.fail - prev.fail;
 
   if (TEST_MODE.geometry !== "VERBOSE") {
-    console.log(`Geometry/rays ${pass}/${pass + fail}`);
+    console.log(`Geometry/planes ${pass}/${pass + fail}`);
   }
 
   finalReport();
@@ -68,39 +64,7 @@ export function run() {
 
 // ------------------------------------------------------------
 
-// Spec paragraph 2.
-function test_basePieces() {
-  const expected = ["rook", "bishop", "duke"];
-  const result = getBasePieces();
-
-  assertEqual(result, expected, "base pieces list");
-
-  report("basePieces", "geometry");
-  }
-
-function test_planeTypeForPiece() {
-  assertEqual(getPlaneTypeForPiece("rook"), "orthogonal", "rook plane type");
-  assertEqual(getPlaneTypeForPiece("bishop"), "skew", "bishop plane type");
-  assertEqual(getPlaneTypeForPiece("duke"), "slant", "duke plane type");
-
-  assertThrows(() => getPlaneTypeForPiece("pawn"), "invalid piece throws");
-
-  report("planeTypeForPiece", "geometry");
-  }
-
-function test_planeTypeInvariant() {
-  const pieces = ["rook", "bishop", "duke"];
-
-  for (const p of pieces) {
-    const type = getPlaneTypeForPiece(p);
-    const valid = ["orthogonal", "skew", "slant"].includes(type);
-    assertEqual(valid, true, `${p} valid plane type`);
-  }
-
-  report("planeTypeInvariant", "geometry");
-}
-
-// Spec paragraph 3.
+// Spec section 3.
 function test_planeGroups() {
   const groups = getPlaneGroups();
 
@@ -133,23 +97,9 @@ function test_planeTypeForPlane() {
   assertThrows(() => getPlaneTypeForPlane("FakePlane"), "invalid plane throws");
 
   report("planeTypeForPlane", "geometry");
-  }
-
-function test_piecePlaneConsistency() {
-  const pieces = ["rook", "bishop", "duke"];
-
-  for (const p of pieces) {
-    const type = getPlaneTypeForPiece(p);
-    const planes = getPlanesForType(type);
-
-    assertEqual(Array.isArray(planes), true, `${p} has planes`);
-    assertEqual(planes.length > 0, true, `${p} non-empty planes`);
-  }
-
-  report("piecePlaneConsistency", "geometry");
 }
 
-// Spec paragraph 4.
+// Spec section 4.
 function test_getPlane() {
   const p = getPlane("Horizontal");
 
@@ -216,6 +166,21 @@ function test_planeRayInvariant() {
   }
 
   report("planeRayInvariant", "geometry");
+}
+
+function test_planeCycleClosure() {
+  const groups = getPlaneGroups();
+
+  for (const planes of Object.values(groups)) {
+    for (const p of planes) {
+      const rays = getPlaneRays(p);
+
+      // implicit closure: last connects to first
+      assertEqual(rays.length >= 4, true, `${p} cycle valid`);
+    }
+  }
+
+  report("planeCycleClosure", "geometry");
 }
 
 // Seampoint: more tests...
