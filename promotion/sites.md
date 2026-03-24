@@ -26,14 +26,22 @@ Places AI said might be good for promoting the website.
   - Rule number one, don't call it that, disguise it.
   - Expectation → violation
 
- ## Post Hooks/Links
-  ### 1.
-  - Logic says if one is good, two is better — quantum mechanics says two can be no better than none.
-    - https://paradigmsage.com/pop/ch-06-interference/
+ ## Posts
+  ### 1. 3/24/26 10:22
+  #### Title:
+    Destructive Interference
+  #### URL: 
+    https://paradigmsage.com/pop/ch-06-interference/
+  #### Text:
+    Logic says if one is good, two is better — quantum mechanics says two might be no better than none.
 
   ### 2.
-  - Trap a quantum object in a box - is it hard or soft, or is it white or black?
-    - https://paradigmsage.com/pop/ch-04-qm/
+  #### Title:
+    Trap a quantum object in a box - is it hard or soft, or is it white or black?
+  #### URL: 
+    https://paradigmsage.com/pop/ch-04-qm/
+  #### Text:
+    - Doesn't appear to show up.
 
   ### 3.
   - If more data thwarts insight - don't see more, see less.

@@ -10,6 +10,7 @@ if (location.hostname === "localhost") {
   console.log("Running tests...");
   // Import and run module tests here.
   import("./tests/templates/module.test.js").then(m => m.run());
+  import("./tests/foundation/unitCells.test.js").then(m => m.run());
   import("./tests/foundation/coords.test.js").then(m => m.run());
   import("./tests/foundation/colors.test.js").then(m => m.run());
   import("./tests/foundation/rays.test.js").then(m => m.run());
