@@ -28,7 +28,7 @@ export function assertEqual(actual, expected, label) {
 export function report(name, layer = "foundation") {
   const mode = TEST_MODE[layer] || "TERSE";
 
-  const padded = name.padEnd(12);
+  const padded = name.padEnd(17);
   const line = `${padded} ${PASS}/${PASS + FAIL} tests passed`;
 
   if (mode === "VERBOSE") {

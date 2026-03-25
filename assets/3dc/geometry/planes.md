@@ -41,9 +41,21 @@
 ## 3. Cycle Starting Points and Direction
   Planes are defined by cyclic ray orderings. 
   Rays form boundaries, and quadrants are derived as adjacent ray pairs within those cycles.
+  To list these cycles requires two choices, a starting point and a rotation direction.
+  - The pawn is the only asymmetric piece.
+  - The pawn's definition depends on the definition of the base pieces 
+  - which depend on the definition of planes, rays and quads, 
+  - which depend on the pawn definition.
+
+  We choose to break this self-referential definition by treating rays as the 
+  structural primitive from which plane cycles are defined.
+  Adjacency does not depend on the pawn. 
+  The pawn, however, provides the most natural basis for selecting starting quads and rotation direction.
+
+  These rules uniquely determine the starting quad and rotation direction for every plane.
 
  ### 3.1 Constraints
-  Canonicalization is determined by a hierarchy of constraints:
+  Canonicalization is determined by a set of canonicalization rules:
   - 1. For pawn *advance* planes:
     - 1.1. Q1 is chosen toward opponent, rotation is clockwise (relative to pov).
     - 1.2. If two quads approach opponent, Q1 is the top most, rotation toward the opponent (second quad).
@@ -56,6 +68,9 @@
     - 3.3 If no quads approach opponent, Q1 is top most, rotation is clockwise (relative to pov).
 
  ### 3.2 Plane-Quad-Ray Table
+  The canonical ray ordering for each plane is defined by the plane-ray tables in this specification. 
+  All adjacency relations and quad orderings are derived from these cycles.
+
   | #  | Plane      | POV     | Q1 Nickname  | Ray Cycles                                      | Rule |
   | :- | :--------- | :------ | :----------- | :---------------------------------------------- | :--- |
   |  1 | Horizontal | White   | Forward      | left_fore > right_fore > left_back > right_back | 1.1  |
@@ -73,4 +88,9 @@
   | 11 | Downleft   | Top     |              | left_down  > fore_down > right_up   > back_up   | 3.2  |
   | 12 | Upright    | Top     |              | right_up   > fore_up   > left_down  > back_down | 3.2  |
   | 13 | Downright  | Top     |              | right_down > fore_down > left_up    > back_up   | 3.2  |
+
+ ### 3.3 Nicknames
+  Nicknames are optional labels for human reference and do not participate in identity or derivation.
+  They are tied to the asymmetry provided by the pawn, and identify only the first quad.
+  The list may grow in later layers for pedagical reasons, and identify other than first quads.
 
