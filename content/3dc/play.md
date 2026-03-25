@@ -22,4 +22,5 @@ layout: "play"
  ### Week 2:
   - 3/22/26 - Establish template files (*.md, *.json, *.js, and *.test.js).
   - 3/23/26 - Planes: specs, data/code/test slices partway through para 4.
+  - 3/24/26 - Finish porting over the planes module.
 

@@ -25,12 +25,16 @@
 │   │   │   │   ├── coords.json
 │   │   │   │   ├── coords.md
 │   │   │   │   └── coords.py
-│   │   │   └── rays
-│   │   │       ├── rays.js
-│   │   │       ├── rays.json
-│   │   │       ├── rays.md
-│   │   │       ├── rays.out
-│   │   │       └── rays.py
+│   │   │   ├── rays
+│   │   │   │   ├── rays.js
+│   │   │   │   ├── rays.json
+│   │   │   │   ├── rays.md
+│   │   │   │   ├── rays.out
+│   │   │   │   └── rays.py
+│   │   │   └── unitCells
+│   │   │       ├── unitCells.js
+│   │   │       ├── unitCells.json
+│   │   │       └── unitCells.md
 │   │   ├── geometry
 │   │   │   ├── _tbd.md
 │   │   │   ├── planes.js
@@ -40,6 +44,7 @@
 │   │   │   ├── quadMap.md
 │   │   │   ├── quadMap.out
 │   │   │   ├── quadMap.py
+│   │   │   ├── quads.md
 │   │   │   ├── quads1.json
 │   │   │   ├── quads1.md
 │   │   │   ├── quads1.out
@@ -64,7 +69,8 @@
 │   │   │   ├── foundation
 │   │   │   │   ├── colors.test.js
 │   │   │   │   ├── coords.test.js
-│   │   │   │   └── rays.test.js
+│   │   │   │   ├── rays.test.js
+│   │   │   │   └── unitCells.test.js
 │   │   │   ├── geometry
 │   │   │   │   └── planes.test.js
 │   │   │   ├── integration
@@ -345,4 +351,4 @@
 │           └── poc.js
 └── themes
 
-73 directories, 272 files
+74 directories, 277 files
