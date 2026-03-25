@@ -1,0 +1,158 @@
+{
+  "figures": [
+    {
+      "id": 40,
+      "filename": "Planes_Duke.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/Planes_Duke.png",
+      "caption": "Figure 40: The Six Duke Slant Planes",
+      "description": "The six slant planes of the duke shown in wireframed cubes."
+    },
+    {
+      "id": 41,
+      "filename": "Planes_Cross_Planes.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/Planes_Cross_Planes.png",
+      "caption": "Figure 41: The Three Pairs of Duke Cross Planes",
+      "description": "The six slant planes of the duke shown in pairs, the three sets of cross planes."
+    },
+    {
+      "id": 42,
+      "filename": "DukeMetallicity_02.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/DukeMetallicity_02.png",
+      "caption": "Figure 42: Duke Colors & Gold Tiles Primary Slant Plane (32 of the 64 Metal Tiles)",
+      "description": "Tiles are color coded with bishop colors on their surfaces and duke colors on their edges. Dukes start and stay on metal slant planes; either gold or silver tiles. They can never reach the gem planes. To help deduce duke colors without cluttering the board, the gold tiles in the primary plane are marked with black dots. Silver tiles are the unmarked tiles diagonally in between the gold ones. Metal tiles are also black and white tiles but alternate every other level. Duke colors alternate orthogonally and diagonally. KR1,1 is a white gold tile; ruby to the right, jade to the left."
+    },
+    {
+      "id": 43,
+      "filename": "DukeCrossPairsVertical.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/DukeCrossPairsVertical.png",
+      "caption": "Figure 43: Duke Vertical Cross Planes (Major and Minor)",
+      "description": "The *vertical cross planes* intersect in a vertical line. *Major* planes extend from player to player, while *minor* plans are perpendicular to the players. The largest major plane (shown here) contains the starting lineup of the pieces. It is also called the *primary* plane. The single *apex* *tiles* (single open diamonds) are all in a horizontal plane, while the *duplex* *tiles* (double open diamonds) align along the vertical intersection line of the vertical cross planes skipping every other horizontal plane. Duke is on K4,4; notice its missing image in the White piece tray."
+    },
+    {
+      "id": 44,
+      "filename": "DukeCrossPairsLeft.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/DukeCrossPairsLeft.png",
+      "caption": "Figure 44: Duke Left Cross Planes (Upleft, Downleft)",
+      "description": "The left cross planes intersect in a horizontal line connecting the left faces. The upleft plane extends towards the opponent when traversed in the up direction, and in perfect symmetry, the downleft plane extends towards the opponent when traversed in the down direction. The single apex tiles are all in a right vertical plane, while the duplex tiles align along the left intersection line of the left cross planes skipping every other right vertical plane. Duke is on K4,4."
+    },
+    {
+      "id": 45,
+      "filename": "DukeCrossPairsRight.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/DukeCrossPairsRight.png",
+      "caption": "Figure 45: Duke Right Cross Planes (Upright, Downright)",
+      "description": "The right cross planes intersect in a horizontal line connecting the right faces. The upright plane extends towards the opponent when traversed in the up direction, and in perfect symmetry, the downright plane extends towards the opponent when traversed in the down direction. The single apex tiles are all in a left vertical plane, while the duplex tiles align along the right intersection line of the right cross planes skipping every other left vertical plane. Duke is on K4,4."
+    },
+    {
+      "id": 46,
+      "filename": "DukeMajorQuads_02.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/DukeMajorQuads_02.png",
+      "caption": "Figure 46: Duke Plane is Cut by Two Lines, thus Four Quadrants",
+      "description": "Shown is the *primary major plane*, it connects the top and bottom faces of the board and opposing vertical edges. As the largest major plane, it also contains the starting lineup. It's two straight lines are readily visible and clearly divide the plane, like the rook, into four quadrants, but unlike rook quadrants, duke quadrants come in two flavors, which alternate around the plane. Those quadrants advancing toward a board edge (left and right) are regular quadrants. They use the conventional apex tile decorator. Those quadrants advancing toward a diagonal line across a board face (up and down) have duplex tiles, they are also in the cross plane (minor plane, not shown). Note that the duke can only reach half of the tiles in its plane (32 out of 64). All the tiles in this plane have been raised so that their edges are visible. Note they are all gold tiles; the primary plane is a metallic plane."
+    },
+    {
+      "id": 47,
+      "filename": "DukeOpposingEdgeQuads.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/DukeOpposingEdgeQuads.png",
+      "caption": "Figure 47: Duke Opposing Edge Quadrants in the Primary Major Plane",
+      "description": "The two opposing *edge quadrants* of the duke move are shown for the *primary major plane*, the largest major plane, the one that contains the starting lineup of the pieces. As these are edge quadrants, they utilize the regular apex tile decorator (single open black diamond). Each sports a 3x3 advancement square. Note the one apex decorator off the board. Ghost dukes show the pure quadrant moves."
+    },
+    {
+      "id": 48,
+      "filename": "DukeOpposingFaceQuads.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/DukeOpposingFaceQuads.png",
+      "caption": "Figure 48: Duke Opposing Face Quadrants in the Primary Major Plane",
+      "description": "The two opposing *face quadrants* of the duke move are shown for the *primary plane*, (see previous figure). As face quadrants, they utilize the duplex tile decorator (pair of open black diamonds). Each sports a 3x3 advancement square. Note the off board duplex decorator and the ghost dukes."
+    },
+    {
+      "id": 49,
+      "filename": "Duke_Pseudo_Projection.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/Duke_Pseudo_Projection.png",
+      "caption": "Figure 49: Duke Pseudo Projection; Linear Moves in Slant Planes are the 2D Bishop Move",
+      "description": "The straight-line moves of the duke in a slant plane are the 2D bishop's move. This example is in the primary major plane, which contains 64 tiles, 32 of which the duke can reach. Other than tile color, this plane is a one-to-one map with the 2D board, which is why in this figure most of the pieces have been moved from their tray positions to their starting lineup position."
+    },
+    {
+      "id": 50,
+      "filename": "DukeQuadSnapshotsEdge_ab_02.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/DukeQuadSnapshotsEdge_ab_02.png",
+      "caption": "Figure 50: Duke Snapshots of Edge Quadrant Move (Perimeters 1 & 2)",
+      "description": "Two snapshots of a silver duke making an edge quadrant move in the primary plane out to perimeter 1 (a) and perimeter 2 (b). Silver tiles in the primary plane have been raised. Ghost dukes show the legal quadrant moves to perimeters 1 & 2. Note this includes the apex tiles."
+    },
+    {
+      "id": 51,
+      "filename": "DukeQuadSnapshotsEdge_c.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/DukeQuadSnapshotsEdge_c.png",
+      "caption": "Figure 51: Duke Snapshots of Edge Quadrant Move (Perimeter 3)",
+      "description": "Third snapshot of a silver duke making an edge quadrant move in the primary plane out to perimeter 3 (c). Ghost dukes show the legal quadrant moves to perimeter 3. Note this includes the apex tiles."
+    },
+    {
+      "id": 52,
+      "filename": "DukeQuadSnapshotsFace_ab_02.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/DukeQuadSnapshotsFace_ab_02.png",
+      "caption": "Figure 52: Duke Snapshots of Face Quadrant Simplex Move (Perimeters 1 & 2)",
+      "description": "Two snapshots of a duke face quadrant move out to perimeter 1 (a) and perimeter 2 (b) in the major plane. Advance in the minor plane is blocked by the pawn, so the duke can only advance to the 'apex' tile in this plane. Such tiles are called *simplex tiles*, and simply delete one diamond from the duplex decorator. Primary plane silver tiles have been raised. Ghost dukes indicate pure quadrant moves."
+    },
+    {
+      "id": 53,
+      "filename": "DukeQuadSnapshotsFace_c.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/DukeQuadSnapshotsFace_c.png",
+      "caption": "Figure 53: Duke Snapshots of Face Quadrant Simplex Move (Perimeter 3)",
+      "description": "(Continues previous figure.) Third snapshot of a duke face quadrant move out to perimeter 3 (c) in the major plane. Advance in the minor plane is blocked by the pawn, note the simplex tiles. Ghost dukes indicate pure quadrant moves to perimeter 3."
+    },
+    {
+      "id": 54,
+      "filename": "DukeQuadSnapshotsDuplex_ab_02.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/DukeQuadSnapshotsDuplex_ab_02.png",
+      "caption": "Figure 54: Duke Snapshots of a Duplex Move to Perimeter 2 First in the Minor Plane",
+      "description": "Two snapshots of a duke face quadrant move to the duplex tile out to perimeter 1 (a) and perimeter 2 (b) first in the minor plane only. The silver tiles in this minor plane have been raised for clarity. Ghost dukes indicate the move. Note the lack of ghost dukes on the body tiles of perimeter 2."
+    },
+    {
+      "id": 55,
+      "filename": "DukeQuadSnapshotsDuplex_cd.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/DukeQuadSnapshotsDuplex_cd.png",
+      "caption": "Figure 55: Duke Snapshots of a Duplex Move to Perimeter 2 Adding the Major Plane",
+      "description": "(Continuation of previous figure.) The advancement squares for the major plane are added in. The single ghost duke on the final duplex tile was advancing in *both* cross planes. Note specifically that the ghost duke is *only* on the duplex tile, and there are none on the other tiles on the perimeters as those moves occur in one plane only. The silver tiles have not been raised, rather the inner 16 border has been used."
+    },
+    {
+      "id": 56,
+      "filename": "DukeLinearSnapshot_a.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/DukeLinearSnapshot_a.png",
+      "caption": "Figure 56: Duke Snapshot of Linear Move in Primary Plane to Perimeter 1.",
+      "description": "The White duke is on a gold tile, as is the Black king. In addition, the king is in line with the duke, so a linear attack is a possibility; one must check all three planes. Snapshot of the 2x3 advancement rectangle at perimeter 1 of the linear threat in the primary plane. Black's pawn is in a gem plane and thus safe from the duke."
+    },
+    {
+      "id": 57,
+      "filename": "DukeLinearSnapshot_b.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/DukeLinearSnapshot_b.png",
+      "caption": "Figure 57: Duke Snapshot of Linear Move in Primary Plane to Perimeter 2.",
+      "description": "(Continuation of previous figure.) Snapshot of the 3x5 advancement rectangle at perimeter 2 of the linear threat to the king in the primary plane. The duke has three linear move decorators. At perimeter 1 is the one with three diamonds, so at this point, the move is in all three duke planes. At perimeter 2, however, one of the diamonds is hollowed, so one of the other planes is blocked; the duke is polarized in two planes. Notice that one end tile also sports a change in their decorator at perimeter 2 (KR5,5), for the same reason. The inner black diamond is smaller, indicating that a linear move in this direction would be blocked in one plane as well."
+    },
+    {
+      "id": 58,
+      "filename": "DukeLinearSnapshot_c.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/DukeLinearSnapshot_c.png",
+      "caption": "Figure 58: Duke Snapshot of Linear Move in Primary Plane Blocked by Rook at Perimeter 4.",
+      "description": "(Continuation of previous figure.) Snapshot of the 4x7 advancement rectangle at perimeter 3 of the linear threat to the king in the primary plane. The third duke linear move decorator has only one diamond of three that is solid, indicating a linear move polarized in one plane only, so the king is not in check in either of the other two duke planes. Advance to perimeter 4 is blocked by the rook in a face quadrant so the king is not in check in the primary plane either. Note that the king is not threatening the rook, for it is covered by the duke. Both are on raised tiles to indicate the duke threat. Note the four decorators off the board to make the advancement rectangle a little clearer."
+    },
+    {
+      "id": 59,
+      "filename": "DukeLinearDownRight.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/DukeLinearDownRight.png",
+      "caption": "Figure 59: Duke Linear Move Blocked by Knight in Downright Plane at Perimeter 2.",
+      "description": "White's knight (KB7,3) blocks her duke's (KB3,3) potential linear attack on Black's king (KN2,2) in the downright plane at perimeter 2 in a face quadrant. Knight and underlying tile are raised to emphasize this. The knight is on a duplex tile of a face quadrant. The advancement rectangle is 2x3. At perimeter 1 (K4,4) the duke's move is not yet polarized. Note the decorator has *three* solid diamonds indicating linear motion in *three* planes."
+    },
+    {
+      "id": 60,
+      "filename": "DukeLinearDownLeft.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/DukeLinearDownLeft.png",
+      "caption": "Figure 60: Duke Linear Move Blocked by Bishop in Downleft Plane at Perimeter 3.",
+      "description": "White's bishop (QR8,2) blocks her duke's (KB3,3) potential linear attack on Black's king (KN2,2) in the downleft plane at perimeter 3 in an edge quadrant. Bishop and underlying tile are raised to emphasize this. The advancement rectangle is 3x5. At perimeter 2 (Q5,5) the duke's move is now polarized into just two planes. Note the decorator has *two* solid diamonds and one hollowed, indicating linear motion in *two* planes."
+    },
+    {
+      "id": 61,
+      "filename": "DukeShape.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/DukeShape.png",
+      "caption": "Figure 61: Duke Shape",
+      "description": "Marking all the tiles a duke can reach in one move from the corner fails to reveal any fundamental shape, unlike for the rook and bishop. Since the duke moves through corners connecting adjacent cubes, the shape chosen for the duke is a cube pivoted onto one truncated corner. Hollowed out this allows it to stack neatly on top of the bishop to create the composite piece, the stack. Three planes are shown, with linear move decorators, the apex tile decorators (edge quadrants), and the duplex tile decorators (face quadrants)."
+    }
+  ]
+}

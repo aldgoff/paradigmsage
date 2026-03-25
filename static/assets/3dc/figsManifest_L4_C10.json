@@ -1,0 +1,95 @@
+{
+  "figures": [
+    {
+      "id": 72,
+      "filename": "StackOverlapTiles.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/StackOverlapTiles.png",
+      "caption": "Figure 72: Stack Overlap Tiles",
+      "description": "Stack decorators are bordered in orange like queen decorators are bordered in purple. From the home location, each stack can cover 9 q-tiles and 5 Feynman tiles. White king side stack shown."
+    },
+    {
+      "id": 73,
+      "filename": "StackCoverage.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/StackCoverage.png",
+      "caption": "Figure 73: Stack Coverage via Sub Pieces",
+      "description": "The tiles a stack covers as either a bishop or a duke. New decorators are introduced, but they follow previous idioms. Note the linear moves, bishop alternation patterns, and duke duplex tiles."
+    },
+    {
+      "id": 74,
+      "filename": "StackMoveToQtile.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/StackMoveToQtile.png",
+      "caption": "Figure 74: Stack Advancement Manifolds for a Move to a Q-Tile",
+      "description": "This is a linear move for the bishop sub-piece (outward planes) and an apex move for the duke sub-piece (primary plane). Note the linear move decorator. Ghost stack shows the destination."
+    },
+    {
+      "id": 75,
+      "filename": "StackMoveToFeynmanTile.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/StackMoveToFeynmanTile.png",
+      "caption": "Figure 75: Stack Advancement Manifolds for a Move to a Feynman Tile",
+      "description": "This is an apex move for the bishop sub-piece (leftward plane) and face quadrant move for the duke sup-piece (downleft plane). Note the alternation patterns. Ghost stack shows the destination."
+    },
+    {
+      "id": 76,
+      "filename": "StackDecayDuke.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/StackDecayDuke.png",
+      "caption": "Figure 76: Stack Decay - White Emits Duke",
+      "description": "White's queen side stack (black bishop, silver duke) decays emitting a duke to KN5,1. Move is in an edge quadrant in the upleft plane to the apex tile of a 3x3 advancement square, which is the first q-tile in this direction. This means both the duke and the bishop cover each other. Note that the duke is fading out of the stack (QB1,1) leaving only the bishop."
+    },
+    {
+      "id": 77,
+      "filename": "StackDecayBishop.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/StackDecayBishop.png",
+      "caption": "Figure 77: Stack Decay - Black Emits Bishop",
+      "description": "Black's queen side stack (black bishop, gold duke) decays emitting a bishop to KN4,8, (same tile as the duke from the previous figure). Move is in the forward up quadrant of the rightward plane (Black's perspective) to a tile on the perimeter of a 5x5 advancement square. This is not an overlap tile, so while the bishop is covering the duke, the duke is not covering the bishop. Note that the bishop is fading out of the stack (QB1,1) leaving a hanging duke (which will drop to the tile)."
+    },
+    {
+      "id": 78,
+      "filename": "StackRecombinations.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/StackRecombinations.png",
+      "caption": "Figure 78: Stack Recombination",
+      "description": "Two examples of *recombination* are shown. White's gold duke recombines with its white bishop on KB1,1 via a duplex move with two independent 3x3 advancement squares in the up quadrants of the major and minor planes (half the tiles are off the board, shown). Black's white bishop recombines with its silver duke on Q1,3 via a 4x4 advancement square in the down forward quadrant of the leftward plane. Destination tiles have ghosted duke and bishop respectively. Neither sub piece must be on an overlap tile."
+    },
+    {
+      "id": 79,
+      "filename": "StackCrossCombination.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/StackCrossCombination.png",
+      "caption": "Figure 79: Stack Cross Combination",
+      "description": "White has cross combined her black bishop (from QB1,1) with her gold duke (from KB1,1) onto a *gold-black stack* (K2,2) via a series of unspecified moves. Either sub piece may make the final move to create a cross combined stack. The free bishop (KB1,1) and duke (QB1,1) could also cross combine, forming a *silver-white stack*. Occupied tiles have been raised to reveal their duke colors."
+    },
+    {
+      "id": 80,
+      "filename": "StackTeleportationDuke.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/StackTeleportationDuke.png",
+      "caption": "Figure 80: Stack to Stack Teleportation of a Duke Between Two Bishops",
+      "description": "An original white-gold stack (Q5,1) teleports by emitting a duke which combines with the existing black bishop (QR8,6) creating a gold-black stack, one of the two possible cross combined stacks for White. The teleporting sub piece (ghosted) does not change its color (gold) but must teleport between two sub pieces (bishop) that are on different native colors (white/black). The example shows the 5x5 advancement square in the downleft plane; note the two tiles off the board. Occupied tiles have been raised to reveal their duke colors."
+    },
+    {
+      "id": 81,
+      "filename": "StackTeleportationBishop.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/StackTeleportationBishop.png",
+      "caption": "Figure 81: Stack to Stack Teleportation of a Bishop Between Two Dukes",
+      "description": "An original *white-gold stack* (KR1,1) *teleports* by emitting a bishop which combines with the existing silver duke (QN8,2) creating a *silver-white stack*, one of the two possible *cross combined stacks* for White. The teleporting sub piece (ghosted) does not change its color (white) but must teleport between two sub pieces (duke) that are on *different native colors* (gold/silver). The example shows the 7x7 advancement square in the rightward plane; note the many tiles off the board, including two of the three Feynman tiles. Since the bishop is the traveling piece, it has been inverted with the duke in the stacks. Occupied tiles have been raised to reveal their duke colors."
+    },
+    {
+      "id": 82,
+      "filename": "StackFissionQtile.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/StackFissionQtile.png",
+      "caption": "Figure 82: Stack Explosion (Fission) Conjoined by a Q-Tile",
+      "description": "Stack *explodes* at Q1,1 *conjoined* to a q-tile at Q5,5 which places it on the apex tile of perimeter 2 of a duke edge quadrant move in the major plane, and on perimeter 4 of a bishop liner move in the outward planes. There are 5 potential destination tiles for the duke and 18 for the bishop, which implies 89 possible *explosions*. The permutation where *both* sub pieces end up on the overlap tile is *denied*, as that would be a *stack* *move* not a *fission* move, so ghost bishop & duke are not stacked."
+    },
+    {
+      "id": 83,
+      "filename": "StackFissionFeynman.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/StackFissionFeynman.png",
+      "caption": "Figure 83: Stack Explosion (Fission) Conjoined by a Feynman Tile",
+      "description": "Stack explodes at K2,4 conjoined by a Feynman tile at K4,6 which is the apex tile of perimeter 2 of a bishop quadrant move in the leftward plane and on perimeter 3 of a duke face quadrant move in the upright plane. There are 5 potential destination tiles for the bishop and 7 for the duke, which implies 34 possible explosions. The permutation where both sub pieces end up on the overlap tile is denied, as that would be a stack move not a fission move. Ghost pieces show legal destinations."
+    },
+    {
+      "id": 84,
+      "filename": "StackShape.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/StackShape.png",
+      "caption": "Figure 84: Stack Shape",
+      "description": "Preferred shape for the stack is duke on top (upper left image) but for some cases, the reverse has merit (upper right). Both can be real pieces with a tetrahedral cutout in the bases that align with the outside surface. The image used in this work (lower middle) is an artistic cheat that allows the duke and bishop images to be easily separated for reuse without a lot of cut and paste effort. Duke-bishop rotation is 60 degrees around the vertical axis. Stack decorators are typically orange."
+    }
+  ]
+}
