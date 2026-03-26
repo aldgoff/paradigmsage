@@ -37,6 +37,11 @@
 │   │   │       └── unitCells.md
 │   │   ├── geometry
 │   │   │   ├── _tbd.md
+│   │   │   ├── Obsolete
+│   │   │   │   ├── quads.py
+│   │   │   │   ├── quads.table.json
+│   │   │   │   ├── quads.table.py
+│   │   │   │   └── run_quads.sh
 │   │   │   ├── planes.js
 │   │   │   ├── planes.json
 │   │   │   ├── planes.md
@@ -44,6 +49,8 @@
 │   │   │   ├── quadMap.md
 │   │   │   ├── quadMap.out
 │   │   │   ├── quadMap.py
+│   │   │   ├── quads.js
+│   │   │   ├── quads.json
 │   │   │   ├── quads.md
 │   │   │   ├── quads1.json
 │   │   │   ├── quads1.md
@@ -72,7 +79,8 @@
 │   │   │   │   ├── rays.test.js
 │   │   │   │   └── unitCells.test.js
 │   │   │   ├── geometry
-│   │   │   │   └── planes.test.js
+│   │   │   │   ├── planes.test.js
+│   │   │   │   └── quads.test.js
 │   │   │   ├── integration
 │   │   │   ├── model
 │   │   │   ├── templates
@@ -261,9 +269,19 @@
 │   │   ├── 12ls
 │   │   │   └── JPC06_2_12ls-Paper_6.pdf
 │   │   ├── 3dc
+│   │   │   ├── 3DCB_L1_Foundations_clean.md
+│   │   │   ├── 3DCB_L2a_PRB_clean.md
+│   │   │   ├── 3DCB_L2b_Duke_clean.md
+│   │   │   ├── 3DCB_L3_QN.md
+│   │   │   ├── 3DCB_L4_Stack.md
 │   │   │   ├── congruentRules.txt
 │   │   │   ├── Dis3D Chess Ch-1 188.pdf
-│   │   │   └── Dis3D Chess TOC 188.pdf
+│   │   │   ├── Dis3D Chess TOC 188.pdf
+│   │   │   ├── figsManifest_L1_C1_3.json
+│   │   │   ├── figsManifest_L2_C4_6.json
+│   │   │   ├── figsManifest_L2_C7.json
+│   │   │   ├── figsManifest_L3_C8_9.json
+│   │   │   └── figsManifest_L4_C10.json
 │   │   ├── NLL
 │   │   │   ├── CTB alias
 │   │   │   ├── JPC06NLL1.pdf
@@ -344,11 +362,11 @@
 │   │   │   └── QT3-AJP-2006.pdf
 │   │   └── ssi
 │   │       └── JPC06_3_SSI-Paper_5.pdf
-│   └── qt3
+│   └── qt3-poc
 │       ├── js
 │       │   └── tests
 │       └── poc
 │           └── poc.js
 └── themes
 
-74 directories, 277 files
+75 directories, 294 files

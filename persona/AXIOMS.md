@@ -98,3 +98,11 @@
 
   All additions occur only at marked seampoints.
 
+## A20. Inline Structural Contract (ISC)
+  A variable block used for structural declaration that:
+  - declares expected input/output shape
+  - uses representative values or direct bindings from inputs
+  - is colocated with logic that fulfills it
+  - contains no derived or transformational logic
+  - is not referenced by runtime logic beyond structure assembly
+
