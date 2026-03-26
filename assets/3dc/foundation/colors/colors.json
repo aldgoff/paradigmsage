@@ -1,0 +1,57 @@
+{
+  "colors_module": {
+    "normalization": {
+      "Status": "Not used.",
+      "description": "All tile-color computations must convert input to VTS first.",
+      "accepted_inputs": ["<LL>X,Y", "(z,x,y)"],
+      "canonical_space": "VTS"
+      },
+
+    "bishop_color": {
+      "rule": "parity(z + x + y)",
+      "colors": {
+        "0": "white",
+        "1": "black"
+      }
+      },
+
+    "duke_color": {
+      "unit_cell_period": 2,
+      "axes_mod2": ["uz = z % 2", "ux = x % 2", "uy = y % 2"],
+      "color_map": {
+        "uz=0": {
+          "0,0": "silver",
+          "0,1": "jade",
+          "1,0": "ruby",
+          "1,1": "gold"
+        },
+        "uz=1": {
+          "0,0": "gold",
+          "0,1": "ruby",
+          "1,0": "jade",
+          "1,1": "silver"
+        }
+      }
+      },
+
+    "combined_color": {
+      "Status": "Not used.",
+      "definition": "Canonical tile color is ordered pair (bishop_color, duke_color).",
+      "equivalence_classes": {
+        "bishop_color": "1/2 of board",
+        "duke_color": "1/4 of board",
+        "stack_color": "1/8 of board"
+      }
+      },
+
+    "formats": {
+      "Status": "Not used.",
+      "board_coord": "<LL>X,Y",
+      "vts_coord": "(z,x,y)",
+      "notes": [
+        "Color rules operate exclusively in VTS.",
+        "Board coordinates must be parsed and converted before coloring."
+      ]
+      }
+   }
+}

@@ -1,0 +1,20 @@
+22: {'piece': 'bishop', 'piece_quad': 10, 'plane': 'Downward', 'plane_quad': 4, 'ray_pair': ['RBU', 'LBU'], 'nickname': 'UP'}
+Q23: {'piece': 'bishop', 'piece_quad': 11, 'plane': 'Downward', 'plane_quad': 5, 'ray_pair': ['LBU', 'left']}
+Keel: {'piece': 'duke', 'piece_quad': 7, 'plane': 'Minor', 'plane_quad': 3, 'ray_pair': ['right_down', 'left_down'], 'duke_type': 'face', 'duplex': True, 'simplex': False, 'nickname': 'Keel'}
+
+piece quad {'piece': 'rook', 'piece_quad': 5, 'plane': 'Left', 'plane_quad': 1, 'ray_pair': ['up', 'right_fore']}
+piece quad {'piece': 'bishop', 'piece_quad': 5, 'plane': 'Upward', 'plane_quad': 5, 'ray_pair': ['LBD', 'left']}
+piece quad {'piece': 'duke', 'piece_quad': 5, 'plane': 'Minor', 'plane_quad': 1, 'ray_pair': ['left_up', 'right_up'], 'duke_type': 'face', 'duplex': True, 'simplex': False, 'nickname': 'Bridge'}
+
+plane quad {'piece': 'bishop', 'piece_quad': 3, 'plane': 'Upward', 'plane_quad': 3, 'ray_pair': ['right', 'RBD']}
+plane quad {'piece': 'bishop', 'piece_quad': 10, 'plane': 'Downward', 'plane_quad': 4, 'ray_pair': ['RBU', 'LBU'], 'nickname': 'UP'}
+plane quad {'piece': 'bishop', 'piece_quad': 17, 'plane': 'Leftward', 'plane_quad': 5, 'ray_pair': ['RBD', 'back']}
+plane quad {'piece': 'bishop', 'piece_quad': 24, 'plane': 'Rightward', 'plane_quad': 6, 'ray_pair': ['back', 'RBU']}
+
+nickname quad {'piece': 'bishop', 'piece_quad': 1, 'plane': 'Upward', 'plane_quad': 1, 'ray_pair': ['RFU', 'LFU'], 'nickname': 'UpPredator'}
+nickname quad {'piece': 'bishop', 'piece_quad': 7, 'plane': 'Downward', 'plane_quad': 1, 'ray_pair': ['RFD', 'LFD'], 'nickname': 'DnPredator'}
+nickname quad {'piece': 'bishop', 'piece_quad': 13, 'plane': 'Leftward', 'plane_quad': 1, 'ray_pair': ['LBU', 'LFU'], 'nickname': 'LUpSling'}
+nickname quad {'piece': 'bishop', 'piece_quad': 21, 'plane': 'Rightward', 'plane_quad': 3, 'ray_pair': ['fore', 'LFD'], 'nickname': 'RDnSling'}
+
+quadMap.py smoke test passed.
+

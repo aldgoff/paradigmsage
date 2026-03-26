@@ -1,0 +1,200 @@
+{
+  "figures": [
+    {
+      "id": 16,
+      "filename": "Planes.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/Planes.png",
+      "caption": "Figure 16: The 13 Planes of 3D Chess",
+      "description": "There are three types of planes in 3D chess. *Orthogonal* for the rook (3); *horizontal*, *left vertical*, and *right vertical* (a). *Skew* for the bishop (4); *upward*, *downward*, *leftward*, and *rightward* (b). *Slant* for the duke (6): the *major* & *minor* cross pairs, the *upleft* & *downleft* cross pairs, and the *upright* & *downright* cross pairs (c). All left and right designators are from each players' perspective. Up and down designators indicate in which direction the plane approaches the opponent. Except for the horizontal, major, and minor planes, these designators are swapped between Black and White (shown). From the neutral point of view of this figure the duke minor plane is edge on; it has been rotated ever so slightly to make it visible."
+    },
+    {
+      "id": 17,
+      "filename": "RookPlane4Quads.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/RookPlane4Quads.png",
+      "caption": "Figure 17: Rook's Plane is Cut by Two Lines, Thus Four Quadrants",
+      "description": "A rook plane is cut by 2 lines yielding 4 quadrants. The black decorators are used to indicate the 4 rays that originate from the rook on KR5,4. The shape of an orthogonal plane is always an 8x8 square, independent of the rook's position."
+    },
+    {
+      "id": 18,
+      "filename": "RookOpposingQuads.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/RookOpposingQuads.png",
+      "caption": "Figure 18: Rook Opposing Quadrants in Horizontal Plane",
+      "description": "Each plane of the rook move contains four quadrants. Advancement squares of various sizes are shown for the horizontal plane in opposing quadrants for clarity. A 3x3 and a 4x4 advancement square are shown in (a) and a 2x2 and a 6x6 advancement square (extends off board) are shown in (b). The *single ghosted* rooks show the locations where the rook can make pure quadrant moves (60% opacity). The end tiles contain *double ghosted* rooks (30% opacity); including them implies a full quadrant move. Moves to end tiles are linear moves, not quadrant moves, and require at least one advancement rectangle to be unblocked."
+    },
+    {
+      "id": 19,
+      "filename": "RookPlanes.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/RookPlanes.png",
+      "caption": "Figure 19: Rook's Three Orthogonal Planes",
+      "description": "The 2D rook moves in two orthogonal lines (a). The 3D rook moves in three orthogonal planes (b). Planes intersect at the straight-line moves (black diamond inserts). Projection of the 3D rook move onto any face of the 3D board is the 2D rook move."
+    },
+    {
+      "id": 20,
+      "filename": "RookQuadSnapshots.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/RookQuadSnapshots.png",
+      "caption": "Figure 20: Rook Snapshots of a Quadrant Move in a Horizontal Plane",
+      "description": "A series of 5 snapshots (a) -- (e) showing each new perimeter of the 6x6 advancement square which must be empty of any other pieces for the rook to be able to advance to perimeter 5 (e). Each perimeter is two tiles larger than the previous one (3, 5, 7, 9, 11). Decorated red diamonds indicate tactically significant aspects of advancement squares; the line of solid black decorators represents the two rays, the open black decorators the sequence of apex tiles. Undecorated tiles (pure red tiles) indicate uninteresting interior tiles. All highlight diamonds are slightly smaller (very slightly) than a tile so the underlying tile's color (black or white) can peek through. (Zooming on supported platforms makes this more useful.)"
+    },
+    {
+      "id": 21,
+      "filename": "RookQuadrantVertical.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/RookQuadrantVertical.png",
+      "caption": "Figure 21: Rook Snapshots of a Pure Quadrant Move in a Vertical Plane",
+      "description": "(Facing page.) Three snapshots (a) - (c) of a rook making a pure quadrant move in the upward quadrant of the left vertical plane are shown, which happens to extend off the board. The ghost rooks indicate pure and full quadrant moves, but also that a piece may not move off the board. Note the addition of the apex decorators."
+    },
+    {
+      "id": 22,
+      "filename": "RookLinearSnapshot.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/RookLinearSnapshot.png",
+      "caption": "Figure 22: Rook Snapshots of Linear Move in Horizontal Plane",
+      "description": "Three snapshots (a) -- (c) of a rook making a linear move are shown in the horizontal plane only. Because the king is in the direct line of this move, it blocks both planes (vertical plane not shown). Note the use of the new two black diamond decorator to indicate the sequence of end tiles along which a linear move occurs."
+    },
+    {
+      "id": 23,
+      "filename": "RookLinear_HR.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/RookLinear_HR.png",
+      "caption": "Figure 23: Rook Linear Move in Two Planes",
+      "description": "Rook makes a linear move to the ghost rook location but falls short of putting the king in check. The two quadrants in each plane form the pair of advancement rectangles, one of which must be unblocked for the linear move to be legal. They can be, and typically are, blocked at different distances, as shown here. The vertical plane is blocked by the knight to a 3x5 advancement rectangle, while the horizontal plane is blocked by the bishop to a 5x9 advancement rectangle (which of necessity extends off the board). Note that the end tile of the linear move at perimeter 3 has a single black diamond decorator. This decorator shows that the linear move is now unblocked in only plane. Note also that the apex decorator has been added to all four quadrants."
+    },
+    {
+      "id": 24,
+      "filename": "RookShape.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/RookShape.png",
+      "caption": "Figure 24: Rook Shape",
+      "description": "From the corner of the board the rook's move outlines a cube, elongated on a physical board. Thus, the shape chosen for the rook is an elongated cube and alludes to its move."
+    },
+    {
+      "id": 25,
+      "filename": "BishopForwardPlanes.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/BishopForwardPlanes.png",
+      "caption": "Figure 25: Bishop Forward Planes",
+      "description": "The two *forward planes* for a bishop in the center of the board (K5,4) are shown. The three straight lines in each plane are indicated with black diamond decorators (apex tiles have been suppressed for clarity). These two planes intersect in a diagonal line perpendicular to the two players. As in 2D the bishop is confined to the color of the tile it starts on."
+    },
+    {
+      "id": 26,
+      "filename": "BishopOutwardPlanes.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/BishopOutwardPlanes.png",
+      "caption": "Figure 26: Bishop Outward Planes",
+      "description": "The two *outward planes* for a bishop in the center of the board (K5,4) are shown. The three straight lines in each plane are shown with black diamond decorators (apex tiles have been suppressed for clarity). These two planes intersect in a diagonal line which extends between the players."
+    },
+    {
+      "id": 27,
+      "filename": "Planes_Bishop.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/Planes_Bishop.png",
+      "caption": "Figure 27: The Four Skew Planes of the Bishop",
+      "description": "Shown are the four skew planes of the bishop inside a cubical wire fame rendition of the 3D chess board. *Upward* and *downward* are the *forward* planes, *leftward* and *rightward* are the *outward* planes. Names are from White's perspective (right vertical edge)."
+    },
+    {
+      "id": 28,
+      "filename": "BishopPlaneQuads.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/BishopPlaneQuads.png",
+      "caption": "Figure 28: Bishop Plane is Cut by Three Lines, thus Six Quadrants",
+      "description": "A bishop plane is cut by 3 lines yielding 6 quadrants. The black decorators are used to indicate the 6 rays that originate from the bishop on K4,5. The shape of a skew plane can be either an irregular hexagon (as in this figure) or an equilateral triangle, it depends on the position of the bishop."
+    },
+    {
+      "id": 29,
+      "filename": "BishopAlt_QuadsOdd.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/BishopAlt_QuadsOdd.png",
+      "caption": "Figure 29: Bishop Alternating Quadrants in Right Outward Plane (1, 3, 5)",
+      "description": "Three alternating quadrants in White's rightward plane are shown (K3,4). Starting at the top and advancing clockwise the advancement squares are of size 2x2, 3x3 and 4x4. Ghost bishops indicate where on the perimeter of these three advancement squares the bishop can advance to as a pure quadrant move, double ghosted as a full quadrant move (the end tiles)."
+    },
+    {
+      "id": 30,
+      "filename": "BishopAlt_QuadsEven.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/BishopAlt_QuadsEven.png",
+      "caption": "Figure 30: Bishop Alternating Quadrants in Right Outward Plane (2, 4, 6)",
+      "description": "The other three alternating quadrants in White's rightward plane are shown (K3,4). Starting at the right and advancing clockwise the advancement squares are of size 2x2, 3x3 and 4x4. Ghost bishops indicate where on the perimeter of these three advancement squares the bishop can advance to as a pure quadrant move, double ghosted as a full quadrant move (the end tiles)."
+    },
+    {
+      "id": 31,
+      "filename": "BishopProjection.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/BishopProjection.png",
+      "caption": "Figure 31: Bishop Projection of 3D Move onto 2D Orthogonal Planes",
+      "description": "Projection of the 3D bishop move is the 2D bishop move (a). One forward and one outward plane project onto horizontal planes and vertical planes, in this example the right vertical planes (b). Ghost bishops are on the left most right vertical plane (White's point of view). On the left vertical planes, the projection is two parallel lines, which are marked with yellow stars in the outer left face of the board (all from White's perspective)."
+    },
+    {
+      "id": 32,
+      "filename": "BishopQuadSnapshots55AB.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/BishopQuadSnapshots55AB.png",
+      "caption": "Figure 32: Bishop Snapshots of Quadrant Move in a Rightward Plane (2x2 & 3x3)",
+      "description": "Snapshots of White's bishop advancing into the lower forward quadrant of the rightward plane from its home position (KR1,1) (a) -- (b). Black diamond decorators indicate tiles on the inner edges of the advancement square. The sequence of apex tiles is indicated with hollow black diamond decorators. Ghosted and double ghosted bishops are on the respective perimeter tiles for these quadrants. The yellow rhombi highlight how the bishop move is a distorted advancement square, but perimeters still grow by the same mathematical law."
+    },
+    {
+      "id": 33,
+      "filename": "BishopQuadSnapshots55CD.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/BishopQuadSnapshots55CD.png",
+      "caption": "Figure 33: Bishop Snapshots of Quadrant Move in a Rightward Plane (4x4 & 5x5)",
+      "description": "Continuation of previous figure; snapshots of White's bishop advancing still further into the lower forward quadrant of the rightward plane[^17] (c) -- (d). Ghosted and double ghosted bishops are on the respective perimeter tiles for these quadrants. The yellow rhombi highlight how the bishop move is a distorted advancement square, but perimeters still grow by the same mathematical law. The empty piece trays on each side may help keep visual alignment between the series of snapshots, particularly for such continuation figures."
+    },
+    {
+      "id": 34,
+      "filename": "BishopLinearShapshots55C_04.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/BishopLinearShapshots55C_04.png",
+      "caption": "Figure 34: Bishop Snapshots of Linear Move in Rightward Plane (2x3 & 3x5)",
+      "description": "This (a) -- (b) and the next figure (c) show three snapshots of a bishop linear move in the outward plane for White's white bishop (K2,1) eventually advancing to K5,4. Only the rightward plane is shown. Note that the rook (K6,5) will eventually block advances in both planes."
+    },
+    {
+      "id": 35,
+      "filename": "BishopLinearShapshots7AB_04.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/BishopLinearShapshots7AB_04.png",
+      "caption": "Figure 35: Bishop Snapshots of Linear Move in Rightward Plane (4x7)",
+      "description": "This is the 3rd snapshot of a bishop making a linear advance from K2,1 ultimately blocked by the rook at K6,5 (c). Since it is in line with the linear move, it blocks advance in both planes, but for clarity only one plane is shown. As for the rook, the linear move is indicated with double diamond decorators indicating that it is moving in two planes. The so-called advancement rectangle of a bishop linear move is distorted because of the rhombus shape of its advancement squares."
+    },
+    {
+      "id": 36,
+      "filename": "BishopLinearForwardPlanes.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/BishopLinearForwardPlanes.png",
+      "caption": "Figure 36: Bishop Linear Move in Two Forward Planes",
+      "description": "At first glance it appears that White's bishop is putting Black's king in check with a linear move along the forward planes (toward the viewer), but the king is on the perimeters of four 5x5 advancement squares, paired up in two planes for two 5x9 advancement rectangles. Since, the knight (KR level) blocks the attack in the upward plane to a 3x3 advancement square, and the rook (QR level) blocks the attack in the downward plane to a 4x4 advancement square, the king is not actually in check. Note the artwork trick where the king and ghost bishop are offset sideways in the tiles, so both are visible."
+    },
+    {
+      "id": 37,
+      "filename": "BishopLinearOutwardPlanes.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/BishopLinearOutwardPlanes.png",
+      "caption": "Figure 37: Bishop Linear Move in Two Outward Planes",
+      "description": "Same situation as in the previous figure, but with the linear move along two outward planes; knight (KR level) blocks the attack in the leftward plane to a 3x3 advancement square, while the rook (QR level) blocks the attack in the rightward plane to a 4x4 advancement square. The ghost bishop shows the farthest legal move the bishop can make in this direction. The ghost bishop partially hides the offset diamond decorator that indicates that the bishop at this point has been reduced to traveling in only one plane. As before, the Black king is not actually in check."
+    },
+    {
+      "id": 38,
+      "filename": "BishopLinearFOPlanes.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/BishopLinearFOPlanes.png",
+      "caption": "Figure 38: Bishop Linear Move in Forward and Outward Plane",
+      "description": "The bishop at first appears to have Black's king in check with a linear move along the downward and rightward planes, but the king is just out of reach. White's attack in the downward plane is blocked by the knight (KB level) to a 3x3 advancement square and in the rightward plane its attack is blocked by the rook (Q level) to a 4x4 advancement square."
+    },
+    {
+      "id": 39,
+      "filename": "BishopShape.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/BishopShape.png",
+      "caption": "Figure 39: Bishop Shape",
+      "description": "From a corner of the board, the bishop can move in only three planes, each with the shape of an equilateral triangle. The three triangles form three sides of an equilateral tetrahedron. Thus, the shape chosen for the bishop is an elongated tetrahedron and alludes to its move."
+    },
+	{
+	  "id": 40,
+	  "filename": "Planes_Duke.png",
+	  "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/Planes_Duke.png",
+	  "caption": "Figure 40: The Six Duke Slant Planes",
+	  "description": "The six slant planes of the duke shown in wireframed cubes."
+	},
+	{
+	  "id": 41,
+	  "filename": "Planes_Cross_Planes.png",
+	  "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/Planes_Cross_Planes.png",
+	  "caption": "Figure 41: The Three Pairs of Duke Cross Planes",
+	  "description": "The six slant planes of the duke shown in pairs, the three sets of cross planes."
+	},
+	{
+	  "id": 42,
+	  "filename": "DukeMetallicity_02.png",
+	  "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/DukeMetallicity_02.png",
+	  "caption": "Figure 42: Duke Colors & Gold Tiles Primary Slant Plane (32 of the 64 Metal Tiles)",
+	  "description": "Tiles are color coded with bishop colors on their surfaces and duke colors on their edges. Dukes start and stay on metal slant planes; either gold or silver tiles. They can never reach the gem planes. To help deduce duke colors without cluttering the board, the gold tiles in the primary plane are marked with black dots. Silver tiles are the unmarked tiles diagonally in between the gold ones. Metal tiles are also black and white tiles but alternate every other level. Duke colors alternate orthogonally and diagonally. KR1,1 is a white gold tile; ruby to the right, jade to the left."
+	},
+	{
+	  "id": 43,
+	  "filename": "DukeCrossPairsVertical.png",
+	  "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/DukeCrossPairsVertical.png",
+	  "caption": "Figure 43: Duke Vertical Cross Planes (Major and Minor)",
+	  "description": "The *vertical cross planes* intersect in a vertical line. *Major* planes extend from player to player, while *minor* plans are perpendicular to the players. The largest major plane (shown here) contains the starting lineup of the pieces. It is also called the *primary* plane. The single *apex* *tiles* (single open diamonds) are all in a horizontal plane, while the *duplex* *tiles* (double open diamonds) align along the vertical intersection line of the vertical cross planes skipping every other horizontal plane. Duke is on K4,4; notice its missing image in the White piece tray."
+	}
+  ]
+}

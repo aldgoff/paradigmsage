@@ -1,0 +1,119 @@
+{
+  "quads_module": {
+    "planeQuadTable": [
+      { "plane": "Horizontal", "piece": "rook",   "global_range": [ 1, 4], "piece_range": [ 1, 4], "plane_range": [1,4],
+        "quads": [
+          { "globalQ": 1, "pieceQ": 1, "planeQ": 1, "rayPair": ["left_fore", "right_fore"], "nickname": "Forward" },
+          { "globalQ": 2, "pieceQ": 2, "planeQ": 2, "rayPair": ["right_fore","left_back"],  "nickname": "Right" },
+          { "globalQ": 3, "pieceQ": 3, "planeQ": 3, "rayPair": ["left_back", "right_back"], "nickname": "Backward" },
+          { "globalQ": 4, "pieceQ": 4, "planeQ": 4, "rayPair": ["right_back","left_fore"],  "nickname": "Left" }
+        ]
+        },
+      { "plane": "Left",       "piece": "rook",   "global_range": [ 5, 8], "piece_range": [ 5, 8], "plane_range": [1,4],
+        "quads": [
+          { "globalQ": 5, "pieceQ": 5, "planeQ": 1, "rayPair": ["up",        "right_fore"] },
+          { "globalQ": 6, "pieceQ": 6, "planeQ": 2, "rayPair": ["right_fore","down"] },
+          { "globalQ": 7, "pieceQ": 7, "planeQ": 3, "rayPair": ["down",      "right_back"] },
+          { "globalQ": 8, "pieceQ": 8, "planeQ": 4, "rayPair": ["right_back","up"] }
+          ]
+        },
+      { "plane": "Right",      "piece": "rook",   "global_range": [ 9,12], "piece_range": [ 9,12], "plane_range": [1,4], 
+        "quads": [ 
+          { "globalQ":  9, "pieceQ":  9, "planeQ": 1, "rayPair": ["up",       "left_fore"] }, 
+          { "globalQ": 10, "pieceQ": 10, "planeQ": 2, "rayPair": ["left_fore","down"] }, 
+          { "globalQ": 11, "pieceQ": 11, "planeQ": 3, "rayPair": ["down",     "left_back"] }, 
+          { "globalQ": 12, "pieceQ": 12, "planeQ": 4, "rayPair": ["left_back","up"] } 
+          ] 
+        },
+      { "plane": "Upward",     "piece": "bishop", "global_range": [13,18], "piece_range": [ 1, 6], "plane_range": [1,6],
+        "quads": [
+          { "globalQ": 13, "pieceQ": 1, "planeQ": 1, "rayPair": ["LFU",  "RFU"], "nickname": "UpPredator" },
+          { "globalQ": 14, "pieceQ": 2, "planeQ": 2, "rayPair": ["RFU",  "right"] },
+          { "globalQ": 15, "pieceQ": 3, "planeQ": 3, "rayPair": ["right","RBD"] },
+          { "globalQ": 16, "pieceQ": 4, "planeQ": 4, "rayPair": ["RBD",  "LBD"], "nickname": "DN" },
+          { "globalQ": 17, "pieceQ": 5, "planeQ": 5, "rayPair": ["LBD",  "left"] },
+          { "globalQ": 18, "pieceQ": 6, "planeQ": 6, "rayPair": ["left", "LFU"] }
+        ]
+        },
+      { "plane": "Downward",   "piece": "bishop", "global_range": [19,24], "piece_range": [ 7,12], "plane_range": [1,6],
+        "quads": [
+          { "globalQ": 19, "pieceQ":  7, "planeQ": 1, "rayPair": ["LFD",  "RFD"], "nickname": "DnPredator" },
+          { "globalQ": 20, "pieceQ":  8, "planeQ": 2, "rayPair": ["RFD",  "right"] },
+          { "globalQ": 21, "pieceQ":  9, "planeQ": 3, "rayPair": ["right","RBU"] },
+          { "globalQ": 22, "pieceQ": 10, "planeQ": 4, "rayPair": ["RBU",  "LBU"], "nickname": "UP" },
+          { "globalQ": 23, "pieceQ": 11, "planeQ": 5, "rayPair": ["LBU",  "left"] },
+          { "globalQ": 24, "pieceQ": 12, "planeQ": 6, "rayPair": ["left", "LFD"] }
+          ]
+        },
+      { "plane": "Leftward",   "piece": "bishop", "global_range": [25,30], "piece_range": [13,18], "plane_range": [1,6],
+        "quads": [
+          { "globalQ": 25, "pieceQ": 13, "planeQ": 1, "rayPair": ["LBU", "LFU"],  "nickname": "LeftTop" },
+          { "globalQ": 26, "pieceQ": 14, "planeQ": 2, "rayPair": ["LFU", "fore"], "nickname": "LUpSling" },
+          { "globalQ": 27, "pieceQ": 15, "planeQ": 3, "rayPair": ["fore","RFD"],  "nickname": "LDnSling" },
+          { "globalQ": 28, "pieceQ": 16, "planeQ": 4, "rayPair": ["RFD", "RBD"] },
+          { "globalQ": 29, "pieceQ": 17, "planeQ": 5, "rayPair": ["RBD", "back"] },
+          { "globalQ": 30, "pieceQ": 18, "planeQ": 6, "rayPair": ["back","LBU"] }
+          ]
+        },
+      { "plane": "Rightward",  "piece": "bishop", "global_range": [31,36], "piece_range": [19,24], "plane_range": [1,6],
+        "quads": [
+          { "globalQ": 31, "pieceQ": 19, "planeQ": 1, "rayPair": ["RBU", "RFU"],  "nickname": "RightTop" } ,
+          { "globalQ": 32, "pieceQ": 20, "planeQ": 2, "rayPair": ["RFU", "fore"], "nickname": "RUpSling" },
+          { "globalQ": 33, "pieceQ": 21, "planeQ": 3, "rayPair": ["fore","LFD"],  "nickname": "RDnSling" },
+          { "globalQ": 34, "pieceQ": 22, "planeQ": 4, "rayPair": ["LFD", "LBD"] },
+          { "globalQ": 35, "pieceQ": 23, "planeQ": 5, "rayPair": ["LBD", "back"] },
+          { "globalQ": 36, "pieceQ": 24, "planeQ": 6, "rayPair": ["back","RBU"] }
+          ]
+        },
+      { "plane": "Major",      "piece": "duke",   "global_range": [37,40], "piece_range": [ 1, 4], "plane_range": [1,4],
+        "quads": [
+          { "globalQ": 37, "pieceQ": 1, "planeQ": 1, "rayPair": ["fore_down","fore_up"],   "quadType": "edge", "nickname": "Fore" },
+          { "globalQ": 38, "pieceQ": 2, "planeQ": 2, "rayPair": ["fore_up",  "back_up"],   "quadType": "face", "nickname": "Up" },
+          { "globalQ": 39, "pieceQ": 3, "planeQ": 3, "rayPair": ["back_up",  "back_down"], "quadType": "edge", "nickname": "Aft" },
+          { "globalQ": 40, "pieceQ": 4, "planeQ": 4, "rayPair": ["back_down","fore_down"], "quadType": "face", "nickname": "Down" }
+          ]
+        },
+      { "plane": "Minor",      "piece": "duke",   "global_range": [41,44], "piece_range": [ 5, 8], "plane_range": [1,4],
+        "quads": [
+          { "globalQ": 41, "pieceQ": 5, "planeQ": 1, "rayPair": ["left_up",   "right_up"],   "quadType": "face", "nickname": "Bridge" },
+          { "globalQ": 42, "pieceQ": 6, "planeQ": 2, "rayPair": ["right_up",  "right_down"], "quadType": "edge", "nickname": "Starboard" },
+          { "globalQ": 43, "pieceQ": 7, "planeQ": 3, "rayPair": ["right_down","left_down"],  "quadType": "face", "nickname": "Keel" },
+          { "globalQ": 44, "pieceQ": 8, "planeQ": 4, "rayPair": ["left_down", "left_up"],    "quadType": "edge", "nickname": "Port"}
+          ]
+        },
+      { "plane": "Upleft",     "piece": "duke",   "global_range": [45,48], "piece_range": [ 9,12], "plane_range": [1,4],
+        "quads": [
+          { "globalQ": 45, "pieceQ":  9, "planeQ": 1, "rayPair": ["left_up",   "fore_up"],    "quadType": "edge" },
+          { "globalQ": 46, "pieceQ": 10, "planeQ": 2, "rayPair": ["fore_up",   "right_down"], "quadType": "face" },
+          { "globalQ": 47, "pieceQ": 11, "planeQ": 3, "rayPair": ["right_down","back_down"],  "quadType": "edge" },
+          { "globalQ": 48, "pieceQ": 12, "planeQ": 4, "rayPair": ["back_down", "left_up"],    "quadType": "face" }
+          ]
+        },
+      { "plane": "Downleft",   "piece": "duke",   "global_range": [49,52], "piece_range": [13,16], "plane_range": [1,4],
+        "quads": [
+          { "globalQ": 49, "pieceQ": 13, "planeQ": 1, "rayPair": ["left_down","fore_down"], "quadType": "edge" },
+          { "globalQ": 50, "pieceQ": 14, "planeQ": 2, "rayPair": ["fore_down","right_up"],  "quadType": "face" },
+          { "globalQ": 51, "pieceQ": 15, "planeQ": 3, "rayPair": ["right_up", "back_up"],   "quadType": "edge" },
+          { "globalQ": 52, "pieceQ": 16, "planeQ": 4, "rayPair": ["back_up",  "left_down"], "quadType": "face" }
+          ]
+        },
+      { "plane": "Upright",    "piece": "duke",   "global_range": [53,56], "piece_range": [17,20], "plane_range": [1,4],
+        "quads": [
+          { "globalQ": 53, "pieceQ": 17, "planeQ": 1, "rayPair": ["right_up", "fore_up"],   "quadType": "edge" },
+          { "globalQ": 54, "pieceQ": 18, "planeQ": 2, "rayPair": ["fore_up",  "left_down"], "quadType": "face" },
+          { "globalQ": 55, "pieceQ": 19, "planeQ": 3, "rayPair": ["left_down","back_down"], "quadType": "edge" },
+          { "globalQ": 56, "pieceQ": 20, "planeQ": 4, "rayPair": ["back_down","right_up"],  "quadType": "face" }
+          ]
+        },
+      { "plane": "Downright",  "piece": "duke",   "global_range": [57,60], "piece_range": [21,24], "plane_range": [1,4],
+        "quads": [
+          { "globalQ": 57, "pieceQ": 21, "planeQ": 1, "rayPair": ["right_down","fore_down"],  "quadType": "edge" },
+          { "globalQ": 58, "pieceQ": 22, "planeQ": 2, "rayPair": ["fore_down", "left_up"],    "quadType": "face" },
+          { "globalQ": 59, "pieceQ": 23, "planeQ": 3, "rayPair": ["left_up",   "back_up"],    "quadType": "edge" },
+          { "globalQ": 60, "pieceQ": 24, "planeQ": 4, "rayPair": ["back_up",   "right_down"], "quadType": "face" }
+          ]
+        }
+    ]
+  }
+}
+

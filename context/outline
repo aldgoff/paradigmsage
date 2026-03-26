@@ -6,33 +6,89 @@
 │   └── default.md
 ├── assets
 │   ├── 3dc
-│   │   └── js
-│   │       ├── controller
-│   │       │   ├── _tbd.md
-│   │       │   └── controller.js
-│   │       ├── foundation
-│   │       │   ├── _tbd.md
-│   │       │   ├── colors
-│   │       │   ├── coords
-│   │       │   └── rays
-│   │       ├── geometry
-│   │       │   └── _tbd.md
-│   │       ├── main.js
-│   │       ├── model
-│   │       │   ├── _tbd.md
-│   │       │   ├── model.js
-│   │       │   └── notation
-│   │       │       └── notation.js
-│   │       ├── tests
-│   │       │   ├── _tbd.md
-│   │       │   ├── foundation
-│   │       │   ├── geometry
-│   │       │   ├── integration
-│   │       │   ├── model
-│   │       │   └── tests.js
-│   │       └── view
-│   │           ├── _tbd.md
-│   │           └── view.js
+│   │   ├── controller
+│   │   │   ├── _tbd.md
+│   │   │   └── controller.js
+│   │   ├── dev
+│   │   │   ├── devNotes.md
+│   │   │   └── symbols.js
+│   │   ├── foundation
+│   │   │   ├── _tbd.md
+│   │   │   ├── colors
+│   │   │   │   ├── colors.js
+│   │   │   │   ├── colors.json
+│   │   │   │   ├── colors.md
+│   │   │   │   ├── colors.out
+│   │   │   │   └── colors.py
+│   │   │   ├── coords
+│   │   │   │   ├── coords.js
+│   │   │   │   ├── coords.json
+│   │   │   │   ├── coords.md
+│   │   │   │   └── coords.py
+│   │   │   ├── rays
+│   │   │   │   ├── rays.js
+│   │   │   │   ├── rays.json
+│   │   │   │   ├── rays.md
+│   │   │   │   ├── rays.out
+│   │   │   │   └── rays.py
+│   │   │   └── unitCells
+│   │   │       ├── unitCells.js
+│   │   │       ├── unitCells.json
+│   │   │       └── unitCells.md
+│   │   ├── geometry
+│   │   │   ├── _tbd.md
+│   │   │   ├── Obsolete
+│   │   │   │   ├── quads.py
+│   │   │   │   ├── quads.table.json
+│   │   │   │   ├── quads.table.py
+│   │   │   │   └── run_quads.sh
+│   │   │   ├── planes.js
+│   │   │   ├── planes.json
+│   │   │   ├── planes.md
+│   │   │   ├── quadMap.json
+│   │   │   ├── quadMap.md
+│   │   │   ├── quadMap.out
+│   │   │   ├── quadMap.py
+│   │   │   ├── quads.js
+│   │   │   ├── quads.json
+│   │   │   ├── quads.md
+│   │   │   ├── quads1.json
+│   │   │   ├── quads1.md
+│   │   │   ├── quads1.out
+│   │   │   └── quads1.py
+│   │   ├── js
+│   │   ├── main.js
+│   │   ├── model
+│   │   │   ├── _tbd.md
+│   │   │   ├── grammar.js
+│   │   │   ├── model.js
+│   │   │   └── notation
+│   │   │       └── notation.js
+│   │   ├── templates
+│   │   │   ├── module.js
+│   │   │   ├── module.json
+│   │   │   └── module.md
+│   │   ├── tests
+│   │   │   ├── _tbd.md
+│   │   │   ├── core
+│   │   │   │   ├── asserts.js
+│   │   │   │   └── invariants.js
+│   │   │   ├── foundation
+│   │   │   │   ├── colors.test.js
+│   │   │   │   ├── coords.test.js
+│   │   │   │   ├── rays.test.js
+│   │   │   │   └── unitCells.test.js
+│   │   │   ├── geometry
+│   │   │   │   ├── planes.test.js
+│   │   │   │   └── quads.test.js
+│   │   │   ├── integration
+│   │   │   ├── model
+│   │   │   ├── templates
+│   │   │   │   └── module.test.js
+│   │   │   └── tests.js
+│   │   └── view
+│   │       ├── _tbd.md
+│   │       └── view.js
 │   ├── jsconfig.json
 │   └── qt3
 │       └── js
@@ -213,7 +269,19 @@
 │   │   ├── 12ls
 │   │   │   └── JPC06_2_12ls-Paper_6.pdf
 │   │   ├── 3dc
-│   │   │   └── Dis3D Chess Ch-1 188.pdf
+│   │   │   ├── 3DCB_L1_Foundations_clean.md
+│   │   │   ├── 3DCB_L2a_PRB_clean.md
+│   │   │   ├── 3DCB_L2b_Duke_clean.md
+│   │   │   ├── 3DCB_L3_QN.md
+│   │   │   ├── 3DCB_L4_Stack.md
+│   │   │   ├── congruentRules.txt
+│   │   │   ├── Dis3D Chess Ch-1 188.pdf
+│   │   │   ├── Dis3D Chess TOC 188.pdf
+│   │   │   ├── figsManifest_L1_C1_3.json
+│   │   │   ├── figsManifest_L2_C4_6.json
+│   │   │   ├── figsManifest_L2_C7.json
+│   │   │   ├── figsManifest_L3_C8_9.json
+│   │   │   └── figsManifest_L4_C10.json
 │   │   ├── NLL
 │   │   │   ├── CTB alias
 │   │   │   ├── JPC06NLL1.pdf
@@ -294,11 +362,11 @@
 │   │   │   └── QT3-AJP-2006.pdf
 │   │   └── ssi
 │   │       └── JPC06_3_SSI-Paper_5.pdf
-│   └── qt3
+│   └── qt3-poc
 │       ├── js
 │       │   └── tests
 │       └── poc
 │           └── poc.js
 └── themes
 
-69 directories, 232 files
+75 directories, 294 files

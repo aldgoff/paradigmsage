@@ -136,5 +136,24 @@
   * Castling permutations and constraints (through-check cases)
   * Exact coordinate parameterization for duke/knight
 
-# End
+# V. Development Lessons Learned.
+
+ ## Layer Architecture (Enforced)
+  The system is partitioned into:
+  - Foundation → defines coordinate systems, rays, equivalence classes
+  - Geometry   → defines manifolds and advancement structures
+  - Model      → defines piece behavior and game rules
+  - 
+  - No trajectory-based reasoning exists above the geometry layer.
+  - The model layer must not encode spatial mechanics.
+
+ ## Testing Discipline
+  - Tests follow: run() → test_* → assert → report → finalReport
+  - Tests are additive and never rewritten
+  - Expected values must derive from board specifications
+  - No hardcoded assumptions about board size or anchor
+
+ ## Specification Primacy
+  - All coordinate behavior is defined by board specification (spec).
+  - Any logic that depends on board size, anchor, or level mapping must reference spec, not constants.
 

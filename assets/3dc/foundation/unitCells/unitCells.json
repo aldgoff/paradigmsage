@@ -1,0 +1,36 @@
+{
+  "unitCells_module": {
+    "2D": {
+      "shape": "square",
+      "rayTypes": {
+        "side":   { "count": 4, "axisChange": 1 },
+        "corner": { "count": 4, "axisChange": 2 }
+        },
+      "correlations": {
+        "side":   { "basePiece": "rook",   "lineType": "orthogonal" },
+        "corner": { "basePiece": "bishop", "lineType": "diagonal" }
+      },
+      "advancement": { 
+        "scale": 8,
+        "rank":  { "left":    [0, -1], "right":    [ 0,  1] },
+        "file":  { "forward": [1,  0], "backward": [-1,  0] },
+        "diag":  { "fore":    [1,  1], "aft":      [-1, -1] },
+        "slant": { "fore":    [1, -1], "aft":      [-1,  1] }
+      }
+    },
+    "3D": {
+      "shape": "cube",
+      "rayTypes": {
+        "face":   { "count":  6, "axisChange": 1 },
+        "edge":   { "count": 12, "axisChange": 2 },
+        "vertex": { "count":  8, "axisChange": 3 }
+        },
+      "correlations": {
+        "face":   { "basePiece": "rook",   "planeType": "orthogonal" },
+        "edge":   { "basePiece": "bishop", "planeType": "skew" },
+        "vertex": { "basePiece": "duke",   "planeType": "slant" }
+      }
+    }
+  }
+}
+

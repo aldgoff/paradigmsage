@@ -37,10 +37,12 @@
     git (CLI)
   VSC (modern code editor, integrated with markdown, git, etc.)
   Hugo server (local and via Pages)
+  ```    
     hugo server --disableFastRender --buildFuture
+  ```  
   Word (full featured content editor)
-  pandoc (convert Word to markdown)
-  Custom chatgpt (paradigmsage), tailored as a website development assistant
+    pandoc (convert Word to markdown)
+    Custom chatgpt (paradigmsage), tailored as a website development assistant
 
 ## Operational Notes
   Use custom AI to assist in web site architecture and development, not for content.
@@ -148,7 +150,17 @@ Used WordPress to make these changes.
 
 
 ## History
+ ### Week 1:
   3/16/26 - Transfer DNS records from WordPress to Hugo.
+  3/17/26 - 3DC: directory architecture.
+  3/18/26 - 3DC: regression tests, port half of foundation/coords.py to coord.js.
+  3/19/26 - 3DC resolve coord and anchor ambiguity, port rest of coords, improve regression framework.
 
+ ### Week 2:
 
 Bookbub
+
+Sudden link failures in paradigmsage.com
+/Users/adgoff/Documents/Publish/WebSites/HugoExample/paradigmsage
+/Users/adgoff/Documents/Publish/WebSites/HugoExample/paradigmsage/static/assets/pop/act1/PD02-SelfReference_11.pdf
+

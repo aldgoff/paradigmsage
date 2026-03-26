@@ -1,0 +1,109 @@
+{
+  "figures": [
+    {
+      "id": 1,
+      "filename": "ParaRookMate_BW_BE.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/ParaRookMate_BW_BE.png",
+      "caption": "Figure 1: Single Rook Mate Endgame Cannot be Done with Straight-line Moves",
+      "description": "In 2D (a), a straight-line rook move cuts the board, so a rook and a king (White) can checkmate a lone king (Black) -- the most basic endgame scenario. In 3D (b), a straight-line rook move does *not* cut the board and so the mate algorithm fails -- doesn't feel like chess. What kind of a move would cut the board?"
+    },
+    {
+      "id": 2,
+      "filename": "ParaRookMateBE.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/ParaRookMateBE.png",
+      "caption": "Figure 2: Single Rook Mate Endgame Requires Planar Moves",
+      "description": "The orthogonal *lines* of the 2D rook move cut the 2D board into *four* disjoint *areas* (a). The orthogonal *planes* of the 3D rook move cut the 3D board into *eight* disjoint *volumes* (b). The single rook mate algorithm is now *dimension agnostic*. Planes intersect at the straight-line moves (black diamond inserts). A projection of the 3D rook move onto a face of the board is the 2D rook move."
+    },
+    {
+      "id": 3,
+      "filename": "ParaDualPathAttack_BW.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/ParaDualPathAttack_BW.png",
+      "caption": "Figure 3: Rook's Dual Path Attack on a Knight -- Rejected",
+      "description": "If a ray pair defines a plane, then a planar move might be regarded as two straight-line moves at once; first down one ray, then down the other. However, symmetry implies both traversal orders must be allowed. That means an attack occurs along *two* paths; the rook attacks both down the 3x6 path and down the 6x3 path. Black cannot defend in a single move. Blocking busted; there go the gambits, there goes the midgame -- doesn't feel like chess."
+    },
+    {
+      "id": 4,
+      "filename": "ParaDualPathCover.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/ParaDualPathCover.png",
+      "caption": "Figure 4: Rook's Outrageous STAB of 39 for Dual Path Move - Rejected",
+      "description": "A rook allowed to move along dual paths can attack or defend 13 other pieces in each plane. Shown is one rook near the center of a horizontal plane. For clarity only one dual path is highlighted. Similar diagrams would apply for both vertical planes (not shown). The ghost rooks show the moves legal under the dual path rule."
+    },
+    {
+      "id": 5,
+      "filename": "ParaRAM_BW.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/ParaRAM_BW.png",
+      "caption": "Figure 5: The Rectangular Advancement Manifold (RAM) -- Rejected",
+      "description": "White's rook is attacking the Black knight via a *rectangular advancement manifold* (*RAM* for short). There can be no other pieces in the 18 tiles that make up this RAM. Black can block this attack with a single move by moving another piece onto *any* of the 16 empty tiles marked in black."
+    },
+    {
+      "id": 6,
+      "filename": "ParaRamStab_BW.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/ParaRamStab_BW.png",
+      "caption": "Figure 6: RAM STAB -- Rejected",
+      "description": "Under the RAM rule, the rook STAB value is still 39. Ghost rooks show the 13 locations that can be simultaneously covered by the rook under the RAM rule in one plane. None are straight-line moves, so the other two planes also support 13 targets. For clarity, only 3 rectangular advancement manifolds are shown (horizontal plane); ghost rooks are segregated for better visibility (a) -- (c)."
+    },
+    {
+      "id": 7,
+      "filename": "ParaAdvSqSnapshots.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/ParaAdvSqSnapshots.png",
+      "caption": "Figure 7: The Advancement Square",
+      "description": "A series of 5 snapshots (a) -- (e) showing each new perimeter of the 6x6 advancement square which must be empty of any other pieces for the White rook to be attacking the Black knight. Each perimeter is two tiles larger than the previous one (3, 5, 7, 9, 11). The line of red diamonds with black inserts represent the two rays (the inner edges of the advancement square). The presence of the knight on the perimeter (outer edges of the advancement square) prevents the rook from moving to those tiles (or beyond); its only legal move on that perimeter is to capture the knight. All the diamonds are slightly smaller than a tile so the underlying tile's color (black or white) can peek through."
+    },
+    {
+      "id": 8,
+      "filename": "ParaRookVerticalCheck.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/ParaRookVerticalCheck.png",
+      "caption": "Figure 8: Three Snapshots Showing King in Check by Rook in Left Vertical Plane",
+      "description": "(Facing page.) Three snapshots (a) - (c) proving the Black king is in check by the White rook via a left vertical advancement square. Note how part of the advancement square extends off the board."
+    },
+    {
+      "id": 9,
+      "filename": "ParaAdvSqQuadsRook_B.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/ParaAdvSqQuadsRook_B.png",
+      "caption": "Figure 9: The Four Quadrants of the Rook Move",
+      "description": "The four quadrants are shown in two pairs for clarity. A 3x3 and a 4x4 advancement square (a), and a 2x2 and a 6x6 advancement square (b). The tiles which the rook can move to on the respective perimeters are shown with ghost rooks. Note that the 6x6 advancement square extends off the board, so the ghost rooks on those tiles are not shown. Note also the subtle implication that linear moves will need to be dealt with as special cases, for the tiles under them are black not red."
+    },
+    {
+      "id": 10,
+      "filename": "ParaAdvRectRook_H.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/ParaAdvRectRook_H.png",
+      "caption": "Figure 10: Rook's Linear Move",
+      "description": "In each plane, a linear move is ambiguous in which quadrant it advances in, so both advancement squares must be empty for the move to be unblocked in that plane. Three snapshots (a) -- (c) of the rook's *advancement rectangle* are shown for the horizontal plane."
+    },
+    {
+      "id": 11,
+      "filename": "ParaLinearMoveRook_HV.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/ParaLinearMoveRook_HV.png",
+      "caption": "Figure 11: Linear Rook Move in Horizontal and Vertical Planes",
+      "description": "The two advancement rectangles for a linear rook move are shown. The vertical one is blocked by the knight, the horizontal one blocked by the pawn. The tile containing the ghost rook (king level) can only be reached in the horizontal plane, the first two linear tiles are reachable in both planes."
+    },
+    {
+      "id": 12,
+      "filename": "BoardShape.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/BoardShape.png",
+      "caption": "Figure 12: Board Shape",
+      "description": "If the 2D board is a square of squares, then the 3D board should be a cube of cubes. A square is the proper unit cell for 2D, a cube the proper unit cell for 3D. In any dimension, adjacent orthogonal unit cells alternate colors (white & black)."
+    },
+    {
+      "id": 13,
+      "filename": "AdjacentCells.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/AdjacentCells.png",
+      "caption": "Figure 13: Base Pieces Derive from Adjacent Unit Cells",
+      "description": "The base pieces derive from the topology of the board, a multi-dimensional array of unit cells. Each type of adjacent cell is connected by a ray of a different type, which can be ordered by the number of coordinates it changes. The unit cell of 2D is the square (a), it has two nearest neighbors; 4 connected by sides (rook), and 4 connected by corners (bishop). Two types of rays connect squares; side rays which change 1 coordinate, and corner rays which change 2 coordinates (a). The unit cell in 3D is the cube (b), it has 26 nearest neighbors; 6 connected by faces (rook), 12 connected by edges (bishop), and 8 connected by vertices (duke). Three types of rays connect cubes; face rays which change 1 coordinate, edge rays which change 2 coordinates, and vertex rays which change 3 coordinates. Red, green, and blue form the basis of a consistent color scheme."
+    },
+    {
+      "id": 14,
+      "filename": "PieceDesign.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/PieceDesign.png",
+      "caption": "Figure 14: 3D Chess Piece Design",
+      "description": "Each of the 3D chess pieces allude to how they move in 3D. From left to right they are; king, queen, rook, bishop, duke, knights (with opposite parity), stack (the combined bishop and duke), and the pawn. In this rendition, the basic shapes have been covered with a marbled surface."
+    },
+    {
+      "id": 15,
+      "filename": "StartingLineup.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/StartingLineup.png",
+      "caption": "Figure 15: Starting Lineup",
+      "description": "Opponents face each other on opposite extents of the board. The major pieces mirror each other around the royal pieces, pawns in front. The White king-side rook starts on a white tile. In 2D, they align along opposing sides (a), in 3D, they align along opposing vertical columns (b). Stack starts next to the royal pieces (bishop level). King is above the queen, so both queens start on white tiles. Pawns are on tile 2,2 (left, right; from each player's perspective) and promote only on the opponent's home column (8,8). The piece trays lie outside the board, serving to ID each level. On each level a thin border surrounds the center 4x4 grid of tiles; easier to visualize multi-level moves."
+    }
+  ]
+}

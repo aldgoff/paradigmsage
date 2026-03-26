@@ -1,0 +1,74 @@
+{
+  "figures": [
+    {
+      "id": 62,
+      "filename": "QueenOverlapTiles.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/QueenOverlapTiles.png",
+      "caption": "Figure 62: Queen Quark Attacks from Board Center to 60 Overlap Tiles",
+      "description": "All the queen *quark* moves from the center of the board; 24 *brook* tiles, 15 *q-tiles*, 9 *hotspots*, 12 *Feynman* tiles, for a total of 60 *overlap* tiles. Note the new decorators with nested diamonds; colors indicate the base piece that cover such tiles. 12 rook and 25 duke linear tiles are also shown."
+    },
+    {
+      "id": 63,
+      "filename": "QueenQuarkBrookQtiles.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/QueenQuarkBrookQtiles.png",
+      "caption": "Figure 63: Queen Quark (Alternating Brook and Q-tile Overlap Tiles)",
+      "description": "Combined diagram showing a queen advancing to alternating brook and q-tiles. The rook and bishop advancement manifolds are shown for an advance to the brook tile at Q4,4, and the duke advancement square is shown for an advance to the q-tile at Q5,5. Brook tiles alternate with the q-tiles down diagonal lines. Both are on the apex of a rook quadrant move, and on the end tile of a bishop linear move in two planes. The q-tile is also on the apex of a duke edge quadrant move at half the perimeter of the rook and bishop. The standard decorators are bordered in purple (royal color). To reduce clutter, queen decorators emphasize what *kind* of base piece over what *type* of tile, or number of manifolds for pure base piece attacks. Brook tile decorators have two nested diamonds, green and red, and the q-tile decorators have three nested diamonds (red, green, blue). The next subsections introduce hotspot and Feynman tiles, which are included i..."
+    },
+    {
+      "id": 64,
+      "filename": "QueenQuarkHotspots.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/QueenQuarkHotspots.png",
+      "caption": "Figure 64: Queen Quark (Alternating Hotspot & Rook Linear Tiles)",
+      "description": "Hotspot tiles are the duplex tiles of duke face quadrants at perimeter N and the linear tiles of rook linear moves at 2N. They are thus in *four* advancement manifolds. Hotspot tiles alternate with rook linear tiles down orthogonal lines. Shown are the rook advancement rectangles out to perimeter 4 and the pair of duke advancement squares in the upright and downright slant planes out to perimeter 2. The hotspot decorator consists of two nested diamonds, blue surrounded by red. For the queen, both rook and duke end tile decorators are replaced with the linear tile idiom, two inline diamonds for the rook, and three inline diamonds for the duke. Rook apex tile decorators are replaced with brook decorators. This substitution helps clarify the relationships between the overlap tiles."
+    },
+    {
+      "id": 65,
+      "filename": "QueenQuarkFeynmanTiles.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/QueenQuarkFeynmanTiles.png",
+      "caption": "Figure 65: Queen Quark (Feynman Tiles)",
+      "description": "Feynman tiles can be attacked as either a bishop or a duke, both quadrant moves. Feynman tiles come in pairs; on the 3N perimeter of a duke face quadrant move 1/3 of the way from end tile to dual apex tile and simultaneously on the bishop apex tile of 2N perimeter. Note also the existence of the other three overlap tiles; four brook tiles, four q-tiles, and three hotspot tiles."
+    },
+    {
+      "id": 66,
+      "filename": "QueenShapeQR11.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/QueenShapeQR11.png",
+      "caption": "Figure 66: Queen Shape",
+      "description": "The queen covers 289 tiles from a corner of the board. It's impressive, but chaotic. Pretty much any design shorter and shapelier than the king which alludes to her being able to move like any of the base pieces should do."
+    },
+    {
+      "id": 67,
+      "filename": "QueenPowerProjectionQ54.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/QueenPowerProjectionQ54.png",
+      "caption": "Figure 67: Queen Power Projection",
+      "description": "The queen covers 355 tiles from the center of the board. Purple bordered decorators are used to indicate hotspot and rook linear tiles, brook and q-tiles, duke linear tiles, Feynman, and bishop apex tiles, and finally rook, bishop, and duke body tiles."
+    },
+    {
+      "id": 68,
+      "filename": "KnightAntiQueen.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/KnightAntiQueen.png",
+      "caption": "Figure 68: Knight as the Anti-Queen (Queen Covered Tiles Within a 5^N Manifold)",
+      "description": "Shown are all the tiles a 2D queen can cover in a 5x5 square (a), and all the tiles a 3D queen can cover in a 5x5x5 cube (b). The tiles she can't cover (8 and 24) are precisely the tiles the knight can cover."
+    },
+    {
+      "id": 69,
+      "filename": "KnightDukeColors.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/KnightDukeColors.png",
+      "caption": "Figure 69: Knight Covers those Tiles the Queen Cannot in a 5^N Array",
+      "description": "The knight is the anti-queen. In 2D, he covers the 8 tiles in a 5x5 square the queen does not (a) and in 3D he covers the 24 tiles within a 5x5x5 cube which she does not (b). The knight changes *both* bishop and duke colors and it projects the 2D move onto each face of the 5x5x5 cube. Its move within a slant plane is its 2D move. The duke-colored board has been used and destination tiles raised; the knight changes to the other color in its current metallicity on adjacent levels, but changes to the other metallicity two levels away. Knight on a jade tile, changes to a ruby tile one level away, but to gold or silver tiles two levels away, 8 of each of the other colors."
+    },
+    {
+      "id": 70,
+      "filename": "KnightCoverage.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/KnightCoverage.png",
+      "caption": "Figure 70: Knight Coverage Proof",
+      "description": "The knight can (eventually) reach every tile on the board. In both boards, the duke starts on the king rook initial tile. In 2D, a simple three move sequence brings the knight to an adjacent side square (a), in 3D, a simple five move sequence brings the knight to an adjacent face cube (b). While not optimal, they prove the knight can reach every tile on the board in no more than 192 moves in 2D and 2560 moves in 3D. For the 3D case, tiles have been raised to reveal the duke colors to reveal the sequence (G: S, G, R, G, J). In 3D, interestingly, the even moves *lite* upon the same color as the knight started on, with each of the other colors visited exactly once."
+    },
+    {
+      "id": 71,
+      "filename": "KnightShape.png",
+      "url": "https://raw.githubusercontent.com/aldgoff/Disc3dChessGPT/main/figures/KnightShape.png",
+      "caption": "Figure 71: Knight Shape",
+      "description": "The knight's shape is quite literally its move; two out, two up, one over; just permute the directions. The knight traverses five cubes. Knight decorators are yellow."
+    }
+  ]
+}
