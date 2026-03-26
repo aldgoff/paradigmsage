@@ -28,7 +28,7 @@
   All other representations (plane index, base-piece index, ray pair, string forms) 
   are equivalent projections and must resolve to this identity.
 
-## 3. Rays
+## 3. Ray Pairs
   Each quad is specified by a pair of rays - not all pairs specify quads.
   The pair must be in the same plane, adjacent, and in order.
   The canonical encapsulation of this is the *planes* table in planes.json.
@@ -151,7 +151,7 @@
   * Quad type (`edge` or `face`, if applicable)
   * Nickname (if defined)
 
- ### 7.4 Invariant
+ ### 7.4 Unique Canonical Index
   > All representations of a quad are equivalent and must resolve to a unique canonical index.
 
 ## 8. Invariants
@@ -160,8 +160,28 @@
   - 6 slant planes x 4 quads  = 24 quads
   - 60 quads
 
-## 9. Generated Json
+## 9. UI
+  | Input    | Output |
+  | :------- | :----- |
+  | 1-60     | { piece, plane, quad: {global, piece, plane}, rayPair, quadType, nickname } |
+  | "Q1-60"  | { piece, plane, quad: {global, piece, plane}, rayPair, quadType, nickname } |
+  | piece, n | Q |
+  | plane, n | Q |
+  | rayPair  | Q |
+  | nickname | Q |
+  |||
+  |||
+  
+  export function pqrTable(Q) {
+    return { piece, plane, quad: {global, piece, plane}, rayPair, quadType, nickname };
+  }
+  export function strToQ(str) { return 1; }
+
+
+
+## 9. Generated Json - DEPRECATE, SORT OF
   These should be generated and placed into the quad.json file; annotated as generated.
+  However, ChatGPT could not even get close to generating them in a human readable layout.
 
  ### 9.1 Plane-Quad Table
   As the cyclic quad sequence is traveresed, each slant plane alternates edge and face quadrants.
