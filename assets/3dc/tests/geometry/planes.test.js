@@ -16,16 +16,15 @@ import {TEST_MODE,
 
 import { invariant } from "../core/invariants.js";
 
-import {
-  getPlaneGroups,
-  getPlanesForType,
-  getPlaneTypeForPlane,
+import {getPlaneGroups,
+        getPlanesForType,
+        getPlaneTypeForPlane,
 
-  getPlane,
-  getPlaneRays,
-  getPlaneQuad1,
-  getPlanePOV,
-  getPlaneRule,
+        getPlane,
+        getPlaneRays,
+        getPlaneQuad1,
+        getPlanePOV,
+        getPlaneRule,
         // Seampoint: functions to test...
 } from "../../geometry/planes.js";
 
