@@ -69,7 +69,7 @@ export function run() {
   let curr = snapshotTotals();
   const pass = curr.pass - prev.pass;
   const fail = curr.fail - prev.fail;
-  if (TEST_MODE.geometry !== "VERBOSE") {
+  if (TEST_MODE.quads !== "VERBOSE") {
     console.log(`Geometry/quads ${pass}/${pass + fail}`);
   }
 
@@ -89,7 +89,7 @@ function test_pieceBijection() {
     assertEqual(q2, q1, `piece bijection failed at Q${q1}`);
   }
 
-  report("pieceBijection", "geometry");
+  report("pieceBijection", "quads");
   }
 
 function test_planeBijection() {
@@ -103,7 +103,7 @@ function test_planeBijection() {
     assertEqual(q2, q1, `plane bijection failed at Q${q1}`);
   }
 
-  report("planeBijection", "geometry");
+  report("planeBijection", "quads");
   }
 
 function test_rayPairBijection() {
@@ -115,7 +115,7 @@ function test_rayPairBijection() {
     assertEqual(q2, q1, `ray pair bijection failed at Q${q1}`);
   }
 
-  report("rayPairBijection", "geometry");
+  report("rayPairBijection", "quads");
 }
 
 function test_nicknameBijectionCount() {
@@ -134,7 +134,7 @@ function test_nicknameBijectionCount() {
     seenQuads.add(q1);
   }
 
-  report("nicknameCount", "geometry");
+  report("nicknameCount", "quads");
 
   return seenQuads.size;
   }
@@ -157,7 +157,7 @@ function test_nicknameUnique() {
     seenNicknames.add(nickname);
   }
 
-  report("nicknameUnique", "geometry");
+  report("nicknameUnique", "quads");
 
   return seenNicknames.size;
   }
@@ -170,7 +170,7 @@ function test_nicknames(count, unique) {
     "Nickname unique count mismatch"
   );
 
-  report("nicknames", "geometry");
+  report("nicknames", "quads");
 }
 
 function test_elementsToQuad() {
@@ -182,7 +182,7 @@ function test_elementsToQuad() {
     assertEqual(q2, q1, `elements quad bijection failed at Q${q1}`);
   }
 
-  report("elementsToQuad", "geometry");
+  report("elementsToQuad", "quads");
 }
 
 function test_pieceQuadUniqueness() {
@@ -197,7 +197,7 @@ function test_pieceQuadUniqueness() {
     seen.add(key);
   }
 
-  report("pieceQuadUnique", "geometry");
+  report("pieceQuadUnique", "quads");
   }
 
 function test_planeQuadUniqueness() {
@@ -212,7 +212,7 @@ function test_planeQuadUniqueness() {
     seen.add(key);
   }
 
-  report("planeQuadUnique", "geometry");
+  report("planeQuadUnique", "quads");
   }
 
 function test_pieceCoverage() {
@@ -226,7 +226,7 @@ function test_pieceCoverage() {
 
   assertEqual(seen.size, 60, "Piece coverage failed");
 
-  report("pieceCoverage", "geometry");
+  report("pieceCoverage", "quads");
   }
 
 function test_planeCoverage() {
@@ -240,7 +240,7 @@ function test_planeCoverage() {
 
   assertEqual(seen.size, 60, "Plane coverage failed");
 
-  report("planeCoverage", "geometry");
+  report("planeCoverage", "quads");
 }
 
 function test_fails() {
@@ -256,7 +256,7 @@ function test_fails() {
   assertThrows(() => qToStr(1.5), "qToStr: non-integer throws");
   assertThrows(() => qToStr("1"), "qToStr: wrong type throws");
 
-  report("testFails", "geometry");
+  report("testFails", "quads");
 }
 // Seampoint: more tests...
 

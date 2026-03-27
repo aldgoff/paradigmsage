@@ -54,7 +54,7 @@ export function run() {
   const pass = curr.pass - prev.pass;
   const fail = curr.fail - prev.fail;
 
-  if (TEST_MODE.geometry !== "VERBOSE") {
+  if (TEST_MODE.planes !== "VERBOSE") {
     console.log(`Geometry/planes ${pass}/${pass + fail}`);
   }
 
@@ -73,7 +73,7 @@ function test_planeGroups() {
   assertEqual(groups.skew.length, 4, "bishop planes count");
   assertEqual(groups.slant.length, 6, "duke planes count");
 
-  report("planeGroups", "geometry");
+  report("planeGroups", "planes");
   }
 
 function test_planesForType() {
@@ -85,7 +85,7 @@ function test_planesForType() {
 
   assertThrows(() => getPlanesForType("invalid"), "invalid type throws");
 
-  report("planesForType", "geometry");
+  report("planesForType", "planes");
   }
 
 function test_planeTypeForPlane() {
@@ -95,7 +95,7 @@ function test_planeTypeForPlane() {
 
   assertThrows(() => getPlaneTypeForPlane("FakePlane"), "invalid plane throws");
 
-  report("planeTypeForPlane", "geometry");
+  report("planeTypeForPlane", "planes");
 }
 
 // Spec section 4.
@@ -106,7 +106,7 @@ function test_getPlane() {
 
   assertThrows(() => getPlane("FakePlane"), "invalid plane throws");
 
-  report("getPlane", "geometry");
+  report("getPlane", "planes");
   }
 
 function test_getPlaneRays() {
@@ -121,7 +121,7 @@ function test_getPlaneRays() {
   const upward = getPlaneRays("Upward");
   assertEqual(upward.length, 6, "Upward has 6 rays");
 
-  report("getPlaneRays", "geometry");
+  report("getPlaneRays", "planes");
   }
 
 function test_getPlaneQuad1() {
@@ -129,7 +129,7 @@ function test_getPlaneQuad1() {
   assertEqual(getPlaneQuad1("Major"), "Dart", "Major quad1");
   assertEqual(getPlaneQuad1("Left"), null, "Left quad1 null");
 
-  report("getPlaneQuad1", "geometry");
+  report("getPlaneQuad1", "planes");
   }
 
 
@@ -138,7 +138,7 @@ function test_getPlanePOV() {
   assertEqual(getPlanePOV("Major"), "Neutral", "Major POV");
   assertEqual(getPlanePOV("Upleft"), "Top", "Upleft POV");
 
-  report("getPlanePOV", "geometry");
+  report("getPlanePOV", "planes");
   }
 
 function test_getPlaneRule() {
@@ -146,7 +146,7 @@ function test_getPlaneRule() {
   assertEqual(getPlaneRule("Leftward"), "2.2", "Leftward rule");
   assertEqual(getPlaneRule("Minor"), "3.3", "Minor rule");
 
-  report("getPlaneRule", "geometry");
+  report("getPlaneRule", "planes");
   }
 
 function test_planeRayInvariant() {
@@ -164,7 +164,7 @@ function test_planeRayInvariant() {
     }
   }
 
-  report("planeRayInvariant", "geometry");
+  report("planeRayInvariant", "planes");
 }
 
 function test_planeCycleClosure() {
@@ -179,7 +179,7 @@ function test_planeCycleClosure() {
     }
   }
 
-  report("planeCycleClosure", "geometry");
+  report("planeCycleClosure", "planes");
 }
 
 // Seampoint: more tests...
