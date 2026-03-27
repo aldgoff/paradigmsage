@@ -23,4 +23,7 @@ layout: "play"
   - 3/22/26 - Establish template files (*.md, *.json, *.js, and *.test.js).
   - 3/23/26 - Planes: specs, data/code/test slices partway through para 4.
   - 3/24/26 - Finish porting over the planes module.
+  - 3/25/26 - Long negotations with AI about code purity.
+  - 3/26/26 - Finished quads modele, data, code, & tests; specs still need work.
+  - 3/27/26 - 
 

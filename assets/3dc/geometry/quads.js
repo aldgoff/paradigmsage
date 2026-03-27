@@ -17,16 +17,8 @@ const Q_MAX = 60;
 
 // --- UI ---  
 export function pqrTable(Q) { // 1 - 60.
-  // Implied return values - A20: Inline Structural Contract (ISC) from AXIOMS.md.
-  const piece = "rook";
-  const plane = "Horizontal";
-    const globalQ = Q;   // Binding.
-    const pieceQ = 24;
-    const planeQ = 4;
-    const rayPair = ["back_up", "right_down"];
-    const quadType = "edge";
-    const nickName = null;
-  const quadrant = { globalQ, pieceQ, planeQ, rayPair, quadType, nickName };
+  // returns: { piece, plane, quad:{globalQ,pieceQ,planeQ,rayPair:[r1,r2],nickname} }.
+  const globalQ = Q;
 
   for (const plane of planeQuadTable) {
     const [lo, hi] = plane.global_range;
@@ -35,7 +27,7 @@ export function pqrTable(Q) { // 1 - 60.
   
     for (const quad of plane.quads) {  // Scan quads in this plane for a match.
       if (quad.globalQ === globalQ) {
-        return {  // { piece, plane, "quad":{globalQ,pieceQ,planeQ,"rayPair":[r1,r2],nickname} }.
+        return {  // { piece, plane, quad:{globalQ,pieceQ,planeQ,rayPair:[r1,r2],nickname} }.
           piece: plane.piece,
           plane: plane.plane,
           ...quad
@@ -46,7 +38,7 @@ export function pqrTable(Q) { // 1 - 60.
 
   throw new Error(`Global quad ${globalQ} not found`);
 
-  // returns { piece, plane, "quad":{globalQ,pieceQ,planeQ,"rayPair":[r1,r2],nickname} }.
+  // returned: { piece, plane, quad:{globalQ,pieceQ,planeQ,rayPair:[r1,r2],nickname} }.
   }
 
 export function elementsToGlobalQ({ piece, plane, pieceQ, planeQ, rayPair, nickname }) {
@@ -215,7 +207,6 @@ export function planeToQuads(plane) {
 
   return result;
 }
-
 // Seampoint: more global functions.
 
 // --- Helpers ---
