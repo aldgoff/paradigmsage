@@ -15,7 +15,7 @@ layout: "play"
   - 3/16/26 - Transfer DNS records from WordPress to Hugo.
   - 3/17/26 - 3DC: directory architecture.
   - 3/18/26 - 3DC: regression tests, port half of foundation/coords.py to coord.js.
-  - 3/19/26 - 3DC resolve coord and anchor ambiguity, port rest of coords, improve regression framework.
+  - 3/19/26 - 3DC: resolve coord and anchor ambiguity, port rest of coords, improve regression framework.
   - 3/20/26 - Port colors and port rays.
   - 3/21/26 - Explore refactor options for quads and quandMaps.
 
@@ -24,6 +24,6 @@ layout: "play"
   - 3/23/26 - Planes: specs, data/code/test slices partway through para 4.
   - 3/24/26 - Finish porting over the planes module.
   - 3/25/26 - Long negotations with AI about code purity.
-  - 3/26/26 - Finished quads modele, data, code, & tests; specs still need work.
-  - 3/27/26 - 
+  - 3/26/26 - Finished quads module, data, code, & tests; specs still need work.
+  - 3/27/26 - Finished perims module.
 

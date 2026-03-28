@@ -43,8 +43,9 @@
   git push -u origin <branch>
   git switch main
   git merge --no-ff <branch>
-  vi: Merge branch '3dc-port' - planes and quads in the geometry layer.
   vi: Merge bug fix|feature add|whatever.
+  vi: Merge branch '3dc-port' - planes and quads in the geometry layer.
+  vi: Merge branch '3dc-port' - perims module in the geometry layer.
   git log --oneline --decorate --graph --all --boundary -n 50
   git push origin main
   ```

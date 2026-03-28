@@ -37,25 +37,15 @@
 │   │   │       └── unitCells.md
 │   │   ├── geometry
 │   │   │   ├── _tbd.md
-│   │   │   ├── Obsolete
-│   │   │   │   ├── quads.py
-│   │   │   │   ├── quads.table.json
-│   │   │   │   ├── quads.table.py
-│   │   │   │   └── run_quads.sh
+│   │   │   ├── perims.js
+│   │   │   ├── perims.json
+│   │   │   ├── perims.md
 │   │   │   ├── planes.js
 │   │   │   ├── planes.json
 │   │   │   ├── planes.md
-│   │   │   ├── quadMap.json
-│   │   │   ├── quadMap.md
-│   │   │   ├── quadMap.out
-│   │   │   ├── quadMap.py
 │   │   │   ├── quads.js
 │   │   │   ├── quads.json
-│   │   │   ├── quads.md
-│   │   │   ├── quads1.json
-│   │   │   ├── quads1.md
-│   │   │   ├── quads1.out
-│   │   │   └── quads1.py
+│   │   │   └── quads.md
 │   │   ├── js
 │   │   ├── main.js
 │   │   ├── model
@@ -79,6 +69,7 @@
 │   │   │   │   ├── rays.test.js
 │   │   │   │   └── unitCells.test.js
 │   │   │   ├── geometry
+│   │   │   │   ├── perims.test.js
 │   │   │   │   ├── planes.test.js
 │   │   │   │   └── quads.test.js
 │   │   │   ├── integration
@@ -369,4 +360,4 @@
 │           └── poc.js
 └── themes
 
-75 directories, 294 files
+74 directories, 286 files
