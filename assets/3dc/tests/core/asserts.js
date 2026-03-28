@@ -3,7 +3,11 @@
 export const TEST_MODE = { // "VERBOSE" | "TERSE" | "OFF"
   foundation: "TERSE",
   geometry: "VERBOSE",
-  // Seam point - regression test verbosity.
+  planes: "TERSE",
+  quads: "TERSE",
+  perims: "TERSE",
+  advSqs: "VERBOSE",
+  // Seampoint - regression test verbosity.
 };
 
 let PASS = 0;

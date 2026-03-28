@@ -1,0 +1,21 @@
+{
+  "perimeter_module": {
+    "_content": "Not used in code, purely descriptive.",
+    "perimeter": {
+      "k_min": 1,
+      "tile_count": "2k+1"
+    },
+    "stride": {
+      "apex_index": "k+1",
+      "length": "2k+1"
+    },
+    "continuity": {
+      "E2_to_next_E1": true
+    },
+    "_example": {
+      "k": 3,
+      "stride": "E1, B2, B3, Apex, B5, B6, E2"
+    }
+  }
+}
+

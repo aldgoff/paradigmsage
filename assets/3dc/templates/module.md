@@ -1,7 +1,7 @@
 # Module Spec
   Desc
 
-## 1. Purpose/Concpets/Example/Canonical/Formats/Parsing/Architecture/Functions/Data/...
+## 1. Purpose/Concepts/Example/Canonical/Formats/Parsing/Architecture/Functions/Data/...
   text
 
 ## 1. Title
