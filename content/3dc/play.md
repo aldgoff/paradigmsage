@@ -27,3 +27,6 @@ layout: "play"
   - 3/26/26 - Finished quads module, data, code, & tests; specs still need work.
   - 3/27/26 - Finished perims module.
 
+ ### Week 3:
+  - 3/29/26 - Start on advSqs module.
+

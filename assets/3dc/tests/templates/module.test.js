@@ -28,42 +28,31 @@ import {UI,
 // ------------------------------------------------------------
 
 export function run() {
-  const specNames = ["8x8x8", "10x8x8", "10x10x10"];
-
   let prev = snapshotTotals();
 
-  for (const specName of specNames) {
-    if (TEST_MODE.templates === "VERBOSE") {
-      console.log(getBoardSpec(specName));
-    }
+  test_UI();
+  // Seampoint: more tests...
 
-    test_UI(specName);
-    // Seampoint: more tests...
-
-    let curr = snapshotTotals();
-
-    const pass = curr.pass - prev.pass;
-    const fail = curr.fail - prev.fail;
-
-    if (TEST_MODE.templates !== "VERBOSE") {
-      console.log(`Templates/cat (${specName}) ${pass}/${pass + fail}`);
-    }
-
-    prev = curr;
+  let curr = snapshotTotals();
+  const pass = curr.pass - prev.pass;
+  const fail = curr.fail - prev.fail;
+  if (TEST_MODE.templates !== "VERBOSE") {
+    console.log(`Templates/cat (${pass}/${pass + fail}`);
   }
+  prev = curr;
 
   finalReport();
 }
 
 // ------------------------------------------------------------
 
-function test_UI(specName) {
+function test_UI() {
   const cases = [
     { value: "whatever", expected: "whatever", label: "module" },
   ];
 
   for (const { value, expected, label } of cases) {
-    assertEqual(UI(specName), expected, label);
+    assertEqual(UI(), expected, label);
   }
 
   report("UI", "templates");
