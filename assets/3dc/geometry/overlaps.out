@@ -1,0 +1,25 @@
+None
+
+Quadrant_rook
+Quadrant_bishop
+Quadrant_bishop
+Quadrant_bishop
+Quadrant_bishop
+Quadrant_duke
+
+Feynman
+
+Error check: Number of quads cannot be three.
+
+RookLinear
+
+Brook
+
+DukeLinear
+Qtile
+Hotspot
+
+Error check: Number of quads cannot be greater than six.
+
+overlaps.py smoke test passed.
+
