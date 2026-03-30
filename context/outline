@@ -37,6 +37,16 @@
 │   │   │       └── unitCells.md
 │   │   ├── geometry
 │   │   │   ├── _tbd.md
+│   │   │   ├── advSqs.js
+│   │   │   ├── advSqs.json
+│   │   │   ├── advSqs.md
+│   │   │   ├── debug.docx
+│   │   │   ├── debug.txt
+│   │   │   ├── FAS.md
+│   │   │   ├── FAS.out
+│   │   │   ├── FAS.py
+│   │   │   ├── GAS.md
+│   │   │   ├── overlaps.out
 │   │   │   ├── perims.js
 │   │   │   ├── perims.json
 │   │   │   ├── perims.md
@@ -69,6 +79,7 @@
 │   │   │   │   ├── rays.test.js
 │   │   │   │   └── unitCells.test.js
 │   │   │   ├── geometry
+│   │   │   │   ├── advSqs.test.js
 │   │   │   │   ├── perims.test.js
 │   │   │   │   ├── planes.test.js
 │   │   │   │   └── quads.test.js
@@ -360,4 +371,4 @@
 │           └── poc.js
 └── themes
 
-74 directories, 286 files
+74 directories, 297 files
