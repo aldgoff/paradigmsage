@@ -29,4 +29,5 @@ layout: "play"
 
  ### Week 3:
   - 3/29/26 - Start on advSqs module.
+  - 3/30/26 - Finish the overlapTiles module.
 
