@@ -35,13 +35,13 @@ Places AI said might be good for promoting the website.
   #### Text:
     Logic says if one is good, two is better — quantum mechanics says two might be no better than none.
 
-  ### 2.
+  ### 2. 3/31/26 10:10
   #### Title:
-    Trap a quantum object in a box - is it hard or soft, or is it white or black?
+    Trap a quantum object in a box - is it hard or soft, or is it black or white?
   #### URL: 
     https://paradigmsage.com/pop/ch-04-qm/
   #### Text:
-    - Doesn't appear to show up.
+    - Quantum Uncertainty: Firmness and color are not even measured in the same units. Surely they cannot be defined in terms of each other?!?
 
   ### 3.
   - If more data thwarts insight - don't see more, see less.
