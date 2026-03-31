@@ -16,7 +16,7 @@ import {quadToRayPair} from "./quads.js";
 
 // --- UI ---
 export function getStride({ quad, k }) {
-  if (!Number.isInteger(k) || k < 1) {
+  if (!Number.isInteger(k) || k < 0) {
     throw new Error(`getStride: invalid k (${k})`);
   }
 
@@ -27,21 +27,21 @@ export function getStride({ quad, k }) {
   const stride = [];  // The ordered list of relative tiles on the perimeter.
 
   const E1 = scale(v1, k);            // E1
-  stride.push(E1);
+  if(k>0) { stride.push(E1); }  // At k=0 E1 & E2 are degenerate and coincide at the source.
 
   for (let i = 1; i < k; i++) {       // Outbound leg (along ray2).
     stride.push(add(E1, scale(v2, i)));
   }
 
   const apex = add(E1, scale(v2, k)); // Apex.
-  stride.push(apex);
+  stride.push(apex);            // At k=0 apex is degenerate with E1, E2, and the source.
 
   for (let i = 1; i < k; i++) {       // Inbound leg (back along ray1).
     stride.push(add(apex, scale(v1, -i)));
   }
 
   const E2 = scale(v2, k);            // E2.
-  stride.push(E2);
+  if(k>0) { stride.push(E2); } // At k=0 E1 & E2 are degenerate and coincide at the source.
 
   return {k, stride, E1, apex, E2 };
   }
@@ -51,7 +51,7 @@ export function nextPerimeter({ quad, k }) {
   }
 
 export function prevPerimeter({ quad, k }) {
-  if (!Number.isInteger(k) || k <= 1) {
+  if (!Number.isInteger(k) || k <= 0) {
     throw new Error(`prevPerimeter: invalid k (${k})`);
   }
 
