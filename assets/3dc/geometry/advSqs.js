@@ -32,11 +32,12 @@ export class AdvSq {
     this.rayPair = rayPair;
     this.k = k;
     if( k<0 || 10<k) { throw new Error(`perimeter ${k} out of range.`); }
+    // For k = 0, degenerate perimeter: all roles (E1, Apex, E2) coincide at origin.
 
     this.perims = [];                  // Source tile.
-    this.perims[0] = source;
+    // this.perims[0] = source;
 
-    for (let i=1; i<=k; i++) {        // Each successive perimeter.
+    for (let i=0; i<=k; i++) {        // Each successive perimeter.
       this.perims[i] = getStride({ quad, k: i });
     }
   }

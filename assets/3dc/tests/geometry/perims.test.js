@@ -69,11 +69,15 @@ export function run() {
 // Passing tests.
 function test_getStride() {
   const cases = [
+    { quad: 1, k: 0,  // Q1 → ["left_fore", "right_fore"]
+      expected: [ [0,0,0] ],
+      label: "Q1 k=0 basic"
+      },
     { quad: 1, k: 1,  // Q1 → ["left_fore", "right_fore"]
       expected: [ [0,1,0],
                   [0,1,1],
                   [0,0,1] ],
-      label: "Q1 k=3 basic"
+      label: "Q1 k=1 basic"
       },
     { quad: 1, k: 2,  // Q1 → ["left_fore", "right_fore"]
       expected: [ [0,2,0],
@@ -81,7 +85,7 @@ function test_getStride() {
                   [0,2,2],
                   [0,1,2],
                   [0,0,2] ],
-      label: "Q1 k=3 basic"
+      label: "Q1 k=2 basic"
       },
     { quad: 1, k: 3,  // Q1 → ["left_fore", "right_fore"]
       expected: [ [0,3,0],
@@ -103,7 +107,7 @@ function test_getStride() {
                   [0,2,4],
                   [0,1,4],
                   [0,0,4] ],
-      label: "Q1 k=3 basic"
+      label: "Q1 k=4 basic"
       }
   ];
 
@@ -272,9 +276,8 @@ function test_invalid_k() {
   for (const quad of values) {
     const label = `Q${quad}`;
 
-    assertThrows( () => getStride({ quad, k: 0 }), `${label} k=0 invalid`);   // k = 0.
     assertThrows( () => getStride({ quad, k: -1 }), `${label} k=-1 invalid`); // k < 0.
-    assertThrows( () => prevPerimeter({ quad, k: 1 }), `${label} prev k=1 invalid`); // prevPerimeter with k=1 (invalid).
+    assertThrows( () => prevPerimeter({ quad, k: 0 }), `${label} prev k=1 invalid`); // prevPerimeter with k=1 (invalid).
   }
 
   report("invalid_k", "perims");
