@@ -19,6 +19,8 @@ import { invariant } from "../core/invariants.js";
 import {getPlaneGroups,
         getPlanesForType,
         getPlaneTypeForPlane,
+        nextPlane,
+        prevPlane,
 
         getPlane,
         getPlaneRays,
@@ -33,11 +35,10 @@ import {getPlaneGroups,
 export function run() {
   let prev = snapshotTotals();
 
-  // test_planeTypeInvariant();
-
   test_planeGroups();         // Spec section 2.2 - plane groups.
   test_planesForType();
   test_planeTypeForPlane();
+  test_nextPrev();
   
   test_getPlane();            // Spec section 3 - plane/rays/quads.
   test_getPlaneRays();
@@ -50,10 +51,8 @@ export function run() {
   // Seampoint: more tests...
 
   let curr = snapshotTotals();  // TODO: refactor as teardown(<module>):
-
   const pass = curr.pass - prev.pass;
   const fail = curr.fail - prev.fail;
-
   if (TEST_MODE.planes !== "VERBOSE") {
     console.log(`Geometry/planes ${pass}/${pass + fail}`);
   }
@@ -96,6 +95,24 @@ function test_planeTypeForPlane() {
   assertThrows(() => getPlaneTypeForPlane("FakePlane"), "invalid plane throws");
 
   report("planeTypeForPlane", "planes");
+  }
+
+function test_nextPrev() {
+  const cases = [
+    { "plane": "Horizontal", "expected": "Left",     label: "rook planes" }, 
+    { "plane": "Upward",     "expected": "Downward", label: "bishop planes" }, 
+    { "plane": "Major",      "expected": "Minor",    label: "duke planes" }, 
+  ];
+
+  for (const test of cases) {
+    const nxtPlane = nextPlane(test.plane);
+    assertEqual(nxtPlane, test.expected, `${test.label}`);
+
+    const prvPlane = prevPlane(nxtPlane);
+    assertEqual(prvPlane, test.plane, `${test.label}`);
+  }
+
+  report("test_nextPrev", "geometry");
 }
 
 // Spec section 4.
@@ -181,6 +198,5 @@ function test_planeCycleClosure() {
 
   report("planeCycleClosure", "planes");
 }
-
 // Seampoint: more tests...
 

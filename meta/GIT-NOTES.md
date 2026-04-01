@@ -50,6 +50,7 @@
   vi: Merge branch '3dc-port' - overlapTiles module in the geometry layer.
   vi: Merge branch '3dc-port' - AdvSq: first stable point.
   vi: Merge branch '3dc-port' - Perims: allow k=0, degenerate, but eliminates the special case, consistent geometry.
+  vi: Merge branch '3dc-port' - AdvSq: first good test coverage.
   git log --oneline --decorate --graph --all --boundary -n 50
   git push origin main
   ```

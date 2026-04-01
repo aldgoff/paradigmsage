@@ -43,38 +43,36 @@ export function pqrTable(Q) { // 1 - 60.
 
 export function elementsToGlobalQ({ piece, plane, pieceQ, planeQ, rayPair, nickname }) {
   return elementsToQuad({ piece, plane, pieceQ, planeQ, rayPair, nickname });
-}
+  }
 
 export function nextQuadInPlane(q) {
-  const cycles = [
-    // Rook planes
-    [1,2,3,4],
-    [5,6,7,8],
-    [9,10,11,12],
+  const Q = toQ(q);
 
-    // Bishop planes
-    [13,14,15,16,17,18],
-    [19,20,21,22,23,24],
-    [25,26,27,28,29,30],
-    [31,32,33,34,35,36],
+  for (const planeRec of planeQuadTable) {
+    const quads = planeRec.quads;
+    const idx = quads.findIndex(qr => qr.globalQ === Q);
 
-    // Duke planes
-    [37,38,39,40],
-    [41,42,43,44],
-    [45,46,47,48],
-    [49,50,51,52],
-    [53,54,55,56],
-    [57,58,59,60],
-  ];
-
-  for (const cycle of cycles) {
-    const idx = cycle.indexOf(q);
     if (idx !== -1) {
-      return cycle[(idx + 1) % cycle.length];
+      return quads[(idx + 1) % quads.length].globalQ;
     }
   }
 
   throw new Error(`nextQuadInPlane: invalid quad ${q}`);
+  }
+
+export function prevQuadInPlane(q) {
+  const Q = toQ(q);
+
+  for (const planeRec of planeQuadTable) {
+    const quads = planeRec.quads;
+    const idx = quads.findIndex(qr => qr.globalQ === Q);
+
+    if (idx !== -1) {
+      return quads[(idx - 1 + quads.length) % quads.length].globalQ;
+    }
+  }
+
+  throw new Error(`prevQuadInPlane: invalid quad ${q}`);
 }
 
 // Representation Conversion Routines:

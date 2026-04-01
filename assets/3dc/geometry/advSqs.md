@@ -89,12 +89,12 @@
 
 # ✅ AdvSq Validation & Query TODO List
 
-## 1. Identity & Structural Integrity
-  1. Does this AdvSq have a valid (source, quad, rayPair, k) tuple?
-  2. Is the rayPair consistent with the quad?
-  3. Is k within valid geometric bounds for the board?
-  4. Does the AdvSq satisfy monotonic growth (k → k+1 containment)?
-  5. Does the AdvSq satisfy closure (all perimeters ≤ k included)?
+## 1. ✅ Identity & Structural Integrity
+  1. ✅ Does this AdvSq have a valid (source, quad, rayPair, k) tuple?
+  2. ✅ Is the rayPair consistent with the quad?
+  3. ✅ Is k within valid geometric bounds for the board?
+  4. ✅ Does the AdvSq satisfy monotonic growth (k → k+1 containment)?
+  5. ✅ Does the AdvSq satisfy closure (all perimeters ≤ k included)?
 
 ## 2. Plane & Piece-Type Validation
   6. Is this AdvSq contained within the expected plane?

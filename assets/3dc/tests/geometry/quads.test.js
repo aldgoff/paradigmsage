@@ -21,6 +21,8 @@ import { invariant } from "../core/invariants.js";
 // --- Module ---
 import {pqrTable,
         elementsToGlobalQ,
+        nextQuadInPlane,
+        prevQuadInPlane,
         strToQ,
         qToStr,
 } from "../../geometry/quads.js";
@@ -51,6 +53,7 @@ export function run() {
   test_pieceBijection();
   test_planeBijection();
   test_rayPairBijection();
+  test_nextPrev();
 
   const count  = test_nicknameBijectionCount();
   const unique = test_nicknameUnique();
@@ -111,6 +114,18 @@ function test_rayPairBijection() {
     const q1 = i;
     const rayPair = quadToRayPair(q1);
     const q2      = rayPairToQuad(rayPair);
+
+    assertEqual(q2, q1, `ray pair bijection failed at Q${q1}`);
+  }
+
+  report("rayPairBijection", "quads");
+  }
+
+function test_nextPrev() {
+  for(let i=1; i<=60; i++) {
+    const q1 = i;
+    const quad = nextQuadInPlane(q1);
+    const q2   = prevQuadInPlane(quad);
 
     assertEqual(q2, q1, `ray pair bijection failed at Q${q1}`);
   }
