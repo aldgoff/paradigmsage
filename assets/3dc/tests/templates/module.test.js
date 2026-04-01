@@ -37,7 +37,7 @@ export function run() {
   const pass = curr.pass - prev.pass;
   const fail = curr.fail - prev.fail;
   if (TEST_MODE.templates !== "VERBOSE") {
-    console.log(`Templates/cat (${pass}/${pass + fail}`);
+    console.log(`Templates/cat ${pass}/${pass + fail}`);
   }
   prev = curr;
 
