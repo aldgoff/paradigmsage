@@ -36,6 +36,28 @@ export function getPlaneTypeForPlane(plane) {
     if (planes.includes(plane)) return type;
   }
   throw new Error(`Unknown plane: ${plane}`);
+  }
+
+export function nextPlane(plane) {
+  for (const group of Object.values(planeGroups)) {
+    const idx = group.indexOf(plane);
+    if (idx !== -1) {
+      return group[(idx + 1) % group.length];
+    }
+  }
+
+  throw new Error(`nextPlane: unknown plane ${plane}`);
+  }
+
+export function prevPlane(plane) {
+  for (const group of Object.values(planeGroups)) {
+    const idx = group.indexOf(plane);
+    if (idx !== -1) {
+      return group[(idx - 1 + group.length) % group.length];
+    }
+  }
+
+  throw new Error(`prevPlane: unknown plane ${plane}`);
 }
 
 // Spec paragraph 4 - planes (where ray cycles and quads are defined).
