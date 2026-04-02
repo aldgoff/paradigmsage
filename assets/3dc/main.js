@@ -1,10 +1,15 @@
 // ./3dc/main.js
 
-// import { initController } from "./controller/controller.js";
+import { initController } from "./controller/controller.js";
 
 console.log("main.js: 3dc/main.js");
 
-// initController();
+const isPlayBoard = document.getElementById("3dc-game");
+const isPlayUI    = document.getElementById("3dc-ui");
+
+if (isPlayBoard && isPlayUI) {
+  initController();
+}
 
 if (location.hostname === "localhost") {
   console.log("Running tests...");

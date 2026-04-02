@@ -1,0 +1,108 @@
+{
+  "tiles_module": {
+    "meta": {
+      "name": "3DC Tile Specification",
+      "version": "0.1",
+      "coordinate_system": "board-centered",
+      "units": "pixels",
+      "spacing": 100
+    },
+    "grid": {
+      "dimensions": [8, 8, 8],
+      "tile_spacing": 100,
+      "origin": [0, 0, 0],
+      "axes": {
+        "x": "file (left-right from White POV)",
+        "y": "rank (near-far from White POV)",
+        "z": "level (bottom to top; rook planes)"
+      }
+    },
+    "tile": {
+      "size": {
+        "width": 85,
+        "depth": 85,
+        "height": 10
+      },
+      "positioning": {
+        "anchor": "bottom-center",
+        "z_offset_per_level": 100
+      },
+      "face": {
+        "encoding": "bishop_color",
+        "colors": {
+          "white": "#f2f2f2",
+          "black": "#2b2b2b"
+        }
+      },
+      "edge": {
+        "encoding": "duke_color",
+        "visibility": {
+          "mode": "constrained",
+          "min_ratio": 0.02,
+          "max_ratio": 0.08
+        },
+        "colors": {
+          "gold": "#c9a227",
+          "silver": "#c0c0c0",
+          "ruby": "#8b0000",
+          "jade": "#006400"
+        }
+      },
+      "separation": {
+        "enabled": true,
+        "gap": 15,
+        "purpose": [
+          "edge_visibility",
+          "tile_distinction"
+        ]
+      }
+    },
+    "color_logic": {
+      "bishop_parity": {
+        "rule": "(x + y + z) % 2",
+        "mapping": {
+          "0": "white",
+          "1": "black"
+        }
+      },
+      "duke_color": {
+        "type": "lookup",
+        "source": "precomputed_8_class_mapping",
+        "note": "must align with 8 equivalence classes (bishop × duke parity)"
+      }
+    },
+    "render": {
+      "projection": "orthographic",
+      "camera": {
+        "default_pov": "white_shallow_angle",
+        "tilt_degrees": 25,
+        "rotation_enabled": true,
+        "zoom_enabled": true,
+        "jitter": {
+          "enabled": true,
+          "amplitude_degrees": 5,
+          "speed": 0.2
+        }
+      },
+      "visibility_constraints": {
+        "minimize_occlusion": true,
+        "preserve_lower_plane_visibility": true
+      }
+    },
+    "interaction": {
+      "clickable": true,
+      "hover": true,
+      "selection_mode": "toggle",
+      "events": [
+        "tile_selected",
+        "tile_hover"
+      ]
+    },
+    "debug": {
+      "show_coordinates": false,
+      "show_axes": false,
+      "highlight_levels": false
+    }
+  }
+}
+

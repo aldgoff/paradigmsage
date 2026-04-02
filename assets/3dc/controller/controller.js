@@ -31,5 +31,27 @@
  *
  * Notes:
  * The controller must not infer legality—it must defer to the engine.
- */
+*/
+
+/* File: controller.js
+  Path: ./3dc/controller/controller.js
+  Purpose: desc
+  Author: Allan Goff
+  Date: 4/02/26
+  UI: the export functions.
+*/
+
+// --- Load JSON ---
+// Seampoint: more objects...
+
+// --- Build upon previous layers ---
+import {initView,} from "../view/view.js";
+// Seampoint: more imports...
+
+
+// --- UI ---
+export function initController() {
+  initView();
+}
+// Seampoint: more global functions...
 

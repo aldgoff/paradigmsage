@@ -26,5 +26,31 @@
  *
  * Notes:
  * Avoid encoding logic assumptions in visuals (e.g., paths).
- */
+*/
+
+/* File: view.js
+  Path: ./3dc/view/view.js
+  Purpose: desc
+  Author: Allan Goff
+  Date: 4/02/26
+  UI: the export functions.
+*/
+
+// --- Load JSON ---
+// Seampoint: more objects...
+
+// --- Build upon previous layers ---
+import { initThree } from "./render/initThree.js";
+// Seampoint: more imports...
+
+
+// --- UI ---
+export function initView() {
+  const container = document.getElementById("qt3-game");
+  if (!container) return false;
+
+  const context = initThree(container);
+  return context;
+}
+// Seampoint: more global functions...
 
