@@ -28,11 +28,3 @@ Note how the *classical ensemble* grows (x2), but also how it shrinks;
   <canvas id="qt3-game" width="900" height="2230"></canvas>
   <textarea id="qt3-state-input"></textarea>  <!-- hello state string. -->
 
-
-
-<!-- Comments in markdown.
-  ## Proof of Concept - JS in a Canvas, state changes via mouse clicks.
-    <canvas id="qt3-demo" width="200" height="100"></canvas>
-    <script type="module" src="/paradigmsage/qt3/poc/poc.js"></script>
--->
-

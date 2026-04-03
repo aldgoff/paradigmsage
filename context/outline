@@ -94,7 +94,22 @@
 │   │   │   └── tests.js
 │   │   └── view
 │   │       ├── _tbd.md
-│   │       └── view.js
+│   │       ├── board
+│   │       ├── brainstorming.md
+│   │       ├── decorators
+│   │       ├── pieces
+│   │       ├── render
+│   │       │   ├── camera.js
+│   │       │   ├── initThree.js
+│   │       │   ├── loop.js
+│   │       │   ├── render.md
+│   │       │   ├── renderer.js
+│   │       │   └── scene.js
+│   │       ├── tiles
+│   │       │   └── tiles.json
+│   │       ├── trays
+│   │       ├── view.js
+│   │       └── view.md
 │   ├── jsconfig.json
 │   └── qt3
 │       └── js
@@ -151,6 +166,7 @@
 │   ├── _index.md
 │   ├── 3dc
 │   │   ├── _index.md
+│   │   ├── dev.md
 │   │   ├── play.md
 │   │   └── rationale.md
 │   ├── contact
@@ -375,4 +391,4 @@
 │           └── poc.js
 └── themes
 
-74 directories, 301 files
+80 directories, 311 files

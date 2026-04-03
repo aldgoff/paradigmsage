@@ -30,6 +30,7 @@ import {modelSetStateString,  // The state of the game is held in the model laye
 import { initCanvas, canvas, ctx } from "./canvas.js";
 
 export function initView() {
+  console.log("initView(): 3dc/view/view.js");
   if (!initCanvas()) return;
 
   installPointerHandlers();
