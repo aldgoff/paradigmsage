@@ -1,6 +1,6 @@
 // ./3dc/main.js
 
-import { initController } from "./controller/controller.js";
+import * as control from "./controller/controller.js";
 
 console.log("main.js: 3dc/main.js");
 
@@ -8,7 +8,7 @@ const isPlayBoard = document.getElementById("3dc-game");
 const isPlayUI    = document.getElementById("3dc-ui");
 
 if (isPlayBoard && isPlayUI) {
-  initController();
+  control.init();
 }
 
 if (location.hostname === "localhost") {

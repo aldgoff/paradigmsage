@@ -1,0 +1,31 @@
+{
+  "render_module": {
+    "scale": {
+      "gridSpacing": 100
+    },
+    "tile": {
+      "size": {
+        "z": 10,
+        "x": 85,
+        "y": 85
+        },
+      "edge": {
+        "color": "#000000"
+      }
+    },
+    "colors": {
+      "background": "#dcecff",
+      "bishop": {
+        "white": "#f2f2f2",
+        "black": "#424242"
+        },
+      "duke": {
+        "gold":   "#c9a227",
+        "silver": "#c0c0c0",
+        "ruby":   "#8b0000",
+        "jade":   "#006400"
+      }
+    }
+  }
+}
+

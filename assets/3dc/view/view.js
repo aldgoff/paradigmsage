@@ -45,8 +45,9 @@ import { initThree } from "./render/initThree.js";
 
 
 // --- UI ---
-export function initView() {
-  const container = document.getElementById("qt3-game");
+export function init() {
+  console.log("view.init(): 3dc/view/init.js");
+  const container = document.getElementById("3dc-game");
   if (!container) return false;
 
   const context = initThree(container);

@@ -45,13 +45,16 @@
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
-import {initView,} from "../view/view.js";
+import * as view from "../view/view.js";
 // Seampoint: more imports...
 
 
 // --- UI ---
-export function initController() {
-  initView();
+export function init() {
+  console.log("control.init(): 3dc/controller/controller.js");
+  const context = view.init();
+
+  console.log("context", context);
 }
 // Seampoint: more global functions...
 
