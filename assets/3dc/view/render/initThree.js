@@ -32,10 +32,10 @@ export function initThree(container) {  // TODO: Currently a POC - most of this 
   scene.background = new THREE.Color(0xdcecff);
 
   const camera = new THREE.OrthographicCamera(
-    -500, 500, 500, -500,
+    -600, 600, 600, -600,
     1, 2000
     );
-    const pov = { white: [-600, 130, -600], neutral: [600, 130, -600], black: [-600, 130, 600] };
+    const pov = { white: [-600, 130, -600], neutral: [600, 130, -600], black: [600, 130, 600], negative: [-600, 130, 600] };
     camera.position.set(...pov.black);
     camera.lookAt(0, 0, 0);
 
