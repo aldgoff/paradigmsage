@@ -14,11 +14,6 @@ import templatesData from "./module.json" assert { type: "json" };
 
 // --- Build upon previous layers ---
 import {getBoardSpec,} from "../foundation/coords/coords.js";
-/* Usage:
-  getBoardSpec(...);
-  planes.nextPlane(...)
-  quads.planeToQuad(...)
- */
 
 import * as planes from "../geometry/planes.js";
 import * as quads  from "../geometry/quads.js";

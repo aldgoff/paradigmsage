@@ -8,53 +8,43 @@
       "spacing": 100
     },
     "grid": {
-      "dimensions": [8, 8, 8],
-      "tile_spacing": 100,
+      "tile_spacing": { "z": 150, "xy": 100 },
       "origin": [0, 0, 0],
       "axes": {
+        "z": "level (bottom to top; rook planes)",
         "x": "file (left-right from White POV)",
-        "y": "rank (near-far from White POV)",
-        "z": "level (bottom to top; rook planes)"
+        "y": "rank (near-far from White POV)"
       }
     },
     "tile": {
       "size": {
-        "width": 85,
-        "depth": 85,
-        "height": 10
+        "height": 5,
+        "width": 92,
+        "depth": 92
       },
       "positioning": {
-        "anchor": "bottom-center",
-        "z_offset_per_level": 100
+        "anchor": "bottom-center"
       },
       "face": {
         "encoding": "bishop_color",
         "colors": {
           "white": "#f2f2f2",
-          "black": "#2b2b2b"
+          "black": "#d0d0d0"
         }
       },
       "edge": {
         "encoding": "duke_color",
-        "visibility": {
-          "mode": "constrained",
-          "min_ratio": 0.02,
-          "max_ratio": 0.08
-        },
         "colors": {
           "gold": "#c9a227",
           "silver": "#c0c0c0",
           "ruby": "#8b0000",
           "jade": "#006400"
+        },
+        "visibility": {
+          "mode": "constrained",
+          "min_ratio": 0.02,
+          "max_ratio": 0.08
         }
-      },
-      "separation": {
-        "enabled": true,
-        "gap": 15,
-        "purpose": [
-          "edge_visibility",
-          "tile_distinction"
-        ]
       }
     },
     "color_logic": {

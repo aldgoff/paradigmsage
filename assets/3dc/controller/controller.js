@@ -53,8 +53,6 @@ import * as view from "../view/view.js";
 export function init() {
   console.log("control.init(): 3dc/controller/controller.js");
   const context = view.init();
-
-  console.log("context", context);
 }
 // Seampoint: more global functions...
 

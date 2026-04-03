@@ -15,7 +15,8 @@ export function xyz2vts([x, y, z]) {
   return [y, x, z]
   }
 
-export function vts2pixels( [z, x, y], Sxy = 100, Sz = 160, center = [50,80,50]) {
+  // TODO: scales are hard coded, need to import from a JSON file.
+export function vts2pixels( [z, x, y], Sxy = 100, Sz = 150, center = [50,Sz/2,50]) {
   return [
     x * Sxy - center[0],
     z * Sz  - center[1],
@@ -23,7 +24,7 @@ export function vts2pixels( [z, x, y], Sxy = 100, Sz = 160, center = [50,80,50])
   ];
   }
 
-export function pixels2vts( [x, y, z], Sxy = 100, Sz = 160, center = [50,80,50]) {
+export function pixels2vts( [x, y, z], Sxy = 100, Sz = 150, center = [50,Sz/2,50]) {
   return [
     Math.round((y + center[1]) / Sz),   // z
     Math.round((x + center[0]) / Sxy),  // x

@@ -31,5 +31,6 @@ title: "Dev"
   - 3/30/26 - Finish the overlapTiles module.
   - 3/31/26 - AdvSq first stable point.
   - 4/01/26 - AdvSq under good set of regression tests, more to do.
-  - 4/02/26 - 
+  - 4/02/26 - POC on tiles, the 8-color board unitcell, and basic POVs.
+  - 4/03/26 - 
 

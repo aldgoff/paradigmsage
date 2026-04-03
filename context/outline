@@ -6,6 +6,7 @@
 │   └── default.md
 ├── assets
 │   ├── 3dc
+│   │   ├── arch.js
 │   │   ├── controller
 │   │   │   ├── _tbd.md
 │   │   │   └── controller.js
@@ -60,6 +61,7 @@
 │   │   │   ├── quads.json
 │   │   │   └── quads.md
 │   │   ├── js
+│   │   ├── layout.js
 │   │   ├── main.js
 │   │   ├── model
 │   │   │   ├── _tbd.md
@@ -100,12 +102,15 @@
 │   │       ├── pieces
 │   │       ├── render
 │   │       │   ├── camera.js
+│   │       │   ├── coordsMap.js
 │   │       │   ├── initThree.js
 │   │       │   ├── loop.js
+│   │       │   ├── render.json
 │   │       │   ├── render.md
 │   │       │   ├── renderer.js
 │   │       │   └── scene.js
 │   │       ├── tiles
+│   │       │   ├── tiles.js
 │   │       │   └── tiles.json
 │   │       ├── trays
 │   │       ├── view.js
@@ -391,4 +396,4 @@
 │           └── poc.js
 └── themes
 
-80 directories, 311 files
+80 directories, 316 files
