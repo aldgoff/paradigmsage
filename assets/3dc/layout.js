@@ -10,19 +10,21 @@ export const LAYOUT_3DC = {
   threeDCanvas: {
     size: {},
     loc: {},
+    dragable: false,
   },
   gameCanvas: {
-    size: {},
-    loc: {},
+    name: "Game Control",
+    size: { w: 200, h: 200},
+    loc: { x: 0, y: 0},
     dragable: true,
     controls: {
       buttons: [
-        { label: "New Game",  key: "n", x: 5, y: 100, w: 130, h: 40, enabled: true },
-        { label: "Rerun",     key: "r", x: 5, y: 150, w: 130, h: 30, enabled: false },
-        { label: "Undo",      key: "u", x: 5, y: 190, w: 130, h: 30, enabled: false },
-        { label: "Redo",      key: "d", x: 5, y: 230, w: 130, h: 30, enabled: false },
-        { label: "Copy",      key: "?", x: 5, y: 270, w: 130, h: 40, enabled: true },
-        { label: "Paste",     key: "?", x: 5, y: 270, w: 130, h: 40, enabled: true },
+        { label: "New Game",  key: "n", x: 5, y:  40, w: 130, h: 40, enabled: true },
+        { label: "Rerun",     key: "r", x: 5, y:  90, w: 130, h: 30, enabled: false },
+        { label: "Undo",      key: "u", x: 5, y: 130, w: 130, h: 30, enabled: false },
+        { label: "Redo",      key: "d", x: 5, y: 170, w: 130, h: 30, enabled: false },
+        { label: "Copy",      key: "?", x: 5, y: 210, w: 130, h: 40, enabled: true },
+        { label: "Paste",     key: "?", x: 5, y: 260, w: 130, h: 40, enabled: true },
       ],
       checkBoxes: {
         autoloadFromTray: false,
@@ -33,8 +35,9 @@ export const LAYOUT_3DC = {
     }
   },
   listingCanvas: {
-    size: {},
-    loc: {},
+    name: "Move Listing",
+    size: { w: 200, h: 200},
+    loc: { x: 300, y: 0},
     dragable: true,
     controls: {
       buttons: [
@@ -52,6 +55,7 @@ export const LAYOUT_3DC = {
     }
   },
   trayCanvas: {
+    name: "Tray Control",
     size: {},
     loc: {},
     dragable: true,
@@ -59,13 +63,15 @@ export const LAYOUT_3DC = {
     gap: {},
   },
   gambitCanvas: {
+    name: "Gambit Exploration",
     size: {},
     loc: {},
     dragable: true,
     cube: {},
     direction: {},
   },
-  viewCanvas: {
+  cameraCanvas: {
+    name: "Camera Control",
     size: {},
     loc: {},
     dragable: true,

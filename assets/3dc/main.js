@@ -4,11 +4,10 @@ import * as control from "./controller/controller.js";
 
 console.log("main.js: 3dc/main.js");
 
-const isPlayBoard = document.getElementById("3dc-game");
-const isPlayUI    = document.getElementById("3dc-ui");
+const playBoard = document.getElementById("3dc-board"); // 3D canvas (Three render engine).
 
-if (isPlayBoard && isPlayUI) {
-  control.init();
+if (playBoard) {
+  control.init(playBoard);
 }
 
 if (location.hostname === "localhost") {

@@ -2,7 +2,7 @@
   "tiles_module": {
     "meta": {
       "name": "3DC Tile Specification",
-      "version": "0.1",
+      "version": "0.4",
       "coordinate_system": "board-centered",
       "units": "pixels",
       "spacing": 100
@@ -35,30 +35,11 @@
       "edge": {
         "encoding": "duke_color",
         "colors": {
-          "gold": "#c9a227",
+          "gold":   "#c9a227",
           "silver": "#c0c0c0",
-          "ruby": "#8b0000",
-          "jade": "#006400"
-        },
-        "visibility": {
-          "mode": "constrained",
-          "min_ratio": 0.02,
-          "max_ratio": 0.08
+          "ruby":   "#8b0000",
+          "jade":   "#006400"
         }
-      }
-    },
-    "color_logic": {
-      "bishop_parity": {
-        "rule": "(x + y + z) % 2",
-        "mapping": {
-          "0": "white",
-          "1": "black"
-        }
-      },
-      "duke_color": {
-        "type": "lookup",
-        "source": "precomputed_8_class_mapping",
-        "note": "must align with 8 equivalence classes (bishop × duke parity)"
       }
     },
     "render": {

@@ -62,6 +62,7 @@
 │   │   │   └── quads.md
 │   │   ├── js
 │   │   ├── layout.js
+│   │   ├── layout.md
 │   │   ├── main.js
 │   │   ├── model
 │   │   │   ├── _tbd.md
@@ -111,7 +112,8 @@
 │   │       │   └── scene.js
 │   │       ├── tiles
 │   │       │   ├── tiles.js
-│   │       │   └── tiles.json
+│   │       │   ├── tiles.json
+│   │       │   └── tiles.md
 │   │       ├── trays
 │   │       ├── view.js
 │   │       └── view.md
@@ -396,4 +398,4 @@
 │           └── poc.js
 └── themes
 
-80 directories, 316 files
+80 directories, 318 files
