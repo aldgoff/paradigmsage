@@ -2,12 +2,12 @@
 
 export const TEST_MODE = { // "VERBOSE" | "TERSE" | "OFF"
   foundation: "TERSE",
-  geometry: "VERBOSE",
-  planes: "TERSE",
-  quads: "TERSE",
-  perims: "TERSE",
-  overlapTiles: "TERSE",
-  advSqs: "TERSE",
+  geometry: "TERSE",
+    planes: "TERSE",
+    quads: "TERSE",
+    perims: "TERSE",
+    overlapTiles: "TERSE",
+    advSqs: "TERSE",
   // Seampoint - regression test verbosity.
 };
 

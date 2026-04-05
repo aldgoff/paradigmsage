@@ -1,4 +1,11 @@
 // ./3dc/main.js
+/* File: main.js
+  Path: ./3dc/main.js
+  Purpose: Entry point for game and for regression tests.
+  Author: Allan Goff
+  Date: 4/02/26
+  UI: the export functions.
+*/
 
 import * as control from "./controller/controller.js";
 
@@ -25,6 +32,8 @@ if (location.hostname === "localhost") {
   import("./tests/geometry/perims.test.js").then(m => m.run());
   import("./tests/geometry/overlapTiles.test.js").then(m => m.run());
   import("./tests/geometry/advSqs.test.js").then(m => m.run());
+
+  import("./tests/model/state.test.js").then(m => m.run());
   // Seampoint: more module tests.
 }
 

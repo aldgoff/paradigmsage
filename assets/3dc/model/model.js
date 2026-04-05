@@ -29,13 +29,13 @@ export function init(playBoard) {
 
   console.log("model.init(): 3dc/model/model.js");
 
-  state.demo();
+  // state.demo();
 
-  exampleStateStr();
-  exampleStateStrSetup();
-  exampleStateStrMoves();
-  exampleStateStrGambits();
-  exampleStateStrAdvsq();
+  // exampleStateStr();
+  // exampleStateStrSetup();
+  // exampleStateStrMoves();
+  // exampleStateStrGambits();
+  // exampleStateStrAdvsq();
 
   return setup; // Whatever that is.
 }

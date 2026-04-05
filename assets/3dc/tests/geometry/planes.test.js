@@ -109,7 +109,7 @@ function test_nextPrev() {
     assertEqual(prvPlane, test.plane, `${test.label}`);
   }
 
-  report("test_nextPrev", "geometry");
+  report("test_nextPrev", "planes");
 }
 
 // Spec section 4.

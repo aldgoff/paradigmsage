@@ -35,3 +35,6 @@ title: "Dev"
   - 4/03/26 - 8x8x8 tiles, plumb dragable 2D control canvases, with names.
   - 4/04/26 - Nail down state for undo/redo.
 
+ ### Week 4:
+  - 4/6/26 - Condensed regression reporting, simpler 3dc page, start on model/state tests.
+
