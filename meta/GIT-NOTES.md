@@ -51,7 +51,7 @@
   vi: Merge branch '3dc-port' - AdvSq: first stable point.
   vi: Merge branch '3dc-port' - Perims: allow k=0, degenerate, but eliminates the special case, consistent geometry.
   vi: Merge branch '3dc-port' - AdvSq: first good test coverage.
-  vi: Merge branch '3dc' - Begin development of the model layer.
+  vi: Merge branch '3dc' - Begin development of the view layer.
   git log --oneline --decorate --graph --all --boundary -n 50
   git push origin main
   ```
