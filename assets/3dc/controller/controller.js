@@ -46,11 +46,12 @@
 
 // --- Build upon previous layers ---
 import * as view from "../view/view.js";
+import * as model from "../model/model.js";
 // Seampoint: more imports...
 
 // --- UI ---
 export function init(playBoard) {
-  console.log("control.init(): 3dc/controller/controller.js");
+  console.log("controller.init(): 3dc/controller/controller.js");
 
   makeDraggable(document.getElementById("game-window"));
   makeDraggable(document.getElementById("listing-window"));
@@ -59,6 +60,7 @@ export function init(playBoard) {
   makeDraggable(document.getElementById("camera-window"));
   // Seampoint - more 2D canvases...
 
+  const setup = model.init(playBoard);
   const context = view.init(playBoard);
 }
 // Seampoint: more global functions...

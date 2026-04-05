@@ -51,6 +51,9 @@ Places AI said might be good for promoting the website.
   - Logical paradox disallows contradictions - but imaginary truth-values demand them.
     - https://paradigmsage.com/pop/ch-02-paradox/
 
+  ### 5. 
+   - If it's better to give than to receive, then shouldn't the birthday boy give presents?
+
  ## Potential Hooks - DEPRECATED.
   ### 4.
   - What kind of a logic does one get if logical paradox is solved by introducing imaginary truthvalues?

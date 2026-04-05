@@ -107,7 +107,7 @@ function drawLayoutBounds(layout = LAYOUT_3DC) {
     else if(layout_key === "gambitCanvas") {
       }
     else {
-      console.log("No code yet to outline graphical elements in", layout_key);
+      // console.log("No code yet to outline graphical elements in", layout_key);
     }
     // Seampoint - more 2D canvases...
   }

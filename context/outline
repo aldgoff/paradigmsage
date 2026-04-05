@@ -68,8 +68,13 @@
 │   │   │   ├── _tbd.md
 │   │   │   ├── grammar.js
 │   │   │   ├── model.js
-│   │   │   └── notation
-│   │   │       └── notation.js
+│   │   │   ├── model.json
+│   │   │   ├── model.md
+│   │   │   ├── notation
+│   │   │   │   └── notation.js
+│   │   │   └── state
+│   │   │       ├── state.js
+│   │   │       └── state.json
 │   │   ├── templates
 │   │   │   ├── module.js
 │   │   │   ├── module.json
@@ -398,4 +403,4 @@
 │           └── poc.js
 └── themes
 
-80 directories, 318 files
+81 directories, 322 files

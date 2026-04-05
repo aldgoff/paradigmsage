@@ -33,4 +33,5 @@ title: "Dev"
   - 4/01/26 - AdvSq under good set of regression tests, more to do.
   - 4/02/26 - POC on tiles, the 8-color board unitcell, and basic POVs.
   - 4/03/26 - 8x8x8 tiles, plumb dragable 2D control canvases, with names.
+  - 4/04/26 - Nail down state for undo/redo.
 
