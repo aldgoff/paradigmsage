@@ -53,11 +53,8 @@ export function run() {
   let curr = snapshotTotals();  // TODO: refactor as teardown(<module>):
   const pass = curr.pass - prev.pass;
   const fail = curr.fail - prev.fail;
-  if (TEST_MODE.planes !== "VERBOSE") {
-    console.log(`Geometry/planes ${pass}/${pass + fail}`);
-  }
 
-  finalReport();
+  finalReport("Geometry/planes");
 }
 
 // ------------------------------------------------------------
@@ -112,7 +109,7 @@ function test_nextPrev() {
     assertEqual(prvPlane, test.plane, `${test.label}`);
   }
 
-  report("test_nextPrev", "geometry");
+  report("test_nextPrev", "planes");
 }
 
 // Spec section 4.

@@ -18,6 +18,8 @@ import {vts2xyz,
         vts2pixels,
         pixels2vts,
 } from "../render/coordsMap.js"
+
+import * as tiles from "../tiles/tiles.js";
 // Seampoint: more imports...
 
 
@@ -31,26 +33,20 @@ export function initThree(container) {  // TODO: Currently a POC - most of this 
     */
   scene.background = new THREE.Color(0xdcecff);
 
-  const camera = new THREE.OrthographicCamera(
-    -500, 500, 500, -500,
-    1, 2000
-    );
-    const pov = { white: [-600, 130, -600], neutral: [600, 130, -600], black: [-600, 130, 600] };
-    camera.position.set(...pov.black);
+  const zoom = 1000; // 400 - 1500.
+  const camera = new THREE.OrthographicCamera( -zoom, zoom, zoom, -zoom,   1, 2000 ); 
+    const pov = { white: [-800, 150, -800], neutral: [900, 170, -900], black: [800, 160, 800], negative: [-800, 160, 800] };
+    camera.position.set(...pov.neutral);
     camera.lookAt(0, 0, 0);
-
 
   // --- TILE (hardcoded test) ---
     // geometry: width, height, depth
-    const tileTrial = [6, 87, 87];
-    const geometry = new THREE.BoxGeometry(...vts2xyz(tileTrial));
+    let rawTile = tiles.createTile([0,0,0]).size;
+    const geometry = new THREE.BoxGeometry(...vts2xyz(rawTile));
 
     // Tile edges.
       const edges = new THREE.EdgesGeometry(geometry);
-      const line = new THREE.LineSegments(
-        edges,
-        new THREE.LineBasicMaterial({ color: 0x000000 })
-      );
+      const line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0x000000 }));
 
     // Face materials, flat.
     const white  = new THREE.MeshBasicMaterial({ color: 0xf2f2f2 });
@@ -60,67 +56,23 @@ export function initThree(container) {  // TODO: Currently a POC - most of this 
     const ruby   = new THREE.MeshBasicMaterial({ color: 0x8b0000 });
     const jade   = new THREE.MeshBasicMaterial({ color: 0x006400 });
 
-    // Side materials, shiny.
-    // const gold = new THREE.MeshStandardMaterial({ color: 0xc9a227, metalness: 0.9, roughness: 0.2 });
-    const MATERIALS = {
-      gold:   new THREE.MeshStandardMaterial({ color: 0xc9a227, metalness: 0.9, roughness: 0.2 }),
-      silver: new THREE.MeshStandardMaterial({ color: 0xc0c0c0, metalness: 0.9, roughness: 0.25 }),
-      ruby:   new THREE.MeshStandardMaterial({ color: 0x8b0000, metalness: 0.6, roughness: 0.3 }),
-      jade:   new THREE.MeshStandardMaterial({ color: 0x006400, metalness: 0.6, roughness: 0.35 })
-    };
+    for(let z=-3; z<=4; z++) {  // Create an 8x8x8 board.
+      for(let x=-3; x<=4; x++) {
+        for(let y=-3; y<=4; y++) {
+          let pos = [z, x, y];
+          let tile = tiles.createTile(pos);
+          let faceColor = new THREE.MeshBasicMaterial({ color: tile.faceColor });
+          let edgeColor = new THREE.MeshBasicMaterial({ color: tile.edgeColor });
 
-    // Mesh.
-    // const sideMat = MATERIALS.gold;   // or whichever duke color
-    // const sideMat = jade;   // or whichever duke color
-    // const topMat  = white;
+          let mat = [edgeColor, edgeColor, faceColor, faceColor, edgeColor, edgeColor];
 
-    // const materials = [
-    //   sideMat, // right
-    //   sideMat, // left
-    //   topMat,  // top
-    //   topMat,  // bottom
-    //   sideMat, // front
-    //   sideMat  // back
-    // ];
-
-    // const materials1 = [silver, silver, white, white, silver, silver];
-    // const materials2 = [gold, gold, black, black, gold, gold];
-
-    const tileProps = [
-      { pos: [0,0,0], mat: [silver, silver, white, white, silver, silver] },
-      { pos: [0,1,0], mat: [ruby,   ruby,   black, black, ruby,   ruby] },
-      { pos: [0,0,1], mat: [jade,   jade,   black, black, jade,   jade] },
-      { pos: [0,1,1], mat: [gold,   gold,   white, white, gold,   gold] },
-      { pos: [1,0,0], mat: [gold,   gold,   black, black, gold,   gold] },
-      { pos: [1,1,0], mat: [jade,   jade,   white, white, jade,   jade] },
-      { pos: [1,0,1], mat: [ruby,   ruby,   white, white, ruby,   ruby] },
-      { pos: [1,1,1], mat: [silver, silver, black, black, silver, silver] },
-    ];
-    let tiles = [];
-    for(const props of tileProps) {
-      const pos = props.pos;
-      const mat = props.mat;
-      let tile = new THREE.Mesh(geometry, mat);   // Colors.
-      tile.add(makeEdges(geometry));              // Edges.
-      tile.position.set(...vts2pixels(pos));      // Position.
-      scene.add(tile);                            // Add to scene.
+          tile = new THREE.Mesh(geometry, mat);       // Colors.
+          tile.add(makeEdges(geometry));              // Edges.
+          tile.position.set(...vts2pixels(pos));      // Position.
+          scene.add(tile);                            // Add to scene.
+        }
+      }
     }
-
-    // const tile1 = new THREE.Mesh(geometry, materials1);
-    // const tile2 = new THREE.Mesh(geometry, materials2);
-
-    // tile1.add(makeEdges(geometry));
-    // tile2.add(makeEdges(geometry));
-
-    // // Position.
-    // const pos1 = [0, 0, 0];
-    // const pos2 = [1, 0, 0];
-    // tile1.position.set(...vts2pixels(pos1));
-    // tile2.position.set(...vts2pixels(pos2));
-
-    // Add to scene.
-    // scene.add(tile1);
-    // scene.add(tile2);
 
     // Light
     // const light = new THREE.DirectionalLight(0xffffff, 1.0);

@@ -45,12 +45,9 @@ export function run() {
   let curr = snapshotTotals();
   const pass = curr.pass - prev.pass;
   const fail = curr.fail - prev.fail;
-  if (TEST_MODE.advSqs !== "VERBOSE") {
-    console.log(`Geometry/advSqs (${pass}/${pass + fail}`);
-  }
   prev = curr;
 
-  finalReport();
+  finalReport("Geometry/advSqs");
 }
 
 // ------------------------------------------------------------

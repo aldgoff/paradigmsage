@@ -52,14 +52,14 @@ export function run() {
     const pass = curr.pass - prev.pass;
     const fail = curr.fail - prev.fail;
 
-    if (TEST_MODE.foundation !== "VERBOSE") {
-      console.log(`Foundation/colors (${specName}) ${pass}/${pass + fail}`);
-    }
+    // if (TEST_MODE.foundation !== "VERBOSE") {
+    //   console.log(`Foundation/colors (${specName}) ${pass}/${pass + fail}`);
+    // }
 
     prev = curr;
   }
 
-  finalReport();
+  finalReport("Foundation/colors");
 }
 
 // ------------------------------------------------------------

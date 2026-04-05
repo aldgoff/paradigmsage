@@ -72,11 +72,8 @@ export function run() {
   let curr = snapshotTotals();
   const pass = curr.pass - prev.pass;
   const fail = curr.fail - prev.fail;
-  if (TEST_MODE.quads !== "VERBOSE") {
-    console.log(`Geometry/quads ${pass}/${pass + fail}`);
-  }
 
-  finalReport();
+  finalReport("Geometry/quads");
 }
 
 // ------------------------------------------------------------

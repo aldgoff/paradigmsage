@@ -2,12 +2,12 @@
 
 export const TEST_MODE = { // "VERBOSE" | "TERSE" | "OFF"
   foundation: "TERSE",
-  geometry: "VERBOSE",
-  planes: "TERSE",
-  quads: "TERSE",
-  perims: "TERSE",
-  overlapTiles: "TERSE",
-  advSqs: "VERBOSE",
+  geometry: "TERSE",
+    planes: "TERSE",
+    quads: "TERSE",
+    perims: "TERSE",
+    overlapTiles: "TERSE",
+    advSqs: "TERSE",
   // Seampoint - regression test verbosity.
 };
 
@@ -92,10 +92,20 @@ export function report(name, layer = "foundation") {
   FAIL = 0;
   }
 
-export function finalReport() {
-  let name = "TOTAL";
-  const padded = name.padEnd(11);
-  console.log(`${padded} ${TOTAL_PASS}/${TOTAL_PASS + TOTAL_FAIL} tests passed`);
+export function finalReport(module="") {
+  let name = "TOTAL:";
+  const length = Math.abs(TOTAL_PASS).toString().length; 
+  const pad = 9 - length;
+  const padded = name.padEnd(pad);
+
+  let space = "";
+  switch (length) {
+    case 1: space = "  "; break;
+    case 2: space = " ";  break;
+    case 3: space = "";   break;
+  }
+
+  console.log(`${padded} ${TOTAL_PASS}/${space} ${TOTAL_PASS + TOTAL_FAIL} tests passed - ${module}`);
 
   TOTAL_PASS = 0;
   TOTAL_FAIL = 0;

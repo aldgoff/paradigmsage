@@ -6,6 +6,7 @@
 │   └── default.md
 ├── assets
 │   ├── 3dc
+│   │   ├── arch.js
 │   │   ├── controller
 │   │   │   ├── _tbd.md
 │   │   │   └── controller.js
@@ -60,13 +61,20 @@
 │   │   │   ├── quads.json
 │   │   │   └── quads.md
 │   │   ├── js
+│   │   ├── layout.js
+│   │   ├── layout.md
 │   │   ├── main.js
 │   │   ├── model
 │   │   │   ├── _tbd.md
 │   │   │   ├── grammar.js
 │   │   │   ├── model.js
-│   │   │   └── notation
-│   │   │       └── notation.js
+│   │   │   ├── model.json
+│   │   │   ├── model.md
+│   │   │   ├── notation
+│   │   │   │   └── notation.js
+│   │   │   └── state
+│   │   │       ├── state.js
+│   │   │       └── state.json
 │   │   ├── templates
 │   │   │   ├── module.js
 │   │   │   ├── module.json
@@ -89,6 +97,7 @@
 │   │   │   │   └── quads.test.js
 │   │   │   ├── integration
 │   │   │   ├── model
+│   │   │   │   └── state.test.js
 │   │   │   ├── templates
 │   │   │   │   └── module.test.js
 │   │   │   └── tests.js
@@ -100,13 +109,17 @@
 │   │       ├── pieces
 │   │       ├── render
 │   │       │   ├── camera.js
+│   │       │   ├── coordsMap.js
 │   │       │   ├── initThree.js
 │   │       │   ├── loop.js
+│   │       │   ├── render.json
 │   │       │   ├── render.md
 │   │       │   ├── renderer.js
 │   │       │   └── scene.js
 │   │       ├── tiles
-│   │       │   └── tiles.json
+│   │       │   ├── tiles.js
+│   │       │   ├── tiles.json
+│   │       │   └── tiles.md
 │   │       ├── trays
 │   │       ├── view.js
 │   │       └── view.md
@@ -391,4 +404,4 @@
 │           └── poc.js
 └── themes
 
-80 directories, 311 files
+81 directories, 323 files

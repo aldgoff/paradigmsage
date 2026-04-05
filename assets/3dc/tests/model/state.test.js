@@ -1,8 +1,8 @@
-/* File: templates.tests.js
-  Path: ./3dc/tests/templates/
-  Purpose: Test the templates module.
+/* File: state.tests.js
+  Path: ./3dc/tests/state/
+  Purpose: Test the state module.
   Author: Allan Goff
-  Date: 4/00/26
+  Date: 4/06/26
   UI: the export functions.
 */
 
@@ -22,13 +22,14 @@ import {getBoardSpec,
 } from "../../foundation/coords/coords.js";
 
 // --- Module ---
-import {UI,
-} from "../../templates/module.js";
+import * as state from "../../model/state/state.js";
 
 // ------------------------------------------------------------
 
 export function run() {
   let prev = snapshotTotals();
+
+  // state.demo();
 
   test_UI();
   // Seampoint: more tests...
@@ -36,12 +37,9 @@ export function run() {
   let curr = snapshotTotals();
   const pass = curr.pass - prev.pass;
   const fail = curr.fail - prev.fail;
-  // if (TEST_MODE.templates !== "VERBOSE") {
-  //   console.log(`Templates/cat ${pass}/${pass + fail}`);
-  // }
   prev = curr;
 
-  finalReport("Templates/cat");
+  finalReport("Model/state");
 }
 
 // ------------------------------------------------------------
@@ -52,10 +50,10 @@ function test_UI() {
   ];
 
   for (const { value, expected, label } of cases) {
-    assertEqual(UI(), expected, label);
+    // assertEqual(UI(), expected, label);
   }
 
-  report("UI", "templates");
+  report("UI", "state");
   }
 
 // Seampoint: more tests...

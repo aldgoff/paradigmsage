@@ -53,11 +53,7 @@ export function run() {
   const pass = curr.pass - prev.pass;
   const fail = curr.fail - prev.fail;
 
-  if (TEST_MODE.unitCells !== "VERBOSE") {
-    console.log(`Foundation/unitCell ${pass}/${pass + fail}`);
-  }
-
-  finalReport();
+  finalReport("Foundation/unitCell");
 }
 
 // ------------------------------------------------------------
