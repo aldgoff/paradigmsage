@@ -2,7 +2,7 @@
   Path: ./3dc/tests/templates/
   Purpose: Test the templates module.
   Author: Allan Goff
-  Date: 3/00/26
+  Date: 4/00/26
   UI: the export functions.
 */
 
@@ -36,12 +36,12 @@ export function run() {
   let curr = snapshotTotals();
   const pass = curr.pass - prev.pass;
   const fail = curr.fail - prev.fail;
-  if (TEST_MODE.templates !== "VERBOSE") {
-    console.log(`Templates/cat ${pass}/${pass + fail}`);
-  }
+  // if (TEST_MODE.templates !== "VERBOSE") {
+  //   console.log(`Templates/cat ${pass}/${pass + fail}`);
+  // }
   prev = curr;
 
-  finalReport();
+  finalReport("Templates/cat");
 }
 
 // ------------------------------------------------------------

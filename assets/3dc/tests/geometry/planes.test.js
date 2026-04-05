@@ -53,11 +53,8 @@ export function run() {
   let curr = snapshotTotals();  // TODO: refactor as teardown(<module>):
   const pass = curr.pass - prev.pass;
   const fail = curr.fail - prev.fail;
-  if (TEST_MODE.planes !== "VERBOSE") {
-    console.log(`Geometry/planes ${pass}/${pass + fail}`);
-  }
 
-  finalReport();
+  finalReport("Geometry/planes");
 }
 
 // ------------------------------------------------------------

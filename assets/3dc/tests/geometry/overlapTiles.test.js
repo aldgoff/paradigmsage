@@ -38,12 +38,9 @@ export function run() {
   let curr = snapshotTotals();
   const pass = curr.pass - prev.pass;
   const fail = curr.fail - prev.fail;
-  if (TEST_MODE.overlapTiles !== "VERBOSE") {
-    console.log(`Geometry/overlap ${pass}/${pass + fail}`);
-  }
   prev = curr;
 
-  finalReport();
+  finalReport("Geometry/overlap");
 }
 
 // ------------------------------------------------------------
