@@ -95,7 +95,7 @@ function getCanvasLocalCoords(canvas, e) {  // TODO: unused.
     x: e.clientX - rect.left,
     y: e.clientY - rect.top
   };
-}
+  }
 
 function isInsideAnyButton(x, y, buttons) {  // TODO: unused.
   return buttons.some(b =>

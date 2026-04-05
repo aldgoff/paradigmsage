@@ -33,9 +33,17 @@
  */
 
 /* Control Flow:
-  play.md - web page, imports the 3D render SQ (Three), and defines the canvases.
+  play.md - web page
+    - imports the 3D render SQ (Three), 
+    - places each canvas on the page (top, left).
+    - defines each canvas
+      - DOM id (*-window)
+      - canvas id (3dc-*), (width, height)
   main.js - Entry point.
-    control.init() -> view.init().
-    Runs regressions tests via imports (viewable in the console) locally.
+    - control.init() 
+      - model.init().
+      - view.init().
+    - Regressions tests (tests/core/asserts.js) via imports (viewable in local console).
+
  */
 

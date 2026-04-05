@@ -1,6 +1,6 @@
 /* File: state.js
   Path: ./3dc/model/state/state.js
-  Purpose: The state and logic of 3D Chess.
+  Purpose: The state of a 3D Chess game.
   Author: Allan Goff
   Date: 4/04/26
   UI: the export functions.
