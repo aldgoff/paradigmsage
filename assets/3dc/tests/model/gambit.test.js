@@ -22,12 +22,13 @@ import stateData from "../../model/state/state.json" assert { type: "json" };
   const stateModule = stateData.state_module;
   const Setup    = stateModule.Setup;
   const Moves    = stateModule.Moves;
+  // const Gambits  = stateModule.Gambits;
   const Insights = stateModule.Insights;
   const AdvSqs   = stateModule.AdvSqs;
   // Seampoint: more objects.
 
 // --- Layers ---
-import * as coords from "../../foundation/coords/coords.js";
+import * as ccords from "../../foundation/coords/coords.js";
 
 // --- Module ---
 import * as state from "../../model/state/state.js";
@@ -40,6 +41,7 @@ export function run() {
   test_state();
   test_setup();
   test_moves();
+  // test_gambits();
   test_insights();
   test_advsqs();
   // Seampoint: more tests...
@@ -75,16 +77,16 @@ function test_state() {
 
 function test_setup() {
   const cases = [
-    { expected: '{"board":[8,8,8],"play":"off","trays":"none","gap":0,"initialPos":"std|list","itemized":{"white":[],"black":[]}}', label: "8x8x8" },
-    { expected: '{"board":[10,8,8],"play":"off","trays":"none","gap":0,"initialPos":"std|list","itemized":{"white":[],"black":[]}}', label: "10x8x8" },
-    { expected: '{"board":[10,10,10],"play":"off","trays":"none","gap":0,"initialPos":"std|list","itemized":{"white":[],"black":[]}}', label: "10x10x10" },
+    { expected: '{"board":[8,8,8],"play":"off","trays":"none","gap":0}', label: "8x8x8" },
+    { expected: '{"board":[10,8,8],"play":"off","trays":"none","gap":0}', label: "10x8x8" },
+    { expected: '{"board":[10,10,10],"play":"off","trays":"none","gap":0}', label: "10x10x10" },
 
-    { expected: '{"board":[8,8,8],"play":"game","trays":"real","gap":0,"autoload":true}', label: "game-real" },
-    { expected: '{"board":[8,8,8],"play":"puzzle","trays":"factory","gap":0,"autoload":true}', label: "puzzle-factory" },
+    { expected: '{"board":[8,8,8],"play":"game","trays":"real","gap":0}', label: "game-real" },
+    { expected: '{"board":[8,8,8],"play":"puzzle","trays":"factory","gap":0}', label: "puzzle-factory" },
 
-    { expected: '{"board":[8,8,8],"play":"game","trays":"real","gap":1,"autoload":true}', label: "gap 1" },
-    { expected: '{"board":[8,8,8],"play":"game","trays":"real","gap":2,"autoload":true}', label: "gap 2" },
-    { expected: '{"board":[8,8,8],"play":"game","trays":"real","gap":3,"autoload":true}', label: "gap 3" },
+    { expected: '{"board":[8,8,8],"play":"game","trays":"real","gap":1}', label: "gap 1" },
+    { expected: '{"board":[8,8,8],"play":"game","trays":"real","gap":2}', label: "gap 2" },
+    { expected: '{"board":[8,8,8],"play":"game","trays":"real","gap":3}', label: "gap 3" },
 
     { expected: '{"board":[6,6,6],"play":"game","trays":"real","gap":0}', label: "6x6x6" },
     { expected: '{"board":[5,5,5],"play":"game","trays":"real","gap":0}', label: "5x5x5" },
@@ -112,6 +114,21 @@ function test_moves() {
   });
 
   report("Moves array", "state");
+  }
+
+function test_gambits() {
+  const cases = [
+    { expected: '{"turn":1,"moves":["P-K4,4","P-Q4,3"],"coords":["",""],"annotations":["","..."]}', label: "turn 1" },
+    { expected: '{"turn":2,"moves":["PxP","N-KB3,3"],"coords":["...",""],"annotations":["",""]}', label: "turn 2" },
+    { expected: '{"turn":3,"moves":["qnP-QN3,4","..."],"coords":["...","..."],"annotations":["...","..."]}', label: "turn 3" },
+  ];
+
+  Gambits.forEach((entry, i) => {
+    const obj = JSON.stringify(entry);
+    assertEqual(obj, cases[i].expected, cases[i].label);
+  });
+
+  report("Gambits array", "state");
   }
 
 function test_insights() {

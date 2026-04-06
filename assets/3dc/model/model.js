@@ -20,7 +20,7 @@ import modelData from "./model.json" assert { type: "json" };
 // --- Build upon previous layers ---
 import * as view    from "../view/view.js";
 import * as control from "../controller/controller.js";
-import * as state   from "./state/state.js";
+import * as state   from "./state/state.js";  // All the undoable state code.
 // Seampoint: more imports...
 
 // --- UI ---
@@ -29,60 +29,9 @@ export function init(playBoard) {
 
   console.log("model.init(): 3dc/model/model.js");
 
-  // state.demo();
-
-  // exampleStateStr();
-  // exampleStateStrSetup();
-  // exampleStateStrMoves();
-  // exampleStateStrGambits();
-  // exampleStateStrAdvsq();
+  // exampleStateStrMoves();  // Comments about fallback notation: coords and annotations - keep for now.
 
   return setup; // Whatever that is.
-}
-
-// By squencing into 4 groups, need only one set of undo buttons; achieves logarithmic undo.
-function exampleStateStr() {
-  let stateStr = "Setup:{}; Moves:{}; Gambits:{}; AdvSq:{}";
-
-  console.log(stateStr);
-}
-
-function exampleStateStrSetup() {
-  let stateStr1 = "Setup:{[" +
-                  "{board: 8x8x8}, " +
-                  "{board: 10x8x8}, " +
-                  "{board: 10x10x10}, " +
-                  "{board: 6x6x6}, " +
-                  "{board: 5x5x5}, " +
-                  "{board: 4x4x4}, " +
-                  "]};";
-  let stateStr2 = "Setup:{[" +
-                  "{board: 8x8x8, play: game, trays: real, gap: 0}" +
-                  "{board: 8x8x8, play: game, trays: real, gap: 1}" +
-                  "{board: 8x8x8, play: game, trays: real, gap: 2}" +
-                  "]};";
-
-  console.log(stateStr1);
-  console.log(stateStr2);
-
-  // const obj = JSON.parse(stateStr1);
-  // const str = JSON.stringify(object);
-
-  // console.log(obj);
-  // console.log(str);
-}
-
-function exampleStateStrSetup1() {
-  let stateStr = "Setup:{" +
-                  "board: 8x8x8|10x8x8|10x10x10|6x6x6|5x5x5|4x4x4, " +
-                  "play: game|puzzle:{size:[5,5,5],loc:[0,0,0]}, " +
-                  "trays: real|factory|none, " +
-                  "gap: 0|1|2, " +  // This is view centric; it is just a default value, can be changed dynamically.
-                  "initialPos: std|itemized:{white:[...],black:[...]}, " +
-                  "autoLoad: true|false" +
-                 "};";
-
-  console.log(stateStr);
 }
 
 function exampleStateStrMoves() { // Best with collapsible listing table.
@@ -108,17 +57,5 @@ function exampleStateStrMoves() { // Best with collapsible listing table.
   console.log(stateStr3);
   console.log(stateStr4);
   console.log(stateStr5);
-}
-
-function exampleStateStrGambits() {
-  let stateStr = "Gambits:{[Q:37,[[Q0,0],[KB2,2]]; Q:38,[[Q0,0],[KN3,3]]; Q:1,[[Q0,0],[Q1,1]]; ... ]}";
-
-  console.log(stateStr);
-}
-
-function exampleStateStrAdvsq() {
-  let stateStr = "Advsq:{[[[Q0,0],[KB2,2]]; [[Q0,0],[KN3,3]]; [[Q0,0],[Q1,1]]; ... ]}";
-
-  console.log(stateStr);
 }
 

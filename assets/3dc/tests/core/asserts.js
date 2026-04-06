@@ -8,6 +8,8 @@ export const TEST_MODE = { // "VERBOSE" | "TERSE" | "OFF"
     perims: "TERSE",
     overlapTiles: "TERSE",
     advSqs: "TERSE",
+  model: "VERBOSE",
+    state: "VERBOSE",
   // Seampoint - regression test verbosity.
 };
 
@@ -105,7 +107,7 @@ export function finalReport(module="") {
     case 3: space = "";   break;
   }
 
-  console.log(`${padded} ${TOTAL_PASS}/${space} ${TOTAL_PASS + TOTAL_FAIL} tests passed - ${module}`);
+  console.log(`${padded} ${TOTAL_PASS}/${space}${TOTAL_PASS + TOTAL_FAIL} tests passed - ${module}`);
 
   TOTAL_PASS = 0;
   TOTAL_FAIL = 0;
