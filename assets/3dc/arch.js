@@ -34,8 +34,8 @@
 
 /* Control Flow:
   play.md - web page
-    - imports the 3D render SQ (Three), 
-    - places each canvas on the page (top, left).
+    - imports the 3D render engine (Three), 
+    - places each 2D canvas on the page (top, left).
     - defines each canvas
       - DOM id (*-window)
       - canvas id (3dc-*), (width, height)

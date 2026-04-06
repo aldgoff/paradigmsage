@@ -52,6 +52,7 @@
   vi: Merge branch '3dc-port' - Perims: allow k=0, degenerate, but eliminates the special case, consistent geometry.
   vi: Merge branch '3dc-port' - AdvSq: first good test coverage.
   vi: Merge branch '3dc' - Begin development of the view layer.
+  vi: Merge branch '3dc' - Start on model layer: state module for undo/redoable state.
   git log --oneline --decorate --graph --all --boundary -n 50
   git push origin main
   ```

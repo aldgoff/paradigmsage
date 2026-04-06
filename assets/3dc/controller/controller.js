@@ -42,11 +42,14 @@
 */
 
 // --- Load JSON ---
-// Seampoint: more objects...
+import stateData from "../model/state/state.json" assert { type: "json" };
+  const seed = stateData.state_module;     // Fake data from state.json.
+// Seampoint: more objects.
 
 // --- Build upon previous layers ---
 import * as view from "../view/view.js";
 import * as model from "../model/model.js";
+import * as state from "../model/state/state.js";
 // Seampoint: more imports...
 
 // --- UI ---
@@ -62,6 +65,39 @@ export function init(playBoard) {
 
   const setup = model.init(playBoard);
   const context = view.init(playBoard);
+
+  demo(); // POC for state interface and undo/redo architecture.
+}
+
+function demo() { // Demo calls to model state arch: create a board and freeze an advsq.
+  console.log("Demo undo/redo state architecture.");
+
+  state.setNull();                                      // Initial state, all null.
+  console.log(JSON.parse(JSON.stringify(state.getState())));
+
+  state.setup(seed.Setup[0]);                           // Make a board.
+  state.setup(seed.Setup[1]);                           // Change mind.
+  state.setup(seed.Setup[2]);                           // Again.
+  console.log(JSON.parse(JSON.stringify(state.getState())));
+
+  state.pushAdvSq(seed.AdvSqs[0]);                      // Explore an advancement square.
+  state.pushAdvSq(seed.AdvSqs[1]);
+  state.pushAdvSq(seed.AdvSqs[2]);
+  console.log(JSON.parse(JSON.stringify(state.getState())));
+
+  state.freeze(seed.AdvSqs[1]);                         // Add to insights.
+  console.log(JSON.parse(JSON.stringify(state.getState())));
+
+  state.pushAdvSq(seed.AdvSqs[0]);                      // Explore an advancement square.
+  state.pushAdvSq(seed.AdvSqs[1]);
+  state.pushAdvSq(seed.AdvSqs[2]);
+  console.log(JSON.parse(JSON.stringify(state.getState())));
+
+  state.freeze(state.getState().AdvSqs[2]);             // Add to insights.
+  console.log(JSON.parse(JSON.stringify(state.getState())));
+
+  state.recordMove(state.getState().Insights[1]);       // Make a move from the insights.
+  console.log(JSON.parse(JSON.stringify(state.getState())));
 }
 // Seampoint: more global functions...
 

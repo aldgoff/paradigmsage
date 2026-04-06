@@ -66,6 +66,9 @@
 │   │   ├── main.js
 │   │   ├── model
 │   │   │   ├── _tbd.md
+│   │   │   ├── gambit
+│   │   │   │   ├── gambit.json
+│   │   │   │   └── gambit.md
 │   │   │   ├── grammar.js
 │   │   │   ├── model.js
 │   │   │   ├── model.json
@@ -74,7 +77,8 @@
 │   │   │   │   └── notation.js
 │   │   │   └── state
 │   │   │       ├── state.js
-│   │   │       └── state.json
+│   │   │       ├── state.json
+│   │   │       └── state.md
 │   │   ├── templates
 │   │   │   ├── module.js
 │   │   │   ├── module.json
@@ -97,6 +101,7 @@
 │   │   │   │   └── quads.test.js
 │   │   │   ├── integration
 │   │   │   ├── model
+│   │   │   │   ├── gambit.test.js
 │   │   │   │   └── state.test.js
 │   │   │   ├── templates
 │   │   │   │   └── module.test.js
@@ -404,4 +409,4 @@
 │           └── poc.js
 └── themes
 
-81 directories, 323 files
+82 directories, 327 files
