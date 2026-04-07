@@ -69,7 +69,7 @@ function test_quad_ctor() {
     assertEqual(advSq.getArea(),    expect.area,    `AdvSq validation failed for area    ${label} ${input.quad} ${input.k}.`);
   }
 
-  report("test_quad_ctor", "advSqs");
+  report("quad_ctor", "advSqs");
   }
 
 function test_raypair_ctor() {
@@ -89,7 +89,7 @@ function test_raypair_ctor() {
     assertEqual(advSq.getArea(),  expect.area,  `AdvSq validation failed for area  ${label} ${input.rayPair} ${input.k}.`);
   }
 
-  report("test_raypair_ctor", "advSqs");
+  report("raypair_ctor", "advSqs");
   }
 
 function test_advSqValidation() {
@@ -109,7 +109,7 @@ function test_advSqValidation() {
     assertEqual(advSq.getArea(),    expect.area,    `AdvSq validation failed for area    ${label} ${input.quad} ${input.k}.`);
   }
 
-  report("test_advSqValid", "advSqs");
+  report("advSqValid", "advSqs");
   }
 
 function test_nextPrevQuads() {
@@ -166,7 +166,7 @@ function test_nextPrevQuads() {
     }
   }
 
-  report("test_nextPrevQuads", "advSqs");
+  report("nextPrevQuads", "advSqs");
   }
 
 function test_nextPrevPlanes() {
@@ -227,7 +227,7 @@ function test_nextPrevPlanes() {
     }
   }
 
-  report("test_nextPrevPlanes", "advSqs");
+  report("nextPrevPlanes", "advSqs");
   }
 
 function test_apexEnds() {
@@ -245,18 +245,30 @@ function test_apexEnds() {
                                     Apex: [[0,0,0], [1,1,0], [2,2,0], [3,3,0]],
                                     E2:   [[0,0,0], [0,1,0], [0,2,0], [0,3,0]], }, label: "rook" },
 
-    { input: "Upward",    expect: { E1:   [[0,0,0], [ 1, 0, 1], [ 2, 0, 2], [ 3, 0, 3]],
+    { input: "Upward",    expect: { // E1:   [[0,0,0], [ 1, 0, 1], [ 2, 0, 2], [ 3, 0, 3]],
+                                    E1:   [[0,0,0], [ 1, 1, 0], [ 2, 2, 0], [ 3, 3, 0]],
                                     Apex: [[0,0,0], [ 2, 1, 1], [ 4, 2, 2], [ 6, 3, 3]],
-                                    E2:   [[0,0,0], [ 1, 1, 0], [ 2, 2, 0], [ 3, 3, 0]], }, label: "bishop" },
-    { input: "Downward",  expect: { E1:   [[0,0,0], [-1, 0, 1], [-2, 0, 2], [-3, 0, 3]],
+                                    // E2:   [[0,0,0], [ 1, 1, 0], [ 2, 2, 0], [ 3, 3, 0]], 
+                                    E2:   [[0,0,0], [ 1, 0, 1], [ 2, 0, 2], [ 3, 0, 3]], 
+                                  }, label: "bishop" },
+    { input: "Downward",  expect: { // E1:   [[0,0,0], [-1, 0, 1], [-2, 0, 2], [-3, 0, 3]],
+                                    E1:   [[0,0,0], [-1, 1, 0], [-2, 2, 0], [-3, 3, 0]],
                                     Apex: [[0,0,0], [-2, 1, 1], [-4, 2, 2], [-6, 3, 3]],
-                                    E2:   [[0,0,0], [-1, 1, 0], [-2, 2, 0], [-3, 3, 0]], }, label: "bishop" },
+                                    // E2:   [[0,0,0], [-1, 1, 0], [-2, 2, 0], [-3, 3, 0]], 
+                                    E2:   [[0,0,0], [-1, 0, 1], [-2, 0, 2], [-3, 0, 3]], 
+                                  }, label: "bishop" },
     { input: "Leftward",  expect: { E1:   [[0,0,0], [ 1, 0,-1], [ 2, 0,-2], [ 3, 0,-3]],
-                                    Apex: [[0,0,0], [ 2, 0, 0], [ 4, 0, 0], [ 6, 0, 0]],
-                                    E2:   [[0,0,0], [ 1, 0, 1], [ 2, 0, 2], [ 3, 0, 3]], }, label: "bishop" },
+                                    // Apex: [[0,0,0], [ 2, 0, 0], [ 4, 0, 0], [ 6, 0, 0]],
+                                    Apex: [[0,0,0], [ 2, 1,-1], [ 4, 2,-2], [ 6, 3,-3]],
+                                    // E2:   [[0,0,0], [ 1, 0, 1], [ 2, 0, 2], [ 3, 0, 3]], 
+                                    E2:   [[0,0,0], [ 1, 1, 0], [ 2, 2, 0], [ 3, 3, 0]], 
+                                  }, label: "bishop" },
     { input: "Rightward", expect: { E1:   [[0,0,0], [ 1,-1, 0], [ 2,-2, 0], [ 3,-3, 0]],
-                                    Apex: [[0,0,0], [ 2, 0, 0], [ 4, 0, 0], [ 6, 0, 0]],
-                                    E2:   [[0,0,0], [ 1, 1, 0], [ 2, 2, 0], [ 3, 3, 0]], }, label: "bishop" },
+                                    // Apex: [[0,0,0], [ 2, 0, 0], [ 4, 0, 0], [ 6, 0, 0]],
+                                    Apex: [[0,0,0], [ 2,-1, 1], [ 4,-2, 2], [ 6,-3, 3]],
+                                    // E2:   [[0,0,0], [ 1, 1, 0], [ 2, 2, 0], [ 3, 3, 0]], 
+                                    E2:   [[0,0,0], [ 1, 0, 1], [ 2, 0, 2], [ 3, 0, 3]], 
+                                  }, label: "bishop" },
 
     { input: "Major",     expect: { E1:   [[0,0,0], [-1, 1, 1], [-2, 2, 2], [-3, 3, 3]],
                                     Apex: [[0,0,0], [ 0, 2, 2], [ 0, 4, 4], [ 0, 6, 6]],
@@ -290,42 +302,42 @@ function test_apexEnds() {
     assertEqual(JSON.stringify(end2Seq), JSON.stringify(expect.E2),   `AdvSq tile E2 sequence failed for ${label} ${input} ${quad}.`);
   }
 
-  report("test_apexEnds", "advSqs");
+  report("apexEnds", "advSqs");
   }
 
 function test_advSqColors() {
-    const cases = [
-      { input: { source: [0,0,0], quad: 1, k: 3 }, expect: { white: 8, black: 8, gold: 4, silver: 4, ruby: 4, jade: 4 }, label: "rook" },
-      { input: { source: [0,0,1], quad: 1, k: 3 }, expect: { white: 8, black: 8, gold: 4, silver: 4, ruby: 4, jade: 4 }, label: "rook" },
-      { input: { source: [0,1,0], quad: 1, k: 3 }, expect: { white: 8, black: 8, gold: 4, silver: 4, ruby: 4, jade: 4 }, label: "rook" },
-      { input: { source: [1,0,0], quad: 1, k: 3 }, expect: { white: 8, black: 8, gold: 4, silver: 4, ruby: 4, jade: 4 }, label: "rook" },
+  const cases = [
+    { input: { source: [0,0,0], quad: 1, k: 3 }, expect: { white: 8, black: 8, gold: 4, silver: 4, ruby: 4, jade: 4 }, label: "rook" },
+    { input: { source: [0,0,1], quad: 1, k: 3 }, expect: { white: 8, black: 8, gold: 4, silver: 4, ruby: 4, jade: 4 }, label: "rook" },
+    { input: { source: [0,1,0], quad: 1, k: 3 }, expect: { white: 8, black: 8, gold: 4, silver: 4, ruby: 4, jade: 4 }, label: "rook" },
+    { input: { source: [1,0,0], quad: 1, k: 3 }, expect: { white: 8, black: 8, gold: 4, silver: 4, ruby: 4, jade: 4 }, label: "rook" },
 
-      { input: { source: [0,0,0], quad: 13, k: 3 }, expect: { white: 16, black:  0, gold: 4, silver: 4, ruby: 4, jade: 4 }, label: "bishop" },
-      { input: { source: [0,0,1], quad: 13, k: 3 }, expect: { white:  0, black: 16, gold: 4, silver: 4, ruby: 4, jade: 4 }, label: "bishop" },
-      { input: { source: [0,1,0], quad: 13, k: 3 }, expect: { white:  0, black: 16, gold: 4, silver: 4, ruby: 4, jade: 4 }, label: "bishop" },
-      { input: { source: [1,0,0], quad: 13, k: 3 }, expect: { white:  0, black: 16, gold: 4, silver: 4, ruby: 4, jade: 4 }, label: "bishop" },
-      { input: { source: [0,1,1], quad: 13, k: 3 }, expect: { white: 16, black:  0, gold: 4, silver: 4, ruby: 4, jade: 4 }, label: "bishop" },
-      { input: { source: [1,1,0], quad: 13, k: 3 }, expect: { white: 16, black:  0, gold: 4, silver: 4, ruby: 4, jade: 4 }, label: "bishop" },
-      { input: { source: [1,0,1], quad: 13, k: 3 }, expect: { white: 16, black:  0, gold: 4, silver: 4, ruby: 4, jade: 4 }, label: "bishop" },
-      { input: { source: [1,1,1], quad: 13, k: 3 }, expect: { white:  0, black: 16, gold: 4, silver: 4, ruby: 4, jade: 4 }, label: "bishop" },
+    { input: { source: [0,0,0], quad: 13, k: 3 }, expect: { white: 16, black:  0, gold: 4, silver: 4, ruby: 4, jade: 4 }, label: "bishop" },
+    { input: { source: [0,0,1], quad: 13, k: 3 }, expect: { white:  0, black: 16, gold: 4, silver: 4, ruby: 4, jade: 4 }, label: "bishop" },
+    { input: { source: [0,1,0], quad: 13, k: 3 }, expect: { white:  0, black: 16, gold: 4, silver: 4, ruby: 4, jade: 4 }, label: "bishop" },
+    { input: { source: [1,0,0], quad: 13, k: 3 }, expect: { white:  0, black: 16, gold: 4, silver: 4, ruby: 4, jade: 4 }, label: "bishop" },
+    { input: { source: [0,1,1], quad: 13, k: 3 }, expect: { white: 16, black:  0, gold: 4, silver: 4, ruby: 4, jade: 4 }, label: "bishop" },
+    { input: { source: [1,1,0], quad: 13, k: 3 }, expect: { white: 16, black:  0, gold: 4, silver: 4, ruby: 4, jade: 4 }, label: "bishop" },
+    { input: { source: [1,0,1], quad: 13, k: 3 }, expect: { white: 16, black:  0, gold: 4, silver: 4, ruby: 4, jade: 4 }, label: "bishop" },
+    { input: { source: [1,1,1], quad: 13, k: 3 }, expect: { white:  0, black: 16, gold: 4, silver: 4, ruby: 4, jade: 4 }, label: "bishop" },
 
-      { input: { source: [1,0,0], quad: 37, k: 3 }, expect: { white: 8, black: 8, gold: 16, silver:  0, ruby:  0, jade:  0 }, label: "duke" },
-      { input: { source: [0,1,1], quad: 37, k: 3 }, expect: { white: 8, black: 8, gold: 16, silver:  0, ruby:  0, jade:  0 }, label: "duke" },
-      { input: { source: [0,0,0], quad: 37, k: 3 }, expect: { white: 8, black: 8, gold:  0, silver: 16, ruby:  0, jade:  0 }, label: "duke" },
-      { input: { source: [1,1,1], quad: 37, k: 3 }, expect: { white: 8, black: 8, gold:  0, silver: 16, ruby:  0, jade:  0 }, label: "duke" },
-      { input: { source: [0,1,0], quad: 37, k: 3 }, expect: { white: 8, black: 8, gold:  0, silver:  0, ruby: 16, jade:  0 }, label: "duke" },
-      { input: { source: [1,0,1], quad: 37, k: 3 }, expect: { white: 8, black: 8, gold:  0, silver:  0, ruby: 16, jade:  0 }, label: "duke" },
-      { input: { source: [0,0,1], quad: 37, k: 3 }, expect: { white: 8, black: 8, gold:  0, silver:  0, ruby:  0, jade: 16 }, label: "duke" },
-      { input: { source: [1,1,0], quad: 37, k: 3 }, expect: { white: 8, black: 8, gold:  0, silver:  0, ruby:  0, jade: 16 }, label: "duke" },
-    ];
+    { input: { source: [1,0,0], quad: 37, k: 3 }, expect: { white: 8, black: 8, gold: 16, silver:  0, ruby:  0, jade:  0 }, label: "duke" },
+    { input: { source: [0,1,1], quad: 37, k: 3 }, expect: { white: 8, black: 8, gold: 16, silver:  0, ruby:  0, jade:  0 }, label: "duke" },
+    { input: { source: [0,0,0], quad: 37, k: 3 }, expect: { white: 8, black: 8, gold:  0, silver: 16, ruby:  0, jade:  0 }, label: "duke" },
+    { input: { source: [1,1,1], quad: 37, k: 3 }, expect: { white: 8, black: 8, gold:  0, silver: 16, ruby:  0, jade:  0 }, label: "duke" },
+    { input: { source: [0,1,0], quad: 37, k: 3 }, expect: { white: 8, black: 8, gold:  0, silver:  0, ruby: 16, jade:  0 }, label: "duke" },
+    { input: { source: [1,0,1], quad: 37, k: 3 }, expect: { white: 8, black: 8, gold:  0, silver:  0, ruby: 16, jade:  0 }, label: "duke" },
+    { input: { source: [0,0,1], quad: 37, k: 3 }, expect: { white: 8, black: 8, gold:  0, silver:  0, ruby:  0, jade: 16 }, label: "duke" },
+    { input: { source: [1,1,0], quad: 37, k: 3 }, expect: { white: 8, black: 8, gold:  0, silver:  0, ruby:  0, jade: 16 }, label: "duke" },
+  ];
 
-    for(const { input, expect, label } of cases) {
-      const advSq = AdvSq.fromQuad(input.source, input.quad, input.k);
-      const colors = advSq.colors();
-      assertEqual(JSON.stringify(colors), JSON.stringify(expect), `${label}`);
-    }
+  for(const { input, expect, label } of cases) {
+    const advSq = AdvSq.fromQuad(input.source, input.quad, input.k);
+    const colors = advSq.colors();
+    assertEqual(JSON.stringify(colors), JSON.stringify(expect), `${label}`);
+  }
 
-    report("test_advSqColors", "advSqs");
+  report("advSqColors", "advSqs");
   }
 // Seampoint: more tests...
 
