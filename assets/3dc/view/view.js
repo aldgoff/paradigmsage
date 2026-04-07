@@ -42,19 +42,30 @@
 // --- Build upon previous layers ---
 import { initThree } from "./render/initThree.js";
 import { LAYOUT_3DC } from "../layout.js";
+import * as run from "./registerHandlers.js";
 // Seampoint: more imports...
 
+// --- Demo for development ---
+function demo(playBoard) {
+  // Just testing the callback functions, actual use is event driven.
+  run.callback.game("game buttons");
+  run.callback.camera("camera buttons");
 
-// --- UI ---
-export function init(playBoard) {
-  console.log("view.init(): 3dc/view/init.js");
   if (!playBoard) return false;
 
   const context = initThree(playBoard);
 
   drawCanvasTitles();
-
   drawLayoutBounds();
+
+  return context;
+}
+
+// --- UI ---
+export function init(playBoard) {
+  console.log("view.init(): 3dc/view/init.js");
+
+  const context = demo(playBoard);
 
   return context;
 }
