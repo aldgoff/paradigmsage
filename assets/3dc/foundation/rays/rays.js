@@ -20,6 +20,7 @@ const raysModule = raysData.rays_module;
 const ROOK   = raysModule.rook;
 const BISHOP = raysModule.bishop;
 const DUKE   = raysModule.duke;
+const APEX   = raysModule.apex;
 const KNIGHT = raysModule.knight;
 
 // -- Internal helpers --
@@ -45,6 +46,7 @@ export const RAY_REGISTRY = {
   rook:   ROOK,
   bishop: BISHOP,
   duke:   DUKE,
+  apex:   APEX,
   knight: KNIGHT
 };
 
@@ -91,3 +93,41 @@ export function hasRay(rayName) {
   );
 }
 
+export function apexRay(rayName) {
+  return APEX[rayName];
+  // DEPRECATE.
+  let ray = [];
+  switch(rayName) {
+    case "LFU_RFU":   ray = APEX.LFU_RFU;   break;
+    case "RFU_right": ray = APEX.RFU_right; break;
+    case "right_RBD": ray = APEX.right_RBD; break;
+    case "RBD_LBD":   ray = APEX.RBD_LBD;   break;
+    case "LBD_left":  ray = APEX.LBD_left;  break;
+    case "left_LFU":  ray = APEX.left_LFU;  break;
+    
+    case "LFD_RFD":   ray = APEX.LFD_RFD;   break;
+    case "RFD_right": ray = APEX.RFD_right; break;
+    case "right_RBU": ray = APEX.right_RBU; break;
+    case "RBU_LBU":   ray = APEX.RBU_LBU;   break;
+    case "LBU_left":  ray = APEX.LBU_left;  break;
+    case "left_LFD":  ray = APEX.left_LFD;  break;
+    
+    case "LBU_LFU":   ray = APEX.LBU_LFU;   break;
+    case "LFU_fore":  ray = APEX.LFU_fore;  break;
+    case "fore_RFD":  ray = APEX.fore_RFD;  break;
+    case "RFD_RBD":   ray = APEX.RFD_RBD;   break;
+    case "RBD_back":  ray = APEX.RBD_back;  break;
+    case "back_LBU":  ray = APEX.back_LBU;  break;
+    
+    case "RBU_RFU":   ray = APEX.RBU_RFU;   break;
+    case "RFU_fore":  ray = APEX.RFU_fore;  break;
+    case "fore_LFD":  ray = APEX.fore_LFD;  break;
+    case "LFD_LBD":   ray = APEX.LFD_LBD;   break;
+    case "LBD_back":  ray = APEX.LBD_back;  break;
+    case "back_RBU":  ray = APEX.back_RBU;  break;
+    
+    default: throw new Error(`Unknown apex ray, ${rayName}.`)
+  }
+
+  return ray;
+}
