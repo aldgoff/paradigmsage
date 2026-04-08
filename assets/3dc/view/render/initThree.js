@@ -69,8 +69,21 @@ export function initThree(container) {  // TODO: Currently a POC - most of this 
 
     // Create offboard tiles to test decorators.
     demoDecorators(geometry, scene);
+
     demoAdvSq(tileMap);
-    demoDualDiamond(tileMap, [3,-1,-1]);
+
+    demoDualDiamond(tileMap, [3,-2,-2], "rook", "linear2");
+    demoDualDiamond(tileMap, [4,-2,-2], "rook", "linear1");
+    demoDualDiamond(tileMap, [3,-1,-1], "bishop", "linear2");
+    demoDualDiamond(tileMap, [4,-1,-1], "bishop", "linear1");
+    
+    demoTriDiamond(tileMap, [2,0,0], "duke", "linear3");
+    demoTriDiamond(tileMap, [3,0,0], "duke", "linear2");
+    demoTriDiamond(tileMap, [4,0,0], "duke", "linear1");
+    demoDualDiamond(tileMap, [3,1,1], "duke", "duplex");
+    demoDualDiamond(tileMap, [4,1,1], "duke", "simplex");
+
+    demoKnight(tileMap);
 
     // Key light (main direction) (TODO: LIGHTING NOT WORKING WELL, only need for shiny metal edges.)
       const key = new THREE.DirectionalLight(0xffffff, 0.9);
@@ -127,6 +140,7 @@ function demoDecorators(geometry, scene) {
     { pos: [-1,-4,-4], piece: "queen", decorator: "qtile" },
     { pos: [-2,-4,-4], piece: "queen", decorator: "brook" },
     { pos: [-3,-4,-4], piece: "queen", decorator: "hotspot" },
+    { pos: [-4,-4,-4], piece: "queen", decorator: "feynman" },
   ]
 
   for(const example of examples) {
@@ -145,7 +159,7 @@ function demoAdvSq(tileMap) {
     { decorator: "end2",   coords: [0,1,0]}, 
     { decorator: "apex",   coords: [0,1,1]}, 
     { decorator: "end2",   coords: [0,0,1]}, 
-    { decorator: "end2",   coords: [0,2,0]},
+    { decorator: "end1",   coords: [0,2,0]},
     { decorator: "body",   coords: [0,2,1]},
     { decorator: "apex",   coords: [0,2,2]},
     { decorator: "body",   coords: [0,1,2]},
@@ -156,8 +170,21 @@ function demoAdvSq(tileMap) {
     const meshTile = getTileMesh(tileMap, tile.coords);
     const faceColor = meshTile.userData.faceColor;
     decorators.decorate(faceColor, meshTile, "rook", tile.decorator);
+  }
+  }
 
-    console.log(tile.decorator, tile.coords);
+function demoKnight(tileMap) {
+  const advsqTiles = [
+    { decorator: "source", coords: [ 1,-3,-3]}, 
+    { decorator: "lite",   coords: [ 0,-1,-1]}, 
+    { decorator: "lite",   coords: [-1,-2,-1]}, 
+    { decorator: "lite",   coords: [-1,-1,-2]}, 
+  ]
+
+  for(const tile of advsqTiles) {
+    const meshTile = getTileMesh(tileMap, tile.coords);
+    const faceColor = meshTile.userData.faceColor;
+    decorators.decorate(faceColor, meshTile, "knight", tile.decorator);
   }
   }
 
@@ -183,6 +210,33 @@ function demoDualDiamond(tileMap, pos, piece="rook", variant="linear1") {
 
   // --- Use your draw function ---
   const group = decorators.drawInsetDualDiamonds(meshTile, 0.85, def);
+
+  meshTile.add(group);
+  }
+
+function demoTriDiamond(tileMap, pos, piece="duke", variant="linear2") {
+  const meshTile = tileMap.get(pos.join(","));
+  if (!meshTile) return;
+
+  const module = decorators.decoratorsModule;
+
+  const defRaw = module.decorators[piece][variant];
+  const pallet = module.pallet;
+
+  console.log("DEF RAW:", defRaw);
+
+  // --- Resolve full structure ---
+  const def = {
+    background: pallet[defRaw.background],
+    left: decorators.resolveColors(defRaw.left, pallet),
+    center: decorators.resolveColors(defRaw.center, pallet),
+    right: decorators.resolveColors(defRaw.right, pallet)
+  };
+
+  console.log("Resolved DEF:", def);
+
+  // --- Use your draw function ---
+  const group = decorators.drawInsetTriDiamonds(meshTile, 0.85, def);
 
   meshTile.add(group);
 }

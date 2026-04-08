@@ -162,7 +162,82 @@ export function drawInsetDualDiamonds(mesh, scale, def) {
   return group;
 }
 
-export function drawInsetTriDiamonds(mesh, scale, colors) { // For duke linears, TODO: probably wrong.
+export function drawInsetTriDiamonds(mesh, scale, def) {
+  const THREE = window.THREE;
+  const group = new THREE.Group();
+
+  const box = new THREE.Box3().setFromObject(mesh);
+  const size = new THREE.Vector3();
+  box.getSize(size);
+
+  // --- 1. Background ---
+  if (def.background) {
+    const bgGeom = new THREE.PlaneGeometry(1, 1);
+    const bgMat = new THREE.MeshBasicMaterial({
+      color: def.background,
+      transparent: true,
+      opacity: 0.6,
+      side: THREE.DoubleSide
+    });
+
+    const bg = new THREE.Mesh(bgGeom, bgMat);
+
+    bg.scale.set(size.x * scale, size.z * scale, 1);
+    bg.position.set(0, size.y / 2 + 0.09, 0);
+    bg.rotation.x = -Math.PI / 2;
+
+    group.add(bg);
+  }
+
+  // --- 2. Positions (diagonal spread, 3 points) ---
+  const positions = [
+    [-0.35, -0.35],  // left
+    [ 0.0,   0.0 ],  // center
+    [ 0.35,  0.35]   // right
+  ];
+
+  const sides = ["left", "center", "right"];
+
+  sides.forEach((side, i) => {
+    const colors = def[side];
+    if (!colors) return;
+
+    colors.forEach((color, j) => {
+      const geom = new THREE.PlaneGeometry(1, 1);
+      const mat = new THREE.MeshBasicMaterial({
+        color,
+        transparent: true,
+        opacity: 0.95,
+        side: THREE.DoubleSide
+      });
+
+      const diamond = new THREE.Mesh(geom, mat);
+
+      // --- Layered scaling (outer → inner) ---
+      const shrink = 1 - j * 0.4;
+
+      diamond.scale.set(
+        size.x * scale * 0.6 * shrink,
+        size.z * scale * 0.6 * shrink,
+        1
+      );
+
+      // --- Rotate flat + diamond ---
+      diamond.rotation.set(-Math.PI / 2, 0, Math.PI / 2);
+
+      diamond.position.set(
+        positions[i][0] * size.x,
+        size.y / 2 + 0.11 + j * 0.01,
+        positions[i][1] * size.z
+      );
+
+      group.add(diamond);
+    });
+  });
+
+  return group;
+}
+export function drawInsetTriDiamonds1(mesh, scale, colors) { // For duke linears, TODO: probably wrong.
   const THREE = window.THREE;
 
   const group = new THREE.Group();
