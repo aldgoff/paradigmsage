@@ -4,9 +4,14 @@ title: "Dev"
 
 **Dev (INWORK)**
 
-  A playable version of 3D Chess with planar moves and advancement squares.
+  A playable version of chess scaled up to three dimensions.
 
   (Game has not yet been introduced in the PoP narrative.)
+
+  Target release date is fall, 2026. 
+  For the terminally impatient, I will post clues from time to time.
+
+  Can you *discover* the rules with only minimal hints?
 
 ## Log
   3/15/26 - AI axioms, hello world, python port plan.
