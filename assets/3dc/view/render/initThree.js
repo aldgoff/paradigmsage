@@ -20,6 +20,7 @@ import {vts2xyz,
 } from "../render/coordsMap.js"
 
 import * as tiles from "../tiles/tiles.js";
+import * as decorators from "../decorators/decorators.js";
 // Seampoint: more imports...
 
 
@@ -45,54 +46,35 @@ export function initThree(container) {  // TODO: Currently a POC - most of this 
     const geometry = new THREE.BoxGeometry(...vts2xyz(rawTile));
 
     // Tile edges.
-      const edges = new THREE.EdgesGeometry(geometry);
-      const line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0x000000 }));
-
-    // Face materials, flat.
-    const white  = new THREE.MeshBasicMaterial({ color: 0xf2f2f2 });
-    const black  = new THREE.MeshBasicMaterial({ color: 0x626262 });
-    const gold   = new THREE.MeshBasicMaterial({ color: 0xc9a227 });
-    const silver = new THREE.MeshBasicMaterial({ color: 0xc0c0c0 });
-    const ruby   = new THREE.MeshBasicMaterial({ color: 0x8b0000 });
-    const jade   = new THREE.MeshBasicMaterial({ color: 0x006400 });
+    const edges = new THREE.EdgesGeometry(geometry);
+    const line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0x000000 }));
 
     for(let z=-3; z<=4; z++) {  // Create an 8x8x8 board.
       for(let x=-3; x<=4; x++) {
         for(let y=-3; y<=4; y++) {
           let pos = [z, x, y];
           let tile = tiles.createTile(pos);
-          let faceColor = new THREE.MeshBasicMaterial({ color: tile.faceColor });
-          let edgeColor = new THREE.MeshBasicMaterial({ color: tile.edgeColor });
-
-          let mat = [edgeColor, edgeColor, faceColor, faceColor, edgeColor, edgeColor];
-
-          tile = new THREE.Mesh(geometry, mat);       // Colors.
-          tile.add(makeEdges(geometry));              // Edges.
-          tile.position.set(...vts2pixels(pos));      // Position.
-          scene.add(tile);                            // Add to scene.
+          let meshTile = createMeshTile(tile, geometry, pos);
+          scene.add(meshTile);                            // Add to scene.
         }
       }
     }
 
-    // Light
-    // const light = new THREE.DirectionalLight(0xffffff, 1.0);
-    // light.position.set(500, 500, 500);
-    // scene.add(light);
-    // scene.add(new THREE.AmbientLight(0xffffff, 0.4));
+    // Create offboard tiles to test decorators.
+    demoDecorators(geometry, scene);
 
     // Key light (main direction) (TODO: LIGHTING NOT WORKING WELL, only need for shiny metal edges.)
-    const key = new THREE.DirectionalLight(0xffffff, 0.9);
-    key.position.set(400, 600, 400);
-    scene.add(key);
+      const key = new THREE.DirectionalLight(0xffffff, 0.9);
+      key.position.set(400, 600, 400);
+      scene.add(key);
 
-    // Fill light (softens shadows)
-    const fill = new THREE.DirectionalLight(0xffffff, 0.5);
-    fill.position.set(-400, 300, -400);
-    scene.add(fill);
+      // Fill light (softens shadows)
+      const fill = new THREE.DirectionalLight(0xffffff, 0.5);
+      fill.position.set(-400, 300, -400);
+      scene.add(fill);
 
-    // Ambient (base visibility)
-    scene.add(new THREE.AmbientLight(0xffffff, 0.6));
-
+      // Ambient (base visibility)
+      scene.add(new THREE.AmbientLight(0xffffff, 0.6));
 
   const renderer = new THREE.WebGLRenderer({
     canvas: container,
@@ -100,20 +82,48 @@ export function initThree(container) {  // TODO: Currently a POC - most of this 
   });
 
   renderer.setSize(container.width, container.height);
-
-
   function animate() {
     requestAnimationFrame(animate);
     renderer.render(scene, camera);
   }
-
   animate();
 
   return { scene, camera, renderer }; // Context.
 }
+
+function demoDecorators(geometry, scene) {
+  const examples = [
+    { pos: [4,-4,-4], piece: "rook", decorator: "end2" },
+    { pos: [3,-4,-4], piece: "bishop", decorator: "end1" },
+    { pos: [2,-4,-4], piece: "duke", decorator: "apex" },
+    { pos: [1,-4,-4], piece: "rook", decorator: "body" },
+    { pos: [0,-4,-4], piece: "bishop", decorator: "source" },
+    { pos: [-1,-4,-4], piece: "queen", decorator: "qtile" },
+    { pos: [-2,-4,-4], piece: "queen", decorator: "brook" },
+    { pos: [-3,-4,-4], piece: "queen", decorator: "hotspot" },
+  ]
+
+  for(const example of examples) {
+    let tile = tiles.createTile(example.pos);
+    let meshTile = createMeshTile(tile, geometry, example.pos);
+    scene.add(meshTile);                            // Add to scene.
+    decorators.decorate(tile.faceColor, meshTile, example.piece, example.decorator);
+  }
+}
 // Seampoint: more global functions...
 
 // --- Helplers ---
+function createMeshTile(tile, geometry, pos) {
+  let faceColor = new THREE.MeshBasicMaterial({ color: tile.faceColor });
+  let edgeColor = new THREE.MeshBasicMaterial({ color: tile.edgeColor });
+  let mat = [edgeColor, edgeColor, faceColor, faceColor, edgeColor, edgeColor];
+
+  let meshTile = new THREE.Mesh(geometry, mat);       // Colors.
+  meshTile.add(makeEdges(geometry));              // Edges.
+  meshTile.position.set(...vts2pixels(pos));      // Position.
+
+  return(meshTile);
+  }
 
 function makeEdges(geometry) {
   const edges = new THREE.EdgesGeometry(geometry);

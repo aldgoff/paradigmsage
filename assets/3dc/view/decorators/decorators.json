@@ -1,0 +1,60 @@
+{
+  "decorators_module": {
+    "scales" : [1.0, 0.80, 0.65, 0.45, 0.25],
+    "pallet": {
+      "black":  "#111111",
+      "red":    "#ff2020",
+      "green":  "#00ff00",
+      "blue":   "#00c3ff",
+      "dkBlue": "#0000ff",
+      "yellow": "#ffff00",
+      "orange": "#ff7f01",
+      "purple": "#7f00ff",
+      "violet": "#c900ff"
+    },
+    "decorators": {
+      "rook": {
+        "body":   ["red"],
+        "source": ["red", "black"],
+        "end2":   ["red", "red", "black"],
+        "end1":   ["red", "red", "red", "black"],
+        "apex":   ["red", "red", "black", "red"],
+        "linear2": { "left": ["black", "black"], "right": ["black", "black"] },
+        "linear1": { "left": ["black", "red"],   "right": ["black", "black"] }
+      },
+      "bishop": {
+        "body":   ["green"],
+        "source": ["green", "black"],
+        "end2":   ["green", "green", "black"],
+        "end1":   ["green", "green", "green", "black"],
+        "apex":   ["green", "green", "black", "green"],
+        "linear2": { "left": ["black", "black"], "right": ["black", "black"] },
+        "linear1": { "left": ["black", "green"],   "right": ["black", "black"] }
+      },
+      "duke": {
+        "body":   ["blue"],
+        "source": ["blue", "black"],
+        "end2":   ["blue", "blue", "black"],
+        "end1":   ["blue", "blue", "blue", "black"],
+        "apex":   ["blue", "blue", "black", "blue"],
+        "duplex":  { "left": ["black", "blue"], "right": ["black", "blue"] },
+        "simplex": { "left": ["blue", "blue"],  "right": ["black", "blue"] },
+        "linear3": { "left": ["black", "black"], "center": ["black", "black"], "right": ["black", "black"] },
+        "linear2": { "left": ["black", "black"], "center": ["black", "blue"],  "right": ["black", "black"] },
+        "linear1": { "left": ["black", "blue"],  "center": ["black", "black"], "right": ["black", "blue"] }
+      },
+      "queen": {
+        "qtile":   ["purple", "red", "green", "dkBlue"],
+        "brook":   ["purple", "green", "green", "red"],
+        "hotspot": ["purple", "red", "blue", "blue"]
+      },
+      "last": {}
+    },
+    "Examples": {
+      "_comment": "YadaYada",
+      "_status": "deprecated",
+      "_doc": "Because I said so."
+    }
+  }
+}
+
