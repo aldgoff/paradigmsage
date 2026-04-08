@@ -16,16 +16,14 @@ import decoratorsData from "./decorators.json" assert { type: "json" };
   // Seampoint: more objects.
 
 // --- Build upon previous layers ---
-import * as quads  from "../../geometry/quads.js";  // Example import, not used.
 // Seampoint: more imports.
-
 
 // --- UI ---
 export function decorate(color, meshTile, piece, decorator) {
   const base = color;
   const list = decorators[piece][decorator];
   const zones = resolveColors(list, pallet);
-  const layers = decorateTile({ base, zones });
+  const layers = applyBaseZones({ base, zones });
 
   layers.forEach(layer => {
     const overlay = drawInsetQuad(meshTile, layer.scale, layer.color);
@@ -33,7 +31,7 @@ export function decorate(color, meshTile, piece, decorator) {
   });
   }
 
-export function decorateTile({ base, zones=[] }) {
+export function applyBaseZones({ base, zones=[] }) {
   return [base, ...zones]
     .slice(0, 5)
     .map((color, i) => ({
@@ -89,7 +87,6 @@ export function drawInsetCircle(mesh, scale, color, zOffset=0) { // For src & ds
   }
 
 export function drawInsetDualDiamonds(mesh, scale, def) {
-  console.log("DEF RAW:", def);
   const THREE = window.THREE;
   const group = new THREE.Group();
 
@@ -160,7 +157,7 @@ export function drawInsetDualDiamonds(mesh, scale, def) {
   });
 
   return group;
-}
+  }
 
 export function drawInsetTriDiamonds(mesh, scale, def) {
   const THREE = window.THREE;
@@ -236,45 +233,9 @@ export function drawInsetTriDiamonds(mesh, scale, def) {
   });
 
   return group;
-}
-export function drawInsetTriDiamonds1(mesh, scale, colors) { // For duke linears, TODO: probably wrong.
-  const THREE = window.THREE;
+  }
 
-  const group = new THREE.Group();
-
-  const box = new THREE.Box3().setFromObject(mesh);
-  const size = new THREE.Vector3();
-  box.getSize(size);
-
-  const offsets = [-0.3, 0, 0.3]; // left, center, right
-
-  colors.forEach((color, i) => {
-    const geom = new THREE.PlaneGeometry(1, 1);
-    const mat = new THREE.MeshBasicMaterial({
-      color,
-      transparent: true,
-      opacity: 0.85,
-      side: THREE.DoubleSide
-    });
-
-    const diamond = new THREE.Mesh(geom, mat);
-
-    diamond.scale.set(size.x * scale * 0.3, size.z * scale * 0.3, 1);
-    diamond.rotation.set(-Math.PI / 2, 0, Math.PI / 4);
-
-    diamond.position.set(
-      offsets[i] * size.x,
-      size.y / 2 + 0.1,
-      0
-    );
-
-    group.add(diamond);
-  });
-
-  return group;
-}
-
-export function resolveColors(names, pallet) {
+export function resolveColors(names, pallet) {  // Convert pallet color names to hexadecimal.
   return names.map(name => {
     const color = pallet[name];
     if (!color) {
@@ -284,4 +245,7 @@ export function resolveColors(names, pallet) {
   });
 }
 // Seampoint: more global functions.
+
+// --- Helpers ---
+// Seampoint: more local functions.
 

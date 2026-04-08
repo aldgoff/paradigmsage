@@ -23,7 +23,6 @@ import * as tiles from "../tiles/tiles.js";
 import * as decorators from "../decorators/decorators.js";
 // Seampoint: more imports...
 
-
 // --- UI ---
 export function initThree(container) {  // TODO: Currently a POC - most of this belongs somewhere else.
   const scene = new THREE.Scene();
@@ -43,8 +42,8 @@ export function initThree(container) {  // TODO: Currently a POC - most of this 
   // --- TILE (hardcoded test) ---
     const tileMap = new Map();
     // geometry: width, height, depth
-    let rawTile = tiles.createTile([0,0,0]).size;
-    const geometry = new THREE.BoxGeometry(...vts2xyz(rawTile));
+    let tileSize = tiles.tileSize();
+    const geometry = new THREE.BoxGeometry(...vts2xyz(tileSize));
 
     // Tile edges.
     const edges = new THREE.EdgesGeometry(geometry);
@@ -54,8 +53,8 @@ export function initThree(container) {  // TODO: Currently a POC - most of this 
       for(let x=-3; x<=4; x++) {
         for(let y=-3; y<=4; y++) {
           let pos = [z, x, y];
-          let tile = tiles.createTile(pos);
-          let meshTile = createMeshTile(tile, geometry, pos);
+          let tile = tiles.getTileAttributes(pos);
+          let meshTile = tiles.createMeshTile(tile, geometry, pos);
           meshTile.userData.isTile = true;
           meshTile.userData.coords = pos;  // [z,x,y]
           meshTile.userData.decorated = false;
@@ -119,7 +118,7 @@ export function initThree(container) {  // TODO: Currently a POC - most of this 
     console.log("Clicked tile:", coords);
 
     // → here you trigger decorator logic
-    const meshTile = getTileMesh(tileMap, coords);
+    const meshTile = tiles.getTileMesh(tileMap, coords);
     if (meshTile) {
       toggleDecorator(meshTile);  // Hard coded for now as src or dst.
     }
@@ -144,8 +143,8 @@ function demoDecorators(geometry, scene) {
   ]
 
   for(const example of examples) {
-    let tile = tiles.createTile(example.pos);
-    let meshTile = createMeshTile(tile, geometry, example.pos);
+    let tile = tiles.getTileAttributes(example.pos);
+    let meshTile = tiles.createMeshTile(tile, geometry, example.pos);
     meshTile.userData.isTile = true;
     meshTile.userData.coords = example.pos;  // [z,x,y]
     scene.add(meshTile);                            // Add to scene.
@@ -167,7 +166,7 @@ function demoAdvSq(tileMap) {
   ]
 
   for(const tile of advsqTiles) {
-    const meshTile = getTileMesh(tileMap, tile.coords);
+    const meshTile = tiles.getTileMesh(tileMap, tile.coords);
     const faceColor = meshTile.userData.faceColor;
     decorators.decorate(faceColor, meshTile, "rook", tile.decorator);
   }
@@ -182,7 +181,7 @@ function demoKnight(tileMap) {
   ]
 
   for(const tile of advsqTiles) {
-    const meshTile = getTileMesh(tileMap, tile.coords);
+    const meshTile = tiles.getTileMesh(tileMap, tile.coords);
     const faceColor = meshTile.userData.faceColor;
     decorators.decorate(faceColor, meshTile, "knight", tile.decorator);
   }
@@ -197,16 +196,12 @@ function demoDualDiamond(tileMap, pos, piece="rook", variant="linear1") {
   const defRaw = module.decorators[piece][variant];
   const pallet = module.pallet;
 
-  console.log("DEF RAW:", defRaw);
-
   // --- Resolve full structure ---
   const def = {
     background: pallet[defRaw.background],
     left: decorators.resolveColors(defRaw.left, pallet),
     right: decorators.resolveColors(defRaw.right, pallet)
   };
-
-  console.log("Resolved DEF:", def);
 
   // --- Use your draw function ---
   const group = decorators.drawInsetDualDiamonds(meshTile, 0.85, def);
@@ -223,8 +218,6 @@ function demoTriDiamond(tileMap, pos, piece="duke", variant="linear2") {
   const defRaw = module.decorators[piece][variant];
   const pallet = module.pallet;
 
-  console.log("DEF RAW:", defRaw);
-
   // --- Resolve full structure ---
   const def = {
     background: pallet[defRaw.background],
@@ -233,8 +226,6 @@ function demoTriDiamond(tileMap, pos, piece="duke", variant="linear2") {
     right: decorators.resolveColors(defRaw.right, pallet)
   };
 
-  console.log("Resolved DEF:", def);
-
   // --- Use your draw function ---
   const group = decorators.drawInsetTriDiamonds(meshTile, 0.85, def);
 
@@ -242,26 +233,6 @@ function demoTriDiamond(tileMap, pos, piece="duke", variant="linear2") {
 }
 
 // --- Helpers ---
-function createMeshTile(tile, geometry, pos) {
-  let faceColor = new THREE.MeshBasicMaterial({ color: tile.faceColor });
-  let edgeColor = new THREE.MeshBasicMaterial({ color: tile.edgeColor });
-  let mat = [edgeColor, edgeColor, faceColor, faceColor, edgeColor, edgeColor];
-
-  let meshTile = new THREE.Mesh(geometry, mat);       // Colors.
-  meshTile.add(makeEdges(geometry));              // Edges.
-  meshTile.position.set(...vts2pixels(pos));      // Position.
-
-  return(meshTile);
-  }
-
-function makeEdges(geometry) {
-  const edges = new THREE.EdgesGeometry(geometry);
-  return new THREE.LineSegments(
-    edges,
-    new THREE.LineBasicMaterial({ color: 0x000000 })
-  );
-}
-
 function getTileFromClick(event, camera, scene, renderer) {
   const THREE = window.THREE;
 
@@ -294,31 +265,20 @@ function getTileFromClick(event, camera, scene, renderer) {
   return obj.userData.coords;  // ← your VTS coords
   }
 
-function getTileMesh(tileMap, pos) {
-  return tileMap.get(pos.join(","));
-  }
-
 function toggleDecorator(meshTile) {
-  if (meshTile.userData.decorated) {
-    // --- REMOVE overlays ---
+  if (meshTile.userData.decorated) {      // --- REMOVE overlays ---
     meshTile.userData.overlays.forEach(o => meshTile.remove(o));
     meshTile.userData.overlays = [];
     meshTile.userData.decorated = false;
-  } else {
-    // --- ADD overlays ---
+  } else {                                // --- ADD overlays ---
     const face = meshTile.userData.faceColor;
-    const layers = decorators.decorateTile({
+    const layers = decorators.applyBaseZones({
       base: face,
-      // zones: ["#ff0000", "#eeeeee", "#ff0000", "#eeeeee" ]
-      // zones: ["#111111", "#111111", "#111111", "#eeeeee" ]
       zones: ["#111111", "#111111", face, face ]
-      // zones: ["#111111", "#eeeeee", "#111111", "#eeeeee" ]
-      // zones: ["#ff0000"]  // rook body
     });
 
     const overlays = layers.map(layer => {
       const circle = decorators.drawInsetCircle(meshTile, layer.scale, layer.color);
-
       meshTile.add(circle);
       return circle;
     });
