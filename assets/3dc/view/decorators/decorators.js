@@ -2,16 +2,16 @@
   Path: ./3dc/view/decorators.js
   Purpose: Apply decorators to tiles.
   Author: Allan Goff
-  Date: 4/00/26
+  Date: 4/08/26
   UI: the export functions.
   #ff1a1a Use FSC color interface to pick colors.
 */
 
 // --- Load JSON ---
 import decoratorsData from "./decorators.json" assert { type: "json" };
-  const decoratorsModule = decoratorsData.decorators_module;
+  export const decoratorsModule = decoratorsData.decorators_module;
   const scales     = decoratorsModule.scales;
-  const pallet     = decoratorsModule.pallet;
+  export const pallet     = decoratorsModule.pallet;
   const decorators = decoratorsModule.decorators;
   // Seampoint: more objects.
 
@@ -42,11 +42,9 @@ export function decorateTile({ base, zones=[] }) {
     }));
   }
 
-export function drawInsetQuad(mesh, scale, color) {
+export function drawInsetQuad(mesh, scale, color) { // For source, body, end1,2,3, and apex tiles.
   const THREE = window.THREE;
-
   const geom = new THREE.PlaneGeometry(1, 1);
-
   const mat = new THREE.MeshBasicMaterial({
     color,
     transparent: true,
@@ -54,23 +52,152 @@ export function drawInsetQuad(mesh, scale, color) {
     side: THREE.DoubleSide
   });
 
-  const overlay = new THREE.Mesh(geom, mat);
+  const overlay = new THREE.Mesh(geom, mat);            // New mesh.
 
-  // --- Match tile size ---
+  const box = new THREE.Box3().setFromObject(mesh);     // Match tile size.
+  const size = new THREE.Vector3();
+  box.getSize(size);
+
+  overlay.scale.set(size.x * scale, size.z * scale, 1); // Scale.
+  overlay.position.set(0, size.y / 2 + 0.1, 0);         // Position on top face.
+  overlay.rotation.x = -Math.PI / 2;                    // Rotate to lie flat.
+
+  return overlay;
+  }
+
+export function drawInsetCircle(mesh, scale, color, zOffset=0) { // For src & dst tiles, toggled by mouse clicks.
+  const THREE = window.THREE;
+  const geom = new THREE.CircleGeometry(0.5, 32);
+  const mat = new THREE.MeshBasicMaterial({
+    color,
+    transparent: true,
+    opacity: 0.85,
+    side: THREE.DoubleSide
+  });
+
+  const circle = new THREE.Mesh(geom, mat);               // New mesh.
+
+  const box = new THREE.Box3().setFromObject(mesh);       // Match tile size.
+  const size = new THREE.Vector3();
+  box.getSize(size);
+
+  circle.scale.set(size.x * scale, size.z * scale, 1);    // Scale.
+  circle.position.set(0, size.y / 2 + 0.1 + zOffset, 0);  // Position on top face.
+  circle.rotation.x = -Math.PI / 2;                       // Rotate to lie flat.
+
+  return circle;
+  }
+
+export function drawInsetDualDiamonds(mesh, scale, def) {
+  console.log("DEF RAW:", def);
+  const THREE = window.THREE;
+  const group = new THREE.Group();
+
   const box = new THREE.Box3().setFromObject(mesh);
   const size = new THREE.Vector3();
   box.getSize(size);
 
-  overlay.scale.set(size.x * scale, size.z * scale, 1);
+  // --- 1. Background (body fill) ---
+  if (def.background) {
+    const bgGeom = new THREE.PlaneGeometry(1, 1);
+    const bgMat = new THREE.MeshBasicMaterial({
+      color: def.background,
+      transparent: true,
+      opacity: 0.6,
+      side: THREE.DoubleSide
+    });
 
-  // --- Position on top face ---
-  overlay.position.set(0, size.y / 2 + 0.1, 0);
+    const bg = new THREE.Mesh(bgGeom, bgMat);
 
-  // --- Rotate to lie flat ---
-  overlay.rotation.x = -Math.PI / 2;
+    bg.scale.set(size.x * scale, size.z * scale, 1);
+    bg.position.set(0, size.y / 2 + 0.09, 0);
+    bg.rotation.x = -Math.PI / 2;
 
-  return overlay;
+    group.add(bg);
   }
+
+  // --- 2. Diamonds along diagonal ---
+  const positions = [
+    [-0.25, -0.25],  // bottom-left → top-right diagonal
+    [ 0.25,  0.25]
+  ];
+
+  const sides = ["left", "right"];
+
+  sides.forEach((side, i) => {
+    const colors = def[side];  // e.g. ["black", "red"]
+
+    colors.forEach((color, j) => {
+      const geom = new THREE.PlaneGeometry(1, 1);
+      const mat = new THREE.MeshBasicMaterial({
+        color,
+        transparent: true,
+        opacity: 0.95,
+        side: THREE.DoubleSide
+      });
+
+      const diamond = new THREE.Mesh(geom, mat);
+
+      // --- Outer bigger, inner smaller ---
+      const shrink = 1 - j * 0.4;   // 1.0, 0.6, etc.
+
+      diamond.scale.set(
+        size.x * scale * 0.7 * shrink,
+        size.z * scale * 0.7 * shrink,
+        1
+      );
+
+      diamond.rotation.set(-Math.PI / 2, 0, Math.PI / 2);
+
+      diamond.position.set(
+        positions[i][0] * size.x,
+        size.y / 2 + 0.11 + j * 0.01, // slight lift to avoid z-fighting
+        positions[i][1] * size.z
+      );
+
+      group.add(diamond);
+    });
+  });
+
+  return group;
+}
+
+export function drawInsetTriDiamonds(mesh, scale, colors) { // For duke linears, TODO: probably wrong.
+  const THREE = window.THREE;
+
+  const group = new THREE.Group();
+
+  const box = new THREE.Box3().setFromObject(mesh);
+  const size = new THREE.Vector3();
+  box.getSize(size);
+
+  const offsets = [-0.3, 0, 0.3]; // left, center, right
+
+  colors.forEach((color, i) => {
+    const geom = new THREE.PlaneGeometry(1, 1);
+    const mat = new THREE.MeshBasicMaterial({
+      color,
+      transparent: true,
+      opacity: 0.85,
+      side: THREE.DoubleSide
+    });
+
+    const diamond = new THREE.Mesh(geom, mat);
+
+    diamond.scale.set(size.x * scale * 0.3, size.z * scale * 0.3, 1);
+    diamond.rotation.set(-Math.PI / 2, 0, Math.PI / 4);
+
+    diamond.position.set(
+      offsets[i] * size.x,
+      size.y / 2 + 0.1,
+      0
+    );
+
+    group.add(diamond);
+  });
+
+  return group;
+}
 
 export function resolveColors(names, pallet) {
   return names.map(name => {

@@ -2,7 +2,7 @@
   Path: ./3dc/initThree/initThree.js
   Purpose: desc
   Author: Allan Goff
-  Date: 4/02/26
+  Date: 4/08/26
   UI: the export functions.
 */
 
@@ -27,12 +27,12 @@ import * as decorators from "../decorators/decorators.js";
 // --- UI ---
 export function initThree(container) {  // TODO: Currently a POC - most of this belongs somewhere else.
   const scene = new THREE.Scene();
-  /*
-    0xeaf4ff   // softer, more white
-    0xdcecff   // slightly stronger blue
-    0xf5faff   // almost white (eggshell feel)
-    */
-  scene.background = new THREE.Color(0xdcecff);
+  /* A 3D env needs these three things to create an 3D context.
+   * scene
+   * camera
+   * renderer
+   */
+  scene.background = new THREE.Color(0xdcecff); // #dcecff - a light blue background.
 
   const zoom = 1000; // 400 - 1500.
   const camera = new THREE.OrthographicCamera( -zoom, zoom, zoom, -zoom,   1, 2000 ); 
@@ -41,6 +41,7 @@ export function initThree(container) {  // TODO: Currently a POC - most of this 
     camera.lookAt(0, 0, 0);
 
   // --- TILE (hardcoded test) ---
+    const tileMap = new Map();
     // geometry: width, height, depth
     let rawTile = tiles.createTile([0,0,0]).size;
     const geometry = new THREE.BoxGeometry(...vts2xyz(rawTile));
@@ -55,6 +56,12 @@ export function initThree(container) {  // TODO: Currently a POC - most of this 
           let pos = [z, x, y];
           let tile = tiles.createTile(pos);
           let meshTile = createMeshTile(tile, geometry, pos);
+          meshTile.userData.isTile = true;
+          meshTile.userData.coords = pos;  // [z,x,y]
+          meshTile.userData.decorated = false;
+          meshTile.userData.overlays = []; 
+          meshTile.userData.faceColor = tile.faceColor;
+          tileMap.set(pos.join(","), meshTile);
           scene.add(meshTile);                            // Add to scene.
         }
       }
@@ -62,6 +69,8 @@ export function initThree(container) {  // TODO: Currently a POC - most of this 
 
     // Create offboard tiles to test decorators.
     demoDecorators(geometry, scene);
+    demoAdvSq(tileMap);
+    demoDualDiamond(tileMap, [3,-1,-1]);
 
     // Key light (main direction) (TODO: LIGHTING NOT WORKING WELL, only need for shiny metal edges.)
       const key = new THREE.DirectionalLight(0xffffff, 0.9);
@@ -88,9 +97,26 @@ export function initThree(container) {  // TODO: Currently a POC - most of this 
   }
   animate();
 
+  // Add event listener.
+    renderer.domElement.addEventListener("click", (event) => {
+    const coords = getTileFromClick(event, camera, scene, renderer);
+
+    if (!coords) return;
+
+    console.log("Clicked tile:", coords);
+
+    // → here you trigger decorator logic
+    const meshTile = getTileMesh(tileMap, coords);
+    if (meshTile) {
+      toggleDecorator(meshTile);  // Hard coded for now as src or dst.
+    }
+    });
+
   return { scene, camera, renderer }; // Context.
 }
+// Seampoint: more global functions...
 
+// --- Demos ---
 function demoDecorators(geometry, scene) {
   const examples = [
     { pos: [4,-4,-4], piece: "rook", decorator: "end2" },
@@ -106,13 +132,62 @@ function demoDecorators(geometry, scene) {
   for(const example of examples) {
     let tile = tiles.createTile(example.pos);
     let meshTile = createMeshTile(tile, geometry, example.pos);
+    meshTile.userData.isTile = true;
+    meshTile.userData.coords = example.pos;  // [z,x,y]
     scene.add(meshTile);                            // Add to scene.
     decorators.decorate(tile.faceColor, meshTile, example.piece, example.decorator);
   }
-}
-// Seampoint: more global functions...
+  }
 
-// --- Helplers ---
+function demoAdvSq(tileMap) {
+  const advsqTiles = [
+    { decorator: "source", coords: [0,0,0]}, 
+    { decorator: "end2",   coords: [0,1,0]}, 
+    { decorator: "apex",   coords: [0,1,1]}, 
+    { decorator: "end2",   coords: [0,0,1]}, 
+    { decorator: "end2",   coords: [0,2,0]},
+    { decorator: "body",   coords: [0,2,1]},
+    { decorator: "apex",   coords: [0,2,2]},
+    { decorator: "body",   coords: [0,1,2]},
+    { decorator: "end2",   coords: [0,0,2]}, 
+  ]
+
+  for(const tile of advsqTiles) {
+    const meshTile = getTileMesh(tileMap, tile.coords);
+    const faceColor = meshTile.userData.faceColor;
+    decorators.decorate(faceColor, meshTile, "rook", tile.decorator);
+
+    console.log(tile.decorator, tile.coords);
+  }
+  }
+
+function demoDualDiamond(tileMap, pos, piece="rook", variant="linear1") {
+  const meshTile = tileMap.get(pos.join(","));
+  if (!meshTile) return;
+
+  const module = decorators.decoratorsModule;
+
+  const defRaw = module.decorators[piece][variant];
+  const pallet = module.pallet;
+
+  console.log("DEF RAW:", defRaw);
+
+  // --- Resolve full structure ---
+  const def = {
+    background: pallet[defRaw.background],
+    left: decorators.resolveColors(defRaw.left, pallet),
+    right: decorators.resolveColors(defRaw.right, pallet)
+  };
+
+  console.log("Resolved DEF:", def);
+
+  // --- Use your draw function ---
+  const group = decorators.drawInsetDualDiamonds(meshTile, 0.85, def);
+
+  meshTile.add(group);
+}
+
+// --- Helpers ---
 function createMeshTile(tile, geometry, pos) {
   let faceColor = new THREE.MeshBasicMaterial({ color: tile.faceColor });
   let edgeColor = new THREE.MeshBasicMaterial({ color: tile.edgeColor });
@@ -131,6 +206,72 @@ function makeEdges(geometry) {
     edges,
     new THREE.LineBasicMaterial({ color: 0x000000 })
   );
+}
+
+function getTileFromClick(event, camera, scene, renderer) {
+  const THREE = window.THREE;
+
+  // --- Mouse → normalized device coords (-1 to +1) ---
+  const rect = renderer.domElement.getBoundingClientRect();
+
+  const mouse = new THREE.Vector2(
+    ((event.clientX - rect.left) / rect.width) * 2 - 1,
+    -((event.clientY - rect.top) / rect.height) * 2 + 1
+  );
+
+  // --- Raycast ---
+  const raycaster = new THREE.Raycaster();
+  raycaster.setFromCamera(mouse, camera);
+
+  const intersects = raycaster.intersectObjects(scene.children, true);
+
+  if (intersects.length === 0) return null;
+
+  // --- Get first hit ---
+  let obj = intersects[0].object;
+
+  // Walk up to tile mesh (in case we hit overlay/edges)
+  while (obj && !obj.userData?.isTile) {
+    obj = obj.parent;
+  }
+
+  if (!obj) return null;
+
+  return obj.userData.coords;  // ← your VTS coords
+  }
+
+function getTileMesh(tileMap, pos) {
+  return tileMap.get(pos.join(","));
+  }
+
+function toggleDecorator(meshTile) {
+  if (meshTile.userData.decorated) {
+    // --- REMOVE overlays ---
+    meshTile.userData.overlays.forEach(o => meshTile.remove(o));
+    meshTile.userData.overlays = [];
+    meshTile.userData.decorated = false;
+  } else {
+    // --- ADD overlays ---
+    const face = meshTile.userData.faceColor;
+    const layers = decorators.decorateTile({
+      base: face,
+      // zones: ["#ff0000", "#eeeeee", "#ff0000", "#eeeeee" ]
+      // zones: ["#111111", "#111111", "#111111", "#eeeeee" ]
+      zones: ["#111111", "#111111", face, face ]
+      // zones: ["#111111", "#eeeeee", "#111111", "#eeeeee" ]
+      // zones: ["#ff0000"]  // rook body
+    });
+
+    const overlays = layers.map(layer => {
+      const circle = decorators.drawInsetCircle(meshTile, layer.scale, layer.color);
+
+      meshTile.add(circle);
+      return circle;
+    });
+
+    meshTile.userData.overlays = overlays;
+    meshTile.userData.decorated = true;
+  }
 }
 // Seampoint: more local functions...
 
