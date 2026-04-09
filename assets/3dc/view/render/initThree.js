@@ -22,6 +22,7 @@ import {vts2xyz,
 import * as tiles from "../tiles/tiles.js";
 import * as decorators from "../decorators/decorators.js";
 import * as cameras from "./cameras.js";
+import * as scenes from "./scenes.js";
 // Seampoint: more imports...
 
 // --- UI ---
@@ -32,69 +33,45 @@ export function initThree(container) {  // TODO: Currently a POC - most of this 
    * renderer
    */
 
-  const scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xdcecff); // #dcecff - a light blue background.
+  const scene = scenes.init();                            // A light blue background.
+  const camera = cameras.init(1000, "neutral", [0,0,0]);  // Zoom and focalPoint.
 
-  let camera = cameras.init(1000, "neutral", [0,0,0]); // Zoom and focalPoint.
+  const tileGeometry = new THREE.BoxGeometry(...vts2xyz(tiles.tileSize()));
+  const tileMap = new Map();
 
-  // --- TILE (hardcoded test) ---
-    const tileMap = new Map();
-    let tileSize = tiles.tileSize();
-    const geometry = new THREE.BoxGeometry(...vts2xyz(tileSize));
+  demoBoard(scene, tileGeometry, tileMap);
 
-    // Tile edges.
-    const edges = new THREE.EdgesGeometry(geometry);
-    const line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0x000000 }));
+  demoDecorators(tileGeometry, scene);    // Create offboard tiles to test decorators.
 
-    for(let z=-3; z<=4; z++) {  // Create an 8x8x8 board.
-      for(let x=-3; x<=4; x++) {
-        for(let y=-3; y<=4; y++) {
-          let pos = [z, x, y];
-          let tile = tiles.getTileAttributes(pos);
-          let meshTile = tiles.createMeshTile(tile, geometry, pos);
-          meshTile.userData.isTile = true;
-          meshTile.userData.coords = pos;  // [z,x,y]
-          meshTile.userData.decorated = false;
-          meshTile.userData.overlays = []; 
-          meshTile.userData.faceColor = tile.faceColor;
-          tileMap.set(pos.join(","), meshTile);
-          scene.add(meshTile);                            // Add to scene.
-        }
-      }
-    }
+  demoAdvSq(tileMap);
 
-    // Create offboard tiles to test decorators.
-    demoDecorators(geometry, scene);
+  demoDualDiamond(tileMap, [3,-2,-2], "rook", "linear2");
+  demoDualDiamond(tileMap, [4,-2,-2], "rook", "linear1");
+  demoDualDiamond(tileMap, [3,-1,-1], "bishop", "linear2");
+  demoDualDiamond(tileMap, [4,-1,-1], "bishop", "linear1");
+  
+  demoTriDiamond(tileMap,  [2,0,0], "duke", "linear3");
+  demoTriDiamond(tileMap,  [3,0,0], "duke", "linear2");
+  demoTriDiamond(tileMap,  [4,0,0], "duke", "linear1");
+  demoDualDiamond(tileMap, [3,1,1], "duke", "duplex");
+  demoDualDiamond(tileMap, [4,1,1], "duke", "simplex");
 
-    demoAdvSq(tileMap);
+  demoKnight(tileMap);
 
-    demoDualDiamond(tileMap, [3,-2,-2], "rook", "linear2");
-    demoDualDiamond(tileMap, [4,-2,-2], "rook", "linear1");
-    demoDualDiamond(tileMap, [3,-1,-1], "bishop", "linear2");
-    demoDualDiamond(tileMap, [4,-1,-1], "bishop", "linear1");
-    
-    demoTriDiamond(tileMap, [2,0,0], "duke", "linear3");
-    demoTriDiamond(tileMap, [3,0,0], "duke", "linear2");
-    demoTriDiamond(tileMap, [4,0,0], "duke", "linear1");
-    demoDualDiamond(tileMap, [3,1,1], "duke", "duplex");
-    demoDualDiamond(tileMap, [4,1,1], "duke", "simplex");
+  demoCamera();
 
-    demoKnight(tileMap);
+  // Key light (main direction) (TODO: LIGHTING NOT WORKING WELL, only need for shiny metal edges.)
+    const key = new THREE.DirectionalLight(0xffffff, 0.9);
+    key.position.set(400, 600, 400);
+    scene.add(key);
 
-    demoCamera();
+    // Fill light (softens shadows)
+    const fill = new THREE.DirectionalLight(0xffffff, 0.5);
+    fill.position.set(-400, 300, -400);
+    scene.add(fill);
 
-    // Key light (main direction) (TODO: LIGHTING NOT WORKING WELL, only need for shiny metal edges.)
-      const key = new THREE.DirectionalLight(0xffffff, 0.9);
-      key.position.set(400, 600, 400);
-      scene.add(key);
-
-      // Fill light (softens shadows)
-      const fill = new THREE.DirectionalLight(0xffffff, 0.5);
-      fill.position.set(-400, 300, -400);
-      scene.add(fill);
-
-      // Ambient (base visibility)
-      scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+    // Ambient (base visibility)
+    scene.add(new THREE.AmbientLight(0xffffff, 0.6));
 
   const renderer = new THREE.WebGLRenderer({
     canvas: container,
@@ -128,7 +105,30 @@ export function initThree(container) {  // TODO: Currently a POC - most of this 
 // Seampoint: more global functions...
 
 // --- Demos ---
-function demoDecorators(geometry, scene) {
+function demoBoard(scene, tileGeometry, tileMap) {
+  // Tile edges.
+  const edges = new THREE.EdgesGeometry(tileGeometry);
+  const line  = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0x000000 }));
+
+  for(let z=-3; z<=4; z++) {  // Create an 8x8x8 board.
+    for(let x=-3; x<=4; x++) {
+      for(let y=-3; y<=4; y++) {
+        let pos = [z, x, y];
+        let tile = tiles.getTileAttributes(pos);
+        let meshTile = tiles.createMeshTile(tile, tileGeometry, pos);
+        meshTile.userData.isTile = true;
+        meshTile.userData.coords = pos;  // [z,x,y]
+        meshTile.userData.decorated = false;
+        meshTile.userData.overlays = []; 
+        meshTile.userData.faceColor = tile.faceColor;
+        tileMap.set(pos.join(","), meshTile);
+        scene.add(meshTile);                            // Add to scene.
+      }
+    }
+  }
+  }
+
+function demoDecorators(tileGeometry, scene) {
   const examples = [
     { pos: [4,-4,-4], piece: "rook", decorator: "end2" },
     { pos: [3,-4,-4], piece: "bishop", decorator: "end1" },
@@ -143,7 +143,7 @@ function demoDecorators(geometry, scene) {
 
   for(const example of examples) {
     let tile = tiles.getTileAttributes(example.pos);
-    let meshTile = tiles.createMeshTile(tile, geometry, example.pos);
+    let meshTile = tiles.createMeshTile(tile, tileGeometry, example.pos);
     meshTile.userData.isTile = true;
     meshTile.userData.coords = example.pos;  // [z,x,y]
     scene.add(meshTile);                            // Add to scene.
@@ -232,10 +232,10 @@ function demoTriDiamond(tileMap, pos, piece="duke", variant="linear2") {
 }
 
 function demoCamera() {
-  // cameras.UI("neutral", [0,0,0]);
+  cameras.UI("neutral", [0,0,0]);
   // cameras.UI("white", [-80,0,0]);
   // cameras.UI("negative", [0,0,0]);
-  cameras.UI("black", [-80,0,0]);
+  // cameras.UI("black", [-80,0,0]);
 }
 
 // --- Helpers ---

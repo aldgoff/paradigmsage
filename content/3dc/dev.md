@@ -44,5 +44,5 @@ title: "Dev"
   - 4/6/26 - Condensed regression reporting, simpler 3dc page, start on model/state tests.
   - 4/7/26 - Bishop rays for slip & slide, control/view callback arch, and decorator POC.
   - 4/8/26 - Demo decorators, click toggle on src/dst, define basic decorators.
-  - 4/9/26 - Port camera code from render to cameras.
+  - 4/9/26 - Port camera and scene code from render to cameras and scenes modules.
 
