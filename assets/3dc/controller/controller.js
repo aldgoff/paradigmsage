@@ -73,8 +73,8 @@ export function init(playBoard) {
 
   register.callbacks();
 
-  const setup = model.init(playBoard);
-  const context = view.init(playBoard);
+  model.init(playBoard);
+  view.init(playBoard);
 
   demo(); // POC for state interface and undo/redo architecture.
 }

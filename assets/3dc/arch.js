@@ -6,30 +6,46 @@
   UI: none, just documentation in code form
   */
 
-/* Tree.
-  MacBookPro:paradigmsage adgoff$ tree assets/3dc/view
-  assets/3dc/view
-  ├── _tbd.md
-  ├── board
-  ├── brainstorming.md
-  ├── decorators
-  ├── pieces
-  ├── render
-  │   ├── camera.js
-  │   ├── coordsMap.js
-  │   ├── initThree.js
-  │   ├── loop.js
-  │   ├── render.json
-  │   ├── render.md
-  │   ├── renderer.js
-  │   └── scene.js
-  ├── tiles
-  │   └── tiles.json
-  ├── trays
-  ├── view.js
-  └── view.md
+/* Tree - 4/9/26.
+MacBookPro:paradigmsage adgoff$ tree assets/3dc/view
+assets/3dc/view
+├── _tbd.md
+├── board
+├── brainstorming.md
+├── decorators
+│   ├── decorators.js
+│   ├── decorators.json
+│   └── decorators.md
+├── demos.js
+├── pieces
+├── registerHandlers.js
+├── render
+│   ├── cameras.js
+│   ├── cameras.json
+│   ├── cameras.md
+│   ├── coordMaps.md
+│   ├── coordsMaps.js
+│   ├── coordsMaps.json
+│   ├── lights.js
+│   ├── lights.json
+│   ├── lights.md
+│   ├── obsolete
+│   │   └── initThree.js
+│   ├── renders.js
+│   ├── renders.json
+│   ├── renders.md
+│   ├── scenes.js
+│   ├── scenes.json
+│   └── scenes.md
+├── tiles
+│   ├── tiles.js
+│   ├── tiles.json
+│   └── tiles.md
+├── trays
+├── view.js
+└── view.md
 
-  6 directories, 13 files
+7 directories, 28 files
  */
 
 /* Control Flow:

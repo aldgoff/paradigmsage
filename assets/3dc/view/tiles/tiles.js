@@ -23,8 +23,6 @@ import * as foundation from "../../foundation/colors/colors.js";
 import * as coordsMaps from "../render/coordsMaps.js"
 // Seampoint: more layers...
 
-// --- Load view modules ---
-
 // --- UI ---
 export function tileSize() {
   let z = tile.size.height;
@@ -81,10 +79,8 @@ export function getTileMesh(tileMap, pos) {
 // --- Helpers ---
 function makeEdges(geometry) {
   const edges = new THREE.EdgesGeometry(geometry);
-  return new THREE.LineSegments(
-    edges,
-    new THREE.LineBasicMaterial({ color: 0x000000 })
-  );
+  const lines = new THREE.LineSegments( edges, new THREE.LineBasicMaterial({ color: 0x000000 }));
+  return lines;
 }
 // Seampoint: more local functions...
 

@@ -9,9 +9,9 @@
 
 // --- Load JSON ---
 import decoratorsData from "./decorators.json" assert { type: "json" };
-  export const decoratorsModule = decoratorsData.decorators_module;
+  const decoratorsModule = decoratorsData.decorators_module;
   const scales     = decoratorsModule.scales;
-  export const pallet     = decoratorsModule.pallet;
+  const pallet     = decoratorsModule.pallet;
   const decorators = decoratorsModule.decorators;
   // Seampoint: more objects.
 
@@ -19,6 +19,10 @@ import decoratorsData from "./decorators.json" assert { type: "json" };
 // Seampoint: more imports.
 
 // --- UI ---
+export function module() {
+  return decoratorsModule;
+}
+
 export function decorate(color, meshTile, piece, decorator) {
   const base = color;
   const list = decorators[piece][decorator];

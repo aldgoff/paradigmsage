@@ -40,9 +40,11 @@
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
-import { initThree } from "./render/initThree.js";
 import { LAYOUT_3DC } from "../layout.js";
+
 import * as run from "./registerHandlers.js";
+import * as renders from "./render/renders.js";
+import * as demos from "./demos.js";
 // Seampoint: more imports...
 
 // --- Demo for development ---
@@ -53,12 +55,14 @@ function demo(playBoard) {
 
   if (!playBoard) return false;
 
-  const context = initThree(playBoard);
+  const context = renders.init(playBoard);
 
   drawCanvasTitles();
   drawLayoutBounds();
 
-  return context;
+  demos.run(context);
+
+  return;
 }
 
 // --- UI ---
@@ -80,7 +84,7 @@ function drawCanvasTitles(layout = LAYOUT_3DC) {
   drawCanvasTitle("3dc-listing", "listingCanvas");
   drawCanvasTitle("3dc-gambit",  "gambitCanvas");
   // Seampoint - more 2D canvases...
-}
+  }
 
 function drawCanvasTitle(id_3dc, layoutLabel) {
   const canvas = document.getElementById(id_3dc);
@@ -92,7 +96,7 @@ function drawCanvasTitle(id_3dc, layoutLabel) {
     ctx.font = "12px sans-serif";
     ctx.fillText(element.name, 4, 14);
   ctx.restore();
-}
+  }
 
 function drawLayoutBounds(layout = LAYOUT_3DC) {
   for (const layout_key in layout) { // Outline each graphical element in layout.
@@ -122,7 +126,7 @@ function drawLayoutBounds(layout = LAYOUT_3DC) {
     }
     // Seampoint - more 2D canvases...
   }
-}
+  }
 
 function ctxDefaults(ctx) {
   ctx.setLineDash([6, 4]);

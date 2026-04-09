@@ -1,52 +1,49 @@
-/* File: initThree.js
-  Path: ./3dc/initThree/initThree.js
+
+/* File: view.js
+  Path: ./3dc/view/view.js
   Purpose: desc
   Author: Allan Goff
-  Date: 4/08/26
+  Date: 4/02/26
   UI: the export functions.
 */
-
-// --- Load Libraries ---
-const THREE = window.THREE;
 
 // --- Load JSON ---
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
+import { LAYOUT_3DC } from "../layout.js";
+
 import {vts2xyz,
         xyz2vts,
         vts2pixels,
         pixels2vts,
-} from "../render/coordsMaps.js"
+} from "./render/coordsMaps.js"
 
-import * as tiles from "../tiles/tiles.js";
-import * as decorators from "../decorators/decorators.js";
-import * as cameras from "./cameras.js";
-import * as scenes from "./scenes.js";
-import * as lights from "./lights.js";
-import * as renders from "./renders.js";
+import * as tiles from "./tiles/tiles.js";
+import * as decorators from "./decorators/decorators.js";
+import * as cameras from "./render/cameras.js";
+
+import * as renders from "./render/renders.js";
 // Seampoint: more imports...
 
-// --- UI ---
-export function initThree(container) {  // TODO: Currently a POC - most of this belongs somewhere else.
-  /* A 3D env needs these three things to create a 3D context.
-   * scene
-   * camera
-   * renderer
-   */
-
-  const scene  = scenes.init();                            // A light blue background.
-  const camera = cameras.init(1000, "neutral", [0,0,0]);  // Zoom and focalPoint.
-  const light  = lights.init(scene);
-  const renderer = renders.init(container, scene, camera);
+// --- Demo for development ---
+export function run(context) {
+  const scene = context.scene;
+  const camera = context.camera;
+  const renderer = context.renderer;
 
   // Create frame for tiles, and a map to hold all the instantiated tiles.
   const tileGeometry = new THREE.BoxGeometry(...vts2xyz(tiles.tileSize()));
   const tileMap = new Map();
 
+  runDemos(scene, renderer, camera, tileGeometry, tileMap);
+}
+
+// --- Demos ---
+function runDemos(scene, renderer, camera, tileGeometry, tileMap) {
   demoBoard(scene, tileGeometry, tileMap);
 
-  demoDecorators(tileGeometry, scene);    // Create offboard tiles to test decorators.
+  demoDecorators(scene, tileGeometry, tileMap);    // Create offboard tiles to test decorators.
 
   demoAdvSq(tileMap);
 
@@ -65,55 +62,44 @@ export function initThree(container) {  // TODO: Currently a POC - most of this 
 
   demoCamera();
 
-  // Add event listener.
-    renderer.domElement.addEventListener("click", (event) => {
-    const coords = getTileFromClick(event, camera, scene, renderer);
-
-    if (!coords) return;
-
-    console.log("Clicked tile:", coords);
-
-    // → here you trigger decorator logic
-    const meshTile = tiles.getTileMesh(tileMap, coords);
-    if (meshTile) {
-      toggleDecorator(meshTile);  // Hard coded for now as src or dst.
-    }
-    });
-
-  return { scene, camera, renderer }; // Context.
+  addEventListener(scene, renderer, camera, tileMap);
 }
-// Seampoint: more global functions...
 
-// --- Demos ---
+function addEventListener(scene, renderer, camera, tileMap) {
+  renderer.domElement.addEventListener("click", (event) => {
+  const coords = getTileFromClick(event, camera, scene, renderer);
+
+  if (!coords) return;
+
+  // → here you trigger decorator logic
+  const meshTile = tiles.getTileMesh(tileMap, coords);
+
+  if (meshTile) {
+    toggleDecorator(meshTile);  // Hard coded for now as src or dst.
+  }
+  });
+}
+
 function demoBoard(scene, tileGeometry, tileMap) {
-  // Tile edges.
-  const edges = new THREE.EdgesGeometry(tileGeometry);
-  const line  = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0x000000 }));
-
   for(let z=-3; z<=4; z++) {  // Create an 8x8x8 board.
     for(let x=-3; x<=4; x++) {
       for(let y=-3; y<=4; y++) {
         let pos = [z, x, y];
         let tile = tiles.getTileAttributes(pos);
         let meshTile = tiles.createMeshTile(tile, tileGeometry, pos);
-        meshTile.userData.isTile = true;
-        meshTile.userData.coords = pos;  // [z,x,y]
-        meshTile.userData.decorated = false;
-        meshTile.userData.overlays = []; 
-        meshTile.userData.faceColor = tile.faceColor;
-        tileMap.set(pos.join(","), meshTile);
+        initTileUserData(meshTile, tile, pos, tileMap);
         scene.add(meshTile);                            // Add to scene.
       }
     }
   }
   }
 
-function demoDecorators(tileGeometry, scene) {
+function demoDecorators(scene, tileGeometry, tileMap) {
   const examples = [
-    { pos: [4,-4,-4], piece: "rook", decorator: "end2" },
+    { pos: [4,-4,-4], piece: "rook",   decorator: "end2" },
     { pos: [3,-4,-4], piece: "bishop", decorator: "end1" },
-    { pos: [2,-4,-4], piece: "duke", decorator: "apex" },
-    { pos: [1,-4,-4], piece: "rook", decorator: "body" },
+    { pos: [2,-4,-4], piece: "duke",   decorator: "apex" },
+    { pos: [1,-4,-4], piece: "rook",   decorator: "body" },
     { pos: [0,-4,-4], piece: "bishop", decorator: "source" },
     { pos: [-1,-4,-4], piece: "queen", decorator: "qtile" },
     { pos: [-2,-4,-4], piece: "queen", decorator: "brook" },
@@ -122,10 +108,10 @@ function demoDecorators(tileGeometry, scene) {
   ]
 
   for(const example of examples) {
-    let tile = tiles.getTileAttributes(example.pos);
+    let pos = example.pos;
+    let tile = tiles.getTileAttributes(pos);
     let meshTile = tiles.createMeshTile(tile, tileGeometry, example.pos);
-    meshTile.userData.isTile = true;
-    meshTile.userData.coords = example.pos;  // [z,x,y]
+    initTileUserData(meshTile, tile, pos, tileMap);
     scene.add(meshTile);                            // Add to scene.
     decorators.decorate(tile.faceColor, meshTile, example.piece, example.decorator);
   }
@@ -170,7 +156,7 @@ function demoDualDiamond(tileMap, pos, piece="rook", variant="linear1") {
   const meshTile = tileMap.get(pos.join(","));
   if (!meshTile) return;
 
-  const module = decorators.decoratorsModule;
+  const module = decorators.module();
 
   const defRaw = module.decorators[piece][variant];
   const pallet = module.pallet;
@@ -192,7 +178,7 @@ function demoTriDiamond(tileMap, pos, piece="duke", variant="linear2") {
   const meshTile = tileMap.get(pos.join(","));
   if (!meshTile) return;
 
-  const module = decorators.decoratorsModule;
+  const module = decorators.module();
 
   const defRaw = module.decorators[piece][variant];
   const pallet = module.pallet;
@@ -272,6 +258,16 @@ function toggleDecorator(meshTile) {
     meshTile.userData.overlays = overlays;
     meshTile.userData.decorated = true;
   }
+}
+
+function initTileUserData(meshTile, tile, pos, tileMap) {
+  meshTile.userData.isTile = true;
+  meshTile.userData.coords = pos;
+  meshTile.userData.decorated = false;
+  meshTile.userData.overlays = [];
+  meshTile.userData.faceColor = tile.faceColor;
+
+  tileMap.set(pos.join(","), meshTile);
 }
 // Seampoint: more local functions...
 
