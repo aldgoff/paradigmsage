@@ -17,7 +17,7 @@ import {vts2xyz,
         xyz2vts,
         vts2pixels,
         pixels2vts,
-} from "../render/coordsMap.js"
+} from "../render/coordsMaps.js"
 
 import * as tiles from "../tiles/tiles.js";
 import * as decorators from "../decorators/decorators.js";

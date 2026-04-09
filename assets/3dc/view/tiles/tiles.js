@@ -20,7 +20,7 @@ import tilesData from "./tiles.json" assert { type: "json" };
 
 // --- Build upon previous layers ---
 import * as foundation from "../../foundation/colors/colors.js";
-import * as coordsMap from "../render/coordsMap.js"
+import * as coordsMaps from "../render/coordsMaps.js"
 // Seampoint: more layers...
 
 // --- Load view modules ---
@@ -66,9 +66,9 @@ export function createMeshTile(tile, geometry, pos) {
   let edgeColor = new THREE.MeshBasicMaterial({ color: tile.edgeColor });
   let mat = [edgeColor, edgeColor, faceColor, faceColor, edgeColor, edgeColor];
 
-  let meshTile = new THREE.Mesh(geometry, mat);   // Colors.
-  meshTile.add(makeEdges(geometry));              // Edges.
-  meshTile.position.set(...coordsMap.vts2pixels(pos));      // Position.
+  let meshTile = new THREE.Mesh(geometry, mat);         // Colors.
+  meshTile.add(makeEdges(geometry));                    // Edges.
+  meshTile.position.set(...coordsMaps.vts2pixels(pos)); // Position.
 
   return(meshTile);
   }
