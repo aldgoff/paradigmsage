@@ -23,6 +23,7 @@ import * as tiles from "../tiles/tiles.js";
 import * as decorators from "../decorators/decorators.js";
 import * as cameras from "./cameras.js";
 import * as scenes from "./scenes.js";
+import * as lights from "./lights.js";
 // Seampoint: more imports...
 
 // --- UI ---
@@ -61,18 +62,22 @@ export function initThree(container) {  // TODO: Currently a POC - most of this 
   demoCamera();
 
   // Key light (main direction) (TODO: LIGHTING NOT WORKING WELL, only need for shiny metal edges.)
-    const key = new THREE.DirectionalLight(0xffffff, 0.9);
-    key.position.set(400, 600, 400);
-    scene.add(key);
+  lights.init(scene);
 
-    // Fill light (softens shadows)
-    const fill = new THREE.DirectionalLight(0xffffff, 0.5);
-    fill.position.set(-400, 300, -400);
-    scene.add(fill);
+    // const key = new THREE.DirectionalLight(0xffffff, 0.9);
+    // key.position.set(400, 600, 400);
+    // scene.add(key);
 
-    // Ambient (base visibility)
-    scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+    // // Fill light (softens shadows)
+    // const fill = new THREE.DirectionalLight(0xffffff, 0.5);
+    // fill.position.set(-400, 300, -400);
+    // scene.add(fill);
 
+    // // Ambient (base visibility)
+    // scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+
+
+    
   const renderer = new THREE.WebGLRenderer({
     canvas: container,
     antialias: true

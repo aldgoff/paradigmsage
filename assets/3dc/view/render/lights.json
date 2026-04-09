@@ -1,0 +1,20 @@
+{
+  "lights_module": {
+    "key": {
+      "color": "#ffffff",
+      "intensity": 0.9,
+      "position": [400, 600, 400]
+    },
+    "fill": {
+      "color": "#ffffff",
+      "intensity": 0.5,
+      "position": [-400, 300, -400]
+    },
+    "ambient": {
+      "color": "#ffffff",
+      "intensity": 0.6,
+      "position": [0,0,0]
+    }
+  }
+}
+

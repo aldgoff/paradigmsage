@@ -13,10 +13,7 @@ const THREE = window.THREE;
 import scenesData from "./scenes.json" assert { type: "json" };
   const scenesModule = scenesData.scenes_module;
   const background  = scenesModule.background;
-  // Seampoint: more objects.
-
-// --- Build upon previous layers ---
-// Seampoint: more imports.
+  // Seampoint: more objects...
 
 // --- UI ---
 export function init() {
@@ -26,4 +23,5 @@ export function init() {
 
   return scene;
 }
+// Seampoint: global functions...
 
