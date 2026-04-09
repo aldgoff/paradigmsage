@@ -131,4 +131,5 @@ function ctxDefaults(ctx) {
   ctx.fillStyle = "#888";
   ctx.font = "12px sans-serif";
 }
+// Seampoint: more local functions...
 
