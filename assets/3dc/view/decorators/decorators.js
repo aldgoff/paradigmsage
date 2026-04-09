@@ -46,7 +46,7 @@ export function drawInsetQuad(mesh, scale, color) { // For source, body, end1,2,
   const mat = new THREE.MeshBasicMaterial({
     color,
     transparent: true,
-    opacity: 0.85,
+    opacity: 0.95,
     side: THREE.DoubleSide
   });
 
@@ -57,7 +57,7 @@ export function drawInsetQuad(mesh, scale, color) { // For source, body, end1,2,
   box.getSize(size);
 
   overlay.scale.set(size.x * scale, size.z * scale, 1); // Scale.
-  overlay.position.set(0, size.y / 2 + 0.1, 0);         // Position on top face.
+  overlay.position.set(0, size.y / 2 + 0.12, 0);         // Position on top face.
   overlay.rotation.x = -Math.PI / 2;                    // Rotate to lie flat.
 
   return overlay;
@@ -69,7 +69,7 @@ export function drawInsetCircle(mesh, scale, color, zOffset=0) { // For src & ds
   const mat = new THREE.MeshBasicMaterial({
     color,
     transparent: true,
-    opacity: 0.85,
+    opacity: 0.95,
     side: THREE.DoubleSide
   });
 
@@ -80,7 +80,7 @@ export function drawInsetCircle(mesh, scale, color, zOffset=0) { // For src & ds
   box.getSize(size);
 
   circle.scale.set(size.x * scale, size.z * scale, 1);    // Scale.
-  circle.position.set(0, size.y / 2 + 0.1 + zOffset, 0);  // Position on top face.
+  circle.position.set(0, size.y / 2 + 0.12 + zOffset, 0); // Position on top face.
   circle.rotation.x = -Math.PI / 2;                       // Rotate to lie flat.
 
   return circle;
@@ -100,7 +100,7 @@ export function drawInsetDualDiamonds(mesh, scale, def) {
     const bgMat = new THREE.MeshBasicMaterial({
       color: def.background,
       transparent: true,
-      opacity: 0.6,
+      opacity: 0.95,
       side: THREE.DoubleSide
     });
 
@@ -173,7 +173,7 @@ export function drawInsetTriDiamonds(mesh, scale, def) {
     const bgMat = new THREE.MeshBasicMaterial({
       color: def.background,
       transparent: true,
-      opacity: 0.6,
+      opacity: 0.95,
       side: THREE.DoubleSide
     });
 

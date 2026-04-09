@@ -24,6 +24,7 @@ import * as decorators from "../decorators/decorators.js";
 import * as cameras from "./cameras.js";
 import * as scenes from "./scenes.js";
 import * as lights from "./lights.js";
+import * as renders from "./renders.js";
 // Seampoint: more imports...
 
 // --- UI ---
@@ -34,9 +35,12 @@ export function initThree(container) {  // TODO: Currently a POC - most of this 
    * renderer
    */
 
-  const scene = scenes.init();                            // A light blue background.
+  const scene  = scenes.init();                            // A light blue background.
   const camera = cameras.init(1000, "neutral", [0,0,0]);  // Zoom and focalPoint.
+  const light  = lights.init(scene);
+  const renderer = renders.init(container, scene, camera);
 
+  // Create frame for tiles, and a map to hold all the instantiated tiles.
   const tileGeometry = new THREE.BoxGeometry(...vts2xyz(tiles.tileSize()));
   const tileMap = new Map();
 
@@ -60,35 +64,6 @@ export function initThree(container) {  // TODO: Currently a POC - most of this 
   demoKnight(tileMap);
 
   demoCamera();
-
-  // Key light (main direction) (TODO: LIGHTING NOT WORKING WELL, only need for shiny metal edges.)
-  lights.init(scene);
-
-    // const key = new THREE.DirectionalLight(0xffffff, 0.9);
-    // key.position.set(400, 600, 400);
-    // scene.add(key);
-
-    // // Fill light (softens shadows)
-    // const fill = new THREE.DirectionalLight(0xffffff, 0.5);
-    // fill.position.set(-400, 300, -400);
-    // scene.add(fill);
-
-    // // Ambient (base visibility)
-    // scene.add(new THREE.AmbientLight(0xffffff, 0.6));
-
-
-    
-  const renderer = new THREE.WebGLRenderer({
-    canvas: container,
-    antialias: true
-  });
-
-  renderer.setSize(container.width, container.height);
-  function animate() {
-    requestAnimationFrame(animate);
-    renderer.render(scene, camera);
-  }
-  animate();
 
   // Add event listener.
     renderer.domElement.addEventListener("click", (event) => {
@@ -234,7 +209,7 @@ function demoTriDiamond(tileMap, pos, piece="duke", variant="linear2") {
   const group = decorators.drawInsetTriDiamonds(meshTile, 0.85, def);
 
   meshTile.add(group);
-}
+  }
 
 function demoCamera() {
   cameras.UI("neutral", [0,0,0]);

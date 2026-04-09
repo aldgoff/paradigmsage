@@ -23,6 +23,8 @@ export function init(scene) {
   // TODO: LIGHTING NOT WORKING WELL, only need for shiny metal edges.
   // No change if this function is never called.
 
+  let light = null; // Place holder for now.
+
   const keylight = new THREE.DirectionalLight(key.color, key.intensity);          // Main direction.
   keylight.position.set(key.position);
   scene.add(keylight);
@@ -34,7 +36,7 @@ export function init(scene) {
   const ambientLight = new THREE.AmbientLight(ambient.color, ambient.intensity);  // Ambient (base visibility)
   scene.add(ambientLight);
 
-  return;
+  return light;
 }
 // Seampoint: global functions...
 
