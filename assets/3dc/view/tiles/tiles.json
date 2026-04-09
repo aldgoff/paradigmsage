@@ -18,9 +18,9 @@
     },
     "tile": {
       "size": {
-        "height": 5,
-        "width": 92,
-        "depth": 92
+        "height": 6,
+        "width": 90,
+        "depth": 90
       },
       "face": {
         "encoding": "bishop_color",

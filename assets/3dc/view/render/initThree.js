@@ -21,27 +21,24 @@ import {vts2xyz,
 
 import * as tiles from "../tiles/tiles.js";
 import * as decorators from "../decorators/decorators.js";
+import * as cameras from "./cameras.js";
 // Seampoint: more imports...
 
 // --- UI ---
 export function initThree(container) {  // TODO: Currently a POC - most of this belongs somewhere else.
-  const scene = new THREE.Scene();
-  /* A 3D env needs these three things to create an 3D context.
+  /* A 3D env needs these three things to create a 3D context.
    * scene
    * camera
    * renderer
    */
+
+  const scene = new THREE.Scene();
   scene.background = new THREE.Color(0xdcecff); // #dcecff - a light blue background.
 
-  const zoom = 1000; // 400 - 1500.
-  const camera = new THREE.OrthographicCamera( -zoom, zoom, zoom, -zoom,   1, 2000 ); 
-    const pov = { white: [-800, 150, -800], neutral: [900, 170, -900], black: [800, 160, 800], negative: [-800, 160, 800] };
-    camera.position.set(...pov.neutral);
-    camera.lookAt(0, 0, 0);
+  let camera = cameras.init(1000, "neutral", [0,0,0]); // Zoom and focalPoint.
 
   // --- TILE (hardcoded test) ---
     const tileMap = new Map();
-    // geometry: width, height, depth
     let tileSize = tiles.tileSize();
     const geometry = new THREE.BoxGeometry(...vts2xyz(tileSize));
 
@@ -83,6 +80,8 @@ export function initThree(container) {  // TODO: Currently a POC - most of this 
     demoDualDiamond(tileMap, [4,1,1], "duke", "simplex");
 
     demoKnight(tileMap);
+
+    demoCamera();
 
     // Key light (main direction) (TODO: LIGHTING NOT WORKING WELL, only need for shiny metal edges.)
       const key = new THREE.DirectionalLight(0xffffff, 0.9);
@@ -230,6 +229,13 @@ function demoTriDiamond(tileMap, pos, piece="duke", variant="linear2") {
   const group = decorators.drawInsetTriDiamonds(meshTile, 0.85, def);
 
   meshTile.add(group);
+}
+
+function demoCamera() {
+  // cameras.UI("neutral", [0,0,0]);
+  // cameras.UI("white", [-80,0,0]);
+  // cameras.UI("negative", [0,0,0]);
+  cameras.UI("black", [-80,0,0]);
 }
 
 // --- Helpers ---

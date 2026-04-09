@@ -62,7 +62,6 @@ export function getTileAttributes(coords) {
   }
 
 export function createMeshTile(tile, geometry, pos) {
-  console.log(geometry);
   let faceColor = new THREE.MeshBasicMaterial({ color: tile.faceColor });
   let edgeColor = new THREE.MeshBasicMaterial({ color: tile.edgeColor });
   let mat = [edgeColor, edgeColor, faceColor, faceColor, edgeColor, edgeColor];
