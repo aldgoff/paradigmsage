@@ -35,4 +35,51 @@
   - view.init() -> view.demo() -> run.callback.whatever(control)
   - 
 
+```
+controller.js
++-------------------------------------------------------------------------+
+| import * as view from "../view/controlsView.js";                        |
+|                                                                         |
+| view.registerButtonHandler(button => { handleButtonRelease(button); }); |
+|                                                                         |
+| function handleButtonRelease(button) {                                  |
+|   switch (button) {                                                     |
+|     case "Undo": handleUndo(); break;                                   |
+|     case "Redo": handleRedo(); break;                                   |
+|     ...                                                                 |
+|   }                                                                     |
+|   view.update();                                                        |
+| }                                                                       |
+|                                                                         |
+| function handleUndo() {}                                                |
+| function handleRedo() {}                                                |
+|   ...                                                                   |
++-------------------------------------------------------------------------+
+
+controlsView.js
++-------------------------------------------+
+| let onControlCommit = null;               |
+| export function registerButtonHandler(fn) |
+|   onControlCommit = fn;                   |
+|                                           |
++-------------------------------------------+
+
+view.js
++----------------------------------+
+|                                  |
+|                                  |
+|                                  |
+|                                  |
++----------------------------------+
+
+tbd.js
++----------------------------------+
+|                                  |
+|                                  |
+|                                  |
+|                                  |
++----------------------------------+
+
+```
+
 
