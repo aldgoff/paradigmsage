@@ -1,0 +1,27 @@
+/* File: scenes.js
+  Path: ./3dc/view/render/scenes.js
+  Purpose: Interface to the scene features of the THREE render engine.
+  Author: Allan Goff
+  Date: 4/09/26
+  UI: the export functions.
+*/
+
+// --- Load Libraries ---
+const THREE = window.THREE;
+
+// --- Load JSON ---
+import scenesData from "./scenes.json" assert { type: "json" };
+  const scenesModule = scenesData.scenes_module;
+  const background  = scenesModule.background;
+  // Seampoint: more objects...
+
+// --- UI ---
+export function init() {
+  const scene = new THREE.Scene();
+  
+  scene.background = new THREE.Color(background.color); // #dcecff - a light blue background.
+
+  return scene;
+}
+// Seampoint: global functions...
+

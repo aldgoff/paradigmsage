@@ -2,6 +2,7 @@
 
 export const TEST_MODE = { // "VERBOSE" | "TERSE" | "OFF"
   foundation: "TERSE",
+    rays: "TERSE",
   geometry: "TERSE",
     planes: "TERSE",
     quads: "TERSE",

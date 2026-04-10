@@ -1,0 +1,13 @@
+{
+  "coordsMaps_module": {
+    "dims": {
+      "Sxy": 100,
+      "Sz": 150,
+      "center": [50, 75, 50]
+    },
+    "Examples": {
+      "_formula": "center = Sxy/2, Sz/2, Sxy/2"
+    }
+  }
+}
+

@@ -50,6 +50,7 @@ import stateData from "../model/state/state.json" assert { type: "json" };
 import * as view from "../view/view.js";
 import * as model from "../model/model.js";
 import * as state from "../model/state/state.js";
+import * as register from "../controller/eventHandler.js";
 // Seampoint: more imports...
 
 // --- UI ---
@@ -63,8 +64,17 @@ export function init(playBoard) {
   makeDraggable(document.getElementById("camera-window"));
   // Seampoint - more 2D canvases...
 
-  const setup = model.init(playBoard);
-  const context = view.init(playBoard);
+  /* Callback registration control flow:
+   * Control: registers callback functions via view registration 
+   * control.init() -> control/register.callbacks() -> 
+   * control/eventHandlers/*GameDispatchers() -> view/registerHandlers/callback register.
+   * view.init() -> view.demo() -> run.callback.whatever(control)
+   */
+
+  register.callbacks();
+
+  model.init(playBoard);
+  view.init(playBoard);
 
   demo(); // POC for state interface and undo/redo architecture.
 }

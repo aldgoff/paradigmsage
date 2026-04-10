@@ -1,7 +1,7 @@
 
 /* File: tiles.js
   Path: ./3dc/tiles/tiles.js
-  Purpose: desc
+  Purpose: Code for building the tiles.
   Author: Allan Goff
   Date: 4/03/26
   UI: the export functions.
@@ -16,51 +16,71 @@ import tilesData from "./tiles.json" assert { type: "json" };
   const tile = tilesModule.tile;
   const face = tile.face.colors;
   const edge = tile.edge.colors;
-
-  // Flat face and edge materials.
-  const white  = new THREE.MeshBasicMaterial({ color: face.white  }); // "#f2f2f2"
-  const black  = new THREE.MeshBasicMaterial({ color: face.black  });
-  const gold   = new THREE.MeshBasicMaterial({ color: edge.gold   }); // "#c9a227"
-  const silver = new THREE.MeshBasicMaterial({ color: edge.silver });
-  const ruby   = new THREE.MeshBasicMaterial({ color: edge.ruby   });
-  const jade   = new THREE.MeshBasicMaterial({ color: edge.jade   });
-  // Seampoint: more objects...
+// Seampoint: more objects...
 
 // --- Build upon previous layers ---
 import * as foundation from "../../foundation/colors/colors.js";
-
-// --- Load view modules ---
+import * as coordsMaps from "../render/coordsMaps.js"
+// Seampoint: more layers...
 
 // --- UI ---
-export function createTile(coords) {
-  let z = tile.size.height;               // Size.
+export function tileSize() {
+  let z = tile.size.height;
   let x = tile.size.width;
   let y = tile.size.depth;
-  const size = [z, x, y];
+
+  return [z, x, y];
+  }
+
+export function getTileAttributes(coords) {
+  const size = tileSize();               // Tile size.
 
   const bishopColor = foundation.bishopColorVts(coords);  // Bishop color depends on position.
   const dukeColor   = foundation.dukeColorVts(coords);    // Duke color depends on position.
 
   let faceColor;
-  switch(bishopColor) { // "white"|"black".
-    case 'white': faceColor = tile.face.colors.white; break;
-    case 'black': faceColor = tile.face.colors.black; break;
+  switch(bishopColor) {                   // Tile face color (bishop).
+    case 'white': faceColor = face.white; break;
+    case 'black': faceColor = face.black; break;
     default:
       throw new Error(`Bad color choice ${bishopColor} for bishop in 3dc/view/tiles.js/createTiles().`);
   }
 
   let edgeColor;
-  switch(dukeColor) { // "gold"|"ruby"|"jade"|"silver".
-    case 'gold':   edgeColor = tile.edge.colors.gold;   break;
-    case 'silver': edgeColor = tile.edge.colors.silver; break;
-    case 'ruby':   edgeColor = tile.edge.colors.ruby;   break;
-    case 'jade':   edgeColor = tile.edge.colors.jade;   break;
+  switch(dukeColor) {                     // Tile edge color (duke).
+    case 'gold':   edgeColor = edge.gold;   break;
+    case 'silver': edgeColor = edge.silver; break;
+    case 'ruby':   edgeColor = edge.ruby;   break;
+    case 'jade':   edgeColor = edge.jade;   break;
     default:
       throw new Error(`Bad color choice ${dukeColor} for duke in 3dc/view/tiles.js/createTiles().`);
   }
 
   return { size, faceColor, edgeColor };  // [6, 87,87], "#f2f2f2", "#8b0000".
+  }
+
+export function createMeshTile(tile, geometry, pos) {
+  let faceColor = new THREE.MeshBasicMaterial({ color: tile.faceColor });
+  let edgeColor = new THREE.MeshBasicMaterial({ color: tile.edgeColor });
+  let mat = [edgeColor, edgeColor, faceColor, faceColor, edgeColor, edgeColor];
+
+  let meshTile = new THREE.Mesh(geometry, mat);         // Colors.
+  meshTile.add(makeEdges(geometry));                    // Edges.
+  meshTile.position.set(...coordsMaps.vts2pixels(pos)); // Position.
+
+  return(meshTile);
+  }
+
+export function getTileMesh(tileMap, pos) {
+  return tileMap.get(pos.join(","));
 }
+// Seampoint: more global functions...
 
 // --- Helpers ---
+function makeEdges(geometry) {
+  const edges = new THREE.EdgesGeometry(geometry);
+  const lines = new THREE.LineSegments( edges, new THREE.LineBasicMaterial({ color: 0x000000 }));
+  return lines;
+}
+// Seampoint: more local functions...
 

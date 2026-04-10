@@ -24,6 +24,7 @@ import {getRayVector,
         getAllRayNames,
         getAllRays,
         hasRay,
+        apexRay,
         // Seam point: functions to test...
 } from "../../foundation/rays/rays.js";
 
@@ -35,6 +36,7 @@ export function run() {
   test_rayCounts();
   test_getRayVector();
   test_hasRay();
+  test_apexRays();
   test_knightDeltas();
   test_rayInvariant();
   test_rayUniqueness();
@@ -61,7 +63,7 @@ function test_rayCounts() {
   assertEqual(Object.keys(duke).length,   8,  "duke count");
   assertEqual(knight.length,              24, "knight count");
 
-  report("rayCounts", "foundation");
+  report("rayCounts", "rays");
   }
 
 function test_getRayVector() {
@@ -86,7 +88,7 @@ function test_getRayVector() {
   // invalid
   assertThrows(() => getRayVector("ZZZ"), "invalid ray");
 
-  report("getRayVector", "foundation");
+  report("getRayVector", "rays");
   }
 
 function test_hasRay() {
@@ -96,7 +98,46 @@ function test_hasRay() {
 
   assertEqual(hasRay("ZZZ"), false, "invalid ray");
 
-  report("hasRay", "foundation");
+  report("hasRay", "rays");
+  }
+
+function test_apexRays() {
+  const bishop = getBishopRays();
+  const tests = [ 
+    { value: "LFU_RFU",   expect: addRays(bishop.LFU,   bishop.RFU),   label: "upward Q13" },  // [ 2, 1, 1]
+    { value: "RFU_right", expect: addRays(bishop.RFU,   bishop.right), label: "upward Q14" },  // [ 1,-1, 2]
+    { value: "right_RBD", expect: addRays(bishop.right, bishop.RBD),   label: "upward Q15" },
+    { value: "RBD_LBD",   expect: addRays(bishop.RBD,   bishop.LBD),   label: "upward Q16" },
+    { value: "LBD_left",  expect: addRays(bishop.LBD,   bishop.left),  label: "upward Q17" },
+    { value: "left_LFU",  expect: addRays(bishop.left,  bishop.LFU),   label: "upward Q18" },
+
+    { value: "LFD_RFD",   expect: addRays(bishop.LFD,   bishop.RFD),   label: "downward Q19" },
+    { value: "RFD_right", expect: addRays(bishop.RFD,   bishop.right), label: "downward Q20" },
+    { value: "right_RBU", expect: addRays(bishop.right, bishop.RBU),   label: "downward Q21" },
+    { value: "RBU_LBU",   expect: addRays(bishop.RBU,   bishop.LBU),   label: "downward Q22" },
+    { value: "LBU_left",  expect: addRays(bishop.LBU,   bishop.left),  label: "downward Q23" },
+    { value: "left_LFD",  expect: addRays(bishop.left,  bishop.LFD),   label: "downward Q24" },
+
+    { value: "LBU_LFU",   expect: addRays(bishop.LBU,   bishop.LFU),   label: "leftward Q25" },
+    { value: "LFU_fore",  expect: addRays(bishop.LFU,   bishop.fore),  label: "leftward Q26" },
+    { value: "fore_RFD",  expect: addRays(bishop.fore,  bishop.RFD),   label: "leftward Q27" },
+    { value: "RFD_RBD",   expect: addRays(bishop.RFD,   bishop.RBD),   label: "leftward Q28" },
+    { value: "RBD_back",  expect: addRays(bishop.RBD,   bishop.back),  label: "leftward Q29" },
+    { value: "back_LBU",  expect: addRays(bishop.back,  bishop.LBU),   label: "leftward Q30" },
+
+    { value: "RBU_RFU",   expect: addRays(bishop.RBU,   bishop.RFU),   label: "Rightward Q31" },
+    { value: "RFU_fore",  expect: addRays(bishop.RFU,   bishop.fore),  label: "Rightward Q32" },
+    { value: "fore_LFD",  expect: addRays(bishop.fore,  bishop.LFD),   label: "Rightward Q33" },
+    { value: "LFD_LBD",   expect: addRays(bishop.LFD,   bishop.LBD),   label: "Rightward Q34" },
+    { value: "LBD_back",  expect: addRays(bishop.LBD,   bishop.back),  label: "Rightward Q35" },
+    { value: "back_RBU",  expect: addRays(bishop.back,  bishop.RBU),   label: "Rightward Q36" },
+  ]
+
+  for(const test of tests) {
+    assertEqual(apexRay(test.value), test.expect, `Invalid bishop apex ray in ${test.label} plane.`);
+  }
+
+  report("apexRays", "rays");
   }
 
 function test_knightDeltas() {
@@ -115,7 +156,7 @@ function test_knightDeltas() {
     assertEqual(d.length, 3, "delta length");
   }
 
-  report("knightDeltas", "foundation");
+  report("knightDeltas", "rays");
   }
 
 function test_rayInvariant() {
@@ -137,7 +178,7 @@ function test_rayInvariant() {
     assertEqual(nonZero, true, `${name} non-zero`);
   }
 
-  report("rayInvariant", "foundation");
+  report("rayInvariant", "rays");
   }
 
 function test_rayUniqueness() {
@@ -150,7 +191,18 @@ function test_rayUniqueness() {
     seen.add(key);
   }
 
-  report("rayUniqueness", "foundation");
+  report("rayUniqueness", "rays");
 }
 // Seam point: more tests...
+
+// --- Helpers ---
+function addRays(ray1, ray2) {
+  let sum = [];
+
+  sum[0] = ray1[0] + ray2[0];
+  sum[1] = ray1[1] + ray2[1];
+  sum[2] = ray1[2] + ray2[2];
+
+  return sum;
+}
 
