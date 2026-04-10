@@ -7,6 +7,7 @@
 */
 
 export const LAYOUT_3DC = {
+  _stats: "deprecated",
   threeDCanvas: {
     size: {},
     loc: {},
