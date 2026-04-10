@@ -1,4 +1,4 @@
-/**
+/** Verbosity from the AI.
  * Module: <filename>
  * Layer: Controller (State Transition Orchestration)
  *
@@ -35,7 +35,7 @@
 
 /* File: controller.js
   Path: ./3dc/controller/controller.js
-  Purpose: desc
+  Purpose: The player's interface to setting up and playing the game.
   Author: Allan Goff
   Date: 4/02/26
   UI: the export functions.
@@ -58,10 +58,10 @@ export function init(playBoard) {
   console.log("controller.init(): 3dc/controller/controller.js");
 
   makeDraggable(document.getElementById("game-window"));
-  makeDraggable(document.getElementById("listing-window"));
-  makeDraggable(document.getElementById("tray-window"));
-  makeDraggable(document.getElementById("gambit-window"));
   makeDraggable(document.getElementById("camera-window"));
+  makeDraggable(document.getElementById("tray-window"));
+  makeDraggable(document.getElementById("move-window"));
+  makeDraggable(document.getElementById("gambit-window"));
   // Seampoint - more 2D canvases...
 
   /* Callback registration control flow:
@@ -112,6 +112,8 @@ function demo() { // Demo calls to model state arch: create a board and freeze a
 // Seampoint: more global functions...
 
 // --- Helpers ---
+let topZ = 100;
+
 function makeDraggable(element) {
   let isDragging = false;
   let offsetX = 0;
@@ -119,15 +121,25 @@ function makeDraggable(element) {
 
   element.addEventListener("pointerdown", (e) => {
     isDragging = true;
+
+    // 🔥 bring to front
+    element.style.zIndex = ++topZ;
+
     const rect = element.getBoundingClientRect();
-    offsetX = e.clientX - rect.left;
-    offsetY = e.clientY - rect.top;
+    const elemX = rect.left + window.scrollX;
+    const elemY = rect.top  + window.scrollY;
+
+    offsetX = e.pageX - elemX;
+    offsetY = e.pageY - elemY;
+
+    element.setPointerCapture(e.pointerId);
   });
 
   window.addEventListener("pointermove", (e) => {
     if (!isDragging) return;
-    element.style.left = `${e.clientX - offsetX}px`;
-    element.style.top  = `${e.clientY - offsetY}px`;
+
+    element.style.left = `${e.pageX - offsetX}px`;
+    element.style.top  = `${e.pageY - offsetY}px`;
   });
 
   window.addEventListener("pointerup", () => {

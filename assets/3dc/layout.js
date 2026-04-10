@@ -34,7 +34,25 @@ export const LAYOUT_3DC = {
       },
     }
   },
-  listingCanvas: {
+  cameraCanvas: {
+    name: "Camera Control",
+    size: {},
+    loc: {},
+    dragable: true,
+    pov: {},
+    zoom: {},
+    jitter: {},
+    levelSep: {},
+  },
+  trayCanvas: {
+    name: "Tray Control",
+    size: {},
+    loc: {},
+    dragable: true,
+    visible: {},
+    gap: {},
+  },
+  moveCanvas: {
     name: "Move Listing",
     size: { w: 200, h: 200},
     loc: { x: 300, y: 0},
@@ -54,14 +72,6 @@ export const LAYOUT_3DC = {
       rows: {},
     }
   },
-  trayCanvas: {
-    name: "Tray Control",
-    size: {},
-    loc: {},
-    dragable: true,
-    visible: {},
-    gap: {},
-  },
   gambitCanvas: {
     name: "Gambit Exploration",
     size: {},
@@ -69,16 +79,6 @@ export const LAYOUT_3DC = {
     dragable: true,
     cube: {},
     direction: {},
-  },
-  cameraCanvas: {
-    name: "Camera Control",
-    size: {},
-    loc: {},
-    dragable: true,
-    pov: {},
-    zoom: {},
-    jitter: {},
-    levelSep: {},
   },
 }
 

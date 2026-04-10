@@ -50,8 +50,8 @@ import * as demos from "./demos.js";
 // --- Demo for development ---
 function demo(playBoard) {
   // Just testing the callback functions, actual use is event driven.
-  run.callback.game("game buttons");
-  run.callback.camera("camera buttons");
+  run.callback.game("Undo");
+  // run.callback.camera("aCameraButton");
 
   if (!playBoard) return false;
 
@@ -78,11 +78,11 @@ export function init(playBoard) {
 // --- Helpers ---
 // Labels the 2D control canvases.
 function drawCanvasTitles(layout = LAYOUT_3DC) {
-  drawCanvasTitle("3dc-game",    "gameCanvas");
-  drawCanvasTitle("3dc-camera",  "cameraCanvas");
-  drawCanvasTitle("3dc-tray",    "trayCanvas");
-  drawCanvasTitle("3dc-listing", "listingCanvas");
-  drawCanvasTitle("3dc-gambit",  "gambitCanvas");
+  drawCanvasTitle("3dc-game",   "gameCanvas");
+  drawCanvasTitle("3dc-camera", "cameraCanvas");
+  drawCanvasTitle("3dc-tray",   "trayCanvas");
+  drawCanvasTitle("3dc-move",   "moveCanvas");
+  drawCanvasTitle("3dc-gambit", "gambitCanvas");
   // Seampoint - more 2D canvases...
   }
 
@@ -117,7 +117,7 @@ function drawLayoutBounds(layout = LAYOUT_3DC) {
       }
     else if(layout_key === "trayCanvas") {
       }
-    else if(layout_key === "listingCanvas") {
+    else if(layout_key === "moveCanvas") {
       }
     else if(layout_key === "gambitCanvas") {
       }
