@@ -11,8 +11,6 @@
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
-import { LAYOUT_3DC } from "../layout.js";
-
 import {vts2xyz,
         xyz2vts,
         vts2pixels,

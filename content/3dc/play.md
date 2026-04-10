@@ -34,11 +34,11 @@ layout: "play"
     left: 0;
   }
 
-  #game-window    { top: 180px; left:  60px; }  /* This places each draggable canvas onto the web page. */
-  #camera-window  { top: 240px; left:  90px; }
-  #tray-window    { top: 320px; left: 120px; }
-  #listing-window { top: 400px; left: 150px; }
-  #gambit-window  { top: 480px; left: 180px; }
+  #game-window   { top: 180px; left:  60px; }  /* This places each draggable canvas onto the web page. */
+  #camera-window { top: 240px; left:  90px; }
+  #tray-window   { top: 320px; left: 120px; }
+  #move-window   { top: 400px; left: 150px; }
+  #gambit-window { top: 480px; left: 180px; }
   /* Seampoint - more 2D canvases... */
 </style>
 
@@ -46,11 +46,11 @@ layout: "play"
   <canvas id="3dc-board" width="1400" height="1800"></canvas>  <!-- 3D -->
 
   <!-- 2D floating windows: allows DOM interface to drag them around. -->
-  <div class="canvas-window" id="game-window">    <canvas id="3dc-game"    width="150" height="300"></canvas> </div>
-  <div class="canvas-window" id="camera-window">  <canvas id="3dc-camera"  width="150" height="300"></canvas> </div>
-  <div class="canvas-window" id="tray-window">    <canvas id="3dc-tray"    width="150" height="300"></canvas> </div>
-  <div class="canvas-window" id="listing-window"> <canvas id="3dc-listing" width="150" height="300"></canvas> </div>
-  <div class="canvas-window" id="gambit-window">  <canvas id="3dc-gambit"  width="150" height="300"></canvas> </div>
+  <div class="canvas-window" id="game-window">   <canvas id="3dc-game"   width="150" height="300"></canvas> </div>
+  <div class="canvas-window" id="camera-window"> <canvas id="3dc-camera" width="150" height="300"></canvas> </div>
+  <div class="canvas-window" id="tray-window">   <canvas id="3dc-tray"   width="150" height="300"></canvas> </div>
+  <div class="canvas-window" id="move-window">   <canvas id="3dc-move"   width="150" height="300"></canvas> </div>
+  <div class="canvas-window" id="gambit-window"> <canvas id="3dc-gambit" width="150" height="300"></canvas> </div>
   <!-- Seampoint - more 2D canvases... -->
 
 

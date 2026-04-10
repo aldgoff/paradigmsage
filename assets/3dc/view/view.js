@@ -37,11 +37,17 @@
 */
 
 // --- Load JSON ---
+import viewData from "./view.json" assert { type: "json" };
+  const viewModule = viewData.view_module;
+  const threeDCanvas = viewModule.threeDCanvas;   // 3D canvas, fixed, background.
+  const gameCanvas   = viewModule.gameCanvas;     // 2D canvi, floating, draggable.
+  const cameraCanvas = viewModule.cameraCanvas;
+  const trayCanvas   = viewModule.trayCanvas;
+  const moveCanvas   = viewModule.moveCanvas;
+  const gambitCanvas = viewModule.gambitCanvas;
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
-import { LAYOUT_3DC } from "../layout.js";
-
 import * as run from "./registerHandlers.js";
 import * as renders from "./render/renders.js";
 import * as demos from "./demos.js";
@@ -50,8 +56,8 @@ import * as demos from "./demos.js";
 // --- Demo for development ---
 function demo(playBoard) {
   // Just testing the callback functions, actual use is event driven.
-  run.callback.game("game buttons");
-  run.callback.camera("camera buttons");
+  run.callback.game("Undo");
+  // run.callback.camera("aCameraButton");
 
   if (!playBoard) return false;
 
@@ -77,19 +83,19 @@ export function init(playBoard) {
 
 // --- Helpers ---
 // Labels the 2D control canvases.
-function drawCanvasTitles(layout = LAYOUT_3DC) {
-  drawCanvasTitle("3dc-game",    "gameCanvas");
-  drawCanvasTitle("3dc-camera",  "cameraCanvas");
-  drawCanvasTitle("3dc-tray",    "trayCanvas");
-  drawCanvasTitle("3dc-listing", "listingCanvas");
-  drawCanvasTitle("3dc-gambit",  "gambitCanvas");
+function drawCanvasTitles() {
+  drawCanvasTitle("3dc-game",   "gameCanvas");
+  drawCanvasTitle("3dc-camera", "cameraCanvas");
+  drawCanvasTitle("3dc-tray",   "trayCanvas");
+  drawCanvasTitle("3dc-move",   "moveCanvas");
+  drawCanvasTitle("3dc-gambit", "gambitCanvas");
   // Seampoint - more 2D canvases...
   }
 
 function drawCanvasTitle(id_3dc, layoutLabel) {
   const canvas = document.getElementById(id_3dc);
   const ctx    = canvas.getContext("2d");
-  const element = LAYOUT_3DC[layoutLabel];
+  const element = viewModule[layoutLabel];
 
   ctx.save();
     ctx.fillStyle = "#888";
@@ -98,7 +104,7 @@ function drawCanvasTitle(id_3dc, layoutLabel) {
   ctx.restore();
   }
 
-function drawLayoutBounds(layout = LAYOUT_3DC) {
+function drawLayoutBounds(layout = viewModule) {
   for (const layout_key in layout) { // Outline each graphical element in layout.
     if(     layout_key === "gameCanvas") {
       const canvas = document.getElementById("3dc-game");
@@ -117,7 +123,7 @@ function drawLayoutBounds(layout = LAYOUT_3DC) {
       }
     else if(layout_key === "trayCanvas") {
       }
-    else if(layout_key === "listingCanvas") {
+    else if(layout_key === "moveCanvas") {
       }
     else if(layout_key === "gambitCanvas") {
       }
