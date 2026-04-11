@@ -61,11 +61,11 @@ export function init(playBoard) {
 
   makeDraggable(document.getElementById("game-window"));      // Canvas panels - deprecating...
   makeDraggable(document.getElementById("camera-window"));
-  makeDraggable(document.getElementById("tray-window"));
   makeDraggable(document.getElementById("move-window"));
 
-  makeDraggable(document.getElementById("gambit-window"));  // DOM panels.
   makeDraggable(document.getElementById("setup-window"));
+  makeDraggable(document.getElementById("tray-window"));
+  makeDraggable(document.getElementById("gambit-window"));  // DOM panels.
   // Seampoint - more 2D panels/canvi...
 
   /* Callback registration control flow:

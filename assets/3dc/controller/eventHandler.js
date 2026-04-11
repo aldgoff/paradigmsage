@@ -12,11 +12,11 @@ import * as register from "../view/registerHandlers.js";
 export function callbacks() {
   register.gameControlDispatcher(gameButtonDispatch);
   register.cameraControlDispatcher(cameraButtonDispatch);
-  register.trayControlDispatcher(trayButtonDispatch);
   register.moveControlDispatcher(moveButtonDispatch);
 
+  register.setupControlDispatcher(setupPanelDispatch);
+  register.trayControlDispatcher(trayPanelDispatch);
   register.gambitControlDispatcher(gambitButtonDispatch);
-  register.setupControlDispatcher(setupButtonDispatch);
   // Seampoint - register another dispatcher.
 }
 
@@ -31,7 +31,7 @@ function buttonDispatch(button) { // Template, not used.
   }
 }
 
-function gameButtonDispatch(button) {
+function gameButtonDispatch(button) {     // Deprecating...
   console.log(`gameButtonDispatch() ${button}`);
 
   switch (button) {
@@ -50,13 +50,6 @@ function cameraButtonDispatch(button) {
   }
   }
 
-function trayButtonDispatch(button) {
-  console.log(`trayButtonDispatch() ${button}`);
-
-  switch (button) {
-    default: throw new Error(`Unknown tray button ${button}.`);  break;
-  }
-  }
 
 function moveButtonDispatch(button) {
   console.log(`moveButtonDispatch() ${button}`);
@@ -66,36 +59,61 @@ function moveButtonDispatch(button) {
   }
 }
 
-function gambitButtonDispatch(button) {   // Gambit panel.
-  // console.log(`gambitButtonDispatch() ${button}`);
-  switch (button) {
+function setupPanelDispatch(payload) {    // Dispatch payload from panel to dispatch functions.
+  const { action, boardSize } = payload;
+  switch (action) {
+    case "makeBoard": handleMakeBoard(boardSize); break;
+    default: throw new Error(`Unknown setup action ${action}.`);
+  }
+  }
+
+function trayPanelDispatch(payload) {
+  const { action, trayType } = payload;
+  switch (action) {
+    case "makeTrays": handleMakeTrays(trayType); break;
+    case "cycleGap": handleCycleGap(); break;
+    default: throw new Error(`Unknown tray action ${action}.`);
+  }
+  }
+
+function gambitButtonDispatch(payload) {
+  const { action } = payload;
+  switch (action) {
     case "freeze": handleFreeze(); break;
     case "prev": handlePrev(); break;
     case "next": handleNext(); break;
     case "delete": handleDelete(); break;
     case "deselect": handleDeselect(); break;
-    default: throw new Error(`Unknown gambit button ${button}.`);  break;
-  }
-}
-
-function setupButtonDispatch(button) {    // Setup panel.
-  // console.log(`setupButtonDispatch() ${button}`);
-  switch (button) {
-    case "makeBoard": handleMakeBoard(); break;
-    case "makeTrays": handleMakeTrays(); break;
-    default: throw new Error(`Unknown setup button ${button}.`);  break;
+    default: throw new Error(`Unknown gambit action ${action}.`);  break;
   }
 }
 // Seampoint - more dispatchers...
 
 // Dispatch functions.
-function handleRerun() {}     // TODO: switch from canvi to panels.
+function handleRerun() {}     // TODO: deprecating, switch from canvi to panels.
 function handleUndo() {
   console.log("   simulated undo button.");
   }
 function handleRedo() {}
 
-function handleFreeze() {     // Gambit handlers.
+function handleMakeBoard(boardSize) { // Setup handlers.
+  console.log("Make Board:", boardSize);
+  // TODO: change state.
+}
+
+function handleMakeTrays(trayType) {  // Tray handlers.
+  // console.log("control_layer.eventHandler.setup: Make Trays.");
+  console.log("Make Tray:", trayType);
+
+  // TODO: change state.
+  }
+
+function handleCycleGap() {
+  console.log("control_layer.eventHandler.setup: Cycle Gap.");
+  // TODO: change state.
+}
+
+function handleFreeze() {             // Gambit handlers.
   console.log("control_layer.eventHandler.gambit: Freeze.");
   // TODO: change state.
   }
@@ -117,16 +135,6 @@ function handleDelete() {
 
 function handleDeselect() {
   console.log("control_layer.eventHandler.gambit: Deselect.");
-  // TODO: change state.
-}
-
-function handleMakeBoard() {     // Setup handlers.
-  console.log("control_layer.eventHandler.setup: Make Board.");
-  // TODO: change state.
-  }
-
-function handleMakeTrays() {
-  console.log("control_layer.eventHandler.setup: Make Trays.");
   // TODO: change state.
 }
 // Seampoint - more handle functions, to be grouped by panel.

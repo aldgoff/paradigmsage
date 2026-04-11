@@ -39,7 +39,8 @@
 
  ### 3.2 controller.js
     +----------------------------------------------------------+
-    | makeDraggable(document.getElementById("gambit-window")); |
+    | makeDraggable(document.getElementById("setup-window"));  |
+    | makeDraggable(document.getElementById("tray-window"));   |
     | ...                                                      |
     | register.callbacks(); Register each panel w/ view layer  |
     |                                                          |
@@ -52,18 +53,26 @@
  ### 3.3 eventHandler.js
     +-----------------------------------------------------------+
     | export function callbacks() {                             |
+    |   register.setupControlDispatcher(setupPanelDispatch);    |
     |   register.gambitControlDispatcher(gambitButtonDispatch); |
     | ...                                                       |
     |                                                           |
-    | function gambitButtonDispatch(button) {                   |
-    | ...                                                       |
-    |                                                           |
-    | switch (button) {...}                                     |
-    |   case "undo": handleUndo(); break;                       |
-    |   case "redo": handleRedo(); break;                       |
-    |   ...                                                     |
-    |   case "rerun": handleRun(); break;                       |
+    | function setupPanelDispatch(payload) {                    |
+    |   const { action, boardSize } = payload;                  |
+    |   switch (action)                                         |
+    |     case "makeBoard": handleMakeBoard(boardSize); break;  |
+    |   }                                                       |
     | }                                                         |
+    | function gambitButtonDispatch(button) {                   |
+    |   const { action } = payload;                             |
+    |   switch (action)                                         |
+    |     case "undo": handleUndo(); break;                     |
+    |     case "redo": handleRedo(); break;                     |
+    |     ...                                                   |
+    |     case "rerun": handleRun(); break;                     |
+    |   }                                                       |
+    | }                                                         |
+    | ...                                                       |
     +-----------------------------------------------------------+
 
  ### 3.4 registerHandlers.js

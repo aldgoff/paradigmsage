@@ -64,11 +64,11 @@ layout: "play"
   /* Locate the 2D floating windows. */
     #game-window   { top: 180px; left:  60px; }  /* This places each draggable canvas onto the web page. */
     #camera-window { top: 240px; left:  90px; }
-    #tray-window   { top: 320px; left: 120px; }
     #move-window   { top: 400px; left: 150px; }
 
-    #gambit-window { top: 480px; left: 180px; }
     #setup-window { top: 180px; left: 480px; }
+    #tray-window   { top: 320px; left: 120px; }
+    #gambit-window { top: 480px; left: 180px; }
     /* Seampoint - more 2D canvases... */
 </style>
 
@@ -78,7 +78,6 @@ layout: "play"
   <!-- Size the 2D floating windows: allows DOM interface to drag them around. -->
   <div class="canvas-window" id="game-window">   <canvas id="3dc-game"   width="150" height="300"></canvas> </div>
   <div class="canvas-window" id="camera-window"> <canvas id="3dc-camera" width="150" height="300"></canvas> </div>
-  <div class="canvas-window" id="tray-window">   <canvas id="3dc-tray"   width="150" height="300"></canvas> </div>
   <div class="canvas-window" id="move-window">   <canvas id="3dc-move"   width="150" height="300"></canvas> </div>
 
 <div class="panel" id="setup-window">
@@ -86,8 +85,29 @@ layout: "play"
 
   <div class="section">
     <button data-action="makeBoard">Make Board</button>
-    <button data-action="makeTrays">Make Trays</button>
   </div>
+
+  <div class="section">
+   <label> <input type="radio" name="board-size" value="8x8x8" checked> 8×8×8 </label><br>
+   <label> <input type="radio" name="board-size" value="10x8x8"> 10×8×8 </label><br>
+   <label> <input type="radio" name="board-size" value="10x10x10"> 10×10×10 </label>
+  </div>  
+
+  </div>
+
+<div class="panel" id="tray-window">
+  <div class="panel-title">Tray Control</div>
+
+  <div class="section">
+    <button data-action="makeTrays">Make Trays</button>
+    <button data-action="cycleGap" disabled>Cycle Gap</button>
+  </div>
+
+  <div class="section">
+   <label> <input type="radio" name="tray-type" value="real" checked> Real </label><br>
+   <label> <input type="radio" name="tray-type" value="factory"> Factory </label><br>
+  </div>  
+
   </div>
 
 <div class="panel" id="gambit-window">

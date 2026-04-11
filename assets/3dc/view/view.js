@@ -78,8 +78,9 @@ export function init(playBoard) {
   const context = demo(playBoard);
 
   // Listeners:
-  wirePanel("gambit-window", "gambit");
-  wirePanel("setup-window", "setup");
+  wirePanel("setup-window",  "setup",  buildSetupPayload);
+  wirePanel("tray-window",   "tray",   buildTrayPayload);  // btn.disabled = false;  // When tray state changes, the view layer should enable this.
+  wirePanel("gambit-window", "gambit", buildGambitPayload);
   // Seampoint - more listeners...
 
   return context;
@@ -91,10 +92,11 @@ export function init(playBoard) {
 function drawCanvasTitles() {
   drawCanvasTitle("3dc-game",   "gameCanvas");
   drawCanvasTitle("3dc-camera", "cameraCanvas");
-  drawCanvasTitle("3dc-tray",   "trayCanvas");
   drawCanvasTitle("3dc-move",   "moveCanvas");
+  // drawCanvasTitle("3dc-setup",  "setupCanvas");
+  // drawCanvasTitle("3dc-tray",   "trayCanvas");
   // drawCanvasTitle("3dc-gambit", "gambitCanvas");
-  // Seampoint - more 2D canvases...
+  // Seampoint - no more 2D canvases...
   }
 
 function drawCanvasTitle(id_3dc, layoutLabel) {
@@ -147,7 +149,7 @@ function ctxDefaults(ctx) {
   ctx.font = "12px sans-serif";
 }
 
-function wirePanel(panelId, callbackName) {
+function wirePanel(panelId, callbackName, buildPayload) {
   const panel = document.getElementById(panelId);
   if (!panel) return;
 
@@ -159,12 +161,35 @@ function wirePanel(panelId, callbackName) {
     if (!action) return;
 
     const cb = run.callback[callbackName];
-    if (!cb) {
-      console.warn(`No callback registered for ${callbackName}`);
-      return;
-    }
-    cb(action);    
+    if (!cb) return;
+
+    const payload = buildPayload(panel, action);
+
+    cb(payload);
   });
 }
+
+function buildSetupPayload(panel, action) {
+  const selected = panel.querySelector('input[name="board-size"]:checked');
+
+  return {
+    action,
+    boardSize: selected?.value
+  };
+  }
+
+function buildTrayPayload(panel, action) {
+  const selected = panel.querySelector('input[name="tray-type"]:checked');
+
+  return {
+    action,
+    trayType: selected?.value
+  };
+  }
+
+function buildGambitPayload(panel, action) {
+  return { action };
+}
+
 // Seampoint: more local functions...
 
