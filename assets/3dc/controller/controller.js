@@ -59,11 +59,13 @@ export function init(playBoard) {
   console.log("controller.init(): 3dc/controller/controller.js");
   example.demoRegistration();
 
-  makeDraggable(document.getElementById("game-window"));
+  makeDraggable(document.getElementById("game-window"));      // Canvas panels - deprecating...
   makeDraggable(document.getElementById("camera-window"));
   makeDraggable(document.getElementById("tray-window"));
   makeDraggable(document.getElementById("move-window"));
-  makeDraggable(document.getElementById("gambit-window"));  // DOM panel.
+
+  makeDraggable(document.getElementById("gambit-window"));  // DOM panels.
+  makeDraggable(document.getElementById("setup-window"));
   // Seampoint - more 2D panels/canvi...
 
   /* Callback registration control flow:

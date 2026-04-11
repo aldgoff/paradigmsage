@@ -14,7 +14,9 @@ export function callbacks() {
   register.cameraControlDispatcher(cameraButtonDispatch);
   register.trayControlDispatcher(trayButtonDispatch);
   register.moveControlDispatcher(moveButtonDispatch);
+
   register.gambitControlDispatcher(gambitButtonDispatch);
+  register.setupControlDispatcher(setupButtonDispatch);
   // Seampoint - register another dispatcher.
 }
 
@@ -62,11 +64,10 @@ function moveButtonDispatch(button) {
   switch (button) {
     default: throw new Error(`Unknown move button ${button}.`);  break;
   }
-  }
+}
 
-function gambitButtonDispatch(button) {
+function gambitButtonDispatch(button) {   // Gambit panel.
   // console.log(`gambitButtonDispatch() ${button}`);
-
   switch (button) {
     case "freeze": handleFreeze(); break;
     case "prev": handlePrev(); break;
@@ -74,6 +75,15 @@ function gambitButtonDispatch(button) {
     case "delete": handleDelete(); break;
     case "deselect": handleDeselect(); break;
     default: throw new Error(`Unknown gambit button ${button}.`);  break;
+  }
+}
+
+function setupButtonDispatch(button) {    // Setup panel.
+  // console.log(`setupButtonDispatch() ${button}`);
+  switch (button) {
+    case "makeBoard": handleMakeBoard(); break;
+    case "makeTrays": handleMakeTrays(); break;
+    default: throw new Error(`Unknown setup button ${button}.`);  break;
   }
 }
 // Seampoint - more dispatchers...
@@ -87,22 +97,37 @@ function handleRedo() {}
 
 function handleFreeze() {     // Gambit handlers.
   console.log("control_layer.eventHandler.gambit: Freeze.");
+  // TODO: change state.
   }
 
 function handlePrev() {
   console.log("control_layer.eventHandler.gambit: Prev.");
+  // TODO: change state.
   }
 
 function handleNext() {
   console.log("control_layer.eventHandler.gambit: Next.");
+  // TODO: change state.
   }
 
 function handleDelete() {
   console.log("control_layer.eventHandler.gambit: Delete.");
+  // TODO: change state.
   }
 
 function handleDeselect() {
   console.log("control_layer.eventHandler.gambit: Deselect.");
+  // TODO: change state.
+}
+
+function handleMakeBoard() {     // Setup handlers.
+  console.log("control_layer.eventHandler.setup: Make Board.");
+  // TODO: change state.
+  }
+
+function handleMakeTrays() {
+  console.log("control_layer.eventHandler.setup: Make Trays.");
+  // TODO: change state.
 }
 // Seampoint - more handle functions, to be grouped by panel.
 

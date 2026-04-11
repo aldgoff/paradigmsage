@@ -78,20 +78,8 @@ export function init(playBoard) {
   const context = demo(playBoard);
 
   // Listeners:
-  const gambitPanel = document.getElementById("gambit-window");
-
-  if (gambitPanel) {
-    gambitPanel.addEventListener("click", (e) => {
-
-      const btn = e.target.closest("button");
-      if (!btn) return;
-
-      const action = btn.dataset.action;
-      if (!action) return;
-
-      run.callback.gambit(action);
-    });
-  }
+  wirePanel("gambit-window", "gambit");
+  wirePanel("setup-window", "setup");
   // Seampoint - more listeners...
 
   return context;
@@ -157,6 +145,26 @@ function ctxDefaults(ctx) {
   ctx.lineWidth = 1;
   ctx.fillStyle = "#888";
   ctx.font = "12px sans-serif";
+}
+
+function wirePanel(panelId, callbackName) {
+  const panel = document.getElementById(panelId);
+  if (!panel) return;
+
+  panel.addEventListener("click", (e) => {
+    const btn = e.target.closest("button");
+    if (!btn) return;
+
+    const action = btn.dataset.action;
+    if (!action) return;
+
+    const cb = run.callback[callbackName];
+    if (!cb) {
+      console.warn(`No callback registered for ${callbackName}`);
+      return;
+    }
+    cb(action);    
+  });
 }
 // Seampoint: more local functions...
 

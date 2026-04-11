@@ -66,7 +66,9 @@ layout: "play"
     #camera-window { top: 240px; left:  90px; }
     #tray-window   { top: 320px; left: 120px; }
     #move-window   { top: 400px; left: 150px; }
+
     #gambit-window { top: 480px; left: 180px; }
+    #setup-window { top: 180px; left: 480px; }
     /* Seampoint - more 2D canvases... */
 </style>
 
@@ -78,6 +80,15 @@ layout: "play"
   <div class="canvas-window" id="camera-window"> <canvas id="3dc-camera" width="150" height="300"></canvas> </div>
   <div class="canvas-window" id="tray-window">   <canvas id="3dc-tray"   width="150" height="300"></canvas> </div>
   <div class="canvas-window" id="move-window">   <canvas id="3dc-move"   width="150" height="300"></canvas> </div>
+
+<div class="panel" id="setup-window">
+  <div class="panel-title">Setup Control</div>
+
+  <div class="section">
+    <button data-action="makeBoard">Make Board</button>
+    <button data-action="makeTrays">Make Trays</button>
+  </div>
+  </div>
 
 <div class="panel" id="gambit-window">
   <div class="panel-title">Gambit Control</div>
