@@ -45,4 +45,6 @@ title: "Dev"
   - 4/7/26 - Bishop rays for slip & slide, control/view callback arch, and decorator POC.
   - 4/8/26 - Demo decorators, click toggle on src/dst, define basic decorators.
   - 4/9/26 - Port render code from initThree.js to specialized modules.
+  - 4/10/26 - Fix canvi scroll bug, add a qt3 research page, callback registration example, new panel arch via DOM.
+  
 
