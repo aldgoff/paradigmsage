@@ -77,6 +77,23 @@ export function init(playBoard) {
 
   const context = demo(playBoard);
 
+  // Listeners:
+  const gambitPanel = document.getElementById("gambit-window");
+
+  if (gambitPanel) {
+    gambitPanel.addEventListener("click", (e) => {
+
+      const btn = e.target.closest("button");
+      if (!btn) return;
+
+      const action = btn.dataset.action;
+      if (!action) return;
+
+      run.callback.gambit(action);
+    });
+  }
+  // Seampoint - more listeners...
+
   return context;
 }
 // Seampoint: more global functions...
@@ -88,7 +105,7 @@ function drawCanvasTitles() {
   drawCanvasTitle("3dc-camera", "cameraCanvas");
   drawCanvasTitle("3dc-tray",   "trayCanvas");
   drawCanvasTitle("3dc-move",   "moveCanvas");
-  drawCanvasTitle("3dc-gambit", "gambitCanvas");
+  // drawCanvasTitle("3dc-gambit", "gambitCanvas");
   // Seampoint - more 2D canvases...
   }
 

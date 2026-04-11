@@ -10,4 +10,5 @@ title: "Clues"
 
 ## Clues
   4/8/26 - If the 2D board is a square of squares (8x8), then the 3D board should be a...?
+  4/11/26 - A square has 8 neighbors, 4 connected by side, 4 connected by corners.
 

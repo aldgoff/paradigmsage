@@ -65,19 +65,44 @@ function moveButtonDispatch(button) {
   }
 
 function gambitButtonDispatch(button) {
-  console.log(`gambitButtonDispatch() ${button}`);
+  // console.log(`gambitButtonDispatch() ${button}`);
 
   switch (button) {
+    case "freeze": handleFreeze(); break;
+    case "prev": handlePrev(); break;
+    case "next": handleNext(); break;
+    case "delete": handleDelete(); break;
+    case "deselect": handleDeselect(); break;
     default: throw new Error(`Unknown gambit button ${button}.`);  break;
   }
 }
 // Seampoint - more dispatchers...
 
 // Dispatch functions.
-function handleRerun() {}
+function handleRerun() {}     // TODO: switch from canvi to panels.
 function handleUndo() {
   console.log("   simulated undo button.");
-}
+  }
 function handleRedo() {}
-// Seampoint - more handle functions, to be grouped by canvi.
+
+function handleFreeze() {     // Gambit handlers.
+  console.log("control_layer.eventHandler.gambit: Freeze.");
+  }
+
+function handlePrev() {
+  console.log("control_layer.eventHandler.gambit: Prev.");
+  }
+
+function handleNext() {
+  console.log("control_layer.eventHandler.gambit: Next.");
+  }
+
+function handleDelete() {
+  console.log("control_layer.eventHandler.gambit: Delete.");
+  }
+
+function handleDeselect() {
+  console.log("control_layer.eventHandler.gambit: Deselect.");
+}
+// Seampoint - more handle functions, to be grouped by panel.
 

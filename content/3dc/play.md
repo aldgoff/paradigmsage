@@ -34,14 +34,40 @@ layout: "play"
     left: 0;
   }
 
+  .panel {
+    position: absolute;
+    border: 1px solid #888;
+    background: rgba(255,255,255,0.95);
+    padding: 8px;
+    width: 180px;
+    font-size: 12px;
+    z-index: 20;
+    cursor: move;
+  }
+
+  .panel-title {
+    font-weight: bold;
+    margin-bottom: 6px;
+  }
+
+  .section {
+    margin-bottom: 8px;
+  }
+
+  .scroll-box {
+    height: 80px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    padding: 4px;
+  }
 
   /* Locate the 2D floating windows. */
-  #game-window   { top: 180px; left:  60px; }  /* This places each draggable canvas onto the web page. */
-  #camera-window { top: 240px; left:  90px; }
-  #tray-window   { top: 320px; left: 120px; }
-  #move-window   { top: 400px; left: 150px; }
-  #gambit-window { top: 480px; left: 180px; }
-  /* Seampoint - more 2D canvases... */
+    #game-window   { top: 180px; left:  60px; }  /* This places each draggable canvas onto the web page. */
+    #camera-window { top: 240px; left:  90px; }
+    #tray-window   { top: 320px; left: 120px; }
+    #move-window   { top: 400px; left: 150px; }
+    #gambit-window { top: 480px; left: 180px; }
+    /* Seampoint - more 2D canvases... */
 </style>
 
 <!-- The 3DC Game... -->
@@ -52,7 +78,23 @@ layout: "play"
   <div class="canvas-window" id="camera-window"> <canvas id="3dc-camera" width="150" height="300"></canvas> </div>
   <div class="canvas-window" id="tray-window">   <canvas id="3dc-tray"   width="150" height="300"></canvas> </div>
   <div class="canvas-window" id="move-window">   <canvas id="3dc-move"   width="150" height="300"></canvas> </div>
-  <div class="canvas-window" id="gambit-window"> <canvas id="3dc-gambit" width="150" height="300"></canvas> </div>
+
+<div class="panel" id="gambit-window">
+  <div class="panel-title">Gambit Control</div>
+
+  <div class="section">
+    <button data-action="freeze">Freeze</button>
+    <button data-action="prev">Prev</button>
+    <button data-action="next">Next</button>
+    <button data-action="delete">Delete</button>
+    <button data-action="deselect">Deselect</button>
+  </div>
+
+  <div class="section scroll-box" id="gambit-list">
+    <!-- advsq entries go here -->
+  </div>
+  </div>
+  <!-- <div class="canvas-window" id="gambit-window"> <canvas id="3dc-gambit" width="150" height="300"></canvas> </div> -->
   <!-- Seampoint - more 2D canvases... -->
 
 

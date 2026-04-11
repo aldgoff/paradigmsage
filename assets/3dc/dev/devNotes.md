@@ -14,5 +14,17 @@
   */
   ```
 
-## TBD
+## AI Feedback on DOM Panels
+  1. ✅ Drag Behavior
+  2. ✅ Dynamic z-index
+  3. ✅ Listeners in makeDraggable, move out.
+  4. ✅ Pointer capture
+  5. ✅ View wiring
+  6. ✅ CSV indentation
+  7. ✅ Arch checkpoint
+
+## Near Term Todos:
+  1. Add next panel or two. 
+  2. Move panel state change routines into their own files, (controller/panels/gambit.js, move.js, setup.js, etc.). 
+  3. Then finish the panels.
 
