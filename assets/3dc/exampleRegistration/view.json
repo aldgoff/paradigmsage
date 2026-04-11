@@ -1,0 +1,26 @@
+{
+  "panel_module": {
+    "gamePanel": {
+      "name": "Game Control",
+      "size": { "w": 150, "h": 300 },
+      "loc": { "x": 0, "y": 0 },
+      "dragable": true,
+      "controls": {
+        "buttons": [
+          ],
+        "checkBoxes": {
+          "autoloadFromTray": false
+          },
+        "radioBoxes": {
+          "board": ["8x8x8", "10x8x8", "10x10x10"]
+          },
+        "textFields": {
+          "status": {},
+          "erros": {}
+        }
+      }
+      },
+    "_Seampoint:": "more panels..."
+  }
+}
+

@@ -51,11 +51,13 @@ import * as view from "../view/view.js";
 import * as model from "../model/model.js";
 import * as state from "../model/state/state.js";
 import * as register from "../controller/eventHandler.js";
+import * as example from "../exampleRegistration/control.js";
 // Seampoint: more imports...
 
 // --- UI ---
 export function init(playBoard) {
   console.log("controller.init(): 3dc/controller/controller.js");
+  example.demoRegistration();
 
   makeDraggable(document.getElementById("game-window"));
   makeDraggable(document.getElementById("camera-window"));
