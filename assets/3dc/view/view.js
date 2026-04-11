@@ -56,7 +56,7 @@ import * as demos from "./demos.js";
 // --- Demo for development ---
 function demo(playBoard) {
   // Just testing the callback functions, actual use is event driven.
-  run.callback.game("Undo");
+  // run.callback.game("Undo");
   // run.callback.camera("aCameraButton");
 
   if (!playBoard) return false;
@@ -80,6 +80,7 @@ export function init(playBoard) {
   // Listeners:
   wirePanel("setup-window",  "setup",  buildSetupPayload);
   wirePanel("tray-window",   "tray",   buildTrayPayload);  // btn.disabled = false;  // When tray state changes, the view layer should enable this.
+  wirePanel("game-window",   "game",   buildGamePayload);
   wirePanel("gambit-window", "gambit", buildGambitPayload);
   // Seampoint - more listeners...
 
@@ -90,16 +91,16 @@ export function init(playBoard) {
 // --- Helpers ---
 // Labels the 2D control canvases.
 function drawCanvasTitles() {
-  drawCanvasTitle("3dc-game",   "gameCanvas");
   drawCanvasTitle("3dc-camera", "cameraCanvas");
   drawCanvasTitle("3dc-move",   "moveCanvas");
   // drawCanvasTitle("3dc-setup",  "setupCanvas");
   // drawCanvasTitle("3dc-tray",   "trayCanvas");
+  // drawCanvasTitle("3dc-game",   "gameCanvas");
   // drawCanvasTitle("3dc-gambit", "gambitCanvas");
   // Seampoint - no more 2D canvases...
   }
 
-function drawCanvasTitle(id_3dc, layoutLabel) {
+function drawCanvasTitle(id_3dc, layoutLabel) { // Deprecating...
   const canvas = document.getElementById(id_3dc);
   const ctx    = canvas.getContext("2d");
   const element = viewModule[layoutLabel];
@@ -111,20 +112,20 @@ function drawCanvasTitle(id_3dc, layoutLabel) {
   ctx.restore();
   }
 
-function drawLayoutBounds(layout = viewModule) {
+function drawLayoutBounds(layout = viewModule) { // Deprecating...
   for (const layout_key in layout) { // Outline each graphical element in layout.
     if(     layout_key === "gameCanvas") {
-      const canvas = document.getElementById("3dc-game");
-      const ctx = canvas.getContext("2d");
-      const element = layout[layout_key];
+      // const canvas = document.getElementById("3dc-game");
+      // const ctx = canvas.getContext("2d");
+      // const element = layout[layout_key];
 
-      ctx.save();
-        ctxDefaults(ctx);
-        for(const button of element.controls.buttons) {
-          ctx.strokeRect(button.x, button.y, button.w, button.h);
-          ctx.fillText(button.label, button.x + 4, button.y + 14);
-        }
-      ctx.restore();
+      // ctx.save();
+      //   ctxDefaults(ctx);
+      //   for(const button of element.controls.buttons) {
+      //     ctx.strokeRect(button.x, button.y, button.w, button.h);
+      //     ctx.fillText(button.label, button.x + 4, button.y + 14);
+      //   }
+      // ctx.restore();
       }
     else if(layout_key === "cameraCanvas") {
       }
@@ -141,7 +142,7 @@ function drawLayoutBounds(layout = viewModule) {
   }
   }
 
-function ctxDefaults(ctx) {
+function ctxDefaults(ctx) { // Deprecating...
   ctx.setLineDash([6, 4]);
   ctx.strokeStyle = "#888";
   ctx.lineWidth = 1;
@@ -185,6 +186,10 @@ function buildTrayPayload(panel, action) {
     action,
     trayType: selected?.value
   };
+  }
+
+function buildGamePayload(panel, action) {
+  return { action };
   }
 
 function buildGambitPayload(panel, action) {
