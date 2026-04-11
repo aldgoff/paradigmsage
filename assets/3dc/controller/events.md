@@ -13,6 +13,7 @@
  ### 2.1 Jargon
   - DOM
   - Panels
+  - Payloads
   - Callbacks
   - Registration
   - Listeners
@@ -89,11 +90,12 @@
     +-----------------------------------------------------------------------+
 
  ### 3.5 view.js
-    +---------------------------------------+
-    | wirePanel("gambit-window", "gambit"); |
-    | wirePanel("setup-window", "setup");   |
-    | ...                                   |
-    +---------------------------------------+
+    +-----------------------------------------------------------+
+    | wirePanel("setup-window", "setup", buildSetupPayload);    |
+    | wirePanel("tray-window", "setup", buildTrayPayload);      |
+    | wirePanel("gambit-window", "gambit", buildGambitPayload); |
+    | ...                                                       |
+    +-----------------------------------------------------------+
 
  ### 3.2 tbd.js
     +----------------------------------+
@@ -104,13 +106,13 @@
     +----------------------------------+
 
 ## 4. A Table if Needed
-    | Panel   | Button List                    | Checkboxes            | Radio Buttons | Text Boxes    | Scroll |
-    | :----- -| :----------------------------- | :-------------------- | :------------ | :------------ | :----- |
-    | Setup   | MakeBoard MakeTrays            | 8x8x8 10x8x8 10x10x10 |  |
-    | Game    | New Rerun Undo Redo Load Save  |                       |  |
-    | Trays   | Create Show Hide               |                       | Gen: Real Factory, Gap: 0 1 2 |
+    | Panel   | Button List                          | Checkboxes            | Radio Buttons         | Text Boxes    | Scroll |
+    | :----- -| :----------------------------------- | :-------------------- | :-------------------- | :------------ | :----- |
+    | Setup   | Make-Board                           |                       | 8x8x8 10x8x8 10x10x10 |               |
+    | Trays   | Make-Trays Show Hide                 |                       | Real Factory          |
+    | Game    | New Rerun Undo Redo Load Save        |                       |                       |
     | Moves   |  |  |  |
-    | Gambit  | Freeze Next Prev Delete Select |                       |  |
+    | Gambit  | Freeze-AdvSq Prev Next Delete Select |                       |                       |               |
     | Compass |  |  |  |
     | AdvSqs  |  |  |  |
     | Camera  | ZoomIn ZoomOut Ascend Descend  |                       |  POV: White Neutral Black Negative  |

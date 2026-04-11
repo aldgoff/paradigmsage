@@ -10,8 +10,9 @@
 import * as view  from "./view.js";
 import * as model from "./model.js";
 
-export function demoRegistration() {
+export function demoRegistration() {  // TODO: depregating...
   console.log("demoRegistration", view);
+  return;
 
   view.registerCallback("game",   button => { handleGameButtonRelease(button); });
   view.registerCallback("camera", button => { handleCameraButtonRelease(button); });

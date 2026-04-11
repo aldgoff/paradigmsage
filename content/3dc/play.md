@@ -39,7 +39,7 @@ layout: "play"
     border: 1px solid #888;
     background: rgba(255,255,255,0.95);
     padding: 8px;
-    width: 180px;
+    width: 130px;
     font-size: 12px;
     z-index: 20;
     cursor: move;
@@ -62,13 +62,13 @@ layout: "play"
   }
 
   /* Locate the 2D floating windows. */
-    #game-window   { top: 180px; left:  60px; }  /* This places each draggable canvas onto the web page. */
-    #camera-window { top: 240px; left:  90px; }
-    #move-window   { top: 400px; left: 150px; }
+    #camera-window { top: 400px; left: 150px; }  /* This places each draggable canvas onto the web page. */
+    #move-window   { top: 400px; left: 350px; }
 
-    #setup-window { top: 180px; left: 480px; }
-    #tray-window   { top: 320px; left: 120px; }
-    #gambit-window { top: 480px; left: 180px; }
+    #setup-window  { top: 180px; left: 100px; }
+    #tray-window   { top: 180px; left: 300px; }
+    #game-window   { top: 180px; left: 500px; }
+    #gambit-window { top: 180px; left: 700px; }
     /* Seampoint - more 2D canvases... */
 </style>
 
@@ -76,9 +76,8 @@ layout: "play"
   <canvas id="3dc-board" width="1400" height="1800"></canvas>  <!-- 3D -->
 
   <!-- Size the 2D floating windows: allows DOM interface to drag them around. -->
-  <div class="canvas-window" id="game-window">   <canvas id="3dc-game"   width="150" height="300"></canvas> </div>
-  <div class="canvas-window" id="camera-window"> <canvas id="3dc-camera" width="150" height="300"></canvas> </div>
-  <div class="canvas-window" id="move-window">   <canvas id="3dc-move"   width="150" height="300"></canvas> </div>
+  <div class="canvas-window" id="camera-window"> <canvas id="3dc-camera" width="150" height="200"></canvas> </div>
+  <div class="canvas-window" id="move-window">   <canvas id="3dc-move"   width="150" height="200"></canvas> </div>
 
 <div class="panel" id="setup-window">
   <div class="panel-title">Setup Control</div>
@@ -92,7 +91,6 @@ layout: "play"
    <label> <input type="radio" name="board-size" value="10x8x8"> 10×8×8 </label><br>
    <label> <input type="radio" name="board-size" value="10x10x10"> 10×10×10 </label>
   </div>  
-
   </div>
 
 <div class="panel" id="tray-window">
@@ -100,7 +98,6 @@ layout: "play"
 
   <div class="section">
     <button data-action="makeTrays">Make Trays</button>
-    <button data-action="cycleGap" disabled>Cycle Gap</button>
   </div>
 
   <div class="section">
@@ -108,13 +105,32 @@ layout: "play"
    <label> <input type="radio" name="tray-type" value="factory"> Factory </label><br>
   </div>  
 
+  <div class="section">
+    <button data-action="showTrays" disabled>Show</button>
+    <button data-action="hideTrays" disabled>Hide</button>
+    <button data-action="cycleGap" disabled>Cycle Gap</button>
   </div>
+  </div>
+
+<div class="panel" id="game-window">
+  <div class="panel-title">Game Control</div>
+
+  <div class="section">
+    <button data-action="newGame">New</button>
+    <button data-action="rerun" disabled>Rerun</button>
+    <button data-action="undo" disabled>Undo</button>
+    <button data-action="redo" disabled>Redo</button>
+    <button data-action="load" >Load</button>
+    <button data-action="save" disabled>Save</button>
+  </div>
+  </div>
+  <!-- <div class="canvas-window" id="game-window">   <canvas id="3dc-game"   width="150" height="300"></canvas> </div> -->
 
 <div class="panel" id="gambit-window">
   <div class="panel-title">Gambit Control</div>
 
   <div class="section">
-    <button data-action="freeze">Freeze</button>
+    <button data-action="freeze">Freeze AdvSq</button>
     <button data-action="prev">Prev</button>
     <button data-action="next">Next</button>
     <button data-action="delete">Delete</button>
@@ -126,6 +142,6 @@ layout: "play"
   </div>
   </div>
   <!-- <div class="canvas-window" id="gambit-window"> <canvas id="3dc-gambit" width="150" height="300"></canvas> </div> -->
-  <!-- Seampoint - more 2D canvases... -->
+<!-- Seampoint - more 2D canvases... -->
 
 

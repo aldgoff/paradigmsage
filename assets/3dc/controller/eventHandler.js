@@ -10,12 +10,12 @@ import * as view from "../view/view.js";
 import * as register from "../view/registerHandlers.js";
 
 export function callbacks() {
-  register.gameControlDispatcher(gameButtonDispatch);
   register.cameraControlDispatcher(cameraButtonDispatch);
   register.moveControlDispatcher(moveButtonDispatch);
 
   register.setupControlDispatcher(setupPanelDispatch);
   register.trayControlDispatcher(trayPanelDispatch);
+  register.gameControlDispatcher(gameButtonDispatch);
   register.gambitControlDispatcher(gambitButtonDispatch);
   // Seampoint - register another dispatcher.
 }
@@ -31,18 +31,7 @@ function buttonDispatch(button) { // Template, not used.
   }
 }
 
-function gameButtonDispatch(button) {     // Deprecating...
-  console.log(`gameButtonDispatch() ${button}`);
-
-  switch (button) {
-    case "Rerun": handleRerun(); break;
-    case "Undo": handleUndo(); break;
-    case "Redo": handleRedo(); break;
-    default: throw new Error(`Unknown game button ${button}.`);  break;
-  }
-  }
-
-function cameraButtonDispatch(button) {
+function cameraButtonDispatch(button) {     // Deprecating...
   console.log(`cameraButtonDispatch() ${button}`);
 
   switch (button) {
@@ -51,7 +40,7 @@ function cameraButtonDispatch(button) {
   }
 
 
-function moveButtonDispatch(button) {
+function moveButtonDispatch(button) {       // Deprecating...
   console.log(`moveButtonDispatch() ${button}`);
 
   switch (button) {
@@ -71,8 +60,24 @@ function trayPanelDispatch(payload) {
   const { action, trayType } = payload;
   switch (action) {
     case "makeTrays": handleMakeTrays(trayType); break;
+    case "showTray": handleShowTray(); break;
+    case "hideTray": handleHideTray(); break;
     case "cycleGap": handleCycleGap(); break;
     default: throw new Error(`Unknown tray action ${action}.`);
+  }
+  }
+
+function gameButtonDispatch(payload) {
+  console.log(`gameButtonDispatch() ${payload}`);
+  const { action } = payload;
+  switch (action) {
+    case "newGame": handleNewGame(); break;
+    case "rerun":   handleRerun(); break;
+    case "undo":    handleUndo(); break;
+    case "redo":    handleRedo(); break;
+    case "load":    handleLoad(); break;
+    case "save":    handleSave(); break;
+    default: throw new Error(`Unknown game ***action ${action}.`);  break;
   }
   }
 
@@ -90,31 +95,66 @@ function gambitButtonDispatch(payload) {
 // Seampoint - more dispatchers...
 
 // Dispatch functions.
-function handleRerun() {}     // TODO: deprecating, switch from canvi to panels.
-function handleUndo() {
-  console.log("   simulated undo button.");
-  }
-function handleRedo() {}
-
 function handleMakeBoard(boardSize) { // Setup handlers.
+  // console.log("control_layer.eventHandler.setup: Make Board.");
   console.log("Make Board:", boardSize);
   // TODO: change state.
 }
 
 function handleMakeTrays(trayType) {  // Tray handlers.
-  // console.log("control_layer.eventHandler.setup: Make Trays.");
+  // console.log("control_layer.eventHandler.tray: Make Trays.");
   console.log("Make Tray:", trayType);
+  // TODO: change state.
+  }
 
+function handleShowTray() {
+  console.log("control_layer.eventHandler.tray: Show Tray.");
+  // TODO: change state.
+  }
+
+function handleHideTray() {
+  console.log("control_layer.eventHandler.tray: Hide Tray.");
   // TODO: change state.
   }
 
 function handleCycleGap() {
-  console.log("control_layer.eventHandler.setup: Cycle Gap.");
+  console.log("control_layer.eventHandler.tray: Cycle Gap.");
+  // TODO: change state.
+}
+
+function handleNewGame() {            // Game handlers.
+  console.log("control_layer.eventHandler.game: New Game.");
+  // TODO: change state.
+  }
+
+function handleRerun() {
+  console.log("control_layer.eventHandler.game: Rerun.");
+  // TODO: change state.
+  }
+  
+function handleUndo() {
+  // console.log("   simulated undo button.");
+  console.log("control_layer.eventHandler.game: Undo.");
+  // TODO: change state.
+  }
+  
+function handleRedo() {
+  console.log("control_layer.eventHandler.game: Redo.");
+  // TODO: change state.
+  }
+  
+function handleLoad() {
+  console.log("control_layer.eventHandler.game: Load.");
+  // TODO: change state.
+  }
+  
+function handleSave() {
+  console.log("control_layer.eventHandler.game: Save.");
   // TODO: change state.
 }
 
 function handleFreeze() {             // Gambit handlers.
-  console.log("control_layer.eventHandler.gambit: Freeze.");
+  console.log("control_layer.eventHandler.gambit: Freeze AdvSq.");
   // TODO: change state.
   }
 
