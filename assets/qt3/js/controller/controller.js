@@ -63,7 +63,7 @@ export function initController() {
   modelSetStateString("");
 
   // Callbacks so controller can change state by button or by mouse clicks.
-  setButtonHandler( button => {    // Registers function with view so it can be called on button events.
+  setButtonHandler(button => {     // Registers function with view so it can be called on button events.
     handleButtonRelease(button);
     });
 

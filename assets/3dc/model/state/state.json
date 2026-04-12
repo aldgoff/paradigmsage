@@ -1,6 +1,6 @@
 {
   "state_module": {
-    "_example": "A sequence of 5 invertible undo/redo arrays.",
+    "_example": "A sequence of 4 invertible undo/redo arrays.",
     "Setup": [
       { "board": [8,8,8],    "play": "off",    "trays": "none",    "gap": 0, "initialPos": "std|list", "itemized": {"white": [], "black": []} },
       { "board": [10,8,8],   "play": "off",    "trays": "none",    "gap": 0, "initialPos": "std|list", "itemized": {"white": [], "black": []} },

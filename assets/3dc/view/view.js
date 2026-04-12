@@ -56,15 +56,12 @@ import * as demos from "./demos.js";
 // --- Demo for development ---
 function demo(playBoard) {
   // Just testing the callback functions, actual use is event driven.
-  run.callback.game("Undo");
+  // run.callback.game("Undo");
   // run.callback.camera("aCameraButton");
 
   if (!playBoard) return false;
 
   const context = renders.init(playBoard);
-
-  drawCanvasTitles();
-  drawLayoutBounds();
 
   demos.run(context);
 
@@ -77,69 +74,139 @@ export function init(playBoard) {
 
   const context = demo(playBoard);
 
+  // Listeners: (The move listing is purely output, no input, therefore no wiring todo.)
+  wirePanel("setup-window",  "setup",  buildSetupPayload);
+  wirePanel("tray-window",   "tray",   buildTrayPayload);  // btn.disabled = false;
+  wirePanel("game-window",   "game",   buildGamePayload);
+  wirePanel("gambit-window", "gambit", buildGambitPayload);
+  wirePanel("advsq-window",  "advsq",  buildAdvsqPayload);
+
+  window.addEventListener("keydown", handleAdvsqKeys);
+
+  wirePanel("camera-window", "camera", buildCameraPayload); // Not subject to the undo arch.
+  // Seampoint - more listeners...
+
   return context;
 }
 // Seampoint: more global functions...
 
 // --- Helpers ---
-// Labels the 2D control canvases.
-function drawCanvasTitles() {
-  drawCanvasTitle("3dc-game",   "gameCanvas");
-  drawCanvasTitle("3dc-camera", "cameraCanvas");
-  drawCanvasTitle("3dc-tray",   "trayCanvas");
-  drawCanvasTitle("3dc-move",   "moveCanvas");
-  drawCanvasTitle("3dc-gambit", "gambitCanvas");
-  // Seampoint - more 2D canvases...
-  }
+function wirePanel(panelId, callbackName, buildPayload) {
+  const panel = document.getElementById(panelId);
+  if (!panel) return;
 
-function drawCanvasTitle(id_3dc, layoutLabel) {
-  const canvas = document.getElementById(id_3dc);
-  const ctx    = canvas.getContext("2d");
-  const element = viewModule[layoutLabel];
+  panel.addEventListener("change", (e) => {
+    const cb = run.callback[callbackName];
+    if (!cb) return;
 
-  ctx.save();
-    ctx.fillStyle = "#888";
-    ctx.font = "12px sans-serif";
-    ctx.fillText(element.name, 4, 14);
-  ctx.restore();
-  }
+    // --- Radios ---
+    const radio = e.target.closest('input[type="radio"]');
+    if (radio) {
+      const action = radio.dataset.action;
+      if (!action) return;
 
-function drawLayoutBounds(layout = viewModule) {
-  for (const layout_key in layout) { // Outline each graphical element in layout.
-    if(     layout_key === "gameCanvas") {
-      const canvas = document.getElementById("3dc-game");
-      const ctx = canvas.getContext("2d");
-      const element = layout[layout_key];
-
-      ctx.save();
-        ctxDefaults(ctx);
-        for(const button of element.controls.buttons) {
-          ctx.strokeRect(button.x, button.y, button.w, button.h);
-          ctx.fillText(button.label, button.x + 4, button.y + 14);
-        }
-      ctx.restore();
-      }
-    else if(layout_key === "cameraCanvas") {
-      }
-    else if(layout_key === "trayCanvas") {
-      }
-    else if(layout_key === "moveCanvas") {
-      }
-    else if(layout_key === "gambitCanvas") {
-      }
-    else {
-      // console.log("No code yet to outline graphical elements in", layout_key);
+      cb({ action, value: radio.value });
+      return;
     }
-    // Seampoint - more 2D canvases...
-  }
+
+    // --- Inputs (advsq only) ---
+    const input = e.target.closest('input');
+    if (!input) return;
+
+    if (callbackName !== "advsq") return;
+
+    cb({
+      action: "updateParam",
+      name: input.name,
+      value: input.value
+    });
+  });
+
+  panel.addEventListener("click", (e) => {
+    // --- Ignore radios (handled by change) ---
+    if (e.target.closest('input[type="radio"]')) return;
+
+    const btn = e.target.closest("button");
+    if (!btn) return;
+
+    const action = btn.dataset.action;
+    if (!action) return;
+
+    const cb = run.callback[callbackName];
+    if (!cb) return;
+
+    const payload = buildPayload(panel, action);
+
+    cb(payload);
+  });
+}
+
+function handleAdvsqKeys(e) {
+  if (["INPUT", "TEXTAREA"].includes(e.target.tagName)) return;
+
+  const cb = run.callback.advsq;
+  if (!cb) return;
+
+  let axis = null;
+  let delta = 0;
+
+  const shift = e.shiftKey;
+
+  switch (e.key.toLowerCase()) {
+    case "k": axis = "z"; delta = shift ? -1 : +1; break;
+    case "i": axis = "x"; delta = shift ? -1 : +1; break;
+    case "j": axis = "y"; delta = shift ? -1 : +1; break;
+    default: return;
   }
 
-function ctxDefaults(ctx) {
-  ctx.setLineDash([6, 4]);
-  ctx.strokeStyle = "#888";
-  ctx.lineWidth = 1;
-  ctx.fillStyle = "#888";
-  ctx.font = "12px sans-serif";
+  e.preventDefault(); // <-- ALSO IMPORTANT
+
+  cb({
+    action: "nudgeSrc",
+    axis,
+    delta
+  });
 }
+
+function buildSetupPayload(panel, action) {
+  const selected = panel.querySelector('input[name="board-size"]:checked');
+
+  return {
+    action,
+    boardSize: selected?.value
+  };
+  }
+
+function buildTrayPayload(panel, action) {
+  const selected = panel.querySelector('input[name="tray-type"]:checked');
+
+  return {
+    action,
+    trayType: selected?.value
+  };
+  }
+
+function buildGamePayload(panel, action) {
+  return { action };
+  }
+
+function buildGambitPayload(panel, action) {
+  return { action };
+  }
+
+function buildAdvsqPayload(panel, action) {
+  return {
+    action,
+    srcTile:  panel.querySelector('[name="advsq-src"]')?.value,
+    quad:     panel.querySelector('[name="advsq-quad"]')?.value,
+    perimeter:panel.querySelector('[name="advsq-perimeter"]')?.value,
+    stride:   panel.querySelector('[name="advsq-stride"]')?.value,
+  };
+}
+
+function buildCameraPayload(panel, action) { // Not subject to the undo arch.
+  return { action };
+}
+
 // Seampoint: more local functions...
 

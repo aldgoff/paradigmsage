@@ -51,18 +51,23 @@ import * as view from "../view/view.js";
 import * as model from "../model/model.js";
 import * as state from "../model/state/state.js";
 import * as register from "../controller/eventHandler.js";
+import * as example from "../exampleRegistration/control.js";
 // Seampoint: more imports...
 
 // --- UI ---
 export function init(playBoard) {
   console.log("controller.init(): 3dc/controller/controller.js");
+  example.demoRegistration();
 
-  makeDraggable(document.getElementById("game-window"));
-  makeDraggable(document.getElementById("camera-window"));
+  makeDraggable(document.getElementById("setup-window"));  // DOM panels.
   makeDraggable(document.getElementById("tray-window"));
+  makeDraggable(document.getElementById("game-window"));
   makeDraggable(document.getElementById("move-window"));
   makeDraggable(document.getElementById("gambit-window"));
-  // Seampoint - more 2D canvases...
+  makeDraggable(document.getElementById("advsq-window"));
+
+  makeDraggable(document.getElementById("camera-window")); // Not subject to the undo arch.
+  // Seampoint - more 2D panels/canvi...
 
   /* Callback registration control flow:
    * Control: registers callback functions via view registration 
@@ -71,7 +76,7 @@ export function init(playBoard) {
    * view.init() -> view.demo() -> run.callback.whatever(control)
    */
 
-  register.callbacks();
+  register.callbacks(); // TODO: register each panel with the view layer.
 
   model.init(playBoard);
   view.init(playBoard);
@@ -79,7 +84,7 @@ export function init(playBoard) {
   demo(); // POC for state interface and undo/redo architecture.
 }
 
-function demo() { // Demo calls to model state arch: create a board and freeze an advsq.
+function demo() { // TODO: Deprecating: demo calls to model state arch: create a board and freeze an advsq.
   console.log("Demo undo/redo state architecture.");
 
   state.setNull();                                      // Initial state, all null.
@@ -112,54 +117,37 @@ function demo() { // Demo calls to model state arch: create a board and freeze a
 // Seampoint: more global functions...
 
 // --- Helpers ---
+let activeDrag = null;
 let topZ = 100;
 
+window.addEventListener("pointermove", (e) => {
+  if (!activeDrag) return;
+
+  const { element, offsetX, offsetY } = activeDrag;
+
+  element.style.left = `${e.pageX - offsetX}px`;
+  element.style.top  = `${e.pageY - offsetY}px`;
+  });
+
+window.addEventListener("pointerup", () => {
+  activeDrag = null;
+});
+
 function makeDraggable(element) {
-  let isDragging = false;
-  let offsetX = 0;
-  let offsetY = 0;
-
   element.addEventListener("pointerdown", (e) => {
-    isDragging = true;
-
-    // 🔥 bring to front
-    element.style.zIndex = ++topZ;
+    if (["BUTTON", "TEXTAREA", "INPUT"].includes(e.target.tagName)) return;
 
     const rect = element.getBoundingClientRect();
     const elemX = rect.left + window.scrollX;
     const elemY = rect.top  + window.scrollY;
 
-    offsetX = e.pageX - elemX;
-    offsetY = e.pageY - elemY;
+    activeDrag = {
+      element,
+      offsetX: e.pageX - elemX,
+      offsetY: e.pageY - elemY
+    };
 
-    element.setPointerCapture(e.pointerId);
-  });
-
-  window.addEventListener("pointermove", (e) => {
-    if (!isDragging) return;
-
-    element.style.left = `${e.pageX - offsetX}px`;
-    element.style.top  = `${e.pageY - offsetY}px`;
-  });
-
-  window.addEventListener("pointerup", () => {
-    isDragging = false;
+    element.style.zIndex = ++topZ;
   });
 }
-
-function getCanvasLocalCoords(canvas, e) {  // TODO: unused.
-  const rect = canvas.getBoundingClientRect();
-  return {
-    x: e.clientX - rect.left,
-    y: e.clientY - rect.top
-  };
-  }
-
-function isInsideAnyButton(x, y, buttons) {  // TODO: unused.
-  return buttons.some(b =>
-    x >= b.x && x <= b.x + b.w &&
-    y >= b.y && y <= b.y + b.h
-  );
-}
-// Seampoint: more local functions...
 

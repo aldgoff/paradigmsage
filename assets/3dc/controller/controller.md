@@ -4,7 +4,7 @@
 ## 1. Purpose/Concepts/Example/Canonical/Formats/Parsing/Architecture/Functions/Data/...
   This is the C part of the MVC design pattern.
 
-## 1. Canvi
+## 1. Canvi TODO: Update to DOM Version.
   There are currently 5 2D canvases defined to control game setup and play.
   The driver in the design is the undo system (see the state module).
   Each 2D canvi floats in front of the game board and can be dragged.
@@ -34,5 +34,52 @@
   - control/eventHandlers/*GameDispatchers() -> view/registerHandlers/callback register.
   - view.init() -> view.demo() -> run.callback.whatever(control)
   - 
+
+```
+controller.js
++-------------------------------------------------------------------------+
+| import * as view from "../view/controlsView.js";                        |
+|                                                                         |
+| view.registerButtonHandler(button => { handleButtonRelease(button); }); |
+|                                                                         |
+| function handleButtonRelease(button) {                                  |
+|   switch (button) {                                                     |
+|     case "Undo": handleUndo(); break;                                   |
+|     case "Redo": handleRedo(); break;                                   |
+|     ...                                                                 |
+|   }                                                                     |
+|   view.update();                                                        |
+| }                                                                       |
+|                                                                         |
+| function handleUndo() {}                                                |
+| function handleRedo() {}                                                |
+|   ...                                                                   |
++-------------------------------------------------------------------------+
+
+controlsView.js
++-------------------------------------------+
+| let onControlCommit = null;               |
+| export function registerButtonHandler(fn) |
+|   onControlCommit = fn;                   |
+|                                           |
++-------------------------------------------+
+
+view.js
++----------------------------------+
+|                                  |
+|                                  |
+|                                  |
+|                                  |
++----------------------------------+
+
+tbd.js
++----------------------------------+
+|                                  |
+|                                  |
+|                                  |
+|                                  |
++----------------------------------+
+
+```
 
 

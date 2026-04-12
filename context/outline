@@ -10,10 +10,19 @@
 │   │   ├── controller
 │   │   │   ├── _tbd.md
 │   │   │   ├── controller.js
-│   │   │   └── eventHandler.js
+│   │   │   ├── controller.md
+│   │   │   ├── eventHandler.js
+│   │   │   └── events.md
 │   │   ├── dev
 │   │   │   ├── devNotes.md
 │   │   │   └── symbols.js
+│   │   ├── exampleRegistration
+│   │   │   ├── control.js
+│   │   │   ├── control.md
+│   │   │   ├── dom.md
+│   │   │   ├── model.js
+│   │   │   ├── view.js
+│   │   │   └── view.json
 │   │   ├── foundation
 │   │   │   ├── _tbd.md
 │   │   │   ├── colors
@@ -61,7 +70,6 @@
 │   │   │   ├── quads.js
 │   │   │   ├── quads.json
 │   │   │   └── quads.md
-│   │   ├── js
 │   │   ├── layout.js
 │   │   ├── layout.md
 │   │   ├── main.js
@@ -115,23 +123,34 @@
 │   │       │   ├── decorators.js
 │   │       │   ├── decorators.json
 │   │       │   └── decorators.md
+│   │       ├── demos.js
 │   │       ├── pieces
 │   │       ├── registerHandlers.js
 │   │       ├── render
-│   │       │   ├── camera.js
-│   │       │   ├── coordsMap.js
-│   │       │   ├── initThree.js
-│   │       │   ├── loop.js
-│   │       │   ├── render.json
-│   │       │   ├── render.md
-│   │       │   ├── renderer.js
-│   │       │   └── scene.js
+│   │       │   ├── cameras.js
+│   │       │   ├── cameras.json
+│   │       │   ├── cameras.md
+│   │       │   ├── coordMaps.md
+│   │       │   ├── coordsMaps.js
+│   │       │   ├── coordsMaps.json
+│   │       │   ├── lights.js
+│   │       │   ├── lights.json
+│   │       │   ├── lights.md
+│   │       │   ├── obsolete
+│   │       │   │   └── initThree.js
+│   │       │   ├── renders.js
+│   │       │   ├── renders.json
+│   │       │   ├── renders.md
+│   │       │   ├── scenes.js
+│   │       │   ├── scenes.json
+│   │       │   └── scenes.md
 │   │       ├── tiles
 │   │       │   ├── tiles.js
 │   │       │   ├── tiles.json
 │   │       │   └── tiles.md
 │   │       ├── trays
 │   │       ├── view.js
+│   │       ├── view.json
 │   │       └── view.md
 │   ├── jsconfig.json
 │   └── qt3
@@ -189,6 +208,7 @@
 │   ├── _index.md
 │   ├── 3dc
 │   │   ├── _index.md
+│   │   ├── clues.md
 │   │   ├── dev.md
 │   │   ├── play.md
 │   │   └── rationale.md
@@ -414,4 +434,4 @@
 │           └── poc.js
 └── themes
 
-82 directories, 332 files
+83 directories, 351 files
