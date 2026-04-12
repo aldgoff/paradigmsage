@@ -54,6 +54,7 @@
   vi: Merge branch '3dc' - Begin development of the view layer.
   vi: Merge branch '3dc' - Start on model layer: state module for undo/redoable state.
   vi: Merge branch '3dc' - POC on view layer, tile aspect, 8-color board, decorators, raycasting clicks.
+  vi: Merge branch '3dc' - Port canvas panels to DOM panels.
   git log --oneline --decorate --graph --all --boundary -n 50
   git push origin main
   ```
