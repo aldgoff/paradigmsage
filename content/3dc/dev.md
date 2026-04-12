@@ -48,3 +48,6 @@ title: "Dev"
   - 4/10/26 - Fix canvi scroll bug, add a qt3 research page, callback registration example, new panel arch via DOM.
   - 4/11/26 - POC DOM based panel arch; port 5 panels: setup, tray, game, gambit, and camera.
 
+ ### Week 5:
+  - 4/12/26 - Make camera POV radio buttons active elements.
+

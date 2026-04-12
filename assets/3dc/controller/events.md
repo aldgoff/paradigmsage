@@ -105,16 +105,16 @@
     |                                  |
     +----------------------------------+
 
-## 4. A Table if Needed
+## 4. A Table of Panels and Controls
     | Panel   | Button List                          | Checkboxes | Radio Buttons                 | Text Boxes    | Scroll |
-    | :----- -| :----------------------------------- | :----------| :---------------------------- | :------------ | :----- |
-    | Setup   | Make-Board                           |            | 8x8x8 10x8x8 10x10x10         |               |
-    | Trays   | Make-Trays Show Hide                 |            | Real Factory                  |
-    | Game    | New Rerun Undo Redo Load Save        |            |                               |
-    | Moves   |  |  |  |
-    | Gambit  | Freeze-AdvSq Prev Next Delete Select |            |                               |               |
-    | AdvSqs  |  |  |  |
-    | Compass |  |  |  |
-    | Camera  | ZoomIn ZoomOut Ascend Descend        |            | White Neutral Black Negative  |
+    | :----- -| :----------------------------------- | :--------- | :---------------------------- | :------------ | :----- |
+    | Setup   | Make-Board                           |            | 8x8x8 10x8x8 10x10x10         |               |        |
+    | Trays   | Make-Trays Show Hide                 |            | Real Factory                  |               |        |
+    | Game    | New Rerun Undo Redo Load Save        |            |                               |               |        |
+    | Moves   |                                      |            |                               |               |        |
+    | Gambit  | Freeze-AdvSq Prev Next Delete Select |            |                               |               |        |
+    | AdvSqs  |                                      |            |                               |               |        |
+    | Compass |                                      |            |                               |               |        |
+    | Camera  | ZoomIn ZoomOut Ascend Descend        |            | White Neutral Black Negative  |               |        |
     |  |  |  |  |
 

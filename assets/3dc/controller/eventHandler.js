@@ -86,13 +86,14 @@ function gambitButtonDispatch(payload) {
 }
 
 function cameraButtonDispatch(payload) { // Not subject to the undo arch.
-  const { action } = payload;
+  const { action, value } = payload;
   switch (action) {
     case "ZoomIn":  handleZoomIn(); break;
     case "ZoomOut": handleZoomOut(); break;
     case "Ascend":  handleAscend(); break;
     case "Descend": handleDescend(); break;
-    default: throw new Error(`Unknown camera action ${action}.`);  break;
+    case "SetPOV":  handlePOV(value); break;
+    default: throw new Error(`Unknown camera action ${action} value ${value}.`);  break;
   }
 }
 // Seampoint - more dispatchers...
@@ -198,6 +199,11 @@ function handleAscend() {
 
 function handleDescend() {
   console.log("control_layer.eventHandler.camera: Descend.");
+  // TODO: change state.
+  }
+
+function handlePOV(pov) {
+  console.log(`control_layer.eventHandler.camera: POV = ${pov}.`);
   // TODO: change state.
 }
 

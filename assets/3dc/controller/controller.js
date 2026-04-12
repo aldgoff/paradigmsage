@@ -127,7 +127,7 @@ window.addEventListener("pointermove", (e) => {
 
   element.style.left = `${e.pageX - offsetX}px`;
   element.style.top  = `${e.pageY - offsetY}px`;
-});
+  });
 
 window.addEventListener("pointerup", () => {
   activeDrag = null;

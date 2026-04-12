@@ -171,6 +171,19 @@ function wirePanel(panelId, callbackName, buildPayload) {
 
     cb(payload);
   });
+
+  panel.addEventListener("change", (e) => {
+    const radio = e.target.closest('input[type="radio"]');
+    if (!radio) return;
+
+    const action = radio.dataset.action;
+    if (!action) return;
+
+    const cb = run.callback[callbackName];
+    if (!cb) return;
+
+    cb({ action, value: radio.value });
+  });
 }
 
 function buildSetupPayload(panel, action) {

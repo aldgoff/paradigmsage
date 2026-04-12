@@ -39,7 +39,7 @@ layout: "play"
     border: 1px solid #888;
     background: rgba(255,255,255,0.95);
     padding: 8px;
-    width: 130px;
+    width: 145px;
     font-size: 12px;
     z-index: 20;
     cursor: move;
@@ -156,14 +156,16 @@ layout: "play"
     <button data-action="Descend">Descend </button>
   </div>
 
+
   <div class="section">
-   <label> <input type="radio" name="pov-type" value="White"          > White    </label><br>
-   <label> <input type="radio" name="pov-type" value="Neutral" checked> Neutral  </label><br>
-   <label> <input type="radio" name="pov-type" value="Black"          > Black    </label><br>
-   <label> <input type="radio" name="pov-type" value="Negative"       > Negative </label><br>
+    <label> <input type="radio" name="camera-pov" value="white"    data-action="SetPOV"> White </label>
+    <label> <input type="radio" name="camera-pov" value="neutral"  data-action="SetPOV" checked> Neutral </label>
+    <label> <input type="radio" name="camera-pov" value="black"    data-action="SetPOV"> Black </label>
+    <label> <input type="radio" name="camera-pov" value="negative" data-action="SetPOV"> Negative </label>
   </div>  
 </div>
 <!-- <div class="canvas-window" id="camera-window"> <canvas id="3dc-camera" width="150" height="200"></canvas> </div> -->
 
 <!-- Seampoint - more DOM control panels... -->
+
 
