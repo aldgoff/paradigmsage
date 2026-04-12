@@ -21,20 +21,12 @@ layout: "play"
 
 <!-- CSS -->
 <style>
-  .canvas-window {
-    position: absolute;
-    border: 1px dashed #888;
-    background: rgba(255,255,255,0.9);
-    z-index: 10;
-    cursor: move;
-  }
-  
   #3dc-board {
     position: absolute;
     top: 0;
     left: 0;
-  }
-
+    }
+  
   .panel {
     position: absolute;
     border: 1px solid #888;
@@ -44,41 +36,28 @@ layout: "play"
     font-size: 12px;
     z-index: 20;
     cursor: move;
-  }
-
-  #move-window {
-    width: 380px;   /* tune later */
-  }
+    }
   #move-list {
     font-family: monospace;
-    white-space: pre;
-  }
-  #move-list {
+    white-space: pre;   /* Allows code to col align text. */
     height: 140px;
-  }
-  #move-window .panel-title {
+    }
+  #move-window {
     font-family: monospace;
-  }
-
+    width: 380px;
+    }
   .panel-title {
     font-weight: bold;
     margin-bottom: 6px;
-  }
-
+    }
   .section {
     margin-bottom: 8px;
-  }
-
+    }
   .scroll-box {
-    height: 80px;
     overflow-y: auto;
     border: 1px solid #ccc;
     padding: 4px;
   }
-
-  /* Locate the 2D floating windows. */
-    /* #move-window   { top: 400px; left: 350px; }  This places each draggable canvas onto the web page. */
-    /* Seampoint - more 2D canvases... */
 
   /* DOM Control Panels */
     #setup-window  { top: 180px; left:  100px; }
@@ -93,10 +72,7 @@ layout: "play"
 </style>
 
 <!-- The 3DC Game... -->
-  <canvas id="3dc-board" width="1400" height="1800"></canvas>  <!-- 3D -->
-
-  <!-- Size the 2D floating windows: allows DOM interface to drag them around. -->
-  <!-- <div class="canvas-window" id="move-window">   <canvas id="3dc-move"   width="150" height="200"></canvas> </div> -->
+<canvas id="3dc-board" width="1400" height="1800"></canvas>  <!-- 3D -->
 
  <!-- The DOM Control Panels -->
 <div class="panel" id="setup-window">
@@ -144,7 +120,6 @@ layout: "play"
     <button data-action="save" disabled>Save</button>
   </div>
   </div>
-<!-- <div class="canvas-window" id="game-window">   <canvas id="3dc-game"   width="150" height="300"></canvas> </div> -->
 
 <div class="panel" id="move-window">
   <div class="panel-title">Move | White | Black | Coordinates | Annotations</div>
@@ -153,7 +128,6 @@ layout: "play"
     <!-- tbd go here -->
   </div>
   </div>
-<!-- <div class="canvas-window" id="move-window">   <canvas id="3dc-move"   width="150" height="200"></canvas> </div> -->
 
 <div class="panel" id="gambit-window">
   <div class="panel-title">Gambit Control</div>
@@ -170,7 +144,6 @@ layout: "play"
     <!-- advsq entries go here -->
   </div>
   </div>
-<!-- <div class="canvas-window" id="gambit-window"> <canvas id="3dc-gambit" width="150" height="300"></canvas> </div> -->
 
 <div class="panel" id="advsq-window">
   <div class="panel-title">AdvSq Control</div>
@@ -220,7 +193,6 @@ layout: "play"
     <label> <input type="radio" name="camera-pov" value="negative" data-action="SetPOV"> Negative </label>
   </div>  
 </div>
-<!-- <div class="canvas-window" id="camera-window"> <canvas id="3dc-camera" width="150" height="200"></canvas> </div> -->
 
 <!-- Seampoint - more DOM control panels... -->
 

@@ -63,9 +63,6 @@ function demo(playBoard) {
 
   const context = renders.init(playBoard);
 
-  // drawCanvasTitles();
-  // drawLayoutBounds();
-
   demos.run(context);
 
   return;
@@ -77,9 +74,9 @@ export function init(playBoard) {
 
   const context = demo(playBoard);
 
-  // Listeners:
+  // Listeners: (The move listing is purely output, no input, therefore no wiring todo.)
   wirePanel("setup-window",  "setup",  buildSetupPayload);
-  wirePanel("tray-window",   "tray",   buildTrayPayload);  // btn.disabled = false;  // When tray state changes, the view layer should enable this.
+  wirePanel("tray-window",   "tray",   buildTrayPayload);  // btn.disabled = false;
   wirePanel("game-window",   "game",   buildGamePayload);
   wirePanel("gambit-window", "gambit", buildGambitPayload);
   wirePanel("advsq-window",  "advsq",  buildAdvsqPayload);
@@ -94,68 +91,6 @@ export function init(playBoard) {
 // Seampoint: more global functions...
 
 // --- Helpers ---
-// Labels the 2D control canvases.
-function drawCanvasTitles() {
-  drawCanvasTitle("3dc-move",   "moveCanvas");
-  // drawCanvasTitle("3dc-setup",  "setupCanvas");
-  // drawCanvasTitle("3dc-tray",   "trayCanvas");
-  // drawCanvasTitle("3dc-game",   "gameCanvas");
-  // drawCanvasTitle("3dc-gambit", "gambitCanvas");
-
-  // drawCanvasTitle("3dc-camera", "cameraCanvas");
-  // Seampoint - no more 2D canvases...
-  }
-
-function drawCanvasTitle(id_3dc, layoutLabel) { // Deprecating...
-  const canvas = document.getElementById(id_3dc);
-  const ctx    = canvas.getContext("2d");
-  const element = viewModule[layoutLabel];
-
-  ctx.save();
-    ctx.fillStyle = "#888";
-    ctx.font = "12px sans-serif";
-    ctx.fillText(element.name, 4, 14);
-  ctx.restore();
-  }
-
-function drawLayoutBounds(layout = viewModule) { // Deprecating...
-  for (const layout_key in layout) { // Outline each graphical element in layout.
-    if(     layout_key === "gameCanvas") {
-      // const canvas = document.getElementById("3dc-game");
-      // const ctx = canvas.getContext("2d");
-      // const element = layout[layout_key];
-
-      // ctx.save();
-      //   ctxDefaults(ctx);
-      //   for(const button of element.controls.buttons) {
-      //     ctx.strokeRect(button.x, button.y, button.w, button.h);
-      //     ctx.fillText(button.label, button.x + 4, button.y + 14);
-      //   }
-      // ctx.restore();
-      }
-    else if(layout_key === "cameraCanvas") {
-      }
-    else if(layout_key === "trayCanvas") {
-      }
-    else if(layout_key === "moveCanvas") {
-      }
-    else if(layout_key === "gambitCanvas") {
-      }
-    else {
-      // console.log("No code yet to outline graphical elements in", layout_key);
-    }
-    // Seampoint - more 2D canvases...
-  }
-  }
-
-function ctxDefaults(ctx) { // Deprecating...
-  ctx.setLineDash([6, 4]);
-  ctx.strokeStyle = "#888";
-  ctx.lineWidth = 1;
-  ctx.fillStyle = "#888";
-  ctx.font = "12px sans-serif";
-}
-
 function wirePanel(panelId, callbackName, buildPayload) {
   const panel = document.getElementById(panelId);
   if (!panel) return;

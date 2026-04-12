@@ -50,7 +50,7 @@ function trayPanelDispatch(payload) {
   }
 
 function gameButtonDispatch(payload) {
-  console.log("gameButtonDispatch()", payload);
+  // console.log("gameButtonDispatch()", payload);
   const { action } = payload;
   switch (action) {
     case "newGame": handleNewGame(); break;

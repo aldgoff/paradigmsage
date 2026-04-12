@@ -4,7 +4,7 @@
 ## 1. Purpose/Concepts/Example/Canonical/Formats/Parsing/Architecture/Functions/Data/...
   This is the C part of the MVC design pattern.
 
-## 1. Canvi
+## 1. Canvi TODO: Update to DOM Version.
   There are currently 5 2D canvases defined to control game setup and play.
   The driver in the design is the undo system (see the state module).
   Each 2D canvi floats in front of the game board and can be dragged.

@@ -59,11 +59,10 @@ export function init(playBoard) {
   console.log("controller.init(): 3dc/controller/controller.js");
   example.demoRegistration();
 
-  makeDraggable(document.getElementById("move-window"));   // Canvas panels - deprecating...
-
   makeDraggable(document.getElementById("setup-window"));  // DOM panels.
   makeDraggable(document.getElementById("tray-window"));
   makeDraggable(document.getElementById("game-window"));
+  makeDraggable(document.getElementById("move-window"));
   makeDraggable(document.getElementById("gambit-window"));
   makeDraggable(document.getElementById("advsq-window"));
 
@@ -85,7 +84,7 @@ export function init(playBoard) {
   demo(); // POC for state interface and undo/redo architecture.
 }
 
-function demo() { // Demo calls to model state arch: create a board and freeze an advsq.
+function demo() { // TODO: Deprecating: demo calls to model state arch: create a board and freeze an advsq.
   console.log("Demo undo/redo state architecture.");
 
   state.setNull();                                      // Initial state, all null.
