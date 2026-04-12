@@ -82,6 +82,9 @@ export function init(playBoard) {
   wirePanel("tray-window",   "tray",   buildTrayPayload);  // btn.disabled = false;  // When tray state changes, the view layer should enable this.
   wirePanel("game-window",   "game",   buildGamePayload);
   wirePanel("gambit-window", "gambit", buildGambitPayload);
+  wirePanel("advsq-window",  "advsq",  buildAdvsqPayload);
+
+  window.addEventListener("keydown", handleAdvsqKeys);
 
   wirePanel("camera-window", "camera", buildCameraPayload); // Not subject to the undo arch.
   // Seampoint - more listeners...
@@ -184,6 +187,88 @@ function wirePanel(panelId, callbackName, buildPayload) {
 
     cb({ action, value: radio.value });
   });
+
+  panel.addEventListener("change", (e) => {
+    const cb = run.callback[callbackName];
+    if (!cb) return;
+
+    // --- Radios (already working) ---
+    const radio = e.target.closest('input[type="radio"]');
+    if (radio) {
+      const action = radio.dataset.action;
+      if (!action) return;
+
+      cb({ action, value: radio.value });
+      return;
+    }
+
+    // --- NEW: Number/Text inputs ---
+    const input = e.target.closest('input');
+    if (!input) return;
+
+    // Only handle advsq panel for now
+    if (callbackName !== "advsq") return;
+
+    const name = input.name;
+    const value = input.value;
+
+    cb({
+      action: "updateParam",
+      name,
+      value
+    });
+  });
+}
+
+function handleAdvsqKeys(e) {
+  if (["INPUT", "TEXTAREA"].includes(e.target.tagName)) return;
+
+  const cb = run.callback.advsq;
+  if (!cb) return;
+
+  let axis = null;
+  let delta = 0;
+
+  const shift = e.shiftKey;
+
+  switch (e.key.toLowerCase()) {
+    case "k": axis = "z"; delta = shift ? -1 : +1; break;
+    case "i": axis = "x"; delta = shift ? -1 : +1; break;
+    case "j": axis = "y"; delta = shift ? -1 : +1; break;
+    default: return;
+  }
+
+  e.preventDefault(); // <-- ALSO IMPORTANT
+
+  cb({
+    action: "nudgeSrc",
+    axis,
+    delta
+  });
+}
+
+function handleAdvsqKeys1(e) {
+  const cb = run.callback["advsq"];
+  if (!cb) return;
+
+  let action = null;
+  let axis = null;
+  let delta = 0;
+
+  const shift = e.shiftKey;
+
+  switch (e.key.toLowerCase()) {
+    case "k": axis = "z"; delta = shift ? -1 : +1; break;
+    case "i": axis = "x"; delta = shift ? -1 : +1; break;
+    case "j": axis = "y"; delta = shift ? -1 : +1; break;
+    default: return; // ignore other keys
+  }
+
+  cb({
+    action: "nudgeSrc",
+    axis,
+    delta
+  });
 }
 
 function buildSetupPayload(panel, action) {
@@ -210,6 +295,16 @@ function buildGamePayload(panel, action) {
 
 function buildGambitPayload(panel, action) {
   return { action };
+  }
+
+function buildAdvsqPayload(panel, action) {
+  return {
+    action,
+    srcTile:  panel.querySelector('[name="advsq-src"]')?.value,
+    quad:     panel.querySelector('[name="advsq-quad"]')?.value,
+    perimeter:panel.querySelector('[name="advsq-perimeter"]')?.value,
+    stride:   panel.querySelector('[name="advsq-stride"]')?.value,
+  };
 }
 
 function buildCameraPayload(panel, action) { // Not subject to the undo arch.

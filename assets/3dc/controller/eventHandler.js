@@ -16,20 +16,10 @@ export function callbacks() {
   register.trayControlDispatcher(trayPanelDispatch);
   register.gameControlDispatcher(gameButtonDispatch);
   register.gambitControlDispatcher(gambitButtonDispatch);
+  register.advsqControlDispatcher(advsqPanelDispatch);
 
   register.cameraControlDispatcher(cameraButtonDispatch); // Not subject to the undo arch.
   // Seampoint - register another dispatcher.
-}
-
-function buttonDispatch(button) { // Template, not used.
-  console.log(`buttonDispatch() ${button}`);
-
-  switch (button) {
-    case "Rerun": handleRerun(); break;
-    case "Undo": handleUndo(); break;
-    case "Redo": handleRedo(); break;
-    default: throw new Error(`Unknown button ${button}.`);  break;
-  }
 }
 
 function moveButtonDispatch(button) {       // Deprecating...
@@ -82,6 +72,20 @@ function gambitButtonDispatch(payload) {
     case "delete": handleDelete(); break;
     case "deselect": handleDeselect(); break;
     default: throw new Error(`Unknown gambit action ${action}.`);  break;
+  }
+  }
+
+function advsqPanelDispatch(payload) {
+  const { action, srcTile, quad, perimeter, stride } = payload;
+  switch (action) {
+    case "place":       handlePlace(payload); break;
+    case "remove":      handleRemove(); break;
+    case "nextQuad":    handleNextQuad(); break;
+    case "nextPlane":   handleNextPlane(); break;
+    case "nextPiece":   handleNextPiece(); break;
+    case "nudgeSrc":    handleNudgeSrc(payload); break;
+    case "updateParam": handleUpdateParam(payload); break;
+    default: throw new Error(`Unknown advsq action ${action}, payload ${JSON.stringify(payload)}.`);
   }
 }
 
@@ -180,6 +184,58 @@ function handleDelete() {
 function handleDeselect() {
   console.log("control_layer.eventHandler.gambit: Deselect.");
   // TODO: change state.
+}
+
+function handlePlace(payload) {       // Advsq handlers.
+  const { action, srcTile, quad, perimeter, stride } = payload;
+  console.log("control_layer.eventHandler.advsq: Place", payload);
+  // TODO: change state.
+  }
+
+function handleRemove() {
+  console.log(`control_layer.eventHandler.advsq: Remove.`);
+  // TODO: change state.
+  }
+
+function handleNextQuad() {
+  console.log(`control_layer.eventHandler.advsq: Next Quad.`);
+  // TODO: change state.
+  }
+
+function handleNextPlane() {
+  console.log(`control_layer.eventHandler.advsq: Next Plane.`);
+  // TODO: change state.
+  }
+
+function handleNextPiece() {
+  console.log(`control_layer.eventHandler.advsq: Next Piece.`);
+  // TODO: change state.
+  }
+
+function handleNudgeSrc(payload) {
+  const { axis, delta } = payload;
+
+  console.log(`Nudge ${axis} by ${delta}`);
+
+  // TODO:
+  // 1. read current srcTile
+  // 2. parse into (z,x,y)
+  // 3. apply delta
+  // 4. write back to input OR state
+  }
+
+function handleUpdateParam(payload) {
+  const { name, value } = payload;
+
+  console.log(`Update ${name} → ${value}`);
+
+  // Optional: normalize name
+  const param = name.replace("advsq-", "");
+
+  console.log(`Param ${param} = ${value}`);
+
+  // TODO:
+  // update current advsq state
 }
 
 function handleZoomIn() {             // Camera handlers. Not subject to the undo arch.

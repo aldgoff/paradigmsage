@@ -65,6 +65,7 @@ export function init(playBoard) {
   makeDraggable(document.getElementById("tray-window"));
   makeDraggable(document.getElementById("game-window"));
   makeDraggable(document.getElementById("gambit-window"));
+  makeDraggable(document.getElementById("advsq-window"));
 
   makeDraggable(document.getElementById("camera-window")); // Not subject to the undo arch.
   // Seampoint - more 2D panels/canvi...

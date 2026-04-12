@@ -13,6 +13,7 @@ export const callback = { // Allows rest of view layer easy access to control's 
   tray: null, 
   game: null, 
   gambit: null,
+  advsq: null,
 
   camera: null, // Not subject to the undo arch.
   // Seampoint - more callbacks...
@@ -24,6 +25,7 @@ export function setupControlDispatcher(fn)  { callback.setup  = fn; }
 export function trayControlDispatcher(fn)   { callback.tray   = fn; }
 export function gameControlDispatcher(fn)   { callback.game   = fn; }
 export function gambitControlDispatcher(fn) { callback.gambit = fn; }
+export function advsqControlDispatcher(fn)  { callback.advsq = fn; }
 
 export function cameraControlDispatcher(fn) { callback.camera = fn; } // Not subject to the undo arch.
 // Seampoint - more dispatchers...

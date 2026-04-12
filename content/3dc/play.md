@@ -70,6 +70,7 @@ layout: "play"
     #tray-window   { top: 180px; left: 300px; }
     #game-window   { top: 180px; left: 500px; }
     #gambit-window { top: 180px; left: 700px; }
+    #advsq-window  { top: 180px; left: 900px; }
 
     #camera-window { top: 400px; left: 150px; }
     /* Seampont - more DOM control panels... */
@@ -145,6 +146,36 @@ layout: "play"
   </div>
   </div>
 <!-- <div class="canvas-window" id="gambit-window"> <canvas id="3dc-gambit" width="150" height="300"></canvas> </div> -->
+
+<div class="panel" id="advsq-window">
+  <div class="panel-title">AdvSq Control</div>
+
+  <div class="section">
+    <button data-action="place">Place</button>
+    <button data-action="remove">Remove</button>
+  </div>
+
+  <div class="section">
+  <label> Source Tile: <input type="string" name="advsq-src"       value="Q3,3"> </label>
+  <label> Quad:        <input type="number" name="advsq-quad"      min="1" step="1" value="1"> </label>
+  <label> Perimeter:   <input type="number" name="advsq-perimeter" min="1" step="1" value="2"> </label>
+  <label> Stride:      <input type="number" name="advsq-stride"    min="1" step="1" value="3"> </label>
+  </div>
+
+  <div class="section">
+    <button data-action="nextQuad">Next Quad</button>
+    <button data-action="nextPlane">Next Plane</button>
+    <button data-action="nextPiece">Next Piece</button>
+  </div>
+
+  <!-- Optional: key hints (visual only) -->
+  <div class="section" style="font-size: 11px; color: #666;">
+    Slip & Slide +: k i j
+  </div>
+  <div class="section" style="font-size: 11px; color: #666;">
+    Slip & Slide -: ^k ^i ^j
+  </div>
+</div>
 
 <div class="panel" id="camera-window">
   <div class="panel-title">Camera Control</div>

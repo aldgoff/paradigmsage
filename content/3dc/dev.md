@@ -49,5 +49,5 @@ title: "Dev"
   - 4/11/26 - POC DOM based panel arch; port 5 panels: setup, tray, game, gambit, and camera.
 
  ### Week 5:
-  - 4/12/26 - Make camera POV radio buttons active elements.
+  - 4/12/26 - Make camera POV radio buttons active elements. Add 6th panel, advsqs.
 
