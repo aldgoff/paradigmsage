@@ -82,6 +82,8 @@ export function init(playBoard) {
   wirePanel("tray-window",   "tray",   buildTrayPayload);  // btn.disabled = false;  // When tray state changes, the view layer should enable this.
   wirePanel("game-window",   "game",   buildGamePayload);
   wirePanel("gambit-window", "gambit", buildGambitPayload);
+
+  wirePanel("camera-window", "camera", buildCameraPayload); // Not subject to the undo arch.
   // Seampoint - more listeners...
 
   return context;
@@ -91,12 +93,13 @@ export function init(playBoard) {
 // --- Helpers ---
 // Labels the 2D control canvases.
 function drawCanvasTitles() {
-  drawCanvasTitle("3dc-camera", "cameraCanvas");
   drawCanvasTitle("3dc-move",   "moveCanvas");
   // drawCanvasTitle("3dc-setup",  "setupCanvas");
   // drawCanvasTitle("3dc-tray",   "trayCanvas");
   // drawCanvasTitle("3dc-game",   "gameCanvas");
   // drawCanvasTitle("3dc-gambit", "gambitCanvas");
+
+  // drawCanvasTitle("3dc-camera", "cameraCanvas");
   // Seampoint - no more 2D canvases...
   }
 
@@ -193,6 +196,10 @@ function buildGamePayload(panel, action) {
   }
 
 function buildGambitPayload(panel, action) {
+  return { action };
+}
+
+function buildCameraPayload(panel, action) { // Not subject to the undo arch.
   return { action };
 }
 

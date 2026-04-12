@@ -10,13 +10,14 @@ import * as view from "../view/view.js";
 import * as register from "../view/registerHandlers.js";
 
 export function callbacks() {
-  register.cameraControlDispatcher(cameraButtonDispatch);
   register.moveControlDispatcher(moveButtonDispatch);
 
   register.setupControlDispatcher(setupPanelDispatch);
   register.trayControlDispatcher(trayPanelDispatch);
   register.gameControlDispatcher(gameButtonDispatch);
   register.gambitControlDispatcher(gambitButtonDispatch);
+
+  register.cameraControlDispatcher(cameraButtonDispatch); // Not subject to the undo arch.
   // Seampoint - register another dispatcher.
 }
 
@@ -30,15 +31,6 @@ function buttonDispatch(button) { // Template, not used.
     default: throw new Error(`Unknown button ${button}.`);  break;
   }
 }
-
-function cameraButtonDispatch(button) {     // Deprecating...
-  console.log(`cameraButtonDispatch() ${button}`);
-
-  switch (button) {
-    default: throw new Error("Unknown camera button.");  break;
-  }
-  }
-
 
 function moveButtonDispatch(button) {       // Deprecating...
   console.log(`moveButtonDispatch() ${button}`);
@@ -90,6 +82,17 @@ function gambitButtonDispatch(payload) {
     case "delete": handleDelete(); break;
     case "deselect": handleDeselect(); break;
     default: throw new Error(`Unknown gambit action ${action}.`);  break;
+  }
+}
+
+function cameraButtonDispatch(payload) { // Not subject to the undo arch.
+  const { action } = payload;
+  switch (action) {
+    case "ZoomIn":  handleZoomIn(); break;
+    case "ZoomOut": handleZoomOut(); break;
+    case "Ascend":  handleAscend(); break;
+    case "Descend": handleDescend(); break;
+    default: throw new Error(`Unknown camera action ${action}.`);  break;
   }
 }
 // Seampoint - more dispatchers...
@@ -177,5 +180,26 @@ function handleDeselect() {
   console.log("control_layer.eventHandler.gambit: Deselect.");
   // TODO: change state.
 }
+
+function handleZoomIn() {             // Camera handlers. Not subject to the undo arch.
+  console.log("control_layer.eventHandler.camera: Zoom In.");
+  // TODO: change state.
+  }
+
+function handleZoomOut() {
+  console.log("control_layer.eventHandler.camera: Zoom Out.");
+  // TODO: change state.
+  }
+
+function handleAscend() {
+  console.log("control_layer.eventHandler.camera: Ascend.");
+  // TODO: change state.
+  }
+
+function handleDescend() {
+  console.log("control_layer.eventHandler.camera: Descend.");
+  // TODO: change state.
+}
+
 // Seampoint - more handle functions, to be grouped by panel.
 

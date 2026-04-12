@@ -106,15 +106,15 @@
     +----------------------------------+
 
 ## 4. A Table if Needed
-    | Panel   | Button List                          | Checkboxes            | Radio Buttons         | Text Boxes    | Scroll |
-    | :----- -| :----------------------------------- | :-------------------- | :-------------------- | :------------ | :----- |
-    | Setup   | Make-Board                           |                       | 8x8x8 10x8x8 10x10x10 |               |
-    | Trays   | Make-Trays Show Hide                 |                       | Real Factory          |
-    | Game    | New Rerun Undo Redo Load Save        |                       |                       |
+    | Panel   | Button List                          | Checkboxes | Radio Buttons                 | Text Boxes    | Scroll |
+    | :----- -| :----------------------------------- | :----------| :---------------------------- | :------------ | :----- |
+    | Setup   | Make-Board                           |            | 8x8x8 10x8x8 10x10x10         |               |
+    | Trays   | Make-Trays Show Hide                 |            | Real Factory                  |
+    | Game    | New Rerun Undo Redo Load Save        |            |                               |
     | Moves   |  |  |  |
-    | Gambit  | Freeze-AdvSq Prev Next Delete Select |                       |                       |               |
-    | Compass |  |  |  |
+    | Gambit  | Freeze-AdvSq Prev Next Delete Select |            |                               |               |
     | AdvSqs  |  |  |  |
-    | Camera  | ZoomIn ZoomOut Ascend Descend  |                       |  POV: White Neutral Black Negative  |
+    | Compass |  |  |  |
+    | Camera  | ZoomIn ZoomOut Ascend Descend        |            | White Neutral Black Negative  |
     |  |  |  |  |
 

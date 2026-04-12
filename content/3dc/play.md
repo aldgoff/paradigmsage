@@ -62,23 +62,26 @@ layout: "play"
   }
 
   /* Locate the 2D floating windows. */
-    #camera-window { top: 400px; left: 150px; }  /* This places each draggable canvas onto the web page. */
-    #move-window   { top: 400px; left: 350px; }
+    #move-window   { top: 400px; left: 350px; }  /* This places each draggable canvas onto the web page. */
+    /* Seampoint - more 2D canvases... */
 
+  /* DOM Control Panels */
     #setup-window  { top: 180px; left: 100px; }
     #tray-window   { top: 180px; left: 300px; }
     #game-window   { top: 180px; left: 500px; }
     #gambit-window { top: 180px; left: 700px; }
-    /* Seampoint - more 2D canvases... */
+
+    #camera-window { top: 400px; left: 150px; }
+    /* Seampont - more DOM control panels... */
 </style>
 
 <!-- The 3DC Game... -->
   <canvas id="3dc-board" width="1400" height="1800"></canvas>  <!-- 3D -->
 
   <!-- Size the 2D floating windows: allows DOM interface to drag them around. -->
-  <div class="canvas-window" id="camera-window"> <canvas id="3dc-camera" width="150" height="200"></canvas> </div>
   <div class="canvas-window" id="move-window">   <canvas id="3dc-move"   width="150" height="200"></canvas> </div>
 
+ <!-- The DOM Control Panels -->
 <div class="panel" id="setup-window">
   <div class="panel-title">Setup Control</div>
 
@@ -141,7 +144,26 @@ layout: "play"
     <!-- advsq entries go here -->
   </div>
   </div>
-  <!-- <div class="canvas-window" id="gambit-window"> <canvas id="3dc-gambit" width="150" height="300"></canvas> </div> -->
-<!-- Seampoint - more 2D canvases... -->
+<!-- <div class="canvas-window" id="gambit-window"> <canvas id="3dc-gambit" width="150" height="300"></canvas> </div> -->
 
+<div class="panel" id="camera-window">
+  <div class="panel-title">Camera Control</div>
+
+  <div class="section">
+    <button data-action="ZoomIn"> Zoom In </button>
+    <button data-action="ZoomOut">Zoom Out</button>
+    <button data-action="Ascend"> Ascend  </button>
+    <button data-action="Descend">Descend </button>
+  </div>
+
+  <div class="section">
+   <label> <input type="radio" name="pov-type" value="White"          > White    </label><br>
+   <label> <input type="radio" name="pov-type" value="Neutral" checked> Neutral  </label><br>
+   <label> <input type="radio" name="pov-type" value="Black"          > Black    </label><br>
+   <label> <input type="radio" name="pov-type" value="Negative"       > Negative </label><br>
+  </div>  
+</div>
+<!-- <div class="canvas-window" id="camera-window"> <canvas id="3dc-camera" width="150" height="200"></canvas> </div> -->
+
+<!-- Seampoint - more DOM control panels... -->
 

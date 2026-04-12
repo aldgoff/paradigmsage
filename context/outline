@@ -11,7 +11,8 @@
 │   │   │   ├── _tbd.md
 │   │   │   ├── controller.js
 │   │   │   ├── controller.md
-│   │   │   └── eventHandler.js
+│   │   │   ├── eventHandler.js
+│   │   │   └── events.md
 │   │   ├── dev
 │   │   │   ├── devNotes.md
 │   │   │   └── symbols.js
@@ -433,4 +434,4 @@
 │           └── poc.js
 └── themes
 
-83 directories, 350 files
+83 directories, 351 files
