@@ -160,7 +160,37 @@ function wirePanel(panelId, callbackName, buildPayload) {
   const panel = document.getElementById(panelId);
   if (!panel) return;
 
+  panel.addEventListener("change", (e) => {
+    const cb = run.callback[callbackName];
+    if (!cb) return;
+
+    // --- Radios ---
+    const radio = e.target.closest('input[type="radio"]');
+    if (radio) {
+      const action = radio.dataset.action;
+      if (!action) return;
+
+      cb({ action, value: radio.value });
+      return;
+    }
+
+    // --- Inputs (advsq only) ---
+    const input = e.target.closest('input');
+    if (!input) return;
+
+    if (callbackName !== "advsq") return;
+
+    cb({
+      action: "updateParam",
+      name: input.name,
+      value: input.value
+    });
+  });
+
   panel.addEventListener("click", (e) => {
+    // --- Ignore radios (handled by change) ---
+    if (e.target.closest('input[type="radio"]')) return;
+
     const btn = e.target.closest("button");
     if (!btn) return;
 
@@ -173,50 +203,6 @@ function wirePanel(panelId, callbackName, buildPayload) {
     const payload = buildPayload(panel, action);
 
     cb(payload);
-  });
-
-  panel.addEventListener("change", (e) => {
-    const radio = e.target.closest('input[type="radio"]');
-    if (!radio) return;
-
-    const action = radio.dataset.action;
-    if (!action) return;
-
-    const cb = run.callback[callbackName];
-    if (!cb) return;
-
-    cb({ action, value: radio.value });
-  });
-
-  panel.addEventListener("change", (e) => {
-    const cb = run.callback[callbackName];
-    if (!cb) return;
-
-    // --- Radios (already working) ---
-    const radio = e.target.closest('input[type="radio"]');
-    if (radio) {
-      const action = radio.dataset.action;
-      if (!action) return;
-
-      cb({ action, value: radio.value });
-      return;
-    }
-
-    // --- NEW: Number/Text inputs ---
-    const input = e.target.closest('input');
-    if (!input) return;
-
-    // Only handle advsq panel for now
-    if (callbackName !== "advsq") return;
-
-    const name = input.name;
-    const value = input.value;
-
-    cb({
-      action: "updateParam",
-      name,
-      value
-    });
   });
 }
 
@@ -239,30 +225,6 @@ function handleAdvsqKeys(e) {
   }
 
   e.preventDefault(); // <-- ALSO IMPORTANT
-
-  cb({
-    action: "nudgeSrc",
-    axis,
-    delta
-  });
-}
-
-function handleAdvsqKeys1(e) {
-  const cb = run.callback["advsq"];
-  if (!cb) return;
-
-  let action = null;
-  let axis = null;
-  let delta = 0;
-
-  const shift = e.shiftKey;
-
-  switch (e.key.toLowerCase()) {
-    case "k": axis = "z"; delta = shift ? -1 : +1; break;
-    case "i": axis = "x"; delta = shift ? -1 : +1; break;
-    case "j": axis = "y"; delta = shift ? -1 : +1; break;
-    default: return; // ignore other keys
-  }
 
   cb({
     action: "nudgeSrc",

@@ -25,7 +25,7 @@ export function setupControlDispatcher(fn)  { callback.setup  = fn; }
 export function trayControlDispatcher(fn)   { callback.tray   = fn; }
 export function gameControlDispatcher(fn)   { callback.game   = fn; }
 export function gambitControlDispatcher(fn) { callback.gambit = fn; }
-export function advsqControlDispatcher(fn)  { callback.advsq = fn; }
+export function advsqControlDispatcher(fn)  { callback.advsq  = fn; }
 
 export function cameraControlDispatcher(fn) { callback.camera = fn; } // Not subject to the undo arch.
 // Seampoint - more dispatchers...

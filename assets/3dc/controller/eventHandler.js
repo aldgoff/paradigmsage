@@ -50,7 +50,7 @@ function trayPanelDispatch(payload) {
   }
 
 function gameButtonDispatch(payload) {
-  console.log(`gameButtonDispatch() ${payload}`);
+  console.log("gameButtonDispatch()", payload);
   const { action } = payload;
   switch (action) {
     case "newGame": handleNewGame(); break;
@@ -227,11 +227,8 @@ function handleNudgeSrc(payload) {
 function handleUpdateParam(payload) {
   const { name, value } = payload;
 
-  console.log(`Update ${name} → ${value}`);
-
   // Optional: normalize name
   const param = name.replace("advsq-", "");
-
   console.log(`Param ${param} = ${value}`);
 
   // TODO:
@@ -259,7 +256,7 @@ function handleDescend() {
   }
 
 function handlePOV(pov) {
-  console.log(`control_layer.eventHandler.camera: POV = ${pov}.`);
+  console.log("control_layer.eventHandler.camera: POV =", pov);
   // TODO: change state.
 }
 

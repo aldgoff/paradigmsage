@@ -112,7 +112,7 @@
     | Trays   | Make-Trays Show Hide                 |          | Real Factory                 |             |        |
     | Game    | New Rerun Undo Redo Load Save        |          |                              |             |        |
     | Moves   |                                      |          |                              |             |        |
-    | Gambit  | Freeze-AdvSq Prev Next Delete Select |          |                              |             |        |
+    | Gambit  | Freeze-AdvSq Prev Next Delete Select |          |                              |             | list   |
     | AdvSqs  | Place Remove Expand Contract + -     | k i j    |                              | Q Perimeter |        |
     | AdvSqs  | NextQuad NextPlane NextPiece         | ^k ^i ^j |                              | Stride      |        |
     | Compass |                                      |          |                              |             |        |
