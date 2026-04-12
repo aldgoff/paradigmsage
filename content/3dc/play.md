@@ -8,7 +8,8 @@ layout: "play"
   The 3D board is a cube of cubes (8x8x8).
   Each tile is the bottom of a cube.
   An 8 color board includes the 2 bishop colors (tile faces) and the 4 duke colors (tile edges).
-  Board is not yet active, just a POC for the render engine.
+  Board and panels are **inactive** - a POC for the render engine.
+  (For the terminally impatient, you are a witness to how the 'sausage' is made.)
 
   (Game has not yet been introduced in the PoP narrative.)
 
@@ -45,6 +46,20 @@ layout: "play"
     cursor: move;
   }
 
+  #move-window {
+    width: 380px;   /* tune later */
+  }
+  #move-list {
+    font-family: monospace;
+    white-space: pre;
+  }
+  #move-list {
+    height: 140px;
+  }
+  #move-window .panel-title {
+    font-family: monospace;
+  }
+
   .panel-title {
     font-weight: bold;
     margin-bottom: 6px;
@@ -62,17 +77,18 @@ layout: "play"
   }
 
   /* Locate the 2D floating windows. */
-    #move-window   { top: 400px; left: 350px; }  /* This places each draggable canvas onto the web page. */
+    /* #move-window   { top: 400px; left: 350px; }  This places each draggable canvas onto the web page. */
     /* Seampoint - more 2D canvases... */
 
   /* DOM Control Panels */
-    #setup-window  { top: 180px; left: 100px; }
-    #tray-window   { top: 180px; left: 300px; }
-    #game-window   { top: 180px; left: 500px; }
-    #gambit-window { top: 180px; left: 700px; }
-    #advsq-window  { top: 180px; left: 900px; }
+    #setup-window  { top: 180px; left:  100px; }
+    #tray-window   { top: 180px; left:  300px; }
+    #game-window   { top: 180px; left:  500px; }
+    #move-window   { top: 360px; left:  100px; }
+    #gambit-window { top: 180px; left:  700px; }
+    #advsq-window  { top: 180px; left:  900px; }
 
-    #camera-window { top: 400px; left: 150px; }
+    #camera-window { top: 600px; left: 150px; }
     /* Seampont - more DOM control panels... */
 </style>
 
@@ -80,7 +96,7 @@ layout: "play"
   <canvas id="3dc-board" width="1400" height="1800"></canvas>  <!-- 3D -->
 
   <!-- Size the 2D floating windows: allows DOM interface to drag them around. -->
-  <div class="canvas-window" id="move-window">   <canvas id="3dc-move"   width="150" height="200"></canvas> </div>
+  <!-- <div class="canvas-window" id="move-window">   <canvas id="3dc-move"   width="150" height="200"></canvas> </div> -->
 
  <!-- The DOM Control Panels -->
 <div class="panel" id="setup-window">
@@ -128,7 +144,16 @@ layout: "play"
     <button data-action="save" disabled>Save</button>
   </div>
   </div>
-  <!-- <div class="canvas-window" id="game-window">   <canvas id="3dc-game"   width="150" height="300"></canvas> </div> -->
+<!-- <div class="canvas-window" id="game-window">   <canvas id="3dc-game"   width="150" height="300"></canvas> </div> -->
+
+<div class="panel" id="move-window">
+  <div class="panel-title">Move | White | Black | Coordinates | Annotations</div>
+
+  <div class="section scroll-box" id="move-list">
+    <!-- tbd go here -->
+  </div>
+  </div>
+<!-- <div class="canvas-window" id="move-window">   <canvas id="3dc-move"   width="150" height="200"></canvas> </div> -->
 
 <div class="panel" id="gambit-window">
   <div class="panel-title">Gambit Control</div>

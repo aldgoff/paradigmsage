@@ -73,7 +73,12 @@
   Undo follows this list in reverse order.
   Gambits are rewound, then moves, the inital position, the trays, and finally the board.
 
-  The gambit tiles (src/dst) are two tiles on the board the player can arbitrarily move around. As either (or both) are moved, any advancement squares that couple them are drawn. At any point the player can say save, and that creates an advancement square that stays on the board. Player can  continue to move srcdst around or undo the list of accumulate advancement squares. So undo looks like this, undo positions of src/dst, then undo list of advsqs, then undo list of moves, then undo setup and board construction. Layered, but logarithmic resolution.
+  The gambit tiles (src/dst) are two tiles on the board the player can arbitrarily move around. 
+  As either (or both) are moved, any advancement squares that couple them are drawn. 
+  At any point the player can say save, and that creates an advancement square that stays on the board. 
+  Player can  continue to move srcdst around or undo the list of accumulate advancement squares. 
+  So undo looks like this, undo positions of src/dst, then undo list of advsqs, then undo list of moves, then undo setup and board construction. 
+  Layered, but logarithmic resolution.
 
  ### 4.3 Listing
   A draft
@@ -83,7 +88,7 @@
   | ---: | :------ | :------ | :---------------------------------- | :---------- |
   |   1  | P-K4,4  | P-KB3,4 | [K2,2]-[K4,4]   : [KB2,2]-[KB3,4]   | ch, ep, qc, kc, rc, dc, qn, etc. |
   |   2  | P-Q4,4  | P-QB3,4 | [Q2,2]-[Q4,4]   : [QB2,2]-[QB3,4]   | fk, pn, dc, mp, td, dy, tp, etc. |
-  |   3  |  |  |  |  |
+  | ...  |  |  |  |  |
 
   - Collapsed:
 

@@ -63,8 +63,8 @@ function demo(playBoard) {
 
   const context = renders.init(playBoard);
 
-  drawCanvasTitles();
-  drawLayoutBounds();
+  // drawCanvasTitles();
+  // drawLayoutBounds();
 
   demos.run(context);
 
