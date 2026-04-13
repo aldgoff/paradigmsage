@@ -24,7 +24,7 @@
  ### 3.0 Files
   - play.md
   - controller/controller.js
-  - controller/eventHandler.js - TODO: rename to events.js?
+  - controller/events.js
   - view/registerHandlers.js
   - view/view.js
 
@@ -32,7 +32,7 @@
     +----------------------------------+
     | CSS <style> ... </style>         |
     | 3D canvas                        |
-    | Panels                           |
+    | DOM Panels                       |
     |   Title                          |
     |   Buttons                        |
     |   Other controls                 |
@@ -51,12 +51,12 @@
     |   element.addEventListener("pointerdown", (e) =>         |
     +----------------------------------------------------------+
 
- ### 3.3 eventHandler.js
+ ### 3.3 events.js
     +-----------------------------------------------------------+
     | export function callbacks() {                             |
     |   register.setupControlDispatcher(setupPanelDispatch);    |
     |   register.gambitControlDispatcher(gambitButtonDispatch); |
-    | ...                                                       |
+    |   ...                                                     |
     |                                                           |
     | function setupPanelDispatch(payload) {                    |
     |   const { action, boardSize } = payload;                  |
@@ -79,12 +79,14 @@
  ### 3.4 registerHandlers.js
     +-----------------------------------------------------------------------+
     | export const callback = {                                             |
-    |   game: null,                                                         |
+    |   setup: null,                                                        |
+    |   tray null,                                                          |
     |   ...                                                                 |
     |   gambit: null,                                                       |
     | }                                                                     |
     |                                                                       |
     | export function gameControlDispatcher(fn)   { callback.game   = fn; } |
+    | export function trayControlDispatcher(fn)   { callback.tray   = fn; } |
     | ...                                                                   |
     | export function gambitControlDispatcher(fn) { callback.gambit = fn; } |
     +-----------------------------------------------------------------------+
@@ -93,8 +95,13 @@
     +-----------------------------------------------------------+
     | wirePanel("setup-window", "setup", buildSetupPayload);    |
     | wirePanel("tray-window", "setup", buildTrayPayload);      |
-    | wirePanel("gambit-window", "gambit", buildGambitPayload); |
     | ...                                                       |
+    | wirePanel("advsq-window", "advsq", buildAdvsqPayload);    |
+    |                                                           |
+    | buildSetupPayload(panel, action)                          |
+    | buildTrayPayload(panel, action)                           |
+    | ...                                                       |
+    | buildAdvsqPayload(panel, action)                          |
     +-----------------------------------------------------------+
 
  ### 3.2 tbd.js

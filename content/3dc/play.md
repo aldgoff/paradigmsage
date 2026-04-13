@@ -59,16 +59,15 @@ layout: "play"
     padding: 4px;
   }
 
-  /* DOM Control Panels */
-    #setup-window  { top: 180px; left:  100px; }
-    #tray-window   { top: 180px; left:  300px; }
-    #game-window   { top: 180px; left:  500px; }
-    #move-window   { top: 360px; left:  100px; }
-    #gambit-window { top: 180px; left:  700px; }
-    #advsq-window  { top: 180px; left:  900px; }
+  #setup-window  { top: 180px; left:  100px; }  /* DOM Control Panels */
+  #tray-window   { top: 180px; left:  300px; }
+  #game-window   { top: 180px; left:  500px; }
+  #move-window   { top: 360px; left:  100px; }
+  #gambit-window { top: 180px; left:  700px; }
+  #advsq-window  { top: 180px; left:  900px; }
 
-    #camera-window { top: 600px; left: 150px; }
-    /* Seampont - more DOM control panels... */
+  #camera-window { top: 600px; left: 150px; }
+  /* Seampont - more DOM control panels... */
 </style>
 
 <!-- The 3DC Game... -->
@@ -160,18 +159,18 @@ layout: "play"
   <label> Stride:      <input type="number" name="advsq-stride"    min="1" step="1" value="3"> </label>
   </div>
 
-  <div class="section">
-    <button data-action="nextQuad">Next Quad</button>
-    <button data-action="nextPlane">Next Plane</button>
-    <button data-action="nextPiece">Next Piece</button>
-  </div>
-
   <!-- Optional: key hints (visual only) -->
   <div class="section" style="font-size: 11px; color: #666;">
     Slip & Slide +: k i j
   </div>
   <div class="section" style="font-size: 11px; color: #666;">
     Slip & Slide -: ^k ^i ^j
+  </div>
+
+  <div class="section">
+    <button data-action="nextQuad">Next Quad</button>
+    <button data-action="nextPlane">Next Plane</button>
+    <button data-action="nextPiece">Next Piece</button>
   </div>
 </div>
 

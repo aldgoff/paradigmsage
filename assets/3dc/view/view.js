@@ -1,5 +1,12 @@
-/**
- * Module: <filename>
+/* File: view.js
+  Path: ./3dc/view/view.js
+  Purpose: desc
+  Author: Allan Goff
+  Date: 4/02/26
+  UI: the export functions.
+*/
+
+/** Roles:
  * Layer: View (Projection & Visualization)
  *
  * Purpose:
@@ -28,23 +35,7 @@
  * Avoid encoding logic assumptions in visuals (e.g., paths).
 */
 
-/* File: view.js
-  Path: ./3dc/view/view.js
-  Purpose: desc
-  Author: Allan Goff
-  Date: 4/02/26
-  UI: the export functions.
-*/
-
 // --- Load JSON ---
-import viewData from "./view.json" assert { type: "json" };
-  const viewModule = viewData.view_module;
-  const threeDCanvas = viewModule.threeDCanvas;   // 3D canvas, fixed, background.
-  const gameCanvas   = viewModule.gameCanvas;     // 2D canvi, floating, draggable.
-  const cameraCanvas = viewModule.cameraCanvas;
-  const trayCanvas   = viewModule.trayCanvas;
-  const moveCanvas   = viewModule.moveCanvas;
-  const gambitCanvas = viewModule.gambitCanvas;
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
@@ -55,10 +46,6 @@ import * as demos from "./demos.js";
 
 // --- Demo for development ---
 function demo(playBoard) {
-  // Just testing the callback functions, actual use is event driven.
-  // run.callback.game("Undo");
-  // run.callback.camera("aCameraButton");
-
   if (!playBoard) return false;
 
   const context = renders.init(playBoard);
