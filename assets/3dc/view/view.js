@@ -1,6 +1,6 @@
 /* File: view.js
   Path: ./3dc/view/view.js
-  Purpose: desc
+  Purpose: Interface to the view layer, render board, wire the panels, and add event listeners.
   Author: Allan Goff
   Date: 4/02/26
   UI: the export functions.
@@ -59,7 +59,7 @@ function demo(playBoard) {
 export function init(playBoard) {
   console.log("view.init(): 3dc/view/init.js");
 
-  const context = demo(playBoard);
+  const context = demo(playBoard); // Display POC board, decorators, raycasting.
 
   // Listeners: (The move listing is purely output, no input, therefore no wiring todo.)
   wirePanel("setup-window",  "setup",  buildSetupPayload);
@@ -73,7 +73,8 @@ export function init(playBoard) {
   wirePanel("camera-window", "camera", buildCameraPayload); // Not subject to the undo arch.
   // Seampoint - more listeners...
 
-  return context;
+  // return context;
+  return;
 }
 // Seampoint: more global functions...
 

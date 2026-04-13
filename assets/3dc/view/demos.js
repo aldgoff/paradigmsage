@@ -1,7 +1,7 @@
 
 /* File: view.js
   Path: ./3dc/view/view.js
-  Purpose: desc
+  Purpose: POC on render engine, board, tiles, decorators, and raycasting.
   Author: Allan Goff
   Date: 4/02/26
   UI: the export functions.
@@ -58,7 +58,7 @@ function runDemos(scene, renderer, camera, tileGeometry, tileMap) {
 
   demoKnight(tileMap);
 
-  demoCamera();
+  demoCamera("neutral");  // "white" | "neutral" | "black" | "negative".
 
   addEventListener(scene, renderer, camera, tileMap);
 }
@@ -195,11 +195,10 @@ function demoTriDiamond(tileMap, pos, piece="duke", variant="linear2") {
   meshTile.add(group);
   }
 
-function demoCamera() {
-  cameras.UI("neutral", [0,0,0]);
-  // cameras.UI("white", [-80,0,0]);
-  // cameras.UI("negative", [0,0,0]);
-  // cameras.UI("black", [-80,0,0]);
+function demoCamera(pov) {
+  const offset = (pov === "white" || pov === "black")? -80 : 0;
+
+  cameras.selectPOV(pov, [offset, 0, 0]);
 }
 
 // --- Helpers ---

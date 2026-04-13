@@ -207,7 +207,3 @@ I think this works.
   ]
 }
 
-## N. Invariants (typically last section)
-  Formally redundant consequences of the spec that must always hold.
-  Used as drift guards and cross-checks across data, code, and tests.
-

@@ -12,7 +12,6 @@ const THREE = window.THREE;
 // --- Load JSON ---
 import camerasData from "./cameras.json" assert { type: "json" };
   const camerasModule = camerasData.cameras_module;
-  const category  = camerasModule.category;
   const POV  = camerasModule.POV;
   // Seampoint: more objects.
 
@@ -41,8 +40,20 @@ export function init(zoom, pov, focalPoint=[0,0,0]) {
   return camera;
 }
 
-export function UI(newPov, focalPoint=specs.focalPoint) {
+export function selectPOV(newPov, focalPoint=specs.focalPoint) {
+  const vertical = pov[1];
   pov = POV[newPov];
+  pov[1] = vertical;
+
+  specs.camera.position.set(...pov);
+  specs.camera.lookAt(...focalPoint);
+
+  return;
+  }
+
+export function shiftVertical(tilt) {
+  pov[1] += tilt;
+
   specs.camera.position.set(...pov);
   specs.camera.lookAt(...focalPoint);
 
