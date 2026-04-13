@@ -223,6 +223,8 @@ function handleNextPiece() {
   // TODO: change state.
 }
 
+import * as cameras from "../view/render/cameras.js";
+
 function handleZoomIn() {             // Camera handlers. Not subject to the undo arch.
   console.log("Camera Zoom-In:");
   // TODO: change state.
@@ -235,17 +237,26 @@ function handleZoomOut() {
 
 function handleAscend() {
   console.log("Camera Ascend:");
-  // TODO: change state.
+  const tilt = 10;
+  cameras.shiftVertical(tilt);
   }
 
 function handleDescend() {
   console.log("Camera Descend:");
-  // TODO: change state.
+  const tilt = -10;
+  cameras.shiftVertical(tilt);
   }
 
 function handlePOV(pov) {
   console.log("Camera POV:", pov);
-  // TODO: change state.
+
+  const offset = (pov === "white" || pov === "black")? -80 : 0; // Camera angle slightly off.
+
+  let shift = 0;  // Even worse: TODO; get AI help in using camera.
+  if(     pov === "white") { shift = -0; }  
+  else if(pov === "black") { shift =  0; }
+
+  cameras.selectPOV(pov, [shift, 0, 0]);
 }
 
 // Seampoint - more handle functions, to be grouped by panel.
