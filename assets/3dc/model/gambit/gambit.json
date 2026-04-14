@@ -26,11 +26,6 @@
       { "turn": 2, "moves": ["PxP", "N-KB3,3"], "coords": ["...", ""], "annotations": ["", ""] },
       { "turn": 3, "moves": ["qnP-QN3,4", "..."], "coords": ["...", "..."], "annotations": ["...", "..."] }
     ],
-    "Insights": [
-      { "Q":37, "src": "Q3,3", "dst": "KB2,2" }, 
-      { "Q":38, "src": "Q3,3", "dst": "KN3,3" }, 
-      { "Q":1, "src": "Q3,3", "dst": "Q1,1" }
-    ],
     "AdvSqs": [
       { "src": "Q3,3", "dst": "KB2,2" }, 
       { "src": "Q3,3", "dst": "KN3,3" }, 

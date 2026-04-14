@@ -18,14 +18,18 @@ import stateData from "./state.json" assert { type: "json" };
 // Seampoint: more objects.
 
 // --- Build upon previous layers ---
-import * as view from "../../view/view.js";
+import * as model from "../../model/model.js";
+import * as view   from "../../view/view.js";
 import * as control from "../../controller/controller.js";
+
+import * as boards from "../../view/boards/boards.js";
+
 // Seampoint: more imports...
 
-let state = { // This is the state of game/puzzle/board/moves/insight/advsq etc.
+let state = { // This is the state of the game: board/moves/gambits/advsq.
   Setup:   [],
   Moves:   [],
-  Insights:[],
+  Gambits: [],
   AdvSqs:  []
 };
 
@@ -35,30 +39,32 @@ export function getState() {
   }
 
 export function getNull() {
-  return { Setup: [], Moves: [], Insights:[], AdvSqs: [] };
+  return { Setup: [], Moves: [], Gambits:[], AdvSqs: [] };
   }
 
 export function setNull() {
-  state = { Setup: [], Moves: [], Insights:[], AdvSqs: [] };
+  state = { Setup: [], Moves: [], Gambits:[], AdvSqs: [] };
 }
 
 // Basic player sequence.
 export function setup(option) {           // Pick a board, trays, rule enforcement, etc.
+  // TODO: may have to erase later states and/or delete an existing board.
   state.Setup.push(option);
+  boards.makeBoard(option.board);
   }
 
 export function pushAdvSq(advsq) {        // Manipulate an advancement square.
   state.AdvSqs.push(advsq);
   }
 
-export function freeze(advsq) {           // Freeze each on board to generate insight.
-  state.Insights.push(advsq);
+export function freeze(advsq) {           // Freeze each on board to generate gambit.
+  state.Gambits.push(structuredClone(advsq));
   state.AdvSqs.length = 0;
   }
 
-export function recordMove(insight) {     // Select a move from the insight set of advsqs.
-  state.Moves.push(insight);
-  state.Insights.length = 0;
+export function recordMove(gambit) {     // Select a move from the gambit set of advsqs.
+  state.Moves.push(structuredClone(gambit));
+  // state.Gambits.length = 0;
 }
 
 // To be deprecated as dev progresses...useful javascript weirdness.
@@ -92,12 +98,6 @@ function iterateState(stateData) {
       // console.log("  Moves:", entry.moves.join(" | "));
       // console.log("  Coords:", entry.coords.join(" | "));
       // console.log("  Notes:", entry.annotations.join(" | "));
-  });
-
-  console.log("Insights:");
-  mod.Insights.forEach((entry, i) => {
-    console.log(i, entry);
-    // console.log(`Q:${entry.Q} ${entry.src} → ${entry.dst}`);
   });
 
   console.log("AdvSqs:");

@@ -1,7 +1,7 @@
 
 /* File: view.js
   Path: ./3dc/view/view.js
-  Purpose: desc
+  Purpose: POC on render engine, board, tiles, decorators, and raycasting.
   Author: Allan Goff
   Date: 4/02/26
   UI: the export functions.
@@ -22,6 +22,8 @@ import * as decorators from "./decorators/decorators.js";
 import * as cameras from "./render/cameras.js";
 
 import * as renders from "./render/renders.js";
+
+import * as boards from "./boards/boards.js";
 // Seampoint: more imports...
 
 // --- Demo for development ---
@@ -39,7 +41,7 @@ export function run(context) {
 
 // --- Demos ---
 function runDemos(scene, renderer, camera, tileGeometry, tileMap) {
-  demoBoard(scene, tileGeometry, tileMap);
+  demoBoard([8,8,8], scene, tileGeometry, tileMap);
 
   demoDecorators(scene, tileGeometry, tileMap);    // Create offboard tiles to test decorators.
 
@@ -58,7 +60,7 @@ function runDemos(scene, renderer, camera, tileGeometry, tileMap) {
 
   demoKnight(tileMap);
 
-  demoCamera();
+  demoCamera("neutral");  // "white" | "neutral" | "black" | "negative".
 
   addEventListener(scene, renderer, camera, tileMap);
 }
@@ -78,7 +80,8 @@ function addEventListener(scene, renderer, camera, tileMap) {
   });
 }
 
-function demoBoard(scene, tileGeometry, tileMap) {
+function demoBoard(dimensions, scene, tileGeometry, tileMap) {
+  // boards.makeBoard(dimensions);
   for(let z=-3; z<=4; z++) {  // Create an 8x8x8 board.
     for(let x=-3; x<=4; x++) {
       for(let y=-3; y<=4; y++) {
@@ -195,11 +198,10 @@ function demoTriDiamond(tileMap, pos, piece="duke", variant="linear2") {
   meshTile.add(group);
   }
 
-function demoCamera() {
-  cameras.UI("neutral", [0,0,0]);
-  // cameras.UI("white", [-80,0,0]);
-  // cameras.UI("negative", [0,0,0]);
-  // cameras.UI("black", [-80,0,0]);
+function demoCamera(pov) {
+  const offset = (pov === "white" || pov === "black")? -80 : 0;
+
+  cameras.selectPOV(pov, [offset, 0, 0]);
 }
 
 // --- Helpers ---

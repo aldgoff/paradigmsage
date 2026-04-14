@@ -7,22 +7,21 @@
   A layered approach: nested arrays to facilitate undo/redo.
   - Setup:    Creating/changing the board, play/puzzle, trays, gap, initial position, autoload.
   - Moves:    Standard listing, but with safe fallback and annotation columns.
-  - Gambits:  Explore near term possible moves.
-  - Insights: Create and explore multiple advancement manifolds and ther interactions.
+  - Gambits:  Explore near term possible moves, multiple advancement manifolds and ther interactions.
   - AdvSqs:   Create an advSq and move it around (expand/contract, shift, slip, nextQuad, nextPlane).
 
   Can undo/redo within each category. When empty or full, transitions to next category.
   A branch deletes all downstream states.
 
   So, a 4 move gambit, with an undo back to move 2, where a different move 3 is specified,
-  deletes moves 3 & 4, and the Insight and AdvSqs undo/redo arrays.
+  deletes moves 3 & 4, and AdvSqs undo/redo arrays.
 
   The result is a kind of logarithmic undo chain.
 
   Each of the 5 undo/redo arrays start at zero length.
   After board setup, each player may make a move, or start a gambit analysis.
   A gambit analysis begins by exploring potential advsqs (array 5).
-  The move, gambit, and insight arrays (2, 3, & 4) may be empty at this point.
+  The move and gambit arrays (2, 3, & 4) may be empty at this point.
 
 ## 2. Setup (UR array 1)
   - The setup phase is stored, to be replayed at will via the undo/redo system.
@@ -49,24 +48,15 @@
     - That happens only when one player or the other deviates from the gambit.
   - A branch will zero out all later moves of the gambit, and all later undo/redo arrays.
 
-## 5. Insights (UR array 4)
-  - The advsqs of insight analysis are stored, to be replayed at will via the undo/redo system.
-  - Each player is free to explore how a small set of advsqs interact.
-    - There is no apriori limit to the number of such captured advsqs.
-    - As a practical matter, they will probably be limited to 5 - 9.
-    - It is intended that at least one of these be a legal next move.
-    - A player traverses the undo/redo list, then saves the current as the next move in the gambit.
-  - A branch will zero out all later advsqs in the analysis, and all later undo/redo arrays.
-
-## 6. AdvSqs (UR array 5)
+## 5. AdvSqs (UR array 4)
   - The location and extent of a single advsq is stored, to be replayed at will via the undo/redo system.
     - It's parameters can be modified in a variety of ways.
-    - An advsq can be added to the insights list - it gets *frozen* to the board.
+    - An advsq can be added to the gambits list - it gets *frozen* to the board.
     - This does not zero the undo array, but it does truncated it to this instance.
     - If a single history contains multiple desired advsqs, they must be frozen in reverse order.
   - A branch will zero out all later positions of that advsq.
 
- ### 6.1
+ ### 5.1
   There are subtle challenges here.
 
   An advsq can be defined by a source and destination tile (src, dst).
@@ -82,7 +72,7 @@
   - Both are hard to shift/slip (within plane)/(to new plane).
   - SD: hard for nextQuad()/nextPlane() (multiple quads may be implied; linear, overlap).
 
- ### 6.2 Shifts and Slips
+ ### 5.2 Shifts and Slips
   I thought that shift and slip were different things.
   - Shift: within plane.
   - Slip: to new plane.
@@ -100,9 +90,4 @@
   There are 24 bishop apex moves.
   Therefore, there are 26 + 24 = 50 slip directions, most change planes.
   Thus shift is a subset of slip.
-
-
-## N. Invariants (typically last section)
-  Formally redundant consequences of the spec that must always hold.
-  Used as drift guards and cross-checks across data, code, and tests.
 

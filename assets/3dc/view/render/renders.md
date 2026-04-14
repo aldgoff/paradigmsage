@@ -11,7 +11,6 @@
     - Easy integration with DOM overlay ✅
     - Good picking (click detection) ✅
     - Primary Recommendation: Three.js
-    - Why it fits your system:
 
 ## 1.1. Orthographic camera support
   - Native, stable
@@ -48,18 +47,4 @@
   - And evolve to:
     - custom geometry
     - instancing (performance later)
-
-
-
-
-
-## 1. Purpose/Concepts/Example/Canonical/Formats/Parsing/Architecture/Functions/Data/...
-  text
-
- ### 1.1 SubSection
-  text
-
-## N. Invariants (typically last section)
-  Formally redundant consequences of the spec that must always hold.
-  Used as drift guards and cross-checks across data, code, and tests.
 

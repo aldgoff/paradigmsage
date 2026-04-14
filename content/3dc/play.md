@@ -4,12 +4,16 @@ layout: "play"
 ---
 
 **Play (INWORK)**
-  A playable version of 3D Chess with planar moves and advancement squares.
+  A playable implemetation of 3D Chess with planar moves and advancement squares.
   The 3D board is a cube of cubes (8x8x8).
   Each tile is the bottom of a cube.
   An 8 color board includes the 2 bishop colors (tile faces) and the 4 duke colors (tile edges).
-  Board and panels are **inactive** - a POC for the render engine.
-  (For the terminally impatient, you are a witness to how the 'sausage' is made.)
+  Active Panels: Setup Control and Camera Control. 
+  Click on the **Make Board** button to see a board.
+  Play with **camera controls**.
+  **Raycasting** demonstrated by toggling circles on clicked tiles.
+  A growing POC for the render engine (4/14/26).
+  (For the terminally impatient, you are witness to how the 'sausage' is made.)
 
   (Game has not yet been introduced in the PoP narrative.)
 
@@ -46,6 +50,11 @@ layout: "play"
     font-family: monospace;
     width: 380px;
     }
+  #undo-list {
+    height: 66px;
+    font-family: monospace;
+    white-space: pre;
+    }
   .panel-title {
     font-weight: bold;
     margin-bottom: 6px;
@@ -59,16 +68,15 @@ layout: "play"
     padding: 4px;
   }
 
-  /* DOM Control Panels */
-    #setup-window  { top: 180px; left:  100px; }
-    #tray-window   { top: 180px; left:  300px; }
-    #game-window   { top: 180px; left:  500px; }
-    #move-window   { top: 360px; left:  100px; }
-    #gambit-window { top: 180px; left:  700px; }
-    #advsq-window  { top: 180px; left:  900px; }
+  #setup-window  { top: 180px; left:  100px; }  /* DOM Control Panels */
+  #tray-window   { top: 180px; left:  300px; }
+  #game-window   { top: 180px; left:  500px; }
+  #move-window   { top: 360px; left:  100px; }
+  #gambit-window { top: 180px; left:  700px; }
+  #advsq-window  { top: 180px; left:  900px; }
 
-    #camera-window { top: 600px; left: 150px; }
-    /* Seampont - more DOM control panels... */
+  #camera-window { top: 600px; left: 150px; }
+  /* Seampont - more DOM control panels... */
 </style>
 
 <!-- The 3DC Game... -->
@@ -113,11 +121,15 @@ layout: "play"
 
   <div class="section">
     <button data-action="newGame">New</button>
-    <button data-action="rerun" disabled>Rerun</button>
-    <button data-action="undo" disabled>Undo</button>
-    <button data-action="redo" disabled>Redo</button>
+    <button data-action="rerun">Rerun</button>
+    <button data-action="undo">Undo</button>
+    <button data-action="redo">Redo</button>
     <button data-action="load" >Load</button>
-    <button data-action="save" disabled>Save</button>
+    <button data-action="save" >Save</button>
+  </div>
+
+  <div class="section scroll-box" id="undo-list">
+    <!-- tbd go here -->
   </div>
   </div>
 
@@ -160,18 +172,18 @@ layout: "play"
   <label> Stride:      <input type="number" name="advsq-stride"    min="1" step="1" value="3"> </label>
   </div>
 
-  <div class="section">
-    <button data-action="nextQuad">Next Quad</button>
-    <button data-action="nextPlane">Next Plane</button>
-    <button data-action="nextPiece">Next Piece</button>
-  </div>
-
   <!-- Optional: key hints (visual only) -->
   <div class="section" style="font-size: 11px; color: #666;">
     Slip & Slide +: k i j
   </div>
   <div class="section" style="font-size: 11px; color: #666;">
     Slip & Slide -: ^k ^i ^j
+  </div>
+
+  <div class="section">
+    <button data-action="nextQuad">Next Quad</button>
+    <button data-action="nextPlane">Next Plane</button>
+    <button data-action="nextPiece">Next Piece</button>
   </div>
 </div>
 

@@ -11,7 +11,7 @@
 │   │   │   ├── _tbd.md
 │   │   │   ├── controller.js
 │   │   │   ├── controller.md
-│   │   │   ├── eventHandler.js
+│   │   │   ├── events.js
 │   │   │   └── events.md
 │   │   ├── dev
 │   │   │   ├── devNotes.md
@@ -70,8 +70,6 @@
 │   │   │   ├── quads.js
 │   │   │   ├── quads.json
 │   │   │   └── quads.md
-│   │   ├── layout.js
-│   │   ├── layout.md
 │   │   ├── main.js
 │   │   ├── model
 │   │   │   ├── _tbd.md
@@ -88,6 +86,9 @@
 │   │   │       ├── state.js
 │   │   │       ├── state.json
 │   │   │       └── state.md
+│   │   ├── Obsolete
+│   │   │   ├── layout.js
+│   │   │   └── layout.md
 │   │   ├── templates
 │   │   │   ├── module.js
 │   │   │   ├── module.json
@@ -110,14 +111,18 @@
 │   │   │   │   └── quads.test.js
 │   │   │   ├── integration
 │   │   │   ├── model
-│   │   │   │   ├── gambit.test.js
+│   │   │   │   ├── Obsolete
+│   │   │   │   │   └── gambit.test.js
 │   │   │   │   └── state.test.js
 │   │   │   ├── templates
 │   │   │   │   └── module.test.js
 │   │   │   └── tests.js
 │   │   └── view
 │   │       ├── _tbd.md
-│   │       ├── board
+│   │       ├── boards
+│   │       │   ├── boards.js
+│   │       │   ├── boards.json
+│   │       │   └── boards.md
 │   │       ├── brainstorming.md
 │   │       ├── decorators
 │   │       │   ├── decorators.js
@@ -434,4 +439,4 @@
 │           └── poc.js
 └── themes
 
-83 directories, 351 files
+85 directories, 354 files

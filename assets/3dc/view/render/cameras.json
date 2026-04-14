@@ -1,11 +1,12 @@
 {
   "cameras_module": {
-    "category": {
-      "key1": "value1",
-      "key2": 123,
-      "array": [-1,  0,  0]
-    },
     "POV": { 
+      "white":    [-750, 150, -850], 
+      "neutral":  [ 800, 150, -800], 
+      "black":    [ 850, 150,  750], 
+      "negative": [-800, 150,  800] 
+    },
+    "history": { 
       "white":    [-800, 150, -800], 
       "neutral":  [ 900, 170, -900], 
       "black":    [ 800, 150,  800], 

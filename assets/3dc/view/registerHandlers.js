@@ -6,6 +6,7 @@
   UI: the export functions.
 */
 
+// --- UI ---
 export const callback = { // Allows rest of view layer easy access to control's dispatch functions.
   setup: null,
   tray: null, 

@@ -28,3 +28,40 @@
   2. Move panel state change routines into their own files, (controller/panels/gambit.js, move.js, setup.js, etc.). 
   3. Then finish the panels.
 
+## Eliminating Inisights in favor of Gambits - branch 3dc-insights
+  ```grep -RIn "nsight" ./assets/3dc | wc   62 lines ```
+ ### ✅ Tests
+  ✅ state.test.js
+  ✅ gambit.test.js
+
+ ### ✅ Controller
+  ✅ events.js
+  ✅ controller.js
+
+ ### ✅ Model
+  ✅ model.json
+  ✅ model.md
+  ✅ state.json
+  ✅ state.md
+  ✅ state.js
+  ✅ gambit.json
+  ✅ gambit.md
+
+## Make Board via State History and MVC Architecture.
+ ### state.js
+
+ ### events.js
+  handleNewGame()
+  ✅ handleRerun()
+  ✅ handleUndo()
+  ✅ handleRedo()
+  handleLoad()
+  handleSave()
+
+  renderState()
+
+ ### ✅ boards.js
+
+ ### controller.js
+  renderState()
+

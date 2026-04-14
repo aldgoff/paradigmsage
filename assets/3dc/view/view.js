@@ -1,5 +1,12 @@
-/**
- * Module: <filename>
+/* File: view.js
+  Path: ./3dc/view/view.js
+  Purpose: Interface to the view layer, render board, wire the panels, and add event listeners.
+  Author: Allan Goff
+  Date: 4/02/26
+  UI: the export functions.
+*/
+
+/** Roles:
  * Layer: View (Projection & Visualization)
  *
  * Purpose:
@@ -28,23 +35,7 @@
  * Avoid encoding logic assumptions in visuals (e.g., paths).
 */
 
-/* File: view.js
-  Path: ./3dc/view/view.js
-  Purpose: desc
-  Author: Allan Goff
-  Date: 4/02/26
-  UI: the export functions.
-*/
-
 // --- Load JSON ---
-import viewData from "./view.json" assert { type: "json" };
-  const viewModule = viewData.view_module;
-  const threeDCanvas = viewModule.threeDCanvas;   // 3D canvas, fixed, background.
-  const gameCanvas   = viewModule.gameCanvas;     // 2D canvi, floating, draggable.
-  const cameraCanvas = viewModule.cameraCanvas;
-  const trayCanvas   = viewModule.trayCanvas;
-  const moveCanvas   = viewModule.moveCanvas;
-  const gambitCanvas = viewModule.gambitCanvas;
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
@@ -53,12 +44,10 @@ import * as renders from "./render/renders.js";
 import * as demos from "./demos.js";
 // Seampoint: more imports...
 
+export let context;
+
 // --- Demo for development ---
 function demo(playBoard) {
-  // Just testing the callback functions, actual use is event driven.
-  // run.callback.game("Undo");
-  // run.callback.camera("aCameraButton");
-
   if (!playBoard) return false;
 
   const context = renders.init(playBoard);
@@ -69,10 +58,16 @@ function demo(playBoard) {
 }
 
 // --- UI ---
-export function init(playBoard) {
+export function init(playBoard) { // PlayBoard is the 3D canvas from the THREE renderer.
   console.log("view.init(): 3dc/view/init.js");
 
-  const context = demo(playBoard);
+  if(false) {  // POC.
+    const context = demo(playBoard); // Display POC board, decorators, raycasting.
+  }
+  else {      // Growing the panel and undo features.
+    context = renders.init(playBoard);
+    // demos.run(context);
+  }
 
   // Listeners: (The move listing is purely output, no input, therefore no wiring todo.)
   wirePanel("setup-window",  "setup",  buildSetupPayload);
@@ -86,7 +81,8 @@ export function init(playBoard) {
   wirePanel("camera-window", "camera", buildCameraPayload); // Not subject to the undo arch.
   // Seampoint - more listeners...
 
-  return context;
+  // return context;
+  return;
 }
 // Seampoint: more global functions...
 
