@@ -116,7 +116,7 @@ layout: "play"
     <button data-action="undo">Undo</button>
     <button data-action="redo">Redo</button>
     <button data-action="load" >Load</button>
-    <button data-action="save" disabled>Save</button>
+    <button data-action="save" >Save</button>
   </div>
   </div>
 

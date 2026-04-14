@@ -130,9 +130,9 @@ function test_gambits() {
 
 function test_advsqs() {
   const cases = [
-    { expected: '{"src":"Q3,3","dst":"KB2,2"}', label: "rook?" },
-    { expected: '{"src":"Q3,3","dst":"KN3,3"}', label: "bishop?" },
-    { expected: '{"src":"Q3,3","dst":"Q1,1"}', label: "duke?" },
+    { expected: '{"src":"Q1,1","dst":"KB2,2"}', label: "rook?" },
+    { expected: '{"src":"Q2,2","dst":"KN3,3"}', label: "bishop?" },
+    { expected: '{"src":"K3,3","dst":"Q1,1"}', label: "duke?" },
     { expected: '{"src":"K4,4","dst":"KR1,1"}', label: "stack?" },
   ];
 

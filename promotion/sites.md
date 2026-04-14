@@ -43,7 +43,7 @@ Places AI said might be good for promoting the website.
   #### Text:
     - Quantum Uncertainty: Firmness and color are not even measured in the same units. Surely they cannot be defined in terms of each other?!?
 
-  ### 3.
+  ### 3. 4/7/26 10:10
   #### Title:
     - Paradigm claims ignoring, not observing, is the key to scientific breakthroughs.
   #### URL:
@@ -54,7 +54,7 @@ Places AI said might be good for promoting the website.
   #### Rejected
     - Paradigm boldly claims that great scientists ignore more and see less.
 
-  ### 4.
+  ### 4. 4/14/26 10:54
   #### Title:
   - The Liar's Paradox: a hole in logic, or a paradigm to pummel?
   - Proof by contradiction is thwarted by paradox, but 
@@ -62,7 +62,8 @@ Places AI said might be good for promoting the website.
   #### URL:
     - https://paradigmsage.com/pop/ch-02-paradox/
   #### Text:
-    - tbd
+    - Falsification by contradiction is an established method of proof.
+    - But contradiction by self-reference admits another solution, imaginary truthvalues.
 
   ### 5. 
   #### Title:

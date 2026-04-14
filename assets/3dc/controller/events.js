@@ -126,102 +126,178 @@ let undoState = { // This is the undo state of the game: local to controller.
   Moves:   [],
   Gambits: [],
   AdvSqs:  []
-};
+  };
 
-let undoIndex = {
+let undoIndex = { // undoIndex[key][0] = pointer to NEXT item to apply.
   Setup:   [],
   Moves:   [],
   Gambits: [],
   AdvSqs:  []
 }
+
+function statusUndoIndex() {    // Game helpers.
+  console.log(`
+    ${undoIndex.Setup[0]}/${undoIndex.Setup[1]}
+    ${undoIndex.Moves[0]}/${undoIndex.Moves[1]}
+    ${undoIndex.Gambits[0]}/${undoIndex.Gambits[1]}
+    ${undoIndex.AdvSqs[0]}/${undoIndex.AdvSqs[1]}
+    `);
+  }
+
+function currentKeyIndex() {
+  const order = ["AdvSqs", "Gambits", "Moves", "Setup"];
+
+  for (const key of order) {
+    const i = undoIndex[key][0];
+
+    if (i > 0) {
+      return {
+        arrayKey: key,
+        index: i - 1
+      };
+    }
+  }
+
+  return null;
+  }
+
+function prevKeyIndex() {
+  const order = ["AdvSqs", "Gambits", "Moves", "Setup"];
+
+  for (let k = 0; k < order.length; k++) {
+    const key = order[k];
+    let i = undoIndex[key][0];
+
+    // Only consider arrays that have any applied state
+    if (i > 0) {
+      i = i - 1;
+
+      if (i >= 0) {      // Case 1: still within same array
+        undoIndex[key][0] = i;
+        if(i-1 >= 0)
+          return { arrayKey: key, index: i-1 };
+      }
+
+      for (let j = k + 1; j < order.length; j++) {      // Case 2: retreat to previous arrays
+        const prevKey = order[j];
+        const prevI = undoIndex[prevKey][0];
+
+        if (prevI > 0) {
+          return { arrayKey: prevKey, index: prevI - 1 };
+        }
+      }
+
+      return null; // nothing left anywhere
+    }
+  }
+
+  return null; // no arrays had state
+  }
+
+function nextKeyIndex() {
+  const order = ["Setup", "Moves", "Gambits", "AdvSqs"];
+
+  for (let k = 0; k < order.length; k++) {
+    const key = order[k];
+    let i = undoIndex[key][0];
+    const max = undoIndex[key][1];
+
+    // Only consider arrays that have remaining redo
+    if (i < max) {      // Case 1: advance within same array
+      undoIndex[key][0] = i + 1;
+      return { arrayKey: key, index: i };
+    }
+
+    for (let j = k + 1; j < order.length; j++) {    // Case 2: move forward to next arrays
+      const nextKey = order[j];
+      const nextI = undoIndex[nextKey][0];
+      const nextMax = undoIndex[nextKey][1];
+
+      if (nextI < nextMax) {
+        undoIndex[nextKey][0] = nextI + 1;
+        return { arrayKey: nextKey, index: nextI };
+      }
+    }
+
+    // If we checked this key and forward keys, nothing found
+    if (i < max) break;
+  }
+
+  return null;
+}
+
 function handleNewGame() {            // Game handlers.
-  console.log("Game New-Game:");
+  // console.log("Game New-Game:");
   // TODO: change state.
+  // TODO: temp code - show current state.
+  const currKeyIndex = currentKeyIndex();
+
+  const key = currKeyIndex.arrayKey;
+  const index = currKeyIndex.index;
+  const stateArray = undoState[key];
+
+  console.log(`${key} ${index}`, JSON.parse(JSON.stringify(stateArray))[index])
   }
 
 function handleRerun() {
   console.log("Game Rerun:");
   // TODO: change state.
-  for(const key in undoIndex) {
-    const array = undoIndex[key];
-    console.log(key, "undoIndex i/max", undoIndex[key][0], undoIndex[key][1]);
-  }
   }
   
 function handleUndo() {
   // console.log("Game Undo:");
   // TODO: change state.
-  if(undoIndex["AdvSqs"][0] >= 0) {
-    let i = undoIndex["AdvSqs"][0];
-    const stateArray = undoState["AdvSqs"];
-      console.log(`AdvSq ${i}`, JSON.parse(JSON.stringify(stateArray))[i])
-    undoIndex["AdvSqs"][0] = --i;
-    }
-  else if(undoIndex["Gambits"][0] >= 0) {
-    let i = undoIndex["Gambits"][0];
-    const stateArray = undoState["Gambits"];
-      console.log(`Gambit ${i}`, JSON.parse(JSON.stringify(stateArray))[i])
-    undoIndex["Gambits"][0] = --i;
-    }
-  else if(undoIndex["Moves"][0] >= 0) {
-    let i = undoIndex["Moves"][0];
-    const stateArray = undoState["Moves"];
-      console.log(`Move ${i}`, JSON.parse(JSON.stringify(stateArray))[i])
-    undoIndex["Moves"][0] = --i;
-    }
-  else if(undoIndex["Setup"][0] >= 0) {
-    let i = undoIndex["Setup"][0];
-    const stateArray = undoState["Setup"];
-      console.log(`Setup ${i}`, JSON.parse(JSON.stringify(stateArray))[i])
-    undoIndex["Setup"][0] = --i;
+  const keyIndex = prevKeyIndex();
+  if(keyIndex === null) {
+    console.log("Genesis - empty state history.");
+    return;
   }
-  };
+
+  const key = keyIndex.arrayKey;
+  const index = keyIndex.index;
+  const stateArray = undoState[key];
+
+  console.log(`${key} ${index}`, JSON.parse(JSON.stringify(stateArray))[index])
+  }
   
 function handleRedo() {
-  // console.log("Game Redo:");
+  // console.log("Game Undo:");
   // TODO: change state.
-  if(undoIndex["Setup"][0] < undoIndex["Setup"][1]) {
-    let i = undoIndex["Setup"][0];
-    const stateArray = undoState["Setup"];
-      console.log(`Setup ${i+1}`, JSON.parse(JSON.stringify(stateArray))[i+1])
-    undoIndex["Setup"][0] = ++i;
-    }
-  else if(undoIndex["Moves"][0] < undoIndex["Moves"][1]) {
-    let i = undoIndex["Moves"][0];
-    const stateArray = undoState["Moves"];
-      console.log(`Move ${i+1}`, JSON.parse(JSON.stringify(stateArray))[i+1])
-    undoIndex["Moves"][0] = ++i;
-    }
-  else if(undoIndex["Gambits"][0] < undoIndex["Gambits"][1]) {
-    let i = undoIndex["Gambits"][0];
-    const stateArray = undoState["Gambits"];
-      console.log(`Gambit ${i+1}`, JSON.parse(JSON.stringify(stateArray))[i+1])
-    undoIndex["Gambits"][0] = ++i;
-    }
-  else if(undoIndex["AdvSqs"][0] < undoIndex["AdvSqs"][1]) {
-    let i = undoIndex["AdvSqs"][0];
-    const stateArray = undoState["AdvSqs"];
-      console.log(`AdvSq ${i+1}`, JSON.parse(JSON.stringify(stateArray))[i+1])
-    undoIndex["AdvSqs"][0] = ++i;
+  const keyIndex = nextKeyIndex();
+  if(keyIndex === null) {
+    console.log("Head death - nor more state history.");
+    return;
   }
+
+  const key = keyIndex.arrayKey;
+  const index = keyIndex.index;
+  const stateArray = undoState[key];
+
+  console.log(`${key} ${index}`, JSON.parse(JSON.stringify(stateArray))[index])
   }
   
 function handleLoad() {
   console.log("Game Load:", state.getState());
+  // TODO: change state.
+  // TODO: temp code - load example state from json file.
   undoState = structuredClone(state.getState());  // A deep copy for undo to traverse.
   for(const key in undoState) {
     const array = undoState[key];
     console.log(key, "length", array.length);
-    undoIndex[key][0] = array.length - 1;
-    undoIndex[key][1] = array.length - 1;
+    undoIndex[key][0] = array.length;
+    undoIndex[key][1] = array.length;
   }
+  const keyIndex = currentKeyIndex();
+  console.log("keyIndex", keyIndex);
+
   console.log("----------");
-  // TODO: change state.
   }
   
 function handleSave() {
-  console.log("Game Save:");
+  // console.log("Game Save:");
   // TODO: change state.
+  console.log("statusUndoIndex:");
+  statusUndoIndex();
 }
 
 function handleFreeze() {             // Gambit handlers.
