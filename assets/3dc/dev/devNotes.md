@@ -47,3 +47,21 @@
   ✅ gambit.json
   ✅ gambit.md
 
+## Make Board via State History and MVC Architecture.
+ ### state.js
+
+ ### events.js
+  handleNewGame()
+  ✅ handleRerun()
+  ✅ handleUndo()
+  ✅ handleRedo()
+  handleLoad()
+  handleSave()
+
+  renderState()
+
+ ### ✅ boards.js
+
+ ### controller.js
+  renderState()
+

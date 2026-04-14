@@ -50,6 +50,11 @@ layout: "play"
     font-family: monospace;
     width: 380px;
     }
+  #undo-list {
+    height: 66px;
+    font-family: monospace;
+    white-space: pre;
+    }
   .panel-title {
     font-weight: bold;
     margin-bottom: 6px;
@@ -121,6 +126,10 @@ layout: "play"
     <button data-action="redo">Redo</button>
     <button data-action="load" >Load</button>
     <button data-action="save" >Save</button>
+  </div>
+
+  <div class="section scroll-box" id="undo-list">
+    <!-- tbd go here -->
   </div>
   </div>
 

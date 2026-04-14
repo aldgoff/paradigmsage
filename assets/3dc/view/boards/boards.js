@@ -32,9 +32,7 @@ let currentBoard = null;
 export function makeBoard(dimensions) {
   console.log("makeBoard()", dimensions);
 
-  if (currentBoard) {
-    view.context.scene.remove(currentBoard);
-  }
+  if(currentBoard) { view.context.scene.remove(currentBoard); }
 
   const Z = dimensions[0]/2;  // 8.
   const X = dimensions[1]/2;  // 8.
@@ -50,7 +48,7 @@ export function makeBoard(dimensions) {
   const tileMap = new Map();
 
   let count = 0;
-  for(let z=Sz; z<=Z; z++) {  // Create an 8x8x8 board.
+  for(let z=Sz; z<=Z; z++) {  // Create the board.
     for(let x=Sx; x<=X; x++) {
       for(let y=Sy; y<=Y; y++) {
         let pos = [z, x, y];
@@ -69,6 +67,13 @@ export function makeBoard(dimensions) {
 
   console.log("count", count);
   console.log("view.context", view.context);
+  }
+
+export function clearBoard() {
+  if (currentBoard) {
+    view.context.scene.remove(currentBoard);
+    currentBoard = null;
+  }
 }
 // Seampoint: more global functions.
 

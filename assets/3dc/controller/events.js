@@ -9,6 +9,7 @@
 import * as register from "../view/registerHandlers.js";
 import * as controls from "./controller.js";
 import * as state   from "../model/state/state.js";
+import * as boards  from "../view/boards/boards.js";
 
 // --- UI ---
 export function callbacks() {
@@ -140,12 +141,22 @@ let undoIndex = { // undoIndex[key][0] = pointer to NEXT item to apply.
 }
 
 function statusUndoIndex() {    // Game helpers.
-  console.log(`
-    ${undoIndex.Setup[0]}/${undoIndex.Setup[1]}
-    ${undoIndex.Moves[0]}/${undoIndex.Moves[1]}
-    ${undoIndex.Gambits[0]}/${undoIndex.Gambits[1]}
-    ${undoIndex.AdvSqs[0]}/${undoIndex.AdvSqs[1]}
-    `);
+  const el = document.getElementById("undo-list");
+
+  const rows = [
+    ["Setup",   undoIndex.Setup],
+    ["Moves",   undoIndex.Moves],
+    ["Gambits", undoIndex.Gambits],
+    ["AdvSqs",  undoIndex.AdvSqs]
+  ];
+
+  const text = rows
+    .map(([label, [i, max]]) =>
+      `${label.padEnd(7)} ${i}/${max}`
+    )
+    .join("\n");
+
+  el.textContent = text;
   }
 
 function currentKeyIndex() {
@@ -153,16 +164,12 @@ function currentKeyIndex() {
 
   for (const key of order) {
     const i = undoIndex[key][0];
-
     if (i > 0) {
-      return {
-        arrayKey: key,
-        index: i - 1
-      };
+      return { arrayKey: key, index: i - 1 };
     }
   }
 
-  return null;
+  return { arrayKey: "Sentry", index: -1 };  // 🔥 explicit
   }
 
 function prevKeyIndex() {
@@ -244,40 +251,95 @@ function handleNewGame() {            // Game handlers.
   }
 
 function handleRerun() {
-  console.log("Game Rerun:");
-  // TODO: change state.
+  const order = ["AdvSqs", "Gambits", "Moves", "Setup"];
+
+  const curr = currentKeyIndex();
+
+  let { arrayKey, index } = curr;
+
+  // 🔥 Case 0: already at Sentry
+  if (arrayKey === "Sentry") {
+    boards.clearBoard();
+    statusUndoIndex();
+    return;
   }
-  
+
+  const k = order.indexOf(arrayKey);
+
+  // 🔥 Case 1: collapse current key to first element
+  if (index > 0) {
+    undoIndex[arrayKey][0] = 1;
+  } 
+  else {
+    // 🔥 Case 2: move to next lower-priority key
+    let found = false;
+
+    for (let j = k + 1; j < order.length; j++) {
+      const key = order[j];
+      const i = undoIndex[key][0];
+
+      if (i > 0) {
+        undoIndex[key][0] = 0;   // jump to empty state of that key
+        arrayKey = key;
+        found = true;
+        break;
+      }
+    }
+
+    // 🔥 Fall through to Sentry
+    if (!found) {
+      // zero Setup explicitly (important for your display)
+      undoIndex.Setup[0] = 0;
+
+      boards.clearBoard();
+      statusUndoIndex();
+      return;
+    }
+  }
+
+  // 🔥 Render logic (Sentry-aware)
+  if (arrayKey === "Setup") {
+    if (undoIndex.Setup[0] === 0) {
+      boards.clearBoard();
+    } else {
+      const setup = undoState.Setup[undoIndex.Setup[0] - 1];
+      boards.makeBoard(setup.board);
+    }
+  }
+
+  statusUndoIndex();
+  }
+
 function handleUndo() {
-  // console.log("Game Undo:");
-  // TODO: change state.
   const keyIndex = prevKeyIndex();
-  if(keyIndex === null) {
-    console.log("Genesis - empty state history.");
+
+  if (!keyIndex) {
+    boards.clearBoard();   // 🔥 THIS is the correct place
+    statusUndoIndex();
     return;
   }
 
-  const key = keyIndex.arrayKey;
-  const index = keyIndex.index;
-  const stateArray = undoState[key];
-
-  console.log(`${key} ${index}`, JSON.parse(JSON.stringify(stateArray))[index])
+  if (keyIndex.arrayKey === "Setup") {
+    const setup = undoState.Setup[keyIndex.index];
+    boards.makeBoard(setup.board);
   }
-  
+
+  statusUndoIndex();
+  }
+
 function handleRedo() {
-  // console.log("Game Undo:");
-  // TODO: change state.
   const keyIndex = nextKeyIndex();
-  if(keyIndex === null) {
-    console.log("Head death - nor more state history.");
+  if (!keyIndex) {
+    console.log("Head death - no more state history.");
     return;
   }
 
-  const key = keyIndex.arrayKey;
-  const index = keyIndex.index;
-  const stateArray = undoState[key];
+  if (keyIndex.arrayKey === "Setup") {
+    const setup = undoState.Setup[keyIndex.index];
+    boards.makeBoard(setup.board);
+  }
 
-  console.log(`${key} ${index}`, JSON.parse(JSON.stringify(stateArray))[index])
+  statusUndoIndex();
   }
   
 function handleLoad() {
@@ -295,13 +357,15 @@ function handleLoad() {
   console.log("keyIndex", keyIndex);
 
   console.log("----------");
+
+  statusUndoIndex();
   }
   
 function handleSave() {
   // console.log("Game Save:");
   // TODO: change state.
   console.log("statusUndoIndex:");
-  statusUndoIndex();
+  statusUndoIndex();  // TODO: Deprecate, now shows up in the Game Control panel.
 }
 
 function handleFreeze() {             // Gambit handlers.
