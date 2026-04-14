@@ -7,6 +7,8 @@
 */
 
 import * as register from "../view/registerHandlers.js";
+import * as controls from "./controller.js";
+import * as state   from "../model/state/state.js";
 
 // --- UI ---
 export function callbacks() {
@@ -21,7 +23,7 @@ export function callbacks() {
   // Seampoint - register another dispatcher.
 }
 
-function setupPanelDispatch(payload) {    // Dispatch payload from panel to dispatch functions.
+function setupPanelDispatch(payload) {    // Dispatch payload from panel to handleevent functions.
   const { action, boardSize } = payload;
   switch (action) {
     case "makeBoard": handleMakeBoard(boardSize); break;
@@ -93,7 +95,7 @@ function cameraPanelDispatch(payload) { // Not subject to the undo arch.
 }
 // Seampoint - more dispatchers...
 
-// Dispatch functions.
+// Handle event functions.
 function handleMakeBoard(boardSize) { // Setup handlers.
   console.log("Setup Make-Board:", boardSize);
   // TODO: change state.
@@ -119,6 +121,21 @@ function handleCycleGap() {
   // TODO: change state.
 }
 
+let undoState = { // This is the undo state of the game: local to controller.
+  Setup:   [],
+  Moves:   [],
+  Gambits: [],
+  Insights:[],
+  AdvSqs:  []
+};
+
+let undoIndex = {
+  Setup:   [],
+  Moves:   [],
+  Gambits: [],
+  Insights:[],
+  AdvSqs:  []
+}
 function handleNewGame() {            // Game handlers.
   console.log("Game New-Game:");
   // TODO: change state.
@@ -127,20 +144,92 @@ function handleNewGame() {            // Game handlers.
 function handleRerun() {
   console.log("Game Rerun:");
   // TODO: change state.
+  for(const key in undoIndex) {
+    const array = undoIndex[key];
+    console.log(key, "undoIndex i/max", undoIndex[key][0], undoIndex[key][1]);
+  }
   }
   
 function handleUndo() {
-  console.log("Game Undo:");
+  // console.log("Game Undo:");
   // TODO: change state.
+  if(undoIndex["AdvSqs"][0] >= 0) {
+    let i = undoIndex["AdvSqs"][0];
+    const stateArray = undoState["AdvSqs"];
+      console.log(`AdvSq ${i}`, JSON.parse(JSON.stringify(stateArray))[i])
+    undoIndex["AdvSqs"][0] = --i;
+    }
+  else if(undoIndex["Gambits"][0] >= 0) {
+    let i = undoIndex["Gambits"][0];
+    const stateArray = undoState["Gambits"];
+      console.log(`Gambit ${i}`, JSON.parse(JSON.stringify(stateArray))[i])
+    undoIndex["Gambits"][0] = --i;
+    }
+  else if(undoIndex["Insights"][0] >= 0) {
+    let i = undoIndex["Insights"][0];
+    const stateArray = undoState["Insights"];
+      console.log(`Insight ${i}`, JSON.parse(JSON.stringify(stateArray))[i])
+    undoIndex["Insights"][0] = --i;
+    }
+  else if(undoIndex["Moves"][0] >= 0) {
+    let i = undoIndex["Moves"][0];
+    const stateArray = undoState["Moves"];
+      console.log(`Move ${i}`, JSON.parse(JSON.stringify(stateArray))[i])
+    undoIndex["Moves"][0] = --i;
+    }
+  else if(undoIndex["Setup"][0] >= 0) {
+    let i = undoIndex["Setup"][0];
+    const stateArray = undoState["Setup"];
+      console.log(`Setup ${i}`, JSON.parse(JSON.stringify(stateArray))[i])
+    undoIndex["Setup"][0] = --i;
   }
+  };
   
 function handleRedo() {
-  console.log("Game Redo:");
+  // console.log("Game Redo:");
   // TODO: change state.
+  if(undoIndex["Setup"][0] < undoIndex["Setup"][1]) {
+    let i = undoIndex["Setup"][0];
+    const stateArray = undoState["Setup"];
+      console.log(`Setup ${i+1}`, JSON.parse(JSON.stringify(stateArray))[i+1])
+    undoIndex["Setup"][0] = ++i;
+    }
+  else if(undoIndex["Moves"][0] < undoIndex["Moves"][1]) {
+    let i = undoIndex["Moves"][0];
+    const stateArray = undoState["Moves"];
+      console.log(`Move ${i+1}`, JSON.parse(JSON.stringify(stateArray))[i+1])
+    undoIndex["Moves"][0] = ++i;
+    }
+  else if(undoIndex["Insights"][0] < undoIndex["Insights"][1]) {
+    let i = undoIndex["Insights"][0];
+    const stateArray = undoState["Insights"];
+      console.log(`Insight ${i+1}`, JSON.parse(JSON.stringify(stateArray))[i+1])
+    undoIndex["Insights"][0] = ++i;
+    }
+  else if(undoIndex["Gambits"][0] < undoIndex["Gambits"][1]) {
+    let i = undoIndex["Gambits"][0];
+    const stateArray = undoState["Gambits"];
+      console.log(`Gambit ${i+1}`, JSON.parse(JSON.stringify(stateArray))[i+1])
+    undoIndex["Gambits"][0] = ++i;
+    }
+  else if(undoIndex["AdvSqs"][0] < undoIndex["AdvSqs"][1]) {
+    let i = undoIndex["AdvSqs"][0];
+    const stateArray = undoState["AdvSqs"];
+      console.log(`AdvSq ${i+1}`, JSON.parse(JSON.stringify(stateArray))[i+1])
+    undoIndex["AdvSqs"][0] = ++i;
+  }
   }
   
 function handleLoad() {
-  console.log("Game Load:");
+  console.log("Game Load:", state.getState());
+  undoState = structuredClone(state.getState());  // A deep copy for undo to traverse.
+  for(const key in undoState) {
+    const array = undoState[key];
+    console.log(key, "length", array.length);
+    undoIndex[key][0] = array.length - 1;
+    undoIndex[key][1] = array.length - 1;
+  }
+  console.log("----------");
   // TODO: change state.
   }
   

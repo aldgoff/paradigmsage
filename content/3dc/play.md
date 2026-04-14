@@ -112,9 +112,9 @@ layout: "play"
 
   <div class="section">
     <button data-action="newGame">New</button>
-    <button data-action="rerun" disabled>Rerun</button>
-    <button data-action="undo" disabled>Undo</button>
-    <button data-action="redo" disabled>Redo</button>
+    <button data-action="rerun">Rerun</button>
+    <button data-action="undo">Undo</button>
+    <button data-action="redo">Redo</button>
     <button data-action="load" >Load</button>
     <button data-action="save" disabled>Save</button>
   </div>

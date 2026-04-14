@@ -22,9 +22,10 @@ import * as view from "../../view/view.js";
 import * as control from "../../controller/controller.js";
 // Seampoint: more imports...
 
-let state = { // This is the state of game/puzzle/board/moves/insight/advsq etc.
+let state = { // This is the state of the game: board/moves/gambits/advsq.
   Setup:   [],
   Moves:   [],
+  Gambits: [],
   Insights:[],
   AdvSqs:  []
 };
@@ -35,11 +36,11 @@ export function getState() {
   }
 
 export function getNull() {
-  return { Setup: [], Moves: [], Insights:[], AdvSqs: [] };
+  return { Setup: [], Moves: [], Gambits:[], Insights:[], AdvSqs: [] };
   }
 
 export function setNull() {
-  state = { Setup: [], Moves: [], Insights:[], AdvSqs: [] };
+  state = { Setup: [], Moves: [], Gambits:[], Insights:[], AdvSqs: [] };
 }
 
 // Basic player sequence.
@@ -52,13 +53,15 @@ export function pushAdvSq(advsq) {        // Manipulate an advancement square.
   }
 
 export function freeze(advsq) {           // Freeze each on board to generate insight.
-  state.Insights.push(advsq);
+  state.Gambits.push(structuredClone(advsq));
+  state.Insights.push(structuredClone(advsq));
   state.AdvSqs.length = 0;
   }
 
 export function recordMove(insight) {     // Select a move from the insight set of advsqs.
-  state.Moves.push(insight);
-  state.Insights.length = 0;
+  state.Moves.push(structuredClone(insight));
+  // state.Gambits.length = 0;
+  // state.Insights.length = 0;
 }
 
 // To be deprecated as dev progresses...useful javascript weirdness.

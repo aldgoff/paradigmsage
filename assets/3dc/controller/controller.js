@@ -116,7 +116,7 @@ function makeDraggable(element) {
 import stateData from "../model/state/state.json" assert { type: "json" };
   const seed = stateData.state_module;     // Fake data from state.json.
 
-function demo() { // TODO: Deprecating: demo calls to model state arch: create a board and freeze an advsq.
+function demo() { // TODO: Deprecating: create a fake state history, for dev undo arch.
   console.log("Demo undo/redo state architecture.");
 
   state.setNull();                                      // Initial state, all null.
@@ -132,7 +132,10 @@ function demo() { // TODO: Deprecating: demo calls to model state arch: create a
   state.pushAdvSq(seed.AdvSqs[2]);
   console.log(JSON.parse(JSON.stringify(state.getState())));
 
-  state.freeze(seed.AdvSqs[1]);                         // Add to insights.
+  state.freeze(structuredClone(seed.AdvSqs[1]));                         // Add to insights.
+  console.log(JSON.parse(JSON.stringify(state.getState())));
+
+  state.recordMove(structuredClone(state.getState().Insights[0]));       // Make a move from the insights.
   console.log(JSON.parse(JSON.stringify(state.getState())));
 
   state.pushAdvSq(seed.AdvSqs[0]);                      // Explore an advancement square.
@@ -140,10 +143,21 @@ function demo() { // TODO: Deprecating: demo calls to model state arch: create a
   state.pushAdvSq(seed.AdvSqs[2]);
   console.log(JSON.parse(JSON.stringify(state.getState())));
 
-  state.freeze(state.getState().AdvSqs[2]);             // Add to insights.
+  state.freeze(structuredClone(state.getState().AdvSqs[1]));             // Add to insights.
   console.log(JSON.parse(JSON.stringify(state.getState())));
 
-  state.recordMove(state.getState().Insights[1]);       // Make a move from the insights.
+  state.pushAdvSq(seed.AdvSqs[0]);                      // Explore an advancement square.
+  state.pushAdvSq(seed.AdvSqs[1]);
+  state.pushAdvSq(seed.AdvSqs[2]);
+  console.log(JSON.parse(JSON.stringify(state.getState())));
+
+  state.freeze(structuredClone(state.getState().AdvSqs[0]));             // Add to insights.
+  console.log(JSON.parse(JSON.stringify(state.getState())));
+
+  state.pushAdvSq(seed.AdvSqs[0]);                      // Explore an advancement square.
+  state.pushAdvSq(seed.AdvSqs[1]);
+  state.pushAdvSq(seed.AdvSqs[2]);
+  state.pushAdvSq(seed.AdvSqs[3]);
   console.log(JSON.parse(JSON.stringify(state.getState())));
 }
 

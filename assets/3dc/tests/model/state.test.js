@@ -59,9 +59,8 @@ function test_state() {
     { expected: 44, label: "-example" },
     { expected: 11, label: "Setup" },
     { expected:  3, label: "Moves" },
-    { expected:  3, label: "Gambits" },
     { expected:  3, label: "Insights" },
-    { expected:  3, label: "AdvSqs" },
+    { expected:  4, label: "AdvSqs" },
   ];
 
   let i=0;
@@ -134,6 +133,7 @@ function test_advsqs() {
     { expected: '{"src":"Q3,3","dst":"KB2,2"}', label: "rook?" },
     { expected: '{"src":"Q3,3","dst":"KN3,3"}', label: "bishop?" },
     { expected: '{"src":"Q3,3","dst":"Q1,1"}', label: "duke?" },
+    { expected: '{"src":"K4,4","dst":"KR1,1"}', label: "stack?" },
   ];
 
   AdvSqs.forEach((entry, i) => {
