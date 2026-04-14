@@ -99,6 +99,10 @@ function cameraPanelDispatch(payload) { // Not subject to the undo arch.
 function handleMakeBoard(boardSize) { // Setup handlers.
   console.log("Setup Make-Board:", boardSize);
   // TODO: change state.
+  const board = boardSize.split("x").map(n => Number(n));
+  const newBoard = { "board": board, "play": "off", "trays": "none", "gap": 0, "initialPos": "std" };
+  console.log("newBoard", newBoard);
+  state.setup(newBoard);
 }
 
 function handleMakeTrays(trayType) {  // Tray handlers.

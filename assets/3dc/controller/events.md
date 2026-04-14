@@ -93,6 +93,10 @@
 
  ### 3.5 view.js
     +-----------------------------------------------------------+
+    | init(playBoard)                                           |
+    |   demo() -> context = renders.init(playBoard)             |
+    |          -> demos.run(context)                            |
+    |                                                           |
     | wirePanel("setup-window", "setup", buildSetupPayload);    |
     | wirePanel("tray-window", "setup", buildTrayPayload);      |
     | ...                                                       |
@@ -104,13 +108,13 @@
     | buildAdvsqPayload(panel, action)                          |
     +-----------------------------------------------------------+
 
- ### 3.2 tbd.js
-    +----------------------------------+
-    |                                  |
-    |                                  |
-    |                                  |
-    |                                  |
-    +----------------------------------+
+ ### 3.2 demos.js
+    +------------------------------------------+
+    | run(context:{scene,camera,renderer,...}) |
+    |   Prepares tile stuff for board.         |
+    |   -> runDemos(...)                       |
+    |      -> demoBoard(...)                   |
+    +------------------------------------------+
 
 ## 4. A Table of Panels and Controls
     | Panel   | Button List                           | Keys     | Radio Buttons                | Text Boxes  | Scroll |

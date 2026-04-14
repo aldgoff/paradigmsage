@@ -18,8 +18,12 @@ import stateData from "./state.json" assert { type: "json" };
 // Seampoint: more objects.
 
 // --- Build upon previous layers ---
-import * as view from "../../view/view.js";
+import * as model from "../../model/model.js";
+import * as view   from "../../view/view.js";
 import * as control from "../../controller/controller.js";
+
+import * as boards from "../../view/boards/boards.js";
+
 // Seampoint: more imports...
 
 let state = { // This is the state of the game: board/moves/gambits/advsq.
@@ -44,7 +48,9 @@ export function setNull() {
 
 // Basic player sequence.
 export function setup(option) {           // Pick a board, trays, rule enforcement, etc.
+  // TODO: may have to erase later states and/or delete an existing board.
   state.Setup.push(option);
+  boards.makeBoard(option.board);
   }
 
 export function pushAdvSq(advsq) {        // Manipulate an advancement square.

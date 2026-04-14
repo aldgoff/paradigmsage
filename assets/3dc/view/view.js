@@ -44,6 +44,8 @@ import * as renders from "./render/renders.js";
 import * as demos from "./demos.js";
 // Seampoint: more imports...
 
+export let context;
+
 // --- Demo for development ---
 function demo(playBoard) {
   if (!playBoard) return false;
@@ -56,10 +58,16 @@ function demo(playBoard) {
 }
 
 // --- UI ---
-export function init(playBoard) {
+export function init(playBoard) { // PlayBoard is the 3D canvas from the THREE renderer.
   console.log("view.init(): 3dc/view/init.js");
 
-  const context = demo(playBoard); // Display POC board, decorators, raycasting.
+  if(false) {  // POC.
+    const context = demo(playBoard); // Display POC board, decorators, raycasting.
+  }
+  else {      // Growing the panel and undo features.
+    context = renders.init(playBoard);
+    // demos.run(context);
+  }
 
   // Listeners: (The move listing is purely output, no input, therefore no wiring todo.)
   wirePanel("setup-window",  "setup",  buildSetupPayload);

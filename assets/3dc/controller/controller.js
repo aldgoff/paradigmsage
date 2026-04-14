@@ -72,7 +72,7 @@ export function init(playBoard) {
   model.init(playBoard);
   view.init(playBoard);
 
-  demo(); // POC for state interface and undo/redo architecture.
+  // demo(); // POC for state interface and undo/redo architecture.
 }
 // Seampoint: more global functions...
 
