@@ -22,7 +22,7 @@ import stateData from "../../model/state/state.json" assert { type: "json" };
   const stateModule = stateData.state_module;
   const Setup    = stateModule.Setup;
   const Moves    = stateModule.Moves;
-  const Insights = stateModule.Insights;
+  const Gambits = stateModule.Gambits;
   const AdvSqs   = stateModule.AdvSqs;
   // Seampoint: more objects.
 
@@ -40,7 +40,7 @@ export function run() {
   test_state();
   test_setup();
   test_moves();
-  test_insights();
+  test_gambits();
   test_advsqs();
   // Seampoint: more tests...
 
@@ -59,7 +59,7 @@ function test_state() {
     { expected: 44, label: "-example" },
     { expected: 11, label: "Setup" },
     { expected:  3, label: "Moves" },
-    { expected:  3, label: "Insights" },
+    { expected:  3, label: "Gambits" },
     { expected:  4, label: "AdvSqs" },
   ];
 
@@ -113,19 +113,19 @@ function test_moves() {
   report("Moves array", "state");
   }
 
-function test_insights() {
+function test_gambits() {
   const cases = [
     { expected: '{"Q":37,"src":"Q3,3","dst":"KB2,2"}', label: "queen/king" },
     { expected: '{"Q":38,"src":"Q3,3","dst":"KN3,3"}', label: "queen/knight" },
     { expected: '{"Q":1,"src":"Q3,3","dst":"Q1,1"}', label: "queen/queen" },
   ];
 
-  Insights.forEach((entry, i) => {
+  Gambits.forEach((entry, i) => {
     const obj = JSON.stringify(entry);
     assertEqual(obj, cases[i].expected, cases[i].label);
   });
 
-  report("Insights array", "state");
+  report("Gambits array", "state");
   }
 
 function test_advsqs() {

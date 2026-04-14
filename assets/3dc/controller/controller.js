@@ -132,18 +132,10 @@ function demo() { // TODO: Deprecating: create a fake state history, for dev und
   state.pushAdvSq(seed.AdvSqs[2]);
   console.log(JSON.parse(JSON.stringify(state.getState())));
 
-  state.freeze(structuredClone(seed.AdvSqs[1]));                         // Add to insights.
+  state.freeze(structuredClone(seed.AdvSqs[1]));                         // Add to Gambits.
   console.log(JSON.parse(JSON.stringify(state.getState())));
 
-  state.recordMove(structuredClone(state.getState().Insights[0]));       // Make a move from the insights.
-  console.log(JSON.parse(JSON.stringify(state.getState())));
-
-  state.pushAdvSq(seed.AdvSqs[0]);                      // Explore an advancement square.
-  state.pushAdvSq(seed.AdvSqs[1]);
-  state.pushAdvSq(seed.AdvSqs[2]);
-  console.log(JSON.parse(JSON.stringify(state.getState())));
-
-  state.freeze(structuredClone(state.getState().AdvSqs[1]));             // Add to insights.
+  state.recordMove(structuredClone(state.getState().Gambits[0]));       // Make a move from the Gambits.
   console.log(JSON.parse(JSON.stringify(state.getState())));
 
   state.pushAdvSq(seed.AdvSqs[0]);                      // Explore an advancement square.
@@ -151,7 +143,15 @@ function demo() { // TODO: Deprecating: create a fake state history, for dev und
   state.pushAdvSq(seed.AdvSqs[2]);
   console.log(JSON.parse(JSON.stringify(state.getState())));
 
-  state.freeze(structuredClone(state.getState().AdvSqs[0]));             // Add to insights.
+  state.freeze(structuredClone(state.getState().AdvSqs[1]));             // Add to Gambits.
+  console.log(JSON.parse(JSON.stringify(state.getState())));
+
+  state.pushAdvSq(seed.AdvSqs[0]);                      // Explore an advancement square.
+  state.pushAdvSq(seed.AdvSqs[1]);
+  state.pushAdvSq(seed.AdvSqs[2]);
+  console.log(JSON.parse(JSON.stringify(state.getState())));
+
+  state.freeze(structuredClone(state.getState().AdvSqs[0]));             // Add to Gambits.
   console.log(JSON.parse(JSON.stringify(state.getState())));
 
   state.pushAdvSq(seed.AdvSqs[0]);                      // Explore an advancement square.

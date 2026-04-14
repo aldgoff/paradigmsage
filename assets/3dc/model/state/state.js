@@ -26,7 +26,6 @@ let state = { // This is the state of the game: board/moves/gambits/advsq.
   Setup:   [],
   Moves:   [],
   Gambits: [],
-  Insights:[],
   AdvSqs:  []
 };
 
@@ -36,11 +35,11 @@ export function getState() {
   }
 
 export function getNull() {
-  return { Setup: [], Moves: [], Gambits:[], Insights:[], AdvSqs: [] };
+  return { Setup: [], Moves: [], Gambits:[], AdvSqs: [] };
   }
 
 export function setNull() {
-  state = { Setup: [], Moves: [], Gambits:[], Insights:[], AdvSqs: [] };
+  state = { Setup: [], Moves: [], Gambits:[], AdvSqs: [] };
 }
 
 // Basic player sequence.
@@ -52,16 +51,14 @@ export function pushAdvSq(advsq) {        // Manipulate an advancement square.
   state.AdvSqs.push(advsq);
   }
 
-export function freeze(advsq) {           // Freeze each on board to generate insight.
+export function freeze(advsq) {           // Freeze each on board to generate gambit.
   state.Gambits.push(structuredClone(advsq));
-  state.Insights.push(structuredClone(advsq));
   state.AdvSqs.length = 0;
   }
 
-export function recordMove(insight) {     // Select a move from the insight set of advsqs.
-  state.Moves.push(structuredClone(insight));
+export function recordMove(gambit) {     // Select a move from the gambit set of advsqs.
+  state.Moves.push(structuredClone(gambit));
   // state.Gambits.length = 0;
-  // state.Insights.length = 0;
 }
 
 // To be deprecated as dev progresses...useful javascript weirdness.
@@ -95,12 +92,6 @@ function iterateState(stateData) {
       // console.log("  Moves:", entry.moves.join(" | "));
       // console.log("  Coords:", entry.coords.join(" | "));
       // console.log("  Notes:", entry.annotations.join(" | "));
-  });
-
-  console.log("Insights:");
-  mod.Insights.forEach((entry, i) => {
-    console.log(i, entry);
-    // console.log(`Q:${entry.Q} ${entry.src} → ${entry.dst}`);
   });
 
   console.log("AdvSqs:");

@@ -125,7 +125,6 @@ let undoState = { // This is the undo state of the game: local to controller.
   Setup:   [],
   Moves:   [],
   Gambits: [],
-  Insights:[],
   AdvSqs:  []
 };
 
@@ -133,7 +132,6 @@ let undoIndex = {
   Setup:   [],
   Moves:   [],
   Gambits: [],
-  Insights:[],
   AdvSqs:  []
 }
 function handleNewGame() {            // Game handlers.
@@ -165,12 +163,6 @@ function handleUndo() {
       console.log(`Gambit ${i}`, JSON.parse(JSON.stringify(stateArray))[i])
     undoIndex["Gambits"][0] = --i;
     }
-  else if(undoIndex["Insights"][0] >= 0) {
-    let i = undoIndex["Insights"][0];
-    const stateArray = undoState["Insights"];
-      console.log(`Insight ${i}`, JSON.parse(JSON.stringify(stateArray))[i])
-    undoIndex["Insights"][0] = --i;
-    }
   else if(undoIndex["Moves"][0] >= 0) {
     let i = undoIndex["Moves"][0];
     const stateArray = undoState["Moves"];
@@ -199,12 +191,6 @@ function handleRedo() {
     const stateArray = undoState["Moves"];
       console.log(`Move ${i+1}`, JSON.parse(JSON.stringify(stateArray))[i+1])
     undoIndex["Moves"][0] = ++i;
-    }
-  else if(undoIndex["Insights"][0] < undoIndex["Insights"][1]) {
-    let i = undoIndex["Insights"][0];
-    const stateArray = undoState["Insights"];
-      console.log(`Insight ${i+1}`, JSON.parse(JSON.stringify(stateArray))[i+1])
-    undoIndex["Insights"][0] = ++i;
     }
   else if(undoIndex["Gambits"][0] < undoIndex["Gambits"][1]) {
     let i = undoIndex["Gambits"][0];

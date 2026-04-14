@@ -101,36 +101,22 @@
   The ellipses (...) indicate there is data to be seen, if desired.
 
 ## 5. Use Case
-Play flow after setup. 
-Create an advsq, move it around, resize it, maybe change to a different piece. 
-Lock it down (erases the advsq history). 
-Repeat with variations. 
-Now I have a gambit, a sequence of advsqs that help me think about my next move. 
-I select a move (erases the gambit history). 
-Now I can undo my move history to review the game, or even explore in depth alternatives.
-Only when I'm really happy, do I let my opponent know my choice. 
-Rinse and repeat, the code has made me smarter. 
-Undo all the moves, or start a new game.
-*New Game* should be different from *New Setup*, it erases the move list, but does not undo the setup.
-Dork with setup, then play a game or attack a puzzle, dork around with gambits and advsqs until I've thought through my next move. 
-If I ever undo too far, just redo back to where I wanted to be.
-I think this works.
+  Play flow after setup. 
+  Create an advsq, move it around, resize it, maybe change to a different piece. 
+  Lock it down (erases the advsq history). 
+  Repeat with variations. 
+  Now I have a gambit, a sequence of advsqs that help me think about my next move. 
+  I select a move (erases the gambit history). 
+  Now I can undo my move history to review the game, or even explore in depth alternatives.
+  Only when I'm really happy, do I let my opponent know my choice. 
+  Rinse and repeat, the code has made me smarter. 
+  Undo all the moves, or start a new game.
+  *New Game* should be different from *New Setup*, it erases the move list, but does not undo the setup.
+  Dork with setup, then play a game or attack a puzzle, dork around with gambits and advsqs until I've thought through my next move. 
+  If I ever undo too far, just redo back to where I wanted to be.
+  I think this works.
 
- ### 5.1 Transitions
-  Gambit: I move, he moves, I move, he moves, ... as many moves ahead as a I care to try.
-  We are going to use the term a bit differently, as tactical intel; advsqs that interact.
-  - Once I like my advsq, add advsq to insight (erases advsq history).
-  - Once I like my insight, pick move, add to gambit (erases insight history).
-  - Extend gambit by playing both sides.
-  - Once I like my gambit, add its first move to game, (removes first move from the gambit history).
-  - A game that diverges from the gambit, erases rest of the gambit history.
-
-  The depth of the gambit records how many moves ahead you are thinking.
-  Early divergence means you miss guessed your opponent's intent.
-
-  - Synonyms: gestault, insight, grok, 
-
- ### 5.2 Confirmation...
+ ### 5.1 Confirmation...
 {
   "Setup":[
     {"board":[8,8,8]},
@@ -153,53 +139,6 @@ I think this works.
     {"turn":2,"moves":["PxP","N-KB3,3"],"coords":["...",""],"annotations":["",""]},
     {"turn":3,"moves":["qnP-QN3,4","..."],"coords":["...","..."],"annotations":["...","..."]}
     ],
-  "Insights1":[
-    {"Q":37,"srcdst":["Q0,0","KB2,2"]},
-    {"Q":38,"srcdst":["Q0,0","KN3,3"]},
-    {"Q":1,"srcdst":["Q0,0","Q1,1"]}
-    ],
-  "Insights2":[
-    {"Q":37,"src":"Q0,0","dst":"KB2,2"},
-    {"Q":38,"src":"Q0,0","dst":"KN3,3"},
-    {"Q":1,"src":"Q0,0","dst":"Q1,1"}
-    ],
-  "AdvSqs":[
-    ["Q0,0","KB2,2"],
-    ["Q0,0","KN3,3"],
-    ["Q0,0","Q1,1"]
-  ]
-}
-
- ### 5.3 Confirmation...DEPRECATE
-  {"Setup":[
-    {"board":[8,8,8]},
-    {"board":[10,8,8]},
-    {"board":[10,10,10]},
-    {"board":[6,6,6]},{"board":[5,5,5]},
-    {"board":[4,4,4],"play":"puzzle","trays":"real","gap":0},
-    {"board":[4,4,4],"play":"puzzle","trays":"real","gap":1},
-    {"board":[4,4,4],"play":"puzzle","trays":"real","gap":2},
-    {"board":[4,4,4],"play":"puzzle","trays":"real","gap":1}
-  ],
-
-  "Moves":[
-    {"turn":1,"moves":["P-K4,4","P-Q4,3"],"coords":["",""],"annotations":["","..."]},
-    {"turn":2,"moves":["PxP","N-KB3,3"],"coords":["...",""],"annotations":["",""]},
-    {"turn":3,"moves":["qnP-QN3,4","..."],"coords":["...","..."],"annotations":["...","..."]}
-  ],
-
-  "Gambits":[
-    {"turn":1,"moves":["P-K4,4","P-Q4,3"],"coords":["",""],"annotations":["","..."]},
-    {"turn":2,"moves":["PxP","N-KB3,3"],"coords":["...",""],"annotations":["",""]},
-    {"turn":3,"moves":["qnP-QN3,4","..."],"coords":["...","..."],"annotations":["...","..."]}
-  ],
-
-  "Insights":[
-    "Q:37",["Q0,0","KB2,2"],
-    "Q:38",["Q0,0","KN3,3"],
-    "Q:1",["Q0,0","Q1,1"]
-  ],
-
   "AdvSqs":[
     ["Q0,0","KB2,2"],
     ["Q0,0","KN3,3"],
