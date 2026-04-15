@@ -52,4 +52,5 @@ title: "Dev"
   - 4/12/26 - Make camera POV radio buttons active elements. Add 6th panel, advsqs.
   - 4/13/26 - Camera control, first pass on logarithmic undo (current state off-by-one error).
   - 4/14/26 - Delete insights, basic logarithmic undo. Make boards from panel, delete prev, confirm addition to state history, confirm raycasting.
+  - 4/15/26 - Display undo status, branching for makeBoards.
 

@@ -34,16 +34,20 @@ let state = { // This is the state of the game: board/moves/gambits/advsq.
 };
 
 // --- UI ---
+export function setState(newState) {
+  state = structuredClone(newState);
+  }
+
 export function getState() {
   return state;
   }
 
 export function getNull() {
-  return { Setup: [], Moves: [], Gambits:[], AdvSqs: [] };
+  return { Setup: [], Moves: [], Gambits: [], AdvSqs: [] };
   }
 
 export function setNull() {
-  state = { Setup: [], Moves: [], Gambits:[], AdvSqs: [] };
+  state = { Setup: [], Moves: [], Gambits: [], AdvSqs: [] };
 }
 
 // Basic player sequence.
@@ -62,7 +66,7 @@ export function freeze(advsq) {           // Freeze each on board to generate ga
   state.AdvSqs.length = 0;
   }
 
-export function recordMove(gambit) {     // Select a move from the gambit set of advsqs.
+export function recordMove(gambit) {      // Select a move from the gambit set of advsqs.
   state.Moves.push(structuredClone(gambit));
   // state.Gambits.length = 0;
 }

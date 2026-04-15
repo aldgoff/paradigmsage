@@ -103,7 +103,11 @@ function handleMakeBoard(boardSize) { // Setup handlers.
   const board = boardSize.split("x").map(n => Number(n));
   const newBoard = { "board": board, "play": "off", "trays": "none", "gap": 0, "initialPos": "std" };
   console.log("newBoard", newBoard);
+
+  trimStateToUndoIndex();
   state.setup(newBoard);
+
+  captureState();
 }
 
 function handleMakeTrays(trayType) {  // Tray handlers.
@@ -235,19 +239,38 @@ function nextKeyIndex() {
   }
 
   return null;
+  }
+
+function trimStateToUndoIndex() {
+  const curr = state.getState();
+  const next = {};
+
+  for (const key in curr) {
+    const cutoff = undoIndex[key][0];   // pointer to NEXT
+    next[key] = curr[key].slice(0, cutoff);
+  }
+
+  state.setState(next);
+  }
+
+function captureState() {
+  undoState = structuredClone(state.getState());  // A deep copy for undo to traverse.
+  for(const key in undoState) {
+    const array = undoState[key];
+    console.log(key, "length", array.length);
+    undoIndex[key][0] = array.length;
+    undoIndex[key][1] = array.length;
+  }
+  const keyIndex = currentKeyIndex();
+
+  statusUndoIndex();
 }
 
 function handleNewGame() {            // Game handlers.
   // console.log("Game New-Game:");
   // TODO: change state.
-  // TODO: temp code - show current state.
-  const currKeyIndex = currentKeyIndex();
-
-  const key = currKeyIndex.arrayKey;
-  const index = currKeyIndex.index;
-  const stateArray = undoState[key];
-
-  console.log(`${key} ${index}`, JSON.parse(JSON.stringify(stateArray))[index])
+  captureState();
+  statusUndoIndex();
   }
 
 function handleRerun() {
@@ -345,20 +368,6 @@ function handleRedo() {
 function handleLoad() {
   console.log("Game Load:", state.getState());
   // TODO: change state.
-  // TODO: temp code - load example state from json file.
-  undoState = structuredClone(state.getState());  // A deep copy for undo to traverse.
-  for(const key in undoState) {
-    const array = undoState[key];
-    console.log(key, "length", array.length);
-    undoIndex[key][0] = array.length;
-    undoIndex[key][1] = array.length;
-  }
-  const keyIndex = currentKeyIndex();
-  console.log("keyIndex", keyIndex);
-
-  console.log("----------");
-
-  statusUndoIndex();
   }
   
 function handleSave() {
