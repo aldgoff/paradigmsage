@@ -1,5 +1,5 @@
 {
-  "templates_module": {
+  "modules_module": {
     "category": {
       "key1": "value1",
       "key2": 123,
