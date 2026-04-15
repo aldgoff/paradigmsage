@@ -98,11 +98,10 @@ function cameraPanelDispatch(payload) { // Not subject to the undo arch.
 
 // Handle event functions.
 function handleMakeBoard(boardSize) { // Setup handlers.
-  console.log("Setup Make-Board:", boardSize);
+  console.log("control: events.js - handleMakeBoard(boardSize):", boardSize);
   // TODO: change state.
   const board = boardSize.split("x").map(n => Number(n));
   const newBoard = { "board": board, "play": "off", "trays": "none", "gap": 0, "initialPos": "std" };
-  console.log("newBoard", newBoard);
 
   trimStateToUndoIndex();
   state.setup(newBoard);
@@ -257,7 +256,6 @@ function captureState() {
   undoState = structuredClone(state.getState());  // A deep copy for undo to traverse.
   for(const key in undoState) {
     const array = undoState[key];
-    console.log(key, "length", array.length);
     undoIndex[key][0] = array.length;
     undoIndex[key][1] = array.length;
   }
@@ -402,10 +400,36 @@ function handleDeselect() {
   // TODO: change state.
 }
 
-function handlePlace(payload) {       // Advsq handlers.
+import { normalizeTileToVts } from "../foundation/coords/coords.js";
+
+function handlePlace(payload) {
+  const { srcTile, quad, perimeter, stride } = payload;
+
+  console.log("control: events.js - handlePlace(payload):", payload);
+
+  const newAdvsq = {
+    srcTile: normalizeTileToVts(srcTile),   // 🔥 KEY FIX
+    quad: normalizeQuad(quad),
+    perimeter: Number(perimeter),
+    stride: Number(stride)
+  };
+
+  trimStateToUndoIndex();
+  state.pushAdvSq(newAdvsq);
+  captureState();
+}
+
+
+function handlePlace1(payload) {       // Advsq handlers.
   const { action, srcTile, quad, perimeter, stride } = payload;
-  console.log("Advsq Place:", payload);
+  console.log("control: events.js - handlePlace(payload):", payload);
   // TODO: change state.
+  const newAdvsq = { srcTile, quad, perimeter, stride };
+
+  trimStateToUndoIndex();
+  state.pushAdvSq(newAdvsq);
+
+  captureState();
   }
 
 function handleRemove() {
@@ -480,3 +504,11 @@ function handlePOV(pov) {
 
 // Seampoint - more handle functions, to be grouped by panel.
 
+// --- Helpers ---
+function normalizeQuad(q) {
+  if (typeof q === "number") return q;
+  if (typeof q === "string" && q.startsWith("Q")) return q;
+  if (typeof q === "string") return `Q${q}`;
+  throw new Error(`Invalid quad: ${q}`);
+}
+// Seampoint - more local functions.

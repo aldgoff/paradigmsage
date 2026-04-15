@@ -29,11 +29,44 @@ export function decorate(color, meshTile, piece, decorator) {
   const zones = resolveColors(list, pallet);
   const layers = applyBaseZones({ base, zones });
 
+  const overlays = [];
+
   layers.forEach(layer => {
     const overlay = drawInsetQuad(meshTile, layer.scale, layer.color);
-    meshTile.add(overlay);   // attach to meshTile (not scene)
+    meshTile.add(overlay);     // ✅ correct anchoring
+    overlays.push(overlay);    // ✅ track ownership
   });
-  }
+
+  return overlays;
+}
+
+// export function decorate2(color, meshTile, piece, decorator) {
+//   const base = color;
+//   const list = decorators[piece][decorator];
+//   const zones = resolveColors(list, pallet);
+//   const layers = applyBaseZones({ base, zones });
+
+//   const group = new THREE.Group();
+
+//   layers.forEach(layer => {
+//     const overlay = drawInsetQuad(meshTile, layer.scale, layer.color);
+//     group.add(overlay);   // 🔥 attach to group, NOT tile
+//   });
+
+//   return group;  // 🔥 RETURN IT
+// }
+
+// export function decorate1(color, meshTile, piece, decorator) {
+//   const base = color;
+//   const list = decorators[piece][decorator];
+//   const zones = resolveColors(list, pallet);
+//   const layers = applyBaseZones({ base, zones });
+
+//   layers.forEach(layer => {
+//     const overlay = drawInsetQuad(meshTile, layer.scale, layer.color);
+//     meshTile.add(overlay);   // attach to meshTile (not scene)
+//   });
+// }
 
 export function applyBaseZones({ base, zones=[] }) {
   return [base, ...zones]

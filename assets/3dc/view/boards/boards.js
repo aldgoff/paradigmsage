@@ -30,7 +30,7 @@ let currentBoard = null;
 
 // --- UI ---
 export function makeBoard(dimensions) {
-  console.log("makeBoard()", dimensions);
+  console.log("view: boards.js - makeBoard(dimensions):", dimensions);
 
   if(currentBoard) { view.context.scene.remove(currentBoard); }
 
@@ -40,12 +40,12 @@ export function makeBoard(dimensions) {
   const Sz = Z - dimensions[0] + 1;
   const Sx = X - dimensions[1] + 1;
   const Sy = Y - dimensions[2] + 1;
-  console.log("dims:", Sz, Sx, Sy, Z, X, Y);
+  // console.log("dims:", Sz, Sx, Sy, Z, X, Y);
 
   const boardGroup = new THREE.Group();
 
-  const tileGeometry = new THREE.BoxGeometry(...vts2xyz(tiles.tileSize()));
-  const tileMap = new Map();
+  const tileGeometry = view.context.tileGeometry  // ✅
+  const tileMap = view.context.tileMap;   // ✅ SHARED
 
   let count = 0;
   for(let z=Sz; z<=Z; z++) {  // Create the board.
@@ -64,9 +64,6 @@ export function makeBoard(dimensions) {
   currentBoard = boardGroup;
 
   addEventListener(view.context.scene, view.context.renderer, view.context.camera, tileMap);
-
-  console.log("count", count);
-  console.log("view.context", view.context);
   }
 
 export function clearBoard() {

@@ -39,9 +39,16 @@
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
+import {vts2xyz,
+        xyz2vts,
+        vts2pixels,
+        pixels2vts,
+} from "./render/coordsMaps.js"
+
 import * as run from "./registerHandlers.js";
 import * as renders from "./render/renders.js";
 import * as demos from "./demos.js";
+import * as tiles from "./tiles/tiles.js";
 // Seampoint: more imports...
 
 export let context;
@@ -66,6 +73,8 @@ export function init(playBoard) { // PlayBoard is the 3D canvas from the THREE r
   }
   else {      // Growing the panel and undo features.
     context = renders.init(playBoard);
+    context.tileMap = new Map();        // 🔥 ADD
+    context.tileGeometry = new THREE.BoxGeometry(...vts2xyz(tiles.tileSize()));
     // demos.run(context);
   }
 

@@ -23,6 +23,7 @@ import * as view   from "../../view/view.js";
 import * as control from "../../controller/controller.js";
 
 import * as boards from "../../view/boards/boards.js";
+import * as advsqs from "../../view/advsqs/advsqs.js";
 
 // Seampoint: more imports...
 
@@ -52,13 +53,16 @@ export function setNull() {
 
 // Basic player sequence.
 export function setup(option) {           // Pick a board, trays, rule enforcement, etc.
+  console.log("model: state.js - setup(option):", option);
   // TODO: may have to erase later states and/or delete an existing board.
   state.Setup.push(option);
   boards.makeBoard(option.board);
   }
 
-export function pushAdvSq(advsq) {        // Manipulate an advancement square.
-  state.AdvSqs.push(advsq);
+export function pushAdvSq(specs) {        // Manipulate an advancement square.
+  console.log("model: state.js - pushAdvSq(specs):", specs);
+  state.AdvSqs.push(specs);
+  advsqs.makeAdvsq(specs)
   }
 
 export function freeze(advsq) {           // Freeze each on board to generate gambit.

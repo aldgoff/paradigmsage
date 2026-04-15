@@ -65,3 +65,16 @@
  ### controller.js
   renderState()
 
+## Advsq Tasks
+ ### 1. ✅ Delete prev
+
+ ### 2. ✅ Decorator layering visual glitches
+
+ ### 3. Dst decorator for stride tile
+
+ ### 4. wire input fields for direct update.
+
+ ### 5. Advsq does not extend off board.
+
+ ### 6. Undo not working.
+
