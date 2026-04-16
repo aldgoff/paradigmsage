@@ -4,14 +4,20 @@ title: "Dev"
 
 **Dev (INWORK)**
 
-  A playable version of chess scaled up to three dimensions.
+  A playable version of chess scaled up to three dimensions - 
+  but one must abandon the classical abstraction of *trajectories*
+  (see **Rationale**.)
+  We argue that there is a game to be *discovered* (not *invented*),
+  where one might justly lay claim to the *one right rule set*.
 
   (Game has not yet been introduced in the PoP narrative.)
 
-  Target release date is fall, 2026. 
-  For the terminally impatient, I will post clues from time to time.
+  Target release is fall, 2026. 
+  For the terminally impatient, I will post clues from time to time (see **Clues**).
+  The development log is below.
 
-  Can you *discover* the rules with only minimal hints?
+  If you are in to challenges, see if you can *discover* the rules to 3D chess.
+  It is a great exercise in thinking out-of-the-box, of breaking **paradigms**.
 
 ## Log
   3/15/26 - AI axioms, hello world, python port plan.
@@ -53,5 +59,5 @@ title: "Dev"
   - 4/13/26 - Camera control, first pass on logarithmic undo (current state off-by-one error).
   - 4/14/26 - Delete insights, basic logarithmic undo. Make boards from panel, delete prev, confirm addition to state history, confirm raycasting.
   - 4/15/26 - Display undo status, branching for makeBoards. Create advsqs from panel. Undo/redo working, rerun not zeroing downstream elements.
-  - 4/16/26 - Advsq panel: next quad/plane/piece. Offboard decorators and opacity slider.
+  - 4/16/26 - Advsq panel: next quad/plane/piece. Offboard decorators and opacity slider. Refine web pages.
 

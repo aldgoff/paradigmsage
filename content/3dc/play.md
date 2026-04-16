@@ -5,17 +5,7 @@ layout: "play"
 
 **Play (INWORK)**
   A playable implemetation of 3D Chess with planar moves and advancement squares.
-  The 3D board is a cube of cubes (8x8x8).
-  Each tile is the bottom of a cube.
-  An 8 color board includes the 2 bishop colors (tile faces) and the 4 duke colors (tile edges).
-  Active Panels: Setup Control and Camera Control. 
-  Click on the **Make Board** button to see a board.
-  Play with **camera controls**.
-  **Raycasting** demonstrated by toggling circles on clicked tiles.
-  A growing POC for the render engine (4/14/26).
-  (For the terminally impatient, you are witness to how the 'sausage' is made.)
-
-  (Game has not yet been introduced in the PoP narrative.)
+  To see explanatory pages, click on **3DC** above.
 
 <!-- Load the Three.js Render... -->
 <script type="module">
@@ -48,7 +38,7 @@ layout: "play"
     }
   #move-window {
     font-family: monospace;
-    width: 380px;
+    width: 350px;
     }
   #undo-list {
     height: 66px;
@@ -68,21 +58,21 @@ layout: "play"
     padding: 4px;
   }
 
-  #setup-window  { top: 180px; left:  100px; }  /* DOM Control Panels */
-  #tray-window   { top: 180px; left:  300px; }
-  #game-window   { top: 180px; left:  500px; }
-  #move-window   { top: 360px; left:  100px; }
-  #gambit-window { top: 180px; left:  700px; }
-  #advsq-window  { top: 180px; left:  900px; }
+  #setup-window  { top: 120px; left:   80px; }  /* DOM Control Panels */
+  #tray-window   { top: 260px; left:   80px; }
+  #game-window   { top: 120px; left:  280px; }
+  #move-window   { top: 720px; left:   80px; }
+  #gambit-window { top: 580px; left:   80px; }
+  #advsq-window  { top: 320px; left:  280px; }
 
-  #camera-window { top: 600px; left: 150px; }
+  #camera-window { top: 430px; left:   80px; }
   /* Seampont - more DOM control panels... */
 </style>
 
 <!-- The 3DC Game... -->
-<canvas id="3dc-board" width="1400" height="1800"></canvas>  <!-- 3D -->
+<canvas id="3dc-board" width="1600" height="2000"></canvas>  <!-- 3D -->
 
- <!-- The DOM Control Panels -->
+<!-- The DOM Control Panels -->
 <div class="panel" id="setup-window">
   <div class="panel-title">Setup Control</div>
 
@@ -168,8 +158,8 @@ layout: "play"
   <div class="section">
   <label> Source Tile: <input type="string" name="advsq-src"       value="K3,3"> </label>
   <label> Quad:        <input type="number" name="advsq-quad"      min="1" step="1" value="1"> </label>
-  <label> Perimeter:   <input type="number" name="advsq-perimeter" min="1" step="1" value="2"> </label>
-  <label> Stride:      <input type="number" name="advsq-stride"    min="1" step="1" value="3"> </label>
+  <label> Perimeter:   <input type="number" name="advsq-perimeter" min="1" step="1" value="3"> </label>
+  <label> Stride:      <input type="number" name="advsq-stride"    min="1" step="1" value="4"> </label>
   </div>
 
   <!-- Optional: key hints (visual only) -->
@@ -211,5 +201,4 @@ layout: "play"
 </div>
 
 <!-- Seampoint - more DOM control panels... -->
-
 
