@@ -10,6 +10,7 @@ import * as register from "../view/registerHandlers.js";
 import * as controls from "./controller.js";
 import * as state   from "../model/state/state.js";
 import * as boards  from "../view/boards/boards.js";
+import * as advsqs  from "../view/advsqs/advsqs.js";
 
 // --- UI ---
 export function callbacks() {
@@ -273,34 +274,26 @@ function handleNewGame() {            // Game handlers.
 
 function handleRerun() {
   const order = ["AdvSqs", "Gambits", "Moves", "Setup"];
-
   const curr = currentKeyIndex();
-
   let { arrayKey, index } = curr;
+  const k = order.indexOf(arrayKey);
 
-  // 🔥 Case 0: already at Sentry
-  if (arrayKey === "Sentry") {
+  if(arrayKey === "Sentry") { // 🔥 Case 0: already at Sentry
     boards.clearBoard();
     statusUndoIndex();
     return;
-  }
-
-  const k = order.indexOf(arrayKey);
-
-  // 🔥 Case 1: collapse current key to first element
-  if (index > 0) {
+    }
+  else if(index > 0) {        // 🔥 Case 1: collapse current key to first element.
     undoIndex[arrayKey][0] = 1;
-  } 
-  else {
-    // 🔥 Case 2: move to next lower-priority key
+    } 
+  else {                      // 🔥 Case 2: move to next lower-priority key.
     let found = false;
-
-    for (let j = k + 1; j < order.length; j++) {
+    for(let j = k + 1; j < order.length; j++) { // Check each undo category.
       const key = order[j];
       const i = undoIndex[key][0];
 
-      if (i > 0) {
-        undoIndex[key][0] = 0;   // jump to empty state of that key
+      if(i > 0) {
+        undoIndex[key][0] = 0;   // Jump to empty state of that key.
         arrayKey = key;
         found = true;
         break;
@@ -308,10 +301,8 @@ function handleRerun() {
     }
 
     // 🔥 Fall through to Sentry
-    if (!found) {
-      // zero Setup explicitly (important for your display)
-      undoIndex.Setup[0] = 0;
-
+    if(!found) {
+      undoIndex.Setup[0] = 0;      // Zero Setup explicitly (important for display).
       boards.clearBoard();
       statusUndoIndex();
       return;
@@ -319,29 +310,53 @@ function handleRerun() {
   }
 
   // 🔥 Render logic (Sentry-aware)
-  if (arrayKey === "Setup") {
-    if (undoIndex.Setup[0] === 0) {
+  if(     arrayKey === "AdvSqs") {
+    if(undoIndex.AdvSqs[0] === 0) {
+      advsqs.clearAdvsq();
+    } else {
+      const specs = undoState.AdvSqs[undoIndex.AdvSqs[0] - 1];
+      advsqs.makeAdvsq(specs);
+    }
+    }
+  else if(arrayKey === "Setup") {
+    if(undoIndex.Setup[0] === 0) {
       boards.clearBoard();
     } else {
       const setup = undoState.Setup[undoIndex.Setup[0] - 1];
       boards.makeBoard(setup.board);
     }
   }
+  // Seampoint for the rest of the undo elements.
 
   statusUndoIndex();
   }
 
 function handleUndo() {
   const keyIndex = prevKeyIndex();
-
-  if (!keyIndex) {
+  if(!keyIndex) { // Bottom sentry.
     boards.clearBoard();   // 🔥 THIS is the correct place
     statusUndoIndex();
     return;
   }
 
-  if (keyIndex.arrayKey === "Setup") {
+  if(     keyIndex.arrayKey === "AdvSqs") {
+    const specs = undoState.AdvSqs[keyIndex.index];
+    console.log("control: events.js - HandleUndo(advsq)", specs);
+    advsqs.makeAdvsq(specs);
+    }
+  else if(keyIndex.arrayKey === "Gambits") {
+    const specs = undoState.Gambits[keyIndex.index];
+    console.log("control: events.js - HandleUndo(gambit)", specs);
+    // TODO: call the view routine to render the gambit.
+    }
+  else if(keyIndex.arrayKey === "Moves") {
+    const specs = undoState.Moves[keyIndex.index];
+    console.log("control: events.js - HandleUndo(move)", specs);
+    // TODO: call the view routine to render the move.
+    }
+  else if(keyIndex.arrayKey === "Setup") {
     const setup = undoState.Setup[keyIndex.index];
+    console.log("control: events.js - HandleUndo(setup)", setup);
     boards.makeBoard(setup.board);
   }
 
@@ -350,13 +365,29 @@ function handleUndo() {
 
 function handleRedo() {
   const keyIndex = nextKeyIndex();
-  if (!keyIndex) {
-    console.log("Head death - no more state history.");
+  if(!keyIndex) {   // Top sentry.
+    console.log("Heat death - no more state history.");
     return;
   }
 
-  if (keyIndex.arrayKey === "Setup") {
+  if(keyIndex.arrayKey === "AdvSqs") {
+    const specs = undoState.AdvSqs[keyIndex.index];
+    console.log("control: events.js - HandleRedo(advsq)", specs);
+    advsqs.makeAdvsq(specs);
+    }
+  else if(keyIndex.arrayKey === "Gambits") {
+    const specs = undoState.Gambits[keyIndex.index];
+    console.log("control: events.js - HandleRedo(gambit)", specs);
+    // TODO: call the view routine to render the gambit.
+    }
+  else if(keyIndex.arrayKey === "Moves") {
+    const specs = undoState.Moves[keyIndex.index];
+    console.log("control: events.js - HandleRedo(move)", specs);
+    // TODO: call the view routine to render the move.
+    }
+  else if(keyIndex.arrayKey === "Setup") {
     const setup = undoState.Setup[keyIndex.index];
+    console.log("control: events.js - HandleRedo(setup)", setup);
     boards.makeBoard(setup.board);
   }
 

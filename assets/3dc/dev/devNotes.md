@@ -78,3 +78,30 @@
 
  ### 6. Undo not working.
 
+## AI Fuck up on offboard decorators...
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   assets/3dc/controller/events.js
+	modified:   assets/3dc/model/state/state.js
+	modified:   assets/3dc/view/advsqs/advsqs.js
+	modified:   assets/3dc/view/advsqs/advsqs.md
+	modified:   assets/3dc/view/boards/boards.js
+	modified:   assets/3dc/view/view.js
+	modified:   content/3dc/play.md
+
+no changes added to commit (use "git add" and/or "git commit -a")
+MacBookPro:paradigmsage adgoff$ git diff --stat
+ assets/3dc/controller/events.js  |  40 ++++++++++-------------------
+ assets/3dc/model/state/state.js  |   8 +++---
+ assets/3dc/view/advsqs/advsqs.js | 130 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-
+ assets/3dc/view/advsqs/advsqs.md |  10 +++++++-
+ assets/3dc/view/boards/boards.js |  99 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++--------------
+ assets/3dc/view/view.js          |   2 +-
+ content/3dc/play.md              |   6 ++---
+ 7 files changed, 240 insertions(+), 55 deletions(-)
+MacBookPro:paradigmsage adgoff$ 
+
+
+git stash push -m "WIP: advsq offboard experiment"
+
