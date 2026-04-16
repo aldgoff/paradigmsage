@@ -6,11 +6,11 @@
   UI: the export functions.
 */
 
+import * as state    from "../model/state/state.js";
+
 import * as register from "../view/registerHandlers.js";
-import * as controls from "./controller.js";
-import * as state   from "../model/state/state.js";
-import * as boards  from "../view/boards/boards.js";
-import * as advsqs  from "../view/advsqs/advsqs.js";
+import * as boards   from "../view/boards/boards.js";
+import * as advsqs   from "../view/advsqs/advsqs.js";
 
 // --- UI ---
 export function callbacks() {
@@ -25,7 +25,7 @@ export function callbacks() {
   // Seampoint - register another dispatcher.
 }
 
-function setupPanelDispatch(payload) {    // Dispatch payload from panel to handleevent functions.
+function setupPanelDispatch(payload) {    // Dispatch payload from panel to handle event functions.
   const { action, boardSize } = payload;
   switch (action) {
     case "makeBoard": handleMakeBoard(boardSize); break;
