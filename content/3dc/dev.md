@@ -53,4 +53,5 @@ title: "Dev"
   - 4/13/26 - Camera control, first pass on logarithmic undo (current state off-by-one error).
   - 4/14/26 - Delete insights, basic logarithmic undo. Make boards from panel, delete prev, confirm addition to state history, confirm raycasting.
   - 4/15/26 - Display undo status, branching for makeBoards. Create advsqs from panel. Undo/redo working, rerun not zeroing downstream elements.
+  - 4/16/26 - Advsq panel: next quad/plane/piece.
 

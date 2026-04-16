@@ -105,3 +105,16 @@ MacBookPro:paradigmsage adgoff$
 
 git stash push -m "WIP: advsq offboard experiment"
 
+## Capture code lines
+  wirePanel("advsq-window",  "advsq",  buildAdvsqPayload);
+  const panel = document.getElementById(panelId);
+
+    srcTile:  panel.querySelector('[name="advsq-src"]')?.value,
+    quad:     panel.querySelector('[name="advsq-quad"]')?.value,
+    perimeter:panel.querySelector('[name="advsq-perimeter"]')?.value,
+    stride:   panel.querySelector('[name="advsq-stride"]')?.value,
+
+panel.querySelector('[name="advsq-quad"]').value = 3;
+panel.querySelector('[name="advsq-perimeter"]').value = 5;
+panel.querySelector('[name="advsq-stride"]').value = 2;
+

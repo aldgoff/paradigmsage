@@ -77,9 +77,9 @@ function advsqPanelDispatch(payload) {
     case "remove":      handleRemove(); break;
     case "updateParam": handleUpdateParam(payload); break;
     case "nudgeSrc":    handleNudgeSrc(payload); break;
-    case "nextQuad":    handleNextQuad(); break;
-    case "nextPlane":   handleNextPlane(); break;
-    case "nextPiece":   handleNextPiece(); break;
+    case "nextQuad":    handleNextQuad(payload); break;
+    case "nextPlane":   handleNextPlane(payload); break;
+    case "nextPiece":   handleNextPiece(payload); break;
     default: throw new Error(`Unknown advsq action ${action}, payload ${JSON.stringify(payload)}.`);
   }
 }
@@ -434,20 +434,9 @@ function handleDeselect() {
 import { normalizeTileToVts } from "../foundation/coords/coords.js";
 
 function handlePlace(payload) {
-  const { srcTile, quad, perimeter, stride } = payload;
-
   console.log("control: events.js - handlePlace(payload):", payload);
 
-  const newAdvsq = {
-    srcTile: normalizeTileToVts(srcTile),   // 🔥 KEY FIX
-    quad: normalizeQuad(quad),
-    perimeter: Number(perimeter),
-    stride: Number(stride)
-  };
-
-  trimStateToUndoIndex();
-  state.pushAdvSq(newAdvsq);
-  captureState();
+  changeAdvSq(payload);
 }
 
 
@@ -491,19 +480,107 @@ function handleNudgeSrc(payload) {
   // 4. write back to input OR state
   }
 
-function handleNextQuad() {
+function handleNextQuad(payload) {
   console.log("Advsq Next-Quad:");
   // TODO: change state.
+  const panel = document.getElementById("advsq-window");                  // Read.
+  let quadNo = Number(panel.querySelector('[name="advsq-quad"]').value);
+
+  if(      1 <= quadNo && quadNo <= 12) { // Next rook quad.
+    quadNo += 1;
+    if(quadNo % 4 === 1) quadNo -= 4;
+    }
+  else if(13 <= quadNo && quadNo <= 36) { // Next bishop quad.
+    quadNo += 1;
+    if(quadNo % 6 === 1) quadNo -= 6;
+    }
+  else if(37 <= quadNo && quadNo <= 60) { // Next duke quad.
+    quadNo += 1;
+    if(quadNo % 4 === 1) quadNo -= 4;
+    }
+  else {
+    throw new Error("Unknown quad number in control: events.js - handleNextQuad().", quadNo);
   }
 
-function handleNextPlane() {
+  panel.querySelector('[name="advsq-quad"]').value = quadNo;              // Write.
+
+  let { srcTile, quad, perimeter, stride } = payload;                     // Render.
+  payload = { srcTile, quad: quadNo, perimeter, stride };
+  changeAdvSq(payload);
+}
+
+function handleNextPlane(payload) {
   console.log("Advsq Next-Plane:");
   // TODO: change state.
+  const panel = document.getElementById("advsq-window");                  // Read.
+  let quadNo = Number(panel.querySelector('[name="advsq-quad"]').value);
+
+  if(      1 <= quadNo && quadNo <= 12) { // Change rook plane.
+    quadNo += 4;  
+    if(quadNo > 12) quadNo = 1;
+    }
+  else if(13 <= quadNo && quadNo <= 36) { // Change bishop plane.
+    quadNo += 6;
+    if(quadNo > 36) quadNo = 13;
+    }
+  else if(37 <= quadNo && quadNo <= 60) { // Change duke plane.
+    quadNo += 4;
+    if(quadNo > 60) quadNo = 37;
+    }
+  else {
+    throw new Error("Unknown quad number in control: events.js - handleNextPlane().", quadNo);
   }
 
-function handleNextPiece() {
+  panel.querySelector('[name="advsq-quad"]').value = quadNo;              // Write.
+
+  let { srcTile, quad, perimeter, stride } = payload;                     // Render.
+  payload = { srcTile, quad: quadNo, perimeter, stride };
+  changeAdvSq(payload);
+  }
+
+function handleNextPiece(payload) {
   console.log("Advsq Next-Piece:");
   // TODO: change state.
+  const panel = document.getElementById("advsq-window");                  // Read.
+  let quadNo = Number(panel.querySelector('[name="advsq-quad"]').value);
+
+  if(      1 <= quadNo && quadNo <= 12) { // Change from rook to bishop plane.
+    quadNo += 12;  
+    }
+  else if(13 <= quadNo && quadNo <= 36) { // Change from bishop to duke plane.
+    quadNo += 24;
+    }
+  else if(37 <= quadNo && quadNo <= 60) { // Change from duke to rook plane.
+    quadNo += 24;
+    if(quadNo > 60) quadNo -= 60;
+    }
+  else {
+    throw new Error("Unknown quad number in control: events.js - handleNextPiece().", quadNo);
+  }
+
+  panel.querySelector('[name="advsq-quad"]').value = quadNo;              // Write.
+
+  let { srcTile, quad, perimeter, stride } = payload;                     // Render.
+  payload = { srcTile, quad: quadNo, perimeter, stride };
+  changeAdvSq(payload);
+}
+
+// --- Helpers ---
+function changeAdvSq(payload) {
+  const { srcTile, quad, perimeter, stride } = payload;
+
+  console.log("control: events.js - handlePlace(payload):", payload);
+
+  const newAdvsq = {
+    srcTile: normalizeTileToVts(srcTile),   // 🔥 KEY FIX
+    quad: normalizeQuad(quad),
+    perimeter: Number(perimeter),
+    stride: Number(stride)
+  };
+
+  trimStateToUndoIndex();
+  state.pushAdvSq(newAdvsq);
+  captureState();
 }
 
 import * as cameras from "../view/render/cameras.js";
@@ -541,5 +618,6 @@ function normalizeQuad(q) {
   if (typeof q === "string" && q.startsWith("Q")) return q;
   if (typeof q === "string") return `Q${q}`;
   throw new Error(`Invalid quad: ${q}`);
+
 }
 // Seampoint - more local functions.
