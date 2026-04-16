@@ -14,6 +14,11 @@ import advsqsData from "./advsqs.json" assert { type: "json" };
 
 // --- Build upon previous layers ---
 import {getBoardSpec,} from "../../foundation/coords/coords.js";
+import {vts2xyz,
+        xyz2vts,
+        vts2pixels,
+        pixels2vts,
+} from "../render/coordsMaps.js"
 
 import * as view from "../view.js";
 import * as tiles from "../tiles/tiles.js";
@@ -36,19 +41,18 @@ export function UI() {
 export function makeAdvsq(specs) {
   console.log("view: advsqs.js - makeAdvsq(specs):", specs);
 
-  if (currentAdvsq?.userData?.overlays) {
+  if (currentAdvsq?.userData?.overlays) {             // Remove overlays.
     currentAdvsq.userData.overlays.forEach(o => {
       if (o.parent) o.parent.remove(o);
     });
   }
 
-  if (currentAdvsq) {
+  if (currentAdvsq) {                                 // Remove advsq.
     if (currentAdvsq.userData?.overlays) {
       currentAdvsq.userData.overlays.forEach(o => {
         if (o.parent) o.parent.remove(o);
       });
     }
-
     view.context.scene.remove(currentAdvsq);
   }
 
@@ -68,20 +72,20 @@ export function makeAdvsq(specs) {
 
     // Source tile (k=0)
     if (i === 0) {
-      decorateTile(p.stride[0], piece, "source", group);
+      decorateTile(p.stride[0], piece, "source", group, specs.opacity);
       continue;
     }
 
     // E1, apex, E2
-    decorateTile(p.E1,   piece, "end2", group);
-    decorateTile(p.apex, piece, "apex", group);
-    decorateTile(p.E2,   piece, "end2", group);
+    decorateTile(p.E1,   piece, "end2", group, specs.opacity);
+    decorateTile(p.apex, piece, "apex", group, specs.opacity);
+    decorateTile(p.E2,   piece, "end2", group, specs.opacity);
 
     // Body tiles (everything else in stride)
     for (const tile of p.stride) {
       if (isSame(tile, p.E1) || isSame(tile, p.apex) || isSame(tile, p.E2)) continue;
 
-      decorateTile(tile, piece, "body", group);
+      decorateTile(tile, piece, "body", group, specs.opacity);
     }
   }
 
@@ -89,13 +93,13 @@ export function makeAdvsq(specs) {
   currentAdvsq = group;
 }
 
-export function makeAdvsq1(specs) {
-  console.log("view: advsqs.js - makeAdvsq(specs):", specs);
+// export function makeAdvsq1(specs) {
+//   console.log("view: advsqs.js - makeAdvsq(specs):", specs);
 
-  if(currentAdvsq) { view.context.scene.remove(currentAdvsq); }
+//   if(currentAdvsq) { view.context.scene.remove(currentAdvsq); }
 
-  // TODO: Using the geometry layer, place an advsq on the board.
-}
+//   // TODO: Using the geometry layer, place an advsq on the board.
+// }
 
 export function clearAdvsq() {
   if (currentAdvsq) {
@@ -106,9 +110,37 @@ export function clearAdvsq() {
 // Seampoint: more global functions.
 
 // --- Helpers ---
-function decorateTile(coords, piece, decorator, group) {
-  const meshTile = tiles.getTileMesh(view.context.tileMap, coords);
-  if (!meshTile) return;
+function decorateTile(coords, piece, decorator, group, opacity) {
+  let meshTile = tiles.getTileMesh(view.context.tileMap, coords);
+  if (!meshTile) {
+    console.log("Offboard:", coords);
+    // Need to create a tile mesh for this tile with high transparency.
+
+    const tileGeometry = new THREE.BoxGeometry(...vts2xyz(tiles.tileSize()));
+
+    let pos = coords;
+    let tile = tiles.getTileAttributes(pos);
+    meshTile = tiles.createMeshTile(tile, tileGeometry, pos);
+    meshTile.material.forEach(mat => {      // Faces and edges.
+      mat.transparent = true;
+      mat.opacity = opacity;   // tweak as desired
+    });
+    meshTile.children.forEach(child => {     // Frame.
+      if (child.type === "LineSegments") {
+        child.material.transparent = true;
+        child.material.opacity = opacity  // match tile or slightly higher (e.g. 0.4)
+      }
+    });
+
+    meshTile.userData = {
+      isTile: true,
+      coords: pos,
+      faceColor: tile.faceColor,
+      isOffboard: true
+    };
+
+    group.add(meshTile);
+  }
 
   const faceColor = meshTile.userData.faceColor;
 
