@@ -185,6 +185,11 @@ layout: "play"
     <button data-action="nextPlane">Next Plane</button>
     <button data-action="nextPiece">Next Piece</button>
   </div>
+
+  <div class="section">
+    <label> Offboard Visibility
+      <input type="range" name="offboard-opacity" min="0" max="1" step="0.01" value="0.5"> </label>
+  </div>
 </div>
 
 <div class="panel" id="camera-window">
@@ -197,13 +202,12 @@ layout: "play"
     <button data-action="Descend">Descend </button>
   </div>
 
-
   <div class="section">
     <label> <input type="radio" name="camera-pov" value="white"    data-action="SetPOV"> White </label>
     <label> <input type="radio" name="camera-pov" value="neutral"  data-action="SetPOV" checked> Neutral </label>
     <label> <input type="radio" name="camera-pov" value="black"    data-action="SetPOV"> Black </label>
     <label> <input type="radio" name="camera-pov" value="negative" data-action="SetPOV"> Negative </label>
-  </div>  
+  </div>
 </div>
 
 <!-- Seampoint - more DOM control panels... -->

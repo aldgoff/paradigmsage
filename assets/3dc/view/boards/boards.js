@@ -54,7 +54,7 @@ export function makeBoard(dimensions) {
         let pos = [z, x, y];
         let tile = tiles.getTileAttributes(pos);
         let meshTile = tiles.createMeshTile(tile, tileGeometry, pos);
-        initTileUserData(meshTile, tile, pos, tileMap);
+        tiles.initTileUserData(meshTile, tile, pos, tileMap);
         boardGroup.add(meshTile); // Add tile to board.
         count++;
       }
@@ -75,16 +75,6 @@ export function clearBoard() {
 // Seampoint: more global functions.
 
 // --- Helpers ---
-function initTileUserData(meshTile, tile, pos, tileMap) {
-  meshTile.userData.isTile = true;
-  meshTile.userData.coords = pos;
-  meshTile.userData.decorated = false;
-  meshTile.userData.overlays = [];
-  meshTile.userData.faceColor = tile.faceColor;
-
-  tileMap.set(pos.join(","), meshTile);
-  }
-
 function addEventListener(scene, renderer, camera, tileMap) {
   renderer.domElement.addEventListener("click", (event) => {
   const coords = getTileFromClick(event, camera, scene, renderer);

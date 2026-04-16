@@ -71,7 +71,9 @@ function gambitButtonDispatch(payload) {
   }
 
 function advsqPanelDispatch(payload) {
-  const { action, srcTile, quad, perimeter, stride } = payload;
+  const { action, srcTile, quad, perimeter, stride, opacity } = payload;
+  console.log("control: events.js - advsqPanelDispatch(payload)", payload);
+
   switch (action) {
     case "place":       handlePlace(payload); break;
     case "remove":      handleRemove(); break;
@@ -85,15 +87,17 @@ function advsqPanelDispatch(payload) {
 }
 
 function cameraPanelDispatch(payload) { // Not subject to the undo arch.
-  const { action, value } = payload;
+  const { action, value, offboardOpacity } = payload;
+
   switch (action) {
     case "ZoomIn":  handleZoomIn(); break;
     case "ZoomOut": handleZoomOut(); break;
     case "Ascend":  handleAscend(); break;
     case "Descend": handleDescend(); break;
     case "SetPOV":  handlePOV(value); break;
-    default: throw new Error(`Unknown camera action ${action} value ${value}.`);  break;
+    default: throw new Error(`Unknown camera action ${action} value ${value}.`); break;
   }
+  // <input type="range" name="offboard-opacity" min="0" max="1" step="0.01" value="0.5"> </label>
 }
 // Seampoint - more dispatchers...
 
@@ -433,23 +437,10 @@ function handleDeselect() {
 
 import { normalizeTileToVts } from "../foundation/coords/coords.js";
 
-function handlePlace(payload) {
+function handlePlace(payload) {       // Advsq handlers.
   console.log("control: events.js - handlePlace(payload):", payload);
 
   changeAdvSq(payload);
-}
-
-
-function handlePlace1(payload) {       // Advsq handlers.
-  const { action, srcTile, quad, perimeter, stride } = payload;
-  console.log("control: events.js - handlePlace(payload):", payload);
-  // TODO: change state.
-  const newAdvsq = { srcTile, quad, perimeter, stride };
-
-  trimStateToUndoIndex();
-  state.pushAdvSq(newAdvsq);
-
-  captureState();
   }
 
 function handleRemove() {
@@ -459,7 +450,7 @@ function handleRemove() {
 
 function handleUpdateParam(payload) {
   const { name, value } = payload;
-  console.log("Advsq Update:", payload);
+  console.log("control: events.js - handleUpdateParam(payload):", payload);
 
   // Optional: normalize name
   const param = name.replace("advsq-", "");
@@ -481,7 +472,7 @@ function handleNudgeSrc(payload) {
   }
 
 function handleNextQuad(payload) {
-  console.log("Advsq Next-Quad:");
+  console.log("control: events.js - handleNextQuad(payload):", payload);
   // TODO: change state.
   const panel = document.getElementById("advsq-window");                  // Read.
   let quadNo = Number(panel.querySelector('[name="advsq-quad"]').value);
@@ -504,13 +495,13 @@ function handleNextQuad(payload) {
 
   panel.querySelector('[name="advsq-quad"]').value = quadNo;              // Write.
 
-  let { srcTile, quad, perimeter, stride } = payload;                     // Render.
-  payload = { srcTile, quad: quadNo, perimeter, stride };
+  let { srcTile, quad, perimeter, stride, opacity } = payload;            // Render.
+  payload = { srcTile, quad: quadNo, perimeter, stride, opacity };
   changeAdvSq(payload);
-}
+  }
 
 function handleNextPlane(payload) {
-  console.log("Advsq Next-Plane:");
+  console.log("control: events.js - handleNextPlane(payload):", payload);
   // TODO: change state.
   const panel = document.getElementById("advsq-window");                  // Read.
   let quadNo = Number(panel.querySelector('[name="advsq-quad"]').value);
@@ -533,13 +524,13 @@ function handleNextPlane(payload) {
 
   panel.querySelector('[name="advsq-quad"]').value = quadNo;              // Write.
 
-  let { srcTile, quad, perimeter, stride } = payload;                     // Render.
-  payload = { srcTile, quad: quadNo, perimeter, stride };
+  let { srcTile, quad, perimeter, stride, opacity } = payload;            // Render.
+  payload = { srcTile, quad: quadNo, perimeter, stride, opacity };
   changeAdvSq(payload);
   }
 
 function handleNextPiece(payload) {
-  console.log("Advsq Next-Piece:");
+  console.log("control: events.js - handleNextPiece(payload):", payload);
   // TODO: change state.
   const panel = document.getElementById("advsq-window");                  // Read.
   let quadNo = Number(panel.querySelector('[name="advsq-quad"]').value);
@@ -560,22 +551,23 @@ function handleNextPiece(payload) {
 
   panel.querySelector('[name="advsq-quad"]').value = quadNo;              // Write.
 
-  let { srcTile, quad, perimeter, stride } = payload;                     // Render.
-  payload = { srcTile, quad: quadNo, perimeter, stride };
+  let { srcTile, quad, perimeter, stride, opacity } = payload;            // Render.
+  payload = { srcTile, quad: quadNo, perimeter, stride, opacity };
   changeAdvSq(payload);
 }
 
 // --- Helpers ---
 function changeAdvSq(payload) {
-  const { srcTile, quad, perimeter, stride } = payload;
+  const { srcTile, quad, perimeter, stride, opacity } = payload;
 
-  console.log("control: events.js - handlePlace(payload):", payload);
+  console.log("control: events.js - changeAdvSq(payload):", payload);
 
   const newAdvsq = {
     srcTile: normalizeTileToVts(srcTile),   // 🔥 KEY FIX
     quad: normalizeQuad(quad),
     perimeter: Number(perimeter),
-    stride: Number(stride)
+    stride: Number(stride),
+    opacity: Number(opacity),
   };
 
   trimStateToUndoIndex();

@@ -206,6 +206,7 @@ function buildAdvsqPayload(panel, action) {
     quad:     panel.querySelector('[name="advsq-quad"]')?.value,
     perimeter:panel.querySelector('[name="advsq-perimeter"]')?.value,
     stride:   panel.querySelector('[name="advsq-stride"]')?.value,
+    opacity:  panel.querySelector('[name="offboard-opacity"]')?.value,
   };
 }
 

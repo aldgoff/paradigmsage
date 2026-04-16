@@ -118,3 +118,20 @@ panel.querySelector('[name="advsq-quad"]').value = 3;
 panel.querySelector('[name="advsq-perimeter"]').value = 5;
 panel.querySelector('[name="advsq-stride"]').value = 2;
 
+## Making Tile Meshes...
+  let count = 0;
+  for(let z=Sz; z<=Z; z++) {  // Create the board.
+    for(let x=Sx; x<=X; x++) {
+      for(let y=Sy; y<=Y; y++) {
+        let pos = [z, x, y];
+        let tile = tiles.getTileAttributes(pos);
+        let meshTile = tiles.createMeshTile(tile, tileGeometry, pos);
+        initTileUserData(meshTile, tile, pos, tileMap);
+        boardGroup.add(meshTile); // Add tile to board.
+        count++;
+      }
+    }
+  }
+  view.context.scene.add(boardGroup);              // Add board to scene.
+  currentBoard = boardGroup;
+
