@@ -7,7 +7,7 @@
 */
 
 /* JSON stringify and parse syntax:
- * Will want to leverage JSON stringify and parse.
+ * Leverage JSON stringify and parse.
  * const str = JSON.stringify(setup);
  * const obj = JSON.parse(str);
 */
@@ -18,16 +18,15 @@ import stateData from "./state.json" assert { type: "json" };
 // Seampoint: more objects.
 
 // --- Build upon previous layers ---
-import * as model from "../../model/model.js";
-import * as view   from "../../view/view.js";
-import * as control from "../../controller/controller.js";
+import * as model  from "../../model/model.js";
 
+import * as view   from "../../view/view.js";
 import * as boards from "../../view/boards/boards.js";
 import * as advsqs from "../../view/advsqs/advsqs.js";
 
 // Seampoint: more imports...
 
-let state = { // This is the state of the game: board/moves/gambits/advsq.
+let state = { // This is the state history of the game: setup-moves-gambits-advsq.
   Setup:   [],
   Moves:   [],
   Gambits: [],
@@ -92,32 +91,16 @@ function iterateState(stateData) {
   console.log("Moves:");
   mod.Moves.forEach((entry, i) => {
     console.log(i, entry);
-    // console.log(`Turn ${entry.turn}:`);
-    // console.log("  Moves:", entry.moves.join(" | "));
-    // console.log("  Coords:", entry.coords.join(" | "));
-    // console.log("  Notes:", entry.annotations.join(" | "));
   });
 
   console.log("Gambits:");
   mod.Gambits.forEach((entry, i) => {
     console.log(i, entry);
-    // mod.Gambits.forEach(g => {
-      // console.log(`Turn ${entry.turn}:`);
-      // console.log("  Moves:", entry.moves.join(" | "));
-      // console.log("  Coords:", entry.coords.join(" | "));
-      // console.log("  Notes:", entry.annotations.join(" | "));
   });
 
   console.log("AdvSqs:");
   mod.AdvSqs.forEach((entry, i) => {
     console.log(i, entry);
   });
-
-  // mod.AdvSqs.forEach(a => {
-  //   console.log(`${a.src} → ${a.dst}`);
-  // });
-  // mod.AdvSqs.forEach((entry, i) => {
-  //   console.log(`${entry.src} → ${entry.dst}`);
-  // });
 }
 

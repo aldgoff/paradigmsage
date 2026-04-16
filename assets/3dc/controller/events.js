@@ -112,7 +112,7 @@ function handleMakeBoard(boardSize) { // Setup handlers.
   state.setup(newBoard);
 
   captureState();
-}
+  }
 
 function handleMakeTrays(trayType) {  // Tray handlers.
   console.log("Tray Make-Tray:", trayType);
@@ -133,141 +133,7 @@ function handleCycleGap() {
   console.log("Tray Cycle-Gap:");
   // TODO: change state.
 }
-
-let undoState = { // This is the undo state of the game: local to controller.
-  Setup:   [],
-  Moves:   [],
-  Gambits: [],
-  AdvSqs:  []
-  };
-
-let undoIndex = { // undoIndex[key][0] = pointer to NEXT item to apply.
-  Setup:   [],
-  Moves:   [],
-  Gambits: [],
-  AdvSqs:  []
-}
-
-function statusUndoIndex() {    // Game helpers.
-  const el = document.getElementById("undo-list");
-
-  const rows = [
-    ["Setup",   undoIndex.Setup],
-    ["Moves",   undoIndex.Moves],
-    ["Gambits", undoIndex.Gambits],
-    ["AdvSqs",  undoIndex.AdvSqs]
-  ];
-
-  const text = rows
-    .map(([label, [i, max]]) =>
-      `${label.padEnd(7)} ${i}/${max}`
-    )
-    .join("\n");
-
-  el.textContent = text;
-  }
-
-function currentKeyIndex() {
-  const order = ["AdvSqs", "Gambits", "Moves", "Setup"];
-
-  for (const key of order) {
-    const i = undoIndex[key][0];
-    if (i > 0) {
-      return { arrayKey: key, index: i - 1 };
-    }
-  }
-
-  return { arrayKey: "Sentry", index: -1 };  // 🔥 explicit
-  }
-
-function prevKeyIndex() {
-  const order = ["AdvSqs", "Gambits", "Moves", "Setup"];
-
-  for (let k = 0; k < order.length; k++) {
-    const key = order[k];
-    let i = undoIndex[key][0];
-
-    // Only consider arrays that have any applied state
-    if (i > 0) {
-      i = i - 1;
-
-      if (i >= 0) {      // Case 1: still within same array
-        undoIndex[key][0] = i;
-        if(i-1 >= 0)
-          return { arrayKey: key, index: i-1 };
-      }
-
-      for (let j = k + 1; j < order.length; j++) {      // Case 2: retreat to previous arrays
-        const prevKey = order[j];
-        const prevI = undoIndex[prevKey][0];
-
-        if (prevI > 0) {
-          return { arrayKey: prevKey, index: prevI - 1 };
-        }
-      }
-
-      return null; // nothing left anywhere
-    }
-  }
-
-  return null; // no arrays had state
-  }
-
-function nextKeyIndex() {
-  const order = ["Setup", "Moves", "Gambits", "AdvSqs"];
-
-  for (let k = 0; k < order.length; k++) {
-    const key = order[k];
-    let i = undoIndex[key][0];
-    const max = undoIndex[key][1];
-
-    // Only consider arrays that have remaining redo
-    if (i < max) {      // Case 1: advance within same array
-      undoIndex[key][0] = i + 1;
-      return { arrayKey: key, index: i };
-    }
-
-    for (let j = k + 1; j < order.length; j++) {    // Case 2: move forward to next arrays
-      const nextKey = order[j];
-      const nextI = undoIndex[nextKey][0];
-      const nextMax = undoIndex[nextKey][1];
-
-      if (nextI < nextMax) {
-        undoIndex[nextKey][0] = nextI + 1;
-        return { arrayKey: nextKey, index: nextI };
-      }
-    }
-
-    // If we checked this key and forward keys, nothing found
-    if (i < max) break;
-  }
-
-  return null;
-  }
-
-function trimStateToUndoIndex() {
-  const curr = state.getState();
-  const next = {};
-
-  for (const key in curr) {
-    const cutoff = undoIndex[key][0];   // pointer to NEXT
-    next[key] = curr[key].slice(0, cutoff);
-  }
-
-  state.setState(next);
-  }
-
-function captureState() {
-  undoState = structuredClone(state.getState());  // A deep copy for undo to traverse.
-  for(const key in undoState) {
-    const array = undoState[key];
-    undoIndex[key][0] = array.length;
-    undoIndex[key][1] = array.length;
-  }
-  const keyIndex = currentKeyIndex();
-
-  statusUndoIndex();
-}
+/*** ---------- ---------- ---------- ---------- ***/
 
 function handleNewGame() {            // Game handlers.
   // console.log("Game New-Game:");
@@ -410,6 +276,143 @@ function handleSave() {
   statusUndoIndex();  // TODO: Deprecate, now shows up in the Game Control panel.
 }
 
+// --- Helpers ---
+let undoState = { // This is the undo state of the game: local to controller.
+  Setup:   [],
+  Moves:   [],
+  Gambits: [],
+  AdvSqs:  []
+  };
+
+let undoIndex = { // undoIndex[key][0] = pointer to NEXT item to apply.
+  Setup:   [],
+  Moves:   [],
+  Gambits: [],
+  AdvSqs:  []
+}
+
+function statusUndoIndex() {    // Game helpers.
+  const el = document.getElementById("undo-list");
+
+  const rows = [
+    ["Setup",   undoIndex.Setup],
+    ["Moves",   undoIndex.Moves],
+    ["Gambits", undoIndex.Gambits],
+    ["AdvSqs",  undoIndex.AdvSqs]
+  ];
+
+  const text = rows
+    .map(([label, [i, max]]) =>
+      `${label.padEnd(7)} ${i}/${max}`
+    )
+    .join("\n");
+
+  el.textContent = text;
+  }
+
+function currentKeyIndex() {
+  const order = ["AdvSqs", "Gambits", "Moves", "Setup"];
+
+  for (const key of order) {
+    const i = undoIndex[key][0];
+    if (i > 0) {
+      return { arrayKey: key, index: i - 1 };
+    }
+  }
+
+  return { arrayKey: "Sentry", index: -1 };  // 🔥 explicit
+  }
+
+function prevKeyIndex() {
+  const order = ["AdvSqs", "Gambits", "Moves", "Setup"];
+
+  for (let k = 0; k < order.length; k++) {
+    const key = order[k];
+    let i = undoIndex[key][0];
+
+    // Only consider arrays that have any applied state
+    if (i > 0) {
+      i = i - 1;
+
+      if (i >= 0) {      // Case 1: still within same array
+        undoIndex[key][0] = i;
+        if(i-1 >= 0)
+          return { arrayKey: key, index: i-1 };
+      }
+
+      for (let j = k + 1; j < order.length; j++) {      // Case 2: retreat to previous arrays
+        const prevKey = order[j];
+        const prevI = undoIndex[prevKey][0];
+
+        if (prevI > 0) {
+          return { arrayKey: prevKey, index: prevI - 1 };
+        }
+      }
+
+      return null; // nothing left anywhere
+    }
+  }
+
+  return null; // no arrays had state
+  }
+
+function nextKeyIndex() {
+  const order = ["Setup", "Moves", "Gambits", "AdvSqs"];
+
+  for (let k = 0; k < order.length; k++) {
+    const key = order[k];
+    let i = undoIndex[key][0];
+    const max = undoIndex[key][1];
+
+    // Only consider arrays that have remaining redo
+    if (i < max) {      // Case 1: advance within same array
+      undoIndex[key][0] = i + 1;
+      return { arrayKey: key, index: i };
+    }
+
+    for (let j = k + 1; j < order.length; j++) {    // Case 2: move forward to next arrays
+      const nextKey = order[j];
+      const nextI = undoIndex[nextKey][0];
+      const nextMax = undoIndex[nextKey][1];
+
+      if (nextI < nextMax) {
+        undoIndex[nextKey][0] = nextI + 1;
+        return { arrayKey: nextKey, index: nextI };
+      }
+    }
+
+    // If we checked this key and forward keys, nothing found
+    if (i < max) break;
+  }
+
+  return null;
+  }
+
+function trimStateToUndoIndex() {
+  const curr = state.getState();
+  const next = {};
+
+  for (const key in curr) {
+    const cutoff = undoIndex[key][0];   // pointer to NEXT
+    next[key] = curr[key].slice(0, cutoff);
+  }
+
+  state.setState(next);
+  }
+
+function captureState() {
+  undoState = structuredClone(state.getState());  // A deep copy for undo to traverse.
+  for(const key in undoState) {
+    const array = undoState[key];
+    undoIndex[key][0] = array.length;
+    undoIndex[key][1] = array.length;
+  }
+  const keyIndex = currentKeyIndex();
+
+  statusUndoIndex();
+}
+/*** ---------- ---------- ---------- ---------- ***/
+
 function handleFreeze() {             // Gambit handlers.
   console.log("Gambit Freeze-AdvSq:");
   // TODO: change state.
@@ -434,6 +437,7 @@ function handleDeselect() {
   console.log("Gambit Deselect:");
   // TODO: change state.
 }
+/*** ---------- ---------- ---------- ---------- ***/
 
 import { normalizeTileToVts } from "../foundation/coords/coords.js";
 
@@ -573,7 +577,15 @@ function changeAdvSq(payload) {
   trimStateToUndoIndex();
   state.pushAdvSq(newAdvsq);
   captureState();
+  }
+
+function normalizeQuad(q) {
+  if (typeof q === "number") return q;
+  if (typeof q === "string" && q.startsWith("Q")) return q;
+  if (typeof q === "string") return `Q${q}`;
+  throw new Error(`Invalid quad: ${q}`);
 }
+/*** ---------- ---------- ---------- ---------- ***/
 
 import * as cameras from "../view/render/cameras.js";
 
@@ -604,12 +616,3 @@ function handlePOV(pov) {
 
 // Seampoint - more handle functions, to be grouped by panel.
 
-// --- Helpers ---
-function normalizeQuad(q) {
-  if (typeof q === "number") return q;
-  if (typeof q === "string" && q.startsWith("Q")) return q;
-  if (typeof q === "string") return `Q${q}`;
-  throw new Error(`Invalid quad: ${q}`);
-
-}
-// Seampoint - more local functions.
