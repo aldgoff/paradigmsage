@@ -8,7 +8,6 @@
 │   ├── 3dc
 │   │   ├── arch.js
 │   │   ├── controller
-│   │   │   ├── _tbd.md
 │   │   │   ├── controller.js
 │   │   │   ├── controller.md
 │   │   │   ├── events.js
@@ -72,7 +71,6 @@
 │   │   │   └── quads.md
 │   │   ├── main.js
 │   │   ├── model
-│   │   │   ├── _tbd.md
 │   │   │   ├── gambit
 │   │   │   │   ├── gambit.json
 │   │   │   │   └── gambit.md
@@ -86,9 +84,6 @@
 │   │   │       ├── state.js
 │   │   │       ├── state.json
 │   │   │       └── state.md
-│   │   ├── Obsolete
-│   │   │   ├── layout.js
-│   │   │   └── layout.md
 │   │   ├── templates
 │   │   │   ├── modules.js
 │   │   │   ├── modules.json
@@ -220,6 +215,7 @@
 │   │   ├── clues.md
 │   │   ├── dev.md
 │   │   ├── play.md
+│   │   ├── quickStart.md
 │   │   └── rationale.md
 │   ├── contact
 │   │   └── _index.md
@@ -292,6 +288,7 @@
 │   └── QM-QFT-RED-HERRINGS.md
 ├── drafts
 │   └── iqt3.md
+├── grep
 ├── hugo.toml
 ├── i18n
 ├── layouts
@@ -443,4 +440,4 @@
 │           └── poc.js
 └── themes
 
-86 directories, 357 files
+85 directories, 355 files

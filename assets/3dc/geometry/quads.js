@@ -17,7 +17,7 @@ const Q_MAX = 60;
 
 // --- UI ---  
 export function pqrTable(Q) { // 1 - 60.
-  // returns: { piece, plane, quad:{globalQ,pieceQ,planeQ,rayPair:[r1,r2],nickname} }.
+  // returns: { piece, plane, quad:{globalQ,pieceQ,planeQ,rayPair:[r1,r2],quadType,nickname} }.
   const globalQ = Q;
 
   for (const plane of planeQuadTable) {
@@ -27,7 +27,7 @@ export function pqrTable(Q) { // 1 - 60.
   
     for (const quad of plane.quads) {  // Scan quads in this plane for a match.
       if (quad.globalQ === globalQ) {
-        return {  // { piece, plane, quad:{globalQ,pieceQ,planeQ,rayPair:[r1,r2],nickname} }.
+        return {  // { piece, plane, quad:{globalQ,pieceQ,planeQ,rayPair:[r1,r2],quadType,nickname} }.
           piece: plane.piece,
           plane: plane.plane,
           ...quad
@@ -73,6 +73,18 @@ export function prevQuadInPlane(q) {
   }
 
   throw new Error(`prevQuadInPlane: invalid quad ${q}`);
+}
+
+export function quadToQuadType(q) {
+  const Q = toQ(q);
+  const rec = pqrTable(Q);
+
+  // Only duke defines quadType
+  if (rec.piece !== "duke") {
+    return null;
+  }
+
+  return rec.quadType || null;
 }
 
 // Representation Conversion Routines:

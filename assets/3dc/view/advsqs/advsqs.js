@@ -23,13 +23,14 @@ import {vts2xyz,
 import * as view from "../view.js";
 import * as tiles from "../tiles/tiles.js";
 import * as decorators from "../decorators/decorators.js";
-import * as cameras from "../render/cameras.js";
-import * as renders from "../render/renders.js";
+import * as cameras    from "../render/cameras.js";
+import * as renders    from "../render/renders.js";
 
+import * as state  from "../../model/state/state.js";
 import * as coords from "../../foundation/coords/coords.js";
-
 import * as planes from "../../geometry/planes.js";
 import * as quads  from "../../geometry/quads.js";
+import * as overlaps from "../../geometry/overlapTiles.js";
 import { AdvSq } from "../../geometry/advSqs.js";
 // Seampoint: more imports.
 
@@ -76,6 +77,25 @@ export function setAdvsqPanelParams(params) {
   panel.querySelector('[name="advsq-opacity"]').value   = params.opacity;
   }
 
+export function specsToPanelParams(specs) {
+  if(!specs) return getAdvsqPanelInitialParams();
+
+  const spec = getActiveBoardSpec();
+  // const spec = coords.getBoardSpec("8x8x8");  // TODO: get boardspec from setup panel.
+  console.log("   specs", specs);
+  let src = coords.vtsToBoard(specs.srcTile, spec);
+  console.log("   spec", spec);
+  console.log("   denormalizeQuad(specs.quad)", denormalizeQuad(specs.quad));
+
+  return {
+    srcTile: coords.vtsToBoard(specs.srcTile, spec),
+    quad:    denormalizeQuad(specs.quad),
+    perimeter: specs.perimeter,
+    stride:    specs.stride,
+    opacity:   specs.opacity
+  };
+  }
+
 export function makeAdvsq(specs) {
   console.log("view: advsqs.js - makeAdvsq(specs):", specs);
 
@@ -101,10 +121,26 @@ export function makeAdvsq(specs) {
       continue;
     }
 
-    // E1, apex, E2
-    decorateTile(p.E1,   piece, "end2", group, specs.opacity);
-    decorateTile(p.apex, piece, "apex", group, specs.opacity);
-    decorateTile(p.E2,   piece, "end2", group, specs.opacity);
+    if(1<=quad && quad <=36) {    // Rook or Bishop.
+      decorateTile(p.E1,   piece, "end2", group, specs.opacity);
+      decorateTile(p.apex, piece, "apex", group, specs.opacity);
+      decorateTile(p.E2,   piece, "end2", group, specs.opacity);
+      }
+    else {                        // Duke.
+      decorateTile(p.E1,   piece, "end3", group, specs.opacity);
+      const quadType = quads.quadToQuadType(quad);
+      console.log("*** quadType", quadType, "|");
+      if(     quadType === "edge") {
+        decorateTile(p.apex, piece, "apex", group, specs.opacity);
+        }
+      else if(quadType === "face") {
+        decorateTile(p.apex, piece, "duplex", group, specs.opacity);
+        }
+      else {
+        // throw new Error("Unknown duke quad type", quadType, quad);  // TODO: Bug when changing offboard visiblity.
+      }
+      decorateTile(p.E2,   piece, "end3", group, specs.opacity);
+    }
 
     // Body tiles (everything else in stride)
     for (const tile of p.stride) {
@@ -177,30 +213,19 @@ function decorateTile(coords, piece, decorator, group, opacity) {
   }
 }
 
-export function specsToPanelParams(specs) {
-  if (!specs) return getAdvsqPanelInitialParams();
+function getActiveBoardSpec() {
+  const setupArray = state.getState().Setup;
 
-  const spec = coords.getBoardSpec("8x8x8");  // TODO: get boardspec from setup panel.
+  if (!setupArray || setupArray.length === 0) {
+    return coords.getBoardSpec("8x8x8"); // fallback
+  }
 
-  return {
-    srcTile: coords.vtsToBoard(specs.srcTile, spec),
-    quad:    denormalizeQuad(specs.quad),
-    perimeter: specs.perimeter,
-    stride:    specs.stride,
-    opacity:   specs.opacity
-  };
-}
+  const latest = setupArray[setupArray.length - 1];
+  const board = latest.board; // [z,x,y]
 
-export function specsToPanelParams1(specs) {
-  if (!specs) return getAdvsqPanelInitialParams();
+  const boardStr = board.join("x"); // "8x8x8"
 
-  return {
-    srcTile: coords.vtsToBoard(specs.srcTile),   // convert back
-    quad:    denormalizeQuad(specs.quad),
-    perimeter: specs.perimeter,
-    stride:    specs.stride,
-    opacity:   specs.opacity
-  };
+  return coords.getBoardSpec(boardStr);
 }
 // Seampoint: more local functions.
 

@@ -60,5 +60,5 @@ title: "Dev"
   - 4/14/26 - Delete insights, basic logarithmic undo. Make boards from panel, delete prev, confirm addition to state history, confirm raycasting.
   - 4/15/26 - Display undo status, branching for makeBoards. Create advsqs from panel. Undo/redo working, rerun not zeroing downstream elements.
   - 4/16/26 - Advsq panel: next quad/plane/piece. Offboard decorators and opacity slider. Refine web pages. QC controller code. QC dead code.
-  - 4/17/26 - Advsq panel Remove feature. Undo's restore AdvSq Panel fields. Editable fields trigger immediate advsq updates.
+  - 4/17/26 - Advsq panel Remove feature. Undo's restore AdvSq Panel fields. Editable fields trigger immediate advsq updates. Duke duplex/apex tiles.
 

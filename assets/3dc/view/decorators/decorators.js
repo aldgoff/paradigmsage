@@ -23,50 +23,18 @@ export function module() {
   return decoratorsModule;
 }
 
-export function decorate(color, meshTile, piece, decorator) {
-  const base = color;
-  const list = decorators[piece][decorator];
-  const zones = resolveColors(list, pallet);
-  const layers = applyBaseZones({ base, zones });
+export function decorate(baseColor, meshTile, piece, decoratorName) {
+  const defRaw = decorators[piece][decoratorName];
+  if (!defRaw || Object.keys(defRaw).length === 0) {
+    return []; // Silently ignore placeholders like "_trailing"
+  }
 
-  const overlays = [];
+  const resolved = resolveDefinition(defRaw, pallet);
 
-  layers.forEach(layer => {
-    const overlay = drawInsetQuad(meshTile, layer.scale, layer.color);
-    meshTile.add(overlay);     // ✅ correct anchoring
-    overlays.push(overlay);    // ✅ track ownership
-  });
+  const overlays = renderDecorator(meshTile, baseColor, resolved);
 
   return overlays;
-}
-
-// export function decorate2(color, meshTile, piece, decorator) {
-//   const base = color;
-//   const list = decorators[piece][decorator];
-//   const zones = resolveColors(list, pallet);
-//   const layers = applyBaseZones({ base, zones });
-
-//   const group = new THREE.Group();
-
-//   layers.forEach(layer => {
-//     const overlay = drawInsetQuad(meshTile, layer.scale, layer.color);
-//     group.add(overlay);   // 🔥 attach to group, NOT tile
-//   });
-
-//   return group;  // 🔥 RETURN IT
-// }
-
-// export function decorate1(color, meshTile, piece, decorator) {
-//   const base = color;
-//   const list = decorators[piece][decorator];
-//   const zones = resolveColors(list, pallet);
-//   const layers = applyBaseZones({ base, zones });
-
-//   layers.forEach(layer => {
-//     const overlay = drawInsetQuad(meshTile, layer.scale, layer.color);
-//     meshTile.add(overlay);   // attach to meshTile (not scene)
-//   });
-// }
+  }
 
 export function applyBaseZones({ base, zones=[] }) {
   return [base, ...zones]
@@ -152,8 +120,8 @@ export function drawInsetDualDiamonds(mesh, scale, def) {
 
   // --- 2. Diamonds along diagonal ---
   const positions = [
-    [-0.25, -0.25],  // bottom-left → top-right diagonal
-    [ 0.25,  0.25]
+    [-0.18, -0.18],  // bottom-left → top-right diagonal
+    [ 0.18,  0.18]
   ];
 
   const sides = ["left", "right"];
@@ -176,8 +144,8 @@ export function drawInsetDualDiamonds(mesh, scale, def) {
       const shrink = 1 - j * 0.4;   // 1.0, 0.6, etc.
 
       diamond.scale.set(
-        size.x * scale * 0.7 * shrink,
-        size.z * scale * 0.7 * shrink,
+        size.x * scale * 0.63* shrink,
+        size.z * scale * 0.63* shrink,
         1
       );
 
@@ -273,6 +241,7 @@ export function drawInsetTriDiamonds(mesh, scale, def) {
   }
 
 export function resolveColors(names, pallet) {  // Convert pallet color names to hexadecimal.
+  console.log("view: decorators.js - resolveColors(names, pallet)", names, pallet);
   return names.map(name => {
     const color = pallet[name];
     if (!color) {
@@ -284,5 +253,81 @@ export function resolveColors(names, pallet) {  // Convert pallet color names to
 // Seampoint: more global functions.
 
 // --- Helpers ---
+function resolveDefinition(def, pallet) {
+  // --- CASE 1: linear array ---
+  if (Array.isArray(def)) {
+    return {
+      type: "linear",
+      zones: resolveColors(def, pallet)
+    };
+  }
+
+  // --- CASE 2: structured object ---
+  if (typeof def === "object") {
+    const out = {};
+
+    for (const key in def) {
+      if (Array.isArray(def[key])) {
+        out[key] = resolveColors(def[key], pallet);
+      } else {
+        out[key] = pallet[def[key]];
+      }
+    }
+
+    // classify type
+    if (out.left && out.right && !out.center) {
+      return { type: "dual", ...out };
+    }
+
+    if (out.left && out.center && out.right) {
+      return { type: "tri", ...out };
+    }
+
+    return { type: "custom", ...out };
+  }
+
+  throw new Error("Invalid decorator definition");
+  }
+
+function renderDecorator(meshTile, baseColor, def) {
+  const overlays = [];
+
+  switch (def.type) {
+
+    case "linear": {
+      const layers = applyBaseZones({
+        base: baseColor,
+        zones: def.zones
+      });
+
+      layers.forEach(layer => {
+        const overlay = drawInsetQuad(meshTile, layer.scale, layer.color);
+        meshTile.add(overlay);
+        overlays.push(overlay);
+      });
+
+      break;
+    }
+
+    case "dual": {
+      const group = drawInsetDualDiamonds(meshTile, scales[1], def);
+      meshTile.add(group);
+      overlays.push(group);
+      break;
+    }
+
+    case "tri": {
+      const group = drawInsetTriDiamonds(meshTile, scales[1], def);
+      meshTile.add(group);
+      overlays.push(group);
+      break;
+    }
+
+    default:
+      throw new Error(`Unsupported decorator type '${def.type}'`);
+  }
+
+  return overlays;
+}
 // Seampoint: more local functions.
 

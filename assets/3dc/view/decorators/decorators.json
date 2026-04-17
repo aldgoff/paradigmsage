@@ -34,6 +34,7 @@
       "duke": {
         "body":   ["blue"],
         "source": ["blue", "black"],
+        "end3":   ["blue", "dkBlue", "black"],
         "end2":   ["blue", "blue", "black"],
         "end1":   ["blue", "blue", "blue", "black"],
         "apex":   ["blue", "blue", "black", "blue"],
@@ -53,7 +54,7 @@
         "source": ["yellow", "black", "black", "black"],
         "lite":   ["yellow", "black", "yellow", "black"]
         },
-      "last": {}
+      "_trailing": {}
     },
     "toggles": {
       "generic": {
@@ -76,7 +77,7 @@
         "src": ["purple", "purple", "purple", "white"],
         "dst": ["purple", "white", "purple", "white"]
         },
-      "last": {}
+      "_trailing": {}
     },
     "Examples": {
       "_comment": "Decorator schema with 4 nested diamonds, plus the double and triple diamonds.",

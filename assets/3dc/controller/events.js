@@ -451,6 +451,11 @@ import { normalizeTileToVts } from "../foundation/coords/coords.js";
 function handlePlace(payload) {       // Advsq handlers.
   console.log("control: events.js - handlePlace(payload):", payload);
 
+  const panel = document.getElementById("advsq-window");                  // Read.
+  let quadNo = Number(panel.querySelector('[name="advsq-quad"]').value);
+
+  let { srcTile, quad, perimeter, stride, opacity } = payload;            // Render.
+  payload = { srcTile, quad: quadNo, perimeter, stride, opacity };
   changeAdvSq(payload);
   }
 
@@ -481,7 +486,7 @@ function handleUpdateParam(payload) {
     opacity:  panel.querySelector('[name="advsq-opacity"]').value
   };
 
-  changeAdvSq(updatedPayload);
+  changeAdvSq(updatedPayload);  // TODO: broken by opacity.
 }
 
 function handleNudgeSrc(payload) {
@@ -519,18 +524,6 @@ function handleNudgeSrc(payload) {
 
   changeAdvSq(updatedPayload);
 }
-
-function handleNudgeSrc1(payload) {
-  const { axis, delta } = payload;
-
-  console.log(`Advsq Nudge-Src ${axis} by ${delta}`);
-
-  // TODO:
-  // 1. read current srcTile
-  // 2. parse into (z,x,y)
-  // 3. apply delta
-  // 4. write back to input OR state
-  }
 
 function handleNextQuad(payload) {
   console.log("control: events.js - handleNextQuad(payload):", payload);
