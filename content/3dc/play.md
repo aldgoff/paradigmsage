@@ -74,7 +74,7 @@ layout: "play"
 
 <!-- The DOM Control Panels -->
 <div class="panel" id="setup-window">
-  <div class="panel-title">Setup Control</div>
+  <div class="panel-title">Setup Panel</div>
 
   <div class="section">
     <button data-action="makeBoard">Make Board</button>
@@ -88,7 +88,7 @@ layout: "play"
   </div>
 
 <div class="panel" id="tray-window">
-  <div class="panel-title">Tray Control</div>
+  <div class="panel-title">Tray Panel</div>
 
   <div class="section">
     <button data-action="makeTrays">Make Trays</button>
@@ -107,7 +107,7 @@ layout: "play"
   </div>
 
 <div class="panel" id="game-window">
-  <div class="panel-title">Game Control</div>
+  <div class="panel-title">Game Panel</div>
 
   <div class="section">
     <button data-action="newGame">New</button>
@@ -132,7 +132,7 @@ layout: "play"
   </div>
 
 <div class="panel" id="gambit-window">
-  <div class="panel-title">Gambit Control</div>
+  <div class="panel-title">Gambit Panel</div>
 
   <div class="section">
     <button data-action="freeze">Freeze AdvSq</button>
@@ -148,7 +148,7 @@ layout: "play"
   </div>
 
 <div class="panel" id="advsq-window">
-  <div class="panel-title">AdvSq Control</div>
+  <div class="panel-title">AdvSq Panel</div>
 
   <div class="section">
     <button data-action="place">Place</button>
@@ -183,7 +183,7 @@ layout: "play"
 </div>
 
 <div class="panel" id="camera-window">
-  <div class="panel-title">Camera Control</div>
+  <div class="panel-title">Camera Panel</div>
 
   <div class="section">
     <button data-action="ZoomIn"> Zoom In </button>

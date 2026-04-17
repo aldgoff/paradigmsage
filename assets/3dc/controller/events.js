@@ -9,6 +9,7 @@
 import * as control  from "../controller/controller.js";
 
 import * as state    from "../model/state/state.js";
+import * as coords   from "../foundation/coords/coords.js";
 
 import * as register from "../view/registerHandlers.js";
 import * as boards   from "../view/boards/boards.js";
@@ -465,20 +466,61 @@ function handleRemove() {
   advsqs.setAdvsqPanelParams(initial);
 
   statusUndoIndex();
-  }
+}
 
 function handleUpdateParam(payload) {
-  const { name, value } = payload;
   console.log("control: events.js - handleUpdateParam(payload):", payload);
 
-  // Optional: normalize name
-  const param = name.replace("advsq-", "");
-  // console.log(`Param ${param} = ${value}`);
+  const panel = document.getElementById("advsq-window");
 
-  // TODO: change state
-  }
+  const updatedPayload = {
+    srcTile:  panel.querySelector('[name="advsq-src"]').value,
+    quad:     panel.querySelector('[name="advsq-quad"]').value,
+    perimeter:panel.querySelector('[name="advsq-perimeter"]').value,
+    stride:   panel.querySelector('[name="advsq-stride"]').value,
+    opacity:  panel.querySelector('[name="advsq-opacity"]').value
+  };
+
+  changeAdvSq(updatedPayload);
+}
 
 function handleNudgeSrc(payload) {
+  const { axis, delta } = payload;
+
+  console.log(`Advsq Nudge-Src ${axis} by ${delta}`);
+
+  const panel = document.getElementById("advsq-window");
+
+  // 1. Read current srcTile (board notation)
+  const srcStr = panel.querySelector('[name="advsq-src"]').value;
+
+  // 2. Convert to VTS
+  let vts = normalizeTileToVts(srcStr);  // [z,x,y]
+
+  // 3. Apply delta
+  if (axis === "z") vts[0] += delta;
+  if (axis === "x") vts[1] += delta;
+  if (axis === "y") vts[2] += delta;
+
+  // 4. Convert back to board notation
+  const newSrc = coords.vtsToBoard(vts);   // 🔥 you just built this
+
+  // 5. Write back to panel
+  panel.querySelector('[name="advsq-src"]').value = newSrc;
+
+  // 6. Reuse existing pipeline
+  const updatedPayload = {
+    srcTile:  newSrc,
+    quad:     panel.querySelector('[name="advsq-quad"]').value,
+    perimeter:panel.querySelector('[name="advsq-perimeter"]').value,
+    stride:   panel.querySelector('[name="advsq-stride"]').value,
+    opacity:  panel.querySelector('[name="advsq-opacity"]').value
+  };
+
+  changeAdvSq(updatedPayload);
+}
+
+function handleNudgeSrc1(payload) {
   const { axis, delta } = payload;
 
   console.log(`Advsq Nudge-Src ${axis} by ${delta}`);
