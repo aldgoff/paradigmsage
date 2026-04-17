@@ -6,6 +6,8 @@
   UI: the export functions.
 */
 
+import * as control  from "../controller/controller.js";
+
 import * as state    from "../model/state/state.js";
 
 import * as register from "../view/registerHandlers.js";
@@ -204,7 +206,7 @@ function handleRerun() {
 function handleUndo() {
   const keyIndex = prevKeyIndex();
   if(!keyIndex) { // Bottom sentry.
-    boards.clearBoard();   // 🔥 THIS is the correct place
+    boards.clearBoard();
     statusUndoIndex();
     return;
   }
@@ -448,8 +450,17 @@ function handlePlace(payload) {       // Advsq handlers.
   }
 
 function handleRemove() {
-  console.log("Advsq Remove:");
-  // TODO: change state.
+  console.log("control: events.js - handleRemove()");
+
+  state.clearAdvSqs();
+
+  undoState.AdvSqs = [];
+  undoIndex.AdvSqs = [0, 0];
+
+  const initial = advsqs.getAdvsqPanelInitialParams();
+  advsqs.setAdvsqPanelParams(initial);
+
+  statusUndoIndex();
   }
 
 function handleUpdateParam(payload) {
@@ -477,7 +488,7 @@ function handleNudgeSrc(payload) {
 
 function handleNextQuad(payload) {
   console.log("control: events.js - handleNextQuad(payload):", payload);
-  // TODO: change state.
+
   const panel = document.getElementById("advsq-window");                  // Read.
   let quadNo = Number(panel.querySelector('[name="advsq-quad"]').value);
 
@@ -506,7 +517,7 @@ function handleNextQuad(payload) {
 
 function handleNextPlane(payload) {
   console.log("control: events.js - handleNextPlane(payload):", payload);
-  // TODO: change state.
+
   const panel = document.getElementById("advsq-window");                  // Read.
   let quadNo = Number(panel.querySelector('[name="advsq-quad"]').value);
 
@@ -535,7 +546,7 @@ function handleNextPlane(payload) {
 
 function handleNextPiece(payload) {
   console.log("control: events.js - handleNextPiece(payload):", payload);
-  // TODO: change state.
+
   const panel = document.getElementById("advsq-window");                  // Read.
   let quadNo = Number(panel.querySelector('[name="advsq-quad"]').value);
 
@@ -584,6 +595,40 @@ function normalizeQuad(q) {
   if (typeof q === "string" && q.startsWith("Q")) return q;
   if (typeof q === "string") return `Q${q}`;
   throw new Error(`Invalid quad: ${q}`);
+  }
+
+function clearAdvSqState() {
+  // --- Clear model ---
+  const curr = state.getState();
+  curr.AdvSqs = [];
+  state.setState(curr);
+
+  // --- Clear undo history ---
+  undoState.AdvSqs = [];
+
+  // --- Reset pointers ---
+  undoIndex.AdvSqs[0] = 0;  // current index
+  undoIndex.AdvSqs[1] = 0;  // max index
+  }
+
+function syncAdvsqPanel(specs) {
+  const panel = document.getElementById("advsq-window");
+  if (!panel) return;
+
+  panel.querySelector('[name="advsq-src"]').value =
+    specs?.srcTile ?? "";
+
+  panel.querySelector('[name="advsq-quad"]').value =
+    specs?.quad ?? 1;
+
+  panel.querySelector('[name="advsq-perimeter"]').value =
+    specs?.perimeter ?? 1;
+
+  panel.querySelector('[name="advsq-stride"]').value =
+    specs?.stride ?? 1;
+
+  panel.querySelector('[name="advsq-opacity"]').value =
+    specs?.opacity ?? 0.5;
 }
 /*** ---------- ---------- ---------- ---------- ***/
 

@@ -73,7 +73,7 @@ export function init(playBoard) { // PlayBoard is the 3D canvas from the THREE r
   }
   else {      // Growing the panel and undo features.
     context = renders.init(playBoard);
-    context.tileMap = new Map();        // 🔥 ADD
+    context.tileMap = new Map();
     context.tileGeometry = new THREE.BoxGeometry(...vts2xyz(tiles.tileSize()));
     // demos.run(context);
   }
@@ -206,7 +206,7 @@ function buildAdvsqPayload(panel, action) {
     quad:     panel.querySelector('[name="advsq-quad"]')?.value,
     perimeter:panel.querySelector('[name="advsq-perimeter"]')?.value,
     stride:   panel.querySelector('[name="advsq-stride"]')?.value,
-    opacity:  panel.querySelector('[name="offboard-opacity"]')?.value,
+    opacity:  panel.querySelector('[name="advsq-opacity"]')?.value,
   };
 }
 

@@ -31,30 +31,53 @@ import * as quads  from "../../geometry/quads.js";
 import { AdvSq } from "../../geometry/advSqs.js";
 // Seampoint: more imports.
 
+// --- Globals ---
+let advsqPanelInitialParams = null;
 let currentAdvsq = null;
 
 // --- UI ---
-export function UI() {
-  return "whatever";
+export function setAdvsqPanelInitialParams() {
+  advsqPanelInitialParams = getAdvsqPanelParams();
+  }
+
+export function getAdvsqPanelInitialParams() {
+  return advsqPanelInitialParams;
+  }
+
+export function getAdvsqPanelParams() {
+  console.log("view: advsqs.js - getAdvsqPanelParams():");
+
+  const panel = document.getElementById("advsq-window");
+  if (!panel) return;
+
+  const params = {
+    srcTile:   panel.querySelector('[name="advsq-src"]')?.value,
+    quad:      panel.querySelector('[name="advsq-quad"]')?.value,
+    perimeter: panel.querySelector('[name="advsq-perimeter"]')?.value,
+    stride:    panel.querySelector('[name="advsq-stride"]')?.value,
+    opacity:   panel.querySelector('[name="advsq-opacity"]')?.value,
+  };
+
+  return params;
+  }
+
+export function setAdvsqPanelParams(params) {
+  console.log("view: advsqs.js - setAdvsqPanelParams(params):", params);
+
+  const panel = document.getElementById("advsq-window");
+  if (!panel) return;
+
+  panel.querySelector('[name="advsq-src"]').value       = params.srcTile;
+  panel.querySelector('[name="advsq-quad"]').value      = params.quad;
+  panel.querySelector('[name="advsq-perimeter"]').value = params.perimeter;
+  panel.querySelector('[name="advsq-stride"]').value    = params.stride;
+  panel.querySelector('[name="advsq-opacity"]').value   = params.opacity;
   }
 
 export function makeAdvsq(specs) {
   console.log("view: advsqs.js - makeAdvsq(specs):", specs);
 
-  if (currentAdvsq?.userData?.overlays) {             // Remove overlays.
-    currentAdvsq.userData.overlays.forEach(o => {
-      if (o.parent) o.parent.remove(o);
-    });
-  }
-
-  if (currentAdvsq) {                                 // Remove advsq.
-    if (currentAdvsq.userData?.overlays) {
-      currentAdvsq.userData.overlays.forEach(o => {
-        if (o.parent) o.parent.remove(o);
-      });
-    }
-    view.context.scene.remove(currentAdvsq);
-  }
+  clearAdvsq();
 
   const group = new THREE.Group();
 
@@ -67,11 +90,11 @@ export function makeAdvsq(specs) {
   const perims = advsq.getPerims();
 
   // --- 2. Traverse all tiles ---
-  for (let i = 0; i < perims.length; i++) {
+  for(let i = 0; i < perims.length; i++) {
     const p = perims[i];
 
     // Source tile (k=0)
-    if (i === 0) {
+    if(i === 0) {
       decorateTile(p.stride[0], piece, "source", group, specs.opacity);
       continue;
     }
@@ -91,21 +114,22 @@ export function makeAdvsq(specs) {
 
   view.context.scene.add(group);
   currentAdvsq = group;
-}
-
-// export function makeAdvsq1(specs) {
-//   console.log("view: advsqs.js - makeAdvsq(specs):", specs);
-
-//   if(currentAdvsq) { view.context.scene.remove(currentAdvsq); }
-
-//   // TODO: Using the geometry layer, place an advsq on the board.
-// }
+  }
 
 export function clearAdvsq() {
-  if (currentAdvsq) {
-    view.context.scene.remove(currentAdvsq);
-    currentAdvsq = null;
+  console.log("view: advsqs.js - clearAdvsq():");
+
+  if (!currentAdvsq) return;
+
+  if(currentAdvsq.userData?.overlays) {  // Remove overlays from ALL tiles (board + offboard).
+    currentAdvsq.userData.overlays.forEach(o => {
+      if (o.parent) o.parent.remove(o);
+    });
   }
+
+  view.context.scene.remove(currentAdvsq);  // Remove offboard tiles (group children).
+
+  currentAdvsq = null;
 }
 // Seampoint: more global functions.
 
@@ -113,8 +137,7 @@ export function clearAdvsq() {
 function decorateTile(coords, piece, decorator, group, opacity) {
   let meshTile = tiles.getTileMesh(view.context.tileMap, coords);
   if (!meshTile) {
-    console.log("Offboard:", coords);
-    // Need to create a tile mesh for this tile with high transparency.
+    // TODO: Need to create a tile mesh for this tile with high transparency.
 
     const tileGeometry = new THREE.BoxGeometry(...vts2xyz(tiles.tileSize()));
 

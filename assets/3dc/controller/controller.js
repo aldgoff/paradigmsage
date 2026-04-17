@@ -47,6 +47,7 @@
 import * as register from "../controller/events.js";
 
 import * as view     from "../view/view.js";
+import * as advsqs   from "../view/advsqs/advsqs.js";
 
 import * as model    from "../model/model.js";
 import * as state    from "../model/state/state.js";
@@ -54,11 +55,14 @@ import * as state    from "../model/state/state.js";
 import * as example  from "../exampleRegistration/control.js";  //TODO: DEPRECATED
 // Seampoint: more imports...
 
+// --- Globals ---
+// let advsqPanelInitialParams = null;
+
 // --- UI ---
 export function init(playBoard) {
   console.log("controller.init(): 3dc/controller/controller.js");
 
-  example.demoRegistration();
+  // example.demoRegistration();
 
   makeDraggable(document.getElementById("setup-window"));  // DOM panels.
   makeDraggable(document.getElementById("tray-window"));
@@ -70,10 +74,14 @@ export function init(playBoard) {
   makeDraggable(document.getElementById("camera-window")); // Not subject to the undo arch.
   // Seampoint - more 2D panels/canvi...
 
+  // advsqPanelInitialParams = advsqs.getAdvsqPanelParams();
+
   register.callbacks();
 
   model.init(playBoard);
   view.init(playBoard);
+
+  advsqs.setAdvsqPanelInitialParams();
 
   // demo(); // POC for state interface and undo/redo architecture.
 }

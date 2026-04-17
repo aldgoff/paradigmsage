@@ -26,7 +26,7 @@ const specs = { camera, pov, focalPoint };
 
 // --- UI ---
 export function init(zoom, pov, focalPoint=[0,0,0]) {
-  console.log("Camera Init()");
+  console.log("view: camera.js - Init()");
   specs.pov  = POV[pov];
   specs.focalPoint = focalPoint;
 

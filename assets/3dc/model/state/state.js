@@ -64,6 +64,12 @@ export function pushAdvSq(specs) {        // Manipulate an advancement square.
   advsqs.makeAdvsq(specs)
   }
 
+export function clearAdvSqs() {
+  console.log("model: state.js - clearAdvSqs():", );
+  state.AdvSqs = [];
+  advsqs.clearAdvsq();
+  }
+
 export function freeze(advsq) {           // Freeze each on board to generate gambit.
   state.Gambits.push(structuredClone(advsq));
   state.AdvSqs.length = 0;

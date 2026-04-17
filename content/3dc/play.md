@@ -178,7 +178,7 @@ layout: "play"
 
   <div class="section">
     <label> Offboard Visibility
-      <input type="range" name="offboard-opacity" min="0" max="1" step="0.01" value="0.5"> </label>
+      <input type="range" name="advsq-opacity" min="0" max="1" step="0.01" value="0.5"> </label>
   </div>
 </div>
 
