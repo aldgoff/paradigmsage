@@ -26,6 +26,8 @@ import * as decorators from "../decorators/decorators.js";
 import * as cameras from "../render/cameras.js";
 import * as renders from "../render/renders.js";
 
+import * as coords from "../../foundation/coords/coords.js";
+
 import * as planes from "../../geometry/planes.js";
 import * as quads  from "../../geometry/quads.js";
 import { AdvSq } from "../../geometry/advSqs.js";
@@ -174,10 +176,44 @@ function decorateTile(coords, piece, decorator, group, opacity) {
     group.userData.overlays.push(...overlays);
   }
 }
+
+export function specsToPanelParams(specs) {
+  if (!specs) return getAdvsqPanelInitialParams();
+
+  const spec = coords.getBoardSpec("8x8x8");  // TODO: get boardspec from setup panel.
+
+  return {
+    srcTile: coords.vtsToBoard(specs.srcTile, spec),
+    quad:    denormalizeQuad(specs.quad),
+    perimeter: specs.perimeter,
+    stride:    specs.stride,
+    opacity:   specs.opacity
+  };
+}
+
+export function specsToPanelParams1(specs) {
+  if (!specs) return getAdvsqPanelInitialParams();
+
+  return {
+    srcTile: coords.vtsToBoard(specs.srcTile),   // convert back
+    quad:    denormalizeQuad(specs.quad),
+    perimeter: specs.perimeter,
+    stride:    specs.stride,
+    opacity:   specs.opacity
+  };
+}
 // Seampoint: more local functions.
 
 // --- Utilities ---
 function isSame(a, b) {
   return a[0] === b[0] && a[1] === b[1] && a[2] === b[2];
-}// Seampoint: more utility functions.
+}
+
+function denormalizeQuad(q) {
+  if (typeof q === "string" && q.startsWith("Q")) {
+    return Number(q.slice(1));
+  }
+  return q;
+}
+// Seampoint: more utility functions.
 

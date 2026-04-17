@@ -188,6 +188,7 @@ function handleRerun() {
     } else {
       const specs = undoState.AdvSqs[undoIndex.AdvSqs[0] - 1];
       advsqs.makeAdvsq(specs);
+      advsqs.setAdvsqPanelParams(advsqs.specsToPanelParams(specs));
     }
     }
   else if(arrayKey === "Setup") {
@@ -199,6 +200,7 @@ function handleRerun() {
     }
   }
   // Seampoint for the rest of the undo elements.
+
 
   statusUndoIndex();
   }
@@ -215,6 +217,7 @@ function handleUndo() {
     const specs = undoState.AdvSqs[keyIndex.index];
     console.log("control: events.js - HandleUndo(advsq)", specs);
     advsqs.makeAdvsq(specs);
+    advsqs.setAdvsqPanelParams(advsqs.specsToPanelParams(specs));
     }
   else if(keyIndex.arrayKey === "Gambits") {
     const specs = undoState.Gambits[keyIndex.index];
@@ -246,6 +249,7 @@ function handleRedo() {
     const specs = undoState.AdvSqs[keyIndex.index];
     console.log("control: events.js - HandleRedo(advsq)", specs);
     advsqs.makeAdvsq(specs);
+    advsqs.setAdvsqPanelParams(advsqs.specsToPanelParams(specs));
     }
   else if(keyIndex.arrayKey === "Gambits") {
     const specs = undoState.Gambits[keyIndex.index];
