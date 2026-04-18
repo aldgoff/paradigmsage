@@ -61,5 +61,5 @@ title: "Dev"
   - 4/15/26 - Display undo status, branching for makeBoards. Create advsqs from panel. Undo/redo working, rerun not zeroing downstream elements.
   - 4/16/26 - Advsq panel: next quad/plane/piece. Offboard decorators and opacity slider. Refine web pages. QC controller code. QC dead code.
   - 4/17/26 - Advsq panel Remove feature. Undo's restore AdvSq Panel fields. Editable fields trigger immediate advsq updates. Duke duplex/apex tiles.
-  - 4/18/26 - Fix opacity bug.
+  - 4/18/26 - Fix opacity bug. Add stride tile to use dst decorator.
 

@@ -73,23 +73,22 @@ function gambitButtonDispatch(payload) {
   }
 }
 
+// function advsqPanelDispatch2(payload) {
+//   const { action } = payload;
+
+//   switch (action) {
+//     case "place":       handlePlace(payload); break;
+//     case "remove":      handleRemove(); break;
+//     case "updateParam": handleUpdateParam(payload); break;
+//     case "nudgeSrc":    handleNudgeSrc(payload); break;
+//     case "nextQuad":    handleNextQuad(payload); break;
+//     case "nextPlane":   handleNextPlane(payload); break;
+//     case "nextPiece":   handleNextPiece(payload); break;
+//     default: throw new Error(`Unknown advsq action ${action}, payload ${JSON.stringify(payload)}.`);
+//   }
+// }
+
 function advsqPanelDispatch(payload) {
-  const { action } = payload;
-
-  switch (action) {
-    case "place":       handlePlace(payload); break;
-    case "remove":      handleRemove(); break;
-    case "updateParam": handleUpdateParam(payload); break;
-    // case "updateOpacity": handleOpacityOnly(payload); break; // 🔥 NEW
-    case "nudgeSrc":    handleNudgeSrc(payload); break;
-    case "nextQuad":    handleNextQuad(payload); break;
-    case "nextPlane":   handleNextPlane(payload); break;
-    case "nextPiece":   handleNextPiece(payload); break;
-    default: throw new Error(`Unknown advsq action ${action}, payload ${JSON.stringify(payload)}.`);
-  }
-}
-
-function advsqPanelDispatch1(payload) {
   const { action, srcTile, quad, perimeter, stride, opacity } = payload;
   console.log("control: events.js - advsqPanelDispatch(payload)", payload);
 
@@ -487,12 +486,21 @@ function handleRemove() {
   advsqs.setAdvsqPanelParams(initial);
 
   statusUndoIndex();
-}
+  }
 
 function handleUpdateParam(payload) {
   console.log("control: events.js - handleUpdateParam(payload):", payload);
 
   const panel = document.getElementById("advsq-window");
+
+  const perimeter = panel.querySelector('[name="advsq-perimeter"]').value;
+  let stride = Number(panel.querySelector('[name="advsq-stride"]').value);
+
+  const maxStride = 2*Number(perimeter) + 1;
+  if(stride > maxStride) {
+    panel.querySelector('[name="advsq-stride"]').value = maxStride;
+    stride = maxStride;
+  }
 
   const updatedPayload = {
     srcTile:  panel.querySelector('[name="advsq-src"]').value,
@@ -503,25 +511,8 @@ function handleUpdateParam(payload) {
   };
 
   changeAdvSq(updatedPayload);  // TODO: broken by opacity.
-}
+  }
 
-// function handleOpacityOnly(payload) {
-//   console.log("control: events.js - handleOpacityOnly(payload)", payload);
-//   const panel = document.getElementById("advsq-window");
-
-//   const opacity = Number(
-//     panel.querySelector('[name="advsq-opacity"]').value
-//   );
-
-//   const last = state.getState().AdvSqs.slice(-1)[0];
-//   console.log("*** last", last);
-//   if (!last) return;
-
-//   advsqs.makeAdvsq({
-//     ...last,
-//     opacity
-//   });
-// }
 
 function handleNudgeSrc(payload) {
   const { axis, delta } = payload;
@@ -557,7 +548,7 @@ function handleNudgeSrc(payload) {
   };
 
   changeAdvSq(updatedPayload);
-}
+  }
 
 function handleNextQuad(payload) {
   console.log("control: events.js - handleNextQuad(payload):", payload);
@@ -581,10 +572,12 @@ function handleNextQuad(payload) {
     throw new Error("Unknown quad number in control: events.js - handleNextQuad().", quadNo);
   }
 
-  panel.querySelector('[name="advsq-quad"]').value = quadNo;              // Write.
+  panel.querySelector('[name="advsq-quad"]').value   = quadNo;            // Write.
+  const firstStride = 1;
+  panel.querySelector('[name="advsq-stride"]').value = firstStride;
 
   let { srcTile, quad, perimeter, stride, opacity } = payload;            // Render.
-  payload = { srcTile, quad: quadNo, perimeter, stride, opacity };
+  payload = { srcTile, quad: quadNo, perimeter, stride: firstStride, opacity };
   changeAdvSq(payload);
   }
 

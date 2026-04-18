@@ -159,7 +159,7 @@ layout: "play"
   <label> Source Tile: <input type="string" name="advsq-src"       value="K3,3"> </label>
   <label> Quad:        <input type="number" name="advsq-quad"      min="1" step="1" value="1"> </label>
   <label> Perimeter:   <input type="number" name="advsq-perimeter" min="1" step="1" value="3"> </label>
-  <label> Stride:      <input type="number" name="advsq-stride"    min="1" step="1" value="4"> </label>
+  <label> Stride:      <input type="number" name="advsq-stride"    min="1" step="1" value="1"> </label>
   </div>
 
   <!-- Optional: key hints (visual only) -->

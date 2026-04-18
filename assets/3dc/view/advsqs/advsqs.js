@@ -103,7 +103,7 @@ export function makeAdvsq(specs) {
 
   const group = new THREE.Group();
 
-  const { srcTile, quad, perimeter } = specs;
+  const { srcTile, quad, perimeter, stride } = specs;
 
   // --- 1. Build geometric AdvSq ---
   const advsq = AdvSq.fromQuad(srcTile, quad, perimeter);
@@ -112,46 +112,24 @@ export function makeAdvsq(specs) {
   const perims = advsq.getPerims();
 
   // --- 2. Traverse all tiles ---
-  for(let i = 0; i < perims.length; i++) {
-    const p = perims[i];
+  for(let k = 0; k < perims.length; k++) {
+    const p = perims[k];
+    const perim = perims[k];
 
     // Source tile (k=0)
-    if(i === 0) {
+    if(k === 0) {
       decorateTile(p.stride[0], piece, "source", group, specs.opacity);
       continue;
     }
 
     let quadNo = quad;
-    if(typeof quad === "string" && specs.quad.startsWith("Q"))  
+    if(typeof quad === "string" && specs.quad.startsWith("Q")) {
       quadNo = Number(specs.quad.slice(1));
-
-    if(1<=quadNo && quadNo <=36) {    // Rook or Bishop.
-      decorateTile(p.E1,   piece, "end2", group, specs.opacity);
-      decorateTile(p.apex, piece, "apex", group, specs.opacity);
-      decorateTile(p.E2,   piece, "end2", group, specs.opacity);
-      }
-    else {                        // Duke.
-      decorateTile(p.E1,   piece, "end3", group, specs.opacity);
-      const quadType = quads.quadToQuadType(quadNo);
-      console.log("*** quadType", quadType, "|");
-      if(     quadType === "edge") {
-        decorateTile(p.apex, piece, "apex", group, specs.opacity);
-        }
-      else if(quadType === "face") {
-        decorateTile(p.apex, piece, "duplex", group, specs.opacity);
-        }
-      else {
-        throw new Error("Unknown duke quad type", quadType, quad);  // TODO: Bug when changing offboard visiblity.
-      }
-      decorateTile(p.E2,   piece, "end3", group, specs.opacity);
     }
+    let quadType = quads.quadToQuadType(quadNo);
 
-    // Body tiles (everything else in stride)
-    for (const tile of p.stride) {
-      if (isSame(tile, p.E1) || isSame(tile, p.apex) || isSame(tile, p.E2)) continue;
-
-      decorateTile(tile, piece, "body", group, specs.opacity);
-    }
+    const lastPerim = (k === perims.length - 1);
+    decoratePerimeter(lastPerim, perim, piece, quadType, group, specs.opacity, stride);
   }
 
   view.context.scene.add(group);
@@ -214,6 +192,24 @@ function decorateTile(coords, piece, decorator, group, opacity) {
   if (overlays) {
     group.userData.overlays = group.userData.overlays || [];
     group.userData.overlays.push(...overlays);
+  }
+}
+
+function decoratePerimeter(lastPerim, perim, piece, quadType, group, opacity, strideNo) {
+  console.log("view: advsqs.js - decoratePerimeter(perim)", perim);
+  const end  = (piece    === "duke") ? "end3":   "end2";
+  const apex = (quadType === "face") ? "duplex": "apex";
+
+  const stride = perim.stride;
+  for(let i=1; i<=stride.length; i++) {
+    const j = i - 1;
+    if(     isSame(stride[j], perim.E1)  ) decorateTile(stride[j], piece, end,  group, opacity);
+    else if(isSame(stride[j], perim.apex)) decorateTile(stride[j], piece, apex, group, opacity);
+    else if(isSame(stride[j], perim.E2)  ) decorateTile(stride[j], piece, end,  group, opacity);
+    else {
+      decorateTile(stride[j], piece, "body", group, opacity);
+    }
+    if(lastPerim && (i === strideNo)) decorateTile(stride[j], piece, "dst", group, opacity);
   }
 }
 

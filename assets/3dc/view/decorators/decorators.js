@@ -24,9 +24,10 @@ export function module() {
 }
 
 export function decorate(baseColor, meshTile, piece, decoratorName) {
+  // console.log("view: decorators.js - decorate(baseColor, meshTile, piece, decoratorName)", baseColor, meshTile, piece, decoratorName);
   const defRaw = decorators[piece][decoratorName];
   if (!defRaw || Object.keys(defRaw).length === 0) {
-    return []; // Silently ignore placeholders like "_trailing"
+    return []; // Silently ignore json placeholders like "_trailing"
   }
 
   const resolved = resolveDefinition(defRaw, pallet);
@@ -66,29 +67,6 @@ export function drawInsetQuad(mesh, scale, color) { // For source, body, end1,2,
   overlay.rotation.x = -Math.PI / 2;                    // Rotate to lie flat.
 
   return overlay;
-  }
-
-export function drawInsetCircle(mesh, scale, color, zOffset=0) { // For src & dst tiles, toggled by mouse clicks.
-  const THREE = window.THREE;
-  const geom = new THREE.CircleGeometry(0.5, 32);
-  const mat = new THREE.MeshBasicMaterial({
-    color,
-    transparent: true,
-    opacity: 0.95,
-    side: THREE.DoubleSide
-  });
-
-  const circle = new THREE.Mesh(geom, mat);               // New mesh.
-
-  const box = new THREE.Box3().setFromObject(mesh);       // Match tile size.
-  const size = new THREE.Vector3();
-  box.getSize(size);
-
-  circle.scale.set(size.x * scale, size.z * scale, 1);    // Scale.
-  circle.position.set(0, size.y / 2 + 0.12 + zOffset, 0); // Position on top face.
-  circle.rotation.x = -Math.PI / 2;                       // Rotate to lie flat.
-
-  return circle;
   }
 
 export function drawInsetDualDiamonds(mesh, scale, def) {
@@ -240,6 +218,30 @@ export function drawInsetTriDiamonds(mesh, scale, def) {
   return group;
   }
 
+export function drawInsetCircle(mesh, scale, color, zOffset=0) { // For src & dst tiles, toggled by mouse clicks.
+  console.log("view: decorators.js - drawInsetCircle(mesh, scale, color, zOffset=0)", mesh, scale, color, zOffset=0);
+  const THREE = window.THREE;
+  const geom = new THREE.CircleGeometry(0.5, 32);
+  const mat = new THREE.MeshBasicMaterial({
+    color,
+    transparent: true,
+    opacity: 0.95,
+    side: THREE.DoubleSide
+  });
+
+  const circle = new THREE.Mesh(geom, mat);               // New mesh.
+
+  const box = new THREE.Box3().setFromObject(mesh);       // Match tile size.
+  const size = new THREE.Vector3();
+  box.getSize(size);
+
+  circle.scale.set(size.x * scale, size.z * scale, 1);    // Scale.
+  circle.position.set(0, size.y / 2 + 0.12 + zOffset, 0); // Position on top face.
+  circle.rotation.x = -Math.PI / 2;                       // Rotate to lie flat.
+
+  return circle;
+}
+
 export function resolveColors(names, pallet) {  // Convert pallet color names to hexadecimal.
   // console.log("view: decorators.js - resolveColors(names, pallet)", names, pallet);
   return names.map(name => {
@@ -318,6 +320,13 @@ function renderDecorator(meshTile, baseColor, def) {
 
     case "tri": {
       const group = drawInsetTriDiamonds(meshTile, scales[1], def);
+      meshTile.add(group);
+      overlays.push(group);
+      break;
+    }
+
+    case "stride": {
+      const group = drawInsetCircle(meshTile, scales[1], def);
       meshTile.add(group);
       overlays.push(group);
       break;
