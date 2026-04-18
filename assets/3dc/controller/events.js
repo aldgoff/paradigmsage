@@ -71,9 +71,25 @@ function gambitButtonDispatch(payload) {
     case "deselect": handleDeselect(); break;
     default: throw new Error(`Unknown gambit action ${action}.`);  break;
   }
-  }
+}
 
 function advsqPanelDispatch(payload) {
+  const { action } = payload;
+
+  switch (action) {
+    case "place":       handlePlace(payload); break;
+    case "remove":      handleRemove(); break;
+    case "updateParam": handleUpdateParam(payload); break;
+    // case "updateOpacity": handleOpacityOnly(payload); break; // 🔥 NEW
+    case "nudgeSrc":    handleNudgeSrc(payload); break;
+    case "nextQuad":    handleNextQuad(payload); break;
+    case "nextPlane":   handleNextPlane(payload); break;
+    case "nextPiece":   handleNextPiece(payload); break;
+    default: throw new Error(`Unknown advsq action ${action}, payload ${JSON.stringify(payload)}.`);
+  }
+}
+
+function advsqPanelDispatch1(payload) {
   const { action, srcTile, quad, perimeter, stride, opacity } = payload;
   console.log("control: events.js - advsqPanelDispatch(payload)", payload);
 
@@ -489,6 +505,24 @@ function handleUpdateParam(payload) {
   changeAdvSq(updatedPayload);  // TODO: broken by opacity.
 }
 
+// function handleOpacityOnly(payload) {
+//   console.log("control: events.js - handleOpacityOnly(payload)", payload);
+//   const panel = document.getElementById("advsq-window");
+
+//   const opacity = Number(
+//     panel.querySelector('[name="advsq-opacity"]').value
+//   );
+
+//   const last = state.getState().AdvSqs.slice(-1)[0];
+//   console.log("*** last", last);
+//   if (!last) return;
+
+//   advsqs.makeAdvsq({
+//     ...last,
+//     opacity
+//   });
+// }
+
 function handleNudgeSrc(payload) {
   const { axis, delta } = payload;
 
@@ -623,6 +657,7 @@ function changeAdvSq(payload) {
     stride: Number(stride),
     opacity: Number(opacity),
   };
+  console.log("control: events.js - newAdvsq:", newAdvsq);
 
   trimStateToUndoIndex();
   state.pushAdvSq(newAdvsq);

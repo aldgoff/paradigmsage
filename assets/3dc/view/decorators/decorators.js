@@ -241,7 +241,7 @@ export function drawInsetTriDiamonds(mesh, scale, def) {
   }
 
 export function resolveColors(names, pallet) {  // Convert pallet color names to hexadecimal.
-  console.log("view: decorators.js - resolveColors(names, pallet)", names, pallet);
+  // console.log("view: decorators.js - resolveColors(names, pallet)", names, pallet);
   return names.map(name => {
     const color = pallet[name];
     if (!color) {

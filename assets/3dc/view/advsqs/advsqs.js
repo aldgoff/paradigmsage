@@ -121,14 +121,18 @@ export function makeAdvsq(specs) {
       continue;
     }
 
-    if(1<=quad && quad <=36) {    // Rook or Bishop.
+    let quadNo = quad;
+    if(typeof quad === "string" && specs.quad.startsWith("Q"))  
+      quadNo = Number(specs.quad.slice(1));
+
+    if(1<=quadNo && quadNo <=36) {    // Rook or Bishop.
       decorateTile(p.E1,   piece, "end2", group, specs.opacity);
       decorateTile(p.apex, piece, "apex", group, specs.opacity);
       decorateTile(p.E2,   piece, "end2", group, specs.opacity);
       }
     else {                        // Duke.
       decorateTile(p.E1,   piece, "end3", group, specs.opacity);
-      const quadType = quads.quadToQuadType(quad);
+      const quadType = quads.quadToQuadType(quadNo);
       console.log("*** quadType", quadType, "|");
       if(     quadType === "edge") {
         decorateTile(p.apex, piece, "apex", group, specs.opacity);
@@ -137,7 +141,7 @@ export function makeAdvsq(specs) {
         decorateTile(p.apex, piece, "duplex", group, specs.opacity);
         }
       else {
-        // throw new Error("Unknown duke quad type", quadType, quad);  // TODO: Bug when changing offboard visiblity.
+        throw new Error("Unknown duke quad type", quadType, quad);  // TODO: Bug when changing offboard visiblity.
       }
       decorateTile(p.E2,   piece, "end3", group, specs.opacity);
     }

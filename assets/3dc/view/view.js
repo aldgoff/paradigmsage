@@ -120,6 +120,8 @@ function wirePanel(panelId, callbackName, buildPayload) {
 
     if (callbackName !== "advsq") return;
 
+    // 🔥 NEW: special-case opacity
+    const action = (e.target.name === "advsq-opacity") ? "updateOpacity": "updateParam";
     cb({
       action: "updateParam",
       name: input.name,
