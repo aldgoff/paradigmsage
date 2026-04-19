@@ -64,5 +64,5 @@ title: "Dev"
   - 4/18/26 - Fix opacity bug. Add stride tile to use dst decorator.
 
  ### Week 6:
-  - 4/19/26 - Tuck python FAS/GAS code out of the way. Raise stride decorator (dst), reset to 1 for next buttons.
+  - 4/19/26 - Hide python FAS/GAS code. Raise stride decorator (dst). Next buttons reset to 1. Limit quad to 60, add plane name, perim length and tile type to advsq panel, label:edit-box layout.
 

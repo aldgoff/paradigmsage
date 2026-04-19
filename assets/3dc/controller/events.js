@@ -10,6 +10,7 @@ import * as control  from "../controller/controller.js";
 
 import * as state    from "../model/state/state.js";
 import * as coords   from "../foundation/coords/coords.js";
+import * as quads    from "../geometry/quads.js";
 
 import * as register from "../view/registerHandlers.js";
 import * as boards   from "../view/boards/boards.js";
@@ -72,21 +73,6 @@ function gambitButtonDispatch(payload) {
     default: throw new Error(`Unknown gambit action ${action}.`);  break;
   }
 }
-
-// function advsqPanelDispatch2(payload) {
-//   const { action } = payload;
-
-//   switch (action) {
-//     case "place":       handlePlace(payload); break;
-//     case "remove":      handleRemove(); break;
-//     case "updateParam": handleUpdateParam(payload); break;
-//     case "nudgeSrc":    handleNudgeSrc(payload); break;
-//     case "nextQuad":    handleNextQuad(payload); break;
-//     case "nextPlane":   handleNextPlane(payload); break;
-//     case "nextPiece":   handleNextPiece(payload); break;
-//     default: throw new Error(`Unknown advsq action ${action}, payload ${JSON.stringify(payload)}.`);
-//   }
-// }
 
 function advsqPanelDispatch(payload) {
   const { action, srcTile, quad, perimeter, stride, opacity } = payload;
@@ -493,15 +479,29 @@ function handleUpdateParam(payload) {
 
   const panel = document.getElementById("advsq-window");
 
-  const perimeter = panel.querySelector('[name="advsq-perimeter"]').value;
-  let stride = Number(panel.querySelector('[name="advsq-stride"]').value);
+  const quad = Number(panel.querySelector('[name="advsq-quad"]').value);  // Plane name from quad.
+  const rec = quads.pqrTable(quad);
+  panel.querySelector('[name="advsq-plane"]').textContent = rec.plane;
 
-  const maxStride = 2*Number(perimeter) + 1;
+  const perimeter = panel.querySelector('[name="advsq-perimeter"]').value;  // Length from perimeter.
+  let length = 2*Number(perimeter) + 1;
+  panel.querySelector('[name="advsq-length"]').value = length;
+
+  let stride = Number(panel.querySelector('[name="advsq-stride"]').value);  // Max stride.
+  const k = Number(perimeter);
+  const maxStride = 2*k + 1;
   if(stride > maxStride) {
     panel.querySelector('[name="advsq-stride"]').value = maxStride;
     stride = maxStride;
     return;
   }
+
+  let tileType = "";                                                        // Tile type from stride.
+  if(     stride === 1)         tileType = "E1";
+  else if(stride === k + 1)     tileType = "Apex"; // TODO: duke variations: duplex | thirds.
+  else if(stride === maxStride) tileType = "E2";
+  else                          tileType = "Body";
+  panel.querySelector('[name="advsq-tile"]').value = tileType;
 
   const updatedPayload = {
     srcTile:  panel.querySelector('[name="advsq-src"]').value,
@@ -573,6 +573,10 @@ function handleNextQuad(payload) {
     throw new Error("Unknown quad number in control: events.js - handleNextQuad().", quadNo);
   }
 
+  // const quadValue = Number(panel.querySelector('[name="advsq-quad"]').value);  // Plane name from quad.
+  // const rec = quads.pqrTable(quadValue);
+  // panel.querySelector('[name="advsq-plane"]').textContent = rec.plane;
+
   panel.querySelector('[name="advsq-quad"]').value   = quadNo;            // Write.
   const firstStride = 1;
   panel.querySelector('[name="advsq-stride"]').value = firstStride;
@@ -608,6 +612,9 @@ function handleNextPlane(payload) {
   const firstStride = 1;
   panel.querySelector('[name="advsq-stride"]').value = firstStride;
 
+  const rec = quads.pqrTable(quadNo);                                     // Plane name from quad.
+  panel.querySelector('[name="advsq-plane"]').textContent = rec.plane;
+
   let { srcTile, quad, perimeter, stride, opacity } = payload;            // Render.
   payload = { srcTile, quad: quadNo, perimeter, stride: firstStride, opacity };
   changeAdvSq(payload);
@@ -620,14 +627,14 @@ function handleNextPiece(payload) {
   let quadNo = Number(panel.querySelector('[name="advsq-quad"]').value);
 
   if(      1 <= quadNo && quadNo <= 12) { // Change from rook to bishop plane.
-    quadNo += 12;  
+    quadNo = 13;  
     }
   else if(13 <= quadNo && quadNo <= 36) { // Change from bishop to duke plane.
-    quadNo += 24;
+    quadNo = 37;
     }
   else if(37 <= quadNo && quadNo <= 60) { // Change from duke to rook plane.
-    quadNo += 24;
-    if(quadNo > 60) quadNo -= 60;
+    quadNo = 1;
+    // if(quadNo > 60) quadNo -= 60;
     }
   else {
     throw new Error("Unknown quad number in control: events.js - handleNextPiece().", quadNo);
@@ -636,6 +643,9 @@ function handleNextPiece(payload) {
   panel.querySelector('[name="advsq-quad"]').value = quadNo;              // Write.
   const firstStride = 1;
   panel.querySelector('[name="advsq-stride"]').value = firstStride;
+
+  const rec = quads.pqrTable(quadNo);                                     // Plane name from quad.
+  panel.querySelector('[name="advsq-plane"]').textContent = rec.plane;
 
   let { srcTile, quad, perimeter, stride, opacity } = payload;            // Render.
   payload = { srcTile, quad: quadNo, perimeter, stride: firstStride, opacity };
