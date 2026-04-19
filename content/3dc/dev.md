@@ -63,3 +63,6 @@ title: "Dev"
   - 4/17/26 - Advsq panel Remove feature. Undo's restore AdvSq Panel fields. Editable fields trigger immediate advsq updates. Duke duplex/apex tiles.
   - 4/18/26 - Fix opacity bug. Add stride tile to use dst decorator.
 
+ ### Week 6:
+  - 4/19/26 - Tuck python FAS/GAS code out of the way.
+
