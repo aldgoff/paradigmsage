@@ -23,7 +23,7 @@ export function module() {
   return decoratorsModule;
 }
 
-export function decorate(baseColor, meshTile, piece, decoratorName) {
+export function decorate(baseColor, meshTile, piece, decoratorName, zOffset=0.00) {
   // console.log("view: decorators.js - decorate(baseColor, meshTile, piece, decoratorName)", baseColor, meshTile, piece, decoratorName);
   const defRaw = decorators[piece][decoratorName];
   if (!defRaw || Object.keys(defRaw).length === 0) {
@@ -32,7 +32,7 @@ export function decorate(baseColor, meshTile, piece, decoratorName) {
 
   const resolved = resolveDefinition(defRaw, pallet);
 
-  const overlays = renderDecorator(meshTile, baseColor, resolved);
+  const overlays = renderDecorator(meshTile, baseColor, resolved, zOffset);
 
   return overlays;
   }
@@ -46,7 +46,7 @@ export function applyBaseZones({ base, zones=[] }) {
     }));
   }
 
-export function drawInsetQuad(mesh, scale, color) { // For source, body, end1,2,3, and apex tiles.
+export function drawInsetQuad(mesh, scale, color, zOffset=0.00) { // For source, body, end1,2,3, and apex tiles.
   const THREE = window.THREE;
   const geom = new THREE.PlaneGeometry(1, 1);
   const mat = new THREE.MeshBasicMaterial({
@@ -62,9 +62,10 @@ export function drawInsetQuad(mesh, scale, color) { // For source, body, end1,2,
   const size = new THREE.Vector3();
   box.getSize(size);
 
-  overlay.scale.set(size.x * scale, size.z * scale, 1); // Scale.
-  overlay.position.set(0, size.y / 2 + 0.12, 0);         // Position on top face.
-  overlay.rotation.x = -Math.PI / 2;                    // Rotate to lie flat.
+  overlay.scale.set(size.x * scale, size.z * scale, 1);     // Scale.
+  overlay.position.set(0, size.y / 2 + 0.12 + zOffset, 0);  // Position on top face.
+
+  overlay.rotation.x = -Math.PI / 2;                        // Rotate to lie flat.
 
   return overlay;
   }
@@ -291,7 +292,7 @@ function resolveDefinition(def, pallet) {
   throw new Error("Invalid decorator definition");
   }
 
-function renderDecorator(meshTile, baseColor, def) {
+function renderDecorator(meshTile, baseColor, def, zOffset=0.00) {
   const overlays = [];
 
   switch (def.type) {
@@ -303,7 +304,7 @@ function renderDecorator(meshTile, baseColor, def) {
       });
 
       layers.forEach(layer => {
-        const overlay = drawInsetQuad(meshTile, layer.scale, layer.color);
+        const overlay = drawInsetQuad(meshTile, layer.scale, layer.color, zOffset);
         meshTile.add(overlay);
         overlays.push(overlay);
       });

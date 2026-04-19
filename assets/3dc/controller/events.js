@@ -500,6 +500,7 @@ function handleUpdateParam(payload) {
   if(stride > maxStride) {
     panel.querySelector('[name="advsq-stride"]').value = maxStride;
     stride = maxStride;
+    return;
   }
 
   const updatedPayload = {
@@ -604,9 +605,11 @@ function handleNextPlane(payload) {
   }
 
   panel.querySelector('[name="advsq-quad"]').value = quadNo;              // Write.
+  const firstStride = 1;
+  panel.querySelector('[name="advsq-stride"]').value = firstStride;
 
   let { srcTile, quad, perimeter, stride, opacity } = payload;            // Render.
-  payload = { srcTile, quad: quadNo, perimeter, stride, opacity };
+  payload = { srcTile, quad: quadNo, perimeter, stride: firstStride, opacity };
   changeAdvSq(payload);
   }
 
@@ -631,9 +634,11 @@ function handleNextPiece(payload) {
   }
 
   panel.querySelector('[name="advsq-quad"]').value = quadNo;              // Write.
+  const firstStride = 1;
+  panel.querySelector('[name="advsq-stride"]').value = firstStride;
 
   let { srcTile, quad, perimeter, stride, opacity } = payload;            // Render.
-  payload = { srcTile, quad: quadNo, perimeter, stride, opacity };
+  payload = { srcTile, quad: quadNo, perimeter, stride: firstStride, opacity };
   changeAdvSq(payload);
 }
 

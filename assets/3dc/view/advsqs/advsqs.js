@@ -129,7 +129,8 @@ export function makeAdvsq(specs) {
     let quadType = quads.quadToQuadType(quadNo);
 
     const lastPerim = (k === perims.length - 1);
-    decoratePerimeter(lastPerim, perim, piece, quadType, group, specs.opacity, stride);
+    const zOffset = 0.05;
+    decoratePerimeter(lastPerim, perim, piece, quadType, group, specs.opacity, stride, zOffset);
   }
 
   view.context.scene.add(group);
@@ -154,7 +155,25 @@ export function clearAdvsq() {
 // Seampoint: more global functions.
 
 // --- Helpers ---
-function decorateTile(coords, piece, decorator, group, opacity) {
+function decoratePerimeter(lastPerim, perim, piece, quadType, group, opacity, strideNo, zOffset=0.00) {
+  console.log("view: advsqs.js - decoratePerimeter(perim)", perim);
+  const end  = (piece    === "duke") ? "end3":   "end2";
+  const apex = (quadType === "face") ? "duplex": "apex";
+
+  const stride = perim.stride;
+  for(let i=1; i<=stride.length; i++) {
+    const j = i - 1;
+    if(     isSame(stride[j], perim.E1)  ) decorateTile(stride[j], piece, end,  group, opacity);
+    else if(isSame(stride[j], perim.apex)) decorateTile(stride[j], piece, apex, group, opacity);
+    else if(isSame(stride[j], perim.E2)  ) decorateTile(stride[j], piece, end,  group, opacity);
+    else {
+      decorateTile(stride[j], piece, "body", group, opacity);
+    }
+    if(lastPerim && (i === strideNo)) decorateTile(stride[j], piece, "dst", group, opacity, zOffset);
+  }
+}
+
+function decorateTile(coords, piece, decorator, group, opacity, zOffset=0.00) {
   let meshTile = tiles.getTileMesh(view.context.tileMap, coords);
   if (!meshTile) {
     // TODO: Need to create a tile mesh for this tile with high transparency.
@@ -187,29 +206,11 @@ function decorateTile(coords, piece, decorator, group, opacity) {
 
   const faceColor = meshTile.userData.faceColor;
 
-  const overlays = decorators.decorate(faceColor, meshTile, piece, decorator);
+  const overlays = decorators.decorate(faceColor, meshTile, piece, decorator, zOffset);
 
   if (overlays) {
     group.userData.overlays = group.userData.overlays || [];
     group.userData.overlays.push(...overlays);
-  }
-}
-
-function decoratePerimeter(lastPerim, perim, piece, quadType, group, opacity, strideNo) {
-  console.log("view: advsqs.js - decoratePerimeter(perim)", perim);
-  const end  = (piece    === "duke") ? "end3":   "end2";
-  const apex = (quadType === "face") ? "duplex": "apex";
-
-  const stride = perim.stride;
-  for(let i=1; i<=stride.length; i++) {
-    const j = i - 1;
-    if(     isSame(stride[j], perim.E1)  ) decorateTile(stride[j], piece, end,  group, opacity);
-    else if(isSame(stride[j], perim.apex)) decorateTile(stride[j], piece, apex, group, opacity);
-    else if(isSame(stride[j], perim.E2)  ) decorateTile(stride[j], piece, end,  group, opacity);
-    else {
-      decorateTile(stride[j], piece, "body", group, opacity);
-    }
-    if(lastPerim && (i === strideNo)) decorateTile(stride[j], piece, "dst", group, opacity);
   }
 }
 
