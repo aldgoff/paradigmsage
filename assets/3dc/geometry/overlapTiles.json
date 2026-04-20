@@ -55,20 +55,19 @@
             "roles": [
               { "name": "end3",  "multiplicity": 3 },
               { "name": "body",  "multiplicity": 1 },
-              { "name": "apex",  "multiplicity": 1 },
-              { "name": "third", "multiplicity": 1 }
+              { "name": "apex",  "multiplicity": 1 }
               ],
             "strides": [
               ["source"],
               ["end3", "apex", "end3"],
               ["end3", "body", "apex", "body", "end3"],
-              ["end3", "third", "body", "apex", "body", "body", "end3"],
+              ["end3", "body", "body", "apex", "body", "body", "end3"],
               ["end3", "body", "body", "body", "apex", "body", "body", "body", "end3"],
               ["end3", "body", "body", "body", "body", "apex", "body", "body", "body", "body", "end3"],
-              ["end3", "body", "third", "body", "body", "body", "apex", "body", "body", "body", "body", "body", "end3"],
+              ["end3", "body", "body", "body", "body", "body", "apex", "body", "body", "body", "body", "body", "end3"],
               ["end3", "body", "body", "body", "body", "body", "body", "apex", "body", "body", "body", "body", "body", "body", "end3"],
               ["end3", "body", "body", "body", "body", "body", "body", "body", "apex", "body", "body", "body", "body", "body", "body", "body", "end3"],
-              ["end3", "body", "body", "third", "body", "body", "body", "body", "body", "apex", "body", "body", "body", "body", "body", "body", "body", "body", "end3"],
+              ["end3", "body", "body", "body", "body", "body", "body", "body", "body", "apex", "body", "body", "body", "body", "body", "body", "body", "body", "end3"],
               ["end3", "body", "body", "body", "body", "body", "body", "body", "body", "body", "apex", "body", "body", "body", "body", "body", "body", "body", "body", "body", "end3"]
               ]
           },
@@ -76,19 +75,20 @@
             "roles": [
               { "name": "end3",   "multiplicity": 3 },
               { "name": "body",   "multiplicity": 1 },
-              { "name": "duplex", "multiplicity": 2 }
+              { "name": "duplex", "multiplicity": 2 },
+              { "name": "third",  "multiplicity": 1 }
               ],
             "strides": [
               ["source"],
               ["end3", "duplex", "end3"],
               ["end3", "body", "duplex", "body", "end3"],
-              ["end3", "body", "body", "duplex", "body", "body", "end3"],
+              ["end3", "third", "body", "duplex", "body", "third", "end3"],
               ["end3", "body", "body", "body", "duplex", "body", "body", "body", "end3"],
               ["end3", "body", "body", "body", "body", "duplex", "body", "body", "body", "body", "end3"],
-              ["end3", "body", "body", "body", "body", "body", "duplex", "body", "body", "body", "body", "body", "end3"],
+              ["end3", "body", "third", "body", "body", "body", "duplex", "body", "body", "body", "third", "body", "end3"],
               ["end3", "body", "body", "body", "body", "body", "body", "duplex", "body", "body", "body", "body", "body", "body", "end3"],
               ["end3", "body", "body", "body", "body", "body", "body", "body", "duplex", "body", "body", "body", "body", "body", "body", "body", "end3"],
-              ["end3", "body", "body", "body", "body", "body", "body", "body", "body", "duplex", "body", "body", "body", "body", "body", "body", "body", "body", "end3"],
+              ["end3", "body", "body", "third", "body", "body", "body", "body", "body", "duplex", "body", "body", "body", "body", "body", "third", "body", "body", "end3"],
               ["end3", "body", "body", "body", "body", "body", "body", "body", "body", "body", "duplex", "body", "body", "body", "body", "body", "body", "body", "body", "body", "end3"]
               ]
           }
@@ -101,10 +101,10 @@
           "all": {
             "roles": [
               { "name": "end2",    "multiplicity": 2 },
+              { "name": "hotspot", "multiplicity": 4 },
               { "name": "body",    "multiplicity": 1 },
               { "name": "brook",   "multiplicity": 3 },
-              { "name": "qtile",   "multiplicity": 4 },
-              { "name": "hotspot", "multiplicity": 4 }
+              { "name": "qtile",   "multiplicity": 4 }
               ],
             "strides": [
               ["source"],
@@ -154,8 +154,7 @@
             "roles": [
               { "name": "end3",    "multiplicity": 3 },
               { "name": "body",    "multiplicity": 1 },
-              { "name": "apex",    "multiplicity": 1 },
-              { "name": "Feynman", "multiplicity": 2 }
+              { "name": "qtile",   "multiplicity": 4 }
               ],
             "strides": [
               ["source"],
@@ -175,7 +174,8 @@
             "roles": [
               { "name": "end3",    "multiplicity": 3 },
               { "name": "body",    "multiplicity": 1 },
-              { "name": "hotspot", "multiplicity": 4 }
+              { "name": "hotspot", "multiplicity": 4 },
+              { "name": "Feynman", "multiplicity": 2 }
               ],
             "strides": [
               ["source"],

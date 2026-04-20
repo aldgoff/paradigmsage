@@ -65,4 +65,4 @@ title: "Dev"
 
  ### Week 6:
   - 4/19/26 - Hide python FAS/GAS code. Raise stride decorator (dst). Next buttons reset to 1. Limit quad to 60, add plane name, perim length and tile type to advsq panel, label:edit-box layout.
-
+  - 4/20/26 - Move thirds from edge to face quads.
