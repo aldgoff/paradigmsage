@@ -3,6 +3,7 @@
   Purpose: Offers interface to register callback functions.
   Author: Allan Goff
   Date: 4/07/26
+  Recommended access: import * as run.
   UI: the export functions.
 */
 

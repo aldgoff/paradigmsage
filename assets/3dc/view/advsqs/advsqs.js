@@ -3,6 +3,7 @@
   Purpose: Place the decorators on the board for the advsq.
   Author: Allan Goff
   Date: 4/15/26
+  Recommended access: import * as advsqs.
   UI: the export functions.
 */
 
@@ -13,25 +14,19 @@ import advsqsData from "./advsqs.json" assert { type: "json" };
   // Seampoint: more objects.
 
 // --- Build upon previous layers ---
-import {getBoardSpec,} from "../../foundation/coords/coords.js";
-import {vts2xyz,
-        xyz2vts,
-        vts2pixels,
-        pixels2vts,
-} from "../render/coordsMaps.js"
+import * as state    from "../../model/state/state.js";
+import * as coords   from "../../foundation/coords/coords.js";
+import * as planes   from "../../geometry/planes.js";
+import * as quads    from "../../geometry/quads.js";
+import * as overlaps from "../../geometry/overlapTiles.js";
+import * as advSqs   from "../../geometry/advSqs.js";
 
-import * as view from "../view.js";
-import * as tiles from "../tiles/tiles.js";
+import * as view       from "../view.js";
+import * as tiles      from "../tiles/tiles.js";
 import * as decorators from "../decorators/decorators.js";
 import * as cameras    from "../render/cameras.js";
 import * as renders    from "../render/renders.js";
-
-import * as state  from "../../model/state/state.js";
-import * as coords from "../../foundation/coords/coords.js";
-import * as planes from "../../geometry/planes.js";
-import * as quads  from "../../geometry/quads.js";
-import * as overlaps from "../../geometry/overlapTiles.js";
-import { AdvSq } from "../../geometry/advSqs.js";
+import * as coordsMaps from "../render/coordsMaps.js"
 // Seampoint: more imports.
 
 // --- Globals ---
@@ -106,7 +101,7 @@ export function makeAdvsq(specs) {
   const { srcTile, quad, perimeter, stride } = specs;
 
   // --- 1. Build geometric AdvSq ---
-  const advsq = AdvSq.fromQuad(srcTile, quad, perimeter);
+  const advsq = advSqs.AdvSq.fromQuad(srcTile, quad, perimeter);
 
   const piece = advsq.getPiece();   // rook / bishop / duke
   const perims = advsq.getPerims();
@@ -171,14 +166,14 @@ function decoratePerimeter(lastPerim, perim, piece, quadType, group, opacity, st
     }
     if(lastPerim && (i === strideNo)) decorateTile(stride[j], piece, "dst", group, opacity, zOffset);
   }
-}
+ }
 
 function decorateTile(coords, piece, decorator, group, opacity, zOffset=0.00) {
   let meshTile = tiles.getTileMesh(view.context.tileMap, coords);
   if (!meshTile) {
     // TODO: Need to create a tile mesh for this tile with high transparency.
 
-    const tileGeometry = new THREE.BoxGeometry(...vts2xyz(tiles.tileSize()));
+    const tileGeometry = new THREE.BoxGeometry(...coordsMaps.vts2xyz(tiles.tileSize()));
 
     let pos = coords;
     let tile = tiles.getTileAttributes(pos);
@@ -212,7 +207,7 @@ function decorateTile(coords, piece, decorator, group, opacity, zOffset=0.00) {
     group.userData.overlays = group.userData.overlays || [];
     group.userData.overlays.push(...overlays);
   }
-}
+ }
 
 function getActiveBoardSpec() {
   const setupArray = state.getState().Setup;
@@ -233,7 +228,7 @@ function getActiveBoardSpec() {
 // --- Utilities ---
 function isSame(a, b) {
   return a[0] === b[0] && a[1] === b[1] && a[2] === b[2];
-}
+  }
 
 function denormalizeQuad(q) {
   if (typeof q === "string" && q.startsWith("Q")) {

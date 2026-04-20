@@ -1,9 +1,9 @@
-
 /* File: tiles.js
   Path: ./3dc/tiles/tiles.js
   Purpose: Code for building the tiles.
   Author: Allan Goff
   Date: 4/03/26
+  Recommended access: import * as tiles.
   UI: the export functions.
 */
 

@@ -3,7 +3,7 @@
   Purpose: desc
   Author: Allan Goff
   Date: 3/29/26
-  Recommended access: import * as advsqs.
+  Recommended access: import * as advSqs.
   UI: the export functions.
 */
 
