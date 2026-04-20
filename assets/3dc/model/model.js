@@ -3,6 +3,7 @@
   Purpose: The state and logic of 3D Chess.
   Author: Allan Goff
   Date: 4/04/26
+  Recommended access: import * as model.
   UI: the export functions.
 */
 
@@ -10,7 +11,7 @@
  * Will want to leverage JSON stringify and parse.
  * const str = JSON.stringify(setup);
  * const obj = JSON.parse(str);
- */
+*/
 
 // --- Load JSON ---
 import modelData from "./model.json" assert { type: "json" };
@@ -18,8 +19,8 @@ import modelData from "./model.json" assert { type: "json" };
   // Seampoint: more objects.
 
 // --- Build upon previous layers ---
-import * as view    from "../view/view.js";
 import * as control from "../controller/controller.js";
+import * as view    from "../view/view.js";
 import * as state   from "./state/state.js";  // All the undoable state code.
 // Seampoint: more imports...
 

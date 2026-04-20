@@ -3,6 +3,7 @@
   Purpose: Define planes and quads.
   Author: Allan Goff
   Date: 3/23/26
+  Recommended access: import * as planes.
   UI: export functions only.
 */
 

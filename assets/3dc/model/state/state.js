@@ -3,6 +3,7 @@
   Purpose: The state of a 3D Chess game.
   Author: Allan Goff
   Date: 4/06/26
+  Recommended access: import * as state.
   UI: the export functions.
 */
 

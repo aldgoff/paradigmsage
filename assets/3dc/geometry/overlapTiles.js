@@ -3,8 +3,9 @@
   Purpose: desc
   Author: Allan Goff
   Date: 3/30/26
+  Recommended access: import * as overlapTiles.
   UI: the export functions.
- */
+*/
 
 // --- Load module ---
 import overlapTilesData from "./overlapTiles.json" assert { type: "json" };

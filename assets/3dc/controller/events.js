@@ -3,6 +3,7 @@
   Purpose: Register functions with the view layer for callbacks.
   Author: Allan Goff
   Date: 4/07/26
+  Recommended access: import * as events.
   UI: the export functions.
 */
 

@@ -3,15 +3,17 @@
   Purpose: desc
   Author: Allan Goff
   Date: 3/00/26
+  Recommended access: import * as perims.
   UI: the export functions.
- */
+*/
 
 // --- Load module ---
 
 // --- Build upon the previous layers ---
-import {normalizeTileToVts} from "../foundation/coords/coords.js";
-import {getRayVector} from "../foundation/rays/rays.js";
-import {quadToRayPair} from "./quads.js";
+// Seampoint: more imports.
+import * as coords from "../foundation/coords/coords.js";
+import * as rays   from "../foundation/rays/rays.js";
+import * as quads  from "./quads.js";
 // Seampoint: more imports.
 
 // --- UI ---
@@ -20,9 +22,9 @@ export function getStride({ quad, k }) {
     throw new Error(`getStride: invalid k (${k})`);
   }
 
-  const [ray1, ray2] = quadToRayPair(quad);
-  const v1 = getRayVector(ray1);
-  const v2 = getRayVector(ray2);
+  const [ray1, ray2] = quads.quadToRayPair(quad);
+  const v1 = rays.getRayVector(ray1);
+  const v2 = rays.getRayVector(ray2);
 
   const stride = [];  // The ordered list of relative tiles on the perimeter.
 
@@ -60,7 +62,7 @@ export function prevPerimeter({ quad, k }) {
 
 export function isTileInPlane(tile, v1, v2) {
   // Normalize tile to VTS (future-proof)
-  const t = normalizeTileToVts(tile);  // from coords layer
+  const t = coords.normalizeTileToVts(tile);  // from coords layer
 
   // Plane normal
   const n = cross(v1, v2);

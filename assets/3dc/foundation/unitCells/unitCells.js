@@ -3,6 +3,7 @@
   Purpose: Resolve the canonicalization problem of which concept is most fundamental.
   Author: Allan Goff
   Date: 3/24/26
+  Recommended access: import * as unitCells.
   UI: the export functions.
  */
 
@@ -68,6 +69,5 @@ export function getPlaneType(dim, rayType) {
 
 
 // --- Helpers ---
-
 // Seampoint: more local functions.
 

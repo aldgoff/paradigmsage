@@ -3,6 +3,7 @@
   Purpose: Define directional primitives (rays + knight deltas) in VTS space.
   Author: Allan Goff
   Date: 3/20/26
+  Recommended access: import * as rays.
   UI: export functions only.
 
   Notes:
@@ -11,17 +12,15 @@
     - Knights are displacement vectors (not rays).
 */
 
+// --- Load module ---
 import raysData from "./rays.json" assert { type: "json" };
-
-// -- Load module --
-
-const raysModule = raysData.rays_module;
-
-const ROOK   = raysModule.rook;
-const BISHOP = raysModule.bishop;
-const DUKE   = raysModule.duke;
-const APEX   = raysModule.apex;
-const KNIGHT = raysModule.knight;
+  const raysModule = raysData.rays_module;
+  const ROOK   = raysModule.rook;
+  const BISHOP = raysModule.bishop;
+  const DUKE   = raysModule.duke;
+  const APEX   = raysModule.apex;
+  const KNIGHT = raysModule.knight;
+  // Seampoint: more objects.
 
 // -- Internal helpers --
 

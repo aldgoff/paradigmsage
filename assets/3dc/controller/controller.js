@@ -3,6 +3,7 @@
   Purpose: The player's interface to setting up and playing the game.
   Author: Allan Goff
   Date: 4/02/26
+  Recommended access: import * as control.
   UI: the export functions.
 */
 
@@ -54,9 +55,6 @@ import * as state    from "../model/state/state.js";
 
 import * as example  from "../exampleRegistration/control.js";  //TODO: DEPRECATED
 // Seampoint: more imports...
-
-// --- Globals ---
-// let advsqPanelInitialParams = null;
 
 // --- UI ---
 export function init(playBoard) {

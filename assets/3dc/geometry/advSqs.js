@@ -3,8 +3,9 @@
   Purpose: desc
   Author: Allan Goff
   Date: 3/29/26
+  Recommended access: import * as advsqs.
   UI: the export functions.
- */
+*/
 
 // --- Load module ---
 import advSqsData from "./advSqs.json" assert { type: "json" };
