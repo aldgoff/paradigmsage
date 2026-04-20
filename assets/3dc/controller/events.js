@@ -11,6 +11,7 @@ import * as control  from "../controller/controller.js";
 import * as state    from "../model/state/state.js";
 import * as coords   from "../foundation/coords/coords.js";
 import * as quads    from "../geometry/quads.js";
+import * as overlaps from "../geometry/overlapTiles.js";
 
 import * as register from "../view/registerHandlers.js";
 import * as boards   from "../view/boards/boards.js";
@@ -108,7 +109,6 @@ function cameraPanelDispatch(payload) { // Not subject to the undo arch.
 // Handle event functions.
 function handleMakeBoard(boardSize) { // Setup handlers.
   console.log("control: events.js - handleMakeBoard(boardSize):", boardSize);
-  // TODO: change state.
   const board = boardSize.split("x").map(n => Number(n));
   const newBoard = { "board": board, "play": "off", "trays": "none", "gap": 0, "initialPos": "std" };
 
@@ -479,6 +479,11 @@ function handleUpdateParam(payload) {
 
   const panel = document.getElementById("advsq-window");
 
+  if (payload.name === "advsq-opacity") {   // Short-circuit opacity-only undo updates.
+    changeOpacityOnly(payload);
+    return;
+  }
+
   const quad = Number(panel.querySelector('[name="advsq-quad"]').value);  // Plane name from quad.
   const rec = quads.pqrTable(quad);
   panel.querySelector('[name="advsq-plane"]').textContent = rec.plane;
@@ -496,10 +501,18 @@ function handleUpdateParam(payload) {
     return;
   }
 
+  let apex = "Apex";                                                        // Duke duplex/apex tiles.
+  if(rec.quadType === "face") apex = "Duplex";
+  else if(rec.quadType === "face") apex = "Apex";
+
+  const perim = Number(perimeter);
+  const dukeThirds = false;
+  // const dukeThirds = isThirdsTile(quad, perim, stride);
   let tileType = "";                                                        // Tile type from stride.
   if(     stride === 1)         tileType = "E1";
-  else if(stride === k + 1)     tileType = "Apex"; // TODO: duke variations: duplex | thirds.
+  else if(stride === k + 1)     tileType = apex;
   else if(stride === maxStride) tileType = "E2";
+  else if(dukeThirds)           tileType = "Thirds";  // TODO: Test for duke 'thirds' tile.
   else                          tileType = "Body";
   panel.querySelector('[name="advsq-tile"]').value = tileType;
 
@@ -511,9 +524,8 @@ function handleUpdateParam(payload) {
     opacity:  panel.querySelector('[name="advsq-opacity"]').value
   };
 
-  changeAdvSq(updatedPayload);  // TODO: broken by opacity.
+  changeAdvSq(updatedPayload);
   }
-
 
 function handleNudgeSrc(payload) {
   const { axis, delta } = payload;
@@ -711,7 +723,34 @@ function syncAdvsqPanel(specs) {
 
   panel.querySelector('[name="advsq-opacity"]').value =
     specs?.opacity ?? 0.5;
+  }
+
+function changeOpacityOnly(payload) {
+  const panel = document.getElementById("advsq-window");
+
+  const opacity = Number(
+    panel.querySelector('[name="advsq-opacity"]').value
+  );
+
+  const last = state.getState().AdvSqs.slice(-1)[0];
+  if (!last) return;
+
+  // 🔥 VIEW ONLY — no state mutation
+  advsqs.makeAdvsq({
+    ...last,
+    opacity
+  });
 }
+
+function isThirdsTile(quad, perim, strideIndex) { // TODO: fix.
+  console.log("control: events.js - isThirdsTile(quad, perim, strideIndex):", quad, perim, strideIndex);
+  
+  const stride = overlaps.getStride({ quad, k: perim });
+  if (!stride) return false;
+
+  return stride[strideIndex] === "third";
+}
+
 /*** ---------- ---------- ---------- ---------- ***/
 
 import * as cameras from "../view/render/cameras.js";
