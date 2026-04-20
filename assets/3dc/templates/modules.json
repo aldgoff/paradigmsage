@@ -1,0 +1,24 @@
+{
+  "modules_module": {
+    "category": {
+      "key1": "value1",
+      "key2": 123,
+      "array": [-1,  0,  0]
+    },
+    "base": {
+      "object": { "planeType": "orthogonal" },
+      "set":    { "planeType": "skew" },
+      "map":    { "planeType": "slant", "apex": "duplex" },
+      "nested": {
+        "goodName": { "quadType": "edge", "samIam": "DrSeuss" },
+        "niceName": { "size": 8 }
+      }
+    },
+    "Examples": {
+      "_comment": "YadaYada",
+      "_status": "deprecated",
+      "_doc": "Because I said so."
+    }
+  }
+}
+

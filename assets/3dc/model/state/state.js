@@ -7,7 +7,7 @@
 */
 
 /* JSON stringify and parse syntax:
- * Will want to leverage JSON stringify and parse.
+ * Leverage JSON stringify and parse.
  * const str = JSON.stringify(setup);
  * const obj = JSON.parse(str);
 */
@@ -18,15 +18,15 @@ import stateData from "./state.json" assert { type: "json" };
 // Seampoint: more objects.
 
 // --- Build upon previous layers ---
-import * as model from "../../model/model.js";
-import * as view   from "../../view/view.js";
-import * as control from "../../controller/controller.js";
+import * as model  from "../../model/model.js";
 
+import * as view   from "../../view/view.js";
 import * as boards from "../../view/boards/boards.js";
+import * as advsqs from "../../view/advsqs/advsqs.js";
 
 // Seampoint: more imports...
 
-let state = { // This is the state of the game: board/moves/gambits/advsq.
+let state = { // This is the state history of the game: setup-moves-gambits-advsq.
   Setup:   [],
   Moves:   [],
   Gambits: [],
@@ -34,27 +34,40 @@ let state = { // This is the state of the game: board/moves/gambits/advsq.
 };
 
 // --- UI ---
+export function setState(newState) {
+  state = structuredClone(newState);
+  }
+
 export function getState() {
   return state;
   }
 
 export function getNull() {
-  return { Setup: [], Moves: [], Gambits:[], AdvSqs: [] };
+  return { Setup: [], Moves: [], Gambits: [], AdvSqs: [] };
   }
 
 export function setNull() {
-  state = { Setup: [], Moves: [], Gambits:[], AdvSqs: [] };
+  state = { Setup: [], Moves: [], Gambits: [], AdvSqs: [] };
 }
 
 // Basic player sequence.
 export function setup(option) {           // Pick a board, trays, rule enforcement, etc.
+  console.log("model: state.js - setup(option):", option);
   // TODO: may have to erase later states and/or delete an existing board.
   state.Setup.push(option);
   boards.makeBoard(option.board);
   }
 
-export function pushAdvSq(advsq) {        // Manipulate an advancement square.
-  state.AdvSqs.push(advsq);
+export function pushAdvSq(specs) {        // Manipulate an advancement square.
+  console.log("model: state.js - pushAdvSq(specs):", specs);
+  state.AdvSqs.push(specs);
+  advsqs.makeAdvsq(specs)
+  }
+
+export function clearAdvSqs() {
+  console.log("model: state.js - clearAdvSqs():", );
+  state.AdvSqs = [];
+  advsqs.clearAdvsq();
   }
 
 export function freeze(advsq) {           // Freeze each on board to generate gambit.
@@ -62,7 +75,7 @@ export function freeze(advsq) {           // Freeze each on board to generate ga
   state.AdvSqs.length = 0;
   }
 
-export function recordMove(gambit) {     // Select a move from the gambit set of advsqs.
+export function recordMove(gambit) {      // Select a move from the gambit set of advsqs.
   state.Moves.push(structuredClone(gambit));
   // state.Gambits.length = 0;
 }
@@ -84,32 +97,16 @@ function iterateState(stateData) {
   console.log("Moves:");
   mod.Moves.forEach((entry, i) => {
     console.log(i, entry);
-    // console.log(`Turn ${entry.turn}:`);
-    // console.log("  Moves:", entry.moves.join(" | "));
-    // console.log("  Coords:", entry.coords.join(" | "));
-    // console.log("  Notes:", entry.annotations.join(" | "));
   });
 
   console.log("Gambits:");
   mod.Gambits.forEach((entry, i) => {
     console.log(i, entry);
-    // mod.Gambits.forEach(g => {
-      // console.log(`Turn ${entry.turn}:`);
-      // console.log("  Moves:", entry.moves.join(" | "));
-      // console.log("  Coords:", entry.coords.join(" | "));
-      // console.log("  Notes:", entry.annotations.join(" | "));
   });
 
   console.log("AdvSqs:");
   mod.AdvSqs.forEach((entry, i) => {
     console.log(i, entry);
   });
-
-  // mod.AdvSqs.forEach(a => {
-  //   console.log(`${a.src} → ${a.dst}`);
-  // });
-  // mod.AdvSqs.forEach((entry, i) => {
-  //   console.log(`${entry.src} → ${entry.dst}`);
-  // });
 }
 

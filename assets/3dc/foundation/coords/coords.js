@@ -127,6 +127,17 @@ export function rcsToBoard(rcs, specOrName) {
   }
 
   return `${LL}${X},${Y}`;
+  }
+
+export function vtsToBoard(vts, specOrName = "8x8x8") {
+  let spec = specOrName;
+
+  if (typeof spec === "string") {
+    spec = getBoardSpec(spec);
+  }
+
+  const rcs = vtsToRcs(vts, spec);
+  return rcsToBoard(rcs, spec);
 }
 
 // -- On board tests --

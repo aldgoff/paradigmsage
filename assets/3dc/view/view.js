@@ -39,9 +39,16 @@
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
+import {vts2xyz,
+        xyz2vts,
+        vts2pixels,
+        pixels2vts,
+} from "./render/coordsMaps.js"
+
 import * as run from "./registerHandlers.js";
 import * as renders from "./render/renders.js";
 import * as demos from "./demos.js";
+import * as tiles from "./tiles/tiles.js";
 // Seampoint: more imports...
 
 export let context;
@@ -66,6 +73,8 @@ export function init(playBoard) { // PlayBoard is the 3D canvas from the THREE r
   }
   else {      // Growing the panel and undo features.
     context = renders.init(playBoard);
+    context.tileMap = new Map();
+    context.tileGeometry = new THREE.BoxGeometry(...vts2xyz(tiles.tileSize()));
     // demos.run(context);
   }
 
@@ -111,6 +120,8 @@ function wirePanel(panelId, callbackName, buildPayload) {
 
     if (callbackName !== "advsq") return;
 
+    // 🔥 NEW: special-case opacity
+    const action = (e.target.name === "advsq-opacity") ? "updateOpacity": "updateParam";
     cb({
       action: "updateParam",
       name: input.name,
@@ -197,6 +208,7 @@ function buildAdvsqPayload(panel, action) {
     quad:     panel.querySelector('[name="advsq-quad"]')?.value,
     perimeter:panel.querySelector('[name="advsq-perimeter"]')?.value,
     stride:   panel.querySelector('[name="advsq-stride"]')?.value,
+    opacity:  panel.querySelector('[name="advsq-opacity"]')?.value,
   };
 }
 

@@ -1,5 +1,6 @@
 {
-  "templates_module": {
+  "advsqs_module": {
+    "_status": "Currently unused.",
     "category": {
       "key1": "value1",
       "key2": 123,

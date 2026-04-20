@@ -10,8 +10,8 @@
  * Layer: Controller (State Transition Orchestration)
  *
  * Purpose:
- * Coordinates interaction between model and engine.
- * Selects and applies legal transitions.
+ * - Coordinates interaction between model and engine.
+ * - Selects and applies legal transitions.
  *
  * Ontology:
  * - Does not "execute moves" in a procedural sense
@@ -30,32 +30,39 @@
  *
  * Inputs:
  * - Current game state
- * - Player input or AI selection
+ * - Player input
  *
  * Outputs:
  * - New canonical state
  * - Transition descriptors
  *
  * Notes:
- * The controller must not infer legality—it must defer to the engine.
+ * - The controller must not infer legality—it must defer to the engine.
 */
 
 // --- Load JSON ---
 // Seampoint: more objects.
 
 // --- Build upon previous layers ---
-import * as view  from "../view/view.js";
-import * as model  from "../model/model.js";
-import * as state   from "../model/state/state.js";
+import * as register from "../controller/events.js";
 
-import * as register from "./events.js";
-import * as example   from "../exampleRegistration/control.js";
+import * as view     from "../view/view.js";
+import * as advsqs   from "../view/advsqs/advsqs.js";
+
+import * as model    from "../model/model.js";
+import * as state    from "../model/state/state.js";
+
+import * as example  from "../exampleRegistration/control.js";  //TODO: DEPRECATED
 // Seampoint: more imports...
+
+// --- Globals ---
+// let advsqPanelInitialParams = null;
 
 // --- UI ---
 export function init(playBoard) {
   console.log("controller.init(): 3dc/controller/controller.js");
-  example.demoRegistration();
+
+  // example.demoRegistration();
 
   makeDraggable(document.getElementById("setup-window"));  // DOM panels.
   makeDraggable(document.getElementById("tray-window"));
@@ -67,16 +74,20 @@ export function init(playBoard) {
   makeDraggable(document.getElementById("camera-window")); // Not subject to the undo arch.
   // Seampoint - more 2D panels/canvi...
 
-  register.callbacks(); // TODO: register each panel with the view layer.
+  // advsqPanelInitialParams = advsqs.getAdvsqPanelParams();
+
+  register.callbacks();
 
   model.init(playBoard);
   view.init(playBoard);
+
+  advsqs.setAdvsqPanelInitialParams();
 
   // demo(); // POC for state interface and undo/redo architecture.
 }
 // Seampoint: more global functions...
 
-// --- Helpers ---
+// --- Globals ---
 let activeDrag = null;
 let topZ = 100;
 
@@ -93,6 +104,7 @@ window.addEventListener("pointerup", () => {
   activeDrag = null;
 });
 
+// --- Helpers ---
 function makeDraggable(element) {
   element.addEventListener("pointerdown", (e) => {
     if (["BUTTON", "TEXTAREA", "INPUT"].includes(e.target.tagName)) return;
@@ -112,7 +124,7 @@ function makeDraggable(element) {
 }
 // Seampoint: more local functions...
 
-/*** Demo Code - to be deprecated. */
+/*** Demo Code - TODO: to be deprecated. */
 import stateData from "../model/state/state.json" assert { type: "json" };
   const seed = stateData.state_module;     // Fake data from state.json.
 

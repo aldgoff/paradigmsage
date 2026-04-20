@@ -28,7 +28,6 @@ export function init(playBoard) {
   let setup;
 
   console.log("model.init(): 3dc/model/model.js");
-  console.log("modelModule", modelModule);
 
   // exampleStateStrMoves();  // Comments about fallback notation: coords and annotations - keep for now.
 

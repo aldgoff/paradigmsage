@@ -23,7 +23,7 @@ import {getBoardSpec,
 
 // --- Module ---
 import {UI,
-} from "../../templates/module.js";
+} from "../../templates/modules.js";
 
 // ------------------------------------------------------------
 

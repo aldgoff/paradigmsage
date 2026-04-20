@@ -74,6 +74,17 @@ export function createMeshTile(tile, geometry, pos) {
 export function getTileMesh(tileMap, pos) {
   return tileMap.get(pos.join(","));
 }
+
+export function initTileUserData(meshTile, tile, pos, tileMap) {
+  meshTile.userData.isTile = true;
+  meshTile.userData.coords = pos;
+  meshTile.userData.decorated = false;
+  meshTile.userData.overlays = [];
+  meshTile.userData.faceColor = tile.faceColor;
+
+  tileMap.set(pos.join(","), meshTile);
+  }
+
 // Seampoint: more global functions...
 
 // --- Helpers ---

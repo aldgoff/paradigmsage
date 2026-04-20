@@ -8,7 +8,6 @@
 │   ├── 3dc
 │   │   ├── arch.js
 │   │   ├── controller
-│   │   │   ├── _tbd.md
 │   │   │   ├── controller.js
 │   │   │   ├── controller.md
 │   │   │   ├── events.js
@@ -72,7 +71,6 @@
 │   │   │   └── quads.md
 │   │   ├── main.js
 │   │   ├── model
-│   │   │   ├── _tbd.md
 │   │   │   ├── gambit
 │   │   │   │   ├── gambit.json
 │   │   │   │   └── gambit.md
@@ -86,13 +84,10 @@
 │   │   │       ├── state.js
 │   │   │       ├── state.json
 │   │   │       └── state.md
-│   │   ├── Obsolete
-│   │   │   ├── layout.js
-│   │   │   └── layout.md
 │   │   ├── templates
-│   │   │   ├── module.js
-│   │   │   ├── module.json
-│   │   │   └── module.md
+│   │   │   ├── modules.js
+│   │   │   ├── modules.json
+│   │   │   └── modules.md
 │   │   ├── tests
 │   │   │   ├── _tbd.md
 │   │   │   ├── core
@@ -115,10 +110,14 @@
 │   │   │   │   │   └── gambit.test.js
 │   │   │   │   └── state.test.js
 │   │   │   ├── templates
-│   │   │   │   └── module.test.js
+│   │   │   │   └── modules.test.js
 │   │   │   └── tests.js
 │   │   └── view
 │   │       ├── _tbd.md
+│   │       ├── advsqs
+│   │       │   ├── advsqs.js
+│   │       │   ├── advsqs.json
+│   │       │   └── advsqs.md
 │   │       ├── boards
 │   │       │   ├── boards.js
 │   │       │   ├── boards.json
@@ -216,6 +215,7 @@
 │   │   ├── clues.md
 │   │   ├── dev.md
 │   │   ├── play.md
+│   │   ├── quickStart.md
 │   │   └── rationale.md
 │   ├── contact
 │   │   └── _index.md

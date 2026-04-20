@@ -67,7 +67,7 @@ Places AI said might be good for promoting the website.
 
   ### 5. 
   #### Title:
-   - If it's better to give than to receive, then shouldn't the birthday boy give presents?
+   - If it's better to give than to receive, shouldn't the birthday boy give presents?
   #### URL:
 
   #### TExt:

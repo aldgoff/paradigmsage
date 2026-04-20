@@ -30,7 +30,7 @@ let currentBoard = null;
 
 // --- UI ---
 export function makeBoard(dimensions) {
-  console.log("makeBoard()", dimensions);
+  console.log("view: boards.js - makeBoard(dimensions):", dimensions);
 
   if(currentBoard) { view.context.scene.remove(currentBoard); }
 
@@ -40,12 +40,12 @@ export function makeBoard(dimensions) {
   const Sz = Z - dimensions[0] + 1;
   const Sx = X - dimensions[1] + 1;
   const Sy = Y - dimensions[2] + 1;
-  console.log("dims:", Sz, Sx, Sy, Z, X, Y);
+  // console.log("dims:", Sz, Sx, Sy, Z, X, Y);
 
   const boardGroup = new THREE.Group();
 
-  const tileGeometry = new THREE.BoxGeometry(...vts2xyz(tiles.tileSize()));
-  const tileMap = new Map();
+  const tileGeometry = view.context.tileGeometry  // ✅
+  const tileMap = view.context.tileMap;   // ✅ SHARED
 
   let count = 0;
   for(let z=Sz; z<=Z; z++) {  // Create the board.
@@ -54,7 +54,7 @@ export function makeBoard(dimensions) {
         let pos = [z, x, y];
         let tile = tiles.getTileAttributes(pos);
         let meshTile = tiles.createMeshTile(tile, tileGeometry, pos);
-        initTileUserData(meshTile, tile, pos, tileMap);
+        tiles.initTileUserData(meshTile, tile, pos, tileMap);
         boardGroup.add(meshTile); // Add tile to board.
         count++;
       }
@@ -64,9 +64,6 @@ export function makeBoard(dimensions) {
   currentBoard = boardGroup;
 
   addEventListener(view.context.scene, view.context.renderer, view.context.camera, tileMap);
-
-  console.log("count", count);
-  console.log("view.context", view.context);
   }
 
 export function clearBoard() {
@@ -78,16 +75,6 @@ export function clearBoard() {
 // Seampoint: more global functions.
 
 // --- Helpers ---
-function initTileUserData(meshTile, tile, pos, tileMap) {
-  meshTile.userData.isTile = true;
-  meshTile.userData.coords = pos;
-  meshTile.userData.decorated = false;
-  meshTile.userData.overlays = [];
-  meshTile.userData.faceColor = tile.faceColor;
-
-  tileMap.set(pos.join(","), meshTile);
-  }
-
 function addEventListener(scene, renderer, camera, tileMap) {
   renderer.domElement.addEventListener("click", (event) => {
   const coords = getTileFromClick(event, camera, scene, renderer);

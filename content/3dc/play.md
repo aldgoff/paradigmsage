@@ -5,17 +5,7 @@ layout: "play"
 
 **Play (INWORK)**
   A playable implemetation of 3D Chess with planar moves and advancement squares.
-  The 3D board is a cube of cubes (8x8x8).
-  Each tile is the bottom of a cube.
-  An 8 color board includes the 2 bishop colors (tile faces) and the 4 duke colors (tile edges).
-  Active Panels: Setup Control and Camera Control. 
-  Click on the **Make Board** button to see a board.
-  Play with **camera controls**.
-  **Raycasting** demonstrated by toggling circles on clicked tiles.
-  A growing POC for the render engine (4/14/26).
-  (For the terminally impatient, you are witness to how the 'sausage' is made.)
-
-  (Game has not yet been introduced in the PoP narrative.)
+  To see explanatory pages, click on **3DC** above.
 
 <!-- Load the Three.js Render... -->
 <script type="module">
@@ -48,7 +38,7 @@ layout: "play"
     }
   #move-window {
     font-family: monospace;
-    width: 380px;
+    width: 350px;
     }
   #undo-list {
     height: 66px;
@@ -68,23 +58,23 @@ layout: "play"
     padding: 4px;
   }
 
-  #setup-window  { top: 180px; left:  100px; }  /* DOM Control Panels */
-  #tray-window   { top: 180px; left:  300px; }
-  #game-window   { top: 180px; left:  500px; }
-  #move-window   { top: 360px; left:  100px; }
-  #gambit-window { top: 180px; left:  700px; }
-  #advsq-window  { top: 180px; left:  900px; }
+  #setup-window  { top: 120px; left:   80px; }  /* DOM Control Panels */
+  #tray-window   { top: 260px; left:   80px; }
+  #game-window   { top: 120px; left:  280px; }
+  #move-window   { top: 720px; left:   80px; }
+  #gambit-window { top: 580px; left:   80px; }
+  #advsq-window  { top: 320px; left:  280px; }
 
-  #camera-window { top: 600px; left: 150px; }
+  #camera-window { top: 430px; left:   80px; }
   /* Seampont - more DOM control panels... */
 </style>
 
 <!-- The 3DC Game... -->
-<canvas id="3dc-board" width="1400" height="1800"></canvas>  <!-- 3D -->
+<canvas id="3dc-board" width="1600" height="2000"></canvas>  <!-- 3D -->
 
- <!-- The DOM Control Panels -->
+<!-- The DOM Control Panels -->
 <div class="panel" id="setup-window">
-  <div class="panel-title">Setup Control</div>
+  <div class="panel-title">Setup Panel</div>
 
   <div class="section">
     <button data-action="makeBoard">Make Board</button>
@@ -98,7 +88,7 @@ layout: "play"
   </div>
 
 <div class="panel" id="tray-window">
-  <div class="panel-title">Tray Control</div>
+  <div class="panel-title">Tray Panel</div>
 
   <div class="section">
     <button data-action="makeTrays">Make Trays</button>
@@ -117,7 +107,7 @@ layout: "play"
   </div>
 
 <div class="panel" id="game-window">
-  <div class="panel-title">Game Control</div>
+  <div class="panel-title">Game Panel</div>
 
   <div class="section">
     <button data-action="newGame">New</button>
@@ -142,7 +132,7 @@ layout: "play"
   </div>
 
 <div class="panel" id="gambit-window">
-  <div class="panel-title">Gambit Control</div>
+  <div class="panel-title">Gambit Panel</div>
 
   <div class="section">
     <button data-action="freeze">Freeze AdvSq</button>
@@ -158,7 +148,7 @@ layout: "play"
   </div>
 
 <div class="panel" id="advsq-window">
-  <div class="panel-title">AdvSq Control</div>
+  <div class="panel-title">AdvSq Panel</div>
 
   <div class="section">
     <button data-action="place">Place</button>
@@ -166,10 +156,25 @@ layout: "play"
   </div>
 
   <div class="section">
-  <label> Source Tile: <input type="string" name="advsq-src"       value="Q3,3"> </label>
-  <label> Quad:        <input type="number" name="advsq-quad"      min="1" step="1" value="1"> </label>
-  <label> Perimeter:   <input type="number" name="advsq-perimeter" min="1" step="1" value="2"> </label>
-  <label> Stride:      <input type="number" name="advsq-stride"    min="1" step="1" value="3"> </label>
+    <label> Source Tile: <input  name="advsq-src"  type="text"      value="K3,3" maxlength="7" style="width: 60px;"> </label>
+  </div>
+  <div class="section">
+    <label> Quad:        <input  name="advsq-quad" type="number"      min="1" step="1" value="1" max="60"> </label>
+  </div>
+  <div class="section">
+    <label> Plane:       <output name="advsq-plane" style="opacity:0.7; font-style:italic;">Horizontal</output> </label>
+  </div>
+  <div class="section">
+    <label> Perimeter:   <input  name="advsq-perimeter" type="number" min="1" step="1" value="3" max="99"> </label>
+  </div>
+  <div class="section">
+    <label> Length:       <output name="advsq-length" style="opacity:0.7; font-style:italic;">7</output> </label>
+  </div>
+  <div class="section">
+    <label> Stride:      <input  name="advsq-stride" type="number"    min="1" step="1" value="1" max="99"> </label>
+  </div>
+  <div class="section">
+    <label> Tile:        <output name="advsq-tile" style="opacity:0.7; font-style:italic;">E1</output> </label>
   </div>
 
   <!-- Optional: key hints (visual only) -->
@@ -185,10 +190,15 @@ layout: "play"
     <button data-action="nextPlane">Next Plane</button>
     <button data-action="nextPiece">Next Piece</button>
   </div>
+
+  <div class="section">
+    <label> Offboard Visibility
+      <input type="range" name="advsq-opacity" min="0" max="1" step="0.01" value="0.5"> </label>
+  </div>
 </div>
 
 <div class="panel" id="camera-window">
-  <div class="panel-title">Camera Control</div>
+  <div class="panel-title">Camera Panel</div>
 
   <div class="section">
     <button data-action="ZoomIn"> Zoom In </button>
@@ -197,15 +207,13 @@ layout: "play"
     <button data-action="Descend">Descend </button>
   </div>
 
-
   <div class="section">
     <label> <input type="radio" name="camera-pov" value="white"    data-action="SetPOV"> White </label>
     <label> <input type="radio" name="camera-pov" value="neutral"  data-action="SetPOV" checked> Neutral </label>
     <label> <input type="radio" name="camera-pov" value="black"    data-action="SetPOV"> Black </label>
     <label> <input type="radio" name="camera-pov" value="negative" data-action="SetPOV"> Negative </label>
-  </div>  
+  </div>
 </div>
 
 <!-- Seampoint - more DOM control panels... -->
-
 

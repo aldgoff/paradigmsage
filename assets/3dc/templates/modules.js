@@ -1,15 +1,15 @@
-/* File: templates.js
-  Path: ./3dc/templates/templates.js
+/* File: modules.js
+  Path: ./3dc/modules/modules.js
   Purpose: desc
   Author: Allan Goff
-  Date: 4/00/26
+  Date: 4/15/26
   UI: the export functions.
 */
 
 // --- Load JSON ---
-import templatesData from "./module.json" assert { type: "json" };
-  const templatesModule = templatesData.templates_module;
-  const category  = templatesModule.category;
+import modulesData from "./modules.json" assert { type: "json" };
+  const modulesModule = modulesData.modules_module;
+  const category  = modulesModule.category;
   // Seampoint: more objects.
 
 // --- Build upon previous layers ---
