@@ -16,19 +16,19 @@
     },
 
     "planes": {
-      "Horizontal": { "pov": "White",   "quad1": "Forward",      "rays": ["left_fore","right_fore","left_back","right_back"], "rule": "1.1" },
-      "Left":       { "pov": "White",   "quad1": null,           "rays": ["up","right_fore","down","right_back"],             "rule": "1.2" },
-      "Right":      { "pov": "White",   "quad1": null,           "rays": ["up","left_fore","down","left_back"],               "rule": "1.2" },
-      "Upward":     { "pov": "White",   "quad1": "UpPredator",   "rays": ["LFU","RFU","right","RBD","LBD","left"],            "rule": "2.1" },
-      "Downward":   { "pov": "White",   "quad1": "DownPredator", "rays": ["LFD","RFD","right","RBU","LBU","left"],            "rule": "2.1" },
-      "Leftward":   { "pov": "White",   "quad1": "LeftTop",      "rays": ["LBU","LFU","fore","RFD","RBD","back"],             "rule": "2.2" },
-      "Rightward":  { "pov": "White",   "quad1": "RightTop",     "rays": ["RBU","RFU","fore","LFD","LBD","back"],             "rule": "2.2" },
-      "Major":      { "pov": "Neutral", "quad1": "Dart",         "rays": ["fore_down","fore_up","back_up","back_down"],       "rule": "3.1" },
-      "Minor":      { "pov": "White",   "quad1": "Bridge",       "rays": ["left_up","right_up","right_down","left_down"],     "rule": "3.3" },
-      "Upleft":     { "pov": "Top",     "quad1": null,           "rays": ["left_up","fore_up","right_down","back_down"],      "rule": "3.2" },
-      "Downleft":   { "pov": "Top",     "quad1": null,           "rays": ["left_down","fore_down","right_up","back_up"],      "rule": "3.2" },
-      "Upright":    { "pov": "Top",     "quad1": null,           "rays": ["right_up","fore_up","left_down","back_down"],      "rule": "3.2" },
-      "Downright":  { "pov": "Top",     "quad1": null,           "rays": ["right_down","fore_down","left_up","back_up"],      "rule": "3.2" }
+      "Horizontal": { "pov": "White",   "dir": "CW",  "quad1": "Forward",      "rays": ["left_fore","right_fore","left_back","right_back"], "rule": "1.1" },
+      "Left":       { "pov": "White",   "dir": "CW",  "quad1": null,           "rays": ["up","right_fore","down","right_back"],             "rule": "1.2" },
+      "Right":      { "pov": "White",   "dir": "CCW", "quad1": null,           "rays": ["up","left_fore","down","left_back"],               "rule": "1.2" },
+      "Upward":     { "pov": "White",   "dir": "CW",  "quad1": "UpPredator",   "rays": ["LFU","RFU","right","RBD","LBD","left"],            "rule": "2.1" },
+      "Downward":   { "pov": "White",   "dir": "CCW", "quad1": "DownPredator", "rays": ["LFD","RFD","right","RBU","LBU","left"],            "rule": "2.1" },
+      "Leftward":   { "pov": "White",   "dir": "CCW", "quad1": "LeftTop",      "rays": ["LBU","LFU","fore","RFD","RBD","back"],             "rule": "2.2" },
+      "Rightward":  { "pov": "White",   "dir": "CCW", "quad1": "RightTop",     "rays": ["RBU","RFU","fore","LFD","LBD","back"],             "rule": "2.2" },
+      "Major":      { "pov": "Neutral", "dir": "CW",  "quad1": "Dart",         "rays": ["fore_down","fore_up","back_up","back_down"],       "rule": "3.1" },
+      "Minor":      { "pov": "White",   "dir": "CW",  "quad1": "Bridge",       "rays": ["left_up","right_up","right_down","left_down"],     "rule": "3.3" },
+      "Upleft":     { "pov": "Top",     "dir": "CW",  "quad1": null,           "rays": ["left_up","fore_up","right_down","back_down"],      "rule": "3.2" },
+      "Downleft":   { "pov": "Top",     "dir": "CW",  "quad1": null,           "rays": ["left_down","fore_down","right_up","back_up"],      "rule": "3.2" },
+      "Upright":    { "pov": "Top",     "dir": "CCW", "quad1": null,           "rays": ["right_up","fore_up","left_down","back_down"],      "rule": "3.2" },
+      "Downright":  { "pov": "Top",     "dir": "CCW", "quad1": null,           "rays": ["right_down","fore_down","left_up","back_up"],      "rule": "3.2" }
     }
   }
 }
