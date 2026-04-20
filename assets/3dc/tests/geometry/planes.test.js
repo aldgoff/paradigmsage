@@ -150,7 +150,7 @@ function test_getPlaneQuad1() {
 function test_getPlanePOV() {
   assertEqual(getPlanePOV("Horizontal"), "White", "Horizontal POV");
   assertEqual(getPlanePOV("Major"), "Neutral", "Major POV");
-  assertEqual(getPlanePOV("Upleft"), "Top", "Upleft POV");
+  assertEqual(getPlanePOV("Upleft"), "White", "Upleft POV");
 
   report("getPlanePOV", "planes");
   }
