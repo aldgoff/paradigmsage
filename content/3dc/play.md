@@ -156,25 +156,31 @@ layout: "play"
   </div>
 
   <div class="section">
-    <label> Source Tile: <input  name="advsq-src"  type="text"      value="K3,3" maxlength="7" style="width: 60px;"> </label>
+    <label> Source Tile: <input  name="advsq-src"       type="text"    value="K3,3" maxlength="7" style="width: 60px;"> </label>
   </div>
   <div class="section">
-    <label> Quad:        <input  name="advsq-quad" type="number"      min="1" step="1" value="1" max="60"> </label>
+    <label> Quad:        <input  name="advsq-quad"      type="number"   min="1" step="1" value="1" max="60"> </label>
   </div>
   <div class="section">
-    <label> Plane:       <output name="advsq-plane" style="opacity:0.7; font-style:italic;">Horizontal</output> </label>
+    <label> Nickname:    <output name="advsq-nickname"  style="opacity:0.7; font-style:italic;">Forward</output> </label>
+  </div>
+  <div class="section">
+    <label> Plane:       <output name="advsq-plane"     style="opacity:0.7; font-style:italic;">Horizontal</output> </label>
+  </div>
+  <div class="section">
+    <label> Quad Type:   <output name="advsq-quadType"  style="opacity:0.7; font-style:italic;">none</output> </label>
   </div>
   <div class="section">
     <label> Perimeter:   <input  name="advsq-perimeter" type="number" min="1" step="1" value="3" max="99"> </label>
   </div>
   <div class="section">
-    <label> Length:       <output name="advsq-length" style="opacity:0.7; font-style:italic;">7</output> </label>
+    <label> Length:      <output name="advsq-length"    style="opacity:0.7; font-style:italic;">7</output> </label>
   </div>
   <div class="section">
-    <label> Stride:      <input  name="advsq-stride" type="number"    min="1" step="1" value="1" max="99"> </label>
+    <label> Stride:      <input  name="advsq-stride"    type="number"    min="1" step="1" value="1" max="99"> </label>
   </div>
   <div class="section">
-    <label> Tile:        <output name="advsq-tile" style="opacity:0.7; font-style:italic;">E1</output> </label>
+    <label> Tile:        <output name="advsq-tile"      style="opacity:0.7; font-style:italic;">E1</output> </label>
   </div>
 
   <!-- Optional: key hints (visual only) -->

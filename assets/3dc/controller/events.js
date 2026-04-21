@@ -8,6 +8,7 @@
 */
 
 import * as control  from "../controller/controller.js";
+import * as advsqs   from "./advsqs/advsqs.js";
 
 import * as state    from "../model/state/state.js";
 import * as coords   from "../foundation/coords/coords.js";
@@ -16,7 +17,7 @@ import * as overlaps from "../geometry/overlapTiles.js";
 
 import * as register from "../view/registerHandlers.js";
 import * as boards   from "../view/boards/boards.js";
-import * as advsqs   from "../view/advsqs/advsqs.js";
+import * as view   from "../view/advsqs/advsqs.js";
 
 // --- UI ---
 export function callbacks() {
@@ -25,7 +26,8 @@ export function callbacks() {
   register.gameControlDispatcher(gameButtonDispatch);     // Undo interface.
                                                           // Move panel is display only, no inputs.
   register.gambitControlDispatcher(gambitButtonDispatch); // Build a gambit.
-  register.advsqControlDispatcher(advsqPanelDispatch);    // Manipulate an advancement square.
+
+  register.advsqControlDispatcher(advsqs.panelDispatch);    // Manipulate an advancement square.
 
   register.cameraControlDispatcher(cameraPanelDispatch);  // Not subject to the undo arch.
   // Seampoint - register another dispatcher.
@@ -76,7 +78,7 @@ function gambitButtonDispatch(payload) {
   }
 }
 
-function advsqPanelDispatch(payload) {
+function advsqPanelDispatch(payload) {  // DEPRECATED.
   const { action, srcTile, quad, perimeter, stride, opacity } = payload;
   console.log("control: events.js - advsqPanelDispatch(payload)", payload);
 
@@ -84,7 +86,7 @@ function advsqPanelDispatch(payload) {
     case "place":       handlePlace(payload); break;
     case "remove":      handleRemove(); break;
     case "updateParam": handleUpdateParam(payload); break;
-    case "nudgeSrc":    handleNudgeSrc(payload); break;
+    // case "nudgeSrc":    handleNudgeSrc(payload); break;
     case "nextQuad":    handleNextQuad(payload); break;
     case "nextPlane":   handleNextPlane(payload); break;
     case "nextPiece":   handleNextPiece(payload); break;
@@ -116,7 +118,7 @@ function handleMakeBoard(boardSize) { // Setup handlers.
   trimStateToUndoIndex();
   state.setup(newBoard);
 
-  captureState();
+  cloneStateHistory();
   }
 
 function handleMakeTrays(trayType) {  // Tray handlers.
@@ -143,8 +145,8 @@ function handleCycleGap() {
 function handleNewGame() {            // Game handlers.
   // console.log("Game New-Game:");
   // TODO: change state.
-  captureState();
-  statusUndoIndex();
+  cloneStateHistory();
+  // showUndoStatusInPanel();
   }
 
 function handleRerun() {
@@ -155,7 +157,7 @@ function handleRerun() {
 
   if(arrayKey === "Sentry") { // 🔥 Case 0: already at Sentry
     boards.clearBoard();
-    statusUndoIndex();
+    showUndoStatusInPanel();
     return;
     }
   else if(index > 0) {        // 🔥 Case 1: collapse current key to first element.
@@ -179,7 +181,7 @@ function handleRerun() {
     if(!found) {
       undoIndex.Setup[0] = 0;      // Zero Setup explicitly (important for display).
       boards.clearBoard();
-      statusUndoIndex();
+      showUndoStatusInPanel();
       return;
     }
   }
@@ -187,11 +189,11 @@ function handleRerun() {
   // 🔥 Render logic (Sentry-aware)
   if(     arrayKey === "AdvSqs") {
     if(undoIndex.AdvSqs[0] === 0) {
-      advsqs.clearAdvsq();
+      view.clearAdvsq();
     } else {
       const specs = undoState.AdvSqs[undoIndex.AdvSqs[0] - 1];
-      advsqs.makeAdvsq(specs);
-      advsqs.setAdvsqPanelParams(advsqs.specsToPanelParams(specs));
+      view.makeAdvsq(specs);
+      view.setAdvsqPanelParams(view.specsToPanelParams(specs));
     }
     }
   else if(arrayKey === "Setup") {
@@ -204,22 +206,22 @@ function handleRerun() {
   }
   // Seampoint for the rest of the undo elements.
 
-  statusUndoIndex();
+  showUndoStatusInPanel();
   }
 
 function handleUndo() {
   const keyIndex = prevKeyIndex();
   if(!keyIndex) { // Bottom sentry.
     boards.clearBoard();
-    statusUndoIndex();
+    showUndoStatusInPanel();
     return;
   }
 
   if(     keyIndex.arrayKey === "AdvSqs") {
     const specs = undoState.AdvSqs[keyIndex.index];
-    console.log("control: events.js - HandleUndo(advsq)", specs);
-    advsqs.makeAdvsq(specs);
-    advsqs.setAdvsqPanelParams(advsqs.specsToPanelParams(specs));
+    console.log("control: events.js - HandleUndo() - specs", specs);
+    view.makeAdvsq(specs);
+    view.setAdvsqPanelParams(view.specsToPanelParams(specs));
     }
   else if(keyIndex.arrayKey === "Gambits") {
     const specs = undoState.Gambits[keyIndex.index];
@@ -237,7 +239,7 @@ function handleUndo() {
     boards.makeBoard(setup.board);
   }
 
-  statusUndoIndex();
+  showUndoStatusInPanel();
   }
 
 function handleRedo() {
@@ -250,8 +252,8 @@ function handleRedo() {
   if(keyIndex.arrayKey === "AdvSqs") {
     const specs = undoState.AdvSqs[keyIndex.index];
     console.log("control: events.js - HandleRedo(advsq)", specs);
-    advsqs.makeAdvsq(specs);
-    advsqs.setAdvsqPanelParams(advsqs.specsToPanelParams(specs));
+    view.makeAdvsq(specs);
+    view.setAdvsqPanelParams(view.specsToPanelParams(specs));
     }
   else if(keyIndex.arrayKey === "Gambits") {
     const specs = undoState.Gambits[keyIndex.index];
@@ -269,7 +271,7 @@ function handleRedo() {
     boards.makeBoard(setup.board);
   }
 
-  statusUndoIndex();
+  showUndoStatusInPanel();
   }
   
 function handleLoad() {
@@ -280,8 +282,9 @@ function handleLoad() {
 function handleSave() {
   // console.log("Game Save:");
   // TODO: change state.
-  console.log("statusUndoIndex:");
-  statusUndoIndex();  // TODO: Deprecate, now shows up in the Game Control panel.
+  const state = currentKeyIndex();
+  console.log("currentKeyIndex()", currentKeyIndex());
+  console.log("undoState()", undoState[state.arrayKey][state.index]);
 }
 
 // --- Helpers ---
@@ -299,7 +302,7 @@ let undoIndex = { // undoIndex[key][0] = pointer to NEXT item to apply.
   AdvSqs:  []
 }
 
-function statusUndoIndex() {    // Game helpers.
+export function showUndoStatusInPanel() {    // Game helpers.
   const el = document.getElementById("undo-list");
 
   const rows = [
@@ -318,7 +321,7 @@ function statusUndoIndex() {    // Game helpers.
   el.textContent = text;
   }
 
-function currentKeyIndex() {
+export function currentKeyIndex() {
   const order = ["AdvSqs", "Gambits", "Moves", "Setup"];
 
   for (const key of order) {
@@ -331,7 +334,7 @@ function currentKeyIndex() {
   return { arrayKey: "Sentry", index: -1 };  // 🔥 explicit
   }
 
-function prevKeyIndex() {
+export function prevKeyIndex() {
   const order = ["AdvSqs", "Gambits", "Moves", "Setup"];
 
   for (let k = 0; k < order.length; k++) {
@@ -364,7 +367,7 @@ function prevKeyIndex() {
   return null; // no arrays had state
   }
 
-function nextKeyIndex() {
+export function nextKeyIndex() {
   const order = ["Setup", "Moves", "Gambits", "AdvSqs"];
 
   for (let k = 0; k < order.length; k++) {
@@ -396,7 +399,7 @@ function nextKeyIndex() {
   return null;
   }
 
-function trimStateToUndoIndex() {
+export function trimStateToUndoIndex() {
   const curr = state.getState();
   const next = {};
 
@@ -408,16 +411,21 @@ function trimStateToUndoIndex() {
   state.setState(next);
   }
 
-function captureState() {
+export function cloneStateHistory() {
   undoState = structuredClone(state.getState());  // A deep copy for undo to traverse.
   for(const key in undoState) {
     const array = undoState[key];
     undoIndex[key][0] = array.length;
     undoIndex[key][1] = array.length;
   }
-  const keyIndex = currentKeyIndex();
+  // const keyIndex = currentKeyIndex();
 
-  statusUndoIndex();
+  showUndoStatusInPanel();
+}
+
+export function clearStateHistoryArray(array) {
+  undoState[array] = [];
+  undoIndex.AdvSqs = [0, 0];
 }
 /*** ---------- ---------- ---------- ---------- ***/
 
@@ -465,13 +473,12 @@ function handleRemove() {
 
   state.clearAdvSqs();
 
-  undoState.AdvSqs = [];
-  undoIndex.AdvSqs = [0, 0];
+  clearStateHistoryArray(AdvSqs);
 
-  const initial = advsqs.getAdvsqPanelInitialParams();
-  advsqs.setAdvsqPanelParams(initial);
+  const initial = view.getAdvsqPanelInitialParams();
+  view.setAdvsqPanelParams(initial);
 
-  statusUndoIndex();
+  showUndoStatusInPanel();
   }
 
 function handleUpdateParam(payload) {
@@ -492,7 +499,7 @@ function handleUpdateParam(payload) {
 
   // panel.querySelector('[name="advsq-quad"]').value = quad;                            // Update primary fields.
   // panel.querySelector('[name="advsq-stride"]').value = stride;
-  // const {plane, length, tile} = advsqs.computeAdvsqDerived({quad, perimeter, stride}); // Compute derived fields.
+  // const {plane, length, tile} = view.computeAdvsqDerived({quad, perimeter, stride}); // Compute derived fields.
   // panel.querySelector('[name="advsq-plane"]').textContent  = plane;             // Set derived fields.
   // panel.querySelector('[name="advsq-length"]').textContent = length;
   // panel.querySelector('[name="advsq-tile"]').textContent   = tile;
@@ -564,7 +571,7 @@ function handleNextQuad(payload) {
 
   // panel.querySelector('[name="advsq-quad"]').value   = quadNo;            // Update primary fields.
   // panel.querySelector('[name="advsq-stride"]').value = stride;
-  // const {plane, length, tile} = advsqs.computeAdvsqDerived({quad: quadNo, perimeter, stride}); // Compute derived fields.
+  // const {plane, length, tile} = view.computeAdvsqDerived({quad: quadNo, perimeter, stride}); // Compute derived fields.
   // panel.querySelector('[name="advsq-plane"]').textContent  = plane;             // Update derived fields.
   // panel.querySelector('[name="advsq-length"]').textContent = length;
   // panel.querySelector('[name="advsq-tile"]').textContent   = tile;
@@ -593,7 +600,7 @@ function handleNextPlane(payload) {
 
   // panel.querySelector('[name="advsq-quad"]').value   = quadNo;            // Update primary fields.
   // panel.querySelector('[name="advsq-stride"]').value = stride;
-  // const {plane, length, tile} = advsqs.computeAdvsqDerived({quad: quadNo, perimeter, stride}); // Compute derived fields.
+  // const {plane, length, tile} = view.computeAdvsqDerived({quad: quadNo, perimeter, stride}); // Compute derived fields.
   // panel.querySelector('[name="advsq-plane"]').textContent  = plane;       // Update derived fields.
   // panel.querySelector('[name="advsq-length"]').textContent = length;
   // panel.querySelector('[name="advsq-tile"]').textContent   = tile;
@@ -622,7 +629,7 @@ function handleNextPiece(payload) {
 
   // panel.querySelector('[name="advsq-quad"]').value   = quadNo;            // Update primary fields.
   // panel.querySelector('[name="advsq-stride"]').value = stride;
-  // const {plane, length, tile} = advsqs.computeAdvsqDerived({quad: quadNo, perimeter, stride}); // Compute derived fields.
+  // const {plane, length, tile} = view.computeAdvsqDerived({quad: quadNo, perimeter, stride}); // Compute derived fields.
   // panel.querySelector('[name="advsq-plane"]').textContent  = plane;       // Update derived fields.
   // panel.querySelector('[name="advsq-length"]').textContent = length;
   // panel.querySelector('[name="advsq-tile"]').textContent   = tile;
@@ -648,7 +655,7 @@ function changeAdvSq(payload) {
 
   trimStateToUndoIndex();
   state.pushAdvSq(newAdvsq);
-  captureState();
+  cloneStateHistory();
   }
 
 function normalizeQuad(q) {
@@ -703,7 +710,7 @@ function changeOpacityOnly(payload) {
   if (!last) return;
 
   // 🔥 VIEW ONLY — no state mutation
-  advsqs.makeAdvsq({
+  view.makeAdvsq({
     ...last,
     opacity
   });
@@ -713,7 +720,7 @@ function updateAdvsqPanel(panel, { quad, perimeter, stride }) {
   panel.querySelector('[name="advsq-quad"]').value = quad;                            // Update primary fields.
   panel.querySelector('[name="advsq-perimeter"]').value = perimeter;
   panel.querySelector('[name="advsq-stride"]').value = stride;
-  const {plane, length, tile} = advsqs.computeAdvsqDerived({quad, perimeter, stride});// Compute derived fields.
+  const {plane, length, tile} = view.computeAdvsqDerived({quad, perimeter, stride});// Compute derived fields.
   panel.querySelector('[name="advsq-plane"]').textContent = plane;                    // Set derived fields.
   panel.querySelector('[name="advsq-length"]').textContent = length;
   panel.querySelector('[name="advsq-tile"]').textContent = tile;

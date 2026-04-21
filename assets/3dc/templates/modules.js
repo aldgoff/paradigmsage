@@ -3,6 +3,7 @@
   Purpose: desc
   Author: Allan Goff
   Date: 4/15/26
+  Recommended access: import * as modules.
   UI: the export functions.
 */
 
@@ -13,8 +14,6 @@ import modulesData from "./modules.json" assert { type: "json" };
   // Seampoint: more objects.
 
 // --- Build upon previous layers ---
-import {getBoardSpec,} from "../foundation/coords/coords.js";
-
 import * as planes from "../geometry/planes.js";
 import * as quads  from "../geometry/quads.js";
 // Seampoint: more imports.
@@ -22,6 +21,8 @@ import * as quads  from "../geometry/quads.js";
 
 // --- UI ---
 export function UI() {
+  console.log("control: modules.js - UI()");
+  
   return "whatever";
   }
 // Seampoint: more global functions.

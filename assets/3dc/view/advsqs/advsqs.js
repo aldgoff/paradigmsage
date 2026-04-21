@@ -68,18 +68,21 @@ export function setAdvsqPanelParams(params) {
   const panel = document.getElementById("advsq-window");
   if (!panel) return;
 
-  const quad      = params.quad;                                                // Use the passed in primary fields.
+  const quad      = params.quad;                                                  // Use the passed in primary fields.
   const perimeter = params.perimeter;;
   const stride    = params.stride;
 
-  const {plane, length, tile} = computeAdvsqDerived({quad, perimeter, stride}); // Compute derived fields.
-  console.log("plane, length, tile", plane, length, tile);
+  const derived = computeAdvsqDerived({quad, perimeter, stride});                 // Compute derived fields.
+  // console.log("derived", derived);
 
-  panel.querySelector('[name="advsq-plane"]').textContent  = plane;             // Update derived fields.
-  panel.querySelector('[name="advsq-length"]').textContent = length;
-  panel.querySelector('[name="advsq-tile"]').textContent   = tile;
+  panel.querySelector('[name="advsq-nickname"]').textContent = derived.nickname;  // Update derived fields.
+  panel.querySelector('[name="advsq-plane"]').textContent    = derived.plane;
+  panel.querySelector('[name="advsq-quadType"]').textContent = derived.quadType;
+  panel.querySelector('[name="advsq-length"]').textContent   = derived.length;
+  panel.querySelector('[name="advsq-tile"]').textContent     = derived.tile;
 
-  panel.querySelector('[name="advsq-src"]').value          = params.srcTile;    // Update the primary fields.
+  const srcTileStr = coords.vtsToBoard(params.srcTile);
+  panel.querySelector('[name="advsq-src"]').value          = srcTileStr;          // Update the primary fields.
   panel.querySelector('[name="advsq-quad"]').value         = params.quad;
   panel.querySelector('[name="advsq-perimeter"]').value    = params.perimeter;
   panel.querySelector('[name="advsq-stride"]').value       = params.stride;
@@ -87,6 +90,8 @@ export function setAdvsqPanelParams(params) {
   }
 
 export function specsToPanelParams(specs) {
+  console.log("view: advsqs.js - specsToPanelParams(specs):", specs);
+
   if(!specs) return getAdvsqPanelInitialParams();
 
   const spec = getActiveBoardSpec();
@@ -96,7 +101,7 @@ export function specsToPanelParams(specs) {
   console.log("   spec", spec);
 
   return {
-    srcTile:   coords.vtsToBoard(specs.srcTile, spec),
+    srcTile:   specs.srcTile,
     quad:      specs.quad,
     perimeter: specs.perimeter,
     stride:    specs.stride,
@@ -146,7 +151,7 @@ export function makeAdvsq(specs) {
   }
 
 export function clearAdvsq() {
-  // console.log("view: advsqs.js - clearAdvsq():");
+  console.log("view: advsqs.js - clearAdvsq():");
 
   if (!currentAdvsq) return;
 
@@ -238,6 +243,8 @@ function getActiveBoardSpec() {
 }
 
 export function computeAdvsqDerived({ quad, perimeter, stride }) {
+  console.log("view: advsqs.js - computeAdvsqDerived()", { quad, perimeter, stride });
+
   // --- normalize types ---
   const q = Number(quad);
   const k = Number(perimeter);
@@ -247,7 +254,9 @@ export function computeAdvsqDerived({ quad, perimeter, stride }) {
   // const s = stride;
 
   const rec = quads.pqrTable(q);
-  const plane = rec?.plane ?? "";
+  const nickname = rec?.nickname ?? "";
+  const plane    = rec?.plane ?? "";
+  const quadType = rec?.quadType ?? "";
 
   const length = 2 * k + 1;
 
@@ -262,7 +271,7 @@ export function computeAdvsqDerived({ quad, perimeter, stride }) {
   else if (s === maxStride)  tile = "E2";
   else                       tile = "Body";
 
-  return { plane, length, tile };
+  return { nickname, plane, quadType, length, tile };
 }
 // Seampoint: more local functions.
 

@@ -20,6 +20,7 @@ import stateData from "./state.json" assert { type: "json" };
 
 // --- Build upon previous layers ---
 import * as model  from "../../model/model.js";
+import * as coords from "../../foundation/coords/coords.js";  // normalizeTileToVts().
 
 import * as view   from "../../view/view.js";
 import * as boards from "../../view/boards/boards.js";
@@ -61,12 +62,18 @@ export function setup(option) {           // Pick a board, trays, rule enforceme
 
 export function pushAdvSq(specs) {        // Manipulate an advancement square.
   console.log("model: state.js - pushAdvSq(specs):", specs);
-  state.AdvSqs.push(specs);
-  advsqs.makeAdvsq(specs)
+  state.AdvSqs.push(specs);           // Update state history.
+  advsqs.makeAdvsq(specs);            // Render.
+  advsqs.setAdvsqPanelParams(specs);  // Update the panel.
   }
 
 export function clearAdvSqs() {
-  console.log("model: state.js - clearAdvSqs():", );
+  console.log("model: state.js - clearAdvSqs():");
+
+  const initial = advsqs.getAdvsqPanelInitialParams();  // Normalize initial primary fields.
+  let params = normalize(initial);
+  advsqs.setAdvsqPanelParams(params);
+
   state.AdvSqs = [];
   advsqs.clearAdvsq();
   }
@@ -80,6 +87,21 @@ export function recordMove(gambit) {      // Select a move from the gambit set o
   state.Moves.push(structuredClone(gambit));
   // state.Gambits.length = 0;
 }
+
+// --- Helpers ---
+function normalize(payload) { // Convert panel strings to numbers, arrays, etc.
+  let { srcTile, quad, perimeter, stride, opacity } = payload;  // Unpack primary fields.
+
+  srcTile   = coords.normalizeTileToVts(srcTile);               // Convert numeric fields.
+  quad      = Number(quad);  
+  perimeter = Number(perimeter);
+  stride    = Number(stride);
+  opacity   = Number(opacity);
+
+  const normed = { srcTile, quad, perimeter, stride, opacity }; // Repack primary fields.
+
+  return normed;
+  }
 
 // To be deprecated as dev progresses...useful javascript weirdness.
 function iterateState(stateData) {
