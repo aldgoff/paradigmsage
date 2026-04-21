@@ -51,8 +51,11 @@ export function getAdvsqPanelParams() {
   const params = {
     srcTile:   panel.querySelector('[name="advsq-src"]')?.value,
     quad:      panel.querySelector('[name="advsq-quad"]')?.value,
+    // plane:     panel.querySelector('[name="advsq-plane"]')?.textContent,
     perimeter: panel.querySelector('[name="advsq-perimeter"]')?.value,
+    // length:    panel.querySelector('[name="advsq-length"]')?.textContent,
     stride:    panel.querySelector('[name="advsq-stride"]')?.value,
+    // tile:      panel.querySelector('[name="advsq-tile"]')?.textContent,
     opacity:   panel.querySelector('[name="advsq-opacity"]')?.value,
   };
 
@@ -65,11 +68,22 @@ export function setAdvsqPanelParams(params) {
   const panel = document.getElementById("advsq-window");
   if (!panel) return;
 
-  panel.querySelector('[name="advsq-src"]').value       = params.srcTile;
-  panel.querySelector('[name="advsq-quad"]').value      = params.quad;
-  panel.querySelector('[name="advsq-perimeter"]').value = params.perimeter;
-  panel.querySelector('[name="advsq-stride"]').value    = params.stride;
-  panel.querySelector('[name="advsq-opacity"]').value   = params.opacity;
+  const quad      = params.quad;                                                // Use the passed in primary fields.
+  const perimeter = params.perimeter;;
+  const stride    = params.stride;
+
+  const {plane, length, tile} = computeAdvsqDerived({quad, perimeter, stride}); // Compute derived fields.
+  console.log("plane, length, tile", plane, length, tile);
+
+  panel.querySelector('[name="advsq-plane"]').textContent  = plane;             // Update derived fields.
+  panel.querySelector('[name="advsq-length"]').textContent = length;
+  panel.querySelector('[name="advsq-tile"]').textContent   = tile;
+
+  panel.querySelector('[name="advsq-src"]').value          = params.srcTile;    // Update the primary fields.
+  panel.querySelector('[name="advsq-quad"]').value         = params.quad;
+  panel.querySelector('[name="advsq-perimeter"]').value    = params.perimeter;
+  panel.querySelector('[name="advsq-stride"]').value       = params.stride;
+  panel.querySelector('[name="advsq-opacity"]').value      = params.opacity;
   }
 
 export function specsToPanelParams(specs) {
@@ -80,11 +94,10 @@ export function specsToPanelParams(specs) {
   console.log("   specs", specs);
   let src = coords.vtsToBoard(specs.srcTile, spec);
   console.log("   spec", spec);
-  console.log("   denormalizeQuad(specs.quad)", denormalizeQuad(specs.quad));
 
   return {
-    srcTile: coords.vtsToBoard(specs.srcTile, spec),
-    quad:    denormalizeQuad(specs.quad),
+    srcTile:   coords.vtsToBoard(specs.srcTile, spec),
+    quad:      specs.quad,
     perimeter: specs.perimeter,
     stride:    specs.stride,
     opacity:   specs.opacity
@@ -118,9 +131,9 @@ export function makeAdvsq(specs) {
     }
 
     let quadNo = quad;
-    if(typeof quad === "string" && specs.quad.startsWith("Q")) {
-      quadNo = Number(specs.quad.slice(1));
-    }
+    // if(typeof quad === "string" && specs.quad.startsWith("Q")) {
+    //   quadNo = Number(specs.quad.slice(1));
+    // }
     let quadType = quads.quadToQuadType(quadNo);
 
     const lastPerim = (k === perims.length - 1);
@@ -133,7 +146,7 @@ export function makeAdvsq(specs) {
   }
 
 export function clearAdvsq() {
-  console.log("view: advsqs.js - clearAdvsq():");
+  // console.log("view: advsqs.js - clearAdvsq():");
 
   if (!currentAdvsq) return;
 
@@ -151,7 +164,7 @@ export function clearAdvsq() {
 
 // --- Helpers ---
 function decoratePerimeter(lastPerim, perim, piece, quadType, group, opacity, strideNo, zOffset=0.00) {
-  console.log("view: advsqs.js - decoratePerimeter(perim)", perim);
+  // console.log("view: advsqs.js - decoratePerimeter(perim)", perim);
   const end  = (piece    === "duke") ? "end3":   "end2";
   const apex = (quadType === "face") ? "duplex": "apex";
 
@@ -223,18 +236,40 @@ function getActiveBoardSpec() {
 
   return coords.getBoardSpec(boardStr);
 }
+
+export function computeAdvsqDerived({ quad, perimeter, stride }) {
+  // --- normalize types ---
+  const q = Number(quad);
+  const k = Number(perimeter);
+  const s = Number(stride);
+  // const q = quad;
+  // const k = perimeter;
+  // const s = stride;
+
+  const rec = quads.pqrTable(q);
+  const plane = rec?.plane ?? "";
+
+  const length = 2 * k + 1;
+
+  const maxStride = 2 * k + 1;
+
+  let apex = "Apex";
+  if (rec?.quadType === "face") apex = "Duplex";
+
+  let tile = "";
+  if (s === 1)               tile = "E1";
+  else if (s === k + 1)      tile = apex;
+  else if (s === maxStride)  tile = "E2";
+  else                       tile = "Body";
+
+  return { plane, length, tile };
+}
 // Seampoint: more local functions.
 
 // --- Utilities ---
 function isSame(a, b) {
   return a[0] === b[0] && a[1] === b[1] && a[2] === b[2];
-  }
-
-function denormalizeQuad(q) {
-  if (typeof q === "string" && q.startsWith("Q")) {
-    return Number(q.slice(1));
-  }
-  return q;
 }
+
 // Seampoint: more utility functions.
 

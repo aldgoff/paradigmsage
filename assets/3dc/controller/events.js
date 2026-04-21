@@ -204,7 +204,6 @@ function handleRerun() {
   }
   // Seampoint for the rest of the undo elements.
 
-
   statusUndoIndex();
   }
 
@@ -478,50 +477,31 @@ function handleRemove() {
 function handleUpdateParam(payload) {
   console.log("control: events.js - handleUpdateParam(payload):", payload);
 
-  const panel = document.getElementById("advsq-window");
-
   if (payload.name === "advsq-opacity") {   // Short-circuit opacity-only undo updates.
     changeOpacityOnly(payload);
     return;
   }
 
-  const quad = Number(panel.querySelector('[name="advsq-quad"]').value);  // Plane name from quad.
-  const rec = quads.pqrTable(quad);
-  panel.querySelector('[name="advsq-plane"]').textContent = rec.plane;
+  const panel = document.getElementById("advsq-window");
 
-  const perimeter = panel.querySelector('[name="advsq-perimeter"]').value;  // Length from perimeter.
-  let length = 2*Number(perimeter) + 1;
-  panel.querySelector('[name="advsq-length"]').value = length;
+  const quad      = Number(panel.querySelector('[name="advsq-quad"]').value);           // Grab primary fields.
+  const perimeter = Number(panel.querySelector('[name="advsq-perimeter"]').value);
+  const stride    = Number(panel.querySelector('[name="advsq-stride"]').value);
 
-  let stride = Number(panel.querySelector('[name="advsq-stride"]').value);  // Max stride.
-  const k = Number(perimeter);
-  const maxStride = 2*k + 1;
-  if(stride > maxStride) {
-    panel.querySelector('[name="advsq-stride"]').value = maxStride;
-    stride = maxStride;
-    return;
-  }
+  updateAdvsqPanel(panel, { quad, perimeter, stride });
 
-  let apex = "Apex";                                                        // Duke duplex/apex tiles.
-  if(rec.quadType === "face") apex = "Duplex";
-  else if(rec.quadType === "face") apex = "Apex";
-
-  const perim = Number(perimeter);
-  const dukeThirds = false;
-  // const dukeThirds = isThirdsTile(quad, perim, stride);
-  let tileType = "";                                                        // Tile type from stride.
-  if(     stride === 1)         tileType = "E1";
-  else if(stride === k + 1)     tileType = apex;
-  else if(stride === maxStride) tileType = "E2";
-  else if(dukeThirds)           tileType = "Thirds";  // TODO: Test for duke 'thirds' tile.
-  else                          tileType = "Body";
-  panel.querySelector('[name="advsq-tile"]').value = tileType;
+  // panel.querySelector('[name="advsq-quad"]').value = quad;                            // Update primary fields.
+  // panel.querySelector('[name="advsq-stride"]').value = stride;
+  // const {plane, length, tile} = advsqs.computeAdvsqDerived({quad, perimeter, stride}); // Compute derived fields.
+  // panel.querySelector('[name="advsq-plane"]').textContent  = plane;             // Set derived fields.
+  // panel.querySelector('[name="advsq-length"]').textContent = length;
+  // panel.querySelector('[name="advsq-tile"]').textContent   = tile;
 
   const updatedPayload = {
     srcTile:  panel.querySelector('[name="advsq-src"]').value,
-    quad:     panel.querySelector('[name="advsq-quad"]').value,
-    perimeter:panel.querySelector('[name="advsq-perimeter"]').value,
-    stride:   panel.querySelector('[name="advsq-stride"]').value,
+    quad,
+    perimeter,
+    stride,
     opacity:  panel.querySelector('[name="advsq-opacity"]').value
   };
 
@@ -567,101 +547,87 @@ function handleNudgeSrc(payload) {
 function handleNextQuad(payload) {
   console.log("control: events.js - handleNextQuad(payload):", payload);
 
-  const panel = document.getElementById("advsq-window");                  // Read.
-  let quadNo = Number(panel.querySelector('[name="advsq-quad"]').value);
+  let { srcTile, quad, perimeter, stride, opacity } = payload;            // Unpack primary fields.
 
-  if(      1 <= quadNo && quadNo <= 12) { // Next rook quad.
-    quadNo += 1;
-    if(quadNo % 4 === 1) quadNo -= 4;
-    }
-  else if(13 <= quadNo && quadNo <= 36) { // Next bishop quad.
-    quadNo += 1;
-    if(quadNo % 6 === 1) quadNo -= 6;
-    }
-  else if(37 <= quadNo && quadNo <= 60) { // Next duke quad.
-    quadNo += 1;
-    if(quadNo % 4 === 1) quadNo -= 4;
-    }
-  else {
+  let quadNo = Number(quad);
+  if(      1 <= quadNo && quadNo <= 12) { ++quadNo; if(quadNo%4 === 1) quadNo -= 4; } // Next rook quad.
+  else if(13 <= quadNo && quadNo <= 36) { ++quadNo; if(quadNo%6 === 1) quadNo -= 6; } // Next bishop quad.
+  else if(37 <= quadNo && quadNo <= 60) { ++quadNo; if(quadNo%4 === 1) quadNo -= 4; } // Next duke quad.
+  else {                                                                              // Throw.
     throw new Error("Unknown quad number in control: events.js - handleNextQuad().", quadNo);
   }
+  stride = 1; // First stride.
 
-  // const quadValue = Number(panel.querySelector('[name="advsq-quad"]').value);  // Plane name from quad.
-  // const rec = quads.pqrTable(quadValue);
-  // panel.querySelector('[name="advsq-plane"]').textContent = rec.plane;
+  const panel = document.getElementById("advsq-window");                  // Read.
 
-  panel.querySelector('[name="advsq-quad"]').value   = quadNo;            // Write.
-  const firstStride = 1;
-  panel.querySelector('[name="advsq-stride"]').value = firstStride;
+  updateAdvsqPanel(panel, { quad: quadNo, perimeter, stride });
 
-  let { srcTile, quad, perimeter, stride, opacity } = payload;            // Render.
-  payload = { srcTile, quad: quadNo, perimeter, stride: firstStride, opacity };
+  // panel.querySelector('[name="advsq-quad"]').value   = quadNo;            // Update primary fields.
+  // panel.querySelector('[name="advsq-stride"]').value = stride;
+  // const {plane, length, tile} = advsqs.computeAdvsqDerived({quad: quadNo, perimeter, stride}); // Compute derived fields.
+  // panel.querySelector('[name="advsq-plane"]').textContent  = plane;             // Update derived fields.
+  // panel.querySelector('[name="advsq-length"]').textContent = length;
+  // panel.querySelector('[name="advsq-tile"]').textContent   = tile;
+
+  payload = { srcTile, quad: quadNo, perimeter, stride, opacity };
   changeAdvSq(payload);
   }
 
 function handleNextPlane(payload) {
   console.log("control: events.js - handleNextPlane(payload):", payload);
 
-  const panel = document.getElementById("advsq-window");                  // Read.
-  let quadNo = Number(panel.querySelector('[name="advsq-quad"]').value);
+  let { srcTile, quad, perimeter, stride, opacity } = payload;            // Unpack primary fields.
 
-  if(      1 <= quadNo && quadNo <= 12) { // Change rook plane.
-    quadNo += 4;  
-    if(quadNo > 12) quadNo = 1;
-    }
-  else if(13 <= quadNo && quadNo <= 36) { // Change bishop plane.
-    quadNo += 6;
-    if(quadNo > 36) quadNo = 13;
-    }
-  else if(37 <= quadNo && quadNo <= 60) { // Change duke plane.
-    quadNo += 4;
-    if(quadNo > 60) quadNo = 37;
-    }
-  else {
+  let quadNo = Number(quad);
+  if(      1 <= quadNo && quadNo <= 12) { quadNo += 4; if(quadNo > 12) quadNo =  1; } // Change rook plane.
+  else if(13 <= quadNo && quadNo <= 36) { quadNo += 6; if(quadNo > 36) quadNo = 13; } // Change bishop plane.
+  else if(37 <= quadNo && quadNo <= 60) { quadNo += 4; if(quadNo > 60) quadNo = 37; } // Change duke plane.
+  else {                                                                              // Throw.
     throw new Error("Unknown quad number in control: events.js - handleNextPlane().", quadNo);
   }
+  stride = 1; // First stride.
 
-  panel.querySelector('[name="advsq-quad"]').value = quadNo;              // Write.
-  const firstStride = 1;
-  panel.querySelector('[name="advsq-stride"]').value = firstStride;
+  const panel = document.getElementById("advsq-window");                  // Read.
 
-  const rec = quads.pqrTable(quadNo);                                     // Plane name from quad.
-  panel.querySelector('[name="advsq-plane"]').textContent = rec.plane;
+  updateAdvsqPanel(panel, { quad: quadNo, perimeter, stride });
 
-  let { srcTile, quad, perimeter, stride, opacity } = payload;            // Render.
-  payload = { srcTile, quad: quadNo, perimeter, stride: firstStride, opacity };
+  // panel.querySelector('[name="advsq-quad"]').value   = quadNo;            // Update primary fields.
+  // panel.querySelector('[name="advsq-stride"]').value = stride;
+  // const {plane, length, tile} = advsqs.computeAdvsqDerived({quad: quadNo, perimeter, stride}); // Compute derived fields.
+  // panel.querySelector('[name="advsq-plane"]').textContent  = plane;       // Update derived fields.
+  // panel.querySelector('[name="advsq-length"]').textContent = length;
+  // panel.querySelector('[name="advsq-tile"]').textContent   = tile;
+
+  payload = { srcTile, quad: quadNo, perimeter, stride, opacity };
   changeAdvSq(payload);
   }
 
 function handleNextPiece(payload) {
   console.log("control: events.js - handleNextPiece(payload):", payload);
 
-  const panel = document.getElementById("advsq-window");                  // Read.
-  let quadNo = Number(panel.querySelector('[name="advsq-quad"]').value);
+  let { srcTile, quad, perimeter, stride, opacity } = payload;            // Unpack primary fields.
 
-  if(      1 <= quadNo && quadNo <= 12) { // Change from rook to bishop plane.
-    quadNo = 13;  
-    }
-  else if(13 <= quadNo && quadNo <= 36) { // Change from bishop to duke plane.
-    quadNo = 37;
-    }
-  else if(37 <= quadNo && quadNo <= 60) { // Change from duke to rook plane.
-    quadNo = 1;
-    // if(quadNo > 60) quadNo -= 60;
-    }
-  else {
+  let quadNo = Number(quad);
+  if(      1 <= quadNo && quadNo <= 12) { quadNo = 13; } // Change from rook to bishop plane.
+  else if(13 <= quadNo && quadNo <= 36) { quadNo = 37; } // Change from bishop to duke plane.
+  else if(37 <= quadNo && quadNo <= 60) { quadNo =  1; } // Change from duke to rook plane.
+  else {                                                 // Throw.
     throw new Error("Unknown quad number in control: events.js - handleNextPiece().", quadNo);
   }
+  stride = 1; // First stride.
+  
+  const panel = document.getElementById("advsq-window");                  // Read.
 
-  panel.querySelector('[name="advsq-quad"]').value = quadNo;              // Write.
-  const firstStride = 1;
-  panel.querySelector('[name="advsq-stride"]').value = firstStride;
+  updateAdvsqPanel(panel, { quad: quadNo, perimeter, stride });
 
-  const rec = quads.pqrTable(quadNo);                                     // Plane name from quad.
-  panel.querySelector('[name="advsq-plane"]').textContent = rec.plane;
+  // panel.querySelector('[name="advsq-quad"]').value   = quadNo;            // Update primary fields.
+  // panel.querySelector('[name="advsq-stride"]').value = stride;
+  // const {plane, length, tile} = advsqs.computeAdvsqDerived({quad: quadNo, perimeter, stride}); // Compute derived fields.
+  // panel.querySelector('[name="advsq-plane"]').textContent  = plane;       // Update derived fields.
+  // panel.querySelector('[name="advsq-length"]').textContent = length;
+  // panel.querySelector('[name="advsq-tile"]').textContent   = tile;
 
-  let { srcTile, quad, perimeter, stride, opacity } = payload;            // Render.
-  payload = { srcTile, quad: quadNo, perimeter, stride: firstStride, opacity };
+  payload = { srcTile, quad: quadNo, perimeter, stride, opacity };
   changeAdvSq(payload);
 }
 
@@ -673,7 +639,7 @@ function changeAdvSq(payload) {
 
   const newAdvsq = {
     srcTile: normalizeTileToVts(srcTile),   // 🔥 KEY FIX
-    quad: normalizeQuad(quad),
+    quad: Number(quad),
     perimeter: Number(perimeter),
     stride: Number(stride),
     opacity: Number(opacity),
@@ -743,13 +709,14 @@ function changeOpacityOnly(payload) {
   });
 }
 
-function isThirdsTile(quad, perim, strideIndex) { // TODO: fix.
-  console.log("control: events.js - isThirdsTile(quad, perim, strideIndex):", quad, perim, strideIndex);
-  
-  const stride = overlaps.getStride({ quad, k: perim });
-  if (!stride) return false;
-
-  return stride[strideIndex] === "third";
+function updateAdvsqPanel(panel, { quad, perimeter, stride }) {
+  panel.querySelector('[name="advsq-quad"]').value = quad;                            // Update primary fields.
+  panel.querySelector('[name="advsq-perimeter"]').value = perimeter;
+  panel.querySelector('[name="advsq-stride"]').value = stride;
+  const {plane, length, tile} = advsqs.computeAdvsqDerived({quad, perimeter, stride});// Compute derived fields.
+  panel.querySelector('[name="advsq-plane"]').textContent = plane;                    // Set derived fields.
+  panel.querySelector('[name="advsq-length"]').textContent = length;
+  panel.querySelector('[name="advsq-tile"]').textContent = tile;
 }
 
 /*** ---------- ---------- ---------- ---------- ***/

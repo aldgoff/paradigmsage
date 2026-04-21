@@ -135,3 +135,19 @@ panel.querySelector('[name="advsq-stride"]').value = 2;
   view.context.scene.add(boardGroup);              // Add board to scene.
   currentBoard = boardGroup;
 
+## Advsq Panel Flow...
+UI input change
+   ↓
+handleUpdateParam
+   ↓
+changeAdvSq (save inputs only)
+   ↓
+undo state (inputs only)
+   ↓
+UNDO / REDO
+   ↓
+specsToPanelParams (recompute everything)
+   ↓
+setAdvsqPanelParams
+
+## MVC Flow...
