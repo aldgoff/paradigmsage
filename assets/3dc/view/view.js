@@ -75,12 +75,13 @@ export function init(playBoard) { // PlayBoard is the 3D canvas from the THREE r
   }
 
   // Listeners: (The move listing is purely output, no input, therefore no wiring todo.)
-  wireSetupPanel("setup-window",  "setup",  buildSetupPayload);
-  wireSimplePanel("tray-window",   "tray",   buildTrayPayload);  // btn.disabled = false;
+
+  // wireSimplePanel("tray-window",   "tray",   buildTrayPayload);  // btn.disabled = false;
+
+  wireSetupPanel( "setup-window",  "setup",  buildSetupPayload);
   wireSimplePanel("game-window",   "game",   buildGamePayload);
   wireSimplePanel("gambit-window", "gambit", buildGambitPayload);
-
-  wireAdvsqPanel("advsq-window",  "advsq");
+  wireAdvsqPanel( "advsq-window",  "advsq",  buildAdvsqPayload);
 
   window.addEventListener("keydown", handleAdvsqKeys);
 
@@ -127,7 +128,7 @@ function wireSimplePanel(panelId, callbackName, buildPayload) {
   });
   }
 
-function wireAdvsqPanel(panelId, callbackName) {
+function wireSetupPanel(panelId, callbackName, buildPayload) {
   const panel = document.getElementById(panelId);
   if (!panel) return;
 
@@ -136,10 +137,11 @@ function wireAdvsqPanel(panelId, callbackName) {
 
   // --- Change events (ALL inputs → full payload) ---
   panel.addEventListener("change", (e) => {
-    const input = e.target.closest("input");
+    // const input = e.target.closest("input");
+    const input = e.target.closest('input[name="tray-gap"]');
     if (!input) return;
 
-    const payload = buildAdvsqPayload(panel, "updateParam");
+    const payload = buildPayload(panel, "updateParam");
     cb(payload);
   });
 
@@ -154,12 +156,12 @@ function wireAdvsqPanel(panelId, callbackName) {
     const action = btn.dataset.action;
     if (!action) return;
 
-    const payload = buildAdvsqPayload(panel, action);
+    const payload = buildPayload(panel, action);
     cb(payload);
   });
-}
+  }
 
-function wireSetupPanel(panelId, callbackName) {
+function wireAdvsqPanel(panelId, callbackName, buildPayload) {
   const panel = document.getElementById(panelId);
   if (!panel) return;
 
@@ -171,7 +173,7 @@ function wireSetupPanel(panelId, callbackName) {
     const input = e.target.closest("input");
     if (!input) return;
 
-    const payload = buildSetupPayload(panel, "updateParam");
+    const payload = buildPayload(panel, "updateParam");
     cb(payload);
   });
 
@@ -186,7 +188,7 @@ function wireSetupPanel(panelId, callbackName) {
     const action = btn.dataset.action;
     if (!action) return;
 
-    const payload = buildSetupPayload(panel, action);
+    const payload = buildPayload(panel, action);
     cb(payload);
   });
 }
@@ -221,12 +223,16 @@ function handleAdvsqKeys(e) {
 function buildSetupPayload(panel, action) {
   return {
     action,
-    trayGap:   panel.querySelector('input[name="tray-gap"]')?.value,
+    boardSize:  panel.querySelector('input[name="board-size"]:checked')?.value,
+    trayType:   panel.querySelector('input[name="tray-type"]:checked')?.value,
+    visible:    panel.querySelector('input[name="tray-visible"]')?.value,
+    initialPos: panel.querySelector('input[name="initial-pos"]')?.value,
+    trayGap:    panel.querySelector('input[name="tray-gap"]')?.value,
   };
   }
 
 function buildTrayPayload(panel, action) {
-  const selected = panel.querySelector('input[name="tray-type"]:checked');
+  const selected = panel.querySelector('input[name="tray-type"]:checked')?.value;
 
   return {
     action,

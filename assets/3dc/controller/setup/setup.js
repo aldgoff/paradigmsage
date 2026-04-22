@@ -14,7 +14,8 @@ import setupData from "./setup.json" assert { type: "json" };
   // Seampoint: more objects.
 
 // --- Build upon previous layers ---
-import * as state  from "../../model/state/state.js";
+import * as state from "../../model/state/state.js";
+import * as game  from          "../game/game.js";
 // Seampoint: more imports.
 
 // --- UI ---
@@ -22,59 +23,51 @@ export function panelDispatch(payload) {    // Dispatch payload from panel to ha
   const { action, 
     boardSize,  // 8x8x8|10x8x8|10x10x10.
     play,       // Off|rules|puzzle.
-    trays,      // Real|factory.
+    trayType,   // Real|factory.
     visible,    // True|False.
     gap,        // 0|1|2|3.
     initialPos  // std|manual.
   } = payload;
 
   switch (action) {
-    case "makeBoard": handleMakeBoard(payload.boardSize); break;
-    case "makeTrays": handleMakeTrays(payload); break;
-    case "showTrays": handleShowTrays(); break;
-    case "hideTrays": handleHideTrays(); break;
-    case "updateParam":   handleTrayGap(payload); break;
-    case "cycleGap":  handleCycleGap(payload); break;
+    case "makeBoard":   handleMakeBoard(payload); break;
+    case "showTrays":   handleShowTrays(payload.visible); break;
+    case "hideTrays":   handleHideTrays(payload.visible); break;
+    case "updateParam": handleTrayGap(payload); break;
     default: throw new Error(`Unknown setup action ${action}.`);
   }
   }
 // Seampoint: more global functions.
 
 // --- Handle Functions ---
-function handleMakeBoard(boardSize) { // Setup handler.
-  console.log("control: game.js - handleMakeBoard(boardSize):", boardSize);
-  const board = boardSize.split("x").map(n => Number(n));
-  const newBoard = { "board": board, "play": "off", "trays": "none", "gap": 0, "initialPos": "std" };
+function handleMakeBoard(payload) { // Setup handler.
+  console.log("control: game.js - handleMakeBoard(payload):", payload);
 
-  trimStateToUndoIndex();
-  state.setup(newBoard);  // Command to change setup state.
+  const { action, boardSize, play, trayType, visible, gap, initialPos } = payload;
 
-  cloneStateHistory();
+  state.setup(payload);  // Command to change state.
+  game.showUndoStatus();  // Show undo status in the panel.
   }
 
-function handleMakeTrays(payload) {   // Tray handlers.
-  console.log("control: game.js - handleMakeTrays(payload):", payload);
+function handleShowTrays(visible) {
+  console.log("control: game.js - handleShowTrays(visible):", visible);
   // TODO: change state.
+  game.showUndoStatus();  // Show undo status in the panel.
   }
 
-function handleShowTrays() {
-  console.log("control: game.js - handleShowTrays():");
+function handleHideTrays(visible) {
+  console.log("control: game.js - handleHideTrays(visible):", visible);
   // TODO: change state.
+  game.showUndoStatus();  // Show undo status in the panel.
   }
-
-function handleHideTrays() {
-  console.log("control: game.js - handleHideTrays():");
-  // TODO: change state.
-  }
-
-function handleCycleGap(payload) {
-  console.log("control: game.js - handleCycleGap(payload):", payload);
-  // TODO: change state.
-}
 
 function handleTrayGap(payload) {
   console.log("control: game.js - handleTrayGap(payload):", payload);
+
+  const { action, boardSize, play, trayType, visible, gap, initialPos } = payload;
+
   // TODO: change state.
+  game.showUndoStatus();  // Show undo status in the panel.
 }
 // Seampoint: more local functions.
 

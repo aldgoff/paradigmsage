@@ -24,6 +24,16 @@ import * as renders    from "../render/renders.js";
 let currentBoard = null;
 
 // --- UI ---
+export function makeGame(payload) {
+  console.log("view: boards.js - makeGame(payload):", payload);
+  // Call make board.
+  // Call add trays.
+  // Show|Hide|gap
+  // Rules
+  // Initial position
+}
+
+// --- UI ---
 export function makeBoard(dimensions) {
   console.log("view: boards.js - makeBoard(dimensions):", dimensions);
 

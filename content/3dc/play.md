@@ -66,11 +66,11 @@ layout: "play"
   #setup-window  { top: 120px; left:   80px; }  /* DOM Control Panels */
   #tray-window   { top: 260px; left:   80px; }
   #game-window   { top: 120px; left:  280px; }
-  #move-window   { top: 720px; left:   80px; }
-  #gambit-window { top: 580px; left:   80px; }
+  #move-window   { top: 750px; left:   80px; }
+  #gambit-window { top: 610px; left:   80px; }
   #advsq-window  { top: 410px; left:  280px; }
 
-  #camera-window { top: 430px; left:   80px; }
+  #camera-window { top: 460px; left:   80px; }
   /* Seampont - more DOM control panels... */
 </style>
 
@@ -86,23 +86,31 @@ layout: "play"
   </div>
 
   <div class="section">
-   <label> <input type="radio" name="board-size" value="8x8x8" checked> 8×8×8 </label><br>
-   <label> <input type="radio" name="board-size" value="10x8x8"> 10×8×8 </label><br>
-   <label> <input type="radio" name="board-size" value="10x10x10"> 10×10×10 </label>
+    <label> <input type="radio" name="board-size" value="8x8x8" checked> 8×8×8 </label><br>
+    <label> <input type="radio" name="board-size" value="10x8x8"> 10×8×8 </label><br>
+    <label> <input type="radio" name="board-size" value="10x10x10"> 10×10×10 </label>
   </div>  
 
   <div class="section">
-    <button data-action="makeTrays">Make Trays</button>
+    <label>Tray Type</lable>
+    <!-- <button data-action="addTrays">Add Trays</button> -->
   </div>
 
   <div class="section">
-   <label> <input type="radio" name="tray-type" value="real" checked> Real </label><br>
-   <label> <input type="radio" name="tray-type" value="factory"> Factory </label><br>
+    <label> <input type="radio" name="tray-type" value="none"> None </label><br>
+    <label> <input type="radio" name="tray-type" value="real" checked> Real </label><br>
+    <label> <input type="radio" name="tray-type" value="factory"> Factory </label><br>
   </div>  
 
   <div class="section">
-    <button data-action="showTrays">Show</button>
-    <button data-action="hideTrays">Hide</button>
+    <!-- <button data-action="showTrays">Show</button>
+    <button data-action="hideTrays">Hide</button> -->
+    <label> <input type="checkbox" name="tray-visible" checked> Visible </label><br>
+  </div>  
+
+  <div class="section">
+    <label> <input type="radio" name="initial-pos" value="standard" checked> Standard </label><br>
+    <label> <input type="radio" name="initial-pos" value="manual"> Manual </label><br>
   </div>  
 
   <div class="section">

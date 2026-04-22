@@ -63,11 +63,15 @@ function handleLoad() {
 function handleSave() {
   console.log("control: game.js - handleSave()");
   // TODO: code game.js - handleSave().
+  const lastState = state.fetchCurrentSetup();  // Temp: being used for undo feedback, not button's intended purpose.
+  const index = state.getUndoIndex(); // All of them.
+  const setupIndex = index.Setup;     // Just the setup index
+  console.log("Current Setup Undo:", setupIndex, lastState);
   }
 // Seampoint: more global functions.
 
 // --- Helpers ---
-function showUndoStatus() {
+export function showUndoStatus() {
   const el = document.getElementById("undo-state");
 
   const keys = state.getStateKeys();

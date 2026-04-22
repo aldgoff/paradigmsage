@@ -75,20 +75,17 @@ export const replaceCurrentGambit = (values) => replaceCurrentState("Gambits", v
 export const replaceCurrentAdvsq  = (values) => replaceCurrentState("AdvSqs",  values);
 
 export function pushNewState(buffer, values) {
+  console.log("model: state.js - pushNewState(buffer, values):", buffer, values);
+
   if (!(buffer in state)) {
     throw new Error(`Unknown state buffer: ${buffer}`);
   }
 
   const i = undoIndex[buffer];
 
-  // 🔥 Branch: truncate current buffer if mid-history
-  state[buffer] = state[buffer].slice(0, i);
-
-  // 🔥 Push new state
-  state[buffer].push(structuredClone(values));
-
-  // 🔥 Advance index
-  undoIndex[buffer] = i + 1;
+  state[buffer] = state[buffer].slice(0, i);    // Branch truncages current buffer if mid-history.
+  state[buffer].push(structuredClone(values));  // Push new state onto undo buffer.
+  undoIndex[buffer] = i + 1;                    // Advance the index.
 }
 export function pushNewState1(buffer, values) {
   if(!(buffer in state)) {
@@ -103,21 +100,34 @@ export const pushNewAdvsq  = (values) => pushNewState("AdvSqs",  values);
 
 export function getUndoIndex() {
   return undoIndex;
-}
+  }
 export function getBufferLength(buffer) {
   const arr = state[buffer];
   return arr ? arr.length : 0;
-}
+  }
 export function getStateKeys() {
   return Object.keys(state);
 }
 // Basic player sequence.
-export function setup(option) {           // Pick a board, trays, rule enforcement, etc.
-  console.log("model: state.js - setup(option):", option);
+export function setup(payload) {           // Pick a board, trays, rule enforcement, etc.
+  console.log("model: state.js - setup(payload):", payload);
+  const { action, boardSize, trayType, trayGap } = payload;
+
+  const board = boardSize.split("x").map(n => Number(n));
+  const newBoard = { "board": board, "play": "off", trayType, trayGap, "initialPos": "std" };
+
   // TODO: may have to erase later states and/or delete an existing board.
-  // state.Setup.push(option);
+  pushNewSetup(payload);
+  console.log("model: state.js - setup()...getState()", getState());
+  boards.makeBoard(board);
+  }
+
+export function addTrays(option) {           // Pick a board, trays, rule enforcement, etc.
+  console.log("model: state.js - addTrays(option):", option);
+  // TODO: may have to erase later states and/or delete an existing board.
   pushNewSetup(option);
-  boards.makeBoard(option.board);
+  console.log("model: state.js - setup()...getState()", getState());
+  // boards.makeBoard(option.board);
   }
 
 export function pushAdvSq(specs) {        // Manipulate an advancement square.

@@ -24,23 +24,21 @@ import * as view     from "../view/advsqs/advsqs.js";
 // --- UI ---
 export function callbacks() {
   // register.setupControlDispatcher(setupPanelDispatch);    // Make board.
+  // register.gameControlDispatcher(gameButtonDispatch);     // Undo interface.
   register.setupControlDispatcher(setup.panelDispatch);    // Setup.
+  register.gameControlDispatcher( game.panelDispatch);     // Undo interface.
+  register.advsqControlDispatcher(advsqs.panelDispatch);   // Manipulate an advancement square.
   
   // register.trayControlDispatcher(trayPanelDispatch);      // Make tray
-
-  register.gameControlDispatcher(gameButtonDispatch);     // Undo interface.
-  // register.gameControlDispatcher(game.panelDispatch);     // Undo interface.
   
                                                           // Move panel is display only, no inputs.
   register.gambitControlDispatcher(gambitButtonDispatch); // Build a gambit.
-
-  register.advsqControlDispatcher(advsqs.panelDispatch);  // Manipulate an advancement square.
-
   register.cameraControlDispatcher(cameraPanelDispatch);  // Not subject to the undo arch.
   // Seampoint - register another dispatcher.
 }
 
 function setupPanelDispatch(payload) {    // Dispatch payload from panel to handle event functions.
+  console.log("control: events.js - setupPanelDispatch(payload):", payload);
   const { action, boardSize } = payload;
   switch (action) {
     case "makeBoard": handleMakeBoard(boardSize); break;
@@ -83,7 +81,7 @@ function gambitButtonDispatch(payload) {
     case "deselect": handleDeselect(); break;
     default: throw new Error(`Unknown gambit action ${action}.`);  break;
   }
-}
+  }
 
 function cameraPanelDispatch(payload) { // Not subject to the undo arch.
   const { action, value, offboardOpacity } = payload;
