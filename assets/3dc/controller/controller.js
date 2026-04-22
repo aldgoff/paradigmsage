@@ -63,7 +63,7 @@ export function init(playBoard) {
   // example.demoRegistration();
 
   makeDraggable(document.getElementById("setup-window"));  // DOM panels.
-  makeDraggable(document.getElementById("tray-window"));
+  // makeDraggable(document.getElementById("tray-window")); // DEPRECATED.
   makeDraggable(document.getElementById("game-window"));
   makeDraggable(document.getElementById("move-window"));
   makeDraggable(document.getElementById("gambit-window"));

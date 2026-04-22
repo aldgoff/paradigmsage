@@ -66,3 +66,22 @@ function handleSave() {
   }
 // Seampoint: more global functions.
 
+// --- Helpers ---
+function showUndoStatus() {
+  const el = document.getElementById("undo-state");
+
+  const keys = state.getStateKeys();
+  const undo = state.getUndoIndex();
+
+  const text = keys
+    .map((key) => {
+      const i   = undo[key];
+      const max = state.getBufferLength(key);
+      return `${key.padEnd(7)} ${i}/${max}`;
+    })
+    .join("\n");
+
+  el.textContent = text;
+}
+// Seampoint: more local functions.
+

@@ -90,10 +90,6 @@ layout: "play"
    <label> <input type="radio" name="board-size" value="10x8x8"> 10×8×8 </label><br>
    <label> <input type="radio" name="board-size" value="10x10x10"> 10×10×10 </label>
   </div>  
-  </div>
-
-<div class="panel" id="tray-window">
-  <div class="panel-title">Tray Panel</div>
 
   <div class="section">
     <button data-action="makeTrays">Make Trays</button>
@@ -105,9 +101,12 @@ layout: "play"
   </div>  
 
   <div class="section">
-    <button data-action="showTrays" disabled>Show</button>
-    <button data-action="hideTrays" disabled>Hide</button>
-    <button data-action="cycleGap" disabled>Cycle Gap</button>
+    <button data-action="showTrays">Show</button>
+    <button data-action="hideTrays">Hide</button>
+  </div>  
+
+  <div class="section">
+    <label>Gap<input name="tray-gap" type="number" min="0" step="1" value="1" max="3"> </label>
   </div>
   </div>
 

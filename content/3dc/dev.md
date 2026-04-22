@@ -67,5 +67,5 @@ title: "Dev"
   - 4/19/26 - Hide python FAS/GAS code. Raise stride decorator (dst). Next buttons reset to 1. Limit quad to 60, add plane name, perim length and tile type to advsq panel, label:edit-box layout.
   - 4/20/26 - Move thirds from edge to face quads. Standardize module imports. Validate quads start & dir for first 9 planes. Confirm Q1-Q2 order (pawn driven).
   - 4/21/26 - Move advsq control into its own dir. Add grow and shrink to advsq panel, better intuition and MVC compliance.
-  - 4/22/26 - Attempt max stride limit. Draft state focused undo. POC state undo. Enforce MVC layers.
+  - 4/22/26 - Attempt max stride limit. Draft state focused undo. POC state undo. Setup panel: board and trays. Enforce MVC layers.
 

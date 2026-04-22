@@ -8,6 +8,7 @@
 */
 
 import * as control  from "../controller/controller.js";
+import * as setup    from "./setup/setup.js";
 import * as game     from "./game/game.js";
 import * as advsqs   from "./advsqs/advsqs.js";
 
@@ -22,8 +23,10 @@ import * as view     from "../view/advsqs/advsqs.js";
 
 // --- UI ---
 export function callbacks() {
-  register.setupControlDispatcher(setupPanelDispatch);    // Make board.
-  register.trayControlDispatcher(trayPanelDispatch);      // Make tray
+  // register.setupControlDispatcher(setupPanelDispatch);    // Make board.
+  register.setupControlDispatcher(setup.panelDispatch);    // Setup.
+  
+  // register.trayControlDispatcher(trayPanelDispatch);      // Make tray
 
   register.gameControlDispatcher(gameButtonDispatch);     // Undo interface.
   // register.gameControlDispatcher(game.panelDispatch);     // Undo interface.

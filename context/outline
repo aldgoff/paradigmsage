@@ -16,10 +16,14 @@
 │   │   │   ├── controller.md
 │   │   │   ├── events.js
 │   │   │   ├── events.md
-│   │   │   └── game
-│   │   │       ├── game.js
-│   │   │       ├── game.json
-│   │   │       └── game.md
+│   │   │   ├── game
+│   │   │   │   ├── game.js
+│   │   │   │   ├── game.json
+│   │   │   │   └── game.md
+│   │   │   └── setup
+│   │   │       ├── setup.js
+│   │   │       ├── setup.json
+│   │   │       └── setup.md
 │   │   ├── dev
 │   │   │   ├── devNotes.md
 │   │   │   └── symbols.js
@@ -450,4 +454,4 @@
 │           └── poc.js
 └── themes
 
-89 directories, 361 files
+90 directories, 364 files

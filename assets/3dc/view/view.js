@@ -75,7 +75,7 @@ export function init(playBoard) { // PlayBoard is the 3D canvas from the THREE r
   }
 
   // Listeners: (The move listing is purely output, no input, therefore no wiring todo.)
-  wireSimplePanel("setup-window",  "setup",  buildSetupPayload);
+  wireSetupPanel("setup-window",  "setup",  buildSetupPayload);
   wireSimplePanel("tray-window",   "tray",   buildTrayPayload);  // btn.disabled = false;
   wireSimplePanel("game-window",   "game",   buildGamePayload);
   wireSimplePanel("gambit-window", "gambit", buildGambitPayload);
@@ -159,6 +159,38 @@ function wireAdvsqPanel(panelId, callbackName) {
   });
 }
 
+function wireSetupPanel(panelId, callbackName) {
+  const panel = document.getElementById(panelId);
+  if (!panel) return;
+
+  const cb = run.callback[callbackName];
+  if (!cb) return;
+
+  // --- Change events (ALL inputs → full payload) ---
+  panel.addEventListener("change", (e) => {
+    const input = e.target.closest("input");
+    if (!input) return;
+
+    const payload = buildSetupPayload(panel, "updateParam");
+    cb(payload);
+  });
+
+  // --- Click events (buttons → full payload with action) ---
+  panel.addEventListener("click", (e) => {
+    // ignore radios (handled in change)
+    if (e.target.closest('input[type="radio"]')) return;
+
+    const btn = e.target.closest("button");
+    if (!btn) return;
+
+    const action = btn.dataset.action;
+    if (!action) return;
+
+    const payload = buildSetupPayload(panel, action);
+    cb(payload);
+  });
+}
+
 function handleAdvsqKeys(e) {
   if (["INPUT", "TEXTAREA"].includes(e.target.tagName)) return;
 
@@ -187,11 +219,9 @@ function handleAdvsqKeys(e) {
 }
 
 function buildSetupPayload(panel, action) {
-  const selected = panel.querySelector('input[name="board-size"]:checked');
-
   return {
     action,
-    boardSize: selected?.value
+    trayGap:   panel.querySelector('input[name="tray-gap"]')?.value,
   };
   }
 
