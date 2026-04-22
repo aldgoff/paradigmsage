@@ -21,8 +21,6 @@ import * as utils  from "../../../utils/debug.js";            // snapshot(obj) -
   import * as coords from "../../foundation/coords/coords.js";  // normalizeTileToVts().
   import * as quads  from "../../geometry/quads.js";
   import * as state  from "../../model/state/state.js";
-
-  import * as advsqs from "../../view/advsqs/advsqs.js";
 // Seampoint: more imports.
 
 // --- UI ---
@@ -33,6 +31,8 @@ export function panelDispatch(payload) {
   switch (action) {
     case "place":       handlePlace(payload); break;
     case "remove":      handleRemove(); break;
+    case "grow":        handleGrow(payload); break;
+    case "shrink":      handleShrink(payload); break;
     case "updateParam": handleUpdateParam(payload); break;
     case "nudgeSrc":    handleNudgeSrc(payload); break;
     case "nextQuad":    handleNextQuad(payload); break;
@@ -53,7 +53,7 @@ function handlePlace(payload) {
 
   const newAdvsq = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
   state.pushAdvSq(newAdvsq);                                                // Change state.
-  events.cloneStateHistory();
+  events.cloneStateHistory();                                               // Undo buffer lives in control layer.
   }
 
 function handleRemove() {
@@ -64,19 +64,44 @@ function handleRemove() {
   events.cloneStateHistory();
   }
 
+function handleGrow(payload) {
+  console.log("control: advsqs.js - handleGrow(payload)", payload);
+
+  let { srcTile, quad, perimeter, stride, opacity } = normalize(payload);   // Unpack primary fields.
+  
+  perimeter++;                                                              // Manipulate fields.
+
+  const newAdvsq = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
+  state.pushAdvSq(newAdvsq);                                                // Change state.
+  events.cloneStateHistory();                                               // Undo buffer lives in control layer.
+  }
+
+function handleShrink(payload) {
+  console.log("control: advsqs.js - handleShrink(payload)", payload);
+
+  let { srcTile, quad, perimeter, stride, opacity } = normalize(payload);   // Unpack primary fields.
+  
+  if(--perimeter < 0) perimeter = 0.                                        // Manipulate fields.
+
+  const newAdvsq = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
+  state.pushAdvSq(newAdvsq);                                                // Change state.
+  events.cloneStateHistory();                                               // Undo buffer lives in control layer.
+  }
+
 function handleUpdateParam(payload) {
   console.log("control: advsqs.js - handleUpdateParam(payload)", payload);
 
   let { srcTile, quad, perimeter, stride, opacity } = normalize(payload);   // Unpack primary fields.
 
-  if (payload.name === "advsq-opacity") {   // Short-circuit opacity-only undo updates.
-    changeOpacityOnly(payload);
-    return;
+  if(perimeter === 0) stride = 0;
+  if(stride >= 2*perimeter + 1) {
+    stride = 2*perimeter + 1;
+    return;   // No change, don't update anything.
   }
 
   const newAdvsq = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
   state.pushAdvSq(newAdvsq);                                                // Update state.
-  events.cloneStateHistory();
+  events.cloneStateHistory();                                               // Undo buffer lives in control layer.
   }
 
 function handleNudgeSrc(payload) {
@@ -84,17 +109,23 @@ function handleNudgeSrc(payload) {
 
   const { axis, delta } = payload;                  // The keyboard entry ( |^ ijk +/-1).
 
-  let newAdvsq = advsqs.getAdvsqPanelParams();      // Need the panel primary values.
+  let current = state.getCurrentAdvsq();
+  if (!current) return; // No advsq to nudge, quit trying.
 
-  let norm = normalize(newAdvsq);                   // Norm from strings to numbers and arrays.
-
-  if(     axis === "z") norm.srcTile[0] += delta;   // Offset the src tile by 1 tile (z,x,y).
-  else if(axis === "x") norm.srcTile[1] += delta;
-  else if(axis === "y") norm.srcTile[2] += delta;
+  let advsq = {
+    ...current,
+    srcTile: [...current.srcTile]   // 🔥 critical clone
+  };
+  
+  if(     axis === "z") advsq.srcTile[0] += delta;   // Offset the src tile by 1 tile (z,x,y).
+  else if(axis === "x") advsq.srcTile[1] += delta;
+  else if(axis === "y") advsq.srcTile[2] += delta;
   else throw new Error("WTF?");
 
-  state.pushAdvSq(norm);                            // Update state.
-  events.cloneStateHistory();                       // Update undo history.
+  console.log("control: advsqs.js - handleNudgeSrc()...advsq", utils.snapshot(advsq));
+
+  state.pushAdvSq(advsq);                            // Update state.
+  events.cloneStateHistory();                        // Update undo history.
   } 
 
 function handleNextQuad(payload) {
@@ -112,7 +143,7 @@ function handleNextQuad(payload) {
 
   const newAdvsq = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
   state.pushAdvSq(newAdvsq);                                                // Update state.
-  events.cloneStateHistory();
+  events.cloneStateHistory();                                               // Undo buffer lives in control layer.
   }
 
 function handleNextPlane(payload) {
@@ -130,7 +161,7 @@ function handleNextPlane(payload) {
 
   const newAdvsq = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
   state.pushAdvSq(newAdvsq);                                                // Update state.
-  events.cloneStateHistory();
+  events.cloneStateHistory();                                               // Undo buffer lives in control layer.
   }
 
 function handleNextPiece(payload) {
@@ -148,7 +179,7 @@ function handleNextPiece(payload) {
 
   const newAdvsq = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
   state.pushAdvSq(newAdvsq);                                                // Update state.
-  events.cloneStateHistory();
+  events.cloneStateHistory();                                               // Undo buffer lives in control layer.
 }
 
 // --- Helpers ---
@@ -164,37 +195,7 @@ function normalize(payload) { // Convert panel strings to numbers, arrays, etc.
   const normed = { srcTile, quad, perimeter, stride, opacity }; // Repack primary fields.
 
   return normed;
-  }
-
-function updateAdvsqPanel({ quad, perimeter, stride }) {
-  console.log("control: advsqs.js - updateAdvsqPanel(quad, perimeter, stride)", quad, perimeter, stride);
-
-  const panel = document.getElementById("advsq-window");                  // Read.
-
-  panel.querySelector('[name="advsq-quad"]').value      = quad;                           // Update primary fields.
-  panel.querySelector('[name="advsq-perimeter"]').value = perimeter;
-  panel.querySelector('[name="advsq-stride"]').value    = stride;
-  const rec = quads.pqrTable(quad); // { piece, plane, quad:{globalQ,pieceQ,planeQ,rayPair:[r1,r2],quadType,nickname} }.
-  console.log("control: advsqs.js - updateAdvsqPanel() - rec", rec);
-
-  panel.querySelector('[name="advsq-nickname"]').textContent = rec.nickname;              // Set derived fields.
-  panel.querySelector('[name="advsq-plane"]').textContent = rec.plane;
-  panel.querySelector('[name="advsq-quadType"]').textContent = rec.quadType;
-
-  let maxStride = 2*perimeter + 1;
-  panel.querySelector('[name="advsq-length"]').textContent = maxStride;
-
-  let apex = "none";
-  if(rec?.quadType === "edge") apex = "Apex";
-  if(rec?.quadType === "face") apex = "Duplex";
-  panel.querySelector('[name="advsq-quadType"]').textContent = apex;
-
-  let tile = "";
-  if(stride === 1)                  tile = "E1";
-  else if(stride === perimeter + 1) tile = apex;
-  else if(stride === maxStride)     tile = "E2";
-  else                              tile = "Body";
-  panel.querySelector('[name="advsq-tile"]').textContent = tile;
 }
+
 // Seampoint: more local functions.
 

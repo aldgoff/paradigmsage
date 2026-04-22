@@ -52,6 +52,12 @@ export function setNull() {
   state = { Setup: [], Moves: [], Gambits: [], AdvSqs: [] };
 }
 
+export function getCurrentAdvsq() {
+  const arr = state.AdvSqs;
+  if (!arr.length) return null;
+  return arr[arr.length - 1];
+}
+
 // Basic player sequence.
 export function setup(option) {           // Pick a board, trays, rule enforcement, etc.
   console.log("model: state.js - setup(option):", option);

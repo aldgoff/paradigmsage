@@ -14,19 +14,21 @@ import advsqsData from "./advsqs.json" assert { type: "json" };
   // Seampoint: more objects.
 
 // --- Build upon previous layers ---
-import * as state    from "../../model/state/state.js";
-import * as coords   from "../../foundation/coords/coords.js";
-import * as planes   from "../../geometry/planes.js";
-import * as quads    from "../../geometry/quads.js";
-import * as overlaps from "../../geometry/overlapTiles.js";
-import * as advSqs   from "../../geometry/advSqs.js";
+import * as utils  from "../../../utils/debug.js";            // snapshot(obj) - (debugging as needed).
 
-import * as view       from "../view.js";
-import * as tiles      from "../tiles/tiles.js";
-import * as decorators from "../decorators/decorators.js";
-import * as cameras    from "../render/cameras.js";
-import * as renders    from "../render/renders.js";
-import * as coordsMaps from "../render/coordsMaps.js"
+  import * as state    from "../../model/state/state.js";
+  import * as coords   from "../../foundation/coords/coords.js";
+  import * as planes   from "../../geometry/planes.js";
+  import * as quads    from "../../geometry/quads.js";
+  import * as overlaps from "../../geometry/overlapTiles.js";
+  import * as advSqs   from "../../geometry/advSqs.js";
+
+  import * as view       from "../view.js";
+  import * as tiles      from "../tiles/tiles.js";
+  import * as decorators from "../decorators/decorators.js";
+  import * as cameras    from "../render/cameras.js";
+  import * as renders    from "../render/renders.js";
+  import * as coordsMaps from "../render/coordsMaps.js"
 // Seampoint: more imports.
 
 // --- Globals ---
@@ -63,7 +65,7 @@ export function getAdvsqPanelParams() {
   }
 
 export function setAdvsqPanelParams(params) {
-  console.log("view: advsqs.js - setAdvsqPanelParams(params):", params);
+  console.log("view: advsqs.js - setAdvsqPanelParams(params):", utils.snapshot(params));
 
   const panel = document.getElementById("advsq-window");
   if (!panel) return;

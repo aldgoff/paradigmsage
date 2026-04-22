@@ -151,8 +151,10 @@ layout: "play"
   <div class="panel-title">AdvSq Panel</div>
 
   <div class="section">
-    <button data-action="place">Place</button>
-    <button data-action="remove">Remove</button>
+    <button data-action="place">Place Src Tile</button>
+    <button data-action="remove">Remove Advsq</button>
+    <button data-action="grow">Grow</button>
+    <button data-action="shrink">Shrink</button>
   </div>
 
   <div class="section">
@@ -162,25 +164,25 @@ layout: "play"
     <label> Quad:        <input  name="advsq-quad"      type="number"   min="1" step="1" value="1" max="60"> </label>
   </div>
   <div class="section">
-    <label> Nickname:    <output name="advsq-nickname"  style="opacity:0.7; font-style:italic;">Forward</output> </label>
+    <label> Nickname:    <output name="advsq-nickname"  style="opacity:0.7; font-style:italic;"></output> </label>
   </div>
   <div class="section">
-    <label> Plane:       <output name="advsq-plane"     style="opacity:0.7; font-style:italic;">Horizontal</output> </label>
+    <label> Plane:       <output name="advsq-plane"     style="opacity:0.7; font-style:italic;"></output> </label>
   </div>
   <div class="section">
-    <label> Quad Type:   <output name="advsq-quadType"  style="opacity:0.7; font-style:italic;">none</output> </label>
+    <label> Quad Type:   <output name="advsq-quadType"  style="opacity:0.7; font-style:italic;"></output> </label>
   </div>
   <div class="section">
-    <label> Perimeter:   <input  name="advsq-perimeter" type="number" min="1" step="1" value="3" max="99"> </label>
+    <label> Perimeter:   <input  name="advsq-perimeter" type="number" min="0" step="1" value="0" max="22"> </label>
   </div>
   <div class="section">
     <label> Length:      <output name="advsq-length"    style="opacity:0.7; font-style:italic;">7</output> </label>
   </div>
   <div class="section">
-    <label> Stride:      <input  name="advsq-stride"    type="number"    min="1" step="1" value="1" max="99"> </label>
+    <label> Stride:      <input  name="advsq-stride"    type="number"    min="0" step="1" value="0" max="45"> </label>
   </div>
   <div class="section">
-    <label> Tile:        <output name="advsq-tile"      style="opacity:0.7; font-style:italic;">E1</output> </label>
+    <label> Tile:        <output name="advsq-tile"      style="opacity:0.7; font-style:italic;"></output> </label>
   </div>
 
   <!-- Optional: key hints (visual only) -->
