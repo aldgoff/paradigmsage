@@ -1,5 +1,5 @@
 # Advsqs Spec (Control Level)
-  Hope to enforce MVC patter with directory structure.
+  Hope to enforce MVC pattern with directory structure.
 
 ## 1. Purpose
   All the code for interacting with the advsq panel.

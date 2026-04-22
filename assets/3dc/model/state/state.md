@@ -9,7 +9,7 @@
   - AdvSqs:  Create an advSq and move it around (expand/contract, shift/slip, nextQuad/nextPlane).
 
   Can undo/redo within each category. When empty or full, transitions to next category.
-  A branch deletes all downstream states.
+  A *branch* deletes all downstream states.
 
   The result is a kind of logarithmic undo chain.
 
@@ -17,6 +17,32 @@
   After board setup, each player may make a move, or start a gambit analysis.
   A gambit analysis begins by exploring potential advsqs (array 4).
   The move and gambit arrays (2 & 3) may be empty at this point.
+
+ ### 1.1 Json
+  Contains an example state, useful for development and debugging.
+  - Note that the advsq section is outdated, it assumed the src-dst formalism (below).
+
+ ### 1.2 Implementation
+  State consists of four arrays in a single state object.
+  - State supports undo ops via second set of arrays, the indices into the current state.
+  - Branches (changed choices in the middle of undos) tend to delete all downstream elements and arrays.
+
+ ### 1.3 UI
+  - set/get state
+  - set/get null
+  - fetchCurrent
+  - replaceCurrent
+  - pushNewState
+  - fetchLast
+  - getNext
+  - getPrev
+  - trimStateToUndoIndex
+  - clearStateHistory
+
+ ### 1.4 Render
+  - Renderer uses the fetchLast functions.
+  - Control uses the set/get, fetch/replace/push, trim/clear functions.
+  - Undo uses the get next/prev functions.
 
 ## 2. Setup (UR array 1)
   - The setup phase is stored, to be replayed at will via the undo/redo system.
@@ -69,6 +95,10 @@
   - Both are hard to shift/slip (within plane)/(to new plane).
   - SD: hard for nextQuad()/nextPlane() (multiple quads may be implied; linear, overlap).
 
+  Decision:
+  - For now, the panel will use the QK (quad-perimeter) formalism.
+  - This may not age well under linear moves, but it has substantial strengths over the src-dst formalism.
+
  ### 5.2 Shifts and Slips
   I thought that shift and slip were different things.
   - Shift: within plane.
@@ -88,8 +118,33 @@
   Therefore, there are 26 + 24 = 50 slip directions, most change planes.
   Thus shift is a subset of slip.
 
+## 6. Invariants (typically last section)
+ ### 6.1 Sourc Tile
+  - Can extend off board.
+  - Uses board (positional) notation if tile on board.
+  - Uses vts notation if off.
+  
+ ### 6.2 Quad
+  1-60 (I'd like to allows 0, for when perimeter = 0), but logic has evaded me.
+  
+ ### 6.3 Derived Types
+  Not stored in the undo buffer.
+  - Nickname (json list)
+  - Plane (json list)
+  - Quad Type (json list) - (blank|edge|face)
+  - Perimeter length (0-2*perimeter+1)
+  - Advsq area (N^2, N=perimeter+1)
+  - Stride tile type (E1|Body|Apex|Duplex|E2)
 
-## N. Invariants (typically last section)
-  Formally redundant consequences of the spec that must always hold.
-  Used as drift guards and cross-checks across data, code, and tests.
+ ### 6.4 Perimeters
+  - 0 - tbd (30 or less)
+  
+ ### 6.5 Stride
+  - 0 - perimeterLength.
+
+ ### 6.6 Offboad Visibility
+  - 0.00 - 1.00
+
+## 7. Limits
+  Attempts to exceed limits result in range clamp, but without undo update.
 

@@ -151,3 +151,152 @@ specsToPanelParams (recompute everything)
 setAdvsqPanelParams
 
 ## MVC Flow...
+
+## Undo Checkllist.
+ ### 1. Extract Game Control (Undo System)
+  Goal: isolate undo/redo logic like advsqs
+
+  Create new module:
+  - /controller/game/game.js
+
+  Move from events.js:
+  - handleUndo
+  - handleRedo
+  - handleRerun
+  - currentKeyIndex
+  - prevKeyIndex
+  - nextKeyIndex
+  - showUndoStatusInPanel
+  - undoState + undoIndex (legacy)
+  
+ ### 2. Replace Dispatch Hook (single-line switch)
+  In events.js:
+
+  ```
+    register.gameControlDispatcher(gameButtonDispatch);
+  ```
+
+  → becomes:
+
+  ```  
+    import * as game from "./game/game.js";
+    register.gameControlDispatcher(game.panelDispatch);
+  ```
+
+  ✔ This is your parallel swap seam
+  
+ ### 3. Mirror advsqs Pattern
+  Your advsqs module is already the template:
+  - export function panelDispatch(payload)
+
+  Create equivalent:
+    - game.panelDispatch(payload)
+
+  Route actions:
+  - undo
+  - redo
+  - rerun
+  - newGame (stub OK)
+  - load/save (stub OK)
+  
+ ### 4. Define Index Semantics (lock this now)
+  Replace array-based index with scalar:
+
+  ```  
+    undoIndex = {
+      Setup:   0,
+      Moves:   0,
+      Gambits: 0,
+      AdvSqs:  0
+    }
+  ```  
+  Enforce invariant:
+
+  ```  
+  0 ≤ undoIndex[key] ≤ state[key].length
+  ```    
+
+ ### 5. Implement Push Semantics (critical)
+  For each buffer:
+
+  If undoIndex === length
+  - no truncation of current buffer
+  Else
+  - truncate current buffer to index
+  Then:
+  - delete downstream buffers entirely
+  Downstream map (explicit, no guessing)
+
+  ```
+    const downstream = {
+      Setup:   ["Moves", "Gambits", "AdvSqs"],
+      Moves:   ["Gambits", "AdvSqs"],
+      Gambits: ["AdvSqs"],
+      AdvSqs:  []
+    };
+  ```
+
+  After push:
+  ``` undoIndex[buffer]++```
+
+ ### 6. Implement Replace Semantics (limit compliance)
+  Use index, not array end:
+
+  ```
+    arr[undoIndex[buffer] - 1] = values
+  ```
+  - No:
+  - push
+  - index change
+  - downstream deletion
+
+ ### 7. Remove Controller Dependency from AdvSq (prep)
+  Right now:
+
+    events.cloneStateHistory()
+
+  Leave as-is (temporary)
+  Mark as legacy coupling point
+
+  This will be removed when state owns undo.
+
+ ### 8. Stub UI Completeness (your stated priority)
+  Ensure all actions exist even if empty:
+  - newGame
+  - rerun
+  - undo
+  - redo
+  - load
+  - save
+
+  ✔ Behavior optional
+
+  ✔ Dispatch must not throw  
+
+ ### 9. Guard Rails (minimal but important)
+  - Prevent negative index
+  - Prevent index > length
+  - Replace only if index > 0
+  
+ ### 10. DO NOT TOUCH (for now)
+  ❌ state.js ownership of undo
+
+  ❌ controller undoState
+
+  ❌ rendering side effects
+
+  ❌ normalization duplication
+
+  These are phase 2.
+
+  Arch...
+  ```
+  View → registerHandlers → events.js
+                               ↓
+                        game.panelDispatch   (NEW)
+                        advsqs.panelDispatch (EXISTING)
+                               ↓
+                           state.js
+  ```
+  
+   

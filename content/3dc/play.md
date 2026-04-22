@@ -158,10 +158,10 @@ layout: "play"
   </div>
 
   <div class="section">
-    <label> Source Tile: <input  name="advsq-src"       type="text"    value="K3,3" maxlength="7" style="width: 60px;"> </label>
+    <label> Source Tile  <input  name="advsq-src"       type="text"    value="K3,3" maxlength="7" style="width: 60px;"> </label>
   </div>
   <div class="section">
-    <label> Quad:        <input  name="advsq-quad"      type="number"   min="1" step="1" value="1" max="60"> </label>
+    <label> Quad         <input  name="advsq-quad"      type="number"   min="1" step="1" value="1" max="60"> </label>
   </div>
   <div class="section">
     <label> Nickname:    <output name="advsq-nickname"  style="opacity:0.7; font-style:italic;"></output> </label>
@@ -173,13 +173,16 @@ layout: "play"
     <label> Quad Type:   <output name="advsq-quadType"  style="opacity:0.7; font-style:italic;"></output> </label>
   </div>
   <div class="section">
-    <label> Perimeter:   <input  name="advsq-perimeter" type="number" min="0" step="1" value="0" max="22"> </label>
+    <label> Perimeters   <input  name="advsq-perimeter" type="number" min="0" step="1" value="0" max="22"> </label>
   </div>
   <div class="section">
-    <label> Length:      <output name="advsq-length"    style="opacity:0.7; font-style:italic;">7</output> </label>
+    <label> Length:      <output name="advsq-length"    style="opacity:0.7; font-style:italic;"></output> </label>
   </div>
   <div class="section">
-    <label> Stride:      <input  name="advsq-stride"    type="number"    min="0" step="1" value="0" max="45"> </label>
+    <label> Area:        <output name="advsq-area"      style="opacity:0.7; font-style:italic;"></output> </label>
+  </div>
+  <div class="section">
+    <label> Stride       <input  name="advsq-stride"    type="number"    min="0" step="1" value="0" max="45"> </label>
   </div>
   <div class="section">
     <label> Tile:        <output name="advsq-tile"      style="opacity:0.7; font-style:italic;"></output> </label>

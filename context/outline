@@ -15,7 +15,11 @@
 │   │   │   ├── controller.js
 │   │   │   ├── controller.md
 │   │   │   ├── events.js
-│   │   │   └── events.md
+│   │   │   ├── events.md
+│   │   │   └── game
+│   │   │       ├── game.js
+│   │   │       ├── game.json
+│   │   │       └── game.md
 │   │   ├── dev
 │   │   │   ├── devNotes.md
 │   │   │   └── symbols.js
@@ -162,57 +166,59 @@
 │   │       ├── view.json
 │   │       └── view.md
 │   ├── jsconfig.json
-│   └── qt3
-│       └── js
-│           ├── arch.js
-│           ├── controller
-│           │   └── controller.js
-│           ├── layout.js
-│           ├── main.js
-│           ├── model
-│           │   ├── addCollapseMove.js
-│           │   ├── addLoop.js
-│           │   ├── addPlacementMove.js
-│           │   ├── addScore.js
-│           │   ├── addSpookyMove.js
-│           │   ├── analyzeStateString.js
-│           │   ├── barrel.js
-│           │   ├── collapse.js
-│           │   ├── core
-│           │   │   └── invariants.js
-│           │   ├── cycles.js
-│           │   ├── grammar.js
-│           │   ├── model.js
-│           │   ├── parse.js
-│           │   ├── process.js
-│           │   ├── scoring.js
-│           │   ├── statusMsgs.js
-│           │   ├── structure.js
-│           │   ├── subSpookyMove.js
-│           │   └── tokens.js
-│           ├── tests
-│           │   ├── addCollapseMove.test.js
-│           │   ├── addLoop.test.js
-│           │   ├── addPlacementMove.test.js
-│           │   ├── addScore.test.js
-│           │   ├── addSpookyMove.test.js
-│           │   ├── analyzeStateString.test.js
-│           │   ├── classicalT3.test.js
-│           │   ├── collapse.test.js
-│           │   ├── grammar.test.js
-│           │   ├── helpers.js
-│           │   ├── parse.test.js
-│           │   ├── scoring.test.js
-│           │   ├── statusMsgs.test.js
-│           │   ├── subSpookyMove.test.js
-│           │   └── tokens.test.js
-│           └── view
-│               ├── canvas.js
-│               ├── controlsView.js
-│               ├── ensemble.js
-│               ├── listings.js
-│               ├── moves.js
-│               └── view.js
+│   ├── qt3
+│   │   └── js
+│   │       ├── arch.js
+│   │       ├── controller
+│   │       │   └── controller.js
+│   │       ├── layout.js
+│   │       ├── main.js
+│   │       ├── model
+│   │       │   ├── addCollapseMove.js
+│   │       │   ├── addLoop.js
+│   │       │   ├── addPlacementMove.js
+│   │       │   ├── addScore.js
+│   │       │   ├── addSpookyMove.js
+│   │       │   ├── analyzeStateString.js
+│   │       │   ├── barrel.js
+│   │       │   ├── collapse.js
+│   │       │   ├── core
+│   │       │   │   └── invariants.js
+│   │       │   ├── cycles.js
+│   │       │   ├── grammar.js
+│   │       │   ├── model.js
+│   │       │   ├── parse.js
+│   │       │   ├── process.js
+│   │       │   ├── scoring.js
+│   │       │   ├── statusMsgs.js
+│   │       │   ├── structure.js
+│   │       │   ├── subSpookyMove.js
+│   │       │   └── tokens.js
+│   │       ├── tests
+│   │       │   ├── addCollapseMove.test.js
+│   │       │   ├── addLoop.test.js
+│   │       │   ├── addPlacementMove.test.js
+│   │       │   ├── addScore.test.js
+│   │       │   ├── addSpookyMove.test.js
+│   │       │   ├── analyzeStateString.test.js
+│   │       │   ├── classicalT3.test.js
+│   │       │   ├── collapse.test.js
+│   │       │   ├── grammar.test.js
+│   │       │   ├── helpers.js
+│   │       │   ├── parse.test.js
+│   │       │   ├── scoring.test.js
+│   │       │   ├── statusMsgs.test.js
+│   │       │   ├── subSpookyMove.test.js
+│   │       │   └── tokens.test.js
+│   │       └── view
+│   │           ├── canvas.js
+│   │           ├── controlsView.js
+│   │           ├── ensemble.js
+│   │           ├── listings.js
+│   │           ├── moves.js
+│   │           └── view.js
+│   └── utils
+│       └── debug.js
 ├── content
 │   ├── _index.md
 │   ├── 3dc
@@ -444,4 +450,4 @@
 │           └── poc.js
 └── themes
 
-87 directories, 357 files
+89 directories, 361 files

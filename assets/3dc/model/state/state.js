@@ -7,11 +7,7 @@
   UI: the export functions.
 */
 
-/* JSON stringify and parse syntax:
- * Leverage JSON stringify and parse.
- * const str = JSON.stringify(setup);
- * const obj = JSON.parse(str);
-*/
+/* const obj = JSON.parse(JSON.stringify(setup)); */
 
 // --- Load JSON ---
 import stateData from "./state.json" assert { type: "json" };
@@ -25,15 +21,21 @@ import * as coords from "../../foundation/coords/coords.js";  // normalizeTileTo
 import * as view   from "../../view/view.js";
 import * as boards from "../../view/boards/boards.js";
 import * as advsqs from "../../view/advsqs/advsqs.js";
-
 // Seampoint: more imports...
 
-let state = { // This is the state history of the game: setup-moves-gambits-advsq.
+let state = { // This is the state history of the game: setup-moves-gambits-advsqs.
   Setup:   [],
   Moves:   [],
   Gambits: [],
   AdvSqs:  []
 };
+
+let undoIndex = { // undoIndex[key][0] = pointer to NEXT item to apply.
+  Setup:   0,
+  Moves:   0,
+  Gambits: 0,
+  AdvSqs:  0
+}
 
 // --- UI ---
 export function setState(newState) {
@@ -44,19 +46,44 @@ export function getState() {
   return state;
   }
 
-export function getNull() {
-  return { Setup: [], Moves: [], Gambits: [], AdvSqs: [] };
-  }
-
 export function setNull() {
   state = { Setup: [], Moves: [], Gambits: [], AdvSqs: [] };
+  }
+
+export function getNull() {
+  return { Setup: [], Moves: [], Gambits: [], AdvSqs: [] };
 }
 
-export function getCurrentAdvsq() {
-  const arr = state.AdvSqs;
-  if (!arr.length) return null;
+export function fetchCurrentState(buffer) {
+  const arr = state[buffer];
+  if(!arr || !arr.length) return null;
   return arr[arr.length - 1];
-}
+  }
+export const fetchCurrentSetup  = () => fetchCurrentState("Setup");
+export const fetchCurrentMoves  = () => fetchCurrentState("Moves");
+export const fetchCurrentGambit = () => fetchCurrentState("Gambits");
+export const fetchCurrentAdvsq  = () => fetchCurrentState("AdvSqs");
+
+export function replaceCurrentState(buffer, values) {
+  const arr = state[buffer];
+  if(!arr || !arr.length) return null;
+  arr[arr.length - 1] = structuredClone(values);
+  }
+export const replaceCurrentSetup  = (values) => replaceCurrentState("Setup",   values);
+export const replaceCurrentMoves  = (values) => replaceCurrentState("Moves",   values);
+export const replaceCurrentGambit = (values) => replaceCurrentState("Gambits", values);
+export const replaceCurrentAdvsq  = (values) => replaceCurrentState("AdvSqs",  values);
+
+export function pushNewState(buffer, values) {
+  if(!(buffer in state)) {
+    throw new Error(`Unknown state buffer: ${buffer}`);
+  }
+  state[buffer].push(structuredClone(values));
+  }
+export const pushNewSetup  = (values) => pushNewState("Setup",   values);
+export const pushNewMoves  = (values) => pushNewState("Moves",   values);
+export const pushNewGambit = (values) => pushNewState("Gambits", values);
+export const pushNewAdvsq  = (values) => pushNewState("AdvSqs",  values);
 
 // Basic player sequence.
 export function setup(option) {           // Pick a board, trays, rule enforcement, etc.
@@ -93,6 +120,7 @@ export function recordMove(gambit) {      // Select a move from the gambit set o
   state.Moves.push(structuredClone(gambit));
   // state.Gambits.length = 0;
 }
+// Seampoint: more global functions...
 
 // --- Helpers ---
 function normalize(payload) { // Convert panel strings to numbers, arrays, etc.
@@ -107,7 +135,7 @@ function normalize(payload) { // Convert panel strings to numbers, arrays, etc.
   const normed = { srcTile, quad, perimeter, stride, opacity }; // Repack primary fields.
 
   return normed;
-  }
+}
 
 // To be deprecated as dev progresses...useful javascript weirdness.
 function iterateState(stateData) {
@@ -138,4 +166,5 @@ function iterateState(stateData) {
     console.log(i, entry);
   });
 }
+// Seampoint: more local functions...
 

@@ -8,6 +8,7 @@
 */
 
 import * as control  from "../controller/controller.js";
+import * as game     from "./game/game.js";
 import * as advsqs   from "./advsqs/advsqs.js";
 
 import * as state    from "../model/state/state.js";
@@ -23,11 +24,14 @@ import * as view     from "../view/advsqs/advsqs.js";
 export function callbacks() {
   register.setupControlDispatcher(setupPanelDispatch);    // Make board.
   register.trayControlDispatcher(trayPanelDispatch);      // Make tray
+
   register.gameControlDispatcher(gameButtonDispatch);     // Undo interface.
+  // register.gameControlDispatcher(game.panelDispatch);     // Undo interface.
+  
                                                           // Move panel is display only, no inputs.
   register.gambitControlDispatcher(gambitButtonDispatch); // Build a gambit.
 
-  register.advsqControlDispatcher(advsqs.panelDispatch);    // Manipulate an advancement square.
+  register.advsqControlDispatcher(advsqs.panelDispatch);  // Manipulate an advancement square.
 
   register.cameraControlDispatcher(cameraPanelDispatch);  // Not subject to the undo arch.
   // Seampoint - register another dispatcher.
