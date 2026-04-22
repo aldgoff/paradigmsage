@@ -45,6 +45,11 @@ layout: "play"
     font-family: monospace;
     white-space: pre;
     }
+  #undo-state {
+    height: 66px;
+    font-family: monospace;
+    white-space: pre;
+    }
   .panel-title {
     font-weight: bold;
     margin-bottom: 6px;
@@ -63,7 +68,7 @@ layout: "play"
   #game-window   { top: 120px; left:  280px; }
   #move-window   { top: 720px; left:   80px; }
   #gambit-window { top: 580px; left:   80px; }
-  #advsq-window  { top: 320px; left:  280px; }
+  #advsq-window  { top: 410px; left:  280px; }
 
   #camera-window { top: 430px; left:   80px; }
   /* Seampont - more DOM control panels... */
@@ -119,6 +124,10 @@ layout: "play"
   </div>
 
   <div class="section scroll-box" id="undo-list">
+    <!-- tbd go here -->
+  </div>
+
+  <div class="section scroll-box" id="undo-state">
     <!-- tbd go here -->
   </div>
   </div>

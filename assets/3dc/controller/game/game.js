@@ -14,8 +14,7 @@ import gameData from "./game.json" assert { type: "json" };
   // Seampoint: more objects.
 
 // --- Build upon previous layers ---
-import * as planes from "../../geometry/planes.js";
-import * as quads  from "../../geometry/quads.js";
+import * as state  from "../../model/state/state.js";
 // Seampoint: more imports.
 
 // --- UI ---
@@ -35,6 +34,7 @@ export function panelDispatch(payload) {
   }
 // Seampoint: more global functions.
 
+// --- Handle Functions ---
 function handleNewGame() {
   console.log("control: game.js - handleNewGame()");
   // TODO: code game.js - handleNewGame().

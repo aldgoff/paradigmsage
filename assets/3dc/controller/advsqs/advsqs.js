@@ -54,6 +54,9 @@ function handlePlace(payload) {
   const newAdvsq = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
   state.pushAdvSq(newAdvsq);                                                // Change state.
   events.cloneStateHistory();                                               // Undo buffer lives in control layer.
+
+  //*** New State Based Undo System ***/
+  state.pushNewAdvsq(newAdvsq);
   }
 
 function handleRemove() {
@@ -62,6 +65,9 @@ function handleRemove() {
   state.clearAdvSqs();  // Change state.
 
   events.cloneStateHistory();
+
+  //*** New State Based Undo System ***/
+  
   }
 
 function handleGrow(payload) {
@@ -74,6 +80,10 @@ function handleGrow(payload) {
   const newAdvsq = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
   state.pushAdvSq(newAdvsq);                                                // Change state.
   events.cloneStateHistory();                                               // Undo buffer lives in control layer.
+
+  //*** New State Based Undo System ***/
+  state.pushNewAdvsq(newAdvsq);
+
   }
 
 function handleShrink(payload) {
@@ -85,7 +95,11 @@ function handleShrink(payload) {
 
   const newAdvsq = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
   state.pushAdvSq(newAdvsq);                                                // Change state.
-  events.cloneStateHistory();                                               // Undo buffer lives in control layer.
+  events.cloneStateHistory();     
+                                            // Undo buffer lives in control layer.
+  //*** New State Based Undo System ***/
+  state.pushNewAdvsq(newAdvsq);
+  
   }
 
 function handleUpdateParam(payload) {
@@ -115,6 +129,10 @@ function handleUpdateParam(payload) {
   const newAdvsq = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
   state.pushAdvSq(newAdvsq);                                                // Update state.
   events.cloneStateHistory();                                               // Undo buffer lives in control layer.
+
+  //*** New State Based Undo System ***/
+  state.pushNewAdvsq(newAdvsq);
+
   }
 
 function handleNudgeSrc(payload) {
@@ -139,7 +157,11 @@ function handleNudgeSrc(payload) {
 
   state.pushAdvSq(advsq);                            // Update state.
   events.cloneStateHistory();                        // Update undo history.
-  } 
+
+  //*** New State Based Undo System ***/
+  state.pushNewAdvsq(newAdvsq);
+
+} 
 
 function handleNextQuad(payload) {
   console.log("control: advsqs.js - handleNewQuad(payload)", payload);
@@ -157,7 +179,11 @@ function handleNextQuad(payload) {
   const newAdvsq = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
   state.pushAdvSq(newAdvsq);                                                // Update state.
   events.cloneStateHistory();                                               // Undo buffer lives in control layer.
-  }
+
+  //*** New State Based Undo System ***/
+  state.pushNewAdvsq(newAdvsq);
+
+}
 
 function handleNextPlane(payload) {
   console.log("control: advsqs.js - handleNextPlane(payload)", payload);
@@ -175,7 +201,11 @@ function handleNextPlane(payload) {
   const newAdvsq = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
   state.pushAdvSq(newAdvsq);                                                // Update state.
   events.cloneStateHistory();                                               // Undo buffer lives in control layer.
-  }
+
+  //*** New State Based Undo System ***/
+  state.pushNewAdvsq(newAdvsq);
+
+}
 
 function handleNextPiece(payload) {
   console.log("control: advsqs.js - handleNextPiece(payload)", payload);
@@ -193,6 +223,10 @@ function handleNextPiece(payload) {
   const newAdvsq = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
   state.pushAdvSq(newAdvsq);                                                // Update state.
   events.cloneStateHistory();                                               // Undo buffer lives in control layer.
+
+  //*** New State Based Undo System ***/
+  state.pushNewAdvsq(newAdvsq);
+
 }
 
 // --- Helpers ---

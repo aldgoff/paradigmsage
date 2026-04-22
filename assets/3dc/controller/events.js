@@ -104,7 +104,7 @@ function handleMakeBoard(boardSize) { // Setup handlers.
   const newBoard = { "board": board, "play": "off", "trays": "none", "gap": 0, "initialPos": "std" };
 
   trimStateToUndoIndex();
-  state.setup(newBoard);
+  state.setup(newBoard);  // Command to change setup state.
 
   cloneStateHistory();
   }
@@ -270,9 +270,15 @@ function handleLoad() {
 function handleSave() {
   // console.log("Game Save:");
   // TODO: change state.
-  const state = currentKeyIndex();
+  const state1 = currentKeyIndex();
   console.log("currentKeyIndex()", currentKeyIndex());
-  console.log("undoState()", undoState[state.arrayKey][state.index]);
+  console.log("undoState()", undoState[state1.arrayKey][state1.index]);
+
+  /*** Refactoring to state based undo system. ***/
+  const lastState = state.fetchCurrentSetup();  // Temp: being used for undo feedback, not button's intended purpose.
+  const index = state.getUndoIndex(); // All of them.
+  const setupIndex = index.Setup;     // Just the setup index
+  console.log("Current Setup Undo:", setupIndex, lastState);
 }
 
 // --- Helpers ---
@@ -307,7 +313,27 @@ export function showUndoStatusInPanel() {    // Game helpers.
     .join("\n");
 
   el.textContent = text;
+
+  //*** New State Based Undo System ***/
+  showUndoStatus();
   }
+
+function showUndoStatus() {
+  const el = document.getElementById("undo-state");
+
+  const keys = state.getStateKeys();
+  const undo = state.getUndoIndex();
+
+  const text = keys
+    .map((key) => {
+      const i   = undo[key];
+      const max = state.getBufferLength(key);
+      return `${key.padEnd(7)} ${i}/${max}`;
+    })
+    .join("\n");
+
+  el.textContent = text;
+}
 
 export function currentKeyIndex() {
   const order = ["AdvSqs", "Gambits", "Moves", "Setup"];

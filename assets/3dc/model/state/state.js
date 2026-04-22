@@ -75,6 +75,22 @@ export const replaceCurrentGambit = (values) => replaceCurrentState("Gambits", v
 export const replaceCurrentAdvsq  = (values) => replaceCurrentState("AdvSqs",  values);
 
 export function pushNewState(buffer, values) {
+  if (!(buffer in state)) {
+    throw new Error(`Unknown state buffer: ${buffer}`);
+  }
+
+  const i = undoIndex[buffer];
+
+  // 🔥 Branch: truncate current buffer if mid-history
+  state[buffer] = state[buffer].slice(0, i);
+
+  // 🔥 Push new state
+  state[buffer].push(structuredClone(values));
+
+  // 🔥 Advance index
+  undoIndex[buffer] = i + 1;
+}
+export function pushNewState1(buffer, values) {
   if(!(buffer in state)) {
     throw new Error(`Unknown state buffer: ${buffer}`);
   }
@@ -85,11 +101,22 @@ export const pushNewMoves  = (values) => pushNewState("Moves",   values);
 export const pushNewGambit = (values) => pushNewState("Gambits", values);
 export const pushNewAdvsq  = (values) => pushNewState("AdvSqs",  values);
 
+export function getUndoIndex() {
+  return undoIndex;
+}
+export function getBufferLength(buffer) {
+  const arr = state[buffer];
+  return arr ? arr.length : 0;
+}
+export function getStateKeys() {
+  return Object.keys(state);
+}
 // Basic player sequence.
 export function setup(option) {           // Pick a board, trays, rule enforcement, etc.
   console.log("model: state.js - setup(option):", option);
   // TODO: may have to erase later states and/or delete an existing board.
-  state.Setup.push(option);
+  // state.Setup.push(option);
+  pushNewSetup(option);
   boards.makeBoard(option.board);
   }
 
