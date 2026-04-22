@@ -28,7 +28,7 @@ let state = { // This is the state history of the game: setup-moves-gambits-advs
   Moves:   [],
   Gambits: [],
   AdvSqs:  []
-};
+  };
 
 let undoIndex = { // undoIndex[key][0] = pointer to NEXT item to apply.
   Setup:   0,
@@ -97,6 +97,87 @@ export const pushNewSetup  = (values) => pushNewState("Setup",   values);
 export const pushNewMoves  = (values) => pushNewState("Moves",   values);
 export const pushNewGambit = (values) => pushNewState("Gambits", values);
 export const pushNewAdvsq  = (values) => pushNewState("AdvSqs",  values);
+
+
+export function currentKeyIndex() {
+  const order = ["AdvSqs", "Gambits", "Moves", "Setup"];
+  const undo = undoIndex;
+
+  for (const key of order) {
+    const i = undo[key];
+    if (i > 0) {
+      return { arrayKey: key, index: i - 1 };
+    }
+  }
+
+  return { arrayKey: "Sentry", index: -1 };
+  }
+
+export function prevKeyIndex() {
+  const order = ["AdvSqs", "Gambits", "Moves", "Setup"];
+
+  for (let k = 0; k < order.length; k++) {
+    const key = order[k];
+    let i = undoIndex[key];
+
+    if (i > 0) {
+      i = i - 1;
+      undoIndex[key] = i;
+
+      if (i > 0) {
+        return { arrayKey: key, index: i - 1 };
+      }
+
+      // fall through to lower buffers
+      for (let j = k + 1; j < order.length; j++) {
+        const prevKey = order[j];
+        const prevI = undoIndex[prevKey];
+
+        if (prevI > 0) {
+          return { arrayKey: prevKey, index: prevI - 1 };
+        }
+      }
+
+      return null;
+    }
+  }
+
+  return null;
+  }
+
+export function nextKeyIndex() {
+  const order = ["Setup", "Moves", "Gambits", "AdvSqs"];
+
+  for (let k = 0; k < order.length; k++) {
+    const key = order[k];
+    let i = undoIndex[key];
+    const max = state[key].length;
+
+    if (i < max) {
+      undoIndex[key] = i + 1;
+      return { arrayKey: key, index: i };
+    }
+
+    for (let j = k + 1; j < order.length; j++) {
+      const nextKey = order[j];
+      const nextI = undoIndex[nextKey];
+      const nextMax = state[nextKey].length;
+
+      if (nextI < nextMax) {
+        undoIndex[nextKey] = nextI + 1;
+        return { arrayKey: nextKey, index: nextI };
+      }
+    }
+  }
+
+  return null;
+}
+
+export function fetchFromIndex(buffer) {
+  const i = undoIndex[buffer];
+  if (i === 0) return null;
+  return state[buffer][i - 1];
+}
 
 export function getUndoIndex() {
   return undoIndex;

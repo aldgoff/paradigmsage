@@ -45,6 +45,7 @@ import * as renders    from "./render/renders.js";
 import * as coordsMaps from "./render/coordsMaps.js";
 import * as demos      from "./demos.js";
 import * as tiles      from "./tiles/tiles.js";
+import * as game       from "../controller/game/game.js";
 // Seampoint: more imports...
 
 export let context;
@@ -88,7 +89,8 @@ export function init(playBoard) { // PlayBoard is the 3D canvas from the THREE r
   wireSimplePanel("camera-window", "camera", buildCameraPayload); // Not subject to the undo arch.
   // Seampoint - more listeners...
 
-  // return context;
+  game.showUndoStatus();
+
   return;
 }
 // Seampoint: more global functions...

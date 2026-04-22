@@ -21,6 +21,8 @@ import * as utils  from "../../../utils/debug.js";            // snapshot(obj) -
   import * as coords from "../../foundation/coords/coords.js";  // normalizeTileToVts().
   import * as quads  from "../../geometry/quads.js";
   import * as state  from "../../model/state/state.js";
+  import * as game   from "../../controller/game/game.js";
+
 // Seampoint: more imports.
 
 // --- UI ---
@@ -57,6 +59,7 @@ function handlePlace(payload) {
 
   //*** New State Based Undo System ***/
   state.pushNewAdvsq(newAdvsq);
+  game.showUndoStatus();
   }
 
 function handleRemove() {
@@ -83,7 +86,7 @@ function handleGrow(payload) {
 
   //*** New State Based Undo System ***/
   state.pushNewAdvsq(newAdvsq);
-
+  game.showUndoStatus();
   }
 
 function handleShrink(payload) {
@@ -99,7 +102,7 @@ function handleShrink(payload) {
                                             // Undo buffer lives in control layer.
   //*** New State Based Undo System ***/
   state.pushNewAdvsq(newAdvsq);
-  
+  game.showUndoStatus();
   }
 
 function handleUpdateParam(payload) {
@@ -132,7 +135,7 @@ function handleUpdateParam(payload) {
 
   //*** New State Based Undo System ***/
   state.pushNewAdvsq(newAdvsq);
-
+  game.showUndoStatus();
   }
 
 function handleNudgeSrc(payload) {
@@ -160,7 +163,7 @@ function handleNudgeSrc(payload) {
 
   //*** New State Based Undo System ***/
   state.pushNewAdvsq(newAdvsq);
-
+  game.showUndoStatus();
 } 
 
 function handleNextQuad(payload) {
@@ -182,7 +185,7 @@ function handleNextQuad(payload) {
 
   //*** New State Based Undo System ***/
   state.pushNewAdvsq(newAdvsq);
-
+  game.showUndoStatus();
 }
 
 function handleNextPlane(payload) {
@@ -204,7 +207,7 @@ function handleNextPlane(payload) {
 
   //*** New State Based Undo System ***/
   state.pushNewAdvsq(newAdvsq);
-
+  game.showUndoStatus();
 }
 
 function handleNextPiece(payload) {
@@ -226,7 +229,7 @@ function handleNextPiece(payload) {
 
   //*** New State Based Undo System ***/
   state.pushNewAdvsq(newAdvsq);
-
+  game.showUndoStatus();
 }
 
 // --- Helpers ---

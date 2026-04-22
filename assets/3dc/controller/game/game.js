@@ -15,6 +15,8 @@ import gameData from "./game.json" assert { type: "json" };
 
 // --- Build upon previous layers ---
 import * as state  from "../../model/state/state.js";
+import * as advsqs from "../../view/advsqs/advsqs.js";
+
 // Seampoint: more imports.
 
 // --- UI ---
@@ -43,17 +45,92 @@ function handleNewGame() {
 function handleRerun() {
   console.log("control: game.js - handleNewGame()");
   // TODO: code game.js - handleNewGame().
-  }
+}
 
 function handleUndo() {
-  console.log("control: game.js - handleRerun()");
-  // TODO: code game.js - handleRerun().
+  const keyIndex = state.prevKeyIndex();
+
+  if (!keyIndex) {
+    console.log("Sentry");
+
+    // clear board state
+    advsqs.clearAdvsq();
+    showUndoStatus();
+    return;
   }
 
+  console.log("UNDO:", keyIndex);
+
+  if (keyIndex.arrayKey === "AdvSqs") {
+    const specs = state.fetchFromIndex("AdvSqs");
+
+    // 🔥 critical: clear first
+    advsqs.clearAdvsq();
+
+    if (specs) {
+      advsqs.makeAdvsq(specs);
+      advsqs.setAdvsqPanelParams(specs);
+    }
+  }
+
+  showUndoStatus();
+}
+function handleUndo2() {
+  const keyIndex = state.prevKeyIndex();
+
+  if (!keyIndex) {
+    console.log("Sentry");
+    return;
+  }
+
+  console.log("UNDO:", keyIndex);
+
+  showUndoStatus();
+}
+function handleUndo1() {
+  console.log("control: game.js - handleRerun()");
+  // TODO: code game.js - handleRerun().
+}
+
 function handleRedo() {
+  const keyIndex = state.nextKeyIndex();
+
+  if (!keyIndex) {
+    console.log("Top");
+    return;
+  }
+
+  console.log("REDO:", keyIndex);
+
+  if (keyIndex.arrayKey === "AdvSqs") {
+    const specs = state.fetchFromIndex("AdvSqs");
+
+    advsqs.clearAdvsq();
+
+    if (specs) {
+      advsqs.makeAdvsq(specs);
+      advsqs.setAdvsqPanelParams(specs);
+    }
+  }
+
+  showUndoStatus();
+}
+function handleRedo2() {
+  const keyIndex = state.nextKeyIndex();
+
+  if (!keyIndex) {
+    console.log("Top");
+    return;
+  }
+
+  console.log("REDO:", keyIndex);
+
+  showUndoStatus();
+}
+function handleRedo1() {
   console.log("control: game.js - handleRedo()");
   // TODO: code game.js - handleRedo().
-  }
+}
 
 function handleLoad() {
   console.log("control: game.js - handleLoad()");
