@@ -93,10 +93,23 @@ function handleUpdateParam(payload) {
 
   let { srcTile, quad, perimeter, stride, opacity } = normalize(payload);   // Unpack primary fields.
 
+  // if(perimeter === 0) stride = 0;
+  // if(stride >= 2*perimeter + 1) {
+  //   stride = 2*perimeter + 1;
+  //   return;   // No change, don't update anything.
+  // }
+
+  const maxStride = 2 * perimeter + 1;
+
   if(perimeter === 0) stride = 0;
-  if(stride >= 2*perimeter + 1) {
-    stride = 2*perimeter + 1;
-    return;   // No change, don't update anything.
+
+  if(stride > maxStride) {
+    stride = maxStride;
+
+    const corrected = { srcTile, quad, perimeter, stride, opacity };
+
+    state.replaceCurrentAdvsq(corrected);   // 🔥 no undo entry
+    return;
   }
 
   const newAdvsq = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
