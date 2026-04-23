@@ -122,7 +122,7 @@ function handleNudgeSrc(payload) {
 
   const { axis, delta } = payload;
 
-  const current = state.fetchFromIndex("AdvSqs");                           // Prepacked normalized fields.
+  const current = state.fetchCurrentAdvsq();                           // Prepacked normalized fields.
   if (!current) return;
 
   let newAdvsq = {      // Safe clone.

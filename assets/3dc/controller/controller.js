@@ -132,9 +132,6 @@ function demo() { // TODO: Deprecating: create a fake state history, for dev und
   state.setNull();                                      // Initial state, all null.
   console.log(JSON.parse(JSON.stringify(state.getState())));
 
-  state.setup(seed.Setup[0]);                           // Make a board.
-  state.setup(seed.Setup[1]);                           // Change mind.
-  state.setup(seed.Setup[2]);                           // Again.
   console.log(JSON.parse(JSON.stringify(state.getState())));
 
   state.pushAdvSq(seed.AdvSqs[0]);                      // Explore an advancement square.

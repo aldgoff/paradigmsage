@@ -16,7 +16,7 @@ import setupData from "./setup.json" assert { type: "json" };
 // --- Build upon previous layers ---
 import * as game   from "../../controller/game/game.js";
 import * as state from "../../model/state/state.js";
-// import * as game  from          "../game/game.js";
+import * as boards from "../../view/boards/boards.js";
 // Seampoint: more imports.
 
 // --- UI ---
@@ -47,10 +47,10 @@ function handleMakeBoard(payload) { // Setup handler.
 
   const { action, boardSize, play, trayType, visible, gap, initialPos } = payload;
 
-  // state.pushNewSetup(payload);           // Log state change in undo buffer.
-
-  state.setup(payload);  // Command to change state.
-  game.showUndoStatus();  // Show undo status in the panel.
+  state.pushNewSetup(payload);           // Log state change in undo buffer.
+  boards.makeSetup(payload);             // Render.
+  // Need to update state buffers.
+  // Need to update setup panel.
   }
 
 function handleShowTrays(visible) {

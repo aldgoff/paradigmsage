@@ -29,7 +29,7 @@ export function makeSetup(payload) {
 
   const { action, boardSize, trayType, trayGap } = payload;
 
-  state.pushNewSetup(payload);
+  // state.pushNewSetup(payload);
 
   const dimensions = boardSize.split("x").map(n => Number(n));
   makeBoard(dimensions);

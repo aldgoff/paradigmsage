@@ -158,16 +158,6 @@ setAdvsqPanelParams
 
   Create new module:
   - /controller/game/game.js
-
-  Move from events.js:
-  - handleUndo
-  - handleRedo
-  - handleRerun
-  - currentKeyIndex
-  - prevKeyIndex
-  - nextKeyIndex
-  - showUndoStatusInPanel
-  - undoState + undoIndex (legacy)
   
  ### 2. Replace Dispatch Hook (single-line switch)
   In events.js:
@@ -298,5 +288,5 @@ setAdvsqPanelParams
                                ↓
                            state.js
   ```
-  
+
    
