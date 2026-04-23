@@ -174,7 +174,7 @@ layout: "play"
   </div>
 
   <div class="section">
-    <label> Source Tile  <input  name="advsq-src"       type="text"    value="K3,3" maxlength="7" style="width: 60px;"> </label>
+    <label> Source Tile  <input  name="advsq-src"       type="text"    value="KB4,4" maxlength="7" style="width: 60px;"> </label>
   </div>
   <div class="section">
     <label> Quad         <input  name="advsq-quad"      type="number"   min="1" step="1" value="1" max="60"> </label>

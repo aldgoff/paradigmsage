@@ -45,7 +45,7 @@ export function getAdvsqPanelInitialParams() {
   }
 
 export function getAdvsqPanelParams() {
-  console.log("view: advsqs.js - getAdvsqPanelParams():");
+  console.log("view : advsqs.js - getAdvsqPanelParams():");
 
   const panel = document.getElementById("advsq-window");
   if (!panel) return;
@@ -65,7 +65,7 @@ export function getAdvsqPanelParams() {
   }
 
 export function setAdvsqPanelParams(params) {
-  console.log("view: advsqs.js - setAdvsqPanelParams(params):", utils.snapshot(params));
+  console.log("view : advsqs.js - setAdvsqPanelParams(params):", utils.snapshot(params));
 
   const panel = document.getElementById("advsq-window");
   if (!panel) return;
@@ -92,7 +92,7 @@ export function setAdvsqPanelParams(params) {
   }
 
 export function specsToPanelParams(specs) {
-  console.log("view: advsqs.js - specsToPanelParams(specs):", specs);
+  console.log("view : advsqs.js - specsToPanelParams(specs):", specs);
 
   if(!specs) return getAdvsqPanelInitialParams();
 
@@ -112,7 +112,7 @@ export function specsToPanelParams(specs) {
   }
 
 export function makeAdvsq(specs) {
-  console.log("view: advsqs.js - makeAdvsq(specs):", specs);
+  console.log("view : advsqs.js - makeAdvsq(specs):", specs);
 
   clearAdvsq();
 
@@ -153,7 +153,7 @@ export function makeAdvsq(specs) {
   }
 
 export function clearAdvsq() {
-  console.log("view: advsqs.js - clearAdvsq():");
+  // console.log("view : advsqs.js - clearAdvsq():");
 
   if (!currentAdvsq) return;
 
@@ -171,7 +171,7 @@ export function clearAdvsq() {
 
 // --- Helpers ---
 function decoratePerimeter(lastPerim, perim, piece, quadType, group, opacity, strideNo, zOffset=0.00) {
-  // console.log("view: advsqs.js - decoratePerimeter(perim)", perim);
+  // console.log("view : advsqs.js - decoratePerimeter(perim)", perim);
   const end  = (piece    === "duke") ? "end3":   "end2";
   const apex = (quadType === "face") ? "duplex": "apex";
 
@@ -245,7 +245,7 @@ function getActiveBoardSpec() {
 }
 
 export function computeAdvsqDerived({ quad, perimeter, stride }) {
-  console.log("view: advsqs.js - computeAdvsqDerived()", { quad, perimeter, stride });
+  // console.log("view : advsqs.js - computeAdvsqDerived()", { quad, perimeter, stride });
 
   // --- normalize types ---
   const q = Number(quad);

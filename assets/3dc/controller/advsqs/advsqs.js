@@ -14,25 +14,23 @@ import advsqsData from "./advsqs.json" assert { type: "json" };
 // Seampoint: more objects.
 
 // --- Build upon previous layers ---
-import * as utils  from "../../../utils/debug.js";            // snapshot(obj) - (debugging as needed).
+import * as game   from "../../controller/game/game.js";
 
-  import * as events from "../events.js";                       // cloneStateHistory().
+import * as state  from "../../model/state/state.js";
+import * as coords from "../../foundation/coords/coords.js";  // normalizeTileToVts().
 
-  import * as coords from "../../foundation/coords/coords.js";  // normalizeTileToVts().
-  import * as quads  from "../../geometry/quads.js";
-  import * as state  from "../../model/state/state.js";
-  import * as game   from "../../controller/game/game.js";
+import * as advsqs from "../../view/advsqs/advsqs.js";
 
 // Seampoint: more imports.
 
 // --- UI ---
 export function panelDispatch(payload) {
   const { action, srcTile, quad, perimeter, stride, opacity } = payload;
-  console.log("control: advsqs.js - panelDispatch(payload)", payload);
+  console.log("cntrl: advsqs.js - panelDispatch(payload)", payload);
 
   switch (action) {
     case "place":       handlePlace(payload); break;
-    case "remove":      handleRemove(); break;
+    case "remove":      handleRemove(payload); break;
     case "grow":        handleGrow(payload); break;
     case "shrink":      handleShrink(payload); break;
     case "updateParam": handleUpdateParam(payload); break;
@@ -42,132 +40,117 @@ export function panelDispatch(payload) {
     case "nextPiece":   handleNextPiece(payload); break;
     default: throw new Error(`Unknown advsq action ${action}, payload ${JSON.stringify(payload)}.`);
   }
+
+  game.showUndoStatus();    // Show undo buffer status in game panel.
 }
 // Seampoint: more global functions.
 
 // --- Handle Functions ---
 function handlePlace(payload) {
-  console.log("control: advsqs.js - handlePlace(payload)", payload);
+  console.log("cntrl: advsqs.js - handlePlace(payload)", payload);
 
   let { srcTile, quad, perimeter, stride, opacity } = normalize(payload);   // Unpack primary fields.
-  
                                                                             // Manipulate fields.
-
   const newAdvsq = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
-  state.pushAdvSq(newAdvsq);                                                // Change state.
-  events.cloneStateHistory();                                               // Undo buffer lives in control layer.
 
-  //*** New State Based Undo System ***/
-  state.pushNewAdvsq(newAdvsq);
-  game.showUndoStatus();
+  state.pushNewAdvsq(newAdvsq);           // Log state change in undo buffer.
+  advsqs.makeAdvsq(newAdvsq);             // Render.
+  advsqs.setAdvsqPanelParams(newAdvsq);   // Update the control panel.
   }
 
-function handleRemove() {
-  console.log("control: advsqs.js - handleRemove()");
+function handleRemove(payload) {
+  console.log("cntrl: advsqs.js - handleRemove()");
   
-  state.clearAdvSqs();  // Change state.
+  let { srcTile, quad, perimeter, stride, opacity } = blank(payload);       // Unpack primary fields.
+                                                                            // Manipulate fields.
+  const newAdvsq = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
 
-  events.cloneStateHistory();
-
-  //*** New State Based Undo System ***/
-  
+  state.pushNewAdvsq(newAdvsq);           // Log state change in undo buffer.
+  advsqs.makeAdvsq(newAdvsq);             // Render.
+  advsqs.setAdvsqPanelParams(newAdvsq);   // Update the control panel.
   }
 
 function handleGrow(payload) {
-  console.log("control: advsqs.js - handleGrow(payload)", payload);
+  console.log("cntrl: advsqs.js - handleGrow(payload)", payload);
 
   let { srcTile, quad, perimeter, stride, opacity } = normalize(payload);   // Unpack primary fields.
   
   perimeter++;                                                              // Manipulate fields.
 
   const newAdvsq = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
-  state.pushAdvSq(newAdvsq);                                                // Change state.
-  events.cloneStateHistory();                                               // Undo buffer lives in control layer.
 
-  //*** New State Based Undo System ***/
-  state.pushNewAdvsq(newAdvsq);
-  game.showUndoStatus();
+  state.pushNewAdvsq(newAdvsq);           // Log state change in undo buffer.
+  advsqs.makeAdvsq(newAdvsq);             // Render.
+  advsqs.setAdvsqPanelParams(newAdvsq);   // Update the control panel.
   }
 
 function handleShrink(payload) {
-  console.log("control: advsqs.js - handleShrink(payload)", payload);
+  console.log("cntrl: advsqs.js - handleShrink(payload)", payload);
 
   let { srcTile, quad, perimeter, stride, opacity } = normalize(payload);   // Unpack primary fields.
   
   if(--perimeter < 0) perimeter = 0.                                        // Manipulate fields.
 
   const newAdvsq = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
-  state.pushAdvSq(newAdvsq);                                                // Change state.
-  events.cloneStateHistory();     
-                                            // Undo buffer lives in control layer.
-  //*** New State Based Undo System ***/
-  state.pushNewAdvsq(newAdvsq);
-  game.showUndoStatus();
+
+  state.pushNewAdvsq(newAdvsq);           // Log state change in undo buffer.
+  advsqs.makeAdvsq(newAdvsq);             // Render.
+  advsqs.setAdvsqPanelParams(newAdvsq);   // Update the control panel.
   }
 
 function handleUpdateParam(payload) {
-  console.log("control: advsqs.js - handleUpdateParam(payload)", payload);
+  console.log("cntrl: advsqs.js - handleUpdateParam(payload)", payload);
 
   let { srcTile, quad, perimeter, stride, opacity } = normalize(payload);   // Unpack primary fields.
 
-  // if(perimeter === 0) stride = 0;
-  // if(stride >= 2*perimeter + 1) {
-  //   stride = 2*perimeter + 1;
-  //   return;   // No change, don't update anything.
-  // }
-
-  const maxStride = 2 * perimeter + 1;
-
-  if(perimeter === 0) stride = 0;
-
-  if(stride > maxStride) {
+  const maxStride = 2 * perimeter + 1;                                      // Manipulate fields.
+  if(stride > maxStride) {  // Is stride panel limited or perimeter limited?
     stride = maxStride;
 
-    const corrected = { srcTile, quad, perimeter, stride, opacity };
+    const currAdvsq = state.fetchCurrentAdvsq();
+    const currPerimeter = currAdvsq.perimeter;
 
-    state.replaceCurrentAdvsq(corrected);   // 🔥 no undo entry
-    return;
+    if(perimeter === currPerimeter) { // Panel limited.
+      const corrected = { srcTile, quad, perimeter, stride, opacity };
+      advsqs.setAdvsqPanelParams(corrected);    // Update the control panel.
+      state.replaceCurrentAdvsq(corrected);     // 🔥 no undo entry, no change in state, no need to render.
+      return;
+    }
   }
+  if(perimeter === 0) stride = 0;
 
   const newAdvsq = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
-  state.pushAdvSq(newAdvsq);                                                // Update state.
-  events.cloneStateHistory();                                               // Undo buffer lives in control layer.
 
-  //*** New State Based Undo System ***/
-  state.pushNewAdvsq(newAdvsq);
-  game.showUndoStatus();
+  state.pushNewAdvsq(newAdvsq);           // Log state change in undo buffer.
+  advsqs.makeAdvsq(newAdvsq);             // Render.
+  advsqs.setAdvsqPanelParams(newAdvsq);   // Update the control panel.
   }
 
 function handleNudgeSrc(payload) {
-  console.log("control: advsqs.js - handleNudgeSrc(payload)", payload);
+  console.log("cntrl: advsqs.js - handleNudgeSrc(payload)", payload);
 
-  const { axis, delta } = payload;                  // The keyboard entry ( |^ ijk +/-1).
+  const { axis, delta } = payload;
 
-  let current = state.getCurrentAdvsq();
-  if (!current) return; // No advsq to nudge, quit trying.
+  const current = state.fetchFromIndex("AdvSqs");                           // Prepacked normalized fields.
+  if (!current) return;
 
-  let advsq = {
+  let newAdvsq = {      // Safe clone.
     ...current,
-    srcTile: [...current.srcTile]   // 🔥 critical clone
+    srcTile: [...current.srcTile]
   };
-  
-  if(     axis === "z") advsq.srcTile[0] += delta;   // Offset the src tile by 1 tile (z,x,y).
-  else if(axis === "x") advsq.srcTile[1] += delta;
-  else if(axis === "y") advsq.srcTile[2] += delta;
-  else throw new Error("WTF?");
 
-  console.log("control: advsqs.js - handleNudgeSrc()...advsq", utils.snapshot(advsq));
+  if (axis === "z")      newAdvsq.srcTile[0] += delta;                      // Manipulate fields.
+  else if (axis === "x") newAdvsq.srcTile[1] += delta;
+  else if (axis === "y") newAdvsq.srcTile[2] += delta;
+  else throw new Error("Invalid axis");
 
-  state.pushAdvSq(advsq);                            // Update state.
-  events.cloneStateHistory();                        // Update undo history.
-
-  //*** New State Based Undo System ***/
-  state.pushNewAdvsq(newAdvsq);
-  game.showUndoStatus();
-} 
+  state.pushNewAdvsq(newAdvsq);           // Log state change in undo buffer.
+  advsqs.makeAdvsq(newAdvsq);             // Render.
+  advsqs.setAdvsqPanelParams(newAdvsq);   // Update the control panel.
+  }
 
 function handleNextQuad(payload) {
-  console.log("control: advsqs.js - handleNewQuad(payload)", payload);
+  console.log("cntrl: advsqs.js - handleNewQuad(payload)", payload);
 
   let { srcTile, quad, perimeter, stride, opacity } = normalize(payload);   // Unpack primary fields.
                                                                             // Manipulate fields.
@@ -175,21 +158,19 @@ function handleNextQuad(payload) {
   else if(13 <= quad && quad <= 36) { ++quad; if(quad%6 === 1) quad -= 6; }   // Next bishop quad.
   else if(37 <= quad && quad <= 60) { ++quad; if(quad%4 === 1) quad -= 4; }   // Next duke quad.
   else {                                                                      // Throw.
-    throw new Error("Unknown quad number in control: events.js - handleNextQuad() quad", quad);
+    throw new Error("Unknown quad number in control: advsqs.js - handleNextQuad() quad", quad);
   }
   stride = 1; // First stride.
 
   const newAdvsq = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
-  state.pushAdvSq(newAdvsq);                                                // Update state.
-  events.cloneStateHistory();                                               // Undo buffer lives in control layer.
 
-  //*** New State Based Undo System ***/
-  state.pushNewAdvsq(newAdvsq);
-  game.showUndoStatus();
-}
+  state.pushNewAdvsq(newAdvsq);           // Log state change in undo buffer.
+  advsqs.makeAdvsq(newAdvsq);             // Render.
+  advsqs.setAdvsqPanelParams(newAdvsq);   // Update the control panel.
+  }
 
 function handleNextPlane(payload) {
-  console.log("control: advsqs.js - handleNextPlane(payload)", payload);
+  console.log("cntrl: advsqs.js - handleNextPlane(payload)", payload);
 
   let { srcTile, quad, perimeter, stride, opacity } = normalize(payload);   // Unpack primary fields.
                                                                             // Manipulate fields.
@@ -202,16 +183,14 @@ function handleNextPlane(payload) {
   stride = 1; // First stride.
 
   const newAdvsq = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
-  state.pushAdvSq(newAdvsq);                                                // Update state.
-  events.cloneStateHistory();                                               // Undo buffer lives in control layer.
 
-  //*** New State Based Undo System ***/
-  state.pushNewAdvsq(newAdvsq);
-  game.showUndoStatus();
-}
+  state.pushNewAdvsq(newAdvsq);           // Log state change in undo buffer.
+  advsqs.makeAdvsq(newAdvsq);             // Render.
+  advsqs.setAdvsqPanelParams(newAdvsq);   // Update the control panel.
+  }
 
 function handleNextPiece(payload) {
-  console.log("control: advsqs.js - handleNextPiece(payload)", payload);
+  console.log("cntrl: advsqs.js - handleNextPiece(payload)", payload);
 
   let { srcTile, quad, perimeter, stride, opacity } = normalize(payload);   // Unpack primary fields.
                                                                             // Manipulate fields.
@@ -224,12 +203,10 @@ function handleNextPiece(payload) {
   stride = 1; // First stride.
 
   const newAdvsq = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
-  state.pushAdvSq(newAdvsq);                                                // Update state.
-  events.cloneStateHistory();                                               // Undo buffer lives in control layer.
 
-  //*** New State Based Undo System ***/
-  state.pushNewAdvsq(newAdvsq);
-  game.showUndoStatus();
+  state.pushNewAdvsq(newAdvsq);           // Log state change in undo buffer.
+  advsqs.makeAdvsq(newAdvsq);             // Render.
+  advsqs.setAdvsqPanelParams(newAdvsq);   // Update the control panel.
 }
 
 // --- Helpers ---
@@ -245,6 +222,19 @@ function normalize(payload) { // Convert panel strings to numbers, arrays, etc.
   const normed = { srcTile, quad, perimeter, stride, opacity }; // Repack primary fields.
 
   return normed;
+  }
+
+function blank(payload) { // Convert panel strings to numbers, arrays, etc.
+  let { srcTile, quad, perimeter, stride, opacity } = payload;  // Unpack primary fields.
+
+  srcTile   = [0,0,0];  // "Q4,4"
+  quad      = 1;  
+  perimeter = 0;
+  stride    = 0;
+
+  const blank = { srcTile, quad, perimeter, stride, opacity }; // Repack primary fields.
+
+  return blank;
 }
 
 // Seampoint: more local functions.

@@ -223,6 +223,7 @@ function handleAdvsqKeys(e) {
 }
 
 function buildSetupPayload(panel, action) {
+  console.log("     ---------- view: view.js");
   return {
     action,
     boardSize:  panel.querySelector('input[name="board-size"]:checked')?.value,
@@ -236,6 +237,7 @@ function buildSetupPayload(panel, action) {
 function buildTrayPayload(panel, action) {
   const selected = panel.querySelector('input[name="tray-type"]:checked')?.value;
 
+  console.log("     ---------- view: view.js");
   return {
     action,
     trayType: selected?.value
@@ -243,14 +245,17 @@ function buildTrayPayload(panel, action) {
   }
 
 function buildGamePayload(panel, action) {
+  console.log("     ---------- view: view.js");
   return { action };
   }
 
 function buildGambitPayload(panel, action) {
+  console.log("     ---------- view: view.js");
   return { action };
   }
 
 function buildAdvsqPayload(panel, action) {
+  console.log("     ---------- view: view.js");
   return {
     action,
     srcTile:  panel.querySelector('[name="advsq-src"]')?.value,

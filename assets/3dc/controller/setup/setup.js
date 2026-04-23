@@ -28,6 +28,7 @@ export function panelDispatch(payload) {    // Dispatch payload from panel to ha
     gap,        // 0|1|2|3.
     initialPos  // std|manual.
   } = payload;
+  console.log("control: setup.js - panelDispatch(payload)", payload);
 
   switch (action) {
     case "makeBoard":   handleMakeBoard(payload); break;

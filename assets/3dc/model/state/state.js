@@ -83,15 +83,9 @@ export function pushNewState(buffer, values) {
 
   const i = undoIndex[buffer];
 
-  state[buffer] = state[buffer].slice(0, i);    // Branch truncages current buffer if mid-history.
+  state[buffer] = state[buffer].slice(0, i);    // Branch truncates current buffer if mid-history.
   state[buffer].push(structuredClone(values));  // Push new state onto undo buffer.
   undoIndex[buffer] = i + 1;                    // Advance the index.
-}
-export function pushNewState1(buffer, values) {
-  if(!(buffer in state)) {
-    throw new Error(`Unknown state buffer: ${buffer}`);
-  }
-  state[buffer].push(structuredClone(values));
   }
 export const pushNewSetup  = (values) => pushNewState("Setup",   values);
 export const pushNewMoves  = (values) => pushNewState("Moves",   values);
