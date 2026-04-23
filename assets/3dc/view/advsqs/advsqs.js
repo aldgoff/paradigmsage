@@ -138,9 +138,6 @@ export function makeAdvsq(specs) {
     }
 
     let quadNo = quad;
-    // if(typeof quad === "string" && specs.quad.startsWith("Q")) {
-    //   quadNo = Number(specs.quad.slice(1));
-    // }
     let quadType = quads.quadToQuadType(quadNo);
 
     const lastPerim = (k === perims.length - 1);

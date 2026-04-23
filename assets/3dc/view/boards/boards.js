@@ -1,5 +1,5 @@
 /* File: boards.js
-  Path: ./3dc/boards/boards.js
+  Path: ./3dc/view/boards/boards.js
   Purpose: Create a 3D chess board, add to scene, delete previous.
   Author: Allan Goff
   Date: 4/14/26
@@ -24,6 +24,17 @@ import * as renders    from "../render/renders.js";
 let currentBoard = null;
 
 // --- UI ---
+export function makeSetup(payload) {
+  console.log("view: boards.js - makeSetup(payload):", payload);
+
+  const { action, boardSize, trayType, trayGap } = payload;
+
+  state.pushNewSetup(payload);
+
+  const dimensions = boardSize.split("x").map(n => Number(n));
+  makeBoard(dimensions);
+}
+
 export function makeGame(payload) {
   console.log("view: boards.js - makeGame(payload):", payload);
   // Call make board.

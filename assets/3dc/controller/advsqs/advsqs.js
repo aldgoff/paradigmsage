@@ -20,7 +20,6 @@ import * as state  from "../../model/state/state.js";
 import * as coords from "../../foundation/coords/coords.js";  // normalizeTileToVts().
 
 import * as advsqs from "../../view/advsqs/advsqs.js";
-
 // Seampoint: more imports.
 
 // --- UI ---
@@ -53,9 +52,7 @@ function handlePlace(payload) {
                                                                             // Manipulate fields.
   const newAdvsq = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
 
-  state.pushNewAdvsq(newAdvsq);           // Log state change in undo buffer.
-  advsqs.makeAdvsq(newAdvsq);             // Render.
-  advsqs.setAdvsqPanelParams(newAdvsq);   // Update the control panel.
+  applyAdvsq(newAdvsq); // Log state change, render, update control panel.}
   }
 
 function handleRemove(payload) {
@@ -65,9 +62,9 @@ function handleRemove(payload) {
                                                                             // Manipulate fields.
   const newAdvsq = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
 
-  state.pushNewAdvsq(newAdvsq);           // Log state change in undo buffer.
-  advsqs.makeAdvsq(newAdvsq);             // Render.
-  advsqs.setAdvsqPanelParams(newAdvsq);   // Update the control panel.
+  state.clearBuffer("AdvSqs");           // Log state change in undo buffer.
+  advsqs.clearAdvsq();             // Render.
+  advsqs.setAdvsqPanelInitialParams(newAdvsq);   // Update the control panel.
   }
 
 function handleGrow(payload) {
@@ -79,9 +76,7 @@ function handleGrow(payload) {
 
   const newAdvsq = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
 
-  state.pushNewAdvsq(newAdvsq);           // Log state change in undo buffer.
-  advsqs.makeAdvsq(newAdvsq);             // Render.
-  advsqs.setAdvsqPanelParams(newAdvsq);   // Update the control panel.
+  applyAdvsq(newAdvsq); // Log state change, render, update control panel.}
   }
 
 function handleShrink(payload) {
@@ -93,9 +88,7 @@ function handleShrink(payload) {
 
   const newAdvsq = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
 
-  state.pushNewAdvsq(newAdvsq);           // Log state change in undo buffer.
-  advsqs.makeAdvsq(newAdvsq);             // Render.
-  advsqs.setAdvsqPanelParams(newAdvsq);   // Update the control panel.
+  applyAdvsq(newAdvsq); // Log state change, render, update control panel.}
   }
 
 function handleUpdateParam(payload) {
@@ -121,9 +114,7 @@ function handleUpdateParam(payload) {
 
   const newAdvsq = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
 
-  state.pushNewAdvsq(newAdvsq);           // Log state change in undo buffer.
-  advsqs.makeAdvsq(newAdvsq);             // Render.
-  advsqs.setAdvsqPanelParams(newAdvsq);   // Update the control panel.
+  applyAdvsq(newAdvsq); // Log state change, render, update control panel.}
   }
 
 function handleNudgeSrc(payload) {
@@ -144,9 +135,7 @@ function handleNudgeSrc(payload) {
   else if (axis === "y") newAdvsq.srcTile[2] += delta;
   else throw new Error("Invalid axis");
 
-  state.pushNewAdvsq(newAdvsq);           // Log state change in undo buffer.
-  advsqs.makeAdvsq(newAdvsq);             // Render.
-  advsqs.setAdvsqPanelParams(newAdvsq);   // Update the control panel.
+  applyAdvsq(newAdvsq); // Log state change, render, update control panel.}
   }
 
 function handleNextQuad(payload) {
@@ -164,9 +153,7 @@ function handleNextQuad(payload) {
 
   const newAdvsq = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
 
-  state.pushNewAdvsq(newAdvsq);           // Log state change in undo buffer.
-  advsqs.makeAdvsq(newAdvsq);             // Render.
-  advsqs.setAdvsqPanelParams(newAdvsq);   // Update the control panel.
+  applyAdvsq(newAdvsq); // Log state change, render, update control panel.}
   }
 
 function handleNextPlane(payload) {
@@ -184,9 +171,7 @@ function handleNextPlane(payload) {
 
   const newAdvsq = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
 
-  state.pushNewAdvsq(newAdvsq);           // Log state change in undo buffer.
-  advsqs.makeAdvsq(newAdvsq);             // Render.
-  advsqs.setAdvsqPanelParams(newAdvsq);   // Update the control panel.
+  applyAdvsq(newAdvsq); // Log state change, render, update control panel.}
   }
 
 function handleNextPiece(payload) {
@@ -204,9 +189,7 @@ function handleNextPiece(payload) {
 
   const newAdvsq = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
 
-  state.pushNewAdvsq(newAdvsq);           // Log state change in undo buffer.
-  advsqs.makeAdvsq(newAdvsq);             // Render.
-  advsqs.setAdvsqPanelParams(newAdvsq);   // Update the control panel.
+  applyAdvsq(newAdvsq); // Log state change, render, update control panel.}
 }
 
 // --- Helpers ---
@@ -237,5 +220,10 @@ function blank(payload) { // Convert panel strings to numbers, arrays, etc.
   return blank;
 }
 
+function applyAdvsq(newAdvsq) { // Log state change, render, update control panel.
+  state.pushNewAdvsq(newAdvsq);           // Log state change in undo buffer.
+  advsqs.makeAdvsq(newAdvsq);             // Render.
+  advsqs.setAdvsqPanelParams(newAdvsq);   // Update the control panel.
+}
 // Seampoint: more local functions.
 

@@ -74,6 +74,12 @@ export const replaceCurrentMoves  = (values) => replaceCurrentState("Moves",   v
 export const replaceCurrentGambit = (values) => replaceCurrentState("Gambits", values);
 export const replaceCurrentAdvsq  = (values) => replaceCurrentState("AdvSqs",  values);
 
+export function clearBuffer(buffer) {
+  console.log("model: state.js - clearBuffer(buffer):", buffer);
+  state[buffer].length = 0;
+  undoIndex[buffer] = 0;
+}
+
 export function pushNewState(buffer, values) {
   console.log("model: state.js - pushNewState(buffer, values):", buffer, values);
 
@@ -92,6 +98,20 @@ export const pushNewMoves  = (values) => pushNewState("Moves",   values);
 export const pushNewGambit = (values) => pushNewState("Gambits", values);
 export const pushNewAdvsq  = (values) => pushNewState("AdvSqs",  values);
 
+
+export function currentKeyAndIndex() {
+  const order = ["AdvSqs", "Gambits", "Moves", "Setup"];
+  const undo = undoIndex;
+
+  for (const key of order) {
+    const i = undo[key];
+    if (i > 0) {
+      return { key, index: i - 1 };
+    }
+  }
+
+  return { arrayKey: "Sentry", index: -1 };
+  }
 
 export function currentKeyIndex() {
   const order = ["AdvSqs", "Gambits", "Moves", "Setup"];
@@ -176,6 +196,9 @@ export function fetchFromIndex(buffer) {
 export function getUndoIndex() {
   return undoIndex;
   }
+export function setUndoIndex(key, value) {
+  undoIndex[key] = value;
+}
 export function getBufferLength(buffer) {
   const arr = state[buffer];
   return arr ? arr.length : 0;
@@ -183,6 +206,17 @@ export function getBufferLength(buffer) {
 export function getStateKeys() {
   return Object.keys(state);
 }
+
+export function clearHigherBuffers(fromKey) {
+  const order = ["AdvSqs", "Gambits", "Moves", "Setup"];
+  const k = order.indexOf(fromKey);
+
+  for (let i = 0; i < k; i++) {
+    const key = order[i];
+    undoIndex[key] = 0;
+  }
+}
+
 // Basic player sequence.
 export function setup(payload) {           // Pick a board, trays, rule enforcement, etc.
   console.log("model: state.js - setup(payload):", payload);
