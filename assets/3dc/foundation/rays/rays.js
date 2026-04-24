@@ -23,7 +23,6 @@ import raysData from "./rays.json" assert { type: "json" };
   // Seampoint: more objects.
 
 // -- Internal helpers --
-
 function findRay(rayName) {
   if (rayName in ROOK)   return ROOK[rayName];
   if (rayName in BISHOP) return BISHOP[rayName];
@@ -33,14 +32,12 @@ function findRay(rayName) {
 }
 
 // -- Core (VTS only) --
-
 export function getRayVector(rayName) {
   const v = findRay(rayName);
   return [...v]; // defensive copy
 }
 
 // -- Registries (read-only intent) --
-
 export const RAY_REGISTRY = {
   rook:   ROOK,
   bishop: BISHOP,
@@ -50,7 +47,6 @@ export const RAY_REGISTRY = {
 };
 
 // -- Convenience accessors --
-
 export function getRookRays() {
   return ROOK;
   }
@@ -68,7 +64,6 @@ export function getKnightDeltas() {
 }
 
 // -- Introspection (useful for tests/debug) --
-
 export function getAllRayNames() {
   return [
     ...Object.keys(ROOK),

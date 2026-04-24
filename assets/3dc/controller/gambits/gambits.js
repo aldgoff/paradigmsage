@@ -18,6 +18,7 @@ import * as game   from "../../controller/game/game.js";
 
 import * as state  from "../../model/state/state.js";
 import * as coords from "../../foundation/coords/coords.js";  // vtsToNotation().
+import * as planes from "../../geometry/planes.js";    // resolveDstTile().
 // Seampoint: more imports.
 
 
@@ -25,7 +26,9 @@ import * as coords from "../../foundation/coords/coords.js";  // vtsToNotation()
 export function panelDispatch(payload) {
   const { action } = payload;
   switch (action) {
-    case "freeze":   handleFreeze(); break;
+    case "freezeQ":  handleFreezeQuadrant(); break;
+    case "freezeL":  handleFreezeLinear(); break;
+    case "freezeO":  handleFreezeOverlap(); break;
     case "prev":     handlePrev(); break;
     case "next":     handleNext(); break;
     case "delete":   handleDelete(); break;
@@ -36,8 +39,8 @@ export function panelDispatch(payload) {
 // Seampoint: more global functions.
 
 // --- Handle Functions ---
-function handleFreeze() {
-  console.log("cntrl: gambits.js - handleFreeze()");
+function handleFreezeQuadrant() {
+  console.log("cntrl: gambits.js - handleFreezeQuadrant()");
 
   const curr = state.fetchCurrentAdvsq();
   if (!curr) return;
@@ -45,8 +48,7 @@ function handleFreeze() {
   const { srcTile, quad, perimeter, stride } = curr;
 
   // --- derive destination ---
-  const dstTile = [2,0,0];  // Made up until function below is written.
-  // const dstTile = planes.resolveTile(srcTile, quad, perimeter, stride); // TODO: YOU must implement this!
+  const dstTile = planes.resolveDstTile(srcTile, quad, perimeter, stride); // TODO: YOU must implement this!
 
   // --- convert to notation (likely needed) ---
   const src = coords.vtsToBoard(srcTile); // TODO: Will need size of board (defaults to 8x8x8).
@@ -58,12 +60,29 @@ function handleFreeze() {
     dst
   };
 
+  /* TODO: 3 gambit additions:
+   * 1. Clear AdvSq buffer
+   * 2. Render
+   * 3. Compute derived fields
+   * 4. Add to scroll window
+   * 5. Put resolveDstTile under test
+   * 6. Move add and scale to utils
+   * 7. Test aliases to AI
+   * 8. If that passes, port geo into subdirs.
+   * 9. Update specs.
+   */
+
   state.pushNewGambit(gambit);
   game.showUndoStatus();
 }
 
-function handleFreeze1() {
-  console.log("cntrl: gambits.js - handleFreeze()");
+function handleFreezeLinear() {
+  console.log("cntrl: gambits.js - handleFreezeLinear()");
+  // TODO: change state.
+  }
+
+function handleFreezeOverlay() {
+  console.log("cntrl: gambits.js - handleFreezeOverlay()");
   // TODO: change state.
   }
 

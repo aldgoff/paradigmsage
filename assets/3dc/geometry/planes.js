@@ -15,6 +15,12 @@ import planesData from "./planes.json" assert { type: "json" };
   const planes       = planesModule.planes;
   // Seampoint: more objects.
 
+// --- Build upon previous layers ---
+import * as quads  from "./quads.js";  // quadToRayPair().
+import * as rays   from "../foundation/rays/rays.js";  // getRayVector().
+import * as perims from "../geometry/perims.js";  // scale(), add().
+// Seampoint: more imports.
+
 // --- UI ---
 
 // Spec paragraph 3 - plane groups.
@@ -88,7 +94,47 @@ export function getPlaneRule(plane) {
   return entry.rule;
 }
 
-// Seampoint: more global functions.
+export function resolveDstTile(srcTile, quad, perimeter, stride) {
+  console.log("model: planes.js - resolveDstTile(srcTile, quad, perimeter, stride)", srcTile, quad, perimeter, stride);
+
+  const rayPair = quads.quadToRayPair(quad);  // Convert quad to named ray pair to vts rays.
+  console.log("rayPair", rayPair);
+
+  const ray1 = rays.getRayVector(rayPair[0]);
+  const ray2 = rays.getRayVector(rayPair[1]);
+  console.log("ray1, ray2", ray1, ray2);
+
+  const k = perimeter;                        // Numerical foundation.
+  const s = stride - 1;
+  let offset = 0;
+  let dstTile = srcTile;
+
+  if(     stride == 0) {                      // Assume stride on the apex tile.
+    offset = perims.add(perims.scale(ray1, k), perims.scale(ray2, k));
+    dstTile = perims.add(dstTile, offset);
+    }
+  else if(stride <= k) {                      // Outbound.
+    offset = perims.add(perims.scale(ray1, k), perims.scale(ray2, s));
+    dstTile = perims.add(dstTile, offset);
+    }
+  else if(stride == k + 1) {                  // Stride is on the apex tile.
+    offset = perims.add(perims.scale(ray1, k), perims.scale(ray2, k));
+    dstTile = perims.add(dstTile, offset);
+    }
+  else if(stride <= 2*k + 1) {                // Inbound
+    offset = perims.add(perims.scale(ray2, k), perims.scale(ray1, 2*k - s));
+    dstTile = perims.add(dstTile, offset);
+    }
+  else {                                      // Assume stride on the apex tile.
+    offset = perims.add(perims.scale(ray1, k), perims.scale(ray2, k));
+    dstTile = perims.add(dstTile, offset);
+  }
+
+  console.log("dstTile", dstTile);
+
+  return dstTile; // vts.
+}
+// Seampoint: more global functions.quadToRayPair
 
 
 // --- Helpers ---

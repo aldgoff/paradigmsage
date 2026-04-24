@@ -71,16 +71,16 @@ export function isTileInPlane(tile, v1, v2) {
   return dot(t, n) === 0;
 }
 
-// Seampoint: more global functions.
-
-// --- Helpers ---
-function add(a, b) {
+export function add(a, b) {
   return [a[0] + b[0], a[1] + b[1], a[2] + b[2]];
   }
 
-function scale(v, s) {
+export function scale(v, s) {
   return [v[0] * s, v[1] * s, v[2] * s];
-  }
+}
+// Seampoint: more global functions.
+
+// --- Helpers ---
 
 function cross(a, b) {
   return [

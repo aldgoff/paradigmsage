@@ -61,7 +61,7 @@ layout: "play"
   #setup-window  { top: 120px; left:   80px; }  /* DOM Control Panels */
   #tray-window   { top: 260px; left:   80px; }
   #game-window   { top: 120px; left:  280px; }
-  #move-window   { top: 750px; left:   80px; }
+  #move-window   { top: 900px; left:   80px; }
   #gambit-window { top: 610px; left:   80px; }
   #advsq-window  { top: 320px; left:  280px; }
 
@@ -142,11 +142,25 @@ layout: "play"
   <div class="panel-title">Gambit Panel</div>
 
   <div class="section">
-    <button data-action="freeze">Freeze AdvSq</button>
+    <button data-action="freezeQ">Freeze Quadrant</button>
+    <button data-action="freezeL">Freeze Linear</button>
+    <button data-action="freezeO">Freeze Overlap</button>
     <button data-action="prev">Prev</button>
     <button data-action="next">Next</button>
     <button data-action="delete">Delete</button>
     <button data-action="deselect">Deselect</button>
+  </div>
+
+  <div class="section">
+    <label> Open   :  <output name="gambit-nickname"  style="opacity:0.7; font-style:italic;"> [,,,,,]</output> </label>
+  </div>
+  <div class="section">
+    <label> Blocked:  <output name="gambit-nickname"  style="opacity:0.7; font-style:italic;"> [,,,,,] </output> </label>
+  </div>
+  <div class="section">
+    <label> MoveType: <output name="gambit-nickname"  style="opacity:0.7; font-style:italic;"> Quadrant </output> </label>
+    <label> Overlap:  <output name="gambit-nickname"  style="opacity:0.7; font-style:italic;"> Qtile|etc </output> </label>
+    <label> Piece:    <output name="gambit-nickname"  style="opacity:0.7; font-style:italic;"> Queen </output> </label>
   </div>
 
   <div class="section scroll-box" id="gambit-list">
@@ -158,8 +172,11 @@ layout: "play"
   <div class="panel-title">AdvSq Panel</div>
 
   <div class="section">
-    <button data-action="place">Place Src Tile</button>
-    <button data-action="remove">Remove Advsq</button>
+    <button data-action="place">Place</button>
+    <button data-action="remove">Remove</button>
+  </div>
+
+  <div class="section">
     <button data-action="grow">Grow</button>
     <button data-action="shrink">Shrink</button>
   </div>
