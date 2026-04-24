@@ -64,7 +64,7 @@ function handleFreezeQuadrant() {
    * 2. Render
    * 3. Compute derived fields
    * 4. Add to scroll window
-   * 5. Put resolveDstTile under test
+   * 5. ✅ Put resolveDstTile under test
    * 6. Move add and scale to utils
    * 7. Test aliases to AI
    * 8. If that passes, port geo into subdirs.
