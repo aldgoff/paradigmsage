@@ -46,6 +46,11 @@ import * as coordsMaps from "./render/coordsMaps.js";
 import * as demos      from "./demos.js";
 import * as tiles      from "./tiles/tiles.js";
 import * as game       from "../controller/game/game.js";
+
+  import * as advSqs   from "../geometry/advSqs.js";
+  import * as decorators from "./decorators/decorators.js";
+  import * as quads    from "../geometry/quads.js";
+
 // Seampoint: more imports...
 
 export let context;
@@ -93,6 +98,107 @@ export function init(playBoard) { // PlayBoard is the 3D canvas from the THREE r
 
   return;
 }
+
+export function buildAdvSqGroup(specs) {
+  const group = new THREE.Group();
+
+  const { srcTile, quad, perimeter, stride, opacity } = specs;
+
+  const advsq = advSqs.AdvSq.fromQuad(srcTile, quad, perimeter);
+  const piece = advsq.getPiece();
+  const perims = advsq.getPerims();
+
+  for (let k = 0; k < perims.length; k++) {
+    const perim = perims[k];
+
+    if (k === 0) {
+      decorateTile(perim.stride[0], piece, "source", group, opacity);
+      continue;
+    }
+
+    const quadType = quads.quadToQuadType(quad);
+    const lastPerim = (k === perims.length - 1);
+
+    decoratePerimeter(
+      lastPerim,
+      perim,
+      piece,
+      quadType,
+      group,
+      opacity,
+      stride,
+      0.05
+    );
+  }
+
+  return group;
+}
+// --- Helpers ---
+// TODO: consolidate duplicated functions.
+function decoratePerimeter(lastPerim, perim, piece, quadType, group, opacity, strideNo, zOffset=0.00) {
+  // console.log("view : advsqs.js - decoratePerimeter(perim)", perim);
+  const end  = (piece    === "duke") ? "end3":   "end2";
+  const apex = (quadType === "face") ? "duplex": "apex";
+
+  const stride = perim.stride;
+  for(let i=1; i<=stride.length; i++) {
+    const j = i - 1;
+    if(     isSame(stride[j], perim.E1)  ) decorateTile(stride[j], piece, end,  group, opacity);
+    else if(isSame(stride[j], perim.apex)) decorateTile(stride[j], piece, apex, group, opacity);
+    else if(isSame(stride[j], perim.E2)  ) decorateTile(stride[j], piece, end,  group, opacity);
+    else {
+      decorateTile(stride[j], piece, "body", group, opacity);
+    }
+    if(lastPerim && (i === strideNo)) decorateTile(stride[j], piece, "dst", group, opacity, zOffset);
+  }
+  }
+function decorateTile(coords, piece, decorator, group, opacity, zOffset=0.00) {
+  let meshTile = tiles.getTileMesh(context.tileMap, coords);
+  // let meshTile = tiles.getTileMesh(view.context.tileMap, coords);
+  if (!meshTile) {
+    // TODO: Need to create a tile mesh for this tile with high transparency.
+
+    const tileGeometry = new THREE.BoxGeometry(...coordsMaps.vts2xyz(tiles.tileSize()));
+
+    let pos = coords;
+    let tile = tiles.getTileAttributes(pos);
+    meshTile = tiles.createMeshTile(tile, tileGeometry, pos);
+    meshTile.material.forEach(mat => {      // Faces and edges.
+      mat.transparent = true;
+      mat.opacity = opacity;   // tweak as desired
+    });
+    meshTile.children.forEach(child => {     // Frame.
+      if (child.type === "LineSegments") {
+        child.material.transparent = true;
+        child.material.opacity = opacity  // match tile or slightly higher (e.g. 0.4)
+      }
+    });
+
+    meshTile.userData = {
+      isTile: true,
+      coords: pos,
+      faceColor: tile.faceColor,
+      isOffboard: true
+    };
+
+    group.add(meshTile);
+  }
+
+  const faceColor = meshTile.userData.faceColor;
+
+  const overlays = decorators.decorate(faceColor, meshTile, piece, decorator, zOffset);
+
+  if (overlays) {
+    group.userData.overlays = group.userData.overlays || [];
+    group.userData.overlays.push(...overlays);
+  }
+}
+
+// --- Utilities ---
+function isSame(a, b) {
+  return a[0] === b[0] && a[1] === b[1] && a[2] === b[2];
+}
+
 // Seampoint: more global functions...
 
 // --- Helpers ---

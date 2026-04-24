@@ -116,34 +116,8 @@ export function makeAdvsq(specs) {
 
   clearAdvsq();
 
-  const group = new THREE.Group();
+  const group = view.buildAdvSqGroup(specs);
 
-  const { srcTile, quad, perimeter, stride } = specs;
-
-  // --- 1. Build geometric AdvSq ---
-  const advsq = advSqs.AdvSq.fromQuad(srcTile, quad, perimeter);
-
-  const piece = advsq.getPiece();   // rook / bishop / duke
-  const perims = advsq.getPerims();
-
-  // --- 2. Traverse all tiles ---
-  for(let k = 0; k < perims.length; k++) {
-    const p = perims[k];
-    const perim = perims[k];
-
-    // Source tile (k=0)
-    if(k === 0) {
-      decorateTile(p.stride[0], piece, "source", group, specs.opacity);
-      continue;
-    }
-
-    let quadNo = quad;
-    let quadType = quads.quadToQuadType(quadNo);
-
-    const lastPerim = (k === perims.length - 1);
-    const zOffset = 0.05;
-    decoratePerimeter(lastPerim, perim, piece, quadType, group, specs.opacity, stride, zOffset);
-  }
 
   view.context.scene.add(group);
   currentAdvsq = group;
@@ -224,7 +198,7 @@ function decorateTile(coords, piece, decorator, group, opacity, zOffset=0.00) {
     group.userData.overlays = group.userData.overlays || [];
     group.userData.overlays.push(...overlays);
   }
- }
+}
 
 function getActiveBoardSpec() {
   const setupArray = state.getState().Setup;

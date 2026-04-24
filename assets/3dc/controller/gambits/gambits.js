@@ -16,6 +16,9 @@ import gambitsData from "./gambits.json" assert { type: "json" };
 // --- Build upon previous layers ---
 import * as game   from "../../controller/game/game.js";
 
+import * as advsqs  from "../../view/advsqs/advsqs.js";
+  import * as view       from "../../view/view.js";
+
 import * as state  from "../../model/state/state.js";
 import * as coords from "../../foundation/coords/coords.js";  // vtsToNotation().
 import * as planes from "../../geometry/planes.js";    // resolveDstTile().
@@ -36,8 +39,8 @@ export function panelDispatch(payload) {
 // Seampoint: more global functions.
 
   /* TODO: Gambit additions:
-   *  1. Clear AdvSq buffer
-   *  2. Render
+   *  1. ✅ Clear AdvSq buffer
+   *  2. ✅ Render (with animation)
    *  3. Compute derived fields
    *  4. ✅ Add to scroll window
    *  5. ✅ Put resolveDstTile under test
@@ -56,6 +59,7 @@ export function handleFreezeQuadrant() {
 
   const curr = state.fetchCurrentAdvsq();
   if (!curr) return;
+  console.log("cntrl: gambits.js - handleFreezeQuadrant()...curr", curr);
 
   const { srcTile, quad, perimeter, stride } = curr;
   const dst = planes.resolveDstTile(srcTile, quad, perimeter, stride);  // Derive dst tile.
@@ -68,12 +72,84 @@ export function handleFreezeQuadrant() {
     dst       // Board if on board (KR8,8), vts if off board ([6,6,6]).
   };
 
+  advsqs.clearAdvsq();
+  state.clearBuffer("AdvSqs");
+  // Optional but correct:
+  const initParams = advsqs.getAdvsqPanelInitialParams();
+  console.log("initParams", initParams, normalize(initParams));
+  advsqs.setAdvsqPanelParams(
+    normalize(initParams)
+  );
+
+  const group = makeGambit(curr);
+
   state.pushNewGambit(gambit);
   appendGambitLine(gambit);
   game.showUndoStatus();
 
   return gambit;
   }
+export function makeGambit(specs) {
+  const group = view.buildAdvSqGroup(specs); // {srcTile: Array(3), quad: 1, perimeter: 0, stride: 0, opacity: 0.5}
+
+  view.context.scene.add(group);
+  animateFreezeTransition(group);
+
+  return group;
+}
+function animateFreezeTransition(group, duration = 0.8) {
+
+  const overlays = group.userData?.overlays || [];
+  if (overlays.length === 0) return;
+
+  const start = performance.now();
+
+  function step(now) {
+    let t = (now - start) / (duration * 1000);
+    if (t > 1) t = 1;
+
+    const pulse = Math.sin(t * Math.PI); // 0 → 1 → 0
+
+    for (const overlay of overlays) {
+      if (!overlay.material) continue;
+
+      overlay.material.transparent = true;
+      overlay.material.opacity = pulse;
+    }
+
+    if (t < 1) {
+      requestAnimationFrame(step);
+    } else {
+      finalize();
+    }
+  }
+
+  function finalize() {
+    for (const overlay of overlays) {
+      if (overlay.material) {
+        overlay.material.opacity = 1.0;
+      }
+    }
+  }
+
+  requestAnimationFrame(step);
+}
+// TODO: Duplicated method.
+function normalize(payload) { // Convert panel strings to numbers, arrays, etc.
+  let { srcTile, quad, perimeter, stride, opacity } = payload;  // Unpack primary fields.
+
+  srcTile   = coords.normalizeTileToVts(srcTile);               // Convert numeric fields.
+  quad      = Number(quad);  
+  perimeter = Number(perimeter);
+  stride    = Number(stride);
+  opacity   = Number(opacity);
+
+  const normed = { srcTile, quad, perimeter, stride, opacity }; // Repack primary fields.
+
+  return normed;
+}
+
+/*** ----- ----- ----- ***/
 
 function handleFreezeLinear() {
   console.log("cntrl: gambits.js - handleFreezeLinear()");
