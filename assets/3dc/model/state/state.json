@@ -24,7 +24,8 @@
     "Gambits": [
       { "Q":37, "src": "Q3,3", "dst": "KB2,2" }, 
       { "Q":38, "src": "Q3,3", "dst": "KN3,3" }, 
-      { "Q": 1, "src": "Q3,3", "dst": "Q1,1" }
+      { "Q": 1, "src": "Q3,3", "dst": "Q1,1"  },
+      { "Q": 1, "src": "Q3,3", "dst": [6,3,3] }
     ],
     "AdvSqs": [
       { "srcTile": [0,0,0], "quad": 1, "perimeter": 2, "stride": 0, "opacity": 0.50 },

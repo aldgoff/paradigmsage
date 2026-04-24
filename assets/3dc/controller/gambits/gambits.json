@@ -1,10 +1,26 @@
 {
   "gambits_module": {
-    "category": {
-      "key1": "value1",
-      "key2": 123,
-      "array": [-1,  0,  0]
-    },
+    "MoveType": [
+      "Quadrant",
+      "Linear",
+      "Duplex",
+      "_last"
+    ],
+    "OverlapTiles": [
+      "Brook",
+      "Qtile",
+      "Hotspot",
+      "Feynman",
+      "_last"
+    ],
+    "Piece": [
+      "Rook",
+      "Bishop",
+      "Duke",
+      "Stack",
+      "Queen",
+      "_last"
+    ],
     "Examples": {
       "_comment": "YadaYada",
       "_status": "deprecated",

@@ -11,6 +11,7 @@ export const TEST_MODE = { // "VERBOSE" | "TERSE" | "OFF"
     advSqs: "TERSE",
   model: "VERBOSE",
     state: "VERBOSE",
+    gambits: "TERSE",
   // Seampoint - regression test verbosity.
 };
 

@@ -20,10 +20,10 @@ import { invariant } from "../core/invariants.js";
 // --- Load JSON ---
 import stateData from "../../model/state/state.json" assert { type: "json" };
   const stateModule = stateData.state_module;
-  const Setup    = stateModule.Setup;
-  const Moves    = stateModule.Moves;
+  const Setup   = stateModule.Setup;
+  const Moves   = stateModule.Moves;
   const Gambits = stateModule.Gambits;
-  const AdvSqs   = stateModule.AdvSqs;
+  const AdvSqs  = stateModule.AdvSqs;
   // Seampoint: more objects.
 
 // --- Layers ---
@@ -59,7 +59,7 @@ function test_state() {
     { expected: 44, label: "-example" },
     { expected: 11, label: "Setup" },
     { expected:  3, label: "Moves" },
-    { expected:  3, label: "Gambits" },
+    { expected:  4, label: "Gambits" },
     { expected:  6, label: "AdvSqs" },
   ];
 
@@ -117,7 +117,8 @@ function test_gambits() {
   const cases = [
     { expected: '{"Q":37,"src":"Q3,3","dst":"KB2,2"}', label: "queen/king" },
     { expected: '{"Q":38,"src":"Q3,3","dst":"KN3,3"}', label: "queen/knight" },
-    { expected: '{"Q":1,"src":"Q3,3","dst":"Q1,1"}', label: "queen/queen" },
+    { expected: '{"Q":1,"src":"Q3,3","dst":"Q1,1"}',   label: "queen/queen" },
+    { expected: '{"Q":1,"src":"Q3,3","dst":[6,3,3]}',  label: "queen/queen" },
   ];
 
   Gambits.forEach((entry, i) => {
@@ -130,9 +131,9 @@ function test_gambits() {
 
 function test_advsqs() {
   const cases = [
-    { expected: '{"src":"Q1,1","dst":"KB2,2"}', label: "rook?" },
+    { expected: '{"src":"Q1,1","dst":"KB2,2"}', label: "rook?" }, // TODO verify tests.
     { expected: '{"src":"Q2,2","dst":"KN3,3"}', label: "bishop?" },
-    { expected: '{"src":"K3,3","dst":"Q1,1"}', label: "duke?" },
+    { expected: '{"src":"K3,3","dst":"Q1,1"}',  label: "duke?" },
     { expected: '{"src":"K4,4","dst":"KR1,1"}', label: "stack?" },
   ];
 

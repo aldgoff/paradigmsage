@@ -69,5 +69,5 @@ title: "Dev"
   - 4/21/26 - Move advsq control into its own dir. Add grow and shrink to advsq panel, better intuition and MVC compliance.
   - 4/22/26 - Attempt max stride limit. Draft state focused undo. POC state undo. Setup panel: board and trays. Enforce MVC layers. Add state level undo/redo.
   - 4/23/26 - Refactor advsqs to use state undo. Refine advsqs as undo example. Delete undo system at control layer. Get rerun to work. Basic gambits plumbing.
-  - 4/24/26 - Gambit Freeze Quadrant. Debug resolveDstTile(). Put planes.resolveDstTile() under test.
+  - 4/24/26 - Gambit Freeze Quadrant. Debug resolveDstTile(). Put planes.resolveDstTile() under test. Test plumbing.
 

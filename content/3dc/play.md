@@ -145,22 +145,22 @@ layout: "play"
     <button data-action="freezeQ">Freeze Quadrant</button>
     <button data-action="freezeL">Freeze Linear</button>
     <button data-action="freezeO">Freeze Overlap</button>
-    <button data-action="prev">Prev</button>
-    <button data-action="next">Next</button>
-    <button data-action="delete">Delete</button>
-    <button data-action="deselect">Deselect</button>
   </div>
 
   <div class="section">
-    <label> Open   :  <output name="gambit-nickname"  style="opacity:0.7; font-style:italic;"> [,,,,,]</output> </label>
+    <button data-action="delete">Delete</button>
+  </div>
+
+  <div class="section">
+    <label> Open   :  <output name="gambit-open"  style="opacity:0.7; font-style:italic;"> [,,,,,]</output> </label>
   </div>
   <div class="section">
-    <label> Blocked:  <output name="gambit-nickname"  style="opacity:0.7; font-style:italic;"> [,,,,,] </output> </label>
+    <label> Blocked:  <output name="gambit-blocked"  style="opacity:0.7; font-style:italic;"> [,,,,,] </output> </label>
   </div>
   <div class="section">
-    <label> MoveType: <output name="gambit-nickname"  style="opacity:0.7; font-style:italic;"> Quadrant </output> </label>
-    <label> Overlap:  <output name="gambit-nickname"  style="opacity:0.7; font-style:italic;"> Qtile|etc </output> </label>
-    <label> Piece:    <output name="gambit-nickname"  style="opacity:0.7; font-style:italic;"> Queen </output> </label>
+    <label> MoveType:    <output name="gambit-moveType" style="opacity:0.7; font-style:italic;"> Quadrant </output> </label>
+    <label> Overlap:     <output name="gambit-overlap"  style="opacity:0.7; font-style:italic;"> Qtile|etc </output> </label>
+    <label> LowestPiece: <output name="gambit-piece"    style="opacity:0.7; font-style:italic;"> Queen </output> </label>
   </div>
 
   <div class="section scroll-box" id="gambit-list">

@@ -108,6 +108,8 @@
 │   │   │   └── modules.md
 │   │   ├── tests
 │   │   │   ├── _tbd.md
+│   │   │   ├── controller
+│   │   │   │   └── gambits.test.js
 │   │   │   ├── core
 │   │   │   │   ├── asserts.js
 │   │   │   │   └── invariants.js
@@ -459,4 +461,4 @@
 │           └── poc.js
 └── themes
 
-92 directories, 367 files
+93 directories, 368 files
