@@ -48,16 +48,15 @@ function handleFreezeQuadrant() {
   const { srcTile, quad, perimeter, stride } = curr;
 
   // --- derive destination ---
-  const dstTile = planes.resolveDstTile(srcTile, quad, perimeter, stride); // TODO: YOU must implement this!
+  const dst = planes.resolveDstTile(srcTile, quad, perimeter, stride); // TODO: YOU must implement this!
 
   // --- convert to notation (likely needed) ---
   const src = coords.vtsToBoard(srcTile); // TODO: Will need size of board (defaults to 8x8x8).
-  const dst = coords.vtsToBoard(dstTile);
 
   const gambit = {
     Q: quad,
-    src,
-    dst
+    src,      // Board coordinates (positional notation).
+    dst       // Board if on board (KR8,8), vts if off board ([6,6,6]).
   };
 
   /* TODO: 3 gambit additions:

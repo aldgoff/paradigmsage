@@ -16,8 +16,9 @@ import planesData from "./planes.json" assert { type: "json" };
   // Seampoint: more objects.
 
 // --- Build upon previous layers ---
-import * as quads  from "./quads.js";  // quadToRayPair().
+import * as coords from "../foundation/coords/coords.js";
 import * as rays   from "../foundation/rays/rays.js";  // getRayVector().
+import * as quads  from "../geometry/quads.js";  // quadToRayPair().
 import * as perims from "../geometry/perims.js";  // scale(), add().
 // Seampoint: more imports.
 
@@ -95,19 +96,17 @@ export function getPlaneRule(plane) {
 }
 
 export function resolveDstTile(srcTile, quad, perimeter, stride) {
-  console.log("model: planes.js - resolveDstTile(srcTile, quad, perimeter, stride)", srcTile, quad, perimeter, stride);
+  // console.log("model: planes.js - resolveDstTile(srcTile, quad, perimeter, stride)", srcTile, quad, perimeter, stride);
 
   const rayPair = quads.quadToRayPair(quad);  // Convert quad to named ray pair to vts rays.
-  console.log("rayPair", rayPair);
 
   const ray1 = rays.getRayVector(rayPair[0]);
   const ray2 = rays.getRayVector(rayPair[1]);
-  console.log("ray1, ray2", ray1, ray2);
 
   const k = perimeter;                        // Numerical foundation.
   const s = stride - 1;
   let offset = 0;
-  let dstTile = srcTile;
+  let dstTile = [...srcTile]; // Clone not ref!
 
   if(     stride == 0) {                      // Assume stride on the apex tile.
     offset = perims.add(perims.scale(ray1, k), perims.scale(ray2, k));
@@ -130,9 +129,10 @@ export function resolveDstTile(srcTile, quad, perimeter, stride) {
     dstTile = perims.add(dstTile, offset);
   }
 
-  console.log("dstTile", dstTile);
+  const onBoard = coords.onBoardVts(dstTile);
+  const dst = (onBoard) ? coords.rcsToBoard(coords.vtsToRcs(dstTile)) : dstTile; // "Q1,1", [-4,-4,-4].
 
-  return dstTile; // vts.
+  return dst; // vts.
 }
 // Seampoint: more global functions.quadToRayPair
 

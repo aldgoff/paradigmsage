@@ -49,7 +49,7 @@ export function tileToRcs(tile, specOrName = "8x8x8") {
 
 // -- Canonical --
 
-export function boardToRcs(loc, specOrName) {
+export function boardToRcs(loc, specOrName = "8x8x8") {
   let spec = specOrName;
 
   if (typeof spec === "string") {
@@ -78,7 +78,7 @@ export function boardToRcs(loc, specOrName) {
   return [Z, X, Y];
   }
 
-export function rcsToVts(rcs, specOrName) {
+export function rcsToVts(rcs, specOrName = "8x8x8") {
   let spec = specOrName;
 
   if (typeof spec === "string") {
@@ -95,7 +95,7 @@ export function rcsToVts(rcs, specOrName) {
   return [z, x, y];
   }
 
-export function vtsToRcs(vts, specOrName) {
+export function vtsToRcs(vts, specOrName = "8x8x8") {
   let spec = specOrName;
 
   if (typeof spec === "string") {
@@ -112,7 +112,7 @@ export function vtsToRcs(vts, specOrName) {
   return [Z, X, Y];
   }
 
-export function rcsToBoard(rcs, specOrName) {
+export function rcsToBoard(rcs, specOrName = "8x8x8") {
   let spec = specOrName;
 
   if (typeof spec === "string") {
