@@ -7,38 +7,23 @@
   UI: the export functions.
 */
 
-import * as control  from "../controller/controller.js";
-import * as setup    from "./setup/setup.js";
-import * as game     from "./game/game.js";
-import * as advsqs   from "./advsqs/advsqs.js";
-
-import * as state    from "../model/state/state.js";
+import * as setup    from "../controller/setup/setup.js";
+import * as game     from "../controller/game/game.js";
+import * as gambits  from "../controller/gambits/gambits.js";
+import * as advsqs   from "../controller/advsqs/advsqs.js";
 
 import * as register from "../view/registerHandlers.js";
-import * as view     from "../view/advsqs/advsqs.js";
 
 // --- UI ---
 export function callbacks() {
-  register.setupControlDispatcher( setup.panelDispatch);  // Setup.
-  register.gameControlDispatcher(   game.panelDispatch);  // Undo interface.
-  register.advsqControlDispatcher(advsqs.panelDispatch);  // Manipulate an advancement square.
+  register.setupControlDispatcher( setup.panelDispatch);    // Setup.
+  register.gameControlDispatcher(   game.panelDispatch);    // Undo interface.
+  register.advsqControlDispatcher(advsqs.panelDispatch);    // Manipulate an advancement square.
+  register.gambitControlDispatcher(gambits.panelDispatch);  // Build a gambit.
 
-  register.gambitControlDispatcher(gambitButtonDispatch); // Build a gambit.
   register.cameraControlDispatcher(cameraPanelDispatch);  // Not subject to the undo arch.
   // Seampoint - register another dispatcher.
 }
-
-function gambitButtonDispatch(payload) {
-  const { action } = payload;
-  switch (action) {
-    case "freeze": handleFreeze(); break;
-    case "prev": handlePrev(); break;
-    case "next": handleNext(); break;
-    case "delete": handleDelete(); break;
-    case "deselect": handleDeselect(); break;
-    default: throw new Error(`Unknown gambit action ${action}.`);  break;
-  }
-  }
 
 function cameraPanelDispatch(payload) { // Not subject to the undo arch.
   const { action, value, offboardOpacity } = payload;
@@ -55,32 +40,6 @@ function cameraPanelDispatch(payload) { // Not subject to the undo arch.
 }
 // Seampoint - more dispatchers...
 
-/*** ---------- ---------- ---------- ---------- ***/
-
-function handleFreeze() {             // Gambit handlers.
-  console.log("Gambit Freeze-AdvSq:");
-  // TODO: change state.
-  }
-
-function handlePrev() {
-   console.log("Gambit Prev:");
- // TODO: change state.
-  }
-
-function handleNext() {
-  console.log("Gambit Next:");
-  // TODO: change state.
-  }
-
-function handleDelete() {
-  console.log("Gambit Delete:");
-  // TODO: change state.
-  }
-
-function handleDeselect() {
-  console.log("Gambit Deselect:");
-  // TODO: change state.
-}
 /*** ---------- ---------- ---------- ---------- ***/
 
 import * as cameras from "../view/render/cameras.js";
@@ -109,6 +68,4 @@ function handleDescend() {
 function handlePOV(pov) {
   cameras.selectPOV(pov, [0, 0, 0]);
 }
-
-// Seampoint - more handle functions, to be grouped by panel.
 

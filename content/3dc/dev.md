@@ -68,5 +68,5 @@ title: "Dev"
   - 4/20/26 - Move thirds from edge to face quads. Standardize module imports. Validate quads start & dir for first 9 planes. Confirm Q1-Q2 order (pawn driven).
   - 4/21/26 - Move advsq control into its own dir. Add grow and shrink to advsq panel, better intuition and MVC compliance.
   - 4/22/26 - Attempt max stride limit. Draft state focused undo. POC state undo. Setup panel: board and trays. Enforce MVC layers. Add state level undo/redo.
-  - 4/23/26 - Refactor advsqs to use state undo. Refine advsqs as undo example. Delete undo system at control layer. Get rerun to work.
+  - 4/23/26 - Refactor advsqs to use state undo. Refine advsqs as undo example. Delete undo system at control layer. Get rerun to work. Basic gambits plumbing.
 

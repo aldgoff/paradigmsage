@@ -16,10 +16,15 @@
 │   │   │   ├── controller.md
 │   │   │   ├── events.js
 │   │   │   ├── events.md
+│   │   │   ├── gambits
+│   │   │   │   ├── gambits.js
+│   │   │   │   ├── gambits.json
+│   │   │   │   └── gambits.md
 │   │   │   ├── game
 │   │   │   │   ├── game.js
 │   │   │   │   ├── game.json
 │   │   │   │   └── game.md
+│   │   │   ├── moves
 │   │   │   └── setup
 │   │   │       ├── setup.js
 │   │   │       ├── setup.json
@@ -454,4 +459,4 @@
 │           └── poc.js
 └── themes
 
-90 directories, 364 files
+92 directories, 367 files
