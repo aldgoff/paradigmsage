@@ -15,8 +15,9 @@ import gameData from "./game.json" assert { type: "json" };
 
 // --- Build upon previous layers ---
 import * as state  from "../../model/state/state.js";
-import * as advsqs from "../../view/advsqs/advsqs.js";
+
 import * as boards from "../../view/boards/boards.js";
+import * as advsqs from "../../view/advsqs/advsqs.js";
 // Seampoint: more imports.
 
 // --- UI ---
@@ -42,13 +43,53 @@ function handleNewGame() {
   // TODO: code game.js - handleNewGame().
 }
 
-function handleRerun() {  
+function handleRerun() {
+  const keyIndex = state.collapseKeyIndex();
+
+  if (!keyIndex) { // Bottom Sentry
+    console.log("Bottom Sentry");
+    advsqs.clearAdvsq();
+    boards.clearBoard();
+    showUndoStatus();
+    return;
+  }
+
+  if (keyIndex.arrayKey === "AdvSqs") {
+    advsqs.clearAdvsq();
+    const specs = state.fetchCurrentState("AdvSqs");
+    if (specs) {
+      advsqs.makeAdvsq(specs);
+      advsqs.setAdvsqPanelParams(specs);
+    }
+  }
+  else if (keyIndex.arrayKey === "Gambits") {
+    advsqs.clearAdvsq();
+  }
+  else if (keyIndex.arrayKey === "Moves") {
+    advsqs.clearAdvsq();
+    // TODO: clear gambits if implemented
+  }
+  else if (keyIndex.arrayKey === "Setup") {
+    boards.clearBoard();
+    const specs = state.fetchCurrentState("Setup");
+    if (specs) {
+      boards.makeBoard(specs);
+    }
+  }
+  else {
+    throw new Error("Unknown rerun buffer:", keyIndex.arrayKey);
+  }
+
+  showUndoStatus();
+}
+
+function handleRerun1() {  
   if(keyIndex.arrayKey === "AdvSqs") {
     advsqs.clearAdvsq();
     const firstElement = state.getBufferCount();
   }
 
-}
+  }
 
 function handleUndo() {
   const keyIndex = state.prevKeyIndex();

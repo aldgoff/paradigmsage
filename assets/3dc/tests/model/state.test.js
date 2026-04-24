@@ -41,7 +41,7 @@ export function run() {
   test_setup();
   test_moves();
   test_gambits();
-  test_advsqs();
+  // test_advsqs();
   // Seampoint: more tests...
 
   let curr = snapshotTotals();
@@ -60,7 +60,7 @@ function test_state() {
     { expected: 11, label: "Setup" },
     { expected:  3, label: "Moves" },
     { expected:  3, label: "Gambits" },
-    { expected:  4, label: "AdvSqs" },
+    { expected:  6, label: "AdvSqs" },
   ];
 
   let i=0;

@@ -169,6 +169,21 @@ export const pushNewSetup  = (values) => pushNewState("Setup",   values);
 export const pushNewMoves  = (values) => pushNewState("Moves",   values);
 export const pushNewGambit = (values) => pushNewState("Gambits", values);
 export const pushNewAdvsq  = (values) => pushNewState("AdvSqs",  values);
+
+export function collapseKeyIndex() {
+  const order = ["AdvSqs", "Gambits", "Moves", "Setup"];
+
+  for (const key of order) {
+    const i = bufferCount[key];
+
+    if (i > 1) {
+      bufferCount[key] = 1;
+      return { arrayKey: key, index: 0 };
+    }
+  }
+
+  return null; // Bottom Sentry
+}
 // Seampoint: more global functions...
 
 // --- Helpers ---
