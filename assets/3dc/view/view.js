@@ -134,7 +134,6 @@ export function buildAdvSqGroup(specs) {
   return group;
 }
 // --- Helpers ---
-// TODO: consolidate duplicated functions.
 function decoratePerimeter(lastPerim, perim, piece, quadType, group, opacity, strideNo, zOffset=0.00) {
   // console.log("view : advsqs.js - decoratePerimeter(perim)", perim);
   const end  = (piece    === "duke") ? "end3":   "end2";

@@ -142,65 +142,6 @@ export function clearAdvsq() {
 // Seampoint: more global functions.
 
 // --- Helpers ---
-function decoratePerimeter(lastPerim, perim, piece, quadType, group, opacity, strideNo, zOffset=0.00) {
-  // console.log("view : advsqs.js - decoratePerimeter(perim)", perim);
-  const end  = (piece    === "duke") ? "end3":   "end2";
-  const apex = (quadType === "face") ? "duplex": "apex";
-
-  const stride = perim.stride;
-  for(let i=1; i<=stride.length; i++) {
-    const j = i - 1;
-    if(     isSame(stride[j], perim.E1)  ) decorateTile(stride[j], piece, end,  group, opacity);
-    else if(isSame(stride[j], perim.apex)) decorateTile(stride[j], piece, apex, group, opacity);
-    else if(isSame(stride[j], perim.E2)  ) decorateTile(stride[j], piece, end,  group, opacity);
-    else {
-      decorateTile(stride[j], piece, "body", group, opacity);
-    }
-    if(lastPerim && (i === strideNo)) decorateTile(stride[j], piece, "dst", group, opacity, zOffset);
-  }
- }
-
-function decorateTile(coords, piece, decorator, group, opacity, zOffset=0.00) {
-  let meshTile = tiles.getTileMesh(view.context.tileMap, coords);
-  if (!meshTile) {
-    // TODO: Need to create a tile mesh for this tile with high transparency.
-
-    const tileGeometry = new THREE.BoxGeometry(...coordsMaps.vts2xyz(tiles.tileSize()));
-
-    let pos = coords;
-    let tile = tiles.getTileAttributes(pos);
-    meshTile = tiles.createMeshTile(tile, tileGeometry, pos);
-    meshTile.material.forEach(mat => {      // Faces and edges.
-      mat.transparent = true;
-      mat.opacity = opacity;   // tweak as desired
-    });
-    meshTile.children.forEach(child => {     // Frame.
-      if (child.type === "LineSegments") {
-        child.material.transparent = true;
-        child.material.opacity = opacity  // match tile or slightly higher (e.g. 0.4)
-      }
-    });
-
-    meshTile.userData = {
-      isTile: true,
-      coords: pos,
-      faceColor: tile.faceColor,
-      isOffboard: true
-    };
-
-    group.add(meshTile);
-  }
-
-  const faceColor = meshTile.userData.faceColor;
-
-  const overlays = decorators.decorate(faceColor, meshTile, piece, decorator, zOffset);
-
-  if (overlays) {
-    group.userData.overlays = group.userData.overlays || [];
-    group.userData.overlays.push(...overlays);
-  }
-}
-
 function getActiveBoardSpec() {
   const setupArray = state.getState().Setup;
 
