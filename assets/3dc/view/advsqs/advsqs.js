@@ -97,7 +97,8 @@ export function specsToPanelParams(specs) {
   if(!specs) return getAdvsqPanelInitialParams();
 
   const spec = getActiveBoardSpec();
-  // const spec = coords.getBoardSpec("8x8x8");  // TODO: get boardspec from setup panel.
+  // TODO: get boardspec from setup panel.
+  // const spec = coords.getBoardSpec("8x8x8");
   console.log("   specs", specs);
   let src = coords.vtsToBoard(specs.srcTile, spec);
   console.log("   spec", spec);

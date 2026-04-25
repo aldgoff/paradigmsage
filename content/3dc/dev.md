@@ -70,4 +70,14 @@ title: "Dev"
   - 4/22/26 - Attempt max stride limit. Draft state focused undo. POC state undo. Setup panel: board and trays. Enforce MVC layers. Add state level undo/redo.
   - 4/23/26 - Refactor advsqs to use state undo. Refine advsqs as undo example. Delete undo system at control layer. Get rerun to work. Basic gambits plumbing.
   - 4/24/26 - Gambit Freeze Quadrant. Debug resolveDstTile(). Put planes.resolveDstTile() under test. Test plumbing. Animate freeze.
+  - 4/25/26 - Neaten TODOs.
+
+ ### Week 7:
+  - 4/26/26 - tbd
+
+ ### Week 8:
+  - 5/03/26 - tbd
+
+ ### Week 9:
+  - 5/10/26 - tbd
 

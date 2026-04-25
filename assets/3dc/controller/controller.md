@@ -24,7 +24,7 @@
   - Create 1 of three boards
   - Create trays (2 types, 3 gaps)
 
- ### 1.2 Trays - TODO: to be deprecated.
+ ### 1.2 Trays
 
  ### 1.3 GameControl
   - New

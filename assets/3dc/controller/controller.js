@@ -53,7 +53,8 @@ import * as advsqs   from "../view/advsqs/advsqs.js";
 import * as model    from "../model/model.js";
 import * as state    from "../model/state/state.js";
 
-import * as example  from "../exampleRegistration/control.js";  //TODO: DEPRECATED
+//TODO: DEPRECATED exampleRegistration
+import * as example  from "../exampleRegistration/control.js";
 // Seampoint: more imports...
 
 // --- UI ---
@@ -122,11 +123,12 @@ function makeDraggable(element) {
 }
 // Seampoint: more local functions...
 
-/*** Demo Code - TODO: to be deprecated. */
+ // TODO: Deprecating demo code: create a fake state history, for dev undo arch.
+/*** Demo Code */
 import stateData from "../model/state/state.json" assert { type: "json" };
   const seed = stateData.state_module;     // Fake data from state.json.
 
-function demo() { // TODO: Deprecating: create a fake state history, for dev undo arch.
+function demo() {
   console.log("Demo undo/redo state architecture.");
 
   state.setNull();                                      // Initial state, all null.

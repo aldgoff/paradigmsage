@@ -54,7 +54,8 @@ export function run() {
   test_planeCycleClosure();
   // Seampoint: more tests...
 
-  let curr = snapshotTotals();  // TODO: refactor as teardown(<module>):
+  // TODO: refactor as teardown(<module>):
+  let curr = snapshotTotals();
   const pass = curr.pass - prev.pass;
   const fail = curr.fail - prev.fail;
 
