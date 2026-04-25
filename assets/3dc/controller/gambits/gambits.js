@@ -14,14 +14,15 @@ import gambitsData from "./gambits.json" assert { type: "json" };
   // Seampoint: more objects.
 
 // --- Build upon previous layers ---
-import * as game   from "../../controller/game/game.js";
-
-import * as advsqs  from "../../view/advsqs/advsqs.js";
-  import * as view       from "../../view/view.js";
+import * as game    from "../../controller/game/game.js";
+import * as cAdvsqs from "../../controller/advsqs/advsqs.js";
 
 import * as state  from "../../model/state/state.js";
 import * as coords from "../../foundation/coords/coords.js";  // vtsToNotation().
 import * as planes from "../../geometry/planes.js";    // resolveDstTile().
+
+import * as view    from "../../view/view.js";
+import * as vAdvsqs from "../../view/advsqs/advsqs.js";
 // Seampoint: more imports.
 
 
@@ -72,13 +73,13 @@ export function handleFreezeQuadrant() {
     dst       // Board if on board (KR8,8), vts if off board ([6,6,6]).
   };
 
-  advsqs.clearAdvsq();
+  vAdvsqs.clearAdvsq();
   state.clearBuffer("AdvSqs");
   // Optional but correct:
-  const initParams = advsqs.getAdvsqPanelInitialParams();
-  console.log("initParams", initParams, normalize(initParams));
-  advsqs.setAdvsqPanelParams(
-    normalize(initParams)
+  const initParams = vAdvsqs.getAdvsqPanelInitialParams();
+  console.log("initParams", initParams, cAdvsqs.normalize(initParams));
+  vAdvsqs.setAdvsqPanelParams(
+    cAdvsqs.normalize(initParams)
   );
 
   const group = makeGambit(curr);
@@ -133,20 +134,6 @@ function animateFreezeTransition(group, duration = 0.8) {
   }
 
   requestAnimationFrame(step);
-}
-// TODO: Duplicated method.
-function normalize(payload) { // Convert panel strings to numbers, arrays, etc.
-  let { srcTile, quad, perimeter, stride, opacity } = payload;  // Unpack primary fields.
-
-  srcTile   = coords.normalizeTileToVts(srcTile);               // Convert numeric fields.
-  quad      = Number(quad);  
-  perimeter = Number(perimeter);
-  stride    = Number(stride);
-  opacity   = Number(opacity);
-
-  const normed = { srcTile, quad, perimeter, stride, opacity }; // Repack primary fields.
-
-  return normed;
 }
 
 /*** ----- ----- ----- ***/

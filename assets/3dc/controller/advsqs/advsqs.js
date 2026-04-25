@@ -193,7 +193,7 @@ function handleNextPiece(payload) {
 }
 
 // --- Helpers ---
-function normalize(payload) { // Convert panel strings to numbers, arrays, etc.
+export function normalize(payload) { // Convert panel strings to numbers, arrays, etc.
   let { srcTile, quad, perimeter, stride, opacity } = payload;  // Unpack primary fields.
 
   srcTile   = coords.normalizeTileToVts(srcTile);               // Convert numeric fields.
