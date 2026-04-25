@@ -100,4 +100,13 @@
  ### 5.6 Undo Behavior
   The gambit panel should respond to the usual undo symmantics.
 
-  
+## 6. Validation - A Feynman Tile
+  Bishop quad: KB4,4 - Q19 - k2 - stride=3.
+  Duke   quad: KB4,4 - Q40 - k3 - stride=6.
+
+  Stride tiles between bishop and duke visually conflict.
+
+  Gambit:
+  - Q19: KB4,4 -> QN6,6
+  - Q40: KB4,4 -> QN6,6
+
