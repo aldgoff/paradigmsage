@@ -35,6 +35,7 @@ if (location.hostname === "localhost") {
 
   import("./tests/model/state.test.js").then(m => m.run());
   import("./tests/controller/gambits.test.js").then(m => m.run());
+  import("./tests/view/gambits.test.js").then(m => m.run());
   // Seampoint: more module tests.
 }
 

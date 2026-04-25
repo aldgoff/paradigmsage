@@ -131,7 +131,9 @@
 │   │   │   │   └── state.test.js
 │   │   │   ├── templates
 │   │   │   │   └── modules.test.js
-│   │   │   └── tests.js
+│   │   │   ├── tests.js
+│   │   │   └── view
+│   │   │       └── gambits.test.js
 │   │   └── view
 │   │       ├── _tbd.md
 │   │       ├── advsqs
@@ -148,6 +150,10 @@
 │   │       │   ├── decorators.json
 │   │       │   └── decorators.md
 │   │       ├── demos.js
+│   │       ├── gambits
+│   │       │   ├── gambits.js
+│   │       │   ├── gambits.json
+│   │       │   └── gambits.md
 │   │       ├── pieces
 │   │       ├── registerHandlers.js
 │   │       ├── render
@@ -461,4 +467,4 @@
 │           └── poc.js
 └── themes
 
-93 directories, 368 files
+95 directories, 372 files
