@@ -153,10 +153,7 @@ function decoratePerimeter(lastPerim, perim, piece, quadType, group, opacity, st
   }
 function decorateTile(coords, piece, decorator, group, opacity, zOffset=0.00) {
   let meshTile = tiles.getTileMesh(context.tileMap, coords);
-  // let meshTile = tiles.getTileMesh(view.context.tileMap, coords);
   if (!meshTile) {
-    // TODO: Need to create a tile mesh for this tile with high transparency.
-
     const tileGeometry = new THREE.BoxGeometry(...coordsMaps.vts2xyz(tiles.tileSize()));
 
     let pos = coords;

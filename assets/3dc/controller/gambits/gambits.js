@@ -75,7 +75,7 @@ export function handleFreezeQuadrant() {
 
   vAdvsqs.clearAdvsq();
   state.clearBuffer("AdvSqs");
-  // Optional but correct:
+
   const initParams = vAdvsqs.getAdvsqPanelInitialParams();
   console.log("initParams", initParams, cAdvsqs.normalize(initParams));
   vAdvsqs.setAdvsqPanelParams(
@@ -140,17 +140,17 @@ function animateFreezeTransition(group, duration = 0.8) {
 
 function handleFreezeLinear() {
   console.log("cntrl: gambits.js - handleFreezeLinear()");
-  // TODO: change state.
+  // TODO: change state - handleFreezeLinear().
   }
 
 function handleFreezeOverlay() {
   console.log("cntrl: gambits.js - handleFreezeOverlay()");
-  // TODO: change state.
+  // TODO: change state - handleFreezeOverlay().
   }
 
 function handleDelete() {
   console.log("cntrl: gambits.js - handleDelete()");
-  // TODO: change state.
+  // TODO: change state - handleDelete().
 }
 
 

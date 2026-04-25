@@ -3,7 +3,7 @@
   Purpose: desc
   Author: Allan Goff
   Date: 4/21/26
-  Recommended access: import * as advsqs.
+  Recommended access: import * as cAdvsqs.
   UI: the export functions.
 */
 
@@ -19,7 +19,7 @@ import * as game   from "../../controller/game/game.js";
 import * as state  from "../../model/state/state.js";
 import * as coords from "../../foundation/coords/coords.js";  // normalizeTileToVts().
 
-import * as advsqs from "../../view/advsqs/advsqs.js";
+import * as vAdvsqs from "../../view/advsqs/advsqs.js";
 // Seampoint: more imports.
 
 // --- UI ---
@@ -63,8 +63,8 @@ function handleRemove(payload) {
   const newAdvsq = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
 
   state.clearBuffer("AdvSqs");           // Log state change in undo buffer.
-  advsqs.clearAdvsq();             // Render.
-  advsqs.setAdvsqPanelInitialParams(newAdvsq);   // Update the control panel.
+  vAdvsqs.clearAdvsq();             // Render.
+  vAdvsqs.setAdvsqPanelInitialParams(newAdvsq);   // Update the control panel.
   }
 
 function handleGrow(payload) {
@@ -105,7 +105,7 @@ function handleUpdateParam(payload) {
 
     if(perimeter === currPerimeter) { // Panel limited.
       const corrected = { srcTile, quad, perimeter, stride, opacity };
-      advsqs.setAdvsqPanelParams(corrected);    // Update the control panel.
+      vAdvsqs.setAdvsqPanelParams(corrected);    // Update the control panel.
       state.replaceCurrentAdvsq(corrected);     // 🔥 no undo entry, no change in state, no need to render.
       return;
     }
@@ -222,8 +222,8 @@ function blank(payload) { // Convert panel strings to numbers, arrays, etc.
 
 function applyAdvsq(newAdvsq) { // Log state change, render, update control panel.
   state.pushNewAdvsq(newAdvsq);           // Log state change in undo buffer.
-  advsqs.makeAdvsq(newAdvsq);             // Render.
-  advsqs.setAdvsqPanelParams(newAdvsq);   // Update the control panel.
+  vAdvsqs.makeAdvsq(newAdvsq);             // Render.
+  vAdvsqs.setAdvsqPanelParams(newAdvsq);   // Update the control panel.
 }
 // Seampoint: more local functions.
 

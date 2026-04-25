@@ -46,8 +46,7 @@ export function getStateKeys() {
   return Object.keys(state);
 }
 
-// TODO: Leaves meshes in the scene.
-export function clearBuffer(buffer) {
+export function clearBuffer(buffer) { // Leaves meshes in scene, be sure to call the clear routine.
   console.log("model: state.js - clearBuffer(buffer):", buffer);
   state[buffer].length = 0;
   bufferCount[buffer] = 0;

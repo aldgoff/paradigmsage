@@ -55,13 +55,13 @@ function handleMakeBoard(payload) { // Setup handler.
 
 function handleShowTrays(visible) {
   console.log("control: game.js - handleShowTrays(visible):", visible);
-  // TODO: change state.
+  // TODO: change state - handleShowTrays().
   game.showUndoStatus();  // Show undo status in the panel.
   }
 
 function handleHideTrays(visible) {
   console.log("control: game.js - handleHideTrays(visible):", visible);
-  // TODO: change state.
+  // TODO: change state - handleHideTrays()
   game.showUndoStatus();  // Show undo status in the panel.
   }
 
@@ -70,7 +70,7 @@ function handleTrayGap(payload) {
 
   const { action, boardSize, play, trayType, visible, gap, initialPos } = payload;
 
-  // TODO: change state.
+  // TODO: change state - handleTrayGap().
   game.showUndoStatus();  // Show undo status in the panel.
 }
 // Seampoint: more local functions.

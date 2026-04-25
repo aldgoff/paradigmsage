@@ -40,7 +40,7 @@ export function panelDispatch(payload) {
 // --- Handle Functions ---
 function handleNewGame() {
   console.log("control: game.js - handleNewGame()");
-  // TODO: code game.js - handleNewGame().
+  // TODO: game.js - handleNewGame().
 }
 
 function handleRerun() {
@@ -174,7 +174,7 @@ function handleRedo() {
 
 function handleLoad() {
   console.log("control: game.js - handleLoad()");
-  // TODO: code game.js - handleLoad().
+  // TODO: game.js - handleLoad().
 
   // Dev/Debug code - temporary.
   console.log("control: game.js... getStateKeys()", state.getStateKeys());
@@ -185,7 +185,7 @@ function handleLoad() {
 
 function handleSave() {
   console.log("control: game.js - handleSave()");
-  // TODO: code game.js - handleSave().
+  // TODO: game.js - handleSave().
   const lastState = state.fetchCurrentSetup();  // Temp: being used for undo feedback, not button's intended purpose.
   const index = state.getBufferCount(); // All of them.
   const setupIndex = index.Setup;     // Just the setup index
