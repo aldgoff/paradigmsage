@@ -94,10 +94,13 @@ function test_queen_stride() {
       expected: ["qtile", "body", "Feynman", "body", "qtile"], 
       label: "Queen-Bishop (2)" },
     { params: { piece: 'queen', subType: 'duke',   quadType: 'edge', k: 2 }, 
-      expected: ["end3", "body", "apex", "body", "end3"], 
+      expected: ["end3", "body", "qtile", "body", "end3"], 
       label: "Queen-Duke-edge (3)" },
     { params: { piece: 'queen', subType: 'duke',   quadType: 'face', k: 2 }, 
       expected: ["end3", "body", "hotspot", "body", "end3"], 
+      label: "Queen-Duke-face (3)" },
+    { params: { piece: 'queen', subType: 'duke',   quadType: 'face', k: 3 }, 
+      expected: ["end3", "Feynman", "body", "hotspot", "body", "Feynman", "end3"], 
       label: "Queen-Duke-face (3)" },
 
     { params: { piece: 'queen', subType: 'rook',   quadType: 'all',  k: 3 }, 
@@ -107,10 +110,10 @@ function test_queen_stride() {
       expected: ["qtile", "body", "body", "body", "Feynman", "body", "body", "body", "qtile"], 
       label: "Queen-Bishop (4)" },
     { params: { piece: 'queen', subType: 'duke',   quadType: 'edge', k: 6 }, 
-      expected: ["end3", "body", "Feynman", "body", "body", "body", "apex", "body", "body", "body", "Feynman", "body", "end3"], 
+      expected: ["end3", "body", "body", "body", "body", "body", "qtile", "body", "body", "body", "body", "body", "end3"], 
       label: "Queen-Duke-edge (6)" },
-    { params: { piece: 'queen', subType: 'duke',   quadType: 'face', k: 5 }, 
-      expected: ["end3", "body", "body", "body", "body", "hotspot", "body", "body", "body", "body", "end3"], 
+    { params: { piece: 'queen', subType: 'duke',   quadType: 'face', k: 6 }, 
+      expected: ["end3", "body", "Feynman", "body", "body", "body", "hotspot", "body", "body", "body", "Feynman", "body", "end3"], 
       label: "Queen-Duke-face (5)" },
     ];
 

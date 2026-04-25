@@ -83,14 +83,6 @@ function handleRerun() {
   showUndoStatus();
 }
 
-function handleRerun1() {  
-  if(keyIndex.arrayKey === "AdvSqs") {
-    advsqs.clearAdvsq();
-    const firstElement = state.getBufferCount();
-  }
-
-  }
-
 function handleUndo() {
   const keyIndex = state.prevKeyIndex();
 

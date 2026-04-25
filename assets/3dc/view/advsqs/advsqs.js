@@ -80,8 +80,14 @@ export function setAdvsqPanelParams(params) {
   panel.querySelector('[name="advsq-nickname"]').textContent = derived.nickname;  // Update derived fields.
   panel.querySelector('[name="advsq-plane"]').textContent    = derived.plane;
   panel.querySelector('[name="advsq-quadType"]').textContent = derived.quadType;
+
   panel.querySelector('[name="advsq-length"]').textContent   = derived.length;
+  panel.querySelector('[name="advsq-area"]').textContent     = derived.area;
+  
   panel.querySelector('[name="advsq-tile"]').textContent     = derived.tile;
+  panel.querySelector('[name="advsq-moveType"]').textContent = derived.moveType;
+  panel.querySelector('[name="advsq-overlap"]').textContent  = derived.overlap;
+  panel.querySelector('[name="advsq-piece"]').textContent    = derived.piece;
 
   const srcTileStr = coords.vtsToBoard(params.srcTile);
   panel.querySelector('[name="advsq-src"]').value          = srcTileStr;          // Update the primary fields.
@@ -157,36 +163,77 @@ function getActiveBoardSpec() {
   return coords.getBoardSpec(boardStr);
 }
 
-export function computeAdvsqDerived({ quad, perimeter, stride }) {
+function computeAdvsqDerived({ quad, perimeter, stride }) {
   // console.log("view : advsqs.js - computeAdvsqDerived()", { quad, perimeter, stride });
 
   // --- normalize types ---
   const q = Number(quad);
   const k = Number(perimeter);
   const s = Number(stride);
-  // const q = quad;
-  // const k = perimeter;
-  // const s = stride;
 
+  const quadDerives = quadDerived(q,k,s);
+  const perimDerives = perimDerived(q,k,s);
+  const strideDerives = strideDerived(q,k,s);
+
+  return {
+    ...quadDerives,
+    ...perimDerives,
+    ...strideDerives
+  };
+  }
+
+function quadDerived(q, k, s) {
   const rec = quads.pqrTable(q);
   const nickname = rec?.nickname ?? "";
   const plane    = rec?.plane ?? "";
   const quadType = rec?.quadType ?? "";
 
-  const length = 2 * k + 1;
+  return { nickname, plane, quadType };
+  }
 
+function perimDerived(q, k, s) {
+  const length = 2 * k + 1;
+  const area = (k+1)*(k+1);
+
+  return { length, area };
+  }
+
+function strideDerived(q, k, s) {
+  const rec = quads.pqrTable(q);
   const maxStride = 2 * k + 1;
 
+  let tile = "";                                    // Tile: E1|Apex|Duplex|E2|Body
   let apex = "Apex";
   if (rec?.quadType === "face") apex = "Duplex";
+  if (s === 0)              tile = "";
+  else if (s === 1)         tile = "E1";
+  else if (s === k + 1)     tile = apex;
+  else if (s === maxStride) tile = "E2";
+  else                      tile = "Body";
 
-  let tile = "";
-  if (s === 1)               tile = "E1";
-  else if (s === k + 1)      tile = apex;
-  else if (s === maxStride)  tile = "E2";
-  else                       tile = "Body";
+  let moveType = "quadrant";                        // Move type: quadrant|linear|duplex
+  if(tile === "E1" || tile === "E2")
+    moveType = "linear";
+  else if(tile === "Duplex") { // Duke quad.
+    moveType = "duplex";
+  }
 
-  return { nickname, plane, quadType, length, tile };
+  let overlap = "qtile";                            // Overlap: source|end2|end3|body|apex|brook|qtile|hotspot|Feynman|
+  const basePiece = quads.quadToPiece(q);
+  if(s === 0) overlap = "source";
+  else {
+    let quadType = "all";
+    if(rec?.quadType === "edge") quadType = "edge";
+    if(rec?.quadType === "face") quadType = "face";
+    overlap = overlaps.getOverlapType(basePiece, quadType, k, s-1);
+  }
+
+  let piece = "";                                   // Piece: rook|bishop|duke|stack|queen
+  if(     overlap === "qtile" || overlap === "Feynman") piece = "stack"
+  else if(overlap === "brook" || overlap === "hotspot") piece = "queen"
+  else                                                  piece = basePiece;
+
+  return { tile, moveType, overlap, piece };
 }
 // Seampoint: more local functions.
 

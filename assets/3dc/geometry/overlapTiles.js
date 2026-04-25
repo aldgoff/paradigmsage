@@ -3,7 +3,7 @@
   Purpose: desc
   Author: Allan Goff
   Date: 3/30/26
-  Recommended access: import * as overlapTiles.
+  Recommended access: import * as overlaps.
   UI: the export functions.
 */
 
@@ -70,6 +70,13 @@ export function getRoles({ piece, subType = null, quadType }) {
   if (!quad) { throw new Error(`Invalid quadType '${quadType}' for piece '${piece}'`); }
 
   return quad.roles;
+}
+
+export function getOverlapType(basePiece, quadType, perim, stride) {
+  const type = overlapTiles.queen[basePiece].quads[quadType].strides[perim][stride];
+  // console.log("model: getOverlapType(basePiece, quadType, perim, stride)...type - ", basePiece, quadType, perim, stride, type);
+
+  return type; // source|end2|end3|body|apex|brook|qtile|hotspot|Feynman
 }
 // Seampoint: more global functions.
 

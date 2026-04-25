@@ -211,6 +211,15 @@ layout: "play"
   <div class="section">
     <label> Tile:        <output name="advsq-tile"      style="opacity:0.7; font-style:italic;"></output> </label>
   </div>
+  <div class="section">
+    <label> MoveType: <output name="advsq-moveType" style="opacity:0.7; font-style:italic;"> Q|L|D </output> </label>
+  </div>
+  <div class="section">
+    <label> Overlap:  <output name="advsq-overlap"  style="opacity:0.7; font-style:italic;"> B|Q|H|F </output> </label>
+  </div>
+  <div class="section">
+    <label> Piece:    <output name="advsq-piece"    style="opacity:0.7; font-style:italic;"> R|B|D|Q|S|N </output> </label>
+  </div>
 
   <!-- Optional: key hints (visual only) -->
   <div class="section" style="font-size: 11px; color: #666;">

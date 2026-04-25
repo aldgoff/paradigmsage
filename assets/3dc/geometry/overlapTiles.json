@@ -158,16 +158,16 @@
               ],
             "strides": [
               ["source"],
-              ["end3", "apex", "end3"],
-              ["end3", "body", "apex", "body", "end3"],
-              ["end3", "Feynman", "body", "apex", "body", "Feynman", "end3"],
-              ["end3", "body", "body", "body", "apex", "body", "body", "body", "end3"],
-              ["end3", "body", "body", "body", "body", "apex", "body", "body", "body", "body", "end3"],
-              ["end3", "body", "Feynman", "body", "body", "body", "apex", "body", "body", "body", "Feynman", "body", "end3"],
-              ["end3", "body", "body", "body", "body", "body", "body", "apex", "body", "body", "body", "body", "body", "body", "end3"],
-              ["end3", "body", "body", "body", "body", "body", "body", "body", "apex", "body", "body", "body", "body", "body", "body", "body", "end3"],
-              ["end3", "body", "body", "Feynman", "body", "body", "body", "body", "body", "apex", "body", "body", "body", "body", "Feynman", "body", "body", "body", "end3"],
-              ["end3", "body", "body", "body", "body", "body", "body", "body", "body", "body", "apex", "body", "body", "body", "body", "body", "body", "body", "body", "body", "end3"]
+              ["end3", "qtile", "end3"],
+              ["end3", "body", "qtile", "body", "end3"],
+              ["end3", "body", "body", "qtile", "body", "body", "end3"],
+              ["end3", "body", "body", "body", "qtile", "body", "body", "body", "end3"],
+              ["end3", "body", "body", "body", "body", "qtile", "body", "body", "body", "body", "end3"],
+              ["end3", "body", "body", "body", "body", "body", "qtile", "body", "body", "body", "body", "body", "end3"],
+              ["end3", "body", "body", "body", "body", "body", "body", "qtile", "body", "body", "body", "body", "body", "body", "end3"],
+              ["end3", "body", "body", "body", "body", "body", "body", "body", "qtile", "body", "body", "body", "body", "body", "body", "body", "end3"],
+              ["end3", "body", "body", "body", "body", "body", "body", "body", "body", "qtile", "body", "body", "body", "body", "body", "body", "body", "body", "end3"],
+              ["end3", "body", "body", "body", "body", "body", "body", "body", "body", "body", "qtile", "body", "body", "body", "body", "body", "body", "body", "body", "body", "end3"]
               ]
           },
           "face": {
@@ -181,13 +181,13 @@
               ["source"],
               ["end3", "hotspot", "end3"],
               ["end3", "body", "hotspot", "body", "end3"],
-              ["end3", "body", "body", "hotspot", "body", "body", "end3"],
+              ["end3", "Feynman", "body", "hotspot", "body", "Feynman", "end3"],
               ["end3", "body", "body", "body", "hotspot", "body", "body", "body", "end3"],
               ["end3", "body", "body", "body", "body", "hotspot", "body", "body", "body", "body", "end3"],
-              ["end3", "body", "body", "body", "body", "body", "hotspot", "body", "body", "body", "body", "body", "end3"],
+              ["end3", "body", "Feynman", "body", "body", "body", "hotspot", "body", "body", "body", "Feynman", "body", "end3"],
               ["end3", "body", "body", "body", "body", "body", "body", "hotspot", "body", "body", "body", "body", "body", "body", "end3"],
               ["end3", "body", "body", "body", "body", "body", "body", "body", "hotspot", "body", "body", "body", "body", "body", "body", "body", "end3"],
-              ["end3", "body", "body", "body", "body", "body", "body", "body", "body", "hotspot", "body", "body", "body", "body", "body", "body", "body", "body", "end3"],
+              ["end3", "body", "body", "Feynman", "body", "body", "body", "body", "body", "hotspot", "body", "body", "body", "body", "body", "Feynman", "body", "body", "end3"],
               ["end3", "body", "body", "body", "body", "body", "body", "body", "body", "body", "hotspot", "body", "body", "body", "body", "body", "body", "body", "body", "body", "end3"]
               ]
           }
