@@ -53,11 +53,8 @@ export function getAdvsqPanelParams() {
   const params = {
     srcTile:   panel.querySelector('[name="advsq-src"]')?.value,
     quad:      panel.querySelector('[name="advsq-quad"]')?.value,
-    // plane:     panel.querySelector('[name="advsq-plane"]')?.textContent,
     perimeter: panel.querySelector('[name="advsq-perimeter"]')?.value,
-    // length:    panel.querySelector('[name="advsq-length"]')?.textContent,
     stride:    panel.querySelector('[name="advsq-stride"]')?.value,
-    // tile:      panel.querySelector('[name="advsq-tile"]')?.textContent,
     opacity:   panel.querySelector('[name="advsq-opacity"]')?.value,
   };
 
@@ -70,27 +67,29 @@ export function setAdvsqPanelParams(params) {
   const panel = document.getElementById("advsq-window");
   if (!panel) return;
 
-  const quad      = params.quad;                                                  // Use the passed in primary fields.
+  const quad      = params.quad;                                                    // Use the passed in primary fields.
   const perimeter = params.perimeter;;
   const stride    = params.stride;
 
-  const derived = computeAdvsqDerived({quad, perimeter, stride});                 // Compute derived fields.
-  // console.log("derived", derived);
+  const derived = computeAdvsqDerived({quad, perimeter, stride});                   // Compute derived fields.
 
-  panel.querySelector('[name="advsq-nickname"]').textContent = derived.nickname;  // Update derived fields.
-  panel.querySelector('[name="advsq-plane"]').textContent    = derived.plane;
-  panel.querySelector('[name="advsq-quadType"]').textContent = derived.quadType;
+  panel.querySelector('[name="advsq-nickname"]').textContent  = derived.nickname;     // Update quad derived fields.
+  panel.querySelector('[name="advsq-pieceQuad"]').textContent = derived.pieceQuad;
+  panel.querySelector('[name="advsq-planeQuad"]').textContent = derived.planeQuad;
+  panel.querySelector('[name="advsq-plane"]').textContent     = derived.plane;
+  panel.querySelector('[name="advsq-quadType"]').textContent  = derived.quadType;
 
-  panel.querySelector('[name="advsq-length"]').textContent   = derived.length;
+  panel.querySelector('[name="advsq-length"]').textContent   = derived.length;        // Update perimeter derived fields.
   panel.querySelector('[name="advsq-area"]').textContent     = derived.area;
+  panel.querySelector('[name="advsq-onboard"]').textContent  = derived.onboard;
   
-  panel.querySelector('[name="advsq-tile"]').textContent     = derived.tile;
-  panel.querySelector('[name="advsq-moveType"]').textContent = derived.moveType;
-  panel.querySelector('[name="advsq-overlap"]').textContent  = derived.overlap;
-  panel.querySelector('[name="advsq-piece"]').textContent    = derived.piece;
+  panel.querySelector('[name="advsq-strideType"]').textContent  = derived.strideType; // Update stride derived fields.
+  panel.querySelector('[name="advsq-moveType"]').textContent    = derived.moveType;
+  panel.querySelector('[name="advsq-overlap"]').textContent     = derived.overlap;
+  panel.querySelector('[name="advsq-piece"]').textContent       = derived.piece;
 
   const srcTileStr = coords.vtsToBoard(params.srcTile);
-  panel.querySelector('[name="advsq-src"]').value          = srcTileStr;          // Update the primary fields.
+  panel.querySelector('[name="advsq-src"]').value          = srcTileStr;            // Update the primary fields.
   panel.querySelector('[name="advsq-quad"]').value         = params.quad;
   panel.querySelector('[name="advsq-perimeter"]').value    = params.perimeter;
   panel.querySelector('[name="advsq-stride"]').value       = params.stride;
@@ -188,37 +187,49 @@ function quadDerived(q, k, s) {
   const plane    = rec?.plane ?? "";
   const quadType = rec?.quadType ?? "";
 
-  return { nickname, plane, quadType };
+  const pieceQuad = quads.quadToPieceQuad(q);   // 1-12/24.
+  const planeQuad = quads.quadToPlaneQuad(q);   // 1-4/6.
+
+  return { nickname, plane, quadType, pieceQuad, planeQuad };
   }
 
 function perimDerived(q, k, s) {
   const length = 2 * k + 1;
   const area = (k+1)*(k+1);
+  const onboard = area; // TODO should be between 1 and area.
 
-  return { length, area };
+  // const onboard = coords.onBoardVts(vts); // Need count inadvsq, not a particular tile.
+
+  return { length, area, onboard };
   }
 
 function strideDerived(q, k, s) {
-  const rec = quads.pqrTable(q);
+  const rec = quads.pqrTable(q);  // { piece, plane, quad:{globalQ,pieceQ,planeQ,rayPair:[r1,r2],quadType,nickname}
   const maxStride = 2 * k + 1;
 
-  let tile = "";                                    // Tile: E1|Apex|Duplex|E2|Body
+  let strideType = "";                                    // Tile: source|E1|Body|Apex|Duplex|E2.
   let apex = "Apex";
-  if (rec?.quadType === "face") apex = "Duplex";
-  if (s === 0)              tile = "";
-  else if (s === 1)         tile = "E1";
-  else if (s === k + 1)     tile = apex;
-  else if (s === maxStride) tile = "E2";
-  else                      tile = "Body";
+  let body = "Body"
+  if(rec?.quadType === "face") { 
+    apex = "Duplex";
+    const shell = k/3;
+    if(k%3 === 0 && (s === shell+1 || s === 2*k+1 - shell))
+      body = "Third";
+  }
+  if (s === 0)              strideType = "Source";
+  else if (s === 1)         strideType = "E1";
+  else if (s === k + 1)     strideType = apex;
+  else if (s === maxStride) strideType = "E2";
+  else                      strideType = body;
 
-  let moveType = "quadrant";                        // Move type: quadrant|linear|duplex
-  if(tile === "E1" || tile === "E2")
+  let moveType = "quadrant";                        // Move type: quadrant|linear|duplex.
+  if(strideType === "E1" || strideType === "E2")
     moveType = "linear";
-  else if(tile === "Duplex") { // Duke quad.
+  else if(strideType === "Duplex") { // Duke quad.
     moveType = "duplex";
   }
 
-  let overlap = "qtile";                            // Overlap: source|end2|end3|body|apex|brook|qtile|hotspot|Feynman|
+  let overlap = "qtile";                            // Overlap: source|end2|end3|body|apex|brook|qtile|hotspot|Feynman.
   const basePiece = quads.quadToPiece(q);
   if(s === 0) overlap = "source";
   else {
@@ -233,7 +244,7 @@ function strideDerived(q, k, s) {
   else if(overlap === "brook" || overlap === "hotspot") piece = "queen"
   else                                                  piece = basePiece;
 
-  return { tile, moveType, overlap, piece };
+  return { strideType, moveType, overlap, piece };
 }
 // Seampoint: more local functions.
 

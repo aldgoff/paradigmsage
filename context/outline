@@ -97,7 +97,8 @@
 │   │   │   ├── model.json
 │   │   │   ├── model.md
 │   │   │   ├── notation
-│   │   │   │   └── notation.js
+│   │   │   │   ├── notation.js
+│   │   │   │   └── notation.json
 │   │   │   └── state
 │   │   │       ├── state.js
 │   │   │       ├── state.json
@@ -467,4 +468,4 @@
 │           └── poc.js
 └── themes
 
-95 directories, 372 files
+95 directories, 373 files

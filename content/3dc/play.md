@@ -185,7 +185,9 @@ layout: "play"
     <label> Source Tile  <input  name="advsq-src"       type="text"    value="KB4,4" maxlength="7" style="width: 60px;"> </label>
   </div>
   <div class="section">
-    <label> Quad         <input  name="advsq-quad"      type="number"   min="1" step="1" value="1" max="60"> </label>
+    <label> Quad         <input  name="advsq-quad"      type="number" min="1" step="1" value="1" max="60"> </label>
+    <label> BP:          <output name="advsq-pieceQuad" style="opacity:0.7; font-style:italic;"></output> </label>
+    <label> P:           <output name="advsq-planeQuad" style="opacity:0.7; font-style:italic;"></output> </label>
   </div>
   <div class="section">
     <label> Nickname:    <output name="advsq-nickname"  style="opacity:0.7; font-style:italic;"></output> </label>
@@ -206,19 +208,22 @@ layout: "play"
     <label> Area:        <output name="advsq-area"      style="opacity:0.7; font-style:italic;"></output> </label>
   </div>
   <div class="section">
-    <label> Stride       <input  name="advsq-stride"    type="number"    min="0" step="1" value="0" max="45"> </label>
+    <label> Onboard:     <output name="advsq-onboard"   style="opacity:0.7; font-style:italic;"></output> </label>
   </div>
   <div class="section">
-    <label> Tile:        <output name="advsq-tile"      style="opacity:0.7; font-style:italic;"></output> </label>
+    <label> Stride       <input  name="advsq-stride"    type="number" min="0" step="1" value="0" max="45"> </label>
   </div>
   <div class="section">
-    <label> MoveType: <output name="advsq-moveType" style="opacity:0.7; font-style:italic;"> Q|L|D </output> </label>
+    <label> Stride Type: <output name="advsq-strideType"style="opacity:0.7; font-style:italic;"></output> </label>
   </div>
   <div class="section">
-    <label> Overlap:  <output name="advsq-overlap"  style="opacity:0.7; font-style:italic;"> B|Q|H|F </output> </label>
+    <label> Move Type:   <output name="advsq-moveType"  style="opacity:0.7; font-style:italic;"> Q|L|D </output> </label>
   </div>
   <div class="section">
-    <label> Piece:    <output name="advsq-piece"    style="opacity:0.7; font-style:italic;"> R|B|D|Q|S|N </output> </label>
+    <label> Overlap:     <output name="advsq-overlap"   style="opacity:0.7; font-style:italic;"> B|Q|H|F </output> </label>
+  </div>
+  <div class="section">
+    <label> Piece:       <output name="advsq-piece"     style="opacity:0.7; font-style:italic;"> R|B|D|Q|S|N </output> </label>
   </div>
 
   <!-- Optional: key hints (visual only) -->

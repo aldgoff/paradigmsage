@@ -73,7 +73,7 @@ title: "Dev"
   - 4/25/26 - Neaten TODOs. Fix normalize() dup. Feynman example. Consolodate decoratePerimeter. Remove stale TODO. Draft view/gambits. Code getOverlapType().
 
  ### Week 7:
-  - 4/26/26 - Stride stability.
+  - 4/26/26 - Stride stability. Distinguish stride type (perimeter) from move type (advsq).
 
  ### Week 8:
   - 5/03/26 - tbd
