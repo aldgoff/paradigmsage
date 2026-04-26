@@ -1,5 +1,5 @@
 # Advsqs Spec (Control Level)
-  Hope to enforce MVC pattern with directory structure.
+  Enforce MVC pattern with directory structure.
 
 ## 1. Purpose
   All the code for interacting with the advsq panel.
@@ -25,9 +25,20 @@
 
  ### 2.4 AdvSq Panel
   view.setAdvsqPanelParams(newAdvsq)
+  - Calls computeAdvsqDerived({ quad, perimeter, stride })
 
  ### 2.5 Game Panel Undo Buffers
   state.makeAdvsq(newAdvsq)
+
+## 3. Stride Stability
+  An interesting question is how to morph the stride tile when an advsq expands or shrinks.
+
+  Algorithm:
+  - Stride is pinned to apex tile, if on it.
+  - Stride is pinned to an end tile, if on one.
+  - Stride maintains constant offset from closest end tile.
+    - Enough shrinkage will change it's pinning to the apex tile.
+  - A null stride or perimeter 0 (source tile) starts the pinning on the apex tile.
 
 ## Summary
   - panelDispatch(payload)

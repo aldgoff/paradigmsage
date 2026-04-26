@@ -72,6 +72,16 @@ function handleGrow(payload) {
 
   let { srcTile, quad, perimeter, stride, opacity } = normalize(payload);   // Unpack primary fields.
   
+  if(perimeter > 0) {                                                 // Stride stability idiom (apex, or fixed distance from E1/E2).
+    if(     stride <= 1)               { stride = stride; }           // E1 (or off) - stays on end tile.
+    else if(stride < perimeter + 1)    { stride; }                    // Outbound - constant distance from E1.
+    else if(stride === perimeter + 1)  { stride++; }                  // Apex - stays on apex tile.
+    else if(stride < 2*perimeter + 1)  { stride+=2; }                 // Inbound - constant distance from E2.
+    else if(stride >= 2*perimeter + 1) { stride = 2*perimeter + 3; }  // E2 (or off scale) - stays on end tile.
+  }
+  else {
+    stride = 2;
+  }
   perimeter++;                                                              // Manipulate fields.
 
   const newAdvsq = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
@@ -84,6 +94,13 @@ function handleShrink(payload) {
 
   let { srcTile, quad, perimeter, stride, opacity } = normalize(payload);   // Unpack primary fields.
   
+  if(perimeter >= 1) {                                                // Stride stability idiom (apex, or fixed distance from E1/E2).
+    if(     stride <= 1)               { stride = stride; }           // E1 (or off) - stays on end tile.
+    else if(stride < perimeter + 1)    { stride; }                    // Outbound - constant distance from E1.
+    else if(stride === perimeter + 1)  { stride--; }                  // Apex - stays on apex tile.
+    else if(stride < 2*perimeter + 1)  { stride-=2; }                 // Inbound - constant distance from E2.
+    else if(stride >= 2*perimeter + 1) { stride = 2*perimeter - 1; }  // E2 (or off scale) - stays on end tile.
+  }
   if(--perimeter < 0) perimeter = 0.                                        // Manipulate fields.
 
   const newAdvsq = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
