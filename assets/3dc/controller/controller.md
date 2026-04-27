@@ -230,14 +230,33 @@
     | export function gambitControlDispatcher(fn) { callback.gambit = fn; } |
     +-----------------------------------------------------------------------+
 
-## 5. Callback Registration Control Flow:
+## 5. Listeners
+  window.addEventListener("pointermove", (e) => {
+  window.addEventListener("pointerup", () => {
+  window.addEventListener("pointermove", (e) =>            |
+  window.addEventListener("pointerup", () =>               |
+ element.addEventListener("pointerdown", (e) =>         |
+ element.addEventListener("pointerdown", (e) => {
+
+  window.addEventListener("keydown", handleAdvsqKeys);
+   panel.addEventListener("change", (e) => {
+   panel.addEventListener("click", (e) => {
+
+renderer.domElement.addEventListener("click", (event) => {
+renderer.domElement.addEventListener("click", (event) => {
+  
+addEventListener(view.context.scene, view.context.renderer, view.context.camera, tileMap);
+   
+function addEventListener(scene, renderer, camera, tileMap) {
+
+## 6. Callback Registration Control Flow:
   - Control: registers callback functions via view registration 
   - control.init() -> *control/register.callbacks()* -> 
   - control/events/*GameDispatchers() -> view/registerHandlers/callback register.
   - view.init() -> view.demo() -> run.callback.whatever(control)
   - 
 
- ### 5.1 demos.js
+ ### 6.1 demos.js
     +------------------------------------------+
     | run(context:{scene,camera,renderer,...}) |
     |   Prepares tile stuff for board.         |

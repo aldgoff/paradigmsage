@@ -45,18 +45,17 @@
 // Seampoint: more objects.
 
 // --- Build upon previous layers ---
-// import * as register from "../controller/events.js";
-
-import * as view     from "../view/view.js";
-import * as vAdvsqs  from "../view/advsqs/advsqs.js";
+import * as setup    from "../controller/setup/setup.js";
+import * as gambits  from "../controller/gambits/gambits.js";
+import * as cAdvsqs  from "../controller/advsqs/advsqs.js";
+import * as game     from "../controller/game/game.js";
 
 import * as model    from "../model/model.js";
 import * as state    from "../model/state/state.js";
 
-import * as setup    from "../controller/setup/setup.js";
-import * as game     from "../controller/game/game.js";
-import * as gambits  from "../controller/gambits/gambits.js";
-import * as cAdvsqs   from "../controller/advsqs/advsqs.js";
+import * as view     from "../view/view.js";
+import * as register from "../view/registerHandlers.js";
+import * as vAdvsqs  from "../view/advsqs/advsqs.js";
 
 //TODO: DEPRECATED exampleRegistration
 import * as example  from "../exampleRegistration/control.js";
@@ -73,12 +72,12 @@ export function init(playBoard) {
   makeDraggable(document.getElementById("move-window"));
   makeDraggable(document.getElementById("gambit-window"));
   makeDraggable(document.getElementById("advsq-window"));
+
   makeDraggable(document.getElementById("game-window"));    // Undo control for the previous 4 panels.
 
   makeDraggable(document.getElementById("camera-window")); // Not subject to the undo arch.
   makeDraggable(document.getElementById("viewer-window")); // Not subject to the undo arch.
   // Seampoint - more 2D panels/canvi...
-
 
   callbacks();
 
@@ -110,14 +109,13 @@ window.addEventListener("pointerup", () => {
 
 /*** ---------- ---------- ---------- ---------- ***/
 
-import * as register from "../view/registerHandlers.js";
-
 // --- UI ---
 function callbacks() {
   register.setupControlDispatcher(   setup.panelDispatch);  // Setup.
-  register.gameControlDispatcher(     game.panelDispatch);  // Undo interface.
   register.advsqControlDispatcher( cAdvsqs.panelDispatch);  // Manipulate an advancement square.
   register.gambitControlDispatcher(gambits.panelDispatch);  // Build a gambit.
+
+  register.gameControlDispatcher(     game.panelDispatch);  // Undo interface.
 
   register.cameraControlDispatcher(cameraPanelDispatch);  // Not subject to the undo arch.
   register.viewerControlDispatcher(viewerPanelDispatch);  // Not subject to the undo arch.
