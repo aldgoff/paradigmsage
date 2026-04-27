@@ -3,8 +3,9 @@
   Purpose: Access to quad numbers, planes, and ray pairs.
   Author: Allan Goff
   Date: 3/26/26
+  Recommended access: import * as quads.
   UI: the export functions.
- */
+*/
 
 // --- Load module ---
 import quadsData from "./quads.json" assert { type: "json" };

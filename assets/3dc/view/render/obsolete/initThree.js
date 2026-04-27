@@ -28,7 +28,8 @@ import * as renders from "./renders.js";
 // Seampoint: more imports...
 
 // --- UI ---
-export function initThree(container) {  // TODO: Currently a POC - most of this belongs somewhere else.
+export function initThree(container) {
+  // TODO: Currently a POC - most of this belongs somewhere else.
   /* A 3D env needs these three things to create a 3D context.
    * scene
    * camera

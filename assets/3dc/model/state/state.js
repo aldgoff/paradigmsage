@@ -3,14 +3,10 @@
   Purpose: The state of a 3D Chess game.
   Author: Allan Goff
   Date: 4/06/26
+  Recommended access: import * as state.
   UI: the export functions.
 */
-
-/* JSON stringify and parse syntax:
- * Leverage JSON stringify and parse.
- * const str = JSON.stringify(setup);
- * const obj = JSON.parse(str);
-*/
+/* const obj = JSON.parse(JSON.stringify(setup)); */
 
 // --- Load JSON ---
 import stateData from "./state.json" assert { type: "json" };
@@ -18,20 +14,103 @@ import stateData from "./state.json" assert { type: "json" };
 // Seampoint: more objects.
 
 // --- Build upon previous layers ---
-import * as model  from "../../model/model.js";
-
-import * as view   from "../../view/view.js";
-import * as boards from "../../view/boards/boards.js";
-import * as advsqs from "../../view/advsqs/advsqs.js";
-
+import * as coords from "../../foundation/coords/coords.js";  // normalizeTileToVts().
 // Seampoint: more imports...
 
-let state = { // This is the state history of the game: setup-moves-gambits-advsq.
+let state = { // This is the state history of the game: setup-moves-gambits-advsqs.
   Setup:   [],
   Moves:   [],
   Gambits: [],
   AdvSqs:  []
-};
+  };
+
+let bufferCount = { // bufferCount[key][0] = count of elements in buffer.
+  Setup:   0,
+  Moves:   0,
+  Gambits: 0,
+  AdvSqs:  0
+}
+
+export function getBufferCount() {
+  return bufferCount;
+  }
+export function setBufferCount(key, value) {
+  bufferCount[key] = value;
+}
+
+export function getBufferLength(buffer) {
+  const arr = state[buffer];
+  return arr ? arr.length : 0;
+  }
+export function getStateKeys() {
+  return Object.keys(state);
+}
+
+export function clearBuffer(buffer) { // Leaves meshes in scene, be sure to call the clear routine.
+  console.log("model: state.js - clearBuffer(buffer):", buffer);
+  state[buffer].length = 0;
+  bufferCount[buffer] = 0;
+}
+
+export function prevKeyIndex() {
+  const order = ["AdvSqs", "Gambits", "Moves", "Setup"];
+
+  for (let k = 0; k < order.length; k++) {
+    const key = order[k];
+    let i = bufferCount[key];
+
+    if (i > 0) {
+      i = i - 1;
+      bufferCount[key] = i;
+
+      if (i > 0) {
+        return { arrayKey: key, index: i - 1 };
+      }
+
+      // fall through to lower buffers
+      for (let j = k + 1; j < order.length; j++) {
+        const prevKey = order[j];
+        const prevI = bufferCount[prevKey];
+
+        if (prevI > 0) {
+          return { arrayKey: prevKey, index: prevI - 1 };
+        }
+      }
+
+      return null;
+    }
+  }
+
+  return null;
+  }
+
+export function nextKeyIndex() {
+  const order = ["Setup", "Moves", "Gambits", "AdvSqs"];
+
+  for (let k = 0; k < order.length; k++) {
+    const key = order[k];
+    let i = bufferCount[key];
+    const max = state[key].length;
+
+    if (i < max) {
+      bufferCount[key] = i + 1;
+      return { arrayKey: key, index: i };
+    }
+
+    for (let j = k + 1; j < order.length; j++) {
+      const nextKey = order[j];
+      const nextI = bufferCount[nextKey];
+      const nextMax = state[nextKey].length;
+
+      if (nextI < nextMax) {
+        bufferCount[nextKey] = nextI + 1;
+        return { arrayKey: nextKey, index: nextI };
+      }
+    }
+  }
+
+  return null;
+}
 
 // --- UI ---
 export function setState(newState) {
@@ -42,71 +121,71 @@ export function getState() {
   return state;
   }
 
-export function getNull() {
-  return { Setup: [], Moves: [], Gambits: [], AdvSqs: [] };
-  }
-
 export function setNull() {
   state = { Setup: [], Moves: [], Gambits: [], AdvSqs: [] };
+  }
+
+export function getNull() {
+  return { Setup: [], Moves: [], Gambits: [], AdvSqs: [] };
 }
 
-// Basic player sequence.
-export function setup(option) {           // Pick a board, trays, rule enforcement, etc.
-  console.log("model: state.js - setup(option):", option);
-  // TODO: may have to erase later states and/or delete an existing board.
-  state.Setup.push(option);
-  boards.makeBoard(option.board);
+export function fetchCurrentState(buffer) {
+  const arr = state[buffer];
+  const i = bufferCount[buffer];
+  if (i === 0) return null;
+  return arr[i - 1];  
+  }
+export const fetchCurrentSetup  = () => fetchCurrentState("Setup");
+export const fetchCurrentMoves  = () => fetchCurrentState("Moves");
+export const fetchCurrentGambit = () => fetchCurrentState("Gambits");
+export const fetchCurrentAdvsq  = () => fetchCurrentState("AdvSqs");
+
+export function replaceCurrentState(buffer, values) {
+  const arr = state[buffer];
+  if(!arr || !arr.length) return null;
+  const i = bufferCount[buffer];
+  if (i === 0) return null;
+  arr[i - 1] = structuredClone(values);  
+  }
+export const replaceCurrentSetup  = (values) => replaceCurrentState("Setup",   values);
+export const replaceCurrentMoves  = (values) => replaceCurrentState("Moves",   values);
+export const replaceCurrentGambit = (values) => replaceCurrentState("Gambits", values);
+export const replaceCurrentAdvsq  = (values) => replaceCurrentState("AdvSqs",  values);
+
+export function pushNewState(buffer, values) {
+  console.log("model: state.js - pushNewState(buffer, values):", buffer, values);
+
+  if (!(buffer in state)) {
+    throw new Error(`Unknown state buffer: ${buffer}`);
   }
 
-export function pushAdvSq(specs) {        // Manipulate an advancement square.
-  console.log("model: state.js - pushAdvSq(specs):", specs);
-  state.AdvSqs.push(specs);
-  advsqs.makeAdvsq(specs)
+  const i = bufferCount[buffer];
+
+  state[buffer] = state[buffer].slice(0, i);    // Branch truncates current buffer if mid-history.
+  state[buffer].push(structuredClone(values));  // Push new state onto undo buffer.
+  bufferCount[buffer] = i + 1;                    // Advance the index.
+  }
+export const pushNewSetup  = (values) => pushNewState("Setup",   values);
+export const pushNewMoves  = (values) => pushNewState("Moves",   values);
+export const pushNewGambit = (values) => pushNewState("Gambits", values);
+export const pushNewAdvsq  = (values) => pushNewState("AdvSqs",  values);
+
+export function collapseKeyIndex() {
+  const order = ["AdvSqs", "Gambits", "Moves", "Setup"];
+
+  for (const key of order) {
+    const i = bufferCount[key];
+
+    if (i > 1) {
+      bufferCount[key] = 1;
+      return { arrayKey: key, index: 0 };
+    }
   }
 
-export function clearAdvSqs() {
-  console.log("model: state.js - clearAdvSqs():", );
-  state.AdvSqs = [];
-  advsqs.clearAdvsq();
-  }
-
-export function freeze(advsq) {           // Freeze each on board to generate gambit.
-  state.Gambits.push(structuredClone(advsq));
-  state.AdvSqs.length = 0;
-  }
-
-export function recordMove(gambit) {      // Select a move from the gambit set of advsqs.
-  state.Moves.push(structuredClone(gambit));
-  // state.Gambits.length = 0;
+  return null; // Bottom Sentry
 }
+// Seampoint: more global functions...
 
-// To be deprecated as dev progresses...useful javascript weirdness.
-function iterateState(stateData) {
-  const mod = stateData.state_module;
-
-  // Javescript - weirdness...
-    // mod.Name.forEach((element, index) => {...});   // Element and index.
-    // mod.Name.forEach(element => {...});            // Element only, no index.
-    // mod.Name.forEach(n => {...});                  // Indicate element (n) stands for Name.
-
-  console.log("Setup:");
-  mod.Setup.forEach((entry, i) => {
-    console.log(i, entry);
-  });
-
-  console.log("Moves:");
-  mod.Moves.forEach((entry, i) => {
-    console.log(i, entry);
-  });
-
-  console.log("Gambits:");
-  mod.Gambits.forEach((entry, i) => {
-    console.log(i, entry);
-  });
-
-  console.log("AdvSqs:");
-  mod.AdvSqs.forEach((entry, i) => {
-    console.log(i, entry);
-  });
-}
+// --- Helpers ---
+// Seampoint: more local functions...
 

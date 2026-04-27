@@ -8,10 +8,27 @@
 │   ├── 3dc
 │   │   ├── arch.js
 │   │   ├── controller
+│   │   │   ├── advsqs
+│   │   │   │   ├── advsqs.js
+│   │   │   │   ├── advsqs.json
+│   │   │   │   └── advsqs.md
 │   │   │   ├── controller.js
 │   │   │   ├── controller.md
 │   │   │   ├── events.js
-│   │   │   └── events.md
+│   │   │   ├── events.md
+│   │   │   ├── gambits
+│   │   │   │   ├── gambits.js
+│   │   │   │   ├── gambits.json
+│   │   │   │   └── gambits.md
+│   │   │   ├── game
+│   │   │   │   ├── game.js
+│   │   │   │   ├── game.json
+│   │   │   │   └── game.md
+│   │   │   ├── moves
+│   │   │   └── setup
+│   │   │       ├── setup.js
+│   │   │       ├── setup.json
+│   │   │       └── setup.md
 │   │   ├── dev
 │   │   │   ├── devNotes.md
 │   │   │   └── symbols.js
@@ -50,13 +67,14 @@
 │   │   │   ├── advSqs.js
 │   │   │   ├── advSqs.json
 │   │   │   ├── advSqs.md
-│   │   │   ├── debug.docx
-│   │   │   ├── debug.txt
-│   │   │   ├── FAS.md
-│   │   │   ├── FAS.out
-│   │   │   ├── FAS.py
-│   │   │   ├── GAS.md
-│   │   │   ├── overlaps.out
+│   │   │   ├── FAS
+│   │   │   │   ├── debug.docx
+│   │   │   │   ├── debug.txt
+│   │   │   │   ├── FAS.md
+│   │   │   │   ├── FAS.out
+│   │   │   │   ├── FAS.py
+│   │   │   │   ├── GAS.md
+│   │   │   │   └── overlaps.out
 │   │   │   ├── overlapTiles.js
 │   │   │   ├── overlapTiles.json
 │   │   │   ├── overlapTiles.md
@@ -79,7 +97,8 @@
 │   │   │   ├── model.json
 │   │   │   ├── model.md
 │   │   │   ├── notation
-│   │   │   │   └── notation.js
+│   │   │   │   ├── notation.js
+│   │   │   │   └── notation.json
 │   │   │   └── state
 │   │   │       ├── state.js
 │   │   │       ├── state.json
@@ -90,6 +109,8 @@
 │   │   │   └── modules.md
 │   │   ├── tests
 │   │   │   ├── _tbd.md
+│   │   │   ├── controller
+│   │   │   │   └── gambits.test.js
 │   │   │   ├── core
 │   │   │   │   ├── asserts.js
 │   │   │   │   └── invariants.js
@@ -111,7 +132,9 @@
 │   │   │   │   └── state.test.js
 │   │   │   ├── templates
 │   │   │   │   └── modules.test.js
-│   │   │   └── tests.js
+│   │   │   ├── tests.js
+│   │   │   └── view
+│   │   │       └── gambits.test.js
 │   │   └── view
 │   │       ├── _tbd.md
 │   │       ├── advsqs
@@ -128,6 +151,10 @@
 │   │       │   ├── decorators.json
 │   │       │   └── decorators.md
 │   │       ├── demos.js
+│   │       ├── gambits
+│   │       │   ├── gambits.js
+│   │       │   ├── gambits.json
+│   │       │   └── gambits.md
 │   │       ├── pieces
 │   │       ├── registerHandlers.js
 │   │       ├── render
@@ -157,57 +184,59 @@
 │   │       ├── view.json
 │   │       └── view.md
 │   ├── jsconfig.json
-│   └── qt3
-│       └── js
-│           ├── arch.js
-│           ├── controller
-│           │   └── controller.js
-│           ├── layout.js
-│           ├── main.js
-│           ├── model
-│           │   ├── addCollapseMove.js
-│           │   ├── addLoop.js
-│           │   ├── addPlacementMove.js
-│           │   ├── addScore.js
-│           │   ├── addSpookyMove.js
-│           │   ├── analyzeStateString.js
-│           │   ├── barrel.js
-│           │   ├── collapse.js
-│           │   ├── core
-│           │   │   └── invariants.js
-│           │   ├── cycles.js
-│           │   ├── grammar.js
-│           │   ├── model.js
-│           │   ├── parse.js
-│           │   ├── process.js
-│           │   ├── scoring.js
-│           │   ├── statusMsgs.js
-│           │   ├── structure.js
-│           │   ├── subSpookyMove.js
-│           │   └── tokens.js
-│           ├── tests
-│           │   ├── addCollapseMove.test.js
-│           │   ├── addLoop.test.js
-│           │   ├── addPlacementMove.test.js
-│           │   ├── addScore.test.js
-│           │   ├── addSpookyMove.test.js
-│           │   ├── analyzeStateString.test.js
-│           │   ├── classicalT3.test.js
-│           │   ├── collapse.test.js
-│           │   ├── grammar.test.js
-│           │   ├── helpers.js
-│           │   ├── parse.test.js
-│           │   ├── scoring.test.js
-│           │   ├── statusMsgs.test.js
-│           │   ├── subSpookyMove.test.js
-│           │   └── tokens.test.js
-│           └── view
-│               ├── canvas.js
-│               ├── controlsView.js
-│               ├── ensemble.js
-│               ├── listings.js
-│               ├── moves.js
-│               └── view.js
+│   ├── qt3
+│   │   └── js
+│   │       ├── arch.js
+│   │       ├── controller
+│   │       │   └── controller.js
+│   │       ├── layout.js
+│   │       ├── main.js
+│   │       ├── model
+│   │       │   ├── addCollapseMove.js
+│   │       │   ├── addLoop.js
+│   │       │   ├── addPlacementMove.js
+│   │       │   ├── addScore.js
+│   │       │   ├── addSpookyMove.js
+│   │       │   ├── analyzeStateString.js
+│   │       │   ├── barrel.js
+│   │       │   ├── collapse.js
+│   │       │   ├── core
+│   │       │   │   └── invariants.js
+│   │       │   ├── cycles.js
+│   │       │   ├── grammar.js
+│   │       │   ├── model.js
+│   │       │   ├── parse.js
+│   │       │   ├── process.js
+│   │       │   ├── scoring.js
+│   │       │   ├── statusMsgs.js
+│   │       │   ├── structure.js
+│   │       │   ├── subSpookyMove.js
+│   │       │   └── tokens.js
+│   │       ├── tests
+│   │       │   ├── addCollapseMove.test.js
+│   │       │   ├── addLoop.test.js
+│   │       │   ├── addPlacementMove.test.js
+│   │       │   ├── addScore.test.js
+│   │       │   ├── addSpookyMove.test.js
+│   │       │   ├── analyzeStateString.test.js
+│   │       │   ├── classicalT3.test.js
+│   │       │   ├── collapse.test.js
+│   │       │   ├── grammar.test.js
+│   │       │   ├── helpers.js
+│   │       │   ├── parse.test.js
+│   │       │   ├── scoring.test.js
+│   │       │   ├── statusMsgs.test.js
+│   │       │   ├── subSpookyMove.test.js
+│   │       │   └── tokens.test.js
+│   │       └── view
+│   │           ├── canvas.js
+│   │           ├── controlsView.js
+│   │           ├── ensemble.js
+│   │           ├── listings.js
+│   │           ├── moves.js
+│   │           └── view.js
+│   └── utils
+│       └── debug.js
 ├── content
 │   ├── _index.md
 │   ├── 3dc
@@ -439,4 +468,4 @@
 │           └── poc.js
 └── themes
 
-85 directories, 354 files
+95 directories, 373 files

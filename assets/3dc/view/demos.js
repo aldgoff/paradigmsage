@@ -4,6 +4,7 @@
   Purpose: POC on render engine, board, tiles, decorators, and raycasting.
   Author: Allan Goff
   Date: 4/02/26
+  Recommended access: import * as demos.
   UI: the export functions.
 */
 
@@ -11,19 +12,12 @@
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
-import {vts2xyz,
-        xyz2vts,
-        vts2pixels,
-        pixels2vts,
-} from "./render/coordsMaps.js"
-
-import * as tiles from "./tiles/tiles.js";
+import * as coordsMaps from "./render/coordsMaps.js"
+import * as tiles      from "./tiles/tiles.js";
 import * as decorators from "./decorators/decorators.js";
-import * as cameras from "./render/cameras.js";
-
-import * as renders from "./render/renders.js";
-
-import * as boards from "./boards/boards.js";
+import * as cameras    from "./render/cameras.js";
+import * as renders    from "./render/renders.js";
+import * as boards     from "./boards/boards.js";
 // Seampoint: more imports...
 
 // --- Demo for development ---
@@ -33,7 +27,7 @@ export function run(context) {
   const renderer = context.renderer;
 
   // Create frame for tiles, and a map to hold all the instantiated tiles.
-  const tileGeometry = new THREE.BoxGeometry(...vts2xyz(tiles.tileSize()));
+  const tileGeometry = new THREE.BoxGeometry(...coordsMaps.vts2xyz(tiles.tileSize()));
   const tileMap = new Map();
 
   runDemos(scene, renderer, camera, tileGeometry, tileMap);

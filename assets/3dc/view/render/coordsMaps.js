@@ -1,9 +1,9 @@
-
 /* File: coordsMaps.js
   Path: ./3dc/view/render/coordsMaps.js
   Purpose: Coordinate transforms between 3DC vts versus THREE xyz and scene pixels.
   Author: Allan Goff
   Date: 4/02/26
+  Recommended access: import * as coordsMaps.
   UI: the export functions.
 */
 

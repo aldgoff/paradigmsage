@@ -3,18 +3,20 @@
   Purpose: Establish the 3 integral coordinate systems for 3D chess (left-handed).
   Author: Allan Goff
   Date: 3/18/26
+  Recommended access: import * as coords.
   UI: the export functions.
   Terminology:
     - "tile" = any valid tile representation (string "<LL>X,Y" OR vts [z,x,y])
     - "loc"  = strictly board notation string "<LL>X,Y"
  */
 
+// --- Load module ---
 import coordsData from "./coords.json" assert { type: "json" };
+  const coordsModule = coordsData.coords_module;
+  const boardSpecs = coordsModule.board_specs;
+  // Seampoint: more objects.
 
-// As this is the most foundational layer, no other imports are required.
-
-const coordsModule = coordsData.coords_module;
-const boardSpecs = coordsModule.board_specs;
+// --- Build upon previous layers ---
 
 // -- Helpers --
 
@@ -47,7 +49,7 @@ export function tileToRcs(tile, specOrName = "8x8x8") {
 
 // -- Canonical --
 
-export function boardToRcs(loc, specOrName) {
+export function boardToRcs(loc, specOrName = "8x8x8") {
   let spec = specOrName;
 
   if (typeof spec === "string") {
@@ -76,7 +78,7 @@ export function boardToRcs(loc, specOrName) {
   return [Z, X, Y];
   }
 
-export function rcsToVts(rcs, specOrName) {
+export function rcsToVts(rcs, specOrName = "8x8x8") {
   let spec = specOrName;
 
   if (typeof spec === "string") {
@@ -93,7 +95,7 @@ export function rcsToVts(rcs, specOrName) {
   return [z, x, y];
   }
 
-export function vtsToRcs(vts, specOrName) {
+export function vtsToRcs(vts, specOrName = "8x8x8") {
   let spec = specOrName;
 
   if (typeof spec === "string") {
@@ -110,7 +112,7 @@ export function vtsToRcs(vts, specOrName) {
   return [Z, X, Y];
   }
 
-export function rcsToBoard(rcs, specOrName) {
+export function rcsToBoard(rcs, specOrName = "8x8x8") {
   let spec = specOrName;
 
   if (typeof spec === "string") {
@@ -142,7 +144,7 @@ export function vtsToBoard(vts, specOrName = "8x8x8") {
 
 // -- On board tests --
 
-export function onBoardRcs(rcs, specName = "8x8x8") {
+export function onBoardRcs(rcs, specName = "8x8x8") { // True/False.
   let spec = specName;
 
   if (typeof spec === "string") {

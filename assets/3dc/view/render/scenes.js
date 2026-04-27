@@ -3,6 +3,7 @@
   Purpose: Interface to the scene features of the THREE render engine.
   Author: Allan Goff
   Date: 4/09/26
+  Recommended access: import * as scenes.
   UI: the export functions.
 */
 

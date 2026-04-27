@@ -9,8 +9,10 @@ export const TEST_MODE = { // "VERBOSE" | "TERSE" | "OFF"
     perims: "TERSE",
     overlapTiles: "TERSE",
     advSqs: "TERSE",
+  view: "VERBOSE",
   model: "VERBOSE",
     state: "VERBOSE",
+    gambits: "TERSE",
   // Seampoint - regression test verbosity.
 };
 

@@ -64,7 +64,10 @@
     - 2.2. If two quads approach opponent, Q1 is toward the top, Q2 is the adjacent quad, approaches opponent.
   - 3. For pawn *duke-capture* planes:
     - 3.1 Q1 is chosen toward opponent, rotation is clockwise (relative to pov).
-    - 3.2 If two quads approach, Q1 is top most, rotation toward the opponent (second quad).
+    - 3.2 If two quads approach, Q1 is plane direction most, rotation toward the opponent (second quad).
+      - 3.2.1 For the left and right cross planes, Q1 & Q2 form the adv rectangle where the linear tile is the pawn's duke attack.
+      - 3.2.2 For the upleft and upright planes, Q1 is the upward edge quad.
+      - 3.2.3 For the downleft and downright planes, Q1 is the downward edge quad.
     - 3.3 If no quads approach opponent, Q1 is top most, rotation is clockwise (relative to pov).
 
  ### 3.2 Plane-Quad-Ray Table

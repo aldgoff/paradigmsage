@@ -3,6 +3,7 @@
   Purpose: The player's interface to setting up and playing the game.
   Author: Allan Goff
   Date: 4/02/26
+  Recommended access: import * as control.
   UI: the export functions.
 */
 
@@ -52,11 +53,9 @@ import * as advsqs   from "../view/advsqs/advsqs.js";
 import * as model    from "../model/model.js";
 import * as state    from "../model/state/state.js";
 
-import * as example  from "../exampleRegistration/control.js";  //TODO: DEPRECATED
+//TODO: DEPRECATED exampleRegistration
+import * as example  from "../exampleRegistration/control.js";
 // Seampoint: more imports...
-
-// --- Globals ---
-// let advsqPanelInitialParams = null;
 
 // --- UI ---
 export function init(playBoard) {
@@ -65,7 +64,7 @@ export function init(playBoard) {
   // example.demoRegistration();
 
   makeDraggable(document.getElementById("setup-window"));  // DOM panels.
-  makeDraggable(document.getElementById("tray-window"));
+  // makeDraggable(document.getElementById("tray-window")); // DEPRECATED.
   makeDraggable(document.getElementById("game-window"));
   makeDraggable(document.getElementById("move-window"));
   makeDraggable(document.getElementById("gambit-window"));
@@ -124,19 +123,17 @@ function makeDraggable(element) {
 }
 // Seampoint: more local functions...
 
-/*** Demo Code - TODO: to be deprecated. */
+ // TODO: Deprecating demo code: create a fake state history, for dev undo arch.
+/*** Demo Code */
 import stateData from "../model/state/state.json" assert { type: "json" };
   const seed = stateData.state_module;     // Fake data from state.json.
 
-function demo() { // TODO: Deprecating: create a fake state history, for dev undo arch.
+function demo() {
   console.log("Demo undo/redo state architecture.");
 
   state.setNull();                                      // Initial state, all null.
   console.log(JSON.parse(JSON.stringify(state.getState())));
 
-  state.setup(seed.Setup[0]);                           // Make a board.
-  state.setup(seed.Setup[1]);                           // Change mind.
-  state.setup(seed.Setup[2]);                           // Again.
   console.log(JSON.parse(JSON.stringify(state.getState())));
 
   state.pushAdvSq(seed.AdvSqs[0]);                      // Explore an advancement square.

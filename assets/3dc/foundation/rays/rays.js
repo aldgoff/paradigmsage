@@ -3,6 +3,7 @@
   Purpose: Define directional primitives (rays + knight deltas) in VTS space.
   Author: Allan Goff
   Date: 3/20/26
+  Recommended access: import * as rays.
   UI: export functions only.
 
   Notes:
@@ -11,20 +12,17 @@
     - Knights are displacement vectors (not rays).
 */
 
+// --- Load module ---
 import raysData from "./rays.json" assert { type: "json" };
-
-// -- Load module --
-
-const raysModule = raysData.rays_module;
-
-const ROOK   = raysModule.rook;
-const BISHOP = raysModule.bishop;
-const DUKE   = raysModule.duke;
-const APEX   = raysModule.apex;
-const KNIGHT = raysModule.knight;
+  const raysModule = raysData.rays_module;
+  const ROOK   = raysModule.rook;
+  const BISHOP = raysModule.bishop;
+  const DUKE   = raysModule.duke;
+  const APEX   = raysModule.apex;
+  const KNIGHT = raysModule.knight;
+  // Seampoint: more objects.
 
 // -- Internal helpers --
-
 function findRay(rayName) {
   if (rayName in ROOK)   return ROOK[rayName];
   if (rayName in BISHOP) return BISHOP[rayName];
@@ -34,14 +32,12 @@ function findRay(rayName) {
 }
 
 // -- Core (VTS only) --
-
 export function getRayVector(rayName) {
   const v = findRay(rayName);
   return [...v]; // defensive copy
 }
 
 // -- Registries (read-only intent) --
-
 export const RAY_REGISTRY = {
   rook:   ROOK,
   bishop: BISHOP,
@@ -51,7 +47,6 @@ export const RAY_REGISTRY = {
 };
 
 // -- Convenience accessors --
-
 export function getRookRays() {
   return ROOK;
   }
@@ -69,7 +64,6 @@ export function getKnightDeltas() {
 }
 
 // -- Introspection (useful for tests/debug) --
-
 export function getAllRayNames() {
   return [
     ...Object.keys(ROOK),

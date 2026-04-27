@@ -3,6 +3,7 @@
   Purpose: Apply decorators to tiles.
   Author: Allan Goff
   Date: 4/08/26
+  Recommended access: import * as decorators.
   UI: the export functions.
   #ff1a1a Use FSC color interface to pick colors.
 */

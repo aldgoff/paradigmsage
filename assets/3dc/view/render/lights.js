@@ -3,6 +3,7 @@
   Purpose: Interface to the lighting features of the THREE render engine.
   Author: Allan Goff
   Date: 4/09/26
+  Recommended access: import * as lights.
   UI: the export functions.
 */
 

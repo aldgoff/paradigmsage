@@ -3,6 +3,7 @@
   Purpose: Place the decorators on the board for the advsq.
   Author: Allan Goff
   Date: 4/15/26
+  Recommended access: import * as advsqs.
   UI: the export functions.
 */
 
@@ -13,25 +14,25 @@ import advsqsData from "./advsqs.json" assert { type: "json" };
   // Seampoint: more objects.
 
 // --- Build upon previous layers ---
-import {getBoardSpec,} from "../../foundation/coords/coords.js";
-import {vts2xyz,
-        xyz2vts,
-        vts2pixels,
-        pixels2vts,
-} from "../render/coordsMaps.js"
+import * as utils  from "../../../utils/debug.js";            // snapshot(obj) - (debugging as needed).
 
-import * as view from "../view.js";
-import * as tiles from "../tiles/tiles.js";
-import * as decorators from "../decorators/decorators.js";
-import * as cameras    from "../render/cameras.js";
-import * as renders    from "../render/renders.js";
+  import * as state    from "../../model/state/state.js";
+  import * as coords   from "../../foundation/coords/coords.js";
+  import * as planes   from "../../geometry/planes.js";
+  import * as quads    from "../../geometry/quads.js";
+  import * as overlaps from "../../geometry/overlapTiles.js";
+  import * as advSqs   from "../../geometry/advSqs.js";
 
-import * as state  from "../../model/state/state.js";
-import * as coords from "../../foundation/coords/coords.js";
-import * as planes from "../../geometry/planes.js";
-import * as quads  from "../../geometry/quads.js";
-import * as overlaps from "../../geometry/overlapTiles.js";
-import { AdvSq } from "../../geometry/advSqs.js";
+  import {AdvSq,
+        isEqual,
+} from "../../geometry/advSqs.js";
+
+  import * as view       from "../view.js";
+  import * as tiles      from "../tiles/tiles.js";
+  import * as decorators from "../decorators/decorators.js";
+  import * as cameras    from "../render/cameras.js";
+  import * as renders    from "../render/renders.js";
+  import * as coordsMaps from "../render/coordsMaps.js"
 // Seampoint: more imports.
 
 // --- Globals ---
@@ -48,7 +49,7 @@ export function getAdvsqPanelInitialParams() {
   }
 
 export function getAdvsqPanelParams() {
-  console.log("view: advsqs.js - getAdvsqPanelParams():");
+  console.log("view : advsqs.js - getAdvsqPanelParams():");
 
   const panel = document.getElementById("advsq-window");
   if (!panel) return;
@@ -65,31 +66,55 @@ export function getAdvsqPanelParams() {
   }
 
 export function setAdvsqPanelParams(params) {
-  console.log("view: advsqs.js - setAdvsqPanelParams(params):", params);
+  console.log("view : advsqs.js - setAdvsqPanelParams(params):", utils.snapshot(params));
 
   const panel = document.getElementById("advsq-window");
   if (!panel) return;
 
-  panel.querySelector('[name="advsq-src"]').value       = params.srcTile;
-  panel.querySelector('[name="advsq-quad"]').value      = params.quad;
-  panel.querySelector('[name="advsq-perimeter"]').value = params.perimeter;
-  panel.querySelector('[name="advsq-stride"]').value    = params.stride;
-  panel.querySelector('[name="advsq-opacity"]').value   = params.opacity;
+  const quad      = params.quad;                                                    // Use the passed in primary fields.
+  const perimeter = params.perimeter;;
+  const stride    = params.stride;
+
+  const derived = computeAdvsqDerived({quad, perimeter, stride});                   // Compute derived fields.
+
+  panel.querySelector('[name="advsq-nickname"]').textContent  = derived.nickname;     // Update quad derived fields.
+  panel.querySelector('[name="advsq-pieceQuad"]').textContent = derived.pieceQuad;
+  panel.querySelector('[name="advsq-planeQuad"]').textContent = derived.planeQuad;
+  panel.querySelector('[name="advsq-plane"]').textContent     = derived.plane;
+  panel.querySelector('[name="advsq-quadType"]').textContent  = derived.quadType;
+
+  panel.querySelector('[name="advsq-length"]').textContent   = derived.length;        // Update perimeter derived fields.
+  panel.querySelector('[name="advsq-area"]').textContent     = derived.area;
+  panel.querySelector('[name="advsq-onboard"]').textContent  = derived.onboard;
+  
+  panel.querySelector('[name="advsq-strideType"]').textContent  = derived.strideType; // Update stride derived fields.
+  panel.querySelector('[name="advsq-moveType"]').textContent    = derived.moveType;
+  panel.querySelector('[name="advsq-overlap"]').textContent     = derived.overlap;
+  panel.querySelector('[name="advsq-piece"]').textContent       = derived.piece;
+
+  const srcTileStr = coords.vtsToBoard(params.srcTile);
+  panel.querySelector('[name="advsq-src"]').value          = srcTileStr;            // Update the primary fields.
+  panel.querySelector('[name="advsq-quad"]').value         = params.quad;
+  panel.querySelector('[name="advsq-perimeter"]').value    = params.perimeter;
+  panel.querySelector('[name="advsq-stride"]').value       = params.stride;
+  panel.querySelector('[name="advsq-opacity"]').value      = params.opacity;
   }
 
 export function specsToPanelParams(specs) {
+  console.log("view : advsqs.js - specsToPanelParams(specs):", specs);
+
   if(!specs) return getAdvsqPanelInitialParams();
 
   const spec = getActiveBoardSpec();
-  // const spec = coords.getBoardSpec("8x8x8");  // TODO: get boardspec from setup panel.
+  // TODO: get boardspec from setup panel.
+  // const spec = coords.getBoardSpec("8x8x8");
   console.log("   specs", specs);
   let src = coords.vtsToBoard(specs.srcTile, spec);
   console.log("   spec", spec);
-  console.log("   denormalizeQuad(specs.quad)", denormalizeQuad(specs.quad));
 
   return {
-    srcTile: coords.vtsToBoard(specs.srcTile, spec),
-    quad:    denormalizeQuad(specs.quad),
+    srcTile:   specs.srcTile,
+    quad:      specs.quad,
     perimeter: specs.perimeter,
     stride:    specs.stride,
     opacity:   specs.opacity
@@ -97,48 +122,18 @@ export function specsToPanelParams(specs) {
   }
 
 export function makeAdvsq(specs) {
-  console.log("view: advsqs.js - makeAdvsq(specs):", specs);
+  console.log("view : advsqs.js - makeAdvsq(specs):", specs);
 
   clearAdvsq();
 
-  const group = new THREE.Group();
-
-  const { srcTile, quad, perimeter, stride } = specs;
-
-  // --- 1. Build geometric AdvSq ---
-  const advsq = AdvSq.fromQuad(srcTile, quad, perimeter);
-
-  const piece = advsq.getPiece();   // rook / bishop / duke
-  const perims = advsq.getPerims();
-
-  // --- 2. Traverse all tiles ---
-  for(let k = 0; k < perims.length; k++) {
-    const p = perims[k];
-    const perim = perims[k];
-
-    // Source tile (k=0)
-    if(k === 0) {
-      decorateTile(p.stride[0], piece, "source", group, specs.opacity);
-      continue;
-    }
-
-    let quadNo = quad;
-    if(typeof quad === "string" && specs.quad.startsWith("Q")) {
-      quadNo = Number(specs.quad.slice(1));
-    }
-    let quadType = quads.quadToQuadType(quadNo);
-
-    const lastPerim = (k === perims.length - 1);
-    const zOffset = 0.05;
-    decoratePerimeter(lastPerim, perim, piece, quadType, group, specs.opacity, stride, zOffset);
-  }
+  const group = view.buildAdvSqGroup(specs);
 
   view.context.scene.add(group);
   currentAdvsq = group;
   }
 
 export function clearAdvsq() {
-  console.log("view: advsqs.js - clearAdvsq():");
+  // console.log("view : advsqs.js - clearAdvsq():");
 
   if (!currentAdvsq) return;
 
@@ -155,65 +150,6 @@ export function clearAdvsq() {
 // Seampoint: more global functions.
 
 // --- Helpers ---
-function decoratePerimeter(lastPerim, perim, piece, quadType, group, opacity, strideNo, zOffset=0.00) {
-  console.log("view: advsqs.js - decoratePerimeter(perim)", perim);
-  const end  = (piece    === "duke") ? "end3":   "end2";
-  const apex = (quadType === "face") ? "duplex": "apex";
-
-  const stride = perim.stride;
-  for(let i=1; i<=stride.length; i++) {
-    const j = i - 1;
-    if(     isSame(stride[j], perim.E1)  ) decorateTile(stride[j], piece, end,  group, opacity);
-    else if(isSame(stride[j], perim.apex)) decorateTile(stride[j], piece, apex, group, opacity);
-    else if(isSame(stride[j], perim.E2)  ) decorateTile(stride[j], piece, end,  group, opacity);
-    else {
-      decorateTile(stride[j], piece, "body", group, opacity);
-    }
-    if(lastPerim && (i === strideNo)) decorateTile(stride[j], piece, "dst", group, opacity, zOffset);
-  }
-}
-
-function decorateTile(coords, piece, decorator, group, opacity, zOffset=0.00) {
-  let meshTile = tiles.getTileMesh(view.context.tileMap, coords);
-  if (!meshTile) {
-    // TODO: Need to create a tile mesh for this tile with high transparency.
-
-    const tileGeometry = new THREE.BoxGeometry(...vts2xyz(tiles.tileSize()));
-
-    let pos = coords;
-    let tile = tiles.getTileAttributes(pos);
-    meshTile = tiles.createMeshTile(tile, tileGeometry, pos);
-    meshTile.material.forEach(mat => {      // Faces and edges.
-      mat.transparent = true;
-      mat.opacity = opacity;   // tweak as desired
-    });
-    meshTile.children.forEach(child => {     // Frame.
-      if (child.type === "LineSegments") {
-        child.material.transparent = true;
-        child.material.opacity = opacity  // match tile or slightly higher (e.g. 0.4)
-      }
-    });
-
-    meshTile.userData = {
-      isTile: true,
-      coords: pos,
-      faceColor: tile.faceColor,
-      isOffboard: true
-    };
-
-    group.add(meshTile);
-  }
-
-  const faceColor = meshTile.userData.faceColor;
-
-  const overlays = decorators.decorate(faceColor, meshTile, piece, decorator, zOffset);
-
-  if (overlays) {
-    group.userData.overlays = group.userData.overlays || [];
-    group.userData.overlays.push(...overlays);
-  }
-}
-
 function getActiveBoardSpec() {
   const setupArray = state.getState().Setup;
 
@@ -228,6 +164,97 @@ function getActiveBoardSpec() {
 
   return coords.getBoardSpec(boardStr);
 }
+
+function computeAdvsqDerived({ quad, perimeter, stride }) {
+  // console.log("view : advsqs.js - computeAdvsqDerived()", { quad, perimeter, stride });
+
+  // --- normalize types ---
+  const q = Number(quad);
+  const k = Number(perimeter);
+  const s = Number(stride);
+
+  const quadDerives = quadDerived(q,k,s);
+  const perimDerives = perimDerived(q,k,s);
+  const strideDerives = strideDerived(q,k,s);
+
+  return {
+    ...quadDerives,
+    ...perimDerives,
+    ...strideDerives
+  };
+  }
+
+function quadDerived(q, k, s) {
+  const rec = quads.pqrTable(q);
+  const nickname = rec?.nickname ?? "";
+  const plane    = rec?.plane ?? "";
+  const quadType = rec?.quadType ?? "";
+
+  const pieceQuad = quads.quadToPieceQuad(q);   // 1-12/24.
+  const planeQuad = quads.quadToPlaneQuad(q);   // 1-4/6.
+
+  return { nickname, plane, quadType, pieceQuad, planeQuad };
+  }
+
+function perimDerived(q, k, s) {
+  const length = 2 * k + 1;
+  const area = (k+1)*(k+1);
+  let onboard = area; // Area of an advsq should be between 1 and area.
+
+
+  const panel = document.getElementById("advsq-window");
+  const srcTile = panel.querySelector('[name="advsq-src"]')?.value;
+  const source = coords.normalizeTileToVts(srcTile);
+  const advSq = AdvSq.fromQuad(source, q, k);
+
+  onboard = advSq.getOnboardCount();
+
+  return { length, area, onboard };
+  }
+
+function strideDerived(q, k, s) {
+  const rec = quads.pqrTable(q);  // { piece, plane, quad:{globalQ,pieceQ,planeQ,rayPair:[r1,r2],quadType,nickname}
+  const maxStride = 2 * k + 1;
+
+  let strideType = "";                                    // Tile: source|E1|Body|Apex|Duplex|E2.
+  let apex = "Apex";
+  let body = "Body"
+  if(rec?.quadType === "face") { 
+    apex = "Duplex";
+    const shell = k/3;
+    if(k%3 === 0 && (s === shell+1 || s === 2*k+1 - shell))
+      body = "Third";
+  }
+  if (s === 0)              strideType = "Source";
+  else if (s === 1)         strideType = "E1";
+  else if (s === k + 1)     strideType = apex;
+  else if (s === maxStride) strideType = "E2";
+  else                      strideType = body;
+
+  let moveType = "quadrant";                        // Move type: quadrant|linear|duplex.
+  if(strideType === "E1" || strideType === "E2")
+    moveType = "linear";
+  else if(strideType === "Duplex") { // Duke quad.
+    moveType = "duplex";
+  }
+
+  let overlap = "qtile";                            // Overlap: source|end2|end3|body|apex|brook|qtile|hotspot|Feynman.
+  const basePiece = quads.quadToPiece(q);
+  if(s === 0) overlap = "source";
+  else {
+    let quadType = "all";
+    if(rec?.quadType === "edge") quadType = "edge";
+    if(rec?.quadType === "face") quadType = "face";
+    overlap = overlaps.getOverlapType(basePiece, quadType, k, s-1);
+  }
+
+  let piece = "";                                   // Piece: rook|bishop|duke|stack|queen
+  if(     overlap === "qtile" || overlap === "Feynman") piece = "stack"
+  else if(overlap === "brook" || overlap === "hotspot") piece = "queen"
+  else                                                  piece = basePiece;
+
+  return { strideType, moveType, overlap, piece };
+}
 // Seampoint: more local functions.
 
 // --- Utilities ---
@@ -235,11 +262,5 @@ function isSame(a, b) {
   return a[0] === b[0] && a[1] === b[1] && a[2] === b[2];
 }
 
-function denormalizeQuad(q) {
-  if (typeof q === "string" && q.startsWith("Q")) {
-    return Number(q.slice(1));
-  }
-  return q;
-}
 // Seampoint: more utility functions.
 

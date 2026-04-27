@@ -73,7 +73,7 @@ function test_basePieces_stride() {
       expected: ["end3", "body", "body", "body", "body", "apex", "body", "body", "body", "body", "end3"], 
       label: "Duke-edge (5)" },
     { params: { piece: 'duke',   subType: null, quadType: 'face', k: 6 }, 
-      expected: ["end3", "body", "body", "body", "body", "body", "duplex", "body", "body", "body", "body", "body", "end3"], 
+      expected: ["end3", "body", "third", "body", "body", "body", "duplex", "body", "body", "body", "third", "body", "end3"], 
       label: "Duke-face (6)" },
     ];
 
@@ -94,10 +94,13 @@ function test_queen_stride() {
       expected: ["qtile", "body", "Feynman", "body", "qtile"], 
       label: "Queen-Bishop (2)" },
     { params: { piece: 'queen', subType: 'duke',   quadType: 'edge', k: 2 }, 
-      expected: ["end3", "body", "apex", "body", "end3"], 
+      expected: ["end3", "body", "qtile", "body", "end3"], 
       label: "Queen-Duke-edge (3)" },
     { params: { piece: 'queen', subType: 'duke',   quadType: 'face', k: 2 }, 
       expected: ["end3", "body", "hotspot", "body", "end3"], 
+      label: "Queen-Duke-face (3)" },
+    { params: { piece: 'queen', subType: 'duke',   quadType: 'face', k: 3 }, 
+      expected: ["end3", "Feynman", "body", "hotspot", "body", "Feynman", "end3"], 
       label: "Queen-Duke-face (3)" },
 
     { params: { piece: 'queen', subType: 'rook',   quadType: 'all',  k: 3 }, 
@@ -107,10 +110,10 @@ function test_queen_stride() {
       expected: ["qtile", "body", "body", "body", "Feynman", "body", "body", "body", "qtile"], 
       label: "Queen-Bishop (4)" },
     { params: { piece: 'queen', subType: 'duke',   quadType: 'edge', k: 6 }, 
-      expected: ["end3", "body", "Feynman", "body", "body", "body", "apex", "body", "body", "body", "Feynman", "body", "end3"], 
+      expected: ["end3", "body", "body", "body", "body", "body", "qtile", "body", "body", "body", "body", "body", "end3"], 
       label: "Queen-Duke-edge (6)" },
-    { params: { piece: 'queen', subType: 'duke',   quadType: 'face', k: 5 }, 
-      expected: ["end3", "body", "body", "body", "body", "hotspot", "body", "body", "body", "body", "end3"], 
+    { params: { piece: 'queen', subType: 'duke',   quadType: 'face', k: 6 }, 
+      expected: ["end3", "body", "Feynman", "body", "body", "body", "hotspot", "body", "body", "body", "Feynman", "body", "end3"], 
       label: "Queen-Duke-face (5)" },
     ];
 
@@ -143,7 +146,6 @@ function test_basePieces_roles() {
         { "name": "end3",  "multiplicity": 3 },
         { "name": "body",  "multiplicity": 1 },
         { "name": "apex",  "multiplicity": 1 },
-        { "name": "third", "multiplicity": 1 },
         ], 
       label: "Duke-edge roles" },
     { params: { piece: 'duke',   subType: null, quadType: 'face', k: 2 }, 
@@ -151,6 +153,7 @@ function test_basePieces_roles() {
         { "name": "end3",   "multiplicity": 3 },
         { "name": "body",   "multiplicity": 1 },
         { "name": "duplex", "multiplicity": 2 },
+        { "name": "third", "multiplicity": 1 },
         ], 
       label: "Duke-face roles" },
     ];
@@ -168,10 +171,10 @@ function test_queen_roles() {
     { params: { piece: 'queen', subType: 'rook',   quadType: 'all',  k: 2 }, 
       expected: [
         { "name": "end2",    "multiplicity": 2 },
+        { "name": "hotspot", "multiplicity": 4 },
         { "name": "body",    "multiplicity": 1 },
         { "name": "brook",   "multiplicity": 3 },
-        { "name": "qtile",   "multiplicity": 4 },
-        { "name": "hotspot", "multiplicity": 4 }
+        { "name": "qtile",   "multiplicity": 4 }
         ],
       label: "Queen-Rook roles" },
     { params: { piece: 'queen', subType: 'bishop', quadType: 'all',  k: 2 }, 
@@ -187,15 +190,15 @@ function test_queen_roles() {
       expected: [
         { "name": "end3",    "multiplicity": 3 },
         { "name": "body",    "multiplicity": 1 },
-        { "name": "apex",    "multiplicity": 1 },
-        { "name": "Feynman", "multiplicity": 2 }
+        { "name": "qtile",   "multiplicity": 4 }
         ], 
       label: "Queen-Duke-edge roles" },
     { params: { piece: 'queen', subType: 'duke',   quadType: 'face', k: 2 }, 
       expected: [
         { "name": "end3",    "multiplicity": 3 },
         { "name": "body",    "multiplicity": 1 },
-        { "name": "hotspot", "multiplicity": 4 }
+        { "name": "hotspot", "multiplicity": 4 },
+        { "name": "Feynman", "multiplicity": 2 }
         ],
       label: "Queen-Duke-face roles" },
     ];

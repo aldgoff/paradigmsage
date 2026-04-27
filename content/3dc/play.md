@@ -40,7 +40,7 @@ layout: "play"
     font-family: monospace;
     width: 350px;
     }
-  #undo-list {
+  #undo-state {
     height: 66px;
     font-family: monospace;
     white-space: pre;
@@ -61,11 +61,11 @@ layout: "play"
   #setup-window  { top: 120px; left:   80px; }  /* DOM Control Panels */
   #tray-window   { top: 260px; left:   80px; }
   #game-window   { top: 120px; left:  280px; }
-  #move-window   { top: 720px; left:   80px; }
-  #gambit-window { top: 580px; left:   80px; }
+  #move-window   { top: 900px; left:   80px; }
+  #gambit-window { top: 610px; left:   80px; }
   #advsq-window  { top: 320px; left:  280px; }
 
-  #camera-window { top: 430px; left:   80px; }
+  #camera-window { top: 460px; left:   80px; }
   /* Seampont - more DOM control panels... */
 </style>
 
@@ -81,28 +81,35 @@ layout: "play"
   </div>
 
   <div class="section">
-   <label> <input type="radio" name="board-size" value="8x8x8" checked> 8×8×8 </label><br>
-   <label> <input type="radio" name="board-size" value="10x8x8"> 10×8×8 </label><br>
-   <label> <input type="radio" name="board-size" value="10x10x10"> 10×10×10 </label>
-  </div>  
-  </div>
-
-<div class="panel" id="tray-window">
-  <div class="panel-title">Tray Panel</div>
-
-  <div class="section">
-    <button data-action="makeTrays">Make Trays</button>
-  </div>
-
-  <div class="section">
-   <label> <input type="radio" name="tray-type" value="real" checked> Real </label><br>
-   <label> <input type="radio" name="tray-type" value="factory"> Factory </label><br>
+    <label> <input type="radio" name="board-size" value="8x8x8" checked> 8×8×8 </label><br>
+    <label> <input type="radio" name="board-size" value="10x8x8"> 10×8×8 </label><br>
+    <label> <input type="radio" name="board-size" value="10x10x10"> 10×10×10 </label>
   </div>  
 
   <div class="section">
-    <button data-action="showTrays" disabled>Show</button>
-    <button data-action="hideTrays" disabled>Hide</button>
-    <button data-action="cycleGap" disabled>Cycle Gap</button>
+    <label>Tray Type</lable>
+    <!-- <button data-action="addTrays">Add Trays</button> -->
+  </div>
+
+  <div class="section">
+    <label> <input type="radio" name="tray-type" value="none"> None </label><br>
+    <label> <input type="radio" name="tray-type" value="real" checked> Real </label><br>
+    <label> <input type="radio" name="tray-type" value="factory"> Factory </label><br>
+  </div>  
+
+  <div class="section">
+    <!-- <button data-action="showTrays">Show</button>
+    <button data-action="hideTrays">Hide</button> -->
+    <label> <input type="checkbox" name="tray-visible" checked> Visible </label><br>
+  </div>  
+
+  <div class="section">
+    <label> <input type="radio" name="initial-pos" value="standard" checked> Standard </label><br>
+    <label> <input type="radio" name="initial-pos" value="manual"> Manual </label><br>
+  </div>  
+
+  <div class="section">
+    <label>Gap<input name="tray-gap" type="number" min="0" step="1" value="1" max="3"> </label>
   </div>
   </div>
 
@@ -118,7 +125,7 @@ layout: "play"
     <button data-action="save" >Save</button>
   </div>
 
-  <div class="section scroll-box" id="undo-list">
+  <div class="section scroll-box" id="undo-state">
     <!-- tbd go here -->
   </div>
   </div>
@@ -135,11 +142,25 @@ layout: "play"
   <div class="panel-title">Gambit Panel</div>
 
   <div class="section">
-    <button data-action="freeze">Freeze AdvSq</button>
-    <button data-action="prev">Prev</button>
-    <button data-action="next">Next</button>
+    <button data-action="freezeQ">Freeze Quadrant</button>
+    <button data-action="freezeL">Freeze Linear</button>
+    <button data-action="freezeO">Freeze Overlap</button>
+  </div>
+
+  <div class="section">
     <button data-action="delete">Delete</button>
-    <button data-action="deselect">Deselect</button>
+  </div>
+
+  <div class="section">
+    <label> Open   :  <output name="gambit-open"  style="opacity:0.7; font-style:italic;"> [,,,,,]</output> </label>
+  </div>
+  <div class="section">
+    <label> Blocked:  <output name="gambit-blocked"  style="opacity:0.7; font-style:italic;"> [,,,,,] </output> </label>
+  </div>
+  <div class="section">
+    <label> MoveType:    <output name="gambit-moveType" style="opacity:0.7; font-style:italic;"> Quadrant </output> </label>
+    <label> Overlap:     <output name="gambit-overlap"  style="opacity:0.7; font-style:italic;"> Qtile|etc </output> </label>
+    <label> LowestPiece: <output name="gambit-piece"    style="opacity:0.7; font-style:italic;"> Queen </output> </label>
   </div>
 
   <div class="section scroll-box" id="gambit-list">
@@ -156,25 +177,53 @@ layout: "play"
   </div>
 
   <div class="section">
-    <label> Source Tile: <input  name="advsq-src"  type="text"      value="K3,3" maxlength="7" style="width: 60px;"> </label>
+    <button data-action="grow">Grow</button>
+    <button data-action="shrink">Shrink</button>
+  </div>
+
+  <div class="section">
+    <label> Source Tile  <input  name="advsq-src"       type="text"    value="KB4,4" maxlength="7" style="width: 60px;"> </label>
   </div>
   <div class="section">
-    <label> Quad:        <input  name="advsq-quad" type="number"      min="1" step="1" value="1" max="60"> </label>
+    <label> Quad         <input  name="advsq-quad"      type="number" min="1" step="1" value="1" max="60"> </label>
+    <label> BP:          <output name="advsq-pieceQuad" style="opacity:0.7; font-style:italic;"></output> </label>
+    <label> P:           <output name="advsq-planeQuad" style="opacity:0.7; font-style:italic;"></output> </label>
   </div>
   <div class="section">
-    <label> Plane:       <output name="advsq-plane" style="opacity:0.7; font-style:italic;">Horizontal</output> </label>
+    <label> Nickname:    <output name="advsq-nickname"  style="opacity:0.7; font-style:italic;"></output> </label>
   </div>
   <div class="section">
-    <label> Perimeter:   <input  name="advsq-perimeter" type="number" min="1" step="1" value="3" max="99"> </label>
+    <label> Plane:       <output name="advsq-plane"     style="opacity:0.7; font-style:italic;"></output> </label>
   </div>
   <div class="section">
-    <label> Length:       <output name="advsq-length" style="opacity:0.7; font-style:italic;">7</output> </label>
+    <label> Quad Type:   <output name="advsq-quadType"  style="opacity:0.7; font-style:italic;"></output> </label>
   </div>
   <div class="section">
-    <label> Stride:      <input  name="advsq-stride" type="number"    min="1" step="1" value="1" max="99"> </label>
+    <label> Perimeters   <input  name="advsq-perimeter" type="number" min="0" step="1" value="0" max="22"> </label>
   </div>
   <div class="section">
-    <label> Tile:        <output name="advsq-tile" style="opacity:0.7; font-style:italic;">E1</output> </label>
+    <label> Length:      <output name="advsq-length"    style="opacity:0.7; font-style:italic;"></output> </label>
+  </div>
+  <div class="section">
+    <label> Area:        <output name="advsq-area"      style="opacity:0.7; font-style:italic;"></output> </label>
+  </div>
+  <div class="section">
+    <label> Onboard:     <output name="advsq-onboard"   style="opacity:0.7; font-style:italic;"></output> </label>
+  </div>
+  <div class="section">
+    <label> Stride       <input  name="advsq-stride"    type="number" min="0" step="1" value="0" max="45"> </label>
+  </div>
+  <div class="section">
+    <label> Stride Type: <output name="advsq-strideType"style="opacity:0.7; font-style:italic;"></output> </label>
+  </div>
+  <div class="section">
+    <label> Move Type:   <output name="advsq-moveType"  style="opacity:0.7; font-style:italic;"> Q|L|D </output> </label>
+  </div>
+  <div class="section">
+    <label> Overlap:     <output name="advsq-overlap"   style="opacity:0.7; font-style:italic;"> B|Q|H|F </output> </label>
+  </div>
+  <div class="section">
+    <label> Piece:       <output name="advsq-piece"     style="opacity:0.7; font-style:italic;"> R|B|D|Q|S|N </output> </label>
   </div>
 
   <!-- Optional: key hints (visual only) -->

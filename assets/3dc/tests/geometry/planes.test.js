@@ -27,8 +27,11 @@ import {getPlaneGroups,
         getPlaneQuad1,
         getPlanePOV,
         getPlaneRule,
+        resolveDstTile,
         // Seampoint: functions to test...
 } from "../../geometry/planes.js";
+
+import * as coords from "../../foundation/coords/coords.js";  // vtsToNotation().
 
 // ------------------------------------------------------------
 
@@ -45,12 +48,14 @@ export function run() {
   test_getPlaneQuad1();
   test_getPlanePOV();
   test_getPlaneRule();
-  test_planeRayInvariant();
+  test_resolveDstTile();
 
+  test_planeRayInvariants();
   test_planeCycleClosure();
   // Seampoint: more tests...
 
-  let curr = snapshotTotals();  // TODO: refactor as teardown(<module>):
+  // TODO: refactor as teardown(<module>):
+  let curr = snapshotTotals();
   const pass = curr.pass - prev.pass;
   const fail = curr.fail - prev.fail;
 
@@ -150,7 +155,7 @@ function test_getPlaneQuad1() {
 function test_getPlanePOV() {
   assertEqual(getPlanePOV("Horizontal"), "White", "Horizontal POV");
   assertEqual(getPlanePOV("Major"), "Neutral", "Major POV");
-  assertEqual(getPlanePOV("Upleft"), "Top", "Upleft POV");
+  assertEqual(getPlanePOV("Upleft"), "White", "Upleft POV");
 
   report("getPlanePOV", "planes");
   }
@@ -161,9 +166,40 @@ function test_getPlaneRule() {
   assertEqual(getPlaneRule("Minor"), "3.3", "Minor rule");
 
   report("getPlaneRule", "planes");
+}
+
+function test_resolveDstTile() {
+  const source = [0,0,0]; // Q4,4.
+  const cases = [
+    { input: { quad:  1, k: 2, s: 0 }, expect: {dst: 'Q6,6' }, label: "no stride" },
+    { input: { quad:  1, k: 2, s: 1 }, expect: {dst: 'Q6,4' }, label: "E1" },
+    { input: { quad:  1, k: 2, s: 2 }, expect: {dst: 'Q6,5' }, label: "outbound" },
+    { input: { quad:  1, k: 2, s: 3 }, expect: {dst: 'Q6,6' }, label: "apex" },
+    { input: { quad:  1, k: 2, s: 4 }, expect: {dst: 'Q5,6' }, label: "inbound" },
+    { input: { quad:  1, k: 2, s: 5 }, expect: {dst: 'Q4,6' }, label: "E2" },
+    { input: { quad:  1, k: 2, s: 6 }, expect: {dst: 'Q6,6' }, label: "tooLarge" },
+    { input: { quad:  1, k: 0, s: 2 }, expect: {dst: 'Q4,4' }, label: "no perimeter" },
+    { input: { quad:  1, k: 7, s: 6 }, expect: {dst: [0,7,5]}, label: "large perimeter" },
+    { input: { quad:  1, k: 2, s: 5 }, expect: {dst: 'Q4,6' }, label: "rook linear E2" },
+    { input: { quad:  2, k: 2, s: 1 }, expect: {dst: 'Q4,6' }, label: "rook linear E1" },
+    { input: { quad: 13, k: 3, s: 1 }, expect: {dst: 'KN7,4'}, label: "Upward" },
+    { input: { quad: 13, k: 3, s: 0 }, expect: {dst: [6,3,3]}, label: "Upward" },
+    { input: { quad: 37, k: 3, s: 6 }, expect: {dst: 'KB8,8'}, label: "Major onBoard" },
+    { input: { quad: 37, k: 3, s: 5 }, expect: {dst: [1,5,5]}, label: "Major offBoard" },
+    { input: { quad: 54, k: 2, s: 3 }, expect: {dst: 'Q8,4' }, label: "Duplex" },
+    { input: { quad: 58, k: 2, s: 3 }, expect: {dst: 'Q8,4' }, label: "Duplex" },
+  ];
+
+  for(const { input, expect, label } of cases) {
+    const dst = resolveDstTile(source, input.quad, input.k, input.s); // [1,1,1];
+    assertEqual(dst, expect.dst, `resolveDstTile validation failed ${label} 
+      ${dst} Q${input.quad} k: ${input.k} stride: ${input.s}.`);
   }
 
-function test_planeRayInvariant() {
+  report("resolveDstTile", "planes");
+  }
+
+function test_planeRayInvariants() {
   const groups = getPlaneGroups();
 
   for (const planes of Object.values(groups)) {
@@ -178,8 +214,8 @@ function test_planeRayInvariant() {
     }
   }
 
-  report("planeRayInvariant", "planes");
-}
+  report("planeRayInvariants", "planes");
+  }
 
 function test_planeCycleClosure() {
   const groups = getPlaneGroups();

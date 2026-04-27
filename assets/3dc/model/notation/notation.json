@@ -1,0 +1,30 @@
+{
+  "notation_module": {
+    "strideTiles": {
+      "Source": "",
+      "E1": "",
+      "Body": "",
+      "Apex": "",
+      "Duplex": "?",
+      "Third": "",
+      "E2": "",
+      "_last": ""
+    },
+    "linearTiles": {
+      "linear1": "",
+      "linear2": "",
+      "linear3": "",
+      "duplex": "",
+      "_last": ""
+    },
+    "overlapTiles": {
+      "brook": "",
+      "qtile": "",
+      "hotspot": "",
+      "Feynman": "",
+      "_last": ""
+    },
+    "_last": {}
+  }
+}
+

@@ -3,6 +3,7 @@
   Purpose: Interface to the view layer, render board, wire the panels, and add event listeners.
   Author: Allan Goff
   Date: 4/02/26
+  Recommended access: import * as view.
   UI: the export functions.
 */
 
@@ -39,16 +40,17 @@
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
-import {vts2xyz,
-        xyz2vts,
-        vts2pixels,
-        pixels2vts,
-} from "./render/coordsMaps.js"
+import * as run        from "./registerHandlers.js";
+import * as renders    from "./render/renders.js";
+import * as coordsMaps from "./render/coordsMaps.js";
+import * as demos      from "./demos.js";
+import * as tiles      from "./tiles/tiles.js";
+import * as game       from "../controller/game/game.js";
 
-import * as run from "./registerHandlers.js";
-import * as renders from "./render/renders.js";
-import * as demos from "./demos.js";
-import * as tiles from "./tiles/tiles.js";
+  import * as advSqs   from "../geometry/advSqs.js";
+  import * as decorators from "./decorators/decorators.js";
+  import * as quads    from "../geometry/quads.js";
+
 // Seampoint: more imports...
 
 export let context;
@@ -74,63 +76,182 @@ export function init(playBoard) { // PlayBoard is the 3D canvas from the THREE r
   else {      // Growing the panel and undo features.
     context = renders.init(playBoard);
     context.tileMap = new Map();
-    context.tileGeometry = new THREE.BoxGeometry(...vts2xyz(tiles.tileSize()));
+    context.tileGeometry = new THREE.BoxGeometry(...coordsMaps.vts2xyz(tiles.tileSize()));
     // demos.run(context);
   }
 
   // Listeners: (The move listing is purely output, no input, therefore no wiring todo.)
-  wirePanel("setup-window",  "setup",  buildSetupPayload);
-  wirePanel("tray-window",   "tray",   buildTrayPayload);  // btn.disabled = false;
-  wirePanel("game-window",   "game",   buildGamePayload);
-  wirePanel("gambit-window", "gambit", buildGambitPayload);
-  wirePanel("advsq-window",  "advsq",  buildAdvsqPayload);
+
+  // wireSimplePanel("tray-window",   "tray",   buildTrayPayload);  // btn.disabled = false;
+
+  wireSetupPanel( "setup-window",  "setup",  buildSetupPayload);
+  wireSimplePanel("game-window",   "game",   buildGamePayload);
+  wireSimplePanel("gambit-window", "gambit", buildGambitPayload);
+  wireAdvsqPanel( "advsq-window",  "advsq",  buildAdvsqPayload);
 
   window.addEventListener("keydown", handleAdvsqKeys);
 
-  wirePanel("camera-window", "camera", buildCameraPayload); // Not subject to the undo arch.
+  wireSimplePanel("camera-window", "camera", buildCameraPayload); // Not subject to the undo arch.
   // Seampoint - more listeners...
 
-  // return context;
+  game.showUndoStatus();
+
   return;
 }
+
+export function buildAdvSqGroup(specs) {
+  const group = new THREE.Group();
+
+  const { srcTile, quad, perimeter, stride, opacity } = specs;
+
+  const advsq = advSqs.AdvSq.fromQuad(srcTile, quad, perimeter);
+  const piece = advsq.getPiece();
+  const perims = advsq.getPerims();
+
+  for (let k = 0; k < perims.length; k++) {
+    const perim = perims[k];
+
+    if (k === 0) {
+      decorateTile(perim.stride[0], piece, "source", group, opacity);
+      continue;
+    }
+
+    const quadType = quads.quadToQuadType(quad);
+    const lastPerim = (k === perims.length - 1);
+
+    decoratePerimeter(
+      lastPerim,
+      perim,
+      piece,
+      quadType,
+      group,
+      opacity,
+      stride,
+      0.05
+    );
+  }
+
+  return group;
+}
+// --- Helpers ---
+function decoratePerimeter(lastPerim, perim, piece, quadType, group, opacity, strideNo, zOffset=0.00) {
+  // console.log("view : advsqs.js - decoratePerimeter(perim)", perim);
+  const end  = (piece    === "duke") ? "end3":   "end2";
+  const apex = (quadType === "face") ? "duplex": "apex";
+
+  const stride = perim.stride;
+  for(let i=1; i<=stride.length; i++) {
+    const j = i - 1;
+    if(     isSame(stride[j], perim.E1)  ) decorateTile(stride[j], piece, end,  group, opacity);
+    else if(isSame(stride[j], perim.apex)) decorateTile(stride[j], piece, apex, group, opacity);
+    else if(isSame(stride[j], perim.E2)  ) decorateTile(stride[j], piece, end,  group, opacity);
+    else {
+      decorateTile(stride[j], piece, "body", group, opacity);
+    }
+    if(lastPerim && (i === strideNo)) decorateTile(stride[j], piece, "dst", group, opacity, zOffset);
+  }
+  }
+function decorateTile(coords, piece, decorator, group, opacity, zOffset=0.00) {
+  let meshTile = tiles.getTileMesh(context.tileMap, coords);
+  if (!meshTile) {
+    const tileGeometry = new THREE.BoxGeometry(...coordsMaps.vts2xyz(tiles.tileSize()));
+
+    let pos = coords;
+    let tile = tiles.getTileAttributes(pos);
+    meshTile = tiles.createMeshTile(tile, tileGeometry, pos);
+    meshTile.material.forEach(mat => {      // Faces and edges.
+      mat.transparent = true;
+      mat.opacity = opacity;   // tweak as desired
+    });
+    meshTile.children.forEach(child => {     // Frame.
+      if (child.type === "LineSegments") {
+        child.material.transparent = true;
+        child.material.opacity = opacity  // match tile or slightly higher (e.g. 0.4)
+      }
+    });
+
+    meshTile.userData = {
+      isTile: true,
+      coords: pos,
+      faceColor: tile.faceColor,
+      isOffboard: true
+    };
+
+    group.add(meshTile);
+  }
+
+  const faceColor = meshTile.userData.faceColor;
+
+  const overlays = decorators.decorate(faceColor, meshTile, piece, decorator, zOffset);
+
+  if (overlays) {
+    group.userData.overlays = group.userData.overlays || [];
+    group.userData.overlays.push(...overlays);
+  }
+}
+
+// --- Utilities ---
+function isSame(a, b) {
+  return a[0] === b[0] && a[1] === b[1] && a[2] === b[2];
+}
+
 // Seampoint: more global functions...
 
 // --- Helpers ---
-function wirePanel(panelId, callbackName, buildPayload) {
+function wireSimplePanel(panelId, callbackName, buildPayload) {
   const panel = document.getElementById(panelId);
   if (!panel) return;
 
+  const cb = run.callback[callbackName];
+  if (!cb) return;
+
+  // --- Radios (change → immediate action) ---
   panel.addEventListener("change", (e) => {
-    const cb = run.callback[callbackName];
-    if (!cb) return;
-
-    // --- Radios ---
     const radio = e.target.closest('input[type="radio"]');
-    if (radio) {
-      const action = radio.dataset.action;
-      if (!action) return;
+    if (!radio) return;
 
-      cb({ action, value: radio.value });
-      return;
-    }
+    const action = radio.dataset.action;
+    if (!action) return;
 
-    // --- Inputs (advsq only) ---
-    const input = e.target.closest('input');
-    if (!input) return;
-
-    if (callbackName !== "advsq") return;
-
-    // 🔥 NEW: special-case opacity
-    const action = (e.target.name === "advsq-opacity") ? "updateOpacity": "updateParam";
     cb({
-      action: "updateParam",
-      name: input.name,
-      value: input.value
+      action,
+      value: radio.value
     });
   });
 
+  // --- Buttons (click → full payload) ---
   panel.addEventListener("click", (e) => {
-    // --- Ignore radios (handled by change) ---
+    const btn = e.target.closest("button");
+    if (!btn) return;
+
+    const action = btn.dataset.action;
+    if (!action) return;
+
+    const payload = buildPayload(panel, action);
+    cb(payload);
+  });
+  }
+
+function wireSetupPanel(panelId, callbackName, buildPayload) {
+  const panel = document.getElementById(panelId);
+  if (!panel) return;
+
+  const cb = run.callback[callbackName];
+  if (!cb) return;
+
+  // --- Change events (ALL inputs → full payload) ---
+  panel.addEventListener("change", (e) => {
+    // const input = e.target.closest("input");
+    const input = e.target.closest('input[name="tray-gap"]');
+    if (!input) return;
+
+    const payload = buildPayload(panel, "updateParam");
+    cb(payload);
+  });
+
+  // --- Click events (buttons → full payload with action) ---
+  panel.addEventListener("click", (e) => {
+    // ignore radios (handled in change)
     if (e.target.closest('input[type="radio"]')) return;
 
     const btn = e.target.closest("button");
@@ -139,11 +260,39 @@ function wirePanel(panelId, callbackName, buildPayload) {
     const action = btn.dataset.action;
     if (!action) return;
 
-    const cb = run.callback[callbackName];
-    if (!cb) return;
+    const payload = buildPayload(panel, action);
+    cb(payload);
+  });
+  }
+
+function wireAdvsqPanel(panelId, callbackName, buildPayload) {
+  const panel = document.getElementById(panelId);
+  if (!panel) return;
+
+  const cb = run.callback[callbackName];
+  if (!cb) return;
+
+  // --- Change events (ALL inputs → full payload) ---
+  panel.addEventListener("change", (e) => {
+    const input = e.target.closest("input");
+    if (!input) return;
+
+    const payload = buildPayload(panel, "updateParam");
+    cb(payload);
+  });
+
+  // --- Click events (buttons → full payload with action) ---
+  panel.addEventListener("click", (e) => {
+    // ignore radios (handled in change)
+    if (e.target.closest('input[type="radio"]')) return;
+
+    const btn = e.target.closest("button");
+    if (!btn) return;
+
+    const action = btn.dataset.action;
+    if (!action) return;
 
     const payload = buildPayload(panel, action);
-
     cb(payload);
   });
 }
@@ -176,17 +325,21 @@ function handleAdvsqKeys(e) {
 }
 
 function buildSetupPayload(panel, action) {
-  const selected = panel.querySelector('input[name="board-size"]:checked');
-
+  console.log("     ---------- view: view.js");
   return {
     action,
-    boardSize: selected?.value
+    boardSize:  panel.querySelector('input[name="board-size"]:checked')?.value,
+    trayType:   panel.querySelector('input[name="tray-type"]:checked')?.value,
+    visible:    panel.querySelector('input[name="tray-visible"]')?.value,
+    initialPos: panel.querySelector('input[name="initial-pos"]')?.value,
+    trayGap:    panel.querySelector('input[name="tray-gap"]')?.value,
   };
   }
 
 function buildTrayPayload(panel, action) {
-  const selected = panel.querySelector('input[name="tray-type"]:checked');
+  const selected = panel.querySelector('input[name="tray-type"]:checked')?.value;
 
+  console.log("     ---------- view: view.js");
   return {
     action,
     trayType: selected?.value
@@ -194,14 +347,17 @@ function buildTrayPayload(panel, action) {
   }
 
 function buildGamePayload(panel, action) {
+  console.log("     ---------- view: view.js");
   return { action };
   }
 
 function buildGambitPayload(panel, action) {
+  console.log("     ---------- view: view.js");
   return { action };
   }
 
 function buildAdvsqPayload(panel, action) {
+  console.log("     ---------- view: view.js");
   return {
     action,
     srcTile:  panel.querySelector('[name="advsq-src"]')?.value,

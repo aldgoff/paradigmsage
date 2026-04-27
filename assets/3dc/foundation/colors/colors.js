@@ -3,21 +3,19 @@
   Purpose: Tile color system (bishop + duke) in VTS space.
   Author: Allan Goff
   Date: 3/20/26
+  Recommended access: import * as colors.
   UI: the export functions.
- */
+*/
 
+// --- Load module ---
 import colorsData from "./colors.json" assert { type: "json" };
+  const colorsModule = colorsData.colors_module;
+  const BISHOP = colorsModule.bishop_color;
+  const DUKE   = colorsModule.duke_color;
+  // Seampoint: more objects.
 
-// Build upon the previous layer.
-
-import { normalizeTileToVts } from "../coords/coords.js";
-
-// -- Load module --
-
-const colorsModule = colorsData.colors_module;
-
-const BISHOP = colorsModule.bishop_color;
-const DUKE   = colorsModule.duke_color;
+// --- Build upon previous layers ---
+import * as coords from "../coords/coords.js";
 
 // -- Core (VTS only) --
 
@@ -44,17 +42,17 @@ export function dukeColorVts(vts /* spec-independent */) {
 // -- Public API (normalized) --
 
 export function bishopColor(tile, specOrName = "8x8x8") {
-  const vts = normalizeTileToVts(tile, specOrName);
+  const vts = coords.normalizeTileToVts(tile, specOrName);
   return bishopColorVts(vts);
   }
 
 export function dukeColor(tile, specOrName = "8x8x8") {
-  const vts = normalizeTileToVts(tile, specOrName);
+  const vts = coords.normalizeTileToVts(tile, specOrName);
   return dukeColorVts(vts);
   }
 
 export function tileColors(tile, specOrName = "8x8x8") {
-  const vts = normalizeTileToVts(tile, specOrName);
+  const vts = coords.normalizeTileToVts(tile, specOrName);
 
   return {
     bishop: bishopColorVts(vts),

@@ -1,8 +1,9 @@
 /* File: boards.js
-  Path: ./3dc/boards/boards.js
+  Path: ./3dc/view/boards/boards.js
   Purpose: Create a 3D chess board, add to scene, delete previous.
   Author: Allan Goff
   Date: 4/14/26
+  Recommended access: import * as boards.
   UI: the export functions.
 */
 
@@ -13,20 +14,35 @@ import boardsData from "./boards.json" assert { type: "json" };
   // Seampoint: more objects.
 
 // --- Build upon previous layers ---
-import {vts2xyz,
-        xyz2vts,
-        vts2pixels,
-        pixels2vts,
-} from "../render/coordsMaps.js"
-
-import * as tiles from "../tiles/tiles.js";
-import * as view from "../view.js";
+import * as view       from "../view.js";
+import * as tiles      from "../tiles/tiles.js";
 import * as decorators from "../decorators/decorators.js";
-import * as cameras from "../render/cameras.js";
-import * as renders from "../render/renders.js";
+import * as cameras    from "../render/cameras.js";
+import * as renders    from "../render/renders.js";
 // Seampoint: more imports.
 
 let currentBoard = null;
+
+// --- UI ---
+export function makeSetup(payload) {
+  console.log("view: boards.js - makeSetup(payload):", payload);
+
+  const { action, boardSize, trayType, trayGap } = payload;
+
+  // state.pushNewSetup(payload);
+
+  const dimensions = boardSize.split("x").map(n => Number(n));
+  makeBoard(dimensions);
+}
+
+export function makeGame(payload) {
+  console.log("view: boards.js - makeGame(payload):", payload);
+  // Call make board.
+  // Call add trays.
+  // Show|Hide|gap
+  // Rules
+  // Initial position
+}
 
 // --- UI ---
 export function makeBoard(dimensions) {
