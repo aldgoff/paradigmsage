@@ -23,6 +23,10 @@ import * as utils  from "../../../utils/debug.js";            // snapshot(obj) -
   import * as overlaps from "../../geometry/overlapTiles.js";
   import * as advSqs   from "../../geometry/advSqs.js";
 
+  import {AdvSq,
+        isEqual,
+} from "../../geometry/advSqs.js";
+
   import * as view       from "../view.js";
   import * as tiles      from "../tiles/tiles.js";
   import * as decorators from "../decorators/decorators.js";
@@ -124,7 +128,6 @@ export function makeAdvsq(specs) {
 
   const group = view.buildAdvSqGroup(specs);
 
-
   view.context.scene.add(group);
   currentAdvsq = group;
   }
@@ -196,9 +199,15 @@ function quadDerived(q, k, s) {
 function perimDerived(q, k, s) {
   const length = 2 * k + 1;
   const area = (k+1)*(k+1);
-  const onboard = area; // TODO should be between 1 and area.
+  let onboard = area; // Area of an advsq should be between 1 and area.
 
-  // const onboard = coords.onBoardVts(vts); // Need count inadvsq, not a particular tile.
+
+  const panel = document.getElementById("advsq-window");
+  const srcTile = panel.querySelector('[name="advsq-src"]')?.value;
+  const source = coords.normalizeTileToVts(srcTile);
+  const advSq = AdvSq.fromQuad(source, q, k);
+
+  onboard = advSq.getOnboardCount();
 
   return { length, area, onboard };
   }

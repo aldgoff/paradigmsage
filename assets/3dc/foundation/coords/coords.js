@@ -144,7 +144,7 @@ export function vtsToBoard(vts, specOrName = "8x8x8") {
 
 // -- On board tests --
 
-export function onBoardRcs(rcs, specName = "8x8x8") {
+export function onBoardRcs(rcs, specName = "8x8x8") { // True/False.
   let spec = specName;
 
   if (typeof spec === "string") {

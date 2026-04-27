@@ -35,7 +35,9 @@ import {rayPairToQuad,
         prevQuadInPlane,
 } from "../geometry/quads.js";
 import {getStride,
+        onboardTiles,
 } from "../geometry/perims.js";
+
 // Seampoint: more imports.
 
 const _private = Symbol("AdvSq");
@@ -149,6 +151,18 @@ export class AdvSq {
   }
 
   // Relationships:
+  getOnboardCount() {
+    let onboard = 0;
+    let k = 0;
+    for(const perim of this.perims) {
+      const perimOnboard = onboardTiles(this.source, this.quad, k);
+      console.log("this.source, this.quad, this.k", this.source, this.quad, k, perimOnboard);
+      onboard += perimOnboard;
+      k++;
+    }
+
+    return onboard;
+  }
 }
 
 export function isEqual(a,b) {
