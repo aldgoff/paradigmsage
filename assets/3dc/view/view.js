@@ -88,8 +88,8 @@ export function init(playBoard) { // PlayBoard is the 3D canvas from the THREE r
 
   wirePanel("game-window",    "game",    buildGamePayload,    { onChangeFull: true });
 
-  wirePanel("camera-window",  "camera",  buildCameraPayload,  { onChangeFull: true }); // Not subject to undo.
-  wirePanel("viewer-window",  "viewer",  buildViewerPayload,  { onChangeFull: true });
+  wireSimplePanel("camera-window", "camera", buildCameraPayload, { onChangeFull: true }); // Not subject to undo.
+  wirePanel(      "viewer-window", "viewer", buildViewerPayload, { onChangeFull: true });
 
   window.addEventListener("keydown", handleAdvsqKeys);
   // Seampoint - more listeners...
@@ -222,6 +222,43 @@ function wirePanel(panelId, callbackName, buildPayload, options = {}) {
 
     const cb = run.callback[callbackName];
     if (typeof cb !== "function") return;
+
+    const payload = buildPayload(panel, action);
+    cb(payload);
+  });
+  }
+
+function wireSimplePanel(panelId, callbackName, buildPayload) {
+  const panel = document.getElementById(panelId);
+  if (!panel) return;
+
+  const cb = run.callback[callbackName];
+  if (!cb) return;
+
+  // --- Radios (change → immediate action) ---
+  panel.addEventListener("change", (e) => {
+    const cb = run.callback[callbackName];
+    if (!cb) return;
+
+    const radio = e.target.closest('input[type="radio"]');
+    if (!radio) return;
+
+    const action = radio.dataset.action;
+    if (!action) return;
+
+    cb({
+      action,
+      value: radio.value
+    });
+  });
+
+  // --- Buttons (click → full payload) ---
+  panel.addEventListener("click", (e) => {
+    const btn = e.target.closest("button");
+    if (!btn) return;
+
+    const action = btn.dataset.action;
+    if (!action) return;
 
     const payload = buildPayload(panel, action);
     cb(payload);

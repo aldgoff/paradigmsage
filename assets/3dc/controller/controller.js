@@ -126,59 +126,10 @@ function callbacks() {
 
   register.gameControlDispatcher(        game.panelDispatch);  // Undo interface.
 
-  register.cameraControlDispatcher(cameraPanelDispatch);  // Not subject to undo.
+  register.cameraControlDispatcher(    camera.panelDispatch);  // Not subject to undo.
   register.viewerControlDispatcher(    viewer.panelDispatch);
   // Seampoint - register another dispatcher.
 }
-
-function cameraPanelDispatch(payload) {
-  console.log("cntrl: events.js - cameraPanelDispatch(payload)", payload);
-  const { action, value, offboardOpacity } = payload;
-
-  switch (action) {
-    case "ZoomIn":  handleZoomIn(); break;
-    case "ZoomOut": handleZoomOut(); break;
-    case "Ascend":  handleAscend(); break;
-    case "Descend": handleDescend(); break;
-    case "SetPOV":  handlePOV(value); break;
-    default: throw new Error(`Unknown camera action ${action} value ${value}.`); break;
-  }
-  // <input type="range" name="offboard-opacity" min="0" max="1" step="0.01" value="0.5"> </label>
-}
-
-// Seampoint - more dispatchers...
-
-/*** ---------- ---------- ---------- ---------- ***/
-
-import * as cameras from "../view/render/cameras.js";
-
-function handleZoomIn() {             // Camera handlers. Not subject to undo.
-  console.log("Camera Zoom-In:");
-  const delta = 0.1;
-  cameras.zoomIn(delta);
-  }
-
-function handleZoomOut() {
-  const delta = -0.1;
-  cameras.zoomIn(delta);
-  }
-
-function handleAscend() {
-  const tilt = 10;
-  cameras.shiftVertical(tilt);
-  }
-
-function handleDescend() {
-  const tilt = -10;
-  cameras.shiftVertical(tilt);
-  }
-
-function handlePOV(pov) {
-  cameras.selectPOV(pov, [0, 0, 0]);
-}
-// Seampoint - more handlers...
-
-/*** ---------- ---------- ---------- ---------- ***/
 
 // --- Helpers ---
 function makeDraggable(element) {
