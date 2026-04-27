@@ -16,9 +16,9 @@ import * as register from "../view/registerHandlers.js";
 
 // --- UI ---
 export function callbacks() {
-  register.setupControlDispatcher(   setup.panelDispatch);    // Setup.
-  register.gameControlDispatcher(     game.panelDispatch);    // Undo interface.
-  register.advsqControlDispatcher(  advsqs.panelDispatch);    // Manipulate an advancement square.
+  register.setupControlDispatcher(   setup.panelDispatch);  // Setup.
+  register.gameControlDispatcher(     game.panelDispatch);  // Undo interface.
+  register.advsqControlDispatcher(  advsqs.panelDispatch);  // Manipulate an advancement square.
   register.gambitControlDispatcher(gambits.panelDispatch);  // Build a gambit.
 
   register.cameraControlDispatcher(cameraPanelDispatch);  // Not subject to the undo arch.
@@ -103,4 +103,5 @@ function handleViewerParams(params) {
   console.log("cntrl: events.js - handleViewerParams", params);
   // TODO: viewer parameters.
 }
+// Seampoint - more handlers...
 

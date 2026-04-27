@@ -10,7 +10,6 @@
 // --- UI ---
 export const callback = { // Allows rest of view layer easy access to control's dispatch functions.
   setup: null,
-  tray: null, 
   game: null, 
   move: null, 
   gambit: null,
@@ -22,7 +21,6 @@ export const callback = { // Allows rest of view layer easy access to control's 
 }
 
 export function setupControlDispatcher(fn)  { callback.setup  = fn; }
-export function trayControlDispatcher(fn)   { callback.tray   = fn; }
 export function gameControlDispatcher(fn)   { callback.game   = fn; }
 export function moveControlDispatcher(fn)   { callback.move   = fn; }
 export function gambitControlDispatcher(fn) { callback.gambit = fn; }

@@ -82,20 +82,22 @@ export function init(playBoard) { // PlayBoard is the 3D canvas from the THREE r
 
   // Listeners: (The move listing is purely output, no input, therefore no wiring todo.)
 
-  wireSetupPanel( "setup-window",  "setup",  buildSetupPayload);
-  wireSimplePanel("game-window",   "game",   buildGamePayload);
-  wireSimplePanel("gambit-window", "gambit", buildGambitPayload);
-  wireAdvsqPanel( "advsq-window",  "advsq",  buildAdvsqPayload);
+  wirePanel( "setup-window",  "setup",  buildSetupPayload, { onChangeFull: true });
+  wirePanel("game-window",   "game",   buildGamePayload, { onChangeFull: true });
+  wirePanel("gambit-window", "gambit", buildGambitPayload, { onChangeFull: true });
+  wirePanel( "advsq-window",  "advsq",  buildAdvsqPayload, { onChangeFull: true });
 
   window.addEventListener("keydown", handleAdvsqKeys);
 
-  wireSimplePanel("camera-window", "camera", buildCameraPayload); // Not subject to the undo arch.
+  wirePanel("camera-window", "camera", buildCameraPayload, { onChangeFull: true }); // Not subject to the undo arch.
   // TODO: use new wirePanel method everywhere...
   wirePanel("viewer-window", "viewer", buildViewerPayload, { onChangeFull: true });
 
   // Seampoint - more listeners...
 
-  game.showUndoStatus();
+  console.log("callbacks:", run.callback);
+
+  // game.showUndoStatus();
 
   return;
 }
@@ -205,8 +207,6 @@ function wirePanel(panelId, callbackName, buildPayload, options = {}) {
 
   const cb = run.callback[callbackName];
   if (!cb) return;
-
-  // CHANGE → full payload (optional)
   panel.addEventListener("change", (e) => {
     if (!options.onChangeFull) return;
 
@@ -214,119 +214,154 @@ function wirePanel(panelId, callbackName, buildPayload, options = {}) {
     cb(payload);
   });
 
-  // CLICK → full payload
   panel.addEventListener("click", (e) => {
     const btn = e.target.closest("button");
     if (!btn) return;
 
     const action = btn.dataset.action;
     if (!action) return;
+
+    const cb = run.callback[callbackName];
+    if (typeof cb !== "function") return;
 
     const payload = buildPayload(panel, action);
     cb(payload);
   });
 }
 
-function wireSimplePanel(panelId, callbackName, buildPayload) {
-  const panel = document.getElementById(panelId);
-  if (!panel) return;
+// function wirePanel1(panelId, callbackName, buildPayload, options = {}) {
+//   const panel = document.getElementById(panelId);
+//   if (!panel) return;
 
-  const cb = run.callback[callbackName];
-  if (!cb) return;
+//   const cb = run.callback[callbackName];
+//   if (!cb) return;
 
-  // --- Radios (change → immediate action) ---
-  panel.addEventListener("change", (e) => {
-    const radio = e.target.closest('input[type="radio"]');
-    if (!radio) return;
+//   // CHANGE → full payload (optional)
+//   panel.addEventListener("change", (e) => {
+//     if (!options.onChangeFull) return;
 
-    const action = radio.dataset.action;
-    if (!action) return;
+//     const payload = buildPayload(panel, "updateParam");
+//     cb(payload);
+//   });
 
-    cb({
-      action,
-      value: radio.value
-    });
-  });
+//   // CLICK → full payload
+//   panel.addEventListener("click", (e) => {
+//     const btn = e.target.closest("button");
+//     if (!btn) return;
 
-  // --- Buttons (click → full payload) ---
-  panel.addEventListener("click", (e) => {
-    const btn = e.target.closest("button");
-    if (!btn) return;
+//     const action = btn.dataset.action;
+//     if (!action) return;
 
-    const action = btn.dataset.action;
-    if (!action) return;
+//     const payload = buildPayload(panel, action);
+//     cb(payload);
+//   });
+// }
 
-    const payload = buildPayload(panel, action);
-    cb(payload);
-  });
-  }
+// function wireSimplePanel(panelId, callbackName, buildPayload) {
+//   const panel = document.getElementById(panelId);
+//   if (!panel) return;
 
-function wireSetupPanel(panelId, callbackName, buildPayload) {
-  const panel = document.getElementById(panelId);
-  if (!panel) return;
+//   // const cb = run.callback[callbackName];
+//   // if (!cb) return;
 
-  const cb = run.callback[callbackName];
-  if (!cb) return;
+//   // --- Radios (change → immediate action) ---
+//   panel.addEventListener("change", (e) => {
+//     const cb = run.callback[callbackName];
+//     if (!cb) return;
 
-  // --- Change events (ALL inputs → full payload) ---
-  panel.addEventListener("change", (e) => {
-    // const input = e.target.closest("input");
-    const input = e.target.closest('input[name="tray-gap"]');
-    if (!input) return;
+//     const radio = e.target.closest('input[type="radio"]');
+//     if (!radio) return;
 
-    const payload = buildPayload(panel, "updateParam");
-    cb(payload);
-  });
+//     const action = radio.dataset.action;
+//     if (!action) return;
 
-  // --- Click events (buttons → full payload with action) ---
-  panel.addEventListener("click", (e) => {
-    // ignore radios (handled in change)
-    if (e.target.closest('input[type="radio"]')) return;
+//     cb({
+//       action,
+//       value: radio.value
+//     });
+//   });
 
-    const btn = e.target.closest("button");
-    if (!btn) return;
+//   // --- Buttons (click → full payload) ---
+//   panel.addEventListener("click", (e) => {
+//     const btn = e.target.closest("button");
+//     if (!btn) return;
 
-    const action = btn.dataset.action;
-    if (!action) return;
+//     const action = btn.dataset.action;
+//     if (!action) return;
 
-    const payload = buildPayload(panel, action);
-    cb(payload);
-  });
-  }
+//     const payload = buildPayload(panel, action);
+//     cb(payload);
+//   });
+//   }
 
-function wireAdvsqPanel(panelId, callbackName, buildPayload) {
-  const panel = document.getElementById(panelId);
-  if (!panel) return;
+// function wireSetupPanel(panelId, callbackName, buildPayload) {
+//   const panel = document.getElementById(panelId);
+//   if (!panel) return;
 
-  const cb = run.callback[callbackName];
-  if (!cb) return;
+//   const cb = run.callback[callbackName];
+//   if (!cb) return;
 
-  // --- Change events (ALL inputs → full payload) ---
-  panel.addEventListener("change", (e) => {
-    const input = e.target.closest("input");
-    if (!input) return;
+//   // --- Change events (ALL inputs → full payload) ---
+//   panel.addEventListener("change", (e) => {
+//     // const input = e.target.closest("input");
+//     const input = e.target.closest('input[name="tray-gap"]');
+//     if (!input) return;
 
-    const payload = buildPayload(panel, "updateParam");
-    cb(payload);
-  });
+//     const payload = buildPayload(panel, "updateParam");
+//     cb(payload);
+//   });
 
-  // --- Click events (buttons → full payload with action) ---
-  panel.addEventListener("click", (e) => {
-    // ignore radios (handled in change)
-    if (e.target.closest('input[type="radio"]')) return;
+//   // --- Click events (buttons → full payload with action) ---
+//   panel.addEventListener("click", (e) => {
+//     // ignore radios (handled in change)
+//     if (e.target.closest('input[type="radio"]')) return;
 
-    const btn = e.target.closest("button");
-    if (!btn) return;
+//     const btn = e.target.closest("button");
+//     if (!btn) return;
 
-    const action = btn.dataset.action;
-    if (!action) return;
+//     const action = btn.dataset.action;
+//     if (!action) return;
 
-    const payload = buildPayload(panel, action);
-    cb(payload);
-  });
-}
+//     const payload = buildPayload(panel, action);
+//     cb(payload);
+//   });
+//   }
+
+// function wireAdvsqPanel(panelId, callbackName, buildPayload) {
+//   const panel = document.getElementById(panelId);
+//   if (!panel) return;
+
+//   const cb = run.callback[callbackName];
+//   if (!cb) return;
+
+//   // --- Change events (ALL inputs → full payload) ---
+//   panel.addEventListener("change", (e) => {
+//     const input = e.target.closest("input");
+//     if (!input) return;
+
+//     const payload = buildPayload(panel, "updateParam");
+//     cb(payload);
+//   });
+
+//   // --- Click events (buttons → full payload with action) ---
+//   panel.addEventListener("click", (e) => {
+//     // ignore radios (handled in change)
+//     if (e.target.closest('input[type="radio"]')) return;
+
+//     const btn = e.target.closest("button");
+//     if (!btn) return;
+
+//     const action = btn.dataset.action;
+//     if (!action) return;
+
+//     const payload = buildPayload(panel, action);
+//     cb(payload);
+//   });
+// }
 
 function handleAdvsqKeys(e) {
+  console.log("KEY EVENT", e.key);
+
   if (["INPUT", "TEXTAREA"].includes(e.target.tagName)) return;
 
   const cb = run.callback.advsq;

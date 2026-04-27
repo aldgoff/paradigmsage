@@ -108,25 +108,10 @@
     | buildAdvsqPayload(panel, action)                          |
     +-----------------------------------------------------------+
 
- ### 3.2 demos.js
+ ### 3.6 demos.js
     +------------------------------------------+
     | run(context:{scene,camera,renderer,...}) |
     |   Prepares tile stuff for board.         |
     |   -> runDemos(...)                       |
     |      -> demoBoard(...)                   |
     +------------------------------------------+
-
-## 4. A Table of Panels and Controls
-    | Panel   | Button List                           | Keys     | Radio Buttons                | Text Boxes  | Scroll |
-    | :----- -| :------------------------------------ | :------- | :--------------------------- | :---------- | :----- |
-    | Setup   | Make-Board                            |          | 8x8x8 10x8x8 10x10x10        |             |        |
-    | Trays   | Make-Trays Show Hide                  |          | Real Factory                 |             |        |
-    | Game    | New Rerun Undo Redo Load Save         |          |                              |             |        |
-    | Moves   | (Move-White-Black-Coords-Annotations) |          |                              |             | list   |
-    | Gambit  | Freeze-AdvSq Prev Next Delete Select  |          |                              |             | list   |
-    | AdvSqs  | Place Remove                          | k i j    |                              | Q Perimeter |        |
-    | AdvSqs  | NextQuad NextPlane NextPiece          | ^k ^i ^j |                              | Stride      |        |
-    | Compass |                                       |          |                              |             |        |
-    | Camera  | ZoomIn ZoomOut Ascend Descend         |          | White Neutral Black Negative |             |        |
-    |  |  |  |  |
-

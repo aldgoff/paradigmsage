@@ -59,11 +59,10 @@ layout: "play"
   }
 
   #setup-window  { top:  120px; left:   80px; }  /* DOM Control Panels */
-  #tray-window   { top:  260px; left:   80px; }
-  #game-window   { top:  120px; left:  280px; }
   #move-window   { top: 1100px; left:   80px; }
   #gambit-window { top:  800px; left:   80px; }
   #advsq-window  { top:  320px; left:  280px; }
+  #game-window   { top:  120px; left:  280px; }
 
   #camera-window { top:  420px; left:   80px; }
   #viewer-window { top:  570px; left:   80px; }
@@ -106,23 +105,6 @@ layout: "play"
     <label> <input type="radio" name="initial-pos" value="standard" checked> Standard </label><br>
     <label> <input type="radio" name="initial-pos" value="manual"> Manual </label><br>
   </div>  
-  </div>
-
-<div class="panel" id="game-window">
-  <div class="panel-title">Game Panel</div>
-
-  <div class="section">
-    <button data-action="newGame">New</button>
-    <button data-action="rerun">Rerun</button>
-    <button data-action="undo">Undo</button>
-    <button data-action="redo">Redo</button>
-    <button data-action="load" >Load</button>
-    <button data-action="save" >Save</button>
-  </div>
-
-  <div class="section scroll-box" id="undo-state">
-    <!-- tbd go here -->
-  </div>
   </div>
 
 <div class="panel" id="move-window">
@@ -238,6 +220,23 @@ layout: "play"
   <div class="section">
     <label> Offboard Visibility
       <input type="range" name="advsq-opacity" min="0" max="1" step="0.01" value="0.5"> </label>
+  </div>
+  </div>
+
+<div class="panel" id="game-window">
+  <div class="panel-title">Game Panel</div>
+
+  <div class="section">
+    <button data-action="newGame">New</button>
+    <button data-action="rerun">Rerun</button>
+    <button data-action="undo">Undo</button>
+    <button data-action="redo">Redo</button>
+    <button data-action="load" >Load</button>
+    <button data-action="save" >Save</button>
+  </div>
+
+  <div class="section scroll-box" id="undo-state">
+    <!-- tbd go here -->
   </div>
   </div>
 
