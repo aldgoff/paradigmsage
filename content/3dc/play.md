@@ -285,6 +285,10 @@ layout: "play"
   </div>
 
   <div class="section">
+    <label> Sep <input name="viewer-traySep" type="number" min="1.0" step="0.1" value="1.5" max="2.0"> </label>
+  </div>
+
+  <div class="section">
     <label> Jitter Range <input type="range" name="viewer-range" min="0" max="1" step="0.01" value="0.5"> </label>
     <label> Jitter Speed <input type="range" name="viewer-speed" min="0" max="1" step="0.01" value="0.5"> </label>
   </div>

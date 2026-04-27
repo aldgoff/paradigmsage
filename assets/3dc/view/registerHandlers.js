@@ -9,20 +9,20 @@
 
 // --- UI ---
 export const callback = { // Allows rest of view layer easy access to control's dispatch functions.
-  setup: null,
+  setup: null,    // Primary panels, under undo.
   move: null, 
   gambit: null,
   advsq: null,
   compass: null, 
 
-  game: null, 
+  game: null,     // Undo system, etc.
 
-  camera: null, // Not subject to the undo arch.
-  viewer: null, // Not subject to the undo arch.
+  camera: null,   // Not subject to undo.
+  viewer: null,
   // Seampoint - more callbacks...
 }
 
-export function setupControlDispatcher(fn)   { callback.setup   = fn; } // 
+export function setupControlDispatcher(fn)   { callback.setup   = fn; } // Primary panels, under undo.
 export function moveControlDispatcher(fn)    { callback.move    = fn; }
 export function gambitControlDispatcher(fn)  { callback.gambit  = fn; }
 export function advsqControlDispatcher(fn)   { callback.advsq   = fn; }
@@ -30,7 +30,7 @@ export function compassControlDispatcher(fn) { callback.compass = fn; }
 
 export function gameControlDispatcher(fn)    { callback.game   = fn; }  // Undo system, etc.
 
-export function cameraControlDispatcher(fn)  { callback.camera = fn; }  // Not subject to the undo arch.
-export function viewerControlDispatcher(fn)  { callback.viewer = fn; }  // Not subject to the undo arch.
+export function cameraControlDispatcher(fn)  { callback.camera = fn; }  // Not subject to undo.
+export function viewerControlDispatcher(fn)  { callback.viewer = fn; }
 // Seampoint - more dispatchers...
 

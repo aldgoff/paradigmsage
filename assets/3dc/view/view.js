@@ -88,7 +88,7 @@ export function init(playBoard) { // PlayBoard is the 3D canvas from the THREE r
 
   wirePanel("game-window",    "game",    buildGamePayload,    { onChangeFull: true });
 
-  wirePanel("camera-window",  "camera",  buildCameraPayload,  { onChangeFull: true }); // Not subject to the undo arch.
+  wirePanel("camera-window",  "camera",  buildCameraPayload,  { onChangeFull: true }); // Not subject to undo.
   wirePanel("viewer-window",  "viewer",  buildViewerPayload,  { onChangeFull: true });
 
   window.addEventListener("keydown", handleAdvsqKeys);
@@ -205,7 +205,7 @@ function wirePanel(panelId, callbackName, buildPayload, options = {}) {
 
   const cb = run.callback[callbackName];
   if (!cb) return;
-  
+
   panel.addEventListener("change", (e) => {
     if (!options.onChangeFull) return;
 
@@ -310,6 +310,7 @@ function buildViewerPayload(panel, action) { // Not subject to undo.
   return { 
     action,
     gap:   panel.querySelector('[name="viewer-trayGap"]')?.value,
+    sep:   panel.querySelector('[name="viewer-traySep"]')?.value,
     range: panel.querySelector('[name="viewer-range"]')?.value,
     speed: panel.querySelector('[name="viewer-speed"]')?.value,
   };
