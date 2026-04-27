@@ -74,6 +74,7 @@ title: "Dev"
 
  ### Week 7:
   - 4/26/26 - Stride stability. Distinguish stride type (perimeter) from move type (advsq). Correct duke linear color. Update clues. Onboard tile calc.
+  - 4/27/26 - Plumb viewer panel.
 
  ### Week 8:
   - 5/03/26 - tbd

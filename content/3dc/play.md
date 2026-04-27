@@ -58,14 +58,15 @@ layout: "play"
     padding: 4px;
   }
 
-  #setup-window  { top: 120px; left:   80px; }  /* DOM Control Panels */
-  #tray-window   { top: 260px; left:   80px; }
-  #game-window   { top: 120px; left:  280px; }
-  #move-window   { top: 900px; left:   80px; }
-  #gambit-window { top: 610px; left:   80px; }
-  #advsq-window  { top: 320px; left:  280px; }
+  #setup-window  { top:  120px; left:   80px; }  /* DOM Control Panels */
+  #tray-window   { top:  260px; left:   80px; }
+  #game-window   { top:  120px; left:  280px; }
+  #move-window   { top: 1100px; left:   80px; }
+  #gambit-window { top:  800px; left:   80px; }
+  #advsq-window  { top:  320px; left:  280px; }
 
-  #camera-window { top: 460px; left:   80px; }
+  #camera-window { top:  420px; left:   80px; }
+  #viewer-window { top:  570px; left:   80px; }
   /* Seampont - more DOM control panels... */
 </style>
 
@@ -98,19 +99,13 @@ layout: "play"
   </div>  
 
   <div class="section">
-    <!-- <button data-action="showTrays">Show</button>
-    <button data-action="hideTrays">Hide</button> -->
-    <label> <input type="checkbox" name="tray-visible" checked> Visible </label><br>
+    <label>Initial Position</lable>
   </div>  
 
   <div class="section">
     <label> <input type="radio" name="initial-pos" value="standard" checked> Standard </label><br>
     <label> <input type="radio" name="initial-pos" value="manual"> Manual </label><br>
   </div>  
-
-  <div class="section">
-    <label>Gap<input name="tray-gap" type="number" min="0" step="1" value="1" max="3"> </label>
-  </div>
   </div>
 
 <div class="panel" id="game-window">
@@ -227,11 +222,11 @@ layout: "play"
   </div>
 
   <!-- Optional: key hints (visual only) -->
-  <div class="section" style="font-size: 11px; color: #666;">
+  <div class="section" style="font-size: 13px; font-weight: bold; color: #666;">
     Slip & Slide +: k i j
   </div>
-  <div class="section" style="font-size: 11px; color: #666;">
-    Slip & Slide -: ^k ^i ^j
+  <div class="section" style="font-size: 13px; font-weight: bold; color: #666;">
+    Slip & Slide -: K I J
   </div>
 
   <div class="section">
@@ -244,7 +239,7 @@ layout: "play"
     <label> Offboard Visibility
       <input type="range" name="advsq-opacity" min="0" max="1" step="0.01" value="0.5"> </label>
   </div>
-</div>
+  </div>
 
 <div class="panel" id="camera-window">
   <div class="panel-title">Camera Panel</div>
@@ -261,6 +256,24 @@ layout: "play"
     <label> <input type="radio" name="camera-pov" value="neutral"  data-action="SetPOV" checked> Neutral </label>
     <label> <input type="radio" name="camera-pov" value="black"    data-action="SetPOV"> Black </label>
     <label> <input type="radio" name="camera-pov" value="negative" data-action="SetPOV"> Negative </label>
+  </div>
+  </div>
+
+<div class="panel" id="viewer-window">
+  <div class="panel-title">Viewer Panel</div>
+
+  <div class="section">
+    <button data-action="ShowTrays"> Show Trays </button>
+    <button data-action="HideTrays"> Hide Trays </button>
+  </div>
+
+  <div class="section">
+    <label> Gap <input name="viewer-trayGap" type="number" min="0" step="1" value="1" max="3"> </label>
+  </div>
+
+  <div class="section">
+    <label> Jitter Range <input type="range" name="viewer-range" min="0" max="1" step="0.01" value="0.5"> </label>
+    <label> Jitter Speed <input type="range" name="viewer-speed" min="0" max="1" step="0.01" value="0.5"> </label>
   </div>
 </div>
 

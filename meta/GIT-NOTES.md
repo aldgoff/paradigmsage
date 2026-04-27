@@ -57,6 +57,7 @@
   vi: Merge branch '3dc' - Port canvas panels to DOM panels.
   vi: Merge branch '3dc' - Camera control, partial undo logic, make boards from panel.
   vi: Merge branch '3dc' - Offboard tiles w/ opacity, decorators, responsive advs panel, duplex/apex.
+  vi: Merge branch '3dc' - Merge week 6 (advsq panel, gambit panel, latent bugs, tests, stride stability, derived quantities).
   git log --oneline --decorate --graph --all --boundary -n 50
   git push origin main
   ```
