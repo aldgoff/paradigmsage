@@ -289,6 +289,11 @@ layout: "play"
   </div>
 
   <div class="section">
+    <button data-action="StartAnimation"> Start Animation </button>
+    <button data-action="StopAnimation"> Stop Animation </button>
+  </div>
+
+  <div class="section">
     <label> Jitter Range <input type="range" name="viewer-range" min="0" max="1" step="0.01" value="0.5"> </label>
     <label> Jitter Speed <input type="range" name="viewer-speed" min="0" max="1" step="0.01" value="0.5"> </label>
   </div>

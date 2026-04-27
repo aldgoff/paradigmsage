@@ -14,6 +14,7 @@ import viewerData from "./viewer.json" assert { type: "json" };
   // Seampoint: more objects.
 
 // --- Build upon previous layers ---
+import * as cameras from "../../view/render/cameras.js";
 // Seampoint: more imports.
 
 // --- UI ---
@@ -27,9 +28,11 @@ export function panelDispatch(payload) {
   speed = Number(speed);
 
   switch (action) {
-    case "ShowTrays": handleShowTrays(payload); break;
-    case "HideTrays": handleHideTrays(payload); break;
-    case "updateParam": handleViewerParams({ gap, sep, range, speed }); break;
+    case "ShowTrays":      handleShowTrays(payload); break;
+    case "HideTrays":      handleHideTrays(payload); break;
+    case "StartAnimation": handleStartAnimation(payload); break;
+    case "StopAnimation":  handleStopAnimation(payload); break;
+    case "updateParam":    handleViewerParams({ gap, sep, range, speed }); break;
     default: throw new Error(`Unknown viewer action ${action} payload ${payload}.`); break;
   }
 }
@@ -37,18 +40,33 @@ export function panelDispatch(payload) {
 
 // --- Handle Functions ---
 function handleShowTrays(payload) {   // Viewer handlers. Not subject to undo.
-  console.log("cntrl: events.js - handleShowTrays(payload)", payload);
+  console.log("cntrl: viewer.js - handleShowTrays(payload)", payload);
   // TODO: show trays.
   }
 
 function handleHideTrays(payload) {
-  console.log("cntrl: events.js - handleHideTrays(payload)", payload);
-  // TODO: show trays.
+  console.log("cntrl: viewer.js - handleHideTrays(payload)", payload);
+  // TODO: hide trays.
+  }
+
+function handleStartAnimation(payload) {
+  console.log("cntrl: viewer.js - handleStartAnimation(payload)", payload);
+  // TODO: start animation.
+  cameras.startJitter();
+  }
+
+function handleStopAnimation(payload) {
+  console.log("cntrl: viewer.js - handleStopAnimation(payload)", payload);
+  // TODO: stop animation.
+  cameras.stopJitter();
   }
 
 function handleViewerParams(params) {
-  console.log("cntrl: events.js - handleViewerParams", params);
+  console.log("cntrl: viewer.js - handleViewerParams", params);
   // TODO: viewer parameters.
+
+  cameras.setJitter(params.range, params.speed);
+
   // <input type="range" name="offboard-opacity" min="0" max="1" step="0.01" value="0.5"> </label>
 }
 // Seampoint - more handlers...

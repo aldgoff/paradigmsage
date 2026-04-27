@@ -12,10 +12,10 @@
       "black":    [ 800, 150,  800], 
       "negative": [-900, 170,  900] 
     },
-    "Examples": {
-      "_comment": "YadaYada",
-      "_status": "deprecated",
-      "_doc": "Because I said so."
+    "jitter": {
+      "maxAngleDeg": 45,
+      "minPeriodSec": 1,
+      "maxPeriodSec": 10
     }
   }
 }
