@@ -45,12 +45,12 @@ import * as renders    from "./render/renders.js";
 import * as coordsMaps from "./render/coordsMaps.js";
 import * as demos      from "./demos.js";
 import * as tiles      from "./tiles/tiles.js";
+
 import * as game       from "../controller/game/game.js";
 
-  import * as advSqs     from "../geometry/advSqs.js";
-  import * as decorators from "./decorators/decorators.js";
-  import * as quads      from "../geometry/quads.js";
-
+import * as advSqs     from "../geometry/advSqs.js";
+import * as decorators from "./decorators/decorators.js";
+import * as quads      from "../geometry/quads.js";
 // Seampoint: more imports...
 
 export let context;
@@ -72,7 +72,7 @@ export function init(playBoard) { // PlayBoard is the 3D canvas from the THREE r
 
   if(false) {  // POC.
     const context = demo(playBoard); // Display POC board, decorators, raycasting.
-  }
+    }
   else {      // Growing the panel and undo features.
     context = renders.init(playBoard);
     context.tileMap = new Map();
@@ -80,20 +80,19 @@ export function init(playBoard) { // PlayBoard is the 3D canvas from the THREE r
     // demos.run(context);
   }
 
-  // Listeners: (The move listing is purely output, no input, therefore no wiring todo.)
+  wirePanel("setup-window",   "setup",   buildSetupPayload,   { onChangeFull: true });
+  wirePanel("move-window",    "move",    buildMovePayload,    { onChangeFull: true });
+  wirePanel("gambit-window",  "gambit",  buildGambitPayload,  { onChangeFull: true });
+  wirePanel("advsq-window",   "advsq",   buildAdvsqPayload,   { onChangeFull: true });
+  wirePanel("compass-window", "compass", buildCompassPayload, { onChangeFull: true });
 
-  wirePanel("setup-window",  "setup",  buildSetupPayload,  { onChangeFull: true });
-  wirePanel("game-window",   "game",   buildGamePayload,   { onChangeFull: true });
-  wirePanel("gambit-window", "gambit", buildGambitPayload, { onChangeFull: true });
-  wirePanel("advsq-window",  "advsq",  buildAdvsqPayload,  { onChangeFull: true });
+  wirePanel("game-window",    "game",    buildGamePayload,    { onChangeFull: true });
+
+  wirePanel("camera-window",  "camera",  buildCameraPayload,  { onChangeFull: true }); // Not subject to the undo arch.
+  wirePanel("viewer-window",  "viewer",  buildViewerPayload,  { onChangeFull: true });
 
   window.addEventListener("keydown", handleAdvsqKeys);
-
-  wirePanel("camera-window", "camera", buildCameraPayload, { onChangeFull: true }); // Not subject to the undo arch.
-  wirePanel("viewer-window", "viewer", buildViewerPayload, { onChangeFull: true });
   // Seampoint - more listeners...
-
-  console.log("callbacks:", run.callback);
 
   game.showUndoStatus();
 
@@ -192,6 +191,7 @@ function decorateTile(coords, piece, decorator, group, opacity, zOffset=0.00) {
 }
 
 // --- Utilities ---
+// TODO: Move isSame to utils.
 function isSame(a, b) {
   return a[0] === b[0] && a[1] === b[1] && a[2] === b[2];
 }
@@ -205,6 +205,7 @@ function wirePanel(panelId, callbackName, buildPayload, options = {}) {
 
   const cb = run.callback[callbackName];
   if (!cb) return;
+  
   panel.addEventListener("change", (e) => {
     if (!options.onChangeFull) return;
 
@@ -269,7 +270,7 @@ function buildSetupPayload(panel, action) {
   }
 
 
-function buildGamePayload(panel, action) {
+function buildMovePayload(panel, action) {
   console.log("     ---------- view: view.js");
   return { action };
   }
@@ -289,6 +290,16 @@ function buildAdvsqPayload(panel, action) {
     stride:   panel.querySelector('[name="advsq-stride"]')?.value,
     opacity:  panel.querySelector('[name="advsq-opacity"]')?.value,
   };
+  }
+
+function buildCompassPayload(panel, action) {
+  console.log("     ---------- view: view.js");
+  return { action };
+}
+
+function buildGamePayload(panel, action) {
+  console.log("     ---------- view: view.js");
+  return { action };
 }
 
 function buildCameraPayload(panel, action) { // Not subject to undo.

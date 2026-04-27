@@ -45,10 +45,16 @@
 // Seampoint: more objects.
 
 // --- Build upon previous layers ---
-import * as setup    from "../controller/setup/setup.js";
-import * as gambits  from "../controller/gambits/gambits.js";
-import * as cAdvsqs  from "../controller/advsqs/advsqs.js";
-import * as game     from "../controller/game/game.js";
+import * as setup     from "../controller/setup/setup.js";
+import * as moves     from "../controller/moves/moves.js";
+import * as gambits   from "../controller/gambits/gambits.js";
+import * as cAdvsqs   from "../controller/advsqs/advsqs.js";
+import * as compasses from "../controller/compasses/compasses.js";
+
+import * as game      from "../controller/game/game.js";
+
+import * as camera    from "../controller/gambits/gambits.js";
+import * as viewer    from "../controller/gambits/gambits.js";
 
 import * as model    from "../model/model.js";
 import * as state    from "../model/state/state.js";
@@ -72,6 +78,7 @@ export function init(playBoard) {
   makeDraggable(document.getElementById("move-window"));
   makeDraggable(document.getElementById("gambit-window"));
   makeDraggable(document.getElementById("advsq-window"));
+  makeDraggable(document.getElementById("compass-window"));
 
   makeDraggable(document.getElementById("game-window"));    // Undo control for the previous 4 panels.
 
@@ -111,18 +118,20 @@ window.addEventListener("pointerup", () => {
 
 // --- UI ---
 function callbacks() {
-  register.setupControlDispatcher(   setup.panelDispatch);  // Setup.
-  register.advsqControlDispatcher( cAdvsqs.panelDispatch);  // Manipulate an advancement square.
-  register.gambitControlDispatcher(gambits.panelDispatch);  // Build a gambit.
+  register.setupControlDispatcher(      setup.panelDispatch);  // Setup board, tray, and inital position.
+  register.moveControlDispatcher(       moves.panelDispatch);  // Make and review moves.
+  register.gambitControlDispatcher(   gambits.panelDispatch);  // Build a gambit.
+  register.advsqControlDispatcher(    cAdvsqs.panelDispatch);  // Manipulate an advancement square.
+  register.compassControlDispatcher(compasses.panelDispatch);  // Slip the advsq along rays or apex directions.
 
-  register.gameControlDispatcher(     game.panelDispatch);  // Undo interface.
+  register.gameControlDispatcher(        game.panelDispatch);  // Undo interface.
 
-  register.cameraControlDispatcher(cameraPanelDispatch);  // Not subject to the undo arch.
-  register.viewerControlDispatcher(viewerPanelDispatch);  // Not subject to the undo arch.
+  register.cameraControlDispatcher(cameraPanelDispatch);  // Not subject to undo.
+  register.viewerControlDispatcher(viewerPanelDispatch);  // Not subject to undo.
   // Seampoint - register another dispatcher.
 }
 
-function cameraPanelDispatch(payload) { // Not subject to the undo arch.
+function cameraPanelDispatch(payload) {
   console.log("cntrl: events.js - cameraPanelDispatch(payload)", payload);
   const { action, value, offboardOpacity } = payload;
 
@@ -137,7 +146,7 @@ function cameraPanelDispatch(payload) { // Not subject to the undo arch.
   // <input type="range" name="offboard-opacity" min="0" max="1" step="0.01" value="0.5"> </label>
   }
 
-function viewerPanelDispatch(payload) { // Not subject to the undo arch.
+function viewerPanelDispatch(payload) {
   console.log("cntrl: events.js - viewerPanelDispatch(payload)", payload);
 
   let { action, gap, range, speed } = payload;

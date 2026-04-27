@@ -12,10 +12,16 @@
 │   │   │   │   ├── advsqs.js
 │   │   │   │   ├── advsqs.json
 │   │   │   │   └── advsqs.md
+│   │   │   ├── camera
+│   │   │   │   ├── camera.js
+│   │   │   │   ├── camera.json
+│   │   │   │   └── camera.md
+│   │   │   ├── compasses
+│   │   │   │   ├── compasses.js
+│   │   │   │   ├── compasses.json
+│   │   │   │   └── compasses.md
 │   │   │   ├── controller.js
 │   │   │   ├── controller.md
-│   │   │   ├── events.js
-│   │   │   ├── events.md
 │   │   │   ├── gambits
 │   │   │   │   ├── gambits.js
 │   │   │   │   ├── gambits.json
@@ -25,10 +31,17 @@
 │   │   │   │   ├── game.json
 │   │   │   │   └── game.md
 │   │   │   ├── moves
-│   │   │   └── setup
-│   │   │       ├── setup.js
-│   │   │       ├── setup.json
-│   │   │       └── setup.md
+│   │   │   │   ├── moves.js
+│   │   │   │   ├── moves.json
+│   │   │   │   └── moves.md
+│   │   │   ├── setup
+│   │   │   │   ├── setup.js
+│   │   │   │   ├── setup.json
+│   │   │   │   └── setup.md
+│   │   │   └── viewer
+│   │   │       ├── viewer.js
+│   │   │       ├── viewer.json
+│   │   │       └── viewer.md
 │   │   ├── dev
 │   │   │   ├── devNotes.md
 │   │   │   └── symbols.js
@@ -154,6 +167,7 @@
 │   │       │   ├── gambits.js
 │   │       │   ├── gambits.json
 │   │       │   └── gambits.md
+│   │       ├── moves
 │   │       ├── pieces
 │   │       ├── registerHandlers.js
 │   │       ├── render
@@ -178,7 +192,6 @@
 │   │       │   ├── tiles.js
 │   │       │   ├── tiles.json
 │   │       │   └── tiles.md
-│   │       ├── trays
 │   │       ├── view.js
 │   │       ├── view.json
 │   │       └── view.md
@@ -467,4 +480,4 @@
 │           └── poc.js
 └── themes
 
-95 directories, 372 files
+98 directories, 382 files
