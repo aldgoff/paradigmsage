@@ -17,6 +17,7 @@ export const callback = { // Allows rest of view layer easy access to control's 
   advsq: null,
 
   camera: null, // Not subject to the undo arch.
+  viewer: null, // Not subject to the undo arch.
   // Seampoint - more callbacks...
 }
 
@@ -28,5 +29,6 @@ export function gambitControlDispatcher(fn) { callback.gambit = fn; }
 export function advsqControlDispatcher(fn)  { callback.advsq  = fn; }
 
 export function cameraControlDispatcher(fn) { callback.camera = fn; } // Not subject to the undo arch.
+export function viewerControlDispatcher(fn) { callback.viewer = fn; } // Not subject to the undo arch.
 // Seampoint - more dispatchers...
 

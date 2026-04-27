@@ -71,6 +71,7 @@ export function init(playBoard) {
   makeDraggable(document.getElementById("advsq-window"));
 
   makeDraggable(document.getElementById("camera-window")); // Not subject to the undo arch.
+  makeDraggable(document.getElementById("viewer-window")); // Not subject to the undo arch.
   // Seampoint - more 2D panels/canvi...
 
   // advsqPanelInitialParams = advsqs.getAdvsqPanelParams();

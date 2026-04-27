@@ -16,16 +16,18 @@ import * as register from "../view/registerHandlers.js";
 
 // --- UI ---
 export function callbacks() {
-  register.setupControlDispatcher( setup.panelDispatch);    // Setup.
-  register.gameControlDispatcher(   game.panelDispatch);    // Undo interface.
-  register.advsqControlDispatcher(advsqs.panelDispatch);    // Manipulate an advancement square.
+  register.setupControlDispatcher(   setup.panelDispatch);    // Setup.
+  register.gameControlDispatcher(     game.panelDispatch);    // Undo interface.
+  register.advsqControlDispatcher(  advsqs.panelDispatch);    // Manipulate an advancement square.
   register.gambitControlDispatcher(gambits.panelDispatch);  // Build a gambit.
 
   register.cameraControlDispatcher(cameraPanelDispatch);  // Not subject to the undo arch.
+  register.viewerControlDispatcher(viewerPanelDispatch);  // Not subject to the undo arch.
   // Seampoint - register another dispatcher.
 }
 
 function cameraPanelDispatch(payload) { // Not subject to the undo arch.
+  console.log("cntrl: events.js - cameraPanelDispatch(payload)", payload);
   const { action, value, offboardOpacity } = payload;
 
   switch (action) {
@@ -35,6 +37,24 @@ function cameraPanelDispatch(payload) { // Not subject to the undo arch.
     case "Descend": handleDescend(); break;
     case "SetPOV":  handlePOV(value); break;
     default: throw new Error(`Unknown camera action ${action} value ${value}.`); break;
+  }
+  // <input type="range" name="offboard-opacity" min="0" max="1" step="0.01" value="0.5"> </label>
+  }
+
+function viewerPanelDispatch(payload) { // Not subject to the undo arch.
+  console.log("cntrl: events.js - viewerPanelDispatch(payload)", payload);
+
+  let { action, gap, range, speed } = payload;
+  gap   = Number(gap);
+  range = Number(range);
+  speed = Number(speed);
+
+
+  switch (action) {
+    case "ShowTrays": handleShowTrays(payload); break;
+    case "HideTrays": handleHideTrays(payload); break;
+    case "updateParam": handleViewerParams({ gap, range, speed }); break;
+    default: throw new Error(`Unknown viewer action ${action} payload ${payload}.`); break;
   }
   // <input type="range" name="offboard-opacity" min="0" max="1" step="0.01" value="0.5"> </label>
 }
@@ -67,5 +87,20 @@ function handleDescend() {
 
 function handlePOV(pov) {
   cameras.selectPOV(pov, [0, 0, 0]);
+}
+
+function handleShowTrays(payload) {   // Viewer handlers. Not subject to the undo arch.
+  console.log("cntrl: events.js - handleShowTrays(payload)", payload);
+  // TODO: show trays.
+  }
+
+function handleHideTrays(payload) {
+  console.log("cntrl: events.js - handleHideTrays(payload)", payload);
+  // TODO: show trays.
+  }
+
+function handleViewerParams(params) {
+  console.log("cntrl: events.js - handleViewerParams", params);
+  // TODO: viewer parameters.
 }
 

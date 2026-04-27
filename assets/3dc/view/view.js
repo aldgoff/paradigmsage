@@ -47,9 +47,9 @@ import * as demos      from "./demos.js";
 import * as tiles      from "./tiles/tiles.js";
 import * as game       from "../controller/game/game.js";
 
-  import * as advSqs   from "../geometry/advSqs.js";
+  import * as advSqs     from "../geometry/advSqs.js";
   import * as decorators from "./decorators/decorators.js";
-  import * as quads    from "../geometry/quads.js";
+  import * as quads      from "../geometry/quads.js";
 
 // Seampoint: more imports...
 
@@ -82,8 +82,6 @@ export function init(playBoard) { // PlayBoard is the 3D canvas from the THREE r
 
   // Listeners: (The move listing is purely output, no input, therefore no wiring todo.)
 
-  // wireSimplePanel("tray-window",   "tray",   buildTrayPayload);  // btn.disabled = false;
-
   wireSetupPanel( "setup-window",  "setup",  buildSetupPayload);
   wireSimplePanel("game-window",   "game",   buildGamePayload);
   wireSimplePanel("gambit-window", "gambit", buildGambitPayload);
@@ -92,6 +90,9 @@ export function init(playBoard) { // PlayBoard is the 3D canvas from the THREE r
   window.addEventListener("keydown", handleAdvsqKeys);
 
   wireSimplePanel("camera-window", "camera", buildCameraPayload); // Not subject to the undo arch.
+  // TODO: use new wirePanel method everywhere...
+  wirePanel("viewer-window", "viewer", buildViewerPayload, { onChangeFull: true });
+
   // Seampoint - more listeners...
 
   game.showUndoStatus();
@@ -198,6 +199,34 @@ function isSame(a, b) {
 // Seampoint: more global functions...
 
 // --- Helpers ---
+function wirePanel(panelId, callbackName, buildPayload, options = {}) {
+  const panel = document.getElementById(panelId);
+  if (!panel) return;
+
+  const cb = run.callback[callbackName];
+  if (!cb) return;
+
+  // CHANGE → full payload (optional)
+  panel.addEventListener("change", (e) => {
+    if (!options.onChangeFull) return;
+
+    const payload = buildPayload(panel, "updateParam");
+    cb(payload);
+  });
+
+  // CLICK → full payload
+  panel.addEventListener("click", (e) => {
+    const btn = e.target.closest("button");
+    if (!btn) return;
+
+    const action = btn.dataset.action;
+    if (!action) return;
+
+    const payload = buildPayload(panel, action);
+    cb(payload);
+  });
+}
+
 function wireSimplePanel(panelId, callbackName, buildPayload) {
   const panel = document.getElementById(panelId);
   if (!panel) return;
@@ -368,8 +397,17 @@ function buildAdvsqPayload(panel, action) {
   };
 }
 
-function buildCameraPayload(panel, action) { // Not subject to the undo arch.
+function buildCameraPayload(panel, action) { // Not subject to undo.
   return { action };
+  }
+
+function buildViewerPayload(panel, action) { // Not subject to undo.
+  return { 
+    action,
+    gap:   panel.querySelector('[name="viewer-trayGap"]')?.value,
+    range: panel.querySelector('[name="viewer-range"]')?.value,
+    speed: panel.querySelector('[name="viewer-speed"]')?.value,
+  };
 }
 
 // Seampoint: more local functions...
