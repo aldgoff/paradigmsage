@@ -19,7 +19,7 @@ import * as cameras from "../../view/render/cameras.js";
 
 // --- UI ---
 export function panelDispatch(payload) {
-  console.log("cntrl: camera.js - panelDispatch(payload)", payload);
+  // console.log("cntrl: camera.js - panelDispatch(payload)", payload);
   const { action, value, offboardOpacity } = payload;
 
   switch (action) {

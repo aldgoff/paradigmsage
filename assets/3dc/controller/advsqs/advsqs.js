@@ -238,9 +238,9 @@ function blank(payload) { // Convert panel strings to numbers, arrays, etc.
 }
 
 function applyAdvsq(newAdvsq) { // Log state change, render, update control panel.
-  state.pushNewAdvsq(newAdvsq);           // Log state change in undo buffer.
+  state.pushNewAdvsq(newAdvsq);            // Undo.
   vAdvsqs.makeAdvsq(newAdvsq);             // Render.
-  vAdvsqs.setAdvsqPanelParams(newAdvsq);   // Update the control panel.
+  vAdvsqs.setAdvsqPanelParams(newAdvsq);   // Panel.
 }
 // Seampoint: more local functions...
 

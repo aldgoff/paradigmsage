@@ -31,11 +31,18 @@ layout: "play"
     z-index: 20;
     cursor: move;
     }
+  #gambit-window {
+    width: 200px;
+  }
   #move-list {
     font-family: monospace;
     white-space: pre;   /* Allows code to col align text. */
     height: 140px;
     }
+  #gambit-list {
+    font-family: monospace;
+    white-space: pre;
+  }
   #move-window {
     font-family: monospace;
     width: 350px;
@@ -59,7 +66,7 @@ layout: "play"
   }
 
   #setup-window   { top:  120px; left:   80px; }  /* DOM Control Panels */
-  #move-window    { top: 1100px; left:   80px; }
+  #move-window    { top: 1200px; left:   80px; }
   #gambit-window  { top:  830px; left:   80px; }
   #advsq-window   { top:  320px; left:  280px; }
   #compass-window { top:  960px; left:  280px; }
@@ -142,9 +149,12 @@ layout: "play"
     <label> LowestPiece: <output name="gambit-piece"    style="opacity:0.7; font-style:italic;"> Queen </output> </label>
   </div>
 
-  <div class="section scroll-box" id="gambit-list">
+  <div class="section scroll-box" id="gambit-list"></div>
     <!-- advsq entries go here -->
-  </div>
+    <!-- N quad src -> dst : area -->
+    <!-- N Q<nn> <LL>X,Y> → <LL>X,Y> : area -->
+    <!-- N Q<nn> <LL>X,Y> → [z,x,y] : area -->
+    <!-- 1 Q13 KB4.4 → KR7,7 : 16 -->
   </div>
 
 <div class="panel" id="advsq-window">

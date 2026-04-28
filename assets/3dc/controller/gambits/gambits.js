@@ -21,10 +21,12 @@ import * as state  from "../../model/state/state.js";
 import * as coords from "../../foundation/coords/coords.js";  // vtsToNotation().
 import * as planes from "../../geometry/planes/planes.js";    // resolveDstTile().
 
-import * as view    from "../../view/view.js";
-import * as vAdvsqs from "../../view/advsqs/advsqs.js";
+import * as view     from "../../view/view.js";
+import * as vAdvsqs  from "../../view/advsqs/advsqs.js";
+import * as vGambits from "../../view/gambits/gambits.js";
 // Seampoint: more imports...
 
+const groupMap = new Map();
 
 // --- UI ---
 export function panelDispatch(payload) {
@@ -55,42 +57,59 @@ export function panelDispatch(payload) {
   */
 
 // --- Handle Functions ---
+export function handleFreezeQuadrant2() {
+  console.log("cntrl: gambits.js - handleFreezeQuadrant().");
+
+  const curr = state.fetchCurrentAdvsq();
+  if(!curr) return;
+
+  mAdvsqs.clearBuffer();      // Changes state, derenders, updates panel.
+  mGambits.makeGambit(curr);  // Changes state, renders, updates panel.
+
+  game.showUndoStatus();      // Updates game panel (undo).
+}
+
 export function handleFreezeQuadrant() {
-  console.log("cntrl: gambits.js - handleFreezeQuadrant()");
+  console.log("cntrl: gambits.js - handleFreezeQuadrant().");
 
   const curr = state.fetchCurrentAdvsq();
   if (!curr) return;
-  console.log("cntrl: gambits.js - handleFreezeQuadrant()...curr", curr);
 
-  const { srcTile, quad, perimeter, stride } = curr;
+  const { srcTile, quad, perimeter, stride, opacity } = curr;
   const dst = planes.resolveDstTile(srcTile, quad, perimeter, stride);  // Derive dst tile.
-  const src = coords.vtsToBoard(srcTile); // Conver to positional notation.
-  // TODO: Will need size of board (defaults to 8x8x8).
+  const src = coords.vtsToBoard(srcTile); // Convert to positional notation for onboard tiles, vts for rest.
 
-  const gambit = {  // Prepare state data.
-    Q: quad,
-    src,      // Board coordinates (positional notation).
-    dst       // Board if on board (KR8,8), vts if off board ([6,6,6]).
-  };
+  state.clearBuffer("AdvSqs");      // Things to update: image, undo buffer, advsq panel.
+  vAdvsqs.clearAdvsq();       
+  vAdvsqs.clearAdvsqPanelParams("Q4,4");
 
-  vAdvsqs.clearAdvsq();
-  state.clearBuffer("AdvSqs");
+  vGambits.makeGambit(curr);
+  const group = makeGambit(curr);   // Things to update: image, undo buffer, gambit panel.
+  const gambit = { Q: quad, src, dst };  // Prepare gambit state data.
+  const idx = state.pushNewGambit(gambit);  // Undo buffer.
+  
+  groupMap.set(idx, group);
+  appendGambitLine(gambit, perimeter);     // Gambits panel
+  vGambits.updatePanel();
 
-  const initParams = vAdvsqs.getAdvsqPanelInitialParams();
-  console.log("initParams", initParams, cAdvsqs.normalize(initParams));
-  vAdvsqs.setAdvsqPanelParams(
-    cAdvsqs.normalize(initParams)
-  );
-
-  const group = makeGambit(curr);
-
-  state.pushNewGambit(gambit);
-  appendGambitLine(gambit);
-  game.showUndoStatus();
+  game.showUndoStatus();            // Game (undo) panel.
 
   return gambit;
   }
+export function makeGambitFromSrcDst(gambit, opacity) { // gambit: {Q, src, dst}, opacity.
+  console.log("cntrl: gambits.js - makeGambitFromSrcDst(gambit,opacity)", gambit, opacity);
+    return;
+
+  const group = view.buildAdvSqGroupFrom(gambit, opacity);
+
+  view.context.scene.add(group);
+  animateFreezeTransition(group);
+
+  return group;
+  }
 export function makeGambit(specs) {
+  console.log("cntrl: gambits.js - makeGambit(specs)", specs);
+
   const group = view.buildAdvSqGroup(specs); // {srcTile: Array(3), quad: 1, perimeter: 0, stride: 0, opacity: 0.5}
 
   view.context.scene.add(group);
@@ -154,7 +173,9 @@ function handleDelete() {
 }
 
 // --- Helpers ---
-function appendGambitLine(gambit) {
+function appendGambitLine(gambit, perimeter) {
+  console.log("cntrl: gambits.js - appendGambitLine(gambit, perimeter).", gambit, perimeter);
+
   const el = document.getElementById("gambit-list");
   if (!el) return;
 
@@ -163,15 +184,17 @@ function appendGambitLine(gambit) {
   // --- freeze index ---
   const count = state.getBufferCount().Gambits;
 
+  const area = (perimeter+1)*(perimeter+1);
+
   // --- column widths ---
-  const idxCol = String(count).padStart(3);     // right-aligned
-  const qCol   = `Q${Q}`.padEnd(5);             // "Q37  "
-  const srcCol = String(src).padEnd(8);         // "KB4,4  "
-  const dstCol = String(dst).padEnd(10);        // allow offboard arrays
+  const idxCol  = String(count).padStart(2);    // right-aligned
+  const qCol    = `Q${Q}`.padEnd(3);            // "Q37  "
+  const srcCol  = String(src).padEnd(5);        // "KB4,4  "
+  const dstCol  = String(dst).padEnd(8);        // allow offboard arrays
+  const areaCol = String(area).padStart(2);     // right-aligned
 
   // --- final line ---
-  const line =
-    `${idxCol}  ${qCol} ${srcCol} → ${dstCol}`;
+  const line = `${idxCol} ${qCol} ${srcCol} → ${dstCol}:${areaCol}`;
 
   const div = document.createElement("div");
   div.textContent = line;
