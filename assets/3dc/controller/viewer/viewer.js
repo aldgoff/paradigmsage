@@ -40,14 +40,14 @@ export function panelDispatch(payload) {
   }
 }
 
-export function initViewer(panelId = "viewer-window") {
+export function getJitterValues(panelId = "viewer-window") {
   const panel = document.getElementById(panelId);
   if (!panel) return;
 
   const range = Number(panel.querySelector('[name="viewer-range"]')?.value);
   const speed = Number(panel.querySelector('[name="viewer-speed"]')?.value);
 
-  cameras.setJitter(range, speed);
+  return { range, speed };
 }
 // Seampoint: more global functions.
 

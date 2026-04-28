@@ -52,6 +52,8 @@ import * as viewer     from "../controller/viewer/viewer.js";
 import * as advSqs     from "../geometry/advSqs.js";
 import * as decorators from "./decorators/decorators.js";
 import * as quads      from "../geometry/quads.js";
+
+import * as cameras    from "../view/render/cameras.js";
 // Seampoint: more imports...
 
 export let context;
@@ -96,7 +98,8 @@ export function init(playBoard) { // PlayBoard is the 3D canvas from the THREE r
   // Seampoint - more listeners...
 
   game.showUndoStatus();
-  viewer.initViewer();
+  const {range, speed} = viewer.getJitterValues();
+  cameras.setJitter(range, speed);
 
   return;
 }
