@@ -14,6 +14,7 @@ const THREE = window.THREE;
 import camerasData from "./cameras.json" assert { type: "json" };
   const camerasModule = camerasData.cameras_module;
   const POV = camerasModule.POV;
+  const jit = camerasModule.jitter;
   // Seampoint: more objects.
 
 // --- Build upon previous layers ---
@@ -26,57 +27,90 @@ let focalPoint = [0,0,0];   // Center of board.
 
 const specs = { camera, pov, focalPoint };
 
+// TODO: Move jitter from render/camera to viewer.
 let jitter = {
   enabled: false,
-  rangeRad: (0.5 * camerasModule.jitter.maxAngleDeg) * (Math.PI / 180), // default 50%
-  periodSec: (camerasModule.jitter.minPeriodSec + camerasModule.jitter.maxPeriodSec) / 2,
-  t: 0,
-  prevAngle: 0
+  rangeRad: (0.5 * jit.maxAngleDeg) * (Math.PI / 180),
+  speedDeg: 10,          // degrees/sec
+  direction: 1,
+  angle: 0               // ← PRIMARY STATE
 };
 
-export function setJitter(range01, speed01) {
-  const maxAngleDeg = camerasModule.jitter.maxAngleDeg;
-  const minPeriod   = camerasModule.jitter.minPeriodSec;
-  const maxPeriod   = camerasModule.jitter.maxPeriodSec;
+export function setJitter(range, speed) {
+  jitter.rangeRad = (range * jit.maxAngleDeg) * (Math.PI / 180);
 
-  jitter.rangeRad = (range01 * maxAngleDeg) * (Math.PI / 180);
+  // speed independent of range
+  jitter.speedDeg = jit.minSpeed + speed * (jit.maxSpeed - jit.minSpeed);
+  }
 
-  // Map speed slider → period (inverse relationship)
-  jitter.periodSec = maxPeriod - (speed01 * (maxPeriod - minPeriod));
+export function isJitterEnabled() {
+  return jitter.enabled;
+  }
 
-  // jitter.enabled = range01 > 0 && speed01 > 0;
-}
+export function startJitter() {
+  // derive angle from current view
+  jitter.angle = computeAngleFromPov();
+
+  jitter.enabled = true;
+  }
+
+export function stopJitter() {
+  jitter.enabled = false;
+  }
+
 export function updateJitter(deltaTime) {
   if (!jitter.enabled) return;
 
-  jitter.t += deltaTime;
+  const speedRad = (jitter.speedDeg * Math.PI) / 180;
 
-  const omega = (2 * Math.PI) / jitter.periodSec;
-  const angle = jitter.rangeRad * Math.sin(omega * jitter.t);
+  // advance position
+  jitter.angle += jitter.direction * speedRad * deltaTime;
 
-  // --- Reset to base each frame (ensures symmetry) ---
+  // reflect at bounds
+  if (jitter.angle > jitter.rangeRad) {
+    jitter.angle = jitter.rangeRad;
+    jitter.direction *= -1;
+  }
+
+  if (jitter.angle < -jitter.rangeRad) {
+    jitter.angle = -jitter.rangeRad;
+    jitter.direction *= -1;
+  }
+
+  // apply
+  const y = pov[1];            // preserve vertical
   pov = cloneVec3(basePov);
+  pov[1] = y;
 
-  applyJitter(angle);
-  // Convert absolute → delta (avoids drift)
-  // const delta = angle - jitter.prevAngle;
-  // jitter.prevAngle = angle;
+  applyJitter(jitter.angle);
+  }
 
-  // rotate(delta);
+export function reverseJitter() {
+  jitter.direction *= -1;
 }
-export function startJitter() {
-  // --- Hard reset time phase ---
-  jitter.t = 0;
-  jitter.prevAngle = 0;
 
-  // --- Lock current POV as base ---
-  basePov = cloneVec3(pov);
+// --- Jitter Helpers ---
+function applyJitter(angle) {
+  const [x, y, z] = basePov;
 
-  // --- Enable ---
-  jitter.enabled = true;
-}
-export function stopJitter() {
-  jitter.enabled = false;
+  const cos = Math.cos(angle);
+  const sin = Math.sin(angle);
+
+  pov[0] = x * cos - z * sin;
+  pov[2] = x * sin + z * cos;
+
+  specs.camera.position.set(...pov);
+  specs.camera.lookAt(...focalPoint);
+  }
+
+function computeAngleFromPov() {
+  const [bx, , bz] = basePov;
+  const [px, , pz] = pov;
+
+  const baseAngle = Math.atan2(bz, bx);
+  const povAngle  = Math.atan2(pz, px);
+
+  return povAngle - baseAngle;
 }
 
 // --- UI ---
@@ -98,7 +132,7 @@ export function init(zoom, pov, focalPoint=[0,0,0]) {
   camera.lookAt(...focalPoint);
 
   return camera;
-}
+  }
   
 export function zoomIn(delta) {
   specs.camera.zoom += delta;
@@ -114,35 +148,7 @@ export function shiftVertical(tilt) {
   specs.camera.lookAt(...focalPoint);
 
   return;
-}
-
-export function rotate(delta) {
-  const [x, y, z] = pov;
-
-  const cos = Math.cos(delta);
-  const sin = Math.sin(delta);
-
-  const newX = x * cos - z * sin;
-  const newZ = x * sin + z * cos;
-
-  pov[0] = newX;
-  pov[2] = newZ;
-
-  specs.camera.position.set(...pov);
-  specs.camera.lookAt(...focalPoint);
-}
-function applyJitter(angle) {
-  const [x, y, z] = basePov;
-
-  const cos = Math.cos(angle);
-  const sin = Math.sin(angle);
-
-  pov[0] = x * cos - z * sin;
-  pov[2] = x * sin + z * cos;
-
-  specs.camera.position.set(...pov);
-  specs.camera.lookAt(...focalPoint);
-}
+  }
 
 export function selectPOV(newPov) {
   const vertical = pov[1];

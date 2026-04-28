@@ -47,6 +47,7 @@ import * as demos      from "./demos.js";
 import * as tiles      from "./tiles/tiles.js";
 
 import * as game       from "../controller/game/game.js";
+import * as viewer     from "../controller/viewer/viewer.js";
 
 import * as advSqs     from "../geometry/advSqs.js";
 import * as decorators from "./decorators/decorators.js";
@@ -95,6 +96,7 @@ export function init(playBoard) { // PlayBoard is the 3D canvas from the THREE r
   // Seampoint - more listeners...
 
   game.showUndoStatus();
+  viewer.initViewer();
 
   return;
 }

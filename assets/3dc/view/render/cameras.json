@@ -14,9 +14,10 @@
     },
     "jitter": {
       "maxAngleDeg": 45,
-      "minPeriodSec": 1,
-      "maxPeriodSec": 10
-    }
+      "minSpeed": 1,
+      "maxSpeed": 20
+    },
+    "_comment": "Let speed be in degrees/sec."
   }
 }
 

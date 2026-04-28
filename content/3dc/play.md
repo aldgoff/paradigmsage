@@ -60,14 +60,14 @@ layout: "play"
 
   #setup-window   { top:  120px; left:   80px; }  /* DOM Control Panels */
   #move-window    { top: 1100px; left:   80px; }
-  #gambit-window  { top:  800px; left:   80px; }
+  #gambit-window  { top:  830px; left:   80px; }
   #advsq-window   { top:  320px; left:  280px; }
   #compass-window { top:  960px; left:  280px; }
 
   #game-window    { top:  120px; left:  280px; }
 
   #camera-window { top:   420px; left:   80px; }
-  #viewer-window { top:   570px; left:   80px; }
+  #viewer-window { top:   560px; left:   80px; }
   /* Seampont - more DOM control panels... */
 </style>
 
@@ -289,13 +289,12 @@ layout: "play"
   </div>
 
   <div class="section">
-    <button data-action="StartAnimation"> Start Animation </button>
-    <button data-action="StopAnimation"> Stop Animation </button>
+    <button data-action="ToggleAnimation"> Toggle Animation </button>
   </div>
 
   <div class="section">
-    <label> Jitter Range <input type="range" name="viewer-range" min="0" max="1" step="0.01" value="0.5"> </label>
-    <label> Jitter Speed <input type="range" name="viewer-speed" min="0" max="1" step="0.01" value="0.5"> </label>
+    <label> Jitter Range <input type="range" name="viewer-range" min="0" max="1" step="0.01" value="0.2"> </label>
+    <label> Jitter Speed <input type="range" name="viewer-speed" min="0" max="1" step="0.01" value="0.2"> </label>
   </div>
 </div>
 
