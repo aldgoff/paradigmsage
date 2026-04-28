@@ -11,9 +11,9 @@
 
 // --- Build upon the previous layers ---
 // Seampoint: more imports.
-import * as coords from "../foundation/coords/coords.js";
-import * as rays   from "../foundation/rays/rays.js";
-import * as quads  from "../geometry/quads/quads.js";
+import * as coords from "../../foundation/coords/coords.js";
+import * as rays   from "../../foundation/rays/rays.js";
+import * as quads  from "../../geometry/quads/quads.js";
 // Seampoint: more imports.
 
 // --- UI ---

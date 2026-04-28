@@ -35,7 +35,7 @@ import {rayPairToQuad,
 } from "../geometry/quads/quads.js";
 import {getStride,
         onboardTiles,
-} from "../geometry/perims.js";
+} from "../geometry/perims/perims.js";
 // Seampoint: more imports...
 
 const _private = Symbol("AdvSq");

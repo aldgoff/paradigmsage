@@ -79,17 +79,17 @@
 │   │   │   ├── overlapTiles.json
 │   │   │   ├── overlapTiles.md
 │   │   │   ├── perims
-│   │   │   ├── perims.js
-│   │   │   ├── perims.json
-│   │   │   ├── perims.md
+│   │   │   │   ├── perims.js
+│   │   │   │   ├── perims.json
+│   │   │   │   └── perims.md
 │   │   │   ├── planes
 │   │   │   │   ├── planes.js
 │   │   │   │   ├── planes.json
 │   │   │   │   └── planes.md
-│   │   │   ├── quads
-│   │   │   ├── quads.js
-│   │   │   ├── quads.json
-│   │   │   └── quads.md
+│   │   │   └── quads
+│   │   │       ├── quads.js
+│   │   │       ├── quads.json
+│   │   │       └── quads.md
 │   │   ├── main.js
 │   │   ├── model
 │   │   │   ├── gambit

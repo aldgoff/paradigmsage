@@ -37,7 +37,7 @@ import {getStride,
         prevPerimeter,
         nextPerimeter,
         isTileInPlane,
-} from "../../geometry/perims.js";
+} from "../../geometry/perims/perims.js";
 
 // ------------------------------------------------------------
 
