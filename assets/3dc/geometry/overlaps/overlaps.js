@@ -1,5 +1,5 @@
-/* File: overlapTiles.js
-  Path: ./3dc/geometry/overlapTiles.js
+/* File: overlaps.js
+  Path: ./3dc/geometry/overlaps/overlaps.js
   Purpose: desc
   Author: Allan Goff
   Date: 3/30/26
@@ -8,12 +8,12 @@
 */
 
 // --- Load module ---
-import overlapTilesData from "./overlapTiles.json" assert { type: "json" };
-  const overlapTiles = overlapTilesData.overlapTiles_module;
+import overlapsData from "./overlaps.json" assert { type: "json" };
+  const overlaps = overlapsData.overlaps_module;
   // Seampoint: more objects.
 
 // --- Build upon the previous layers ---
-import { } from "../foundation/coords/coords.js";
+import { } from "../../foundation/coords/coords.js";
 // Seampoint: more imports.
 
 // --- UI ---
@@ -32,9 +32,9 @@ export function getStride({ piece, subType = null, quadType, k }) {
 
   if (piece === 'queen') {
     if (!subType) { throw new Error('Queen requires subType: rook | bishop | duke'); }
-    node = overlapTiles.queen[subType];
+    node = overlaps.queen[subType];
   } else {
-    node = overlapTiles.basePieces[piece];
+    node = overlaps.basePieces[piece];
   }
   if (!node) { throw new Error(`Unknown piece: ${piece}`); }
 
@@ -60,9 +60,9 @@ export function getRoles({ piece, subType = null, quadType }) {
   if (piece === 'queen') {
     if (!subType) { throw new Error('Queen requires subType: rook | bishop | duke'); }
 
-    node = overlapTiles.queen[subType];
+    node = overlaps.queen[subType];
   } else {
-    node = overlapTiles.basePieces[piece];
+    node = overlaps.basePieces[piece];
   }
   if (!node) { throw new Error(`Unknown piece: ${piece}`); }
 
@@ -73,7 +73,7 @@ export function getRoles({ piece, subType = null, quadType }) {
 }
 
 export function getOverlapType(basePiece, quadType, perim, stride) {
-  const type = overlapTiles.queen[basePiece].quads[quadType].strides[perim][stride];
+  const type = overlaps.queen[basePiece].quads[quadType].strides[perim][stride];
   // console.log("model: getOverlapType(basePiece, quadType, perim, stride)...type - ", basePiece, quadType, perim, stride, type);
 
   return type; // source|end2|end3|body|apex|brook|qtile|hotspot|Feynman

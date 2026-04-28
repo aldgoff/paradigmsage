@@ -1,6 +1,6 @@
-/* File: overlapTiles.tests.js
-  Path: ./3dc/tests/overlapTiles/
-  Purpose: Test the overlapTiles module.
+/* File: overlap.tests.js
+  Path: ./3dc/tests/geometry/
+  Purpose: Test the overlaps module.
   Author: Allan Goff
   Date: 3/30/26
   UI: the export functions.
@@ -20,7 +20,7 @@ import { invariant } from "../core/invariants.js";
 // --- Module ---
 import {getStride,
         getRoles,
-} from "../../geometry/overlapTiles.js";
+} from "../../geometry/overlaps/overlaps.js";
 
 // ------------------------------------------------------------
 
@@ -82,7 +82,7 @@ function test_basePieces_stride() {
     assertEqual(JSON.stringify(actual), JSON.stringify(expected), label);
   }
 
-  report("basePiece strides", "overlapTiles");
+  report("basePiece strides", "overlaps");
   }
 
 function test_queen_stride() {
@@ -122,7 +122,7 @@ function test_queen_stride() {
     assertEqual(JSON.stringify(actual), JSON.stringify(expected), label);
   }
 
-  report("queen strides", "overlapTiles");
+  report("queen strides", "overlaps");
   }
 
 function test_basePieces_roles() {
@@ -163,7 +163,7 @@ function test_basePieces_roles() {
     assertEqual(JSON.stringify(actual), JSON.stringify(expected), label);
   }
 
-  report("basePiece roles", "overlapTiles");
+  report("basePiece roles", "overlaps");
   }
 
 function test_queen_roles() {
@@ -208,7 +208,7 @@ function test_queen_roles() {
     assertEqual(JSON.stringify(actual), JSON.stringify(expected), label);
   }
 
-  report("queen roles", "overlapTiles");
+  report("queen roles", "overlaps");
   }
 
 function test_fails() {
@@ -226,7 +226,7 @@ function test_fails() {
     assertThrows(fn, label);
   }
 
-  report('failure cases', 'overlapTiles');
+  report('failure cases', 'overlaps');
   }
 
 function test_stride_vocab() {
@@ -241,7 +241,7 @@ function test_stride_vocab() {
     }
   }
 
-  report("stride vocabulary", "overlapTiles");
+  report("stride vocabulary", "overlaps");
 }
 // Seampoint: more tests...
 

@@ -7,7 +7,7 @@ export const TEST_MODE = { // "VERBOSE" | "TERSE" | "OFF"
     planes: "TERSE",
     quads: "TERSE",
     perims: "TERSE",
-    overlapTiles: "TERSE",
+    overlaps: "TERSE",
     advSqs: "TERSE",
   view: "VERBOSE",
   model: "VERBOSE",

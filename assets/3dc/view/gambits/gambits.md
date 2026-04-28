@@ -24,11 +24,11 @@
   We need similar fields for the advsq itself, to live on the AdvSq panel.
 
   Some of this belongs in a json file. Do we already have it? Perhaps in the geometry layer?
-  Perhaps the overlapTiles files? Check those out.
+  Perhaps the overlap files? Check those out.
   Do we have enough defined to implement a clean gambits UI?
 
  ### 2.2 AI Response?
-  Very, very verbose. Summary, use the overlapTiles module.
+  Very, very verbose. Summary, use the overlap module.
 
  ### 2.
   text

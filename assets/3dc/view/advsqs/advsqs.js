@@ -20,7 +20,7 @@ import * as utils  from "../../../utils/debug.js";            // snapshot(obj) -
   import * as coords   from "../../foundation/coords/coords.js";
   import * as planes   from "../../geometry/planes/planes.js";
   import * as quads    from "../../geometry/quads/quads.js";
-  import * as overlaps from "../../geometry/overlapTiles.js";
+  import * as overlaps from "../../geometry/overlaps/overlaps.js";
   import * as advSqs   from "../../geometry/advSqs.js";
 
   import {AdvSq,
