@@ -1,8 +1,8 @@
-# AdvSqs Spec
+# Advsqs Spec
   Describe the purposes and specs of advancement squares.
 
 ## 1. Purpose
-  Define advancement squares (advSqs).
+  Define advancement squares (advsqs).
   - Geometry is occupancy-blind.
   - Model is occupancy-aware.
 

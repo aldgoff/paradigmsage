@@ -71,13 +71,13 @@
 │   │   │       └── unitCells.md
 │   │   ├── geometry
 │   │   │   ├── advSqs
-│   │   │   ├── advSqs.js
-│   │   │   ├── advSqs.json
-│   │   │   ├── advSqs.md
+│   │   │   │   ├── advsqs.js
+│   │   │   │   ├── advsqs.json
+│   │   │   │   └── advsqs.md
 │   │   │   ├── overlaps
-│   │   │   ├── overlapTiles.js
-│   │   │   ├── overlapTiles.json
-│   │   │   ├── overlapTiles.md
+│   │   │   │   ├── overlaps.js
+│   │   │   │   ├── overlaps.json
+│   │   │   │   └── overlaps.md
 │   │   │   ├── perims
 │   │   │   │   ├── perims.js
 │   │   │   │   ├── perims.json
@@ -123,8 +123,8 @@
 │   │   │   │   ├── rays.test.js
 │   │   │   │   └── unitCells.test.js
 │   │   │   ├── geometry
-│   │   │   │   ├── advSqs.test.js
-│   │   │   │   ├── overlapTiles.test.js
+│   │   │   │   ├── advsqs.test.js
+│   │   │   │   ├── overlaps.test.js
 │   │   │   │   ├── perims.test.js
 │   │   │   │   ├── planes.test.js
 │   │   │   │   └── quads.test.js

@@ -21,11 +21,10 @@ import * as utils  from "../../../utils/debug.js";            // snapshot(obj) -
   import * as planes   from "../../geometry/planes/planes.js";
   import * as quads    from "../../geometry/quads/quads.js";
   import * as overlaps from "../../geometry/overlaps/overlaps.js";
-  import * as advSqs   from "../../geometry/advSqs.js";
 
   import {AdvSq,
         isEqual,
-} from "../../geometry/advSqs.js";
+} from "../../geometry/advsqs/advsqs.js";
 
   import * as view       from "../view.js";
   import * as tiles      from "../tiles/tiles.js";

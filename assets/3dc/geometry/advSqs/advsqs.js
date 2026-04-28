@@ -1,28 +1,28 @@
-/* File: advSqs.js
-  Path: ./3dc/geometry/advSqs.js
+/* File: advsqs.js
+  Path: ./3dc/geometry/advsqs.js
   Purpose: desc
   Author: Allan Goff
   Date: 3/29/26
-  Recommended access: import * as advSqs.
+  Recommended access: import * as mAdvsqs.
   UI: the export functions.
 */
 
 // --- Load module ---
-import advSqsData from "./advSqs.json" assert { type: "json" };
-  const advSqsModule = advSqsData.advSqs_module;
-  const category  = advSqsModule.category;
+import advsqsData from "./advsqs.json" assert { type: "json" };
+  const advsqsModule = advsqsData.advsqs_module;
+  const category  = advsqsModule.category;
 // Seampoint: more objects...
 
 // --- Build upon the previous layers ---
 import {getBoardSpec,
-} from "../foundation/coords/coords.js";
+} from "../../foundation/coords/coords.js";
 import {bishopColor,
         dukeColor,
-} from "../foundation/colors/colors.js";
+} from "../../foundation/colors/colors.js";
 
 import {nextPlane,
         prevPlane,
-} from "../geometry/planes/planes.js";
+} from "../../geometry/planes/planes.js";
 
 import {rayPairToQuad,
         quadToRayPair,
@@ -32,10 +32,10 @@ import {rayPairToQuad,
         quadToPlaneQuad,
         nextQuadInPlane,
         prevQuadInPlane,
-} from "../geometry/quads/quads.js";
+} from "../../geometry/quads/quads.js";
 import {getStride,
         onboardTiles,
-} from "../geometry/perims/perims.js";
+} from "../../geometry/perims/perims.js";
 // Seampoint: more imports...
 
 const _private = Symbol("AdvSq");

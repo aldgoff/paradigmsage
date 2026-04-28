@@ -1,5 +1,5 @@
 {
-  "advSqs_module": {
+  "advsqs_module": {
     "def": {
       "source": [0, 0, 0],
       "ray_pair": ["r1", "r2"],

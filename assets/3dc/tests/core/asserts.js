@@ -8,7 +8,7 @@ export const TEST_MODE = { // "VERBOSE" | "TERSE" | "OFF"
     quads: "TERSE",
     perims: "TERSE",
     overlaps: "TERSE",
-    advSqs: "TERSE",
+    advsqs: "TERSE",
   view: "VERBOSE",
   model: "VERBOSE",
     state: "VERBOSE",

@@ -1,6 +1,6 @@
-/* File: advSqs.tests.js
-  Path: ./3dc/tests/advSqs/
-  Purpose: Test the advSqs module.
+/* File: advsqs.tests.js
+  Path: ./3dc/tests/advsqs/
+  Purpose: Test the advsqs module.
   Author: Allan Goff
   Date: 4/1/26
   UI: the export functions.
@@ -27,7 +27,7 @@ import {planeToQuad,
 // --- Module ---
 import {AdvSq,
         isEqual,
-} from "../../geometry/advSqs.js";
+} from "../../geometry/advsqs/advsqs.js";
 
 // ------------------------------------------------------------
 
@@ -48,7 +48,7 @@ export function run() {
   const fail = curr.fail - prev.fail;
   prev = curr;
 
-  finalReport("Geometry/advSqs");
+  finalReport("Geometry/advsqs");
 }
 
 // ------------------------------------------------------------
@@ -70,7 +70,7 @@ function test_quad_ctor() {
     assertEqual(advSq.getArea(),    expect.area,    `AdvSq validation failed for area    ${label} ${input.quad} ${input.k}.`);
   }
 
-  report("quad_ctor", "advSqs");
+  report("quad_ctor", "advsqs");
   }
 
 function test_raypair_ctor() {
@@ -90,7 +90,7 @@ function test_raypair_ctor() {
     assertEqual(advSq.getArea(),  expect.area,  `AdvSq validation failed for area  ${label} ${input.rayPair} ${input.k}.`);
   }
 
-  report("raypair_ctor", "advSqs");
+  report("raypair_ctor", "advsqs");
   }
 
 function test_advSqValidation() {
@@ -110,7 +110,7 @@ function test_advSqValidation() {
     assertEqual(advSq.getArea(),    expect.area,    `AdvSq validation failed for area    ${label} ${input.quad} ${input.k}.`);
   }
 
-  report("advSqValid", "advSqs");
+  report("advSqValid", "advsqs");
   }
 
 function test_nextPrevQuads() {
@@ -152,7 +152,7 @@ function test_nextPrevQuads() {
     let nextAdvSq = advSq.nextQuad();
     let prevAdvSq = advSq.nextQuad();
 
-    assertEqual(nextAdvSq.quad, expected, `advSqs next/prev quads failed for ${label} ${input.quad} ${input.k}.`);
+    assertEqual(nextAdvSq.quad, expected, `advsqs next/prev quads failed for ${label} ${input.quad} ${input.k}.`);
 
     for(let i=2; i<SENTRY; i++) {
       let next = nextAdvSq.nextQuad();
@@ -167,7 +167,7 @@ function test_nextPrevQuads() {
     }
   }
 
-  report("nextPrevQuads", "advSqs");
+  report("nextPrevQuads", "advsqs");
   }
 
 function test_nextPrevPlanes() {
@@ -228,7 +228,7 @@ function test_nextPrevPlanes() {
     }
   }
 
-  report("nextPrevPlanes", "advSqs");
+  report("nextPrevPlanes", "advsqs");
   }
 
 function test_apexEnds() {
@@ -303,7 +303,7 @@ function test_apexEnds() {
     assertEqual(JSON.stringify(end2Seq), JSON.stringify(expect.E2),   `AdvSq tile E2 sequence failed for ${label} ${input} ${quad}.`);
   }
 
-  report("apexEnds", "advSqs");
+  report("apexEnds", "advsqs");
   }
 
 function test_advSqColors() {
@@ -338,7 +338,7 @@ function test_advSqColors() {
     assertEqual(JSON.stringify(colors), JSON.stringify(expect), `${label}`);
   }
 
-  report("advSqColors", "advSqs");
+  report("advSqColors", "advsqs");
   }
 // Seampoint: more tests...
 
