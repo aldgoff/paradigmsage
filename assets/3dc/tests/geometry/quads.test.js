@@ -25,25 +25,25 @@ import {pqrTable,
         prevQuadInPlane,
         strToQ,
         qToStr,
-} from "../../geometry/quads.js";
+} from "../../geometry/quads/quads.js";
 import {quadToPiece,
         quadToPlane,
         quadToPieceQuad,
         quadToPlaneQuad,
         quadToRayPair,
         quadToNickname,
-} from "../../geometry/quads.js";
+} from "../../geometry/quads/quads.js";
 import {pieceToQuad,
         planeToQuad,
         pieceQuadToQuad,
         planeQuadToQuad,
         rayPairToQuad,
         nicknameToQuad,
-} from "../../geometry/quads.js";
+} from "../../geometry/quads/quads.js";
 import {pieceToQuads,
         planeToQuads,
         planeQuadTable,
-} from "../../geometry/quads.js";
+} from "../../geometry/quads/quads.js";
 
 // ------------------------------------------------------------
 

@@ -32,7 +32,7 @@ import {rayPairToQuad,
         quadToPlaneQuad,
         nextQuadInPlane,
         prevQuadInPlane,
-} from "../geometry/quads.js";
+} from "../geometry/quads/quads.js";
 import {getStride,
         onboardTiles,
 } from "../geometry/perims.js";

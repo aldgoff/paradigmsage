@@ -18,7 +18,7 @@ import planesData from "./planes.json" assert { type: "json" };
 // --- Build upon previous layers ---
 import * as coords from "../../foundation/coords/coords.js";
 import * as rays   from "../../foundation/rays/rays.js";  // getRayVector().
-import * as quads  from "../../geometry/quads.js";  // quadToRayPair().
+import * as quads  from "../../geometry/quads/quads.js";  // quadToRayPair().
 import * as perims from "../../geometry/perims.js";  // scale(), add().
 // Seampoint: more imports...
 

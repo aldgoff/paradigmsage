@@ -13,7 +13,7 @@
 // Seampoint: more imports.
 import * as coords from "../foundation/coords/coords.js";
 import * as rays   from "../foundation/rays/rays.js";
-import * as quads  from "./quads.js";
+import * as quads  from "../geometry/quads/quads.js";
 // Seampoint: more imports.
 
 // --- UI ---

@@ -21,7 +21,8 @@ import { invariant } from "../core/invariants.js";
 import {getBoardSpec,
 } from "../../foundation/coords/coords.js";
 import {planeToQuad,
-} from "../../geometry/quads.js";
+} from "../../geometry/quads/quads.js";
+//TODO: Convert tests to import * as yadas...
 
 // --- Module ---
 import {AdvSq,

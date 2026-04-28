@@ -30,7 +30,7 @@ import {quadToRayPair,
         nextQuadInPlane,
         planeToQuads,
         quadToPlane,
-} from "../../geometry/quads.js";
+} from "../../geometry/quads/quads.js";
 
 // --- Module ---
 import {getStride,

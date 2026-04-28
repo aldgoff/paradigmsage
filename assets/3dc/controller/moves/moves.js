@@ -14,7 +14,7 @@ import movesData from "./moves.json" assert { type: "json" };
   // Seampoint: more objects.
 
 // --- Build upon previous layers ---
-import * as quads  from "../../geometry/quads.js";
+import * as quads  from "../../geometry/quads/quads.js";
 // Seampoint: more imports.
 
 

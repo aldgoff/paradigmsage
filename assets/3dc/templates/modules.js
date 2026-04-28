@@ -15,7 +15,7 @@ import modulesData from "./modules.json" assert { type: "json" };
 
 // --- Build upon previous layers ---
 import * as planes from "../geometry/planes/planes.js";
-import * as quads  from "../geometry/quads.js";
+import * as quads  from "../geometry/quads/quads.js";
 // Seampoint: more imports.
 
 
