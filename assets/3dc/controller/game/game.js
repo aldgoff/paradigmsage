@@ -11,14 +11,14 @@
 import gameData from "./game.json" assert { type: "json" };
   const gameModule = gameData.game_module;
   const category  = gameModule.category;
-  // Seampoint: more objects.
+// Seampoint: more objects...
 
 // --- Build upon previous layers ---
 import * as state  from "../../model/state/state.js";
 
 import * as boards from "../../view/boards/boards.js";
 import * as advsqs from "../../view/advsqs/advsqs.js";
-// Seampoint: more imports.
+// Seampoint: more imports...
 
 // --- UI ---
 export function panelDispatch(payload) {
@@ -35,13 +35,30 @@ export function panelDispatch(payload) {
     default: throw new Error(`Unknown game ***action ${action}.`);  break;
   }
   }
-// Seampoint: more global functions.
+
+export function showUndoStatus() {  // Show undo buffers in Game panel.
+  const el = document.getElementById("undo-state");
+
+  const keys = state.getStateKeys();
+  const undo = state.getBufferCount();
+
+  const text = keys
+    .map((key) => {
+      const i   = undo[key];
+      const max = state.getBufferLength(key);
+      return `${key.padEnd(7)} ${i}/${max}`;
+    })
+    .join("\n");
+
+  el.textContent = text;
+}
+// Seampoint: more global functions...
 
 // --- Handle Functions ---
 function handleNewGame() {
   console.log("control: game.js - handleNewGame()");
   // TODO: game.js - handleNewGame().
-}
+  }
 
 function handleRerun() {
   const keyIndex = state.collapseKeyIndex();
@@ -81,7 +98,7 @@ function handleRerun() {
   }
 
   showUndoStatus();
-}
+  }
 
 function handleUndo() {
   const keyIndex = state.prevKeyIndex();
@@ -183,24 +200,8 @@ function handleSave() {
   const setupIndex = index.Setup;     // Just the setup index
   console.log("Current Setup Undo:", setupIndex, lastState);
   }
-// Seampoint: more global functions.
+// Seampoint: more handle functions...
 
 // --- Helpers ---
-export function showUndoStatus() {  // Show undo buffers in Game panel.
-  const el = document.getElementById("undo-state");
-
-  const keys = state.getStateKeys();
-  const undo = state.getBufferCount();
-
-  const text = keys
-    .map((key) => {
-      const i   = undo[key];
-      const max = state.getBufferLength(key);
-      return `${key.padEnd(7)} ${i}/${max}`;
-    })
-    .join("\n");
-
-  el.textContent = text;
-}
-// Seampoint: more local functions.
+// Seampoint: more local functions...
 

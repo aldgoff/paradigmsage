@@ -11,7 +11,7 @@
 import advsqsData from "./advsqs.json" assert { type: "json" };
   const advsqsModule = advsqsData.advsqs_module;
   const category  = advsqsModule.category;
-// Seampoint: more objects.
+// Seampoint: more objects...
 
 // --- Build upon previous layers ---
 import * as game   from "../../controller/game/game.js";
@@ -20,7 +20,7 @@ import * as state  from "../../model/state/state.js";
 import * as coords from "../../foundation/coords/coords.js";  // normalizeTileToVts().
 
 import * as vAdvsqs from "../../view/advsqs/advsqs.js";
-// Seampoint: more imports.
+// Seampoint: more imports...
 
 // --- UI ---
 export function panelDispatch(payload) {
@@ -42,7 +42,7 @@ export function panelDispatch(payload) {
 
   game.showUndoStatus();    // Show undo buffer status in game panel.
 }
-// Seampoint: more global functions.
+// Seampoint: more global functions...
 
 // --- Handle Functions ---
 function handlePlace(payload) {
@@ -242,5 +242,5 @@ function applyAdvsq(newAdvsq) { // Log state change, render, update control pane
   vAdvsqs.makeAdvsq(newAdvsq);             // Render.
   vAdvsqs.setAdvsqPanelParams(newAdvsq);   // Update the control panel.
 }
-// Seampoint: more local functions.
+// Seampoint: more local functions...
 

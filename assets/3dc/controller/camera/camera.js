@@ -11,7 +11,7 @@
 import cameraData from "./camera.json" assert { type: "json" };
   const cameraModule = cameraData.camera_module;
   const category  = cameraModule.category;
-  // Seampoint: more objects.
+// Seampoint: more objects...
 
 // --- Build upon previous layers ---
 import * as cameras from "../../view/render/cameras.js";
@@ -31,7 +31,7 @@ export function panelDispatch(payload) {
     default: throw new Error(`Unknown camera action ${action} value ${value}.`); break;
   }
 }
-// Seampoint: more global functions.
+// Seampoint: more global functions...
 
 function handleZoomIn() {             // Camera handlers. Not subject to undo.
   console.log("Camera Zoom-In:");
@@ -60,5 +60,5 @@ function handlePOV(pov) {
 // Seampoint - more handlers...
 
 // --- Helpers ---
-// Seampoint: more local functions.
+// Seampoint: more local functions...
 

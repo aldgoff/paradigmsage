@@ -42,7 +42,7 @@
 */
 
 // --- Load JSON ---
-// Seampoint: more objects.
+// Seampoint: more objects...
 
 // --- Build upon previous layers ---
 import * as setup     from "../controller/setup/setup.js";

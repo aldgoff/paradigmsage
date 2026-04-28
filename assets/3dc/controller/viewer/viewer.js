@@ -11,11 +11,11 @@
 import viewerData from "./viewer.json" assert { type: "json" };
   const viewerModule = viewerData.viewer_module;
   const category  = viewerModule.category;
-  // Seampoint: more objects.
+// Seampoint: more objects...
 
 // --- Build upon previous layers ---
 import * as cameras from "../../view/render/cameras.js";
-// Seampoint: more imports.
+// Seampoint: more imports...
 
 let lastClickTime = 0;
 let clickTimer = null;
@@ -49,7 +49,7 @@ export function getJitterValues(panelId = "viewer-window") {
 
   return { range, speed };
 }
-// Seampoint: more global functions.
+// Seampoint: more global functions...
 
 // --- Handle Functions ---
 function handleShowTrays(payload) {   // Viewer handlers. Not subject to undo.
@@ -100,5 +100,5 @@ function handleViewerParams(params) {
 // Seampoint - more handlers...
 
 // --- Helpers ---
-// Seampoint: more local functions.
+// Seampoint: more local functions...
 

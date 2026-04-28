@@ -138,6 +138,8 @@ export function buildAdvSqGroup(specs) {
 
   return group;
 }
+// Seampoint: more global functions...
+
 // --- Helpers ---
 function decoratePerimeter(lastPerim, perim, piece, quadType, group, opacity, strideNo, zOffset=0.00) {
   // console.log("view : advsqs.js - decoratePerimeter(perim)", perim);
@@ -200,8 +202,6 @@ function decorateTile(coords, piece, decorator, group, opacity, zOffset=0.00) {
 function isSame(a, b) {
   return a[0] === b[0] && a[1] === b[1] && a[2] === b[2];
 }
-
-// Seampoint: more global functions...
 
 // --- Helpers ---
 function wirePanel(panelId, callbackName, buildPayload, options = {}) {
@@ -357,6 +357,5 @@ function buildViewerPayload(panel, action) { // Not subject to undo.
     speed: panel.querySelector('[name="viewer-speed"]')?.value,
   };
 }
-
 // Seampoint: more local functions...
 

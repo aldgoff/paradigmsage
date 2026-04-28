@@ -11,7 +11,7 @@
 import gambitsData from "./gambits.json" assert { type: "json" };
   const gambitsModule = gambitsData.gambits_module;
   const category  = gambitsModule.category;
-  // Seampoint: more objects.
+// Seampoint: more objects...
 
 // --- Build upon previous layers ---
 import * as game    from "../../controller/game/game.js";
@@ -23,7 +23,7 @@ import * as planes from "../../geometry/planes/planes.js";    // resolveDstTile(
 
 import * as view    from "../../view/view.js";
 import * as vAdvsqs from "../../view/advsqs/advsqs.js";
-// Seampoint: more imports.
+// Seampoint: more imports...
 
 
 // --- UI ---
@@ -37,7 +37,7 @@ export function panelDispatch(payload) {
     default: throw new Error(`Unknown gambit action ${action}.`);  break;
   }
 }
-// Seampoint: more global functions.
+// Seampoint: more global functions...
 
   /* TODO: Gambit additions:
    *  1. ✅ Clear AdvSq buffer
@@ -153,7 +153,6 @@ function handleDelete() {
   // TODO: change state - handleDelete().
 }
 
-
 // --- Helpers ---
 function appendGambitLine(gambit) {
   const el = document.getElementById("gambit-list");
@@ -180,6 +179,5 @@ function appendGambitLine(gambit) {
   el.appendChild(div);
   el.scrollTop = el.scrollHeight;
 }
-
-// Seampoint: more local functions.
+// Seampoint: more local functions...
 
