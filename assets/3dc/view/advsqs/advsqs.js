@@ -18,7 +18,7 @@ import * as utils  from "../../../utils/debug.js";            // snapshot(obj) -
 
   import * as state    from "../../model/state/state.js";
   import * as coords   from "../../foundation/coords/coords.js";
-  import * as planes   from "../../geometry/planes.js";
+  import * as planes   from "../../geometry/planes/planes.js";
   import * as quads    from "../../geometry/quads.js";
   import * as overlaps from "../../geometry/overlapTiles.js";
   import * as advSqs   from "../../geometry/advSqs.js";

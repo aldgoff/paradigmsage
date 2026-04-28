@@ -1,5 +1,5 @@
 /* File: planes.js
-  Path: ./3dc/geometry/planes.js
+  Path: ./3dc/geometry/planes/planes.js
   Purpose: Define planes and quads.
   Author: Allan Goff
   Date: 3/23/26
@@ -13,17 +13,16 @@ import planesData from "./planes.json" assert { type: "json" };
   const planeGroups  = planesModule.planeGroups;
   const planePairs   = planesModule.planePairs;
   const planes       = planesModule.planes;
-  // Seampoint: more objects.
+  // Seampoint: more objects...
 
 // --- Build upon previous layers ---
-import * as coords from "../foundation/coords/coords.js";
-import * as rays   from "../foundation/rays/rays.js";  // getRayVector().
-import * as quads  from "../geometry/quads.js";  // quadToRayPair().
-import * as perims from "../geometry/perims.js";  // scale(), add().
-// Seampoint: more imports.
+import * as coords from "../../foundation/coords/coords.js";
+import * as rays   from "../../foundation/rays/rays.js";  // getRayVector().
+import * as quads  from "../../geometry/quads.js";  // quadToRayPair().
+import * as perims from "../../geometry/perims.js";  // scale(), add().
+// Seampoint: more imports...
 
 // --- UI ---
-
 // Spec paragraph 3 - plane groups.
 export function getPlaneGroups() {
   return planeGroups;
@@ -134,10 +133,8 @@ export function resolveDstTile(srcTile, quad, perimeter, stride) {
 
   return dst; // vts.
 }
-// Seampoint: more global functions.quadToRayPair
-
+// Seampoint: more global functions...
 
 // --- Helpers ---
-
-// Seampoint: more local functions.
+// Seampoint: more local functions...
 

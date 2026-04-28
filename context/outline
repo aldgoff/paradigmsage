@@ -53,50 +53,40 @@
 │   │   │   ├── view.js
 │   │   │   └── view.json
 │   │   ├── foundation
-│   │   │   ├── _tbd.md
 │   │   │   ├── colors
 │   │   │   │   ├── colors.js
 │   │   │   │   ├── colors.json
-│   │   │   │   ├── colors.md
-│   │   │   │   ├── colors.out
-│   │   │   │   └── colors.py
+│   │   │   │   └── colors.md
 │   │   │   ├── coords
 │   │   │   │   ├── coords.js
 │   │   │   │   ├── coords.json
-│   │   │   │   ├── coords.md
-│   │   │   │   └── coords.py
+│   │   │   │   └── coords.md
 │   │   │   ├── rays
 │   │   │   │   ├── rays.js
 │   │   │   │   ├── rays.json
-│   │   │   │   ├── rays.md
-│   │   │   │   ├── rays.out
-│   │   │   │   └── rays.py
+│   │   │   │   └── rays.md
 │   │   │   └── unitCells
 │   │   │       ├── unitCells.js
 │   │   │       ├── unitCells.json
 │   │   │       └── unitCells.md
 │   │   ├── geometry
-│   │   │   ├── _tbd.md
+│   │   │   ├── advSqs
 │   │   │   ├── advSqs.js
 │   │   │   ├── advSqs.json
 │   │   │   ├── advSqs.md
-│   │   │   ├── FAS
-│   │   │   │   ├── debug.docx
-│   │   │   │   ├── debug.txt
-│   │   │   │   ├── FAS.md
-│   │   │   │   ├── FAS.out
-│   │   │   │   ├── FAS.py
-│   │   │   │   ├── GAS.md
-│   │   │   │   └── overlaps.out
+│   │   │   ├── overlaps
 │   │   │   ├── overlapTiles.js
 │   │   │   ├── overlapTiles.json
 │   │   │   ├── overlapTiles.md
+│   │   │   ├── perims
 │   │   │   ├── perims.js
 │   │   │   ├── perims.json
 │   │   │   ├── perims.md
-│   │   │   ├── planes.js
-│   │   │   ├── planes.json
-│   │   │   ├── planes.md
+│   │   │   ├── planes
+│   │   │   │   ├── planes.js
+│   │   │   │   ├── planes.json
+│   │   │   │   └── planes.md
+│   │   │   ├── quads
 │   │   │   ├── quads.js
 │   │   │   ├── quads.json
 │   │   │   └── quads.md
@@ -480,4 +470,4 @@
 │           └── poc.js
 └── themes
 
-98 directories, 382 files
+102 directories, 368 files

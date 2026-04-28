@@ -19,7 +19,7 @@ import * as cAdvsqs from "../../controller/advsqs/advsqs.js";
 
 import * as state  from "../../model/state/state.js";
 import * as coords from "../../foundation/coords/coords.js";  // vtsToNotation().
-import * as planes from "../../geometry/planes.js";    // resolveDstTile().
+import * as planes from "../../geometry/planes/planes.js";    // resolveDstTile().
 
 import * as view    from "../../view/view.js";
 import * as vAdvsqs from "../../view/advsqs/advsqs.js";

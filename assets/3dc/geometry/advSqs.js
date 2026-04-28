@@ -11,8 +11,7 @@
 import advSqsData from "./advSqs.json" assert { type: "json" };
   const advSqsModule = advSqsData.advSqs_module;
   const category  = advSqsModule.category;
-  // Seampoint: more objects.
-
+// Seampoint: more objects...
 
 // --- Build upon the previous layers ---
 import {getBoardSpec,
@@ -23,7 +22,7 @@ import {bishopColor,
 
 import {nextPlane,
         prevPlane,
-} from "../geometry/planes.js";
+} from "../geometry/planes/planes.js";
 
 import {rayPairToQuad,
         quadToRayPair,
@@ -37,8 +36,7 @@ import {rayPairToQuad,
 import {getStride,
         onboardTiles,
 } from "../geometry/perims.js";
-
-// Seampoint: more imports.
+// Seampoint: more imports...
 
 const _private = Symbol("AdvSq");
 
@@ -168,7 +166,7 @@ export class AdvSq {
 export function isEqual(a,b) {
   return JSON.stringify(a) === JSON.stringify(b);
 }
-// Seampoint: more global functions.
+// Seampoint: more global functions...
 
 // --- Helpers ---
 function isValidVtsTile(tile) {
@@ -184,6 +182,5 @@ function isValidVtsTile(tile) {
     tile.every(n => min <= n && n <= max)
   );
 }
-
-// Seampoint: more local functions.
+// Seampoint: more local functions...
 

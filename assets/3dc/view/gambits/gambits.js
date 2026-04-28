@@ -14,7 +14,7 @@ import gambitsData from "./gambits.json" assert { type: "json" };
   // Seampoint: more objects.
 
 // --- Build upon previous layers ---
-import * as planes from "../../geometry/planes.js";
+import * as planes from "../../geometry/planes/planes.js";
 import * as quads  from "../../geometry/quads.js";
 // Seampoint: more imports.
 
