@@ -5,17 +5,16 @@
   Date: 3/24/26
   Recommended access: import * as unitCells.
   UI: the export functions.
- */
+*/
 
 // --- Load module ---
 import unitCellsData from "./unitCells.json" assert { type: "json" };
   const unitCellsModule = unitCellsData.unitCells_module;
   const unitCells = unitCellsModule;
-  // Seampoint: more objects.
+  // Seampoint: more imports...
 
-// Spec: Unit Cells §1–§2
-
-// --- Dimension access ---
+// --- UI ---
+// -- Dimension access --
 export function getUnitCell(dim) {
   const cell = unitCells[dim];
   if (!cell) throw new Error(`Unknown dimension: ${dim}`);
@@ -26,7 +25,7 @@ export function getShape(dim) {
   return getUnitCell(dim).shape;
 }
 
-// --- Ray types ---
+// -- Ray types --
 export function getRayTypes(dim) {
   return Object.keys(getUnitCell(dim).rayTypes);
   }
@@ -45,7 +44,7 @@ export function getRayCount(dim, rayType) {
   return getRayTypeInfo(dim, rayType).count;
 }
 
-// --- Correlations ---
+// -- Correlations --
 export function getCorrelation(dim, rayType) {
   const entry = getUnitCell(dim).correlations[rayType];
   if (!entry) throw new Error(`No correlation for rayType: ${rayType} in ${dim}`);

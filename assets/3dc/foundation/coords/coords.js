@@ -8,18 +8,16 @@
   Terminology:
     - "tile" = any valid tile representation (string "<LL>X,Y" OR vts [z,x,y])
     - "loc"  = strictly board notation string "<LL>X,Y"
- */
+*/
 
 // --- Load module ---
 import coordsData from "./coords.json" assert { type: "json" };
   const coordsModule = coordsData.coords_module;
   const boardSpecs = coordsModule.board_specs;
-  // Seampoint: more objects.
+  // Seampoint: more imports...
 
-// --- Build upon previous layers ---
-
-// -- Helpers --
-
+// --- UI ---
+// -- Public API (both notations) --
 export function getBoardSpec(specName) {
   const spec = boardSpecs.find(s => s.name === specName);
 
@@ -48,7 +46,6 @@ export function tileToRcs(tile, specOrName = "8x8x8") {
 }
 
 // -- Canonical --
-
 export function boardToRcs(loc, specOrName = "8x8x8") {
   let spec = specOrName;
 
@@ -142,8 +139,7 @@ export function vtsToBoard(vts, specOrName = "8x8x8") {
   return rcsToBoard(rcs, spec);
 }
 
-// -- On board tests --
-
+// -- Onboard tests --
 export function onBoardRcs(rcs, specName = "8x8x8") { // True/False.
   let spec = specName;
 
@@ -171,4 +167,5 @@ export function onBoardVts(vts, specName = "8x8x8") {
 
   return onBoardRcs(rcs, spec);
 }
+// Seampoint: more global functions...
 
