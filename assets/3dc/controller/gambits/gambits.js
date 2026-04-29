@@ -11,129 +11,106 @@
 import gambitsData from "./gambits.json" assert { type: "json" };
   const gambitsModule = gambitsData.gambits_module;
   const category  = gambitsModule.category;
-  // Seampoint: more objects.
+// Seampoint: more objects...
 
 // --- Build upon previous layers ---
 import * as game    from "../../controller/game/game.js";
 import * as cAdvsqs from "../../controller/advsqs/advsqs.js";
 
-import * as state  from "../../model/state/state.js";
-import * as coords from "../../foundation/coords/coords.js";  // vtsToNotation().
-import * as planes from "../../geometry/planes.js";    // resolveDstTile().
+import * as state   from "../../model/state/state.js";
+import * as planes  from "../../geometry/planes/planes.js";    // resolveDstTile().
+import * as mAdvsqs from "../../model/advsqs/advsqs.js";
+import * as mGambits from "../../model/gambits/gambits.js";
+ 
+import * as view     from "../../view/view.js";
+import * as vAdvsqs  from "../../view/advsqs/advsqs.js";
+import * as vGambits from "../../view/gambits/gambits.js";
+// Seampoint: more imports...
 
-import * as view    from "../../view/view.js";
-import * as vAdvsqs from "../../view/advsqs/advsqs.js";
-// Seampoint: more imports.
+/* TODO: Gambit additions:
+  *  1. ✅ Clear AdvSq buffer
+  *  2. ✅ Render (with animation)
+  *  3. Compute derived fields
+  *  4. ✅ Add to scroll window
+  *  5. ✅ Put resolveDstTile under test
+  *  6. ✅ Move add and scale and isSame to utils.
+  *  7. ✅ Test aliases to AI (skipped)
+  *  8. ✅ If that passes, port geo into subdirs.
+  *  9. ✅ Update specs
+  * 10. Freeze Linear
+  * 11. Freeze Overlap
+  * 12. ✅ Plumbing for test suite
+*/
 
+const gambitGroupRegistry = new Map();  // Holds mesh data for re-rendering gambits.
 
 // --- UI ---
 export function panelDispatch(payload) {
+  // console.log("cntrl: gambits.js - panelDispatch(payload):", payload);
+
+  vGambits.cancelAnimation();
+
   const { action } = payload;
   switch (action) {
     case "freezeQ":  handleFreezeQuadrant(); break;
     case "freezeL":  handleFreezeLinear(); break;
     case "freezeO":  handleFreezeOverlap(); break;
     case "delete":   handleDelete(); break;
+    case "remove":   handleRemoveAll(); break;
     default: throw new Error(`Unknown gambit action ${action}.`);  break;
   }
 }
-// Seampoint: more global functions.
 
-  /* TODO: Gambit additions:
-   *  1. ✅ Clear AdvSq buffer
-   *  2. ✅ Render (with animation)
-   *  3. Compute derived fields
-   *  4. ✅ Add to scroll window
-   *  5. ✅ Put resolveDstTile under test
-   *  6. Move add and scale to utils
-   *  7. Test aliases to AI
-   *  8. If that passes, port geo into subdirs.
-   *  9. ✅ Update specs
-   * 10. Freeze Linear
-   * 11. Freeze Overlap
-   * 12. ✅ Plumbing for test suite
-  */
+export function getGambitGroup(idx) {
+  return gambitGroupRegistry.get(idx);
+  }
+
+export function rerunGambits() {
+  console.log("cntrl: gambits.js - rerunGambits()");
+
+  const count = state.getBufferLength("Gambits");
+  const active = state.getBufferCount().Gambits; // ← KEY LINE
+
+  // --- Hide ALL gambits ---
+  for (let i = 0; i < count; i++) {
+    const group = gambitGroupRegistry.get(i);
+    if (group) {
+      vGambits.derenderGambit(group);
+    }
+  }
+
+  // --- Re-render ACTIVE ones (usually just index 0) ---
+  for (let i = 0; i < active; i++) {
+    const group = gambitGroupRegistry.get(i);
+    if (group) {
+      vGambits.renderGambit(group); // no animation
+    }
+  }
+
+  vGambits.refreshPanel();
+}
 
 // --- Handle Functions ---
 export function handleFreezeQuadrant() {
-  console.log("cntrl: gambits.js - handleFreezeQuadrant()");
+  console.log("cntrl: gambits.js - handleFreezeQuadrant().");
 
-  const curr = state.fetchCurrentAdvsq();
-  if (!curr) return;
-  console.log("cntrl: gambits.js - handleFreezeQuadrant()...curr", curr);
+  const curr = state.fetchCurrentAdvsq(); // Get current advsq, if any.
+  if(!curr) return;
 
-  const { srcTile, quad, perimeter, stride } = curr;
-  const dst = planes.resolveDstTile(srcTile, quad, perimeter, stride);  // Derive dst tile.
-  const src = coords.vtsToBoard(srcTile); // Conver to positional notation.
-  // TODO: Will need size of board (defaults to 8x8x8).
+  state.clearBuffer("AdvSqs");                        // Advsq: change state.
+  vAdvsqs.clearAdvsq();                               // De-render.
+  vAdvsqs.clearAdvsqPanelParams("Q4,4");              // Update panel.
 
-  const gambit = {  // Prepare state data.
-    Q: quad,
-    src,      // Board coordinates (positional notation).
-    dst       // Board if on board (KR8,8), vts if off board ([6,6,6]).
-  };
+  const {gambit, group} = mGambits.makeGambit(curr);  // Gambit: create.
 
-  vAdvsqs.clearAdvsq();
-  state.clearBuffer("AdvSqs");
+  state.pushNewGambit(gambit);                        // Change state.
+  const idx = state.getBufferCount().Gambits - 1;
 
-  const initParams = vAdvsqs.getAdvsqPanelInitialParams();
-  console.log("initParams", initParams, cAdvsqs.normalize(initParams));
-  vAdvsqs.setAdvsqPanelParams(
-    cAdvsqs.normalize(initParams)
-  );
+  gambitGroupRegistry.set(idx, group);
+  vGambits.renderGambit(group, { animate: true });    // Render.
+  vGambits.updatePanel(gambit);                       // Update panel.
 
-  const group = makeGambit(curr);
-
-  state.pushNewGambit(gambit);
-  appendGambitLine(gambit);
-  game.showUndoStatus();
-
-  return gambit;
-  }
-export function makeGambit(specs) {
-  const group = view.buildAdvSqGroup(specs); // {srcTile: Array(3), quad: 1, perimeter: 0, stride: 0, opacity: 0.5}
-
-  view.context.scene.add(group);
-  animateFreezeTransition(group);
-
-  return group;
-}
-function animateFreezeTransition(group, duration = 0.8) {
-
-  const overlays = group.userData?.overlays || [];
-  if (overlays.length === 0) return;
-
-  const start = performance.now();
-
-  function step(now) {
-    let t = (now - start) / (duration * 1000);
-    if (t > 1) t = 1;
-
-    const pulse = Math.sin(t * Math.PI); // 0 → 1 → 0
-
-    for (const overlay of overlays) {
-      if (!overlay.material) continue;
-
-      overlay.material.transparent = true;
-      overlay.material.opacity = pulse;
-    }
-
-    if (t < 1) {
-      requestAnimationFrame(step);
-    } else {
-      finalize();
-    }
-  }
-
-  function finalize() {
-    for (const overlay of overlays) {
-      if (overlay.material) {
-        overlay.material.opacity = 1.0;
-      }
-    }
-  }
-
-  requestAnimationFrame(step);
+  game.showUndoStatus();                              // Update game panel (undo).
 }
 
 /*** ----- ----- ----- ***/
@@ -150,36 +127,68 @@ function handleFreezeOverlay() {
 
 function handleDelete() {
   console.log("cntrl: gambits.js - handleDelete()");
-  // TODO: change state - handleDelete().
-}
 
+  // --- Get current index ---
+  const count = state.getBufferCount().Gambits;
+  if (count === 0) return;
+
+  const idx = count - 1;
+
+  // --- Remove group from scene ---
+  const group = gambitGroupRegistry.get(idx);
+  console.log("cntrl: gambits.js - handleDelete()...group, idx", group, idx);
+  if (group) {
+    vGambits.clearGambit(group);
+    gambitGroupRegistry.delete(idx);
+  }
+
+  // --- Remove from state buffer ---
+  const gambits = state.getState().Gambits;
+  gambits.splice(idx, 1);
+
+  // --- Update buffer count ---
+  state.setBufferCount("Gambits", idx);
+
+  // --- Optional: clean panel (simple version: rebuild later) ---
+  const panel = document.getElementById("gambit-list");
+  if (panel && panel.lastChild) {
+    panel.removeChild(panel.lastChild);
+  }
+
+  // --- Update undo UI ---
+  game.showUndoStatus();
+  }
+
+function handleRemoveAll() {
+  console.log("cntrl: gambits.js - handleRemoveAll()");
+
+  const count = state.getBufferCount().Gambits;
+  if (count === 0) return;
+
+  // --- Remove all groups from scene ---
+  for (let i = 0; i < count; i++) {
+    const group = gambitGroupRegistry.get(i);
+    if (group) {
+      vGambits.clearGambit(group);
+    }
+  }
+
+  // --- Clear registry ---
+  gambitGroupRegistry.clear();
+
+  // --- Clear state buffer ---
+  state.clearBuffer("Gambits");
+
+  // --- Clear panel ---
+  const panel = document.getElementById("gambit-list");
+  if (panel) {
+    panel.textContent = "";
+  }
+
+  // --- Update undo UI ---
+  game.showUndoStatus();
+}
 
 // --- Helpers ---
-function appendGambitLine(gambit) {
-  const el = document.getElementById("gambit-list");
-  if (!el) return;
-
-  const { Q, src, dst } = gambit;
-
-  // --- freeze index ---
-  const count = state.getBufferCount().Gambits;
-
-  // --- column widths ---
-  const idxCol = String(count).padStart(3);     // right-aligned
-  const qCol   = `Q${Q}`.padEnd(5);             // "Q37  "
-  const srcCol = String(src).padEnd(8);         // "KB4,4  "
-  const dstCol = String(dst).padEnd(10);        // allow offboard arrays
-
-  // --- final line ---
-  const line =
-    `${idxCol}  ${qCol} ${srcCol} → ${dstCol}`;
-
-  const div = document.createElement("div");
-  div.textContent = line;
-
-  el.appendChild(div);
-  el.scrollTop = el.scrollHeight;
-}
-
-// Seampoint: more local functions.
+// Seampoint: more local functions...
 

@@ -12,10 +12,16 @@
 │   │   │   │   ├── advsqs.js
 │   │   │   │   ├── advsqs.json
 │   │   │   │   └── advsqs.md
+│   │   │   ├── camera
+│   │   │   │   ├── camera.js
+│   │   │   │   ├── camera.json
+│   │   │   │   └── camera.md
+│   │   │   ├── compasses
+│   │   │   │   ├── compasses.js
+│   │   │   │   ├── compasses.json
+│   │   │   │   └── compasses.md
 │   │   │   ├── controller.js
 │   │   │   ├── controller.md
-│   │   │   ├── events.js
-│   │   │   ├── events.md
 │   │   │   ├── gambits
 │   │   │   │   ├── gambits.js
 │   │   │   │   ├── gambits.json
@@ -25,10 +31,17 @@
 │   │   │   │   ├── game.json
 │   │   │   │   └── game.md
 │   │   │   ├── moves
-│   │   │   └── setup
-│   │   │       ├── setup.js
-│   │   │       ├── setup.json
-│   │   │       └── setup.md
+│   │   │   │   ├── moves.js
+│   │   │   │   ├── moves.json
+│   │   │   │   └── moves.md
+│   │   │   ├── setup
+│   │   │   │   ├── setup.js
+│   │   │   │   ├── setup.json
+│   │   │   │   └── setup.md
+│   │   │   └── viewer
+│   │   │       ├── viewer.js
+│   │   │       ├── viewer.json
+│   │   │       └── viewer.md
 │   │   ├── dev
 │   │   │   ├── devNotes.md
 │   │   │   └── symbols.js
@@ -40,58 +53,53 @@
 │   │   │   ├── view.js
 │   │   │   └── view.json
 │   │   ├── foundation
-│   │   │   ├── _tbd.md
 │   │   │   ├── colors
 │   │   │   │   ├── colors.js
 │   │   │   │   ├── colors.json
-│   │   │   │   ├── colors.md
-│   │   │   │   ├── colors.out
-│   │   │   │   └── colors.py
+│   │   │   │   └── colors.md
 │   │   │   ├── coords
 │   │   │   │   ├── coords.js
 │   │   │   │   ├── coords.json
-│   │   │   │   ├── coords.md
-│   │   │   │   └── coords.py
+│   │   │   │   └── coords.md
 │   │   │   ├── rays
 │   │   │   │   ├── rays.js
 │   │   │   │   ├── rays.json
-│   │   │   │   ├── rays.md
-│   │   │   │   ├── rays.out
-│   │   │   │   └── rays.py
+│   │   │   │   └── rays.md
 │   │   │   └── unitCells
 │   │   │       ├── unitCells.js
 │   │   │       ├── unitCells.json
 │   │   │       └── unitCells.md
 │   │   ├── geometry
-│   │   │   ├── _tbd.md
-│   │   │   ├── advSqs.js
-│   │   │   ├── advSqs.json
-│   │   │   ├── advSqs.md
-│   │   │   ├── FAS
-│   │   │   │   ├── debug.docx
-│   │   │   │   ├── debug.txt
-│   │   │   │   ├── FAS.md
-│   │   │   │   ├── FAS.out
-│   │   │   │   ├── FAS.py
-│   │   │   │   ├── GAS.md
-│   │   │   │   └── overlaps.out
-│   │   │   ├── overlapTiles.js
-│   │   │   ├── overlapTiles.json
-│   │   │   ├── overlapTiles.md
-│   │   │   ├── perims.js
-│   │   │   ├── perims.json
-│   │   │   ├── perims.md
-│   │   │   ├── planes.js
-│   │   │   ├── planes.json
-│   │   │   ├── planes.md
-│   │   │   ├── quads.js
-│   │   │   ├── quads.json
-│   │   │   └── quads.md
+│   │   │   ├── advsqs
+│   │   │   │   ├── advsqs.js
+│   │   │   │   ├── advsqs.json
+│   │   │   │   └── advsqs.md
+│   │   │   ├── overlaps
+│   │   │   │   ├── overlaps.js
+│   │   │   │   ├── overlaps.json
+│   │   │   │   └── overlaps.md
+│   │   │   ├── perims
+│   │   │   │   ├── perims.js
+│   │   │   │   ├── perims.json
+│   │   │   │   └── perims.md
+│   │   │   ├── planes
+│   │   │   │   ├── planes.js
+│   │   │   │   ├── planes.json
+│   │   │   │   └── planes.md
+│   │   │   └── quads
+│   │   │       ├── quads.js
+│   │   │       ├── quads.json
+│   │   │       └── quads.md
 │   │   ├── main.js
 │   │   ├── model
-│   │   │   ├── gambit
-│   │   │   │   ├── gambit.json
-│   │   │   │   └── gambit.md
+│   │   │   ├── advsqs
+│   │   │   │   ├── advsqs.js
+│   │   │   │   ├── advsqs.json
+│   │   │   │   └── advsqs.md
+│   │   │   ├── gambits
+│   │   │   │   ├── gambits.js
+│   │   │   │   ├── gambits.json
+│   │   │   │   └── gambits.md
 │   │   │   ├── grammar.js
 │   │   │   ├── model.js
 │   │   │   ├── model.json
@@ -108,7 +116,6 @@
 │   │   │   ├── modules.json
 │   │   │   └── modules.md
 │   │   ├── tests
-│   │   │   ├── _tbd.md
 │   │   │   ├── controller
 │   │   │   │   └── gambits.test.js
 │   │   │   ├── core
@@ -120,8 +127,8 @@
 │   │   │   │   ├── rays.test.js
 │   │   │   │   └── unitCells.test.js
 │   │   │   ├── geometry
-│   │   │   │   ├── advSqs.test.js
-│   │   │   │   ├── overlapTiles.test.js
+│   │   │   │   ├── advsqs.test.js
+│   │   │   │   ├── overlaps.test.js
 │   │   │   │   ├── perims.test.js
 │   │   │   │   ├── planes.test.js
 │   │   │   │   └── quads.test.js
@@ -136,7 +143,6 @@
 │   │   │   └── view
 │   │   │       └── gambits.test.js
 │   │   └── view
-│   │       ├── _tbd.md
 │   │       ├── advsqs
 │   │       │   ├── advsqs.js
 │   │       │   ├── advsqs.json
@@ -155,6 +161,7 @@
 │   │       │   ├── gambits.js
 │   │       │   ├── gambits.json
 │   │       │   └── gambits.md
+│   │       ├── moves
 │   │       ├── pieces
 │   │       ├── registerHandlers.js
 │   │       ├── render
@@ -179,7 +186,6 @@
 │   │       │   ├── tiles.js
 │   │       │   ├── tiles.json
 │   │       │   └── tiles.md
-│   │       ├── trays
 │   │       ├── view.js
 │   │       ├── view.json
 │   │       └── view.md
@@ -236,7 +242,8 @@
 │   │           ├── moves.js
 │   │           └── view.js
 │   └── utils
-│       └── debug.js
+│       ├── debug.js
+│       └── utils.js
 ├── content
 │   ├── _index.md
 │   ├── 3dc
@@ -468,4 +475,4 @@
 │           └── poc.js
 └── themes
 
-95 directories, 373 files
+103 directories, 372 files

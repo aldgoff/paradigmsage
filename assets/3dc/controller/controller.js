@@ -1,6 +1,6 @@
 /* File: controller.js
   Path: ./3dc/controller/controller.js
-  Purpose: The player's interface to setting up and playing the game.
+  Purpose: The player's interface to setting up, exploring, and playing the game.
   Author: Allan Goff
   Date: 4/02/26
   Recommended access: import * as control.
@@ -42,16 +42,26 @@
 */
 
 // --- Load JSON ---
-// Seampoint: more objects.
+// Seampoint: more objects...
 
 // --- Build upon previous layers ---
-import * as register from "../controller/events.js";
+import * as setup     from "../controller/setup/setup.js";
+import * as moves     from "../controller/moves/moves.js";
+import * as gambits   from "../controller/gambits/gambits.js";
+import * as cAdvsqs   from "../controller/advsqs/advsqs.js";
+import * as compasses from "../controller/compasses/compasses.js";
 
-import * as view     from "../view/view.js";
-import * as advsqs   from "../view/advsqs/advsqs.js";
+import * as game      from "../controller/game/game.js";
+
+import * as camera    from "../controller/camera/camera.js";
+import * as viewer    from "../controller/viewer/viewer.js";
 
 import * as model    from "../model/model.js";
 import * as state    from "../model/state/state.js";
+
+import * as view     from "../view/view.js";
+import * as register from "../view/registerHandlers.js";
+import * as vAdvsqs  from "../view/advsqs/advsqs.js";
 
 //TODO: DEPRECATED exampleRegistration
 import * as example  from "../exampleRegistration/control.js";
@@ -61,26 +71,27 @@ import * as example  from "../exampleRegistration/control.js";
 export function init(playBoard) {
   console.log("controller.init(): 3dc/controller/controller.js");
 
+  //TODO: DEPRECATED exampleRegistration
   // example.demoRegistration();
 
-  makeDraggable(document.getElementById("setup-window"));  // DOM panels.
-  // makeDraggable(document.getElementById("tray-window")); // DEPRECATED.
-  makeDraggable(document.getElementById("game-window"));
+  makeDraggable(document.getElementById("setup-window"));   // DOM panels.
   makeDraggable(document.getElementById("move-window"));
   makeDraggable(document.getElementById("gambit-window"));
   makeDraggable(document.getElementById("advsq-window"));
+  makeDraggable(document.getElementById("compass-window"));
 
-  makeDraggable(document.getElementById("camera-window")); // Not subject to the undo arch.
+  makeDraggable(document.getElementById("game-window"));    // Undo control for the previous 4 panels.
+
+  makeDraggable(document.getElementById("camera-window")); // Not subject to undo.
+  makeDraggable(document.getElementById("viewer-window"));
   // Seampoint - more 2D panels/canvi...
 
-  // advsqPanelInitialParams = advsqs.getAdvsqPanelParams();
-
-  register.callbacks();
+  callbacks();
 
   model.init(playBoard);
   view.init(playBoard);
 
-  advsqs.setAdvsqPanelInitialParams();
+  vAdvsqs.setAdvsqPanelInitialParams();
 
   // demo(); // POC for state interface and undo/redo architecture.
 }
@@ -102,6 +113,23 @@ window.addEventListener("pointermove", (e) => {
 window.addEventListener("pointerup", () => {
   activeDrag = null;
 });
+
+/*** ---------- ---------- ---------- ---------- ***/
+
+// --- UI ---
+function callbacks() {
+  register.setupControlDispatcher(      setup.panelDispatch);  // Setup board, tray, and inital position.
+  register.moveControlDispatcher(       moves.panelDispatch);  // Make and review moves.
+  register.gambitControlDispatcher(   gambits.panelDispatch);  // Build a gambit.
+  register.advsqControlDispatcher(    cAdvsqs.panelDispatch);  // Manipulate an advancement square.
+  register.compassControlDispatcher(compasses.panelDispatch);  // Slip the advsq along rays or apex directions.
+
+  register.gameControlDispatcher(        game.panelDispatch);  // Undo interface.
+
+  register.cameraControlDispatcher(    camera.panelDispatch);  // Not subject to undo.
+  register.viewerControlDispatcher(    viewer.panelDispatch);
+  // Seampoint - register another dispatcher.
+}
 
 // --- Helpers ---
 function makeDraggable(element) {

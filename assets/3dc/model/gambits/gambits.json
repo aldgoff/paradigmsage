@@ -1,0 +1,37 @@
+{
+  "state_module": {
+    "_example": "A sequence of 5 invertible undo/redo arrays.",
+    "_TODO:": "dup with state_module",
+    "Setup": [
+      { "board": [8,8,8],    "play": "off",    "trays": "none",    "gap": 0 },
+      { "board": [10,8,8],   "play": "off",    "trays": "none",    "gap": 0 },
+      { "board": [10,10,10], "play": "off",    "trays": "none",    "gap": 0 },
+
+      { "board": [8,8,8],    "play": "game",   "trays": "real",    "gap": 0 },
+      { "board": [8,8,8],    "play": "puzzle", "trays": "factory", "gap": 0 },
+      { "board": [8,8,8],    "play": "game",   "trays": "real",    "gap": 1 },
+      { "board": [8,8,8],    "play": "game",   "trays": "real",    "gap": 2 },
+      { "board": [8,8,8],    "play": "game",   "trays": "real",    "gap": 3 },
+
+      { "board": [6,6,6],    "play": "game",   "trays": "real", "gap": 0 },
+      { "board": [5,5,5],    "play": "game",   "trays": "real", "gap": 0 },
+      { "board": [4,4,4],    "play": "game",   "trays": "real", "gap": 0 }
+    ],
+    "Moves": [
+      { "turn": 1, "moves": ["P-K4,4", "P-Q4,3"], "coords": ["", ""], "annotations": ["", "..."] },
+      { "turn": 2, "moves": ["PxP", "N-KB3,3"], "coords": ["...", ""], "annotations": ["", ""] },
+      { "turn": 3, "moves": ["qnP-QN3,4", "..."], "coords": ["...", "..."], "annotations": ["...", "..."] }
+    ],
+    "Gambits": [
+      { "turn": 1, "moves": ["P-K4,4", "P-Q4,3"], "coords": ["", ""], "annotations": ["", "..."] },
+      { "turn": 2, "moves": ["PxP", "N-KB3,3"], "coords": ["...", ""], "annotations": ["", ""] },
+      { "turn": 3, "moves": ["qnP-QN3,4", "..."], "coords": ["...", "..."], "annotations": ["...", "..."] }
+    ],
+    "AdvSqs": [
+      { "src": "Q3,3", "dst": "KB2,2" }, 
+      { "src": "Q3,3", "dst": "KN3,3" }, 
+      { "src": "Q3,3", "dst": "Q1,1" }
+    ]
+  }
+}
+

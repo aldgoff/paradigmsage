@@ -20,17 +20,9 @@ import raysData from "./rays.json" assert { type: "json" };
   const DUKE   = raysModule.duke;
   const APEX   = raysModule.apex;
   const KNIGHT = raysModule.knight;
-  // Seampoint: more objects.
+  // Seampoint: more imports...
 
-// -- Internal helpers --
-function findRay(rayName) {
-  if (rayName in ROOK)   return ROOK[rayName];
-  if (rayName in BISHOP) return BISHOP[rayName];
-  if (rayName in DUKE)   return DUKE[rayName];
-
-  throw new Error(`Unknown ray: ${rayName}`);
-}
-
+// --- UI ---
 // -- Core (VTS only) --
 export function getRayVector(rayName) {
   const v = findRay(rayName);
@@ -125,3 +117,15 @@ export function apexRay(rayName) {
 
   return ray;
 }
+// Seampoint: more global functions...
+
+// --- Helpers ---
+function findRay(rayName) {
+  if (rayName in ROOK)   return ROOK[rayName];
+  if (rayName in BISHOP) return BISHOP[rayName];
+  if (rayName in DUKE)   return DUKE[rayName];
+
+  throw new Error(`Unknown ray: ${rayName}`);
+}
+// Seampoint: more local functions...
+

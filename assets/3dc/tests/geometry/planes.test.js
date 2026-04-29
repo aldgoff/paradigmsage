@@ -29,7 +29,7 @@ import {getPlaneGroups,
         getPlaneRule,
         resolveDstTile,
         // Seampoint: functions to test...
-} from "../../geometry/planes.js";
+} from "../../geometry/planes/planes.js";
 
 import * as coords from "../../foundation/coords/coords.js";  // vtsToNotation().
 

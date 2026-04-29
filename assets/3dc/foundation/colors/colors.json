@@ -6,7 +6,6 @@
       "accepted_inputs": ["<LL>X,Y", "(z,x,y)"],
       "canonical_space": "VTS"
       },
-
     "bishop_color": {
       "rule": "parity(z + x + y)",
       "colors": {
@@ -14,7 +13,6 @@
         "1": "black"
       }
       },
-
     "duke_color": {
       "unit_cell_period": 2,
       "axes_mod2": ["uz = z % 2", "ux = x % 2", "uy = y % 2"],
@@ -44,8 +42,9 @@
       }
       },
 
-    "formats": {
+    "_formats": {
       "Status": "Not used.",
+      "positional_notation": "<LL>X,Y",
       "board_coord": "<LL>X,Y",
       "vts_coord": "(z,x,y)",
       "notes": [
@@ -55,3 +54,4 @@
       }
    }
 }
+

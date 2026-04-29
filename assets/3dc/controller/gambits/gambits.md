@@ -107,6 +107,6 @@
   Stride tiles between bishop and duke visually conflict.
 
   Gambit:
-  - Q19: KB4,4 -> QN6,6
-  - Q40: KB4,4 -> QN6,6
+  - Q19: KB4,4 -> QN6,6 : area
+  - Q40: KB4,4 -> QN6,6 : area
 

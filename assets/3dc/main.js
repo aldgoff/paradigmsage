@@ -30,7 +30,7 @@ if (location.hostname === "localhost") {
   import("./tests/geometry/planes.test.js").then(m => m.run());
   import("./tests/geometry/quads.test.js").then(m => m.run());
   import("./tests/geometry/perims.test.js").then(m => m.run());
-  import("./tests/geometry/overlapTiles.test.js").then(m => m.run());
+  import("./tests/geometry/overlaps.test.js").then(m => m.run());
   import("./tests/geometry/advSqs.test.js").then(m => m.run());
 
   import("./tests/model/state.test.js").then(m => m.run());

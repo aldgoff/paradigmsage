@@ -30,14 +30,14 @@ import {quadToRayPair,
         nextQuadInPlane,
         planeToQuads,
         quadToPlane,
-} from "../../geometry/quads.js";
+} from "../../geometry/quads/quads.js";
 
 // --- Module ---
 import {getStride,
         prevPerimeter,
         nextPerimeter,
         isTileInPlane,
-} from "../../geometry/perims.js";
+} from "../../geometry/perims/perims.js";
 
 // ------------------------------------------------------------
 

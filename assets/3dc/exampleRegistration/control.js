@@ -10,7 +10,7 @@
 import * as view  from "./view.js";
 import * as model from "./model.js";
 
-// TODO: depregating...demoRegistration().
+// TODO: deprecating...demoRegistration().
 export function demoRegistration() {
   console.log("demoRegistration", view);
   return;

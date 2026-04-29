@@ -112,6 +112,17 @@ export function nextKeyIndex() {
   return null;
 }
 
+export function peekNextKeyIndex() {  // TODO: used?
+  const snapshot = structuredClone(bufferCount);
+
+  const result = nextKeyIndex();
+
+  // restore state
+  bufferCount = snapshot;
+
+  return result;
+}
+
 // --- UI ---
 export function setState(newState) {
   state = structuredClone(newState);

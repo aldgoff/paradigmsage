@@ -11,16 +11,21 @@
 import setupData from "./setup.json" assert { type: "json" };
   const setupModule = setupData.setup_module;
   const category  = setupModule.category;
-  // Seampoint: more objects.
+// Seampoint: more objects...
 
 // --- Build upon previous layers ---
 import * as game   from "../../controller/game/game.js";
 import * as state from "../../model/state/state.js";
 import * as boards from "../../view/boards/boards.js";
-// Seampoint: more imports.
+import * as vGambits from "../../view/gambits/gambits.js";
+// Seampoint: more imports...
 
 // --- UI ---
 export function panelDispatch(payload) {    // Dispatch payload from panel to handle event functions.
+  // console.log("cntrl: setup.js - panelDispatch(payload):", payload);
+
+  vGambits.cancelAnimation();
+
   const { action, 
     boardSize,  // 8x8x8|10x8x8|10x10x10.
     play,       // Off|rules|puzzle.
@@ -39,7 +44,7 @@ export function panelDispatch(payload) {    // Dispatch payload from panel to ha
     default: throw new Error(`Unknown setup action ${action}.`);
   }
   }
-// Seampoint: more global functions.
+// Seampoint: more global functions...
 
 // --- Handle Functions ---
 function handleMakeBoard(payload) { // Setup handler.
@@ -73,5 +78,5 @@ function handleTrayGap(payload) {
   // TODO: change state - handleTrayGap().
   game.showUndoStatus();  // Show undo status in the panel.
 }
-// Seampoint: more local functions.
+// Seampoint: more local functions...
 

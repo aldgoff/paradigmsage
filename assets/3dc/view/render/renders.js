@@ -31,7 +31,20 @@ export function init(container) {
   const light  = lights.init(scene);
 
   renderer.setSize(container.width, container.height);
-  function animate() {
+
+  let lastTime = performance.now();
+
+  function animate(now = performance.now()) {
+    requestAnimationFrame(animate);
+
+    const deltaTime = (now - lastTime) / 1000; // seconds
+    lastTime = now;
+
+    cameras.updateJitter(deltaTime);  // ← ADD THIS
+
+    renderer.render(scene, camera);
+  }
+  function animate1() {
     requestAnimationFrame(animate);
     renderer.render(scene, camera);
   }

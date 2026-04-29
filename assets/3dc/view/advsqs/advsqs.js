@@ -1,5 +1,5 @@
 /* File: advsqs.js
-  Path: ./3dc/advsqs/advsqs.js
+  Path: ./3dc/view/advsqs/advsqs.js
   Purpose: Place the decorators on the board for the advsq.
   Author: Allan Goff
   Date: 4/15/26
@@ -14,18 +14,16 @@ import advsqsData from "./advsqs.json" assert { type: "json" };
   // Seampoint: more objects.
 
 // --- Build upon previous layers ---
-import * as utils  from "../../../utils/debug.js";            // snapshot(obj) - (debugging as needed).
-
+import * as utils  from "../../../utils/debug.js";
   import * as state    from "../../model/state/state.js";
   import * as coords   from "../../foundation/coords/coords.js";
-  import * as planes   from "../../geometry/planes.js";
-  import * as quads    from "../../geometry/quads.js";
-  import * as overlaps from "../../geometry/overlapTiles.js";
-  import * as advSqs   from "../../geometry/advSqs.js";
+  import * as planes   from "../../geometry/planes/planes.js";
+  import * as quads    from "../../geometry/quads/quads.js";
+  import * as overlaps from "../../geometry/overlaps/overlaps.js";
 
   import {AdvSq,
-        isEqual,
-} from "../../geometry/advSqs.js";
+          isEqual,
+  } from "../../geometry/advsqs/advsqs.js";
 
   import * as view       from "../view.js";
   import * as tiles      from "../tiles/tiles.js";
@@ -33,7 +31,7 @@ import * as utils  from "../../../utils/debug.js";            // snapshot(obj) -
   import * as cameras    from "../render/cameras.js";
   import * as renders    from "../render/renders.js";
   import * as coordsMaps from "../render/coordsMaps.js"
-// Seampoint: more imports.
+// Seampoint: more imports...
 
 // --- Globals ---
 let advsqPanelInitialParams = null;
@@ -63,6 +61,36 @@ export function getAdvsqPanelParams() {
   };
 
   return params;
+  }
+
+export function clearAdvsqPanelParams(srcTile) {
+  console.log("view : advsqs.js - clearAdvsqPanelParams(srcTile):", srcTile); // srcTile: positional notation.
+
+  const panel = document.getElementById("advsq-window");
+  if (!panel) return;
+
+  panel.querySelector('[name="advsq-nickname"]').textContent  = "";       // Update quad derived fields.
+  panel.querySelector('[name="advsq-pieceQuad"]').textContent = 0;
+  panel.querySelector('[name="advsq-planeQuad"]').textContent = 0;
+  panel.querySelector('[name="advsq-plane"]').textContent     = "";
+  panel.querySelector('[name="advsq-quadType"]').textContent  = "";
+
+  panel.querySelector('[name="advsq-length"]').textContent   = 0;         // Update perimeter derived fields.
+  panel.querySelector('[name="advsq-area"]').textContent     = 0;   
+  panel.querySelector('[name="advsq-onboard"]').textContent  = 0;
+  
+  panel.querySelector('[name="advsq-strideType"]').textContent  = "";     // Update stride derived fields.
+  panel.querySelector('[name="advsq-moveType"]').textContent    = "";
+  panel.querySelector('[name="advsq-overlap"]').textContent     = "";
+  panel.querySelector('[name="advsq-piece"]').textContent       = "";
+
+  panel.querySelector('[name="advsq-src"]').value          = srcTile;     // Update the primary fields.
+  panel.querySelector('[name="advsq-quad"]').value         = 1;
+  panel.querySelector('[name="advsq-perimeter"]').value    = 0;
+  panel.querySelector('[name="advsq-stride"]').value       = 0;
+  // panel.querySelector('[name="advsq-opacity"]').value      = params.opacity;
+
+  return;
   }
 
 export function setAdvsqPanelParams(params) {
@@ -147,7 +175,7 @@ export function clearAdvsq() {
 
   currentAdvsq = null;
 }
-// Seampoint: more global functions.
+// Seampoint: more global functions...
 
 // --- Helpers ---
 function getActiveBoardSpec() {
@@ -255,12 +283,5 @@ function strideDerived(q, k, s) {
 
   return { strideType, moveType, overlap, piece };
 }
-// Seampoint: more local functions.
-
-// --- Utilities ---
-function isSame(a, b) {
-  return a[0] === b[0] && a[1] === b[1] && a[2] === b[2];
-}
-
-// Seampoint: more utility functions.
+// Seampoint: more local functions...
 

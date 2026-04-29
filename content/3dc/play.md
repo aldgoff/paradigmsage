@@ -31,11 +31,18 @@ layout: "play"
     z-index: 20;
     cursor: move;
     }
+  #gambit-window {
+    width: 200px;
+  }
   #move-list {
     font-family: monospace;
     white-space: pre;   /* Allows code to col align text. */
     height: 140px;
     }
+  #gambit-list {
+    font-family: monospace;
+    white-space: pre;
+  }
   #move-window {
     font-family: monospace;
     width: 350px;
@@ -58,14 +65,16 @@ layout: "play"
     padding: 4px;
   }
 
-  #setup-window  { top: 120px; left:   80px; }  /* DOM Control Panels */
-  #tray-window   { top: 260px; left:   80px; }
-  #game-window   { top: 120px; left:  280px; }
-  #move-window   { top: 900px; left:   80px; }
-  #gambit-window { top: 610px; left:   80px; }
-  #advsq-window  { top: 320px; left:  280px; }
+  #setup-window   { top:  120px; left:   80px; }  /* DOM Control Panels */
+  #move-window    { top: 1200px; left:   80px; }
+  #gambit-window  { top:  830px; left:   80px; }
+  #advsq-window   { top:  120px; left:  260px; }
+  #compass-window { top:  999px; left:  300px; }
 
-  #camera-window { top: 460px; left:   80px; }
+  #game-window    { top:  120px; left:  450px; }
+
+  #camera-window { top:   420px; left:   80px; }
+  #viewer-window { top:   560px; left:   80px; }
   /* Seampont - more DOM control panels... */
 </style>
 
@@ -92,42 +101,19 @@ layout: "play"
   </div>
 
   <div class="section">
-    <label> <input type="radio" name="tray-type" value="none"> None </label><br>
-    <label> <input type="radio" name="tray-type" value="real" checked> Real </label><br>
-    <label> <input type="radio" name="tray-type" value="factory"> Factory </label><br>
+    <label> <input type="radio" disabled name="tray-type" value="none"> None </label><br>
+    <label> <input type="radio" disabled name="tray-type" value="real"> Real </label><br>
+    <label> <input type="radio" disabled name="tray-type" value="factory"> Factory </label><br>
   </div>  
 
   <div class="section">
-    <!-- <button data-action="showTrays">Show</button>
-    <button data-action="hideTrays">Hide</button> -->
-    <label> <input type="checkbox" name="tray-visible" checked> Visible </label><br>
+    <label>Initial Position</lable>
   </div>  
 
   <div class="section">
-    <label> <input type="radio" name="initial-pos" value="standard" checked> Standard </label><br>
-    <label> <input type="radio" name="initial-pos" value="manual"> Manual </label><br>
+    <label> <input type="radio" disabled name="initial-pos" value="standard"> Standard </label><br>
+    <label> <input type="radio" disabled name="initial-pos" value="manual"> Manual </label><br>
   </div>  
-
-  <div class="section">
-    <label>Gap<input name="tray-gap" type="number" min="0" step="1" value="1" max="3"> </label>
-  </div>
-  </div>
-
-<div class="panel" id="game-window">
-  <div class="panel-title">Game Panel</div>
-
-  <div class="section">
-    <button data-action="newGame">New</button>
-    <button data-action="rerun">Rerun</button>
-    <button data-action="undo">Undo</button>
-    <button data-action="redo">Redo</button>
-    <button data-action="load" >Load</button>
-    <button data-action="save" >Save</button>
-  </div>
-
-  <div class="section scroll-box" id="undo-state">
-    <!-- tbd go here -->
-  </div>
   </div>
 
 <div class="panel" id="move-window">
@@ -143,12 +129,13 @@ layout: "play"
 
   <div class="section">
     <button data-action="freezeQ">Freeze Quadrant</button>
-    <button data-action="freezeL">Freeze Linear</button>
-    <button data-action="freezeO">Freeze Overlap</button>
+    <button data-action="freezeL" disabled>Freeze Linear</button>
+    <button data-action="freezeO" disabled>Freeze Overlap</button>
   </div>
 
   <div class="section">
     <button data-action="delete">Delete</button>
+    <button data-action="remove">Remove All</button>
   </div>
 
   <div class="section">
@@ -159,13 +146,20 @@ layout: "play"
   </div>
   <div class="section">
     <label> MoveType:    <output name="gambit-moveType" style="opacity:0.7; font-style:italic;"> Quadrant </output> </label>
+  </div>
+  <div class="section">
     <label> Overlap:     <output name="gambit-overlap"  style="opacity:0.7; font-style:italic;"> Qtile|etc </output> </label>
+  </div>
+  <div class="section">
     <label> LowestPiece: <output name="gambit-piece"    style="opacity:0.7; font-style:italic;"> Queen </output> </label>
   </div>
 
-  <div class="section scroll-box" id="gambit-list">
+  <div class="section scroll-box" id="gambit-list"></div>
     <!-- advsq entries go here -->
-  </div>
+    <!-- N quad src -> dst : area -->
+    <!-- N Q<nn> <LL>X,Y> → <LL>X,Y> : area -->
+    <!-- N Q<nn> <LL>X,Y> → [z,x,y] : area -->
+    <!-- 1 Q13 KB4.4 → KR7,7 : 16 -->
   </div>
 
 <div class="panel" id="advsq-window">
@@ -227,11 +221,11 @@ layout: "play"
   </div>
 
   <!-- Optional: key hints (visual only) -->
-  <div class="section" style="font-size: 11px; color: #666;">
+  <div class="section" style="font-size: 13px; font-weight: bold; color: #666;">
     Slip & Slide +: k i j
   </div>
-  <div class="section" style="font-size: 11px; color: #666;">
-    Slip & Slide -: ^k ^i ^j
+  <div class="section" style="font-size: 13px; font-weight: bold; color: #666;">
+    Slip & Slide -: K I J
   </div>
 
   <div class="section">
@@ -244,7 +238,43 @@ layout: "play"
     <label> Offboard Visibility
       <input type="range" name="advsq-opacity" min="0" max="1" step="0.01" value="0.5"> </label>
   </div>
-</div>
+  </div>
+
+<div class="panel" id="compass-window">
+  <div class="panel-title">Compass Panel</div>
+
+  <div class="section">
+    <button data-action="Rays" disabled>Rays</button>
+  </div>
+
+  <div class="section">
+    <button data-action="Apexes" disabled>Apexes</button>
+  </div>
+  </div>
+
+<div class="panel" id="game-window">
+  <div class="panel-title">Game Panel</div>
+
+  <div class="section">
+    <button data-action="newGame" disabled>New Game</button>
+  </div>
+  <div class="section">
+    <button data-action="undo">Undo</button>
+    <button data-action="redo">Redo</button>
+  </div>
+  <div class="section">
+    <button data-action="rewind">Rewind</button>
+    <button data-action="forward">Forward>></button>
+  </div>
+  <div class="section">
+    <button data-action="load" disabled>Load</button>
+    <button data-action="save" disabled>Save</button>
+  </div>
+
+  <div class="section scroll-box" id="undo-state">
+    <!-- tbd go here -->
+  </div>
+  </div>
 
 <div class="panel" id="camera-window">
   <div class="panel-title">Camera Panel</div>
@@ -261,6 +291,32 @@ layout: "play"
     <label> <input type="radio" name="camera-pov" value="neutral"  data-action="SetPOV" checked> Neutral </label>
     <label> <input type="radio" name="camera-pov" value="black"    data-action="SetPOV"> Black </label>
     <label> <input type="radio" name="camera-pov" value="negative" data-action="SetPOV"> Negative </label>
+  </div>
+  </div>
+
+<div class="panel" id="viewer-window">
+  <div class="panel-title">Viewer Panel</div>
+
+  <div class="section">
+    <button data-action="ShowTrays" disabled> Show Trays </button>
+    <button data-action="HideTrays" disabled> Hide Trays </button>
+  </div>
+
+  <div class="section">
+    <label> 'Gap' <input name="viewer-trayGap" disabled type="number" min="0" step="1" value="1" max="3"> </label>
+  </div>
+
+  <div class="section">
+    <label> 'Sep' <input name="viewer-traySep" type="number" disabled min="1.0" step="0.1" value="1.5" max="2.0"> </label>
+  </div>
+
+  <div class="section">
+    <button data-action="ToggleAnimation"> Toggle Animation </button>
+  </div>
+
+  <div class="section">
+    <label> Jitter Range <input type="range" name="viewer-range" min="0" max="1" step="0.01" value="0.2"> </label>
+    <label> Jitter Speed <input type="range" name="viewer-speed" min="0" max="1" step="0.01" value="0.2"> </label>
   </div>
 </div>
 
