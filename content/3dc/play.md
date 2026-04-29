@@ -101,9 +101,9 @@ layout: "play"
   </div>
 
   <div class="section">
-    <label> <input type="radio" name="tray-type" value="none"> None </label><br>
-    <label> <input type="radio" name="tray-type" value="real" checked> Real </label><br>
-    <label> <input type="radio" name="tray-type" value="factory"> Factory </label><br>
+    <label> <input type="radio" disabled name="tray-type" value="none"> None </label><br>
+    <label> <input type="radio" disabled name="tray-type" value="real"> Real </label><br>
+    <label> <input type="radio" disabled name="tray-type" value="factory"> Factory </label><br>
   </div>  
 
   <div class="section">
@@ -111,8 +111,8 @@ layout: "play"
   </div>  
 
   <div class="section">
-    <label> <input type="radio" name="initial-pos" value="standard" checked> Standard </label><br>
-    <label> <input type="radio" name="initial-pos" value="manual"> Manual </label><br>
+    <label> <input type="radio" disabled name="initial-pos" value="standard"> Standard </label><br>
+    <label> <input type="radio" disabled name="initial-pos" value="manual"> Manual </label><br>
   </div>  
   </div>
 
@@ -129,8 +129,8 @@ layout: "play"
 
   <div class="section">
     <button data-action="freezeQ">Freeze Quadrant</button>
-    <button data-action="freezeL">Freeze Linear</button>
-    <button data-action="freezeO">Freeze Overlap</button>
+    <button data-action="freezeL" disabled>Freeze Linear</button>
+    <button data-action="freezeO" disabled>Freeze Overlap</button>
   </div>
 
   <div class="section">
@@ -244,11 +244,11 @@ layout: "play"
   <div class="panel-title">Compass Panel</div>
 
   <div class="section">
-    <button data-action="Rays">Rays</button>
+    <button data-action="Rays" disabled>Rays</button>
   </div>
 
   <div class="section">
-    <button data-action="Apexes">Apexes</button>
+    <button data-action="Apexes" disabled>Apexes</button>
   </div>
   </div>
 
@@ -256,7 +256,7 @@ layout: "play"
   <div class="panel-title">Game Panel</div>
 
   <div class="section">
-    <button data-action="newGame">New Game</button>
+    <button data-action="newGame" disabled>New Game</button>
   </div>
   <div class="section">
     <button data-action="undo">Undo</button>
@@ -267,8 +267,8 @@ layout: "play"
     <button data-action="forward">Forward>></button>
   </div>
   <div class="section">
-    <button data-action="load" >Load</button>
-    <button data-action="save" >Save</button>
+    <button data-action="load" disabled>Load</button>
+    <button data-action="save" disabled>Save</button>
   </div>
 
   <div class="section scroll-box" id="undo-state">
@@ -298,16 +298,16 @@ layout: "play"
   <div class="panel-title">Viewer Panel</div>
 
   <div class="section">
-    <button data-action="ShowTrays"> Show Trays </button>
-    <button data-action="HideTrays"> Hide Trays </button>
+    <button data-action="ShowTrays" disabled> Show Trays </button>
+    <button data-action="HideTrays" disabled> Hide Trays </button>
   </div>
 
   <div class="section">
-    <label> Gap <input name="viewer-trayGap" type="number" min="0" step="1" value="1" max="3"> </label>
+    <label> 'Gap' <input name="viewer-trayGap" disabled type="number" min="0" step="1" value="1" max="3"> </label>
   </div>
 
   <div class="section">
-    <label> Sep <input name="viewer-traySep" type="number" min="1.0" step="0.1" value="1.5" max="2.0"> </label>
+    <label> 'Sep' <input name="viewer-traySep" type="number" disabled min="1.0" step="0.1" value="1.5" max="2.0"> </label>
   </div>
 
   <div class="section">
