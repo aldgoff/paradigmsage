@@ -46,6 +46,8 @@ import * as coordsMaps from "./render/coordsMaps.js";
 import * as demos      from "./demos.js";
 import * as tiles      from "./tiles/tiles.js";
 
+import * as utils      from "../../../utils/utils.js";
+
 import * as game       from "../controller/game/game.js";
 import * as viewer     from "../controller/viewer/viewer.js";
 
@@ -149,9 +151,9 @@ function decoratePerimeter(lastPerim, perim, piece, quadType, group, opacity, st
   const stride = perim.stride;
   for(let i=1; i<=stride.length; i++) {
     const j = i - 1;
-    if(     isSame(stride[j], perim.E1)  ) decorateTile(stride[j], piece, end,  group, opacity);
-    else if(isSame(stride[j], perim.apex)) decorateTile(stride[j], piece, apex, group, opacity);
-    else if(isSame(stride[j], perim.E2)  ) decorateTile(stride[j], piece, end,  group, opacity);
+    if(     utils.isSame(stride[j], perim.E1)  ) decorateTile(stride[j], piece, end,  group, opacity);
+    else if(utils.isSame(stride[j], perim.apex)) decorateTile(stride[j], piece, apex, group, opacity);
+    else if(utils.isSame(stride[j], perim.E2)  ) decorateTile(stride[j], piece, end,  group, opacity);
     else {
       decorateTile(stride[j], piece, "body", group, opacity);
     }
@@ -200,12 +202,6 @@ function decorateTile(coords, piece, decorator, group, opacity, zOffset=0.00) {
     group.userData.overlays = group.userData.overlays || [];
     group.userData.overlays.push(...overlays);
   }
-}
-
-// --- Utilities ---
-// TODO: Move isSame to utils.
-function isSame(a, b) {
-  return a[0] === b[0] && a[1] === b[1] && a[2] === b[2];
 }
 
 // --- Helpers ---

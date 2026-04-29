@@ -242,7 +242,8 @@
 │   │           ├── moves.js
 │   │           └── view.js
 │   └── utils
-│       └── debug.js
+│       ├── debug.js
+│       └── utils.js
 ├── content
 │   ├── _index.md
 │   ├── 3dc
@@ -474,4 +475,4 @@
 │           └── poc.js
 └── themes
 
-103 directories, 371 files
+103 directories, 372 files

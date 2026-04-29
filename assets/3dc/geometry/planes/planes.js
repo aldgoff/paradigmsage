@@ -16,6 +16,8 @@ import planesData from "./planes.json" assert { type: "json" };
   // Seampoint: more objects...
 
 // --- Build upon previous layers ---
+import * as utils  from "../../../../utils/utils.js";
+
 import * as coords from "../../foundation/coords/coords.js";
 import * as rays   from "../../foundation/rays/rays.js";  // getRayVector().
 import * as quads  from "../../geometry/quads/quads.js";  // quadToRayPair().
@@ -108,24 +110,24 @@ export function resolveDstTile(srcTile, quad, perimeter, stride) {
   let dstTile = [...srcTile]; // Clone not ref!
 
   if(     stride == 0) {                      // Assume stride on the apex tile.
-    offset = perims.add(perims.scale(ray1, k), perims.scale(ray2, k));
-    dstTile = perims.add(dstTile, offset);
+    offset = utils.add(utils.scale(ray1, k), utils.scale(ray2, k));
+    dstTile = utils.add(dstTile, offset);
     }
   else if(stride <= k) {                      // Outbound.
-    offset = perims.add(perims.scale(ray1, k), perims.scale(ray2, s));
-    dstTile = perims.add(dstTile, offset);
+    offset = utils.add(utils.scale(ray1, k), utils.scale(ray2, s));
+    dstTile = utils.add(dstTile, offset);
     }
   else if(stride == k + 1) {                  // Stride is on the apex tile.
-    offset = perims.add(perims.scale(ray1, k), perims.scale(ray2, k));
-    dstTile = perims.add(dstTile, offset);
+    offset = utils.add(utils.scale(ray1, k), utils.scale(ray2, k));
+    dstTile = utils.add(dstTile, offset);
     }
   else if(stride <= 2*k + 1) {                // Inbound
-    offset = perims.add(perims.scale(ray2, k), perims.scale(ray1, 2*k - s));
-    dstTile = perims.add(dstTile, offset);
+    offset = utils.add(utils.scale(ray2, k), utils.scale(ray1, 2*k - s));
+    dstTile = utils.add(dstTile, offset);
     }
   else {                                      // Assume stride on the apex tile.
-    offset = perims.add(perims.scale(ray1, k), perims.scale(ray2, k));
-    dstTile = perims.add(dstTile, offset);
+    offset = utils.add(utils.scale(ray1, k), utils.scale(ray2, k));
+    dstTile = utils.add(dstTile, offset);
   }
 
   const onBoard = coords.onBoardVts(dstTile);

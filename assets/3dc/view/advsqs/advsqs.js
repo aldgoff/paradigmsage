@@ -14,8 +14,7 @@ import advsqsData from "./advsqs.json" assert { type: "json" };
   // Seampoint: more objects.
 
 // --- Build upon previous layers ---
-import * as utils  from "../../../utils/debug.js";            // snapshot(obj) - (debugging as needed).
-
+import * as utils  from "../../../utils/debug.js";
   import * as state    from "../../model/state/state.js";
   import * as coords   from "../../foundation/coords/coords.js";
   import * as planes   from "../../geometry/planes/planes.js";
@@ -23,8 +22,8 @@ import * as utils  from "../../../utils/debug.js";            // snapshot(obj) -
   import * as overlaps from "../../geometry/overlaps/overlaps.js";
 
   import {AdvSq,
-        isEqual,
-} from "../../geometry/advsqs/advsqs.js";
+          isEqual,
+  } from "../../geometry/advsqs/advsqs.js";
 
   import * as view       from "../view.js";
   import * as tiles      from "../tiles/tiles.js";
@@ -32,7 +31,7 @@ import * as utils  from "../../../utils/debug.js";            // snapshot(obj) -
   import * as cameras    from "../render/cameras.js";
   import * as renders    from "../render/renders.js";
   import * as coordsMaps from "../render/coordsMaps.js"
-// Seampoint: more imports.
+// Seampoint: more imports...
 
 // --- Globals ---
 let advsqPanelInitialParams = null;
@@ -176,7 +175,7 @@ export function clearAdvsq() {
 
   currentAdvsq = null;
 }
-// Seampoint: more global functions.
+// Seampoint: more global functions...
 
 // --- Helpers ---
 function getActiveBoardSpec() {
@@ -284,12 +283,5 @@ function strideDerived(q, k, s) {
 
   return { strideType, moveType, overlap, piece };
 }
-// Seampoint: more local functions.
-
-// --- Utilities ---
-// TODO: Move isSame to utils.
-function isSame(a, b) {
-  return a[0] === b[0] && a[1] === b[1] && a[2] === b[2];
-}
-// Seampoint: more utility functions.
+// Seampoint: more local functions...
 

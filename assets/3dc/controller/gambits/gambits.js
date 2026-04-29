@@ -33,7 +33,7 @@ import * as vGambits from "../../view/gambits/gambits.js";
   *  3. Compute derived fields
   *  4. ✅ Add to scroll window
   *  5. ✅ Put resolveDstTile under test
-  *  6. Move add and scale and isSame to utils
+  *  6. ✅ Move add and scale and isSame to utils.
   *  7. ✅ Test aliases to AI (skipped)
   *  8. ✅ If that passes, port geo into subdirs.
   *  9. ✅ Update specs
