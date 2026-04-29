@@ -187,7 +187,7 @@ function handleRedo() {
 
     const group = cGambits.getGambitGroup(idx);
     if (group) {
-      vGambits.renderGambit(group);
+      vGambits.renderGambit(group); // Default animation is false.
     }
     }
   else if(keyIndex.arrayKey === "AdvSqs") {

@@ -192,6 +192,11 @@ function decorateTile(coords, piece, decorator, group, opacity, zOffset=0.00) {
   const overlays = decorators.decorate(faceColor, meshTile, piece, decorator, zOffset);
 
   if (overlays) {
+    overlays.forEach(o => {
+      o.userData = o.userData || {};
+      o.userData.parentTile = meshTile;
+    });
+
     group.userData.overlays = group.userData.overlays || [];
     group.userData.overlays.push(...overlays);
   }

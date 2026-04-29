@@ -79,7 +79,7 @@ export function handleFreezeQuadrant() {
   const idx = state.getBufferCount().Gambits - 1;
 
   gambitGroupRegistry.set(idx, group);
-  vGambits.renderGambit(group);                       // Render.
+  vGambits.renderGambit(group, { animate: true });    // Render.
   vGambits.updatePanel(gambit);                       // Update panel.
 
   game.showUndoStatus();                              // Update game panel (undo).

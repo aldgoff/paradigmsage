@@ -26,7 +26,43 @@ export function UI() {  // Under test, rather stupid.
   return "whatever";
 }
 
-export function renderGambit(group) {
+export function renderGambit(group, { animate = false } = {}) {
+  console.log("view: gambits.js - renderGambit(group)", group);
+
+  view.context.scene.add(group);
+
+  // --- Re-attach overlays ---
+  if (group.userData?.overlays) {
+    group.userData.overlays.forEach(o => {
+      const tile = o.userData?.parentTile;
+      if (tile && !o.parent) {
+        tile.add(o);
+      }
+    });
+  }
+
+  if (animate) {
+    animateFreezeTransition(group);
+  }
+}
+export function renderGambit2(group) {
+  console.log("view: gambits.js - renderGambit(group)", group);
+
+  view.context.scene.add(group);
+
+  // --- Re-attach overlays to tiles ---
+  if (group.userData?.overlays) {
+    group.userData.overlays.forEach(o => {
+      const tile = o.userData?.parentTile;
+      if (tile && !o.parent) {
+        tile.add(o);
+      }
+    });
+  }
+
+  animateFreezeTransition(group);
+}
+export function renderGambit1(group) {
   console.log("view: gambits.js - renderGambit(group)", group);
 
   view.context.scene.add(group);
@@ -34,7 +70,41 @@ export function renderGambit(group) {
 
   return
 }
+
 export function derenderGambit(group) {
+  console.log("view: gambits.js - derenderGambit(group)", group);
+
+  if (!group) return;
+
+  // --- Remove overlays (THIS is what clears onboard visuals) ---
+  if (group.userData?.overlays) {
+    group.userData.overlays.forEach(o => {
+      if (o.parent) o.parent.remove(o);
+    });
+  }
+
+  // --- Remove offboard tiles ---
+  if (group.parent) {
+    group.parent.remove(group);
+  } else {
+    view.context.scene.remove(group);
+  }
+}
+export function derenderGambit2(group) {
+  console.log("view: gambits.js - derenderGambit(group)", group);
+
+  if (!group) return;
+
+  // --- ONLY remove offboard tiles ---
+  if (group.parent) {
+    group.parent.remove(group);
+  } else {
+    view.context.scene.remove(group);
+  }
+
+  // DO NOT touch overlays
+}
+export function derenderGambit1(group) {
   console.log("view: gambits.js - derenderGambit(group)", group);
 
   if (!group) return;
@@ -133,6 +203,16 @@ export function updatePanel(gambit) {
 // Seampoint: more global functions...
 
 //--- Helpers ---
+function applyOpacity(obj, opacity) {
+  if (obj.material) {
+    obj.material.transparent = true;
+    obj.material.opacity = opacity;
+  }
+
+  if (obj.children && obj.children.length > 0) {
+    obj.children.forEach(child => applyOpacity(child, opacity));
+  }
+}
 function animateFreezeTransition(group, duration = 0.8) {
   const overlays = group.userData?.overlays || [];
   if (overlays.length === 0) return;
@@ -146,10 +226,7 @@ function animateFreezeTransition(group, duration = 0.8) {
     const pulse = Math.sin(t * Math.PI); // 0 → 1 → 0
 
     for (const overlay of overlays) {
-      if (!overlay.material) continue;
-
-      overlay.material.transparent = true;
-      overlay.material.opacity = pulse;
+      applyOpacity(overlay, pulse);
     }
 
     if (t < 1) {
@@ -161,9 +238,7 @@ function animateFreezeTransition(group, duration = 0.8) {
 
   function finalize() {
     for (const overlay of overlays) {
-      if (overlay.material) {
-        overlay.material.opacity = 1.0;
-      }
+      applyOpacity(overlay, 1.0);
     }
   }
 
