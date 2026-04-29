@@ -81,21 +81,23 @@ function handleRerun() {
       vAdvsqs.makeAdvsq(specs);
       vAdvsqs.setAdvsqPanelParams(specs);
     }
-  }
+    }
   else if (keyIndex.arrayKey === "Gambits") {
     vAdvsqs.clearAdvsq();
-  }
+    state.setBufferCount("AdvSqs", 0);
+    cGambits.rerunGambits();
+    }
   else if (keyIndex.arrayKey === "Moves") {
     vAdvsqs.clearAdvsq();
     // TODO: clear gambits if implemented
-  }
+    }
   else if (keyIndex.arrayKey === "Setup") {
     boards.clearBoard();
     const specs = state.fetchCurrentState("Setup");
     if (specs) {
       boards.makeBoard(specs);
     }
-  }
+    }
   else {
     throw new Error("Unknown rerun buffer:", keyIndex.arrayKey);
   }

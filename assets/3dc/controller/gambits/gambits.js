@@ -18,7 +18,6 @@ import * as game    from "../../controller/game/game.js";
 import * as cAdvsqs from "../../controller/advsqs/advsqs.js";
 
 import * as state   from "../../model/state/state.js";
-import * as coords  from "../../foundation/coords/coords.js";  // vtsToNotation().
 import * as planes  from "../../geometry/planes/planes.js";    // resolveDstTile().
 import * as mAdvsqs from "../../model/advsqs/advsqs.js";
 import * as mGambits from "../../model/gambits/gambits.js";
@@ -28,7 +27,22 @@ import * as vAdvsqs  from "../../view/advsqs/advsqs.js";
 import * as vGambits from "../../view/gambits/gambits.js";
 // Seampoint: more imports...
 
-const gambitGroupRegistry = new Map();
+/* TODO: Gambit additions:
+  *  1. ✅ Clear AdvSq buffer
+  *  2. ✅ Render (with animation)
+  *  3. Compute derived fields
+  *  4. ✅ Add to scroll window
+  *  5. ✅ Put resolveDstTile under test
+  *  6. Move add and scale and isSame to utils
+  *  7. ✅ Test aliases to AI (skipped)
+  *  8. ✅ If that passes, port geo into subdirs.
+  *  9. ✅ Update specs
+  * 10. Freeze Linear
+  * 11. Freeze Overlap
+  * 12. ✅ Plumbing for test suite
+*/
+
+const gambitGroupRegistry = new Map();  // Holds mesh data for re-rendering gambits.
 
 // --- UI ---
 export function panelDispatch(payload) {
@@ -45,22 +59,32 @@ export function panelDispatch(payload) {
 
 export function getGambitGroup(idx) {
   return gambitGroupRegistry.get(idx);
-}
+  }
 
-  /* TODO: Gambit additions:
-   *  1. ✅ Clear AdvSq buffer
-   *  2. ✅ Render (with animation)
-   *  3. Compute derived fields
-   *  4. ✅ Add to scroll window
-   *  5. ✅ Put resolveDstTile under test
-   *  6. Move add and scale to utils
-   *  7. ✅ Test aliases to AI (skipped)
-   *  8. ✅ If that passes, port geo into subdirs.
-   *  9. ✅ Update specs
-   * 10. Freeze Linear
-   * 11. Freeze Overlap
-   * 12. ✅ Plumbing for test suite
-  */
+export function rerunGambits() {
+  console.log("cntrl: gambits.js - rerunGambits()");
+
+  const count = state.getBufferLength("Gambits");
+  const active = state.getBufferCount().Gambits; // ← KEY LINE
+
+  // --- Hide ALL gambits ---
+  for (let i = 0; i < count; i++) {
+    const group = gambitGroupRegistry.get(i);
+    if (group) {
+      vGambits.derenderGambit(group);
+    }
+  }
+
+  // --- Re-render ACTIVE ones (usually just index 0) ---
+  for (let i = 0; i < active; i++) {
+    const group = gambitGroupRegistry.get(i);
+    if (group) {
+      vGambits.renderGambit(group); // no animation
+    }
+  }
+
+  vGambits.refreshPanel();
+}
 
 // --- Handle Functions ---
 export function handleFreezeQuadrant() {
@@ -129,7 +153,7 @@ function handleDelete() {
 
   // --- Update undo UI ---
   game.showUndoStatus();
-}
+  }
 
 function handleRemoveAll() {
   console.log("cntrl: gambits.js - handleRemoveAll()");
@@ -159,10 +183,6 @@ function handleRemoveAll() {
 
   // --- Update undo UI ---
   game.showUndoStatus();
-}
-function handleRemoveAll1() {
-  console.log("cntrl: gambits.js - handleRemoveAll()");
-  // TODO: change state - handleDelete().
 }
 
 // --- Helpers ---

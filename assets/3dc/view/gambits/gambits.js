@@ -44,32 +44,7 @@ export function renderGambit(group, { animate = false } = {}) {
   if (animate) {
     animateFreezeTransition(group);
   }
-}
-export function renderGambit2(group) {
-  console.log("view: gambits.js - renderGambit(group)", group);
-
-  view.context.scene.add(group);
-
-  // --- Re-attach overlays to tiles ---
-  if (group.userData?.overlays) {
-    group.userData.overlays.forEach(o => {
-      const tile = o.userData?.parentTile;
-      if (tile && !o.parent) {
-        tile.add(o);
-      }
-    });
   }
-
-  animateFreezeTransition(group);
-}
-export function renderGambit1(group) {
-  console.log("view: gambits.js - renderGambit(group)", group);
-
-  view.context.scene.add(group);
-  animateFreezeTransition(group);
-
-  return
-}
 
 export function derenderGambit(group) {
   console.log("view: gambits.js - derenderGambit(group)", group);
@@ -89,40 +64,7 @@ export function derenderGambit(group) {
   } else {
     view.context.scene.remove(group);
   }
-}
-export function derenderGambit2(group) {
-  console.log("view: gambits.js - derenderGambit(group)", group);
-
-  if (!group) return;
-
-  // --- ONLY remove offboard tiles ---
-  if (group.parent) {
-    group.parent.remove(group);
-  } else {
-    view.context.scene.remove(group);
   }
-
-  // DO NOT touch overlays
-}
-export function derenderGambit1(group) {
-  console.log("view: gambits.js - derenderGambit(group)", group);
-
-  if (!group) return;
-
-  // --- Hide overlays ---
-  if (group.userData?.overlays) {
-    group.userData.overlays.forEach(o => {
-      if (o.parent) o.parent.remove(o);
-    });
-  }
-
-  // --- Detach group from scene ---
-  if (group.parent) {
-    group.parent.remove(group);
-  } else {
-    view.context.scene.remove(group);
-  }
-}
 
 export function clearGambit(group) {
   console.log("view: gambits.js - clearGambit(group)", group);
@@ -143,7 +85,7 @@ export function clearGambit(group) {
     // fallback (shouldn't usually happen, but safe)
     view.context.scene.remove(group);
   }
-}
+  }
 
 export function refreshPanel() {
   const el = document.getElementById("gambit-list");
@@ -160,7 +102,7 @@ export function refreshPanel() {
       children[i].style.opacity = "0.3";   // future
     }
   }
-}
+  }
 
 export function updatePanel(gambit) {
   console.log("view: gambits.js - updatePanel(gambit)", gambit);
@@ -212,7 +154,8 @@ function applyOpacity(obj, opacity) {
   if (obj.children && obj.children.length > 0) {
     obj.children.forEach(child => applyOpacity(child, opacity));
   }
-}
+  }
+
 function animateFreezeTransition(group, duration = 0.8) {
   const overlays = group.userData?.overlays || [];
   if (overlays.length === 0) return;
