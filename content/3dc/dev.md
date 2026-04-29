@@ -76,6 +76,7 @@ title: "Dev"
   - 4/26/26 - Stride stability. Distinguish stride type (perimeter) from move type (advsq). Correct duke linear color. Update clues. Onboard tile calc.
   - 4/27/26 - Plumb viewer panel. Roll events into controller. Remove events module. One wirePanel function. Order panels. Panel templates. Port viewer. Port camera. Jitter.
   - 4/28/26 - Double click reverse jitter. Standardize foundation. Standardize geometry. Standardize controller. Better gambit scroll-box. Gambits model folder. Advsqs model folder.
+  - 4/29/26 - MVC compliant gambits.
 
  ### Week 8:
   - 5/03/26 - tbd

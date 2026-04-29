@@ -3,7 +3,7 @@
   Purpose: desc
   Author: Allan Goff
   Date: 4/15/26
-  Recommended access: import * as gambits.
+  Recommended access: import * as vGambits.
   UI: the export functions.
 */
 
@@ -11,19 +11,103 @@
 import gambitsData from "./gambits.json" assert { type: "json" };
   const gambitsModule = gambitsData.gambits_module;
   const category  = gambitsModule.category;
-  // Seampoint: more objects.
+// Seampoint: more objects.
 
 // --- Build upon previous layers ---
-import * as planes from "../../geometry/planes/planes.js";
-import * as quads  from "../../geometry/quads/quads.js";
+import * as state   from "../../model/state/state.js";
+
+import * as view   from "../../view/view.js";
 // Seampoint: more imports.
 
-
 // --- UI ---
-export function UI() {
-  console.log("control: gambits.js - UI()");
+export function UI() {  // Under test, rather stupid.
+  console.log("view: gambits.js - UI()");
   
   return "whatever";
+}
+
+export function renderGambit(group) {
+  console.log("view: gambits.js - renderGambit(group)", group);
+
+  view.context.scene.add(group);
+  animateFreezeTransition(group);
+
+  return
+}
+
+export function clearGambit() {
+  console.log("view: gambits.js - clearGambit()");
+
+  return;
+}
+
+export function updatePanel(gambit) {
+  console.log("view: gambits.js - updatePanel(gambit)", gambit);
+
+  const el = document.getElementById("gambit-list");
+  if (!el) return;
+
+  const { Q, src, dst, area } = gambit;
+
+  // --- freeze index ---
+  const count = state.getBufferCount().Gambits;
+
+  // --- column widths ---
+  const idxCol  = String(count).padStart(2);    // right-aligned
+  const qCol    = `Q${Q}`.padEnd(3);            // "Q37  "
+  const srcCol  = String(src).padEnd(5);        // "KB4,4  "
+  const dstCol  = String(dst).padEnd(8);        // allow offboard arrays
+  const areaCol = String(area).padStart(2);     // right-aligned
+
+  // --- final line ---
+  const line = `${idxCol} ${qCol} ${srcCol} → ${dstCol}:${areaCol}`;
+
+  const div = document.createElement("div");
+  div.textContent = line;
+
+  el.appendChild(div);
+  el.scrollTop = el.scrollHeight;
+
+  return;
+}
+// Seampoint: more global functions...
+
+//--- Helpers ---
+function animateFreezeTransition(group, duration = 0.8) {
+  const overlays = group.userData?.overlays || [];
+  if (overlays.length === 0) return;
+
+  const start = performance.now();
+
+  function step(now) {
+    let t = (now - start) / (duration * 1000);
+    if (t > 1) t = 1;
+
+    const pulse = Math.sin(t * Math.PI); // 0 → 1 → 0
+
+    for (const overlay of overlays) {
+      if (!overlay.material) continue;
+
+      overlay.material.transparent = true;
+      overlay.material.opacity = pulse;
+    }
+
+    if (t < 1) {
+      requestAnimationFrame(step);
+    } else {
+      finalize();
+    }
   }
-// Seampoint: more global functions.
+
+  function finalize() {
+    for (const overlay of overlays) {
+      if (overlay.material) {
+        overlay.material.opacity = 1.0;
+      }
+    }
+  }
+
+  requestAnimationFrame(step);
+}
+// Seampoint: more local functions...
 

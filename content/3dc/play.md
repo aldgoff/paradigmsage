@@ -135,6 +135,7 @@ layout: "play"
 
   <div class="section">
     <button data-action="delete">Delete</button>
+    <button data-action="remove">Remove All</button>
   </div>
 
   <div class="section">

@@ -17,10 +17,12 @@ import gambitsData from "./gambits.json" assert { type: "json" };
 import * as game    from "../../controller/game/game.js";
 import * as cAdvsqs from "../../controller/advsqs/advsqs.js";
 
-import * as state  from "../../model/state/state.js";
-import * as coords from "../../foundation/coords/coords.js";  // vtsToNotation().
-import * as planes from "../../geometry/planes/planes.js";    // resolveDstTile().
-
+import * as state   from "../../model/state/state.js";
+import * as coords  from "../../foundation/coords/coords.js";  // vtsToNotation().
+import * as planes  from "../../geometry/planes/planes.js";    // resolveDstTile().
+import * as mAdvsqs from "../../model/advsqs/advsqs.js";
+import * as mGambits from "../../model/gambits/gambits.js";
+ 
 import * as view     from "../../view/view.js";
 import * as vAdvsqs  from "../../view/advsqs/advsqs.js";
 import * as vGambits from "../../view/gambits/gambits.js";
@@ -57,45 +59,25 @@ export function panelDispatch(payload) {
   */
 
 // --- Handle Functions ---
-export function handleFreezeQuadrant2() {
-  console.log("cntrl: gambits.js - handleFreezeQuadrant().");
-
-  const curr = state.fetchCurrentAdvsq();
-  if(!curr) return;
-
-  mAdvsqs.clearBuffer();      // Changes state, derenders, updates panel.
-  mGambits.makeGambit(curr);  // Changes state, renders, updates panel.
-
-  game.showUndoStatus();      // Updates game panel (undo).
-}
-
 export function handleFreezeQuadrant() {
   console.log("cntrl: gambits.js - handleFreezeQuadrant().");
 
-  const curr = state.fetchCurrentAdvsq();
-  if (!curr) return;
+  const curr = state.fetchCurrentAdvsq(); // Get current advsq, if any.
+  if(!curr) return;
 
-  const { srcTile, quad, perimeter, stride, opacity } = curr;
-  const dst = planes.resolveDstTile(srcTile, quad, perimeter, stride);  // Derive dst tile.
-  const src = coords.vtsToBoard(srcTile); // Convert to positional notation for onboard tiles, vts for rest.
+  state.clearBuffer("AdvSqs");                        // Advsq: change state.
+  vAdvsqs.clearAdvsq();                               // De-render.
+  vAdvsqs.clearAdvsqPanelParams("Q4,4");              // Update panel.
 
-  state.clearBuffer("AdvSqs");      // Things to update: image, undo buffer, advsq panel.
-  vAdvsqs.clearAdvsq();       
-  vAdvsqs.clearAdvsqPanelParams("Q4,4");
-
-  vGambits.makeGambit(curr);
-  const group = makeGambit(curr);   // Things to update: image, undo buffer, gambit panel.
-  const gambit = { Q: quad, src, dst };  // Prepare gambit state data.
-  const idx = state.pushNewGambit(gambit);  // Undo buffer.
-  
+  const {gambit, group} = mGambits.makeGambit(curr);  // Gambit: create.
+  const idx = state.pushNewGambit(gambit);            // Change state.
   groupMap.set(idx, group);
-  appendGambitLine(gambit, perimeter);     // Gambits panel
-  vGambits.updatePanel();
+  vGambits.renderGambit(group);                       // Render.
+  vGambits.updatePanel(gambit);                       // Update panel.
 
-  game.showUndoStatus();            // Game (undo) panel.
+  game.showUndoStatus();                              // Update game panel (undo).
+}
 
-  return gambit;
-  }
 export function makeGambitFromSrcDst(gambit, opacity) { // gambit: {Q, src, dst}, opacity.
   console.log("cntrl: gambits.js - makeGambitFromSrcDst(gambit,opacity)", gambit, opacity);
     return;
@@ -111,6 +93,7 @@ export function makeGambit(specs) {
   console.log("cntrl: gambits.js - makeGambit(specs)", specs);
 
   const group = view.buildAdvSqGroup(specs); // {srcTile: Array(3), quad: 1, perimeter: 0, stride: 0, opacity: 0.5}
+
 
   view.context.scene.add(group);
   animateFreezeTransition(group);

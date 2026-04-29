@@ -29,7 +29,7 @@ export function UI() {
 }
 
 export function clearBuffer() {
-  state.clearBuffer("AdvSqs");      // Things to update: image, undo buffer, advsq panel.
+  state.clearBuffer("AdvSqs");      // Update undo buffer.
 
 }
 

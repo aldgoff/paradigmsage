@@ -64,6 +64,36 @@ export function getAdvsqPanelParams() {
   return params;
   }
 
+export function clearAdvsqPanelParams(srcTile) {
+  console.log("view : advsqs.js - clearAdvsqPanelParams(srcTile):", srcTile); // srcTile: positional notation.
+
+  const panel = document.getElementById("advsq-window");
+  if (!panel) return;
+
+  panel.querySelector('[name="advsq-nickname"]').textContent  = "";       // Update quad derived fields.
+  panel.querySelector('[name="advsq-pieceQuad"]').textContent = 0;
+  panel.querySelector('[name="advsq-planeQuad"]').textContent = 0;
+  panel.querySelector('[name="advsq-plane"]').textContent     = "";
+  panel.querySelector('[name="advsq-quadType"]').textContent  = "";
+
+  panel.querySelector('[name="advsq-length"]').textContent   = 0;         // Update perimeter derived fields.
+  panel.querySelector('[name="advsq-area"]').textContent     = 0;   
+  panel.querySelector('[name="advsq-onboard"]').textContent  = 0;
+  
+  panel.querySelector('[name="advsq-strideType"]').textContent  = "";     // Update stride derived fields.
+  panel.querySelector('[name="advsq-moveType"]').textContent    = "";
+  panel.querySelector('[name="advsq-overlap"]').textContent     = "";
+  panel.querySelector('[name="advsq-piece"]').textContent       = "";
+
+  panel.querySelector('[name="advsq-src"]').value          = srcTile;     // Update the primary fields.
+  panel.querySelector('[name="advsq-quad"]').value         = 1;
+  panel.querySelector('[name="advsq-perimeter"]').value    = 0;
+  panel.querySelector('[name="advsq-stride"]').value       = 0;
+  // panel.querySelector('[name="advsq-opacity"]').value      = params.opacity;
+
+  return;
+  }
+
 export function setAdvsqPanelParams(params) {
   console.log("view : advsqs.js - setAdvsqPanelParams(params):", utils.snapshot(params));
 
@@ -260,6 +290,5 @@ function strideDerived(q, k, s) {
 function isSame(a, b) {
   return a[0] === b[0] && a[1] === b[1] && a[2] === b[2];
 }
-
 // Seampoint: more utility functions.
 

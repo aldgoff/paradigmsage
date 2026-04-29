@@ -70,7 +70,7 @@
 │   │   │       ├── unitCells.json
 │   │   │       └── unitCells.md
 │   │   ├── geometry
-│   │   │   ├── advSqs
+│   │   │   ├── advsqs
 │   │   │   │   ├── advsqs.js
 │   │   │   │   ├── advsqs.json
 │   │   │   │   └── advsqs.md
@@ -92,9 +92,14 @@
 │   │   │       └── quads.md
 │   │   ├── main.js
 │   │   ├── model
-│   │   │   ├── gambit
-│   │   │   │   ├── gambit.json
-│   │   │   │   └── gambit.md
+│   │   │   ├── advsqs
+│   │   │   │   ├── advsqs.js
+│   │   │   │   ├── advsqs.json
+│   │   │   │   └── advsqs.md
+│   │   │   ├── gambits
+│   │   │   │   ├── gambits.js
+│   │   │   │   ├── gambits.json
+│   │   │   │   └── gambits.md
 │   │   │   ├── grammar.js
 │   │   │   ├── model.js
 │   │   │   ├── model.json
@@ -111,7 +116,6 @@
 │   │   │   ├── modules.json
 │   │   │   └── modules.md
 │   │   ├── tests
-│   │   │   ├── _tbd.md
 │   │   │   ├── controller
 │   │   │   │   └── gambits.test.js
 │   │   │   ├── core
@@ -470,4 +474,4 @@
 │           └── poc.js
 └── themes
 
-102 directories, 368 files
+103 directories, 371 files
