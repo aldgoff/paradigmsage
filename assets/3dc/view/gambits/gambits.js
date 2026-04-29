@@ -35,7 +35,27 @@ export function renderGambit(group) {
   return
 }
 
-export function clearGambit() {
+export function clearGambit(group) {
+  console.log("view: gambits.js - clearGambit(group)", group);
+
+  if (!group) return;
+
+  // --- Remove overlays from ALL tiles (board + offboard) ---
+  if (group.userData?.overlays) {
+    group.userData.overlays.forEach(o => {
+      if (o.parent) o.parent.remove(o);
+    });
+  }
+
+  // --- Remove the group itself (offboard tiles, etc.) ---
+  if (group.parent) {
+    group.parent.remove(group);
+  } else {
+    // fallback (shouldn't usually happen, but safe)
+    view.context.scene.remove(group);
+  }
+}
+export function clearGambit1() {
   console.log("view: gambits.js - clearGambit()");
 
   return;

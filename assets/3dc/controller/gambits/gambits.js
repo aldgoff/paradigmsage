@@ -70,7 +70,10 @@ export function handleFreezeQuadrant() {
   vAdvsqs.clearAdvsqPanelParams("Q4,4");              // Update panel.
 
   const {gambit, group} = mGambits.makeGambit(curr);  // Gambit: create.
-  const idx = state.pushNewGambit(gambit);            // Change state.
+
+  state.pushNewGambit(gambit);                        // Change state.
+  const idx = state.getBufferCount().Gambits - 1;
+
   gambitGroupRegistry.set(idx, group);
   vGambits.renderGambit(group);                       // Render.
   vGambits.updatePanel(gambit);                       // Update panel.
@@ -92,10 +95,68 @@ function handleFreezeOverlay() {
 
 function handleDelete() {
   console.log("cntrl: gambits.js - handleDelete()");
-  // TODO: change state - handleDelete().
+
+  // --- Get current index ---
+  const count = state.getBufferCount().Gambits;
+  if (count === 0) return;
+
+  const idx = count - 1;
+
+  // --- Remove group from scene ---
+  const group = gambitGroupRegistry.get(idx);
+  console.log("cntrl: gambits.js - handleDelete()...group, idx", group, idx);
+  if (group) {
+    vGambits.clearGambit(group);
+    gambitGroupRegistry.delete(idx);
   }
 
+  // --- Remove from state buffer ---
+  const gambits = state.getState().Gambits;
+  gambits.splice(idx, 1);
+
+  // --- Update buffer count ---
+  state.setBufferCount("Gambits", idx);
+
+  // --- Optional: clean panel (simple version: rebuild later) ---
+  const panel = document.getElementById("gambit-list");
+  if (panel && panel.lastChild) {
+    panel.removeChild(panel.lastChild);
+  }
+
+  // --- Update undo UI ---
+  game.showUndoStatus();
+}
+
 function handleRemoveAll() {
+  console.log("cntrl: gambits.js - handleRemoveAll()");
+
+  const count = state.getBufferCount().Gambits;
+  if (count === 0) return;
+
+  // --- Remove all groups from scene ---
+  for (let i = 0; i < count; i++) {
+    const group = gambitGroupRegistry.get(i);
+    if (group) {
+      vGambits.clearGambit(group);
+    }
+  }
+
+  // --- Clear registry ---
+  gambitGroupRegistry.clear();
+
+  // --- Clear state buffer ---
+  state.clearBuffer("Gambits");
+
+  // --- Clear panel ---
+  const panel = document.getElementById("gambit-list");
+  if (panel) {
+    panel.textContent = "";
+  }
+
+  // --- Update undo UI ---
+  game.showUndoStatus();
+}
+function handleRemoveAll1() {
   console.log("cntrl: gambits.js - handleRemoveAll()");
   // TODO: change state - handleDelete().
 }
