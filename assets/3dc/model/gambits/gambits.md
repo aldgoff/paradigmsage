@@ -1,4 +1,4 @@
-# Gambit Spec
+# Gambit Model Spec
   How to spport gambits in 3D chess.
   This is a more sophisticated use of the state undo/redo system.
   Think version 2.0.

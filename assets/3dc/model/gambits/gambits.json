@@ -1,6 +1,7 @@
 {
   "state_module": {
     "_example": "A sequence of 5 invertible undo/redo arrays.",
+    "_TODO:": "dup with state_module",
     "Setup": [
       { "board": [8,8,8],    "play": "off",    "trays": "none",    "gap": 0 },
       { "board": [10,8,8],   "play": "off",    "trays": "none",    "gap": 0 },
