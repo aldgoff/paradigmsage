@@ -15,6 +15,7 @@ import viewerData from "./viewer.json" assert { type: "json" };
 
 // --- Build upon previous layers ---
 import * as cameras from "../../view/render/cameras.js";
+import * as vGambits from "../../view/gambits/gambits.js";
 // Seampoint: more imports...
 
 let lastClickTime = 0;
@@ -24,6 +25,8 @@ const DOUBLE_CLICK_MS = 200;
 // --- UI ---
 export function panelDispatch(payload) {
   console.log("cntrl: viewer.js - panelDispatch(payload)", payload);
+
+  vGambits.cancelAnimation();
 
   let { action, gap, sep, range, speed } = payload;
   gap   = Number(gap);

@@ -15,11 +15,15 @@ import cameraData from "./camera.json" assert { type: "json" };
 
 // --- Build upon previous layers ---
 import * as cameras from "../../view/render/cameras.js";
+import * as vGambits from "../../view/gambits/gambits.js";
 // Seampoint: more imports.
 
 // --- UI ---
 export function panelDispatch(payload) {
   // console.log("cntrl: camera.js - panelDispatch(payload)", payload);
+
+  vGambits.cancelAnimation();
+
   const { action, value, offboardOpacity } = payload;
 
   switch (action) {

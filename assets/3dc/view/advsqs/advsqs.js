@@ -1,5 +1,5 @@
 /* File: advsqs.js
-  Path: ./3dc/advsqs/advsqs.js
+  Path: ./3dc/view/advsqs/advsqs.js
   Purpose: Place the decorators on the board for the advsq.
   Author: Allan Goff
   Date: 4/15/26

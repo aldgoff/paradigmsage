@@ -25,7 +25,9 @@ import * as vGambits from "../../view/gambits/gambits.js";
 
 // --- UI ---
 export function panelDispatch(payload) {
-  // console.log("control: game.js - panelDispatch(payload):", payload);
+  // console.log("cntrl: game.js - panelDispatch(payload):", payload);
+
+  vGambits.cancelAnimation();
 
   const { action } = payload;
   switch (action) {

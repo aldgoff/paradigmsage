@@ -17,10 +17,15 @@ import setupData from "./setup.json" assert { type: "json" };
 import * as game   from "../../controller/game/game.js";
 import * as state from "../../model/state/state.js";
 import * as boards from "../../view/boards/boards.js";
+import * as vGambits from "../../view/gambits/gambits.js";
 // Seampoint: more imports...
 
 // --- UI ---
 export function panelDispatch(payload) {    // Dispatch payload from panel to handle event functions.
+  // console.log("cntrl: setup.js - panelDispatch(payload):", payload);
+
+  vGambits.cancelAnimation();
+
   const { action, 
     boardSize,  // 8x8x8|10x8x8|10x10x10.
     play,       // Off|rules|puzzle.

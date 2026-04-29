@@ -20,10 +20,15 @@ import * as state  from "../../model/state/state.js";
 import * as coords from "../../foundation/coords/coords.js";  // normalizeTileToVts().
 
 import * as vAdvsqs from "../../view/advsqs/advsqs.js";
+import * as vGambits from "../../view/gambits/gambits.js";
 // Seampoint: more imports...
 
 // --- UI ---
 export function panelDispatch(payload) {
+  // console.log("cntrl: advsqs.js - panelDispatch(payload):", payload);
+
+  vGambits.cancelAnimation();
+
   const { action, srcTile, quad, perimeter, stride, opacity } = payload;
   console.log("cntrl: advsqs.js - panelDispatch(payload)", payload);
 

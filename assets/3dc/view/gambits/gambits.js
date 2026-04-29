@@ -19,6 +19,8 @@ import * as state   from "../../model/state/state.js";
 import * as view   from "../../view/view.js";
 // Seampoint: more imports.
 
+let activeAnimation = null;
+
 // --- UI ---
 export function UI() {  // Under test, rather stupid.
   console.log("view: gambits.js - UI()");
@@ -154,15 +156,25 @@ function applyOpacity(obj, opacity) {
   if (obj.children && obj.children.length > 0) {
     obj.children.forEach(child => applyOpacity(child, opacity));
   }
-  }
+}
 
 function animateFreezeTransition(group, duration = 0.8) {
   const overlays = group.userData?.overlays || [];
   if (overlays.length === 0) return;
 
-  const start = performance.now();
+  // --- CANCEL any existing animation ---
+  if (activeAnimation) {
+    activeAnimation.cancelled = true;
+  }
+
+  const anim = { cancelled: false };
+  activeAnimation = anim;
+
+    const start = performance.now();
 
   function step(now) {
+    if (anim.cancelled) return;   // 🔥 STOP if invalidated
+
     let t = (now - start) / (duration * 1000);
     if (t > 1) t = 1;
 
@@ -180,12 +192,20 @@ function animateFreezeTransition(group, duration = 0.8) {
   }
 
   function finalize() {
+    if (anim.cancelled) return;
     for (const overlay of overlays) {
       applyOpacity(overlay, 1.0);
     }
   }
 
   requestAnimationFrame(step);
+}
+
+export function cancelAnimation() {
+  if (activeAnimation) {
+    activeAnimation.cancelled = true;
+    activeAnimation = null;
+  }
 }
 // Seampoint: more local functions...
 

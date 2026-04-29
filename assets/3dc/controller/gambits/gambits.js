@@ -46,6 +46,10 @@ const gambitGroupRegistry = new Map();  // Holds mesh data for re-rendering gamb
 
 // --- UI ---
 export function panelDispatch(payload) {
+  // console.log("cntrl: gambits.js - panelDispatch(payload):", payload);
+
+  vGambits.cancelAnimation();
+
   const { action } = payload;
   switch (action) {
     case "freezeQ":  handleFreezeQuadrant(); break;
