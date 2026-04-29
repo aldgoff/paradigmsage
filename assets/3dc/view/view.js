@@ -104,7 +104,7 @@ export function init(playBoard) { // PlayBoard is the 3D canvas from the THREE r
   return;
 }
 
-export function buildAdvSqGroup(specs) {
+export function buildAdvSqGroup(specs) { // Params: srcTile, quad, perimeter, stride, opacity.
   const group = new THREE.Group();
 
   const { srcTile, quad, perimeter, stride, opacity } = specs;

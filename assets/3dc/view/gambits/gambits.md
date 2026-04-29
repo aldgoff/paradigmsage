@@ -1,5 +1,5 @@
-# Gambits Spec
-  Describe how gambits work.
+# Gambits View Spec
+  Describe how gambits are rendered.
 
 ## 1. Purpose
   Advsqs are captured (frozen) into a growing gambit from which an eventual move will be selected.
@@ -30,10 +30,17 @@
  ### 2.2 AI Response?
   Very, very verbose. Summary, use the overlap module.
 
- ### 2.
-  text
+## 3. MVC Control Flow
+ ### 3. Creation
+  - Clone the advsq from the advsq layer.
+  - State Layer:
+    - Log in undo buffer - ```idx = state.pushNewGambit(gambit);```
+    - Update undo list - ```game.showUndoStatus()```
+  - View Layer:
+    - Render
+    - Update panel
 
-## N. Invariants (typically last section)
-  Formally redundant consequences of the spec that must always hold.
-  Used as drift guards and cross-checks across data, code, and tests.
+ ### 3. Undo
+ ### 3. Redo
+ ### 3. Rerun
 

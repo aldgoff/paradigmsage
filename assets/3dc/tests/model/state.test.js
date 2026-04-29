@@ -115,10 +115,10 @@ function test_moves() {
 
 function test_gambits() {
   const cases = [
-    { expected: '{"Q":37,"src":"Q3,3","dst":"KB2,2"}', label: "queen/king" },
-    { expected: '{"Q":38,"src":"Q3,3","dst":"KN3,3"}', label: "queen/knight" },
-    { expected: '{"Q":1,"src":"Q3,3","dst":"Q1,1"}',   label: "queen/queen" },
-    { expected: '{"Q":1,"src":"Q3,3","dst":[6,3,3]}',  label: "queen/queen" },
+    { expected: '{"Q":37,"src":"Q3,3","dst":"KB2,2","area":0}', label: "queen/king" },
+    { expected: '{"Q":38,"src":"Q3,3","dst":"KN3,3","area":0}', label: "queen/knight" },
+    { expected: '{"Q":1,"src":"Q3,3","dst":"Q1,1","area":0}',   label: "queen/queen" },
+    { expected: '{"Q":1,"src":"Q3,3","dst":[6,3,3],"area":0}',  label: "queen/queen" },
   ];
 
   Gambits.forEach((entry, i) => {
