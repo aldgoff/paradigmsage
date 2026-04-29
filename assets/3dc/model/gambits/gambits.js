@@ -20,7 +20,6 @@ import * as coords from "../../foundation/coords/coords.js";
 import * as view   from "../../view/view.js";
 // Seampoint: more imports.
 
-
 // --- UI ---
 export function UI() {
   console.log("control: gambits.js - UI()");

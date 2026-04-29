@@ -28,7 +28,7 @@ import * as vAdvsqs  from "../../view/advsqs/advsqs.js";
 import * as vGambits from "../../view/gambits/gambits.js";
 // Seampoint: more imports...
 
-const groupMap = new Map();
+const gambitGroupRegistry = new Map();
 
 // --- UI ---
 export function panelDispatch(payload) {
@@ -38,10 +38,10 @@ export function panelDispatch(payload) {
     case "freezeL":  handleFreezeLinear(); break;
     case "freezeO":  handleFreezeOverlap(); break;
     case "delete":   handleDelete(); break;
+    case "remove":   handleRemoveAll(); break;
     default: throw new Error(`Unknown gambit action ${action}.`);  break;
   }
 }
-// Seampoint: more global functions...
 
   /* TODO: Gambit additions:
    *  1. ✅ Clear AdvSq buffer
@@ -50,8 +50,8 @@ export function panelDispatch(payload) {
    *  4. ✅ Add to scroll window
    *  5. ✅ Put resolveDstTile under test
    *  6. Move add and scale to utils
-   *  7. Test aliases to AI
-   *  8. If that passes, port geo into subdirs.
+   *  7. ✅ Test aliases to AI (skipped)
+   *  8. ✅ If that passes, port geo into subdirs.
    *  9. ✅ Update specs
    * 10. Freeze Linear
    * 11. Freeze Overlap
@@ -71,71 +71,11 @@ export function handleFreezeQuadrant() {
 
   const {gambit, group} = mGambits.makeGambit(curr);  // Gambit: create.
   const idx = state.pushNewGambit(gambit);            // Change state.
-  groupMap.set(idx, group);
+  gambitGroupRegistry.set(idx, group);
   vGambits.renderGambit(group);                       // Render.
   vGambits.updatePanel(gambit);                       // Update panel.
 
   game.showUndoStatus();                              // Update game panel (undo).
-}
-
-export function makeGambitFromSrcDst(gambit, opacity) { // gambit: {Q, src, dst}, opacity.
-  console.log("cntrl: gambits.js - makeGambitFromSrcDst(gambit,opacity)", gambit, opacity);
-    return;
-
-  const group = view.buildAdvSqGroupFrom(gambit, opacity);
-
-  view.context.scene.add(group);
-  animateFreezeTransition(group);
-
-  return group;
-  }
-export function makeGambit(specs) {
-  console.log("cntrl: gambits.js - makeGambit(specs)", specs);
-
-  const group = view.buildAdvSqGroup(specs); // {srcTile: Array(3), quad: 1, perimeter: 0, stride: 0, opacity: 0.5}
-
-
-  view.context.scene.add(group);
-  animateFreezeTransition(group);
-
-  return group;
-}
-function animateFreezeTransition(group, duration = 0.8) {
-
-  const overlays = group.userData?.overlays || [];
-  if (overlays.length === 0) return;
-
-  const start = performance.now();
-
-  function step(now) {
-    let t = (now - start) / (duration * 1000);
-    if (t > 1) t = 1;
-
-    const pulse = Math.sin(t * Math.PI); // 0 → 1 → 0
-
-    for (const overlay of overlays) {
-      if (!overlay.material) continue;
-
-      overlay.material.transparent = true;
-      overlay.material.opacity = pulse;
-    }
-
-    if (t < 1) {
-      requestAnimationFrame(step);
-    } else {
-      finalize();
-    }
-  }
-
-  function finalize() {
-    for (const overlay of overlays) {
-      if (overlay.material) {
-        overlay.material.opacity = 1.0;
-      }
-    }
-  }
-
-  requestAnimationFrame(step);
 }
 
 /*** ----- ----- ----- ***/
@@ -153,37 +93,13 @@ function handleFreezeOverlay() {
 function handleDelete() {
   console.log("cntrl: gambits.js - handleDelete()");
   // TODO: change state - handleDelete().
+  }
+
+function handleRemoveAll() {
+  console.log("cntrl: gambits.js - handleRemoveAll()");
+  // TODO: change state - handleDelete().
 }
 
 // --- Helpers ---
-function appendGambitLine(gambit, perimeter) {
-  console.log("cntrl: gambits.js - appendGambitLine(gambit, perimeter).", gambit, perimeter);
-
-  const el = document.getElementById("gambit-list");
-  if (!el) return;
-
-  const { Q, src, dst } = gambit;
-
-  // --- freeze index ---
-  const count = state.getBufferCount().Gambits;
-
-  const area = (perimeter+1)*(perimeter+1);
-
-  // --- column widths ---
-  const idxCol  = String(count).padStart(2);    // right-aligned
-  const qCol    = `Q${Q}`.padEnd(3);            // "Q37  "
-  const srcCol  = String(src).padEnd(5);        // "KB4,4  "
-  const dstCol  = String(dst).padEnd(8);        // allow offboard arrays
-  const areaCol = String(area).padStart(2);     // right-aligned
-
-  // --- final line ---
-  const line = `${idxCol} ${qCol} ${srcCol} → ${dstCol}:${areaCol}`;
-
-  const div = document.createElement("div");
-  div.textContent = line;
-
-  el.appendChild(div);
-  el.scrollTop = el.scrollHeight;
-}
 // Seampoint: more local functions...
 

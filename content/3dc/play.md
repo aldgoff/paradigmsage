@@ -146,7 +146,11 @@ layout: "play"
   </div>
   <div class="section">
     <label> MoveType:    <output name="gambit-moveType" style="opacity:0.7; font-style:italic;"> Quadrant </output> </label>
+  </div>
+  <div class="section">
     <label> Overlap:     <output name="gambit-overlap"  style="opacity:0.7; font-style:italic;"> Qtile|etc </output> </label>
+  </div>
+  <div class="section">
     <label> LowestPiece: <output name="gambit-piece"    style="opacity:0.7; font-style:italic;"> Queen </output> </label>
   </div>
 
