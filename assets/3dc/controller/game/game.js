@@ -32,9 +32,10 @@ export function panelDispatch(payload) {
   const { action } = payload;
   switch (action) {
     case "newGame": handleNewGame(); break;
-    case "rerun":   handleRerun(); break;
     case "undo":    handleUndo(); break;
     case "redo":    handleRedo(); break;
+    case "rewind":  handleRewind(); break;
+    case "forward": handleFastForward(); break;
     case "load":    handleLoad(); break;
     case "save":    handleSave(); break;
     default: throw new Error(`Unknown game ***action ${action}.`);  break;
@@ -61,50 +62,8 @@ export function showUndoStatus() {  // Show undo buffers in Game panel.
 
 // --- Handle Functions ---
 function handleNewGame() {
-  console.log("control: game.js - handleNewGame()");
+  console.log("cntrl: game.js - handleNewGame()");
   // TODO: game.js - handleNewGame().
-  }
-
-function handleRerun() {
-  const keyIndex = state.collapseKeyIndex();
-
-  if (!keyIndex) { // Bottom Sentry
-    console.log("Bottom Sentry");
-    vAdvsqs.clearAdvsq();
-    boards.clearBoard();
-    showUndoStatus();
-    return;
-  }
-
-  if (keyIndex.arrayKey === "AdvSqs") {
-    vAdvsqs.clearAdvsq();
-    const specs = state.fetchCurrentState("AdvSqs");
-    if (specs) {
-      vAdvsqs.makeAdvsq(specs);
-      vAdvsqs.setAdvsqPanelParams(specs);
-    }
-    }
-  else if (keyIndex.arrayKey === "Gambits") {
-    vAdvsqs.clearAdvsq();
-    state.setBufferCount("AdvSqs", 0);
-    cGambits.rerunGambits();
-    }
-  else if (keyIndex.arrayKey === "Moves") {
-    vAdvsqs.clearAdvsq();
-    // TODO: clear gambits if implemented
-    }
-  else if (keyIndex.arrayKey === "Setup") {
-    boards.clearBoard();
-    const specs = state.fetchCurrentState("Setup");
-    if (specs) {
-      boards.makeBoard(specs);
-    }
-    }
-  else {
-    throw new Error("Unknown rerun buffer:", keyIndex.arrayKey);
-  }
-
-  showUndoStatus();
   }
 
 function handleUndo() {
@@ -208,19 +167,127 @@ function handleRedo() {
   showUndoStatus();
   }
 
+function handleRewind() {
+  console.log("cntrl: game.js - handleRewind()");
+
+  const keyIndex = state.collapseKeyIndex();
+
+  if (!keyIndex) { // Bottom Sentry
+    console.log("Bottom Sentry");
+    vAdvsqs.clearAdvsq();
+    boards.clearBoard();
+    showUndoStatus();
+    return;
+  }
+
+  if (keyIndex.arrayKey === "AdvSqs") {
+    vAdvsqs.clearAdvsq();
+    const specs = state.fetchCurrentState("AdvSqs");
+    if (specs) {
+      vAdvsqs.makeAdvsq(specs);
+      vAdvsqs.setAdvsqPanelParams(specs);
+    }
+    }
+  else if (keyIndex.arrayKey === "Gambits") {
+    vAdvsqs.clearAdvsq();
+    state.setBufferCount("AdvSqs", 0);
+    cGambits.rerunGambits();
+    }
+  else if (keyIndex.arrayKey === "Moves") {
+    vAdvsqs.clearAdvsq();
+    // TODO: clear gambits if implemented
+    }
+  else if (keyIndex.arrayKey === "Setup") {
+    boards.clearBoard();
+    const specs = state.fetchCurrentState("Setup");
+    if (specs) {
+      boards.makeBoard(specs);
+    }
+    }
+  else {
+    throw new Error("Unknown rerun buffer:", keyIndex.arrayKey);
+  }
+
+  showUndoStatus();  
+  }
+
+function handleFastForward() {
+  console.log("cntrl: game.js - handleFastForward()");
+
+  const counts = state.getBufferCount();
+
+  let startKey = null;
+
+  if (counts.AdvSqs > 0) startKey = "AdvSqs";
+  else if (counts.Gambits > 0) startKey = "Gambits";
+  else if (counts.Moves > 0) startKey = "Moves";
+  else if (counts.Setup > 0) startKey = "Setup";
+
+  if (!startKey) return;
+
+  let keyIndex;
+
+  while (true) {
+    keyIndex = state.nextKeyIndex();
+    if (!keyIndex) break;
+
+    // --- APPLY SAME LOGIC AS handleRedo ---
+    if (keyIndex.arrayKey === "Setup") {
+      const specs = state.fetchCurrentState("Setup");
+      boards.clearBoard();
+      if (specs) boards.makeBoard(specs);
+    }
+
+    else if (keyIndex.arrayKey === "Moves") {
+      const specs = state.fetchCurrentState("Moves");
+      // TODO
+    }
+
+    else if (keyIndex.arrayKey === "Gambits") {
+      vGambits.refreshPanel();
+
+      const count = state.getBufferCount().Gambits;
+      const idx = count - 1;
+
+      const group = cGambits.getGambitGroup(idx);
+      if (group) {
+        vGambits.renderGambit(group);
+      }
+    }
+
+    else if (keyIndex.arrayKey === "AdvSqs") {
+      const specs = state.fetchCurrentState("AdvSqs");
+      vAdvsqs.clearAdvsq();
+      if (specs) {
+        vAdvsqs.makeAdvsq(specs);
+        vAdvsqs.setAdvsqPanelParams(specs);
+      }
+    }
+
+    else {
+      throw new Error("Unknown buffer:", keyIndex.arrayKey);
+    }
+
+    // --- STOP when we hit next buffer ---
+    if (keyIndex.arrayKey !== startKey) break;
+  }
+
+  showUndoStatus();
+  }
+
 function handleLoad() {
-  console.log("control: game.js - handleLoad()");
+  console.log("cntrl: game.js - handleLoad()");
   // TODO: game.js - handleLoad().
 
   // Dev/Debug code - temporary.
-  console.log("control: game.js... getStateKeys()", state.getStateKeys());
-  console.log("control: game.js... getBufferCount()", state.getBufferCount());
-  console.log("control: game.js... getState()", state.getState());
-  console.log("control: game.js... getNull()", state.getNull());
+  console.log("cntrl: game.js... getStateKeys()", state.getStateKeys());
+  console.log("cntrl: game.js... getBufferCount()", state.getBufferCount());
+  console.log("cntrl: game.js... getState()", state.getState());
+  console.log("cntrl: game.js... getNull()", state.getNull());
   }
 
 function handleSave() {
-  console.log("control: game.js - handleSave()");
+  console.log("cntrl: game.js - handleSave()");
   // TODO: game.js - handleSave().
   const lastState = state.fetchCurrentSetup();  // Temp: being used for undo feedback, not button's intended purpose.
   const index = state.getBufferCount(); // All of them.

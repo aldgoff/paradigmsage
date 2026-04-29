@@ -68,10 +68,10 @@ layout: "play"
   #setup-window   { top:  120px; left:   80px; }  /* DOM Control Panels */
   #move-window    { top: 1200px; left:   80px; }
   #gambit-window  { top:  830px; left:   80px; }
-  #advsq-window   { top:  320px; left:  280px; }
-  #compass-window { top:  960px; left:  280px; }
+  #advsq-window   { top:  120px; left:  260px; }
+  #compass-window { top:  999px; left:  300px; }
 
-  #game-window    { top:  120px; left:  280px; }
+  #game-window    { top:  120px; left:  450px; }
 
   #camera-window { top:   420px; left:   80px; }
   #viewer-window { top:   560px; left:   80px; }
@@ -256,10 +256,17 @@ layout: "play"
   <div class="panel-title">Game Panel</div>
 
   <div class="section">
-    <button data-action="newGame">New</button>
-    <button data-action="rerun">Rerun</button>
+    <button data-action="newGame">New Game</button>
+  </div>
+  <div class="section">
     <button data-action="undo">Undo</button>
     <button data-action="redo">Redo</button>
+  </div>
+  <div class="section">
+    <button data-action="rewind">Rewind</button>
+    <button data-action="forward">Forward>></button>
+  </div>
+  <div class="section">
     <button data-action="load" >Load</button>
     <button data-action="save" >Save</button>
   </div>
