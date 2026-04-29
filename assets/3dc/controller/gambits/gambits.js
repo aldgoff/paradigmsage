@@ -43,6 +43,10 @@ export function panelDispatch(payload) {
   }
 }
 
+export function getGambitGroup(idx) {
+  return gambitGroupRegistry.get(idx);
+}
+
   /* TODO: Gambit additions:
    *  1. ✅ Clear AdvSq buffer
    *  2. ✅ Render (with animation)

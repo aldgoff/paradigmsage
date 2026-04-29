@@ -14,10 +14,13 @@ import gameData from "./game.json" assert { type: "json" };
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
-import * as state  from "../../model/state/state.js";
+import * as cGambits from "../../controller/gambits/gambits.js";
 
-import * as boards from "../../view/boards/boards.js";
-import * as advsqs from "../../view/advsqs/advsqs.js";
+import * as state    from "../../model/state/state.js";
+
+import * as boards   from "../../view/boards/boards.js";
+import * as vAdvsqs  from "../../view/advsqs/advsqs.js";
+import * as vGambits from "../../view/gambits/gambits.js";
 // Seampoint: more imports...
 
 // --- UI ---
@@ -65,25 +68,25 @@ function handleRerun() {
 
   if (!keyIndex) { // Bottom Sentry
     console.log("Bottom Sentry");
-    advsqs.clearAdvsq();
+    vAdvsqs.clearAdvsq();
     boards.clearBoard();
     showUndoStatus();
     return;
   }
 
   if (keyIndex.arrayKey === "AdvSqs") {
-    advsqs.clearAdvsq();
+    vAdvsqs.clearAdvsq();
     const specs = state.fetchCurrentState("AdvSqs");
     if (specs) {
-      advsqs.makeAdvsq(specs);
-      advsqs.setAdvsqPanelParams(specs);
+      vAdvsqs.makeAdvsq(specs);
+      vAdvsqs.setAdvsqPanelParams(specs);
     }
   }
   else if (keyIndex.arrayKey === "Gambits") {
-    advsqs.clearAdvsq();
+    vAdvsqs.clearAdvsq();
   }
   else if (keyIndex.arrayKey === "Moves") {
-    advsqs.clearAdvsq();
+    vAdvsqs.clearAdvsq();
     // TODO: clear gambits if implemented
   }
   else if (keyIndex.arrayKey === "Setup") {
@@ -105,7 +108,7 @@ function handleUndo() {
 
   if(!keyIndex) { // Edge case, blank canvas, "Bottom Sentry".
     console.log("Bottom Sentry");
-    advsqs.clearAdvsq();
+    vAdvsqs.clearAdvsq();
     // clear other buffers.
     boards.clearBoard();
     showUndoStatus();
@@ -113,18 +116,28 @@ function handleUndo() {
   }
 
   if(keyIndex.arrayKey === "AdvSqs") {
-    advsqs.clearAdvsq();
+    vAdvsqs.clearAdvsq();
     const specs = state.fetchCurrentState("AdvSqs");
     if(specs) {
-      advsqs.makeAdvsq(specs);
-      advsqs.setAdvsqPanelParams(specs);
+      vAdvsqs.makeAdvsq(specs);
+      vAdvsqs.setAdvsqPanelParams(specs);
     }
     }
   else if(keyIndex.arrayKey === "Gambits") {
-    advsqs.clearAdvsq();
+    vAdvsqs.clearAdvsq();
+
+    vGambits.refreshPanel();
+
+    const count = state.getBufferCount().Gambits;
+    const idx = count; // first "future" item
+
+    const group = cGambits.getGambitGroup(idx);
+    if (group) {
+      vGambits.derenderGambit(group);
+    }
     }
   else if(keyIndex.arrayKey === "Moves") {
-    advsqs.clearAdvsq();
+    vAdvsqs.clearAdvsq();
     // clear gambits.
     }
   else if(keyIndex.arrayKey === "Setup") {
@@ -166,13 +179,23 @@ function handleRedo() {
   else if(keyIndex.arrayKey === "Gambits") {
     const specs = state.fetchCurrentState("Gambits");
     // TODO: clear Gambits.
+
+    vGambits.refreshPanel();
+
+    const count = state.getBufferCount().Gambits;
+    const idx = count - 1; // newly active item
+
+    const group = cGambits.getGambitGroup(idx);
+    if (group) {
+      vGambits.renderGambit(group);
+    }
     }
   else if(keyIndex.arrayKey === "AdvSqs") {
     const specs = state.fetchCurrentState("AdvSqs");
-    advsqs.clearAdvsq();
+    vAdvsqs.clearAdvsq();
     if(specs) {
-      advsqs.makeAdvsq(specs);
-      advsqs.setAdvsqPanelParams(specs);
+      vAdvsqs.makeAdvsq(specs);
+      vAdvsqs.setAdvsqPanelParams(specs);
     }
     }
   else { throw new Error("Unknown undo buffer:", keyIndex.arrayKey);
