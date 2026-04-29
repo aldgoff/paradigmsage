@@ -58,6 +58,7 @@
   vi: Merge branch '3dc' - Camera control, partial undo logic, make boards from panel.
   vi: Merge branch '3dc' - Offboard tiles w/ opacity, decorators, responsive advs panel, duplex/apex.
   vi: Merge branch '3dc' - Merge week 6 (advsq panel, gambit panel, latent bugs, tests, stride stability, derived quantities).
+  vi: Merge branch '3dc' - Merge & tag progress: gambits, undo, MVC compliance, viewer, jitter, bugs, todos, rewind/forward, race condition.
   git log --oneline --decorate --graph --all --boundary -n 50
   git push origin main
   ```
@@ -68,7 +69,7 @@
   git tag
   git tag -a v0.1-<desc> -m "Tag label."
   git tag -a v1.0.1 -m "Tag label."
-  git show v0.1-<desc>
+  git show v0.1-<desc>  (Better)
   git push --tags
   git push origin <tag>  (Better)
   ```
