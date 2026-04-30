@@ -11,14 +11,14 @@
 import advsqsData from "./advsqs.json" assert { type: "json" };
   const advsqsModule = advsqsData.advsqs_module;
   const category  = advsqsModule.category;
-  // Seampoint: more objects.
+// Seampoint: more objects...
 
 // --- Build upon previous layers ---
 import * as state  from "../../model/state/state.js";
 
 import * as planes from "../../geometry/planes/planes.js";
 import * as quads  from "../../geometry/quads/quads.js";
-// Seampoint: more imports.
+// Seampoint: more imports...
 
 
 // --- UI ---
@@ -33,5 +33,5 @@ export function clearBuffer() {
 
 }
 
-// Seampoint: more global functions.
+// Seampoint: more global functions...
 

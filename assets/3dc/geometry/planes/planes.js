@@ -13,7 +13,7 @@ import planesData from "./planes.json" assert { type: "json" };
   const planeGroups  = planesModule.planeGroups;
   const planePairs   = planesModule.planePairs;
   const planes       = planesModule.planes;
-  // Seampoint: more objects...
+// Seampoint: more objects...
 
 // --- Build upon previous layers ---
 import * as utils  from "../../../../utils/utils.js";

@@ -16,7 +16,7 @@
 // --- Load JSON ---
 import modelData from "./model.json" assert { type: "json" };
   const modelModule = modelData.model_module;
-  // Seampoint: more objects.
+// Seampoint: more objects...
 
 // --- Build upon previous layers ---
 import * as control from "../controller/controller.js";
@@ -34,7 +34,9 @@ export function init(playBoard) {
 
   return setup; // Whatever that is.
 }
+// Seampoint: more global functions...
 
+// --- Helpers ---
 function exampleStateStrMoves() { // Best with collapsible listing table.
   // Fallback0: P[z,x,y]-[k,i,j]: piece at zxy moves to|captures piece at [kij].
   // Fallback1: qPxknP: disambiguate by level, piece on queen level takes piece on king night level.
@@ -59,4 +61,5 @@ function exampleStateStrMoves() { // Best with collapsible listing table.
   console.log(stateStr4);
   console.log(stateStr5);
 }
+// Seampoint: more local functions...
 

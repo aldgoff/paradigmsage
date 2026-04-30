@@ -11,7 +11,7 @@
 import quadsData from "./quads.json" assert { type: "json" };
   const quadsModule     = quadsData.quads_module;
   export const planeQuadTable  = quadsModule.planeQuadTable;
-  // Seampoint: more json objects.
+// Seampoint: more objects...
 
 const Q_MIN = 1;    // Note the hard coding, not in the json file.
 const Q_MAX = 60;
@@ -250,7 +250,7 @@ export function planeToQuads(plane) {
 
   return result;
 }
-// Seampoint: more global functions.
+// Seampoint: more global functions...
 
 // --- Helpers ---
 function toQ(input) {
@@ -292,5 +292,8 @@ function elementsToQuad({ piece, plane, pieceQ, planeQ, rayPair, nickname }) {
 
   throw new Error(`elementsToQuad: no match found`);
 }
-// Seampoint: more local functions.
+// Seampoint: more local functions...
+
+// --- Helpers ---
+// Seampoint: more local functions...
 

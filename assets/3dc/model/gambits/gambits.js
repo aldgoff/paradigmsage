@@ -10,15 +10,14 @@
 // --- Load JSON ---
 import gambitsData from "./gambits.json" assert { type: "json" };
   const gambitsModule = gambitsData.gambits_module;
-  // const category  = gambitsModule.category;
-  // Seampoint: more objects.
+// Seampoint: more objects...
 
 // --- Build upon previous layers ---
 import * as planes from "../../geometry/planes/planes.js";
 import * as coords from "../../foundation/coords/coords.js";
 
 import * as view   from "../../view/view.js";
-// Seampoint: more imports.
+// Seampoint: more imports..
 
 // --- UI ---
 export function UI() {
@@ -41,5 +40,8 @@ export function makeGambit(specs) {
 
   return {gambit, group};
 }
-// Seampoint: more global functions.
+// Seampoint: more global functions...
+
+// --- Helpers ---
+// Seampoint: more local functions...
 

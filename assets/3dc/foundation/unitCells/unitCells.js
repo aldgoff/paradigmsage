@@ -11,7 +11,7 @@
 import unitCellsData from "./unitCells.json" assert { type: "json" };
   const unitCellsModule = unitCellsData.unitCells_module;
   const unitCells = unitCellsModule;
-  // Seampoint: more imports...
+// Seampoint: more objects...
 
 // --- UI ---
 // -- Dimension access --
@@ -65,7 +65,6 @@ export function getPlaneType(dim, rayType) {
   return c.planeType ?? null;
 }
 // Seampoint: more global functions.
-
 
 // --- Helpers ---
 // Seampoint: more local functions.

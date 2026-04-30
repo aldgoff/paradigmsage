@@ -129,8 +129,9 @@ layout: "play"
 
   <div class="section">
     <button data-action="freezeQ">Freeze Quadrant</button>
-    <button data-action="freezeL" disabled>Freeze Linear</button>
-    <button data-action="freezeO" disabled>Freeze Overlap</button>
+    <button data-action="freezeL" disabled>Freeze as Linear</button>
+    <button data-action="freezeO" disabled>Freeze with Overlaps</button>
+    <button data-action="freezeP" disabled>Freeze as a plane</button>
   </div>
 
   <div class="section">

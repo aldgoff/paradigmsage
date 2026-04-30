@@ -10,11 +10,11 @@
 // --- Load module ---
 import overlapsData from "./overlaps.json" assert { type: "json" };
   const overlaps = overlapsData.overlaps_module;
-  // Seampoint: more objects.
+// Seampoint: more objects...
 
 // --- Build upon the previous layers ---
 import { } from "../../foundation/coords/coords.js";
-// Seampoint: more imports.
+// Seampoint: more imports...
 
 // --- UI ---
 export function getStride({ piece, subType = null, quadType, k }) {
@@ -78,8 +78,8 @@ export function getOverlapType(basePiece, quadType, perim, stride) {
 
   return type; // source|end2|end3|body|apex|brook|qtile|hotspot|Feynman
 }
-// Seampoint: more global functions.
+// Seampoint: more global functions...
 
 // --- Helpers ---
-// Seampoint: more local functions.
+// Seampoint: more local functions...
 

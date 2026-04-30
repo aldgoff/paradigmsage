@@ -53,8 +53,9 @@ export function panelDispatch(payload) {
   const { action } = payload;
   switch (action) {
     case "freezeQ":  handleFreezeQuadrant(); break;
-    case "freezeL":  handleFreezeLinear(); break;
-    case "freezeO":  handleFreezeOverlap(); break;
+    case "freezeL":  handleFreezeAsLinear(); break;
+    case "freezeO":  handleFreezeWithOverlaps(); break;
+    case "freezeP":  handleFreezeAsAPlane(); break;
     case "delete":   handleDelete(); break;
     case "remove":   handleRemoveAll(); break;
     default: throw new Error(`Unknown gambit action ${action}.`);  break;
@@ -89,6 +90,7 @@ export function rerunGambits() {
 
   vGambits.refreshPanel();
 }
+// Seampoint: more global functions...
 
 // --- Handle Functions ---
 export function handleFreezeQuadrant() {
@@ -113,16 +115,19 @@ export function handleFreezeQuadrant() {
   game.showUndoStatus();                              // Update game panel (undo).
 }
 
-/*** ----- ----- ----- ***/
-
-function handleFreezeLinear() {
+function handleFreezeAsLinear() {
   console.log("cntrl: gambits.js - handleFreezeLinear()");
   // TODO: change state - handleFreezeLinear().
   }
 
-function handleFreezeOverlay() {
+function handleFreezeWithOverlaps() {
   console.log("cntrl: gambits.js - handleFreezeOverlay()");
   // TODO: change state - handleFreezeOverlay().
+  }
+
+function handleFreezeAsAPlane() {
+  console.log("cntrl: gambits.js - handleFreezeAsAPlane()");
+  // TODO: change state - handleFreezeAsAPlane().
   }
 
 function handleDelete() {

@@ -24,7 +24,7 @@ import stateData from "../../model/state/state.json" assert { type: "json" };
   const Moves   = stateModule.Moves;
   const Gambits = stateModule.Gambits;
   const AdvSqs  = stateModule.AdvSqs;
-  // Seampoint: more objects.
+// Seampoint: more objects...
 
 // --- Layers ---
 import * as coords from "../../foundation/coords/coords.js";

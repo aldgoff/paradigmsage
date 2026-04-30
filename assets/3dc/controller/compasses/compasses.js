@@ -11,11 +11,11 @@
 import compassesData from "./compasses.json" assert { type: "json" };
   const compassesModule = compassesData.compasses_module;
   const category  = compassesModule.category;
-  // Seampoint: more objects.
+// Seampoint: more objects...
 
 // --- Build upon previous layers ---
 import * as quads  from "../../geometry/quads/quads.js";
-// Seampoint: more imports.
+// Seampoint: more imports...
 
 
 // --- UI ---
@@ -24,5 +24,8 @@ export function UI() {
   
   return "whatever";
   }
-// Seampoint: more global functions.
+// Seampoint: more global functions...
+
+// --- Helpers ---
+// Seampoint: more local functions...
 

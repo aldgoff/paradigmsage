@@ -21,7 +21,7 @@ import tilesData from "./tiles.json" assert { type: "json" };
 // --- Build upon previous layers ---
 import * as foundation from "../../foundation/colors/colors.js";
 import * as coordsMaps from "../render/coordsMaps.js"
-// Seampoint: more layers...
+// Seampoint: more imports...
 
 // --- UI ---
 export function tileSize() {

@@ -11,13 +11,13 @@
 import gambitsData from "./gambits.json" assert { type: "json" };
   const gambitsModule = gambitsData.gambits_module;
   const category  = gambitsModule.category;
-// Seampoint: more objects.
+// Seampoint: more objects...
 
 // --- Build upon previous layers ---
 import * as state   from "../../model/state/state.js";
 
 import * as view   from "../../view/view.js";
-// Seampoint: more imports.
+// Seampoint: more imports...
 
 let activeAnimation = null;
 

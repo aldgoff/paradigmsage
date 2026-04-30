@@ -15,10 +15,10 @@ import camerasData from "./cameras.json" assert { type: "json" };
   const camerasModule = camerasData.cameras_module;
   const POV = camerasModule.POV;
   const jit = camerasModule.jitter;
-  // Seampoint: more objects.
+// Seampoint: more objects...
 
 // --- Build upon previous layers ---
-// Seampoint: more imports.
+// Seampoint: more imports...
 
 let camera = null;
 let pov    = POV.neutral;   // JSON.
@@ -164,11 +164,11 @@ export function selectPOV(newPov) {
 
   return;
 }
-// Seampoint: more global functions.
+// Seampoint: more global functions...
 
 // --- Helpers ---
 function cloneVec3(v) {
   return [v[0], v[1], v[2]];
 }
-// Seampoint: more local functions.
+// Seampoint: more local functions...
 

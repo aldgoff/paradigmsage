@@ -97,7 +97,7 @@ export function init(playBoard) { // PlayBoard is the 3D canvas from the THREE r
   wirePanel(      "viewer-window", "viewer", buildViewerPayload, { onChangeFull: true });
 
   window.addEventListener("keydown", handleAdvsqKeys);
-  // Seampoint - more listeners...
+  // Seampoint: more listeners...
 
   game.showUndoStatus();
   const {range, speed} = viewer.getJitterValues();
