@@ -104,6 +104,10 @@
 │   │   │   ├── model.js
 │   │   │   ├── model.json
 │   │   │   ├── model.md
+│   │   │   ├── moves
+│   │   │   │   ├── moves.js
+│   │   │   │   ├── moves.json
+│   │   │   │   └── moves.md
 │   │   │   ├── notation
 │   │   │   │   ├── notation.js
 │   │   │   │   └── notation.json
@@ -160,6 +164,9 @@
 │   │       │   ├── gambits.json
 │   │       │   └── gambits.md
 │   │       ├── moves
+│   │       │   ├── moves.js
+│   │       │   ├── moves.json
+│   │       │   └── moves.md
 │   │       ├── pieces
 │   │       ├── registerHandlers.js
 │   │       ├── render
@@ -473,4 +480,4 @@
 │           └── poc.js
 └── themes
 
-102 directories, 371 files
+103 directories, 377 files

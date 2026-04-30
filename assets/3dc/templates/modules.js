@@ -1,9 +1,9 @@
 /* File: modules.js
-  Path: ./3dc/modules/modules.js
+  Path: ./3dc/layer/modules/modules.js
   Purpose: desc
   Author: Allan Goff
   Date: 4/15/26
-  Recommended access: import * as modules.
+  Recommended access: import * as modules from ../../layer/modules/modules.js
   UI: the export functions.
 */
 
@@ -21,7 +21,7 @@ import * as quads  from "../geometry/quads/quads.js";
 
 // --- UI ---
 export function UI() {
-  console.log("control: modules.js - UI()");
+  console.log("layer: modules.js - UI()");
   
   return "whatever";
   }

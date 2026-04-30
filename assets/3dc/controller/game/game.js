@@ -14,13 +14,13 @@ import gameData from "./game.json" assert { type: "json" };
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
-import * as cGambits from "../../controller/gambits/gambits.js";
+  import * as cGambits from "../../controller/gambits/gambits.js";
 
-import * as state    from "../../model/state/state.js";
+  import * as state    from "../../model/state/state.js";
 
-import * as boards   from "../../view/boards/boards.js";
-import * as vAdvsqs  from "../../view/advsqs/advsqs.js";
-import * as vGambits from "../../view/gambits/gambits.js";
+  import * as boards   from "../../view/boards/boards.js";
+  import * as vAdvsqs  from "../../view/advsqs/advsqs.js";
+  import * as vGambits from "../../view/gambits/gambits.js";
 // Seampoint: more imports...
 
 // --- UI ---

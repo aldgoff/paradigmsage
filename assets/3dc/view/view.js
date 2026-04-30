@@ -204,7 +204,6 @@ function decorateTile(coords, piece, decorator, group, opacity, zOffset=0.00) {
   }
 }
 
-// --- Helpers ---
 function wirePanel(panelId, callbackName, buildPayload, options = {}) {
   const panel = document.getElementById(panelId);
   if (!panel) return;
@@ -306,12 +305,9 @@ function buildSetupPayload(panel, action) {
     action,
     boardSize:  panel.querySelector('input[name="board-size"]:checked')?.value,
     trayType:   panel.querySelector('input[name="tray-type"]:checked')?.value,
-    visible:    panel.querySelector('input[name="tray-visible"]')?.value,
     initialPos: panel.querySelector('input[name="initial-pos"]')?.value,
-    trayGap:    panel.querySelector('input[name="tray-gap"]')?.value,
   };
   }
-
 
 function buildMovePayload(panel, action) {
   console.log("     ---------- view: view.js");

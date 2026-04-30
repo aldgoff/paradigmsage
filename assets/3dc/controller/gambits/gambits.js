@@ -1,9 +1,9 @@
 /* File: gambits.js
-  Path: ./3dc/gambits/gambits.js
+  Path: ./3dc/controller/gambits/gambits.js
   Purpose: Collects advsqs into a set that stays on the board - gambit analysis.
   Author: Allan Goff
   Date: 4/23/26
-  Recommended access: import * as gambits.
+  Recommended access: import * as cGambits from ../../controller/gambits/gambits.js
   UI: the export functions.
 */
 
@@ -14,18 +14,18 @@ import gambitsData from "./gambits.json" assert { type: "json" };
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
-import * as game    from "../../controller/game/game.js";
-import * as cAdvsqs from "../../controller/advsqs/advsqs.js";
+  import * as game     from "../../controller/game/game.js";
+  import * as cAdvsqs  from "../../controller/advsqs/advsqs.js";
 
-import * as state   from "../../model/state/state.js";
-import * as planes  from "../../geometry/planes/planes.js";    // resolveDstTile().
-import * as mAdvsqs from "../../model/advsqs/advsqs.js";
-import * as mGambits from "../../model/gambits/gambits.js";
- 
-import * as view     from "../../view/view.js";
-import * as tiles     from "../../view/tiles/tiles.js";
-import * as vAdvsqs  from "../../view/advsqs/advsqs.js";
-import * as vGambits from "../../view/gambits/gambits.js";
+  import * as state    from "../../model/state/state.js";
+  import * as planes   from "../../geometry/planes/planes.js";    // resolveDstTile().
+  import * as mAdvsqs  from "../../model/advsqs/advsqs.js";
+  import * as mGambits from "../../model/gambits/gambits.js";
+  
+  import * as view     from "../../view/view.js";
+  import * as tiles    from "../../view/tiles/tiles.js";
+  import * as vAdvsqs  from "../../view/advsqs/advsqs.js";
+  import * as vGambits from "../../view/gambits/gambits.js";
 // Seampoint: more imports...
 
 /* TODO: Gambit additions:
@@ -96,7 +96,7 @@ export function rerunGambits() {
 export function getLastActiveGambitIndex() {
   const count = state.getBufferCount().Gambits;
   return count; // after undo, this is the removed one
-}
+  }
 export function rebindOverlaysToBoard() {
   console.log("cntrl: gambits.js - rebindOverlaysToBoard()");
 

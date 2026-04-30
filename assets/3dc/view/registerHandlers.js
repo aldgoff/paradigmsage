@@ -19,7 +19,7 @@ export const callback = { // Allows rest of view layer easy access to control's 
 
   camera: null,   // Not subject to undo.
   viewer: null,
-  // Seampoint - more callbacks...
+  // Seampoint: more callbacks...
 }
 
 export function setupControlDispatcher(fn)   { callback.setup   = fn; } // Primary panels, under undo.
@@ -32,5 +32,5 @@ export function gameControlDispatcher(fn)    { callback.game   = fn; }  // Undo 
 
 export function cameraControlDispatcher(fn)  { callback.camera = fn; }  // Not subject to undo.
 export function viewerControlDispatcher(fn)  { callback.viewer = fn; }
-// Seampoint - more dispatchers...
+// Seampoint: more dispatchers...
 

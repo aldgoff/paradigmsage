@@ -82,7 +82,7 @@ export function init(playBoard) {
 
   makeDraggable(document.getElementById("game-window"));    // Undo control for the previous 4 panels.
 
-  makeDraggable(document.getElementById("camera-window")); // Not subject to undo.
+  makeDraggable(document.getElementById("camera-window"));  // Not subject to undo.
   makeDraggable(document.getElementById("viewer-window"));
   // Seampoint - more 2D panels/canvi...
 

@@ -3,9 +3,6 @@ title: "Play"
 layout: "play"
 ---
 
-**Play (INWORK)**
-  A playable implemetation of 3D Chess with planar moves and advancement squares.
-  To see explanatory pages, click on **3DC** above.
 
 <!-- Load the Three.js Render... -->
 <script type="module">
@@ -65,21 +62,21 @@ layout: "play"
     padding: 4px;
   }
 
-  #setup-window   { top:  120px; left:   80px; }  /* DOM Control Panels */
-  #move-window    { top: 1200px; left:   80px; }
-  #gambit-window  { top:  830px; left:   80px; }
-  #advsq-window   { top:  120px; left:  260px; }
-  #compass-window { top:  999px; left:  300px; }
+  #setup-window   { top:  260px; left:   80px; }  /* DOM Control Panels */
+  #move-window    { top: 1190px; left:   80px; }
+  #gambit-window  { top:  880px; left:   80px; }
+  #advsq-window   { top:  260px; left:  255px; }
+  #compass-window { top:  260px; left:  600px; }
 
-  #game-window    { top:  120px; left:  450px; }
+  #game-window    { top:  260px; left:  430px; }
 
-  #camera-window { top:   420px; left:   80px; }
+  #camera-window { top:   510px; left:  430px; }
   #viewer-window { top:   560px; left:   80px; }
   /* Seampont - more DOM control panels... */
 </style>
 
 <!-- The 3DC Game... -->
-<canvas id="3dc-board" width="1600" height="2000"></canvas>  <!-- 3D -->
+<canvas id="3dc-board" width="1600" height="2400"></canvas>  <!-- 3D -->
 
 <!-- The DOM Control Panels -->
 <div class="panel" id="setup-window">
@@ -117,7 +114,17 @@ layout: "play"
   </div>
 
 <div class="panel" id="move-window">
+  <div class="panel-title">Move Panel</div>
+  <div class="section">
+    <button data-action="move">Move</button>
+    <button data-action="capture">Capture</button>
+    <button data-action="castle">Castle</button>
+    <button data-action="enpassant">En Passant</button>
+    <button data-action="promote">Promote</button>
+  </div>
+
   <div class="panel-title">Move | White | Black | Coordinates | Annotations</div>
+
 
   <div class="section scroll-box" id="move-list">
     <!-- tbd go here -->
