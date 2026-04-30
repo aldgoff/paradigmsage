@@ -77,7 +77,7 @@ title: "Dev"
   - 4/27/26 - Viewer panel. Roll events into controller. One wirePanel function. Order panels. Panel templates. Port viewer & camera. Jitter.
   - 4/28/26 - Double click reverse jitter. Standardize foundation, geometry, controller. Better gambit scroll-box. Model folders; gambits, advsqs.
   - 4/29/26 - Gambit: MVC compliance, cleanup, delete/removeAll, undo. Duplex animation. Animation race condition. Utils. Rewind & forward>>.
-  - 4/30/26 - QC.
+  - 4/30/26 - QC. Board undo/redo.
 
  ### Week 8:
   - 5/03/26 - tbd

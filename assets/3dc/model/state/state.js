@@ -11,7 +11,7 @@
 // --- Load JSON ---
 import stateData from "./state.json" assert { type: "json" };
   const seed = stateData.state_module;
-// Seampoint: more objects.
+// Seampoint: more objects...
 
 // --- Build upon previous layers ---
 import * as coords from "../../foundation/coords/coords.js";  // normalizeTileToVts().

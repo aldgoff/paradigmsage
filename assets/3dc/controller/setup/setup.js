@@ -14,9 +14,11 @@ import setupData from "./setup.json" assert { type: "json" };
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
-import * as game   from "../../controller/game/game.js";
-import * as state from "../../model/state/state.js";
-import * as boards from "../../view/boards/boards.js";
+import * as game     from "../../controller/game/game.js";
+
+import * as state    from "../../model/state/state.js";
+
+import * as boards   from "../../view/boards/boards.js";
 import * as vGambits from "../../view/gambits/gambits.js";
 // Seampoint: more imports...
 

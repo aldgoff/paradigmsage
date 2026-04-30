@@ -23,6 +23,7 @@ import * as mAdvsqs from "../../model/advsqs/advsqs.js";
 import * as mGambits from "../../model/gambits/gambits.js";
  
 import * as view     from "../../view/view.js";
+import * as tiles     from "../../view/tiles/tiles.js";
 import * as vAdvsqs  from "../../view/advsqs/advsqs.js";
 import * as vGambits from "../../view/gambits/gambits.js";
 // Seampoint: more imports...
@@ -89,6 +90,46 @@ export function rerunGambits() {
   }
 
   vGambits.refreshPanel();
+}
+
+// Suspicious code
+export function getLastActiveGambitIndex() {
+  const count = state.getBufferCount().Gambits;
+  return count; // after undo, this is the removed one
+}
+export function rebindOverlaysToBoard() {
+  console.log("cntrl: gambits.js - rebindOverlaysToBoard()");
+
+  const tileMap = view.context.tileMap;
+  if (!tileMap) return;
+
+  for (const [idx, group] of gambitGroupRegistry.entries()) {
+    if (!group?.userData?.overlays) continue;
+
+    for (const overlay of group.userData.overlays) {
+      const oldTile = overlay.userData?.parentTile;
+      if (!oldTile) continue;
+
+      const coords = oldTile.userData?.coords;
+      if (!coords) continue;
+
+      // --- lookup NEW tile ---
+      const newTile = tiles.getTileMesh(tileMap, coords);
+      if (!newTile) {
+        console.warn("Rebind failed: no tile for coords", coords);
+        continue;
+      }
+
+      // --- detach from old tile (if still attached) ---
+      if (overlay.parent) {
+        overlay.parent.remove(overlay);
+      }
+
+      // --- rebind ---
+      newTile.add(overlay);
+      overlay.userData.parentTile = newTile;
+    }
+  }
 }
 // Seampoint: more global functions...
 

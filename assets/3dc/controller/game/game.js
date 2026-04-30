@@ -110,7 +110,7 @@ function handleUndo() {
     const specs = state.fetchCurrentState("Setup");
     console.log("specs", specs);
     if(specs) {
-      boards.makeBoard(specs);
+      boards.makeSetup(specs);
     }
     showUndoStatus();  // Show undo status in the panel.
     }
@@ -132,7 +132,7 @@ function handleRedo() {
     const specs = state.fetchCurrentState("Setup");
     boards.clearBoard(specs);
     if(specs) {
-      boards.makeBoard(specs);
+      boards.makeSetup(specs);
     }
     }
   else if(keyIndex.arrayKey === "Moves") {
@@ -201,7 +201,7 @@ function handleRewind() {
     boards.clearBoard();
     const specs = state.fetchCurrentState("Setup");
     if (specs) {
-      boards.makeBoard(specs);
+      boards.makeSetup(specs);
     }
     }
   else {
@@ -235,14 +235,16 @@ function handleFastForward() {
     if (keyIndex.arrayKey === "Setup") {
       const specs = state.fetchCurrentState("Setup");
       boards.clearBoard();
-      if (specs) boards.makeBoard(specs);
-    }
-
+      if (specs) {
+        boards.makeSetup(specs);
+        cGambits.rebindOverlaysToBoard();
+      }
+      // if (specs) boards.makeBoard(specs);
+      }
     else if (keyIndex.arrayKey === "Moves") {
       const specs = state.fetchCurrentState("Moves");
-      // TODO
-    }
-
+      // TODO: fastforward moves.
+      }
     else if (keyIndex.arrayKey === "Gambits") {
       vGambits.refreshPanel();
 
@@ -253,8 +255,7 @@ function handleFastForward() {
       if (group) {
         vGambits.renderGambit(group);
       }
-    }
-
+      }
     else if (keyIndex.arrayKey === "AdvSqs") {
       const specs = state.fetchCurrentState("AdvSqs");
       vAdvsqs.clearAdvsq();
@@ -262,7 +263,7 @@ function handleFastForward() {
         vAdvsqs.makeAdvsq(specs);
         vAdvsqs.setAdvsqPanelParams(specs);
       }
-    }
+      }
 
     else {
       throw new Error("Unknown buffer:", keyIndex.arrayKey);
