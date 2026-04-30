@@ -14,8 +14,7 @@ import movesData from "./moves.json" assert { type: "json" };
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
-import * as planes from "../geometry/planes/planes.js";
-import * as quads  from "../geometry/quads/quads.js";
+import * as quads  from "../../geometry/quads/quads.js";
 // Seampoint: more imports...
 
 // --- UI ---
@@ -23,6 +22,18 @@ export function UI() {
   console.log("view: moves.js - UI()");
   
   return "whatever";
+  }
+
+export function renderMove(move) {
+  console.log("view: moves.js - renderMove(move)", move);
+  
+  return;
+  }
+
+export function updatePanel(move) {
+  console.log("view: moves.js - updatePanel(move)", move);
+  
+  return;
   }
 // Seampoint: more global functions...
 

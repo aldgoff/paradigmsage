@@ -177,7 +177,7 @@ export function pushNewState(buffer, values) {
   bufferCount[buffer] = i + 1;                    // Advance the index.
   }
 export const pushNewSetup  = (values) => pushNewState("Setup",   values);
-export const pushNewMoves  = (values) => pushNewState("Moves",   values);
+export const pushNewMove   = (values) => pushNewState("Moves",   values);
 export const pushNewGambit = (values) => pushNewState("Gambits", values);
 export const pushNewAdvsq  = (values) => pushNewState("AdvSqs",  values);
 
