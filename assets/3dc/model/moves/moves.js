@@ -10,7 +10,7 @@
 // --- Load JSON ---
 import movesData from "./moves.json" assert { type: "json" };
   const movesModule = movesData.moves_module;
-  const category  = movesModule.category;
+  const move  = movesModule.Move;
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
@@ -35,6 +35,8 @@ export function parseBuffer(strings) {    // Convert array of state strings, to 
 
 export function createState(payload, index) { // Create the state entry from raw data.
   console.log("model: moves.js - createState(payload, index)", payload, index);
+  let sam = move.turn;  // Test access to json file.
+  console.log("Sam", sam);
   // TODO: code model: moves - createState().
 
   const srcTile = payload.src;
