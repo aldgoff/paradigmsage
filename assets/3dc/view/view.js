@@ -40,22 +40,22 @@
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
-import * as run        from "./registerHandlers.js";
-import * as renders    from "./render/renders.js";
-import * as coordsMaps from "./render/coordsMaps.js";
-import * as demos      from "./demos.js";
-import * as tiles      from "./tiles/tiles.js";
+  import * as run        from "./registerHandlers.js";
+  import * as renders    from "./render/renders.js";
+  import * as coordsMaps from "./render/coordsMaps.js";
+  import * as demos      from "./demos.js";
+  import * as tiles      from "./tiles/tiles.js";
 
-import * as utils      from "../../../utils/utils.js";
+  import * as utils      from "../../../utils/utils.js";
 
-import * as game       from "../controller/game/game.js";
-import * as viewer     from "../controller/viewer/viewer.js";
+  import * as game       from "../controller/game/game.js";
+  import * as viewer     from "../controller/viewer/viewer.js";
 
-import * as advsqs     from "../geometry/advsqs/advsqs.js";
-import * as decorators from "./decorators/decorators.js";
-import * as quads      from "../geometry/quads/quads.js";
+  import * as advsqs     from "../geometry/advsqs/advsqs.js";
+  import * as decorators from "./decorators/decorators.js";
+  import * as quads      from "../geometry/quads/quads.js";
 
-import * as cameras    from "../view/render/cameras.js";
+  import * as cameras    from "../view/render/cameras.js";
 // Seampoint: more imports...
 
 export let context;
@@ -86,7 +86,7 @@ export function init(playBoard) { // PlayBoard is the 3D canvas from the THREE r
   }
 
   wirePanel("setup-window",   "setup",   buildSetupPayload,   { onChangeFull: true });
-  wirePanel("move-window",    "move",    buildMovePayload,    { onChangeFull: true });
+  wirePanelButtons("move-window",    "move",    buildMovePayload,    { onChangeFull: true });
   wirePanel("gambit-window",  "gambit",  buildGambitPayload,  { onChangeFull: true });
   wirePanel("advsq-window",   "advsq",   buildAdvsqPayload,   { onChangeFull: true });
   wirePanel("compass-window", "compass", buildCompassPayload, { onChangeFull: true });
@@ -233,6 +233,28 @@ function wirePanel(panelId, callbackName, buildPayload, options = {}) {
   });
   }
 
+function wirePanelButtons(panelId, callbackName, buildPayload, options = {}) {
+  const panel = document.getElementById(panelId);
+  if (!panel) return;
+
+  const cb = run.callback[callbackName];
+  if (!cb) return;
+
+  panel.addEventListener("click", (e) => {
+    const btn = e.target.closest("button");
+    if (!btn) return;
+
+    const action = btn.dataset.action;
+    if (!action) return;
+
+    const cb = run.callback[callbackName];
+    if (typeof cb !== "function") return;
+
+    const payload = buildPayload(panel, action);
+    cb(payload);
+  });
+  }
+
 function wireSimplePanel(panelId, callbackName, buildPayload) {
   const panel = document.getElementById(panelId);
   if (!panel) return;
@@ -311,7 +333,16 @@ function buildSetupPayload(panel, action) {
 
 function buildMovePayload(panel, action) {
   console.log("     ---------- view: view.js");
-  return { action };
+  return {
+    action,
+    player:  panel.querySelector('input[name="move-player"]:checked')?.value,
+    piece:   panel.querySelector('[name="move-piece"]')?.value,
+    src:     panel.querySelector('[name="move-src"]')?.value,
+    dst:     panel.querySelector('[name="move-dst"]')?.value,
+    sec:     panel.querySelector('[name="move-2nd"]')?.value,
+    capture: panel.querySelector('[name="move-capture"]')?.value,
+    opts:    panel.querySelector('[name="move-opts"]')?.value,
+  };
   }
 
 function buildGambitPayload(panel, action) {

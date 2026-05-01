@@ -43,6 +43,8 @@ export function panelDispatch(payload) {
   }
 
 export function showUndoStatus() {  // Show undo buffers in Game panel.
+  console.log("cntrl: game.js - showUndoStatus():");
+
   const el = document.getElementById("undo-state");
 
   const keys = state.getStateKeys();
