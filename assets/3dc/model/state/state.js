@@ -10,11 +10,10 @@
 
 // --- Load JSON ---
 import stateData from "./state.json" assert { type: "json" };
-  const seed = stateData.state_module;
+  const seed = stateData.state_module;  // Not used, kept for syntax reference only.
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
-import * as coords from "../../foundation/coords/coords.js";  // normalizeTileToVts().
 // Seampoint: more imports...
 
 let state = { // This is the state history of the game: setup-moves-gambits-advsqs.
@@ -112,17 +111,6 @@ export function nextKeyIndex() {
   return null;
 }
 
-export function peekNextKeyIndex() {  // TODO: used?
-  const snapshot = structuredClone(bufferCount);
-
-  const result = nextKeyIndex();
-
-  // restore state
-  bufferCount = snapshot;
-
-  return result;
-}
-
 // --- UI ---
 export function setState(newState) {
   state = structuredClone(newState);
@@ -147,7 +135,7 @@ export function fetchCurrentState(buffer) {
   return arr[i - 1];  
   }
 export const fetchCurrentSetup  = () => fetchCurrentState("Setup");
-export const fetchCurrentMoves  = () => fetchCurrentState("Moves");
+export const fetchCurrentMove   = () => fetchCurrentState("Moves");
 export const fetchCurrentGambit = () => fetchCurrentState("Gambits");
 export const fetchCurrentAdvsq  = () => fetchCurrentState("AdvSqs");
 
@@ -159,7 +147,7 @@ export function replaceCurrentState(buffer, values) {
   arr[i - 1] = structuredClone(values);  
   }
 export const replaceCurrentSetup  = (values) => replaceCurrentState("Setup",   values);
-export const replaceCurrentMoves  = (values) => replaceCurrentState("Moves",   values);
+export const replaceCurrentMove   = (values) => replaceCurrentState("Moves",   values);
 export const replaceCurrentGambit = (values) => replaceCurrentState("Gambits", values);
 export const replaceCurrentAdvsq  = (values) => replaceCurrentState("AdvSqs",  values);
 

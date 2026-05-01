@@ -17,6 +17,7 @@ import movesData from "./moves.json" assert { type: "json" };
   import * as game     from "../../controller/game/game.js";
 
   import * as state    from "../../model/state/state.js";
+  import * as mMoves   from "../../model/moves/moves.js";
   import * as coords   from "../../foundation/coords/coords.js";  // normalizeTileToVts().
   import * as quads    from "../../geometry/quads/quads.js";
 
@@ -26,7 +27,7 @@ import movesData from "./moves.json" assert { type: "json" };
 
 // --- UI ---
 export function panelDispatch(payload) {
-  console.log("cntrl: moves.js - panelDispatch(payload):", payload);
+  // console.log("cntrl: moves.js - panelDispatch(payload):", payload);
 
   vGambits.cancelAnimation();
 
@@ -52,15 +53,36 @@ function handleMove(payload) {
   console.log("cntrl: moves.js - handleMove(payload)", payload);
   // TODO: change state - handleMove().
 
-  let { player, piece, src, dst, capture, sec, opts } = normalize(payload);   // Unpack primary fields.
-  console.log("cntrl: moves.js - handleMove(normed)", player, piece, src, dst, capture, sec, opts);
+  const index = state.getBufferCount()["Moves"] + 1;
+  const entry = mMoves.createState(payload, index);
+  const tableStr = mMoves.tableFormat(entry);
 
-  const move = {};
+  state.pushNewMove(entry);           // Change state.
+  vMoves.renderMove(entry);           // Render.
+  vMoves.updatePanel(tableStr);       // Update panel.
+
+
+  // let { player, piece, src, dst, capture, sec, opts } = normalize(payload);   // Unpack primary fields.
+  // console.log("cntrl: moves.js - handleMove(normed)", player, piece, src, dst, capture, sec, opts);
+
+  /* "Moves": [
+      { "turn": 1, "moves": ["P-K4,4", "P-Q4,3"], "coords": ["", ""], "annotations": ["", "..."] },
+      { "turn": 2, "moves": ["PxP",   "N-KB3,3"], "coords": ["...", ""], "annotations": ["", ""] },
+      { "turn": 3, "moves": ["qnP-QN3,4", "..."], "coords": ["...", "..."], "annotations": ["...", "..."] }
+    ],
+  */
+
+  // const dstTile = payload.dst;
+  // const move = {player, piece, src, dst, capture, sec};
+  // const moveStateStr = `"${piece}-${dstTile}"`;
+
+  // const curr = state.fetchCurrentMove();
+  // console.log("cntrl: moves.js - handleMove(processed)", curr, index, moveStateStr);
   
-  state.pushNewMove(move);                        // Change state.
+  // state.pushNewMove(moveStateStr);                        // Change state.
 
-  vMoves.renderMove(move);                        // Render.
-  vMoves.updatePanel(move);                       // Update panel.
+  // vMoves.renderMove(move);                        // Render.
+  // vMoves.updatePanel(moveStateStr);                       // Update panel.
   }
 
 function handleCapture(payload) {
