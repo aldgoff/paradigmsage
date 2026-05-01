@@ -57,6 +57,7 @@ export function run() {
 function test_state() {
   const cases = [
     { expected: 44, label: "-example" },
+    { expected: 75, label: "-_cannonicalSchema" },
     { expected: 11, label: "Setup" },
     { expected:  3, label: "Moves" },
     { expected:  4, label: "Gambits" },

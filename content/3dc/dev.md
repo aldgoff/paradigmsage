@@ -78,7 +78,7 @@ title: "Dev"
   - 4/28/26 - Double click reverse jitter. Standardize foundation, geometry, controller. Better gambit scroll-box. Model folders; gambits, advsqs.
   - 4/29/26 - Gambit: MVC compliance, cleanup, delete/removeAll, undo. Duplex animation. Animation race condition. Utils. Rewind & forward>>.
   - 4/30/26 - QC. Board undo/redo. Plumb moves. Plumb move handlers.
-  - 5/01/26 - Add buttons and fields to Move panel. Extend move plumbing.
+  - 5/01/26 - Add buttons and fields to Move panel. Extend move plumbing. Prep for load & save.
 
  ### Week 8:
   - 5/03/26 - tbd

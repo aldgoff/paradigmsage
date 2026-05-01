@@ -291,11 +291,26 @@ function handleLoad() {
 
 function handleSave() {
   console.log("cntrl: game.js - handleSave()");
+
+  let idx = 0;
+
+  idx = state.getBufferCount()["Setup"]; 
+  const currSetup = state.fetchCurrentSetup();
+  console.log("cntrl: game.js - handleSave(currSetup) ", idx, currSetup);
+
+  idx = state.getBufferCount()["Moves"]; 
+  const currMove = state.fetchCurrentMove();
+  console.log("cntrl: game.js - handleSave(currMove)  ", idx, currMove);
+
+  idx = state.getBufferCount()["Gambits"]; 
+  const currGambit = state.fetchCurrentGambit();
+  console.log("cntrl: game.js - handleSave(currGambit)", idx, currGambit);
+
+  idx = state.getBufferCount()["AdvSqs"]; 
+  const currAdvsq = state.fetchCurrentAdvsq();
+  console.log("cntrl: game.js - handleSave(currAdvsq) ", idx, currAdvsq);
+  
   // TODO: game.js - handleSave().
-  const lastState = state.fetchCurrentSetup();  // Temp: being used for undo feedback, not button's intended purpose.
-  const index = state.getBufferCount(); // All of them.
-  const setupIndex = index.Setup;     // Just the setup index
-  console.log("Current Setup Undo:", setupIndex, lastState);
   }
 // Seampoint: more handle functions...
 

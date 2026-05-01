@@ -1,6 +1,7 @@
 {
   "state_module": {
     "_example": "A sequence of 4 invertible undo/redo arrays.",
+    "_cannonicalSchema": "Each model layer module file is responsible for complying to this standard.",
     "Setup": [
       { "board": [8,8,8],    "play": "off",    "trays": "none",    "gap": 0, "initialPos": "std|list", "itemized": {"white": [], "black": []} },
       { "board": [10,8,8],   "play": "off",    "trays": "none",    "gap": 0, "initialPos": "std|list", "itemized": {"white": [], "black": []} },

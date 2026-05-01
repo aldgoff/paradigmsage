@@ -271,7 +271,7 @@ layout: "play"
   </div>
   <div class="section">
     <button data-action="load" disabled>Load</button>
-    <button data-action="save" disabled>Save</button>
+    <button data-action="save" >Save</button>
   </div>
   <div class="section scroll-box" id="undo-state">
     <!-- tbd go here -->
