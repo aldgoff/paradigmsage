@@ -282,43 +282,68 @@ function handleFastForward() {
   }
 
   showUndoStatus();
-  }
+}
 
-function handleLoad() {
+async function handleLoad() {
   console.log("cntrl: game.js - handleLoad()");
-  // TODO: game.js - handleLoad().
 
-  // Dev/Debug code - temporary.
-  console.log("cntrl: game.js... getStateKeys()", state.getStateKeys());
-  console.log("cntrl: game.js... getBufferIndex()", state.getBufferIndex());
-  console.log("cntrl: game.js... getState()", state.getState());
+  try {
+    const text = await navigator.clipboard.readText();
+    const newState = JSON.parse(text);
+
+    state.setNull();      // Reset state completely.
+
+    for(const key of state.getStateKeys()) {   // Load all buffers (no rendering).
+      const entries = newState[key] || [];
+
+      for(const entry of entries) {
+        state.pushNewState(key, entry);
+      }
+
+      state.setBufferIndex(key, 0); // Reset all indexes to 0.
+    }
+
+    showUndoStatus(); // Good visual indicator of successful load.
+
+  } catch (err) {
+    console.error("Load failed:", err);
   }
+}
 
 function handleSave() {
   console.log("cntrl: game.js - handleSave()");
 
-  let idx = 0;
-
-  idx = state.getBufferIndex()["Setup"]; 
-  const currSetup = state.fetchCurrentSetup();
-  console.log("cntrl: game.js - handleSave(currSetup) ", idx, currSetup);
-
-  idx = state.getBufferIndex()["Moves"]; 
-  const currMove = state.fetchCurrentMove();
-  console.log("cntrl: game.js - handleSave(currMove)  ", idx, currMove);
-
-  idx = state.getBufferIndex()["Gambits"]; 
-  const currGambit = state.fetchCurrentGambit();
-  console.log("cntrl: game.js - handleSave(currGambit)", idx, currGambit);
-
-  idx = state.getBufferIndex()["AdvSqs"]; 
-  const currAdvsq = state.fetchCurrentAdvsq();
-  console.log("cntrl: game.js - handleSave(currAdvsq) ", idx, currAdvsq);
+  diagnostic(true);
   
-  // TODO: game.js - handleSave().
+  const stateStr = JSON.stringify(state.getState());  // One long single string.
+  console.log(stateStr);
+  
+  const stateString = JSON.stringify(state.getState(), null, 2);  // Pretty print with 2 space idents.
+  navigator.clipboard.writeText(stateString)
+    .then(() => {
+      console.log("State copied to clipboard");
+    })
+    .catch(err => {
+      console.error("Clipboard write failed:", err);
+    });
   }
 // Seampoint: more handle functions...
 
 // --- Helpers ---
+function diagnostic(enabled=false) {
+  if(!enabled) return;
+
+  const bufferList = [ "Setup", "Moves", "Gambits", "AdvSqs"];
+
+  for(const buffer of bufferList) {
+    console.log("  ", buffer, state.getState()[buffer]);
+  }
+
+  for(const buffer of bufferList) {
+    const idx = state.getBufferIndex()[buffer]; 
+    const currEntry = state.fetchCurrentState(buffer);
+    console.log("  ", idx, currEntry);
+  }
+}
 // Seampoint: more local functions...
 
