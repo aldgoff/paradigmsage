@@ -22,12 +22,15 @@
       { "turn":  1, "player": "Black", "piece": "R", "src": "K1,1", "action": "capture", "dst": "K4,6", "captured": "B", "sec": "Q5,6", "annotations": "ch" },
       { "turn": 14, "player": "White", "piece": "S", "src": "K2,2", "action": "fission", "dst": "K4,4", "captured": "RB", "sec": "Q5,6", "annotations": "ch" },
       { "turn": 14, "player": "White", "action": "fission", "moves": [
-        { "player": "W", "piece": "S", "src": "KB1,1", "dst": "" },
-        { "player": "W", "ghost": "S", "src": "TKB1",  "dst": "" },
-        { "player": "W", "piece": "B", "src": "KB1,1", "dst": "QB3,5" },
-        { "player": "W", "piece": "D", "src": "KB1,1", "dst": "K6,6" },
-        { "player": "W", "ghost": "B", "src": "", "dst": "TKB1,2" },
-        { "player": "W", "ghost": "D", "src": "", "dst": "TKB2,1" }
+        { "color": "W", "piece": "S", "src": "KB1,1", "dst": "" },
+        { "color": "W", "ghost": "S", "src": "TKB1,1", "dst": "" },
+        { "color": "W", "ghost": "B", "src": "", "dst": "TKB1,2" },
+        { "color": "W", "ghost": "D", "src": "", "dst": "TKB2,1" },
+
+        { "color": "W", "piece": "B", "src": "", "dst": "QB3,5" },
+        { "color": "B", "piece": "N", "src": "K6,6",  "dst": "TKN1,1" },
+        { "color": "W", "piece": "D", "src": "", "dst": "K6,6" }
+
       ], "annotations": "ch" },
       { "turn": 3, "moves": ["qnP-QN3,4", "..."], "coords": ["...", "..."], "annotations": ["...", "..."] }
     ],

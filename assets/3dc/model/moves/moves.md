@@ -23,6 +23,15 @@
   - Fission capture/capture
   - Promote bishop to stack
   - Promote duke to stack
+ ### 2.2 Move Idiom
+  A move in 3D chess requires an array of time symmetric src/dst pairs.
+  - A move is easy: [{src, dst}]
+  - A capture is not too bad: [{dst,tray}, {src,dst}]
+  - En passant: [{sec,tray}, {src,dst}]
+  - Castling: [{src,dst}, {src,dst}]
+  - Promotion: [{src,dst}, {dst,tray}, {queen,dst}, {ghost,tray}]
+  - Decay: [{src,null}, {Sghost,null}, {Bghost,tray}, {Dghost,tray}, {B,src|dst}, {D,dst|src}]
+  - etc.
   
 ## 3. Undo
   The idiom is simple, move a piece from one tile to another.
