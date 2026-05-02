@@ -85,13 +85,13 @@ export function init(playBoard) { // PlayBoard is the 3D canvas from the THREE r
     // demos.run(context);
   }
 
-  wirePanel("setup-window",   "setup",   buildSetupPayload,   { onChangeFull: true });
-  wirePanelButtons("move-window",    "move",    buildMovePayload,    { onChangeFull: true });
-  wirePanel("gambit-window",  "gambit",  buildGambitPayload,  { onChangeFull: true });
-  wirePanel("advsq-window",   "advsq",   buildAdvsqPayload,   { onChangeFull: true });
-  wirePanel("compass-window", "compass", buildCompassPayload, { onChangeFull: true });
+  wirePanel("setup-window",       "setup",   buildSetupPayload,   { onChangeFull: true });
+  wirePanelButtons("move-window", "move",    buildMovePayload,    { onChangeFull: true });
+  wirePanel("gambit-window",      "gambit",  buildGambitPayload,  { onChangeFull: true });
+  wirePanel("advsq-window",       "advsq",   buildAdvsqPayload,   { onChangeFull: true });
+  wirePanel("compass-window",     "compass", buildCompassPayload, { onChangeFull: true });
 
-  wirePanel("game-window",    "game",    buildGamePayload,    { onChangeFull: true });
+  wirePanel("game-window",        "game",    buildGamePayload,    { onChangeFull: true });
 
   wireSimplePanel("camera-window", "camera", buildCameraPayload, { onChangeFull: true }); // Not subject to undo.
   wirePanel(      "viewer-window", "viewer", buildViewerPayload, { onChangeFull: true });
@@ -293,7 +293,7 @@ function wireSimplePanel(panelId, callbackName, buildPayload) {
 }
 
 function handleAdvsqKeys(e) {
-  console.log("KEY EVENT", e.key);
+  // console.log("KEY EVENT", e.key);
 
   if (["INPUT", "TEXTAREA"].includes(e.target.tagName)) return;
 

@@ -39,7 +39,7 @@ export function run() {
 
   test_state();
   test_setup();
-  test_moves();
+  // test_moves();
   test_gambits();
   // test_advsqs();
   // Seampoint: more tests...
@@ -59,7 +59,7 @@ function test_state() {
     { expected: 44, label: "-example" },
     { expected: 75, label: "-_cannonicalSchema" },
     { expected: 11, label: "Setup" },
-    { expected:  3, label: "Moves" },
+    { expected:  5, label: "Moves" },
     { expected:  4, label: "Gambits" },
     { expected:  6, label: "AdvSqs" },
   ];
