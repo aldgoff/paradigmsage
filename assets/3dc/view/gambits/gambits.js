@@ -93,7 +93,7 @@ export function refreshPanel() {
   const el = document.getElementById("gambit-list");
   if (!el) return;
 
-  const count = state.getBufferCount().Gambits;
+  const count = state.getBufferIndex().Gambits;
 
   const children = el.children;
 
@@ -115,7 +115,7 @@ export function updatePanel(gambit) {
   const { Q, src, dst, area } = gambit;
 
   // --- freeze index ---
-  const count = state.getBufferCount().Gambits;
+  const count = state.getBufferIndex().Gambits;
 
   // --- column widths ---
   const idxCol  = String(count).padStart(2);    // right-aligned

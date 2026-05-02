@@ -71,7 +71,7 @@ export function rerunGambits() {
   console.log("cntrl: gambits.js - rerunGambits()");
 
   const count = state.getBufferLength("Gambits");
-  const active = state.getBufferCount().Gambits; // ← KEY LINE
+  const active = state.getBufferIndex().Gambits; // ← KEY LINE
 
   // --- Hide ALL gambits ---
   for (let i = 0; i < count; i++) {
@@ -94,7 +94,7 @@ export function rerunGambits() {
 
 // Suspicious code
 export function getLastActiveGambitIndex() {
-  const count = state.getBufferCount().Gambits;
+  const count = state.getBufferIndex().Gambits;
   return count; // after undo, this is the removed one
   }
 export function rebindOverlaysToBoard() {
@@ -147,7 +147,7 @@ export function handleFreezeQuadrant() {
   const {gambit, group} = mGambits.makeGambit(curr);  // Gambit: create.
 
   state.pushNewGambit(gambit);                        // Change state.
-  const idx = state.getBufferCount().Gambits - 1;
+  const idx = state.getBufferIndex().Gambits - 1;
 
   gambitGroupRegistry.set(idx, group);
   vGambits.renderGambit(group, { animate: true });    // Render.
@@ -175,7 +175,7 @@ function handleDelete() {
   console.log("cntrl: gambits.js - handleDelete()");
 
   // --- Get current index ---
-  const count = state.getBufferCount().Gambits;
+  const count = state.getBufferIndex().Gambits;
   if (count === 0) return;
 
   const idx = count - 1;
@@ -193,7 +193,7 @@ function handleDelete() {
   gambits.splice(idx, 1);
 
   // --- Update buffer count ---
-  state.setBufferCount("Gambits", idx);
+  state.setBufferIndex("Gambits", idx);
 
   // --- Optional: clean panel (simple version: rebuild later) ---
   const panel = document.getElementById("gambit-list");
@@ -208,7 +208,7 @@ function handleDelete() {
 function handleRemoveAll() {
   console.log("cntrl: gambits.js - handleRemoveAll()");
 
-  const count = state.getBufferCount().Gambits;
+  const count = state.getBufferIndex().Gambits;
   if (count === 0) return;
 
   // --- Remove all groups from scene ---

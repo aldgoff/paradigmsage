@@ -48,7 +48,7 @@ export function showUndoStatus() {  // Show undo buffers in Game panel.
   const el = document.getElementById("undo-state");
 
   const keys = state.getStateKeys();
-  const undo = state.getBufferCount();
+  const undo = state.getBufferIndex();
 
   const text = keys
     .map((key) => {
@@ -93,7 +93,7 @@ function handleUndo() {
 
     vGambits.refreshPanel();
 
-    const count = state.getBufferCount().Gambits;
+    const count = state.getBufferIndex().Gambits;
     const idx = count; // first "future" item
 
     const group = cGambits.getGambitGroup(idx);
@@ -147,7 +147,7 @@ function handleRedo() {
 
     vGambits.refreshPanel();
 
-    const count = state.getBufferCount().Gambits;
+    const count = state.getBufferIndex().Gambits;
     const idx = count - 1; // newly active item
 
     const group = cGambits.getGambitGroup(idx);
@@ -192,7 +192,7 @@ function handleRewind() {
     }
   else if (keyIndex.arrayKey === "Gambits") {
     vAdvsqs.clearAdvsq();
-    state.setBufferCount("AdvSqs", 0);
+    state.setBufferIndex("AdvSqs", 0);
     cGambits.rerunGambits();
     }
   else if (keyIndex.arrayKey === "Moves") {
@@ -216,7 +216,7 @@ function handleRewind() {
 function handleFastForward() {
   console.log("cntrl: game.js - handleFastForward()");
 
-  const counts = state.getBufferCount();
+  const counts = state.getBufferIndex();
 
   let startKey = null;
 
@@ -250,7 +250,7 @@ function handleFastForward() {
     else if (keyIndex.arrayKey === "Gambits") {
       vGambits.refreshPanel();
 
-      const count = state.getBufferCount().Gambits;
+      const count = state.getBufferIndex().Gambits;
       const idx = count - 1;
 
       const group = cGambits.getGambitGroup(idx);
@@ -284,7 +284,7 @@ function handleLoad() {
 
   // Dev/Debug code - temporary.
   console.log("cntrl: game.js... getStateKeys()", state.getStateKeys());
-  console.log("cntrl: game.js... getBufferCount()", state.getBufferCount());
+  console.log("cntrl: game.js... getBufferIndex()", state.getBufferIndex());
   console.log("cntrl: game.js... getState()", state.getState());
   console.log("cntrl: game.js... getNull()", state.getNull());
   }
@@ -294,19 +294,19 @@ function handleSave() {
 
   let idx = 0;
 
-  idx = state.getBufferCount()["Setup"]; 
+  idx = state.getBufferIndex()["Setup"]; 
   const currSetup = state.fetchCurrentSetup();
   console.log("cntrl: game.js - handleSave(currSetup) ", idx, currSetup);
 
-  idx = state.getBufferCount()["Moves"]; 
+  idx = state.getBufferIndex()["Moves"]; 
   const currMove = state.fetchCurrentMove();
   console.log("cntrl: game.js - handleSave(currMove)  ", idx, currMove);
 
-  idx = state.getBufferCount()["Gambits"]; 
+  idx = state.getBufferIndex()["Gambits"]; 
   const currGambit = state.fetchCurrentGambit();
   console.log("cntrl: game.js - handleSave(currGambit)", idx, currGambit);
 
-  idx = state.getBufferCount()["AdvSqs"]; 
+  idx = state.getBufferIndex()["AdvSqs"]; 
   const currAdvsq = state.fetchCurrentAdvsq();
   console.log("cntrl: game.js - handleSave(currAdvsq) ", idx, currAdvsq);
   

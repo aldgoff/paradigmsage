@@ -53,7 +53,7 @@ function handleMove(payload) {
   console.log("cntrl: moves.js - handleMove(payload)", payload);
   // TODO: change state - handleMove().
 
-  const index = state.getBufferCount()["Moves"] + 1;
+  const index = state.getBufferIndex()["Moves"] + 1;
   const entry = mMoves.createState(payload, index);
   const tableStr = mMoves.tableFormat(entry);
 
