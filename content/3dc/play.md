@@ -31,11 +31,6 @@ layout: "play"
   #gambit-window {
     width: 200px;
   }
-  #move-list {
-    font-family: monospace;
-    white-space: pre;   /* Allows code to col align text. */
-    height: 140px;
-    }
   #gambit-list {
     font-family: monospace;
     white-space: pre;
@@ -43,6 +38,10 @@ layout: "play"
   #move-window {
     font-family: monospace;
     width: 350px;
+    }
+  #move-list {
+    font-family: monospace;
+    white-space: pre;   /* Allows code to col align text. */
     }
   #undo-state {
     height: 66px;
@@ -63,8 +62,8 @@ layout: "play"
   }
 
   #setup-window   { top:  260px; left:   80px; }  /* DOM Control Panels */
-  #move-window    { top: 1190px; left:   80px; }
-  #gambit-window  { top:  880px; left:   80px; }
+  #move-window    { top: 1130px; left:   80px; }
+  #gambit-window  { top:  830px; left:   80px; }
   #advsq-window   { top:  260px; left:  255px; }
   #compass-window { top:  260px; left:  600px; }
 
@@ -120,8 +119,8 @@ layout: "play"
     <button data-action="duke-decay">Duke Decay</button>
     <button data-action="bishop-decay">Bishop Decay</button>
     <button data-action="fission">Fission</button>
-    <label> <input type="radio" name="move-player" value="white" data-action="Player" checked> W </label>
-    <label> <input type="radio" name="move-player" value="black" data-action="Player"> B </label>
+    <label> <input type="radio" name="move-player" value="White" data-action="Player" checked> W </label>
+    <label> <input type="radio" name="move-player" value="Black" data-action="Player"> B </label>
   </div>
   <div class="section">
     <label> SrcTile <input name="move-src" type="text" value="K2,2" maxlength="7" style="width: 44px;"> </label>
@@ -133,10 +132,7 @@ layout: "play"
     <label> Capture <input name="move-capture" type="text" value="Q" maxlength="3" style="width: 24px;"> </label>
     <label> Opts:   <output name="move-opts" style="opacity:0.7; font-style:italic;"> R|B|D|Q|N|S|P|K</output> </label>
   </div>
-  <div class="panel-title">Move | White | Black | Coordinates | Annotations</div>
-  <div class="section scroll-box" id="move-list">
-    <!-- tbd go here -->
-  </div>
+  <div class="section scroll-box" id="move-list"></div>
   </div>
 
 <div class="panel" id="gambit-window">
@@ -270,8 +266,8 @@ layout: "play"
     <button data-action="forward">Forward>></button>
   </div>
   <div class="section">
-    <button data-action="load" disabled>Load</button>
-    <button data-action="save" >Save</button>
+    <button data-action="load">Load</button>
+    <button data-action="save">Save</button>
   </div>
   <div class="section scroll-box" id="undo-state">
     <!-- tbd go here -->

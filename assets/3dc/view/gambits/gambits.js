@@ -28,6 +28,11 @@ export function UI() {  // Under test, rather stupid.
   return "whatever";
 }
 
+export function clearGambits() {
+  console.log("view: gambits.js - clearGambits()");
+  // TODO: write clearGambits().
+}
+
 export function renderGambit(group, { animate = false } = {}) {
   console.log("view: gambits.js - renderGambit(group)", group);
 

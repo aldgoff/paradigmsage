@@ -35,15 +35,12 @@ export function parseBuffer(strings) {    // Convert array of state strings, to 
 
 export function createState(payload, index) { // Create the state entry from raw data.
   console.log("model: moves.js - createState(payload, index)", payload, index);
-  let sam = move.turn;  // Test access to json file.
-  console.log("Sam", sam);
   // TODO: code model: moves - createState().
 
-  const srcTile = payload.src;
-  const dstTile = payload.dst;
-  const secTile = payload.sec;
+  let { action, player, piece, src, dst, sec, capture, opts } = payload;
+  let turn = Math.floor((index + 1) / 2);
+  let entry = { turn, player, piece, src, action, dst, sec };
 
-  let entry = {"turn": 1, "moves": ["P-K4,4", "P-Q4,3"], "coords": ["", ""], "annotations": ["", "..."] };
   return entry;
   }
 
@@ -59,13 +56,6 @@ export function parse(str) {              // Convert a state string to a state e
   // TODO: code model: moves - parse().
   let entry = {};
   return entry;
-}
-
-export function tableFormat(entry) {      // Convert a state entry into columnized string for the panel display.
-  console.log("model: moves.js - tableFormat(entry)", entry);
-  // TODO: code model: moves - tableFormat().
-  let tableStr = "";
-  return tableStr;
 }
 // Seampoint: more global functions...
 

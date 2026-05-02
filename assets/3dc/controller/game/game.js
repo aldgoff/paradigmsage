@@ -21,6 +21,7 @@ import gameData from "./game.json" assert { type: "json" };
   import * as boards   from "../../view/boards/boards.js";
   import * as vAdvsqs  from "../../view/advsqs/advsqs.js";
   import * as vGambits from "../../view/gambits/gambits.js";
+  import * as vMoves   from "../../view/moves/moves.js";
 // Seampoint: more imports...
 
 // --- UI ---
@@ -74,13 +75,13 @@ function handleUndo() {
   if(!keyIndex) { // Edge case, blank canvas, "Bottom Sentry".
     console.log("Bottom Sentry");
     vAdvsqs.clearAdvsq();
-    // clear other buffers.
+    // TODO: clear other buffers.
     boards.clearBoard();
     showUndoStatus();
     return;
   }
 
-  if(keyIndex.arrayKey === "AdvSqs") {
+  if(     keyIndex.arrayKey === "AdvSqs") {
     vAdvsqs.clearAdvsq();
     const specs = state.fetchCurrentState("AdvSqs");
     if(specs) {
@@ -91,24 +92,29 @@ function handleUndo() {
   else if(keyIndex.arrayKey === "Gambits") {
     vAdvsqs.clearAdvsq();
 
-    vGambits.refreshPanel();
-
-    const count = state.getBufferIndex().Gambits;
-    const idx = count; // first "future" item
-
+    const idx = state.getBufferIndex().Gambits;
     const group = cGambits.getGambitGroup(idx);
     if (group) {
       vGambits.derenderGambit(group);
+      vGambits.refreshPanel();
     }
     }
   else if(keyIndex.arrayKey === "Moves") {
     vAdvsqs.clearAdvsq();
-    // clear gambits.
+    vGambits.clearGambits();
+
+    const entry = state.fetchCurrentMove();
+    if(entry) {
+      vMoves.undoMove(entry);
+      vMoves.updatePanel();
+    }
     }
   else if(keyIndex.arrayKey === "Setup") {
-    boards.clearBoard();
-    // clear gambits.
+    vAdvsqs.clearAdvsq();
+    vGambits.clearGambits().
     // clear moves.
+
+    boards.clearBoard();
     const specs = state.fetchCurrentState("Setup");
     console.log("specs", specs);
     if(specs) {
@@ -286,7 +292,6 @@ function handleLoad() {
   console.log("cntrl: game.js... getStateKeys()", state.getStateKeys());
   console.log("cntrl: game.js... getBufferIndex()", state.getBufferIndex());
   console.log("cntrl: game.js... getState()", state.getState());
-  console.log("cntrl: game.js... getNull()", state.getNull());
   }
 
 function handleSave() {
