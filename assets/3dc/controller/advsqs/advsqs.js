@@ -1,9 +1,9 @@
 /* File: advsqs.js
-  Path: ./3dc/advsqs/advsqs.js
-  Purpose: desc
+  Path: ./3dc/controller/advsqs/advsqs.js
+  Purpose: Create and morph advancement squares vis srcTile, quad, perimeter, and stride, w/ opacity for offboard tiles.
   Author: Allan Goff
   Date: 4/21/26
-  Recommended access: import * as cAdvsqs.
+  Recommended access: import * as cAdvsqs from ../../controller/advsqs/advsqa.js
   UI: the export functions.
 */
 
@@ -14,13 +14,13 @@ import advsqsData from "./advsqs.json" assert { type: "json" };
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
-import * as game   from "../../controller/game/game.js";
+  import * as game   from "../../controller/game/game.js";
 
-import * as state  from "../../model/state/state.js";
-import * as coords from "../../foundation/coords/coords.js";  // normalizeTileToVts().
+  import * as state  from "../../model/state/state.js";
+  import * as coords from "../../foundation/coords/coords.js";  // normalizeTileToVts().
 
-import * as vAdvsqs from "../../view/advsqs/advsqs.js";
-import * as vGambits from "../../view/gambits/gambits.js";
+  import * as vAdvsqs  from "../../view/advsqs/advsqs.js";
+  import * as vGambits from "../../view/gambits/gambits.js";
 // Seampoint: more imports...
 
 // --- UI ---

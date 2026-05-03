@@ -3,9 +3,6 @@ title: "Play"
 layout: "play"
 ---
 
-**Play (INWORK)**
-  A playable implemetation of 3D Chess with planar moves and advancement squares.
-  To see explanatory pages, click on **3DC** above.
 
 <!-- Load the Three.js Render... -->
 <script type="module">
@@ -34,11 +31,6 @@ layout: "play"
   #gambit-window {
     width: 200px;
   }
-  #move-list {
-    font-family: monospace;
-    white-space: pre;   /* Allows code to col align text. */
-    height: 140px;
-    }
   #gambit-list {
     font-family: monospace;
     white-space: pre;
@@ -46,6 +38,10 @@ layout: "play"
   #move-window {
     font-family: monospace;
     width: 350px;
+    }
+  #move-list {
+    font-family: monospace;
+    white-space: pre;   /* Allows code to col align text. */
     }
   #undo-state {
     height: 66px;
@@ -65,51 +61,45 @@ layout: "play"
     padding: 4px;
   }
 
-  #setup-window   { top:  120px; left:   80px; }  /* DOM Control Panels */
-  #move-window    { top: 1200px; left:   80px; }
+  #setup-window   { top:  260px; left:   80px; }  /* DOM Control Panels */
+  #move-window    { top: 1130px; left:   80px; }
   #gambit-window  { top:  830px; left:   80px; }
-  #advsq-window   { top:  120px; left:  260px; }
-  #compass-window { top:  999px; left:  300px; }
+  #advsq-window   { top:  260px; left:  255px; }
+  #compass-window { top:  260px; left:  600px; }
 
-  #game-window    { top:  120px; left:  450px; }
+  #game-window    { top:  260px; left:  430px; }
 
-  #camera-window { top:   420px; left:   80px; }
+  #camera-window { top:   510px; left:  430px; }
   #viewer-window { top:   560px; left:   80px; }
   /* Seampont - more DOM control panels... */
 </style>
 
 <!-- The 3DC Game... -->
-<canvas id="3dc-board" width="1600" height="2000"></canvas>  <!-- 3D -->
+<canvas id="3dc-board" width="1600" height="2400"></canvas>  <!-- 3D -->
 
 <!-- The DOM Control Panels -->
 <div class="panel" id="setup-window">
   <div class="panel-title">Setup Panel</div>
-
   <div class="section">
     <button data-action="makeBoard">Make Board</button>
   </div>
-
   <div class="section">
     <label> <input type="radio" name="board-size" value="8x8x8" checked> 8×8×8 </label><br>
     <label> <input type="radio" name="board-size" value="10x8x8"> 10×8×8 </label><br>
     <label> <input type="radio" name="board-size" value="10x10x10"> 10×10×10 </label>
   </div>  
-
   <div class="section">
     <label>Tray Type</lable>
     <!-- <button data-action="addTrays">Add Trays</button> -->
   </div>
-
   <div class="section">
     <label> <input type="radio" disabled name="tray-type" value="none"> None </label><br>
     <label> <input type="radio" disabled name="tray-type" value="real"> Real </label><br>
     <label> <input type="radio" disabled name="tray-type" value="factory"> Factory </label><br>
   </div>  
-
   <div class="section">
     <label>Initial Position</lable>
   </div>  
-
   <div class="section">
     <label> <input type="radio" disabled name="initial-pos" value="standard"> Standard </label><br>
     <label> <input type="radio" disabled name="initial-pos" value="manual"> Manual </label><br>
@@ -117,27 +107,46 @@ layout: "play"
   </div>
 
 <div class="panel" id="move-window">
-  <div class="panel-title">Move | White | Black | Coordinates | Annotations</div>
-
-  <div class="section scroll-box" id="move-list">
-    <!-- tbd go here -->
+  <div class="panel-title">Move Panel</div>
+  <div class="section">
+    <button data-action="move">Move</button>
+    <button data-action="capture">Capture</button>
+    <button data-action="enpassant">En Passant</button>
+    <button data-action="castle">Castle</button>
+    <button data-action="promote">Promote</button>
   </div>
+  <div class="section">
+    <button data-action="duke-decay">Duke Decay</button>
+    <button data-action="bishop-decay">Bishop Decay</button>
+    <button data-action="fission">Fission</button>
+    <label> <input type="radio" name="move-player" value="White" data-action="Player" checked> W </label>
+    <label> <input type="radio" name="move-player" value="Black" data-action="Player"> B </label>
+  </div>
+  <div class="section">
+    <label> SrcTile <input name="move-src" type="text" value="K2,2" maxlength="7" style="width: 44px;"> </label>
+    <label> DstTile <input name="move-dst" type="text" value="K4,4" maxlength="7" style="width: 44px;"> </label>
+    <label> 2ndTile <input name="move-2nd" type="text" value="" maxlength="7" style="width: 44px;"> </label>
+  </div>
+  <div class="section">
+    <label> Piece   <input name="move-piece"   type="text" value="P" maxlength="3" style="width: 24px;"> </label>
+    <label> Capture <input name="move-capture" type="text" value="Q" maxlength="3" style="width: 24px;"> </label>
+    <label> Opts:   <output name="move-opts" style="opacity:0.7; font-style:italic;"> R|B|D|Q|N|S|P|K</output> </label>
+  </div>
+  <div class="section scroll-box" id="move-list"></div>
   </div>
 
 <div class="panel" id="gambit-window">
   <div class="panel-title">Gambit Panel</div>
-
   <div class="section">
     <button data-action="freezeQ">Freeze Quadrant</button>
-    <button data-action="freezeL" disabled>Freeze Linear</button>
-    <button data-action="freezeO" disabled>Freeze Overlap</button>
+    <button data-action="freezeL" disabled>Freeze as Linear</button>
+    <button data-action="freezeO" disabled>Freeze with Overlaps</button>
+    <button data-action="freezeP" disabled>Freeze as a plane</button>
   </div>
-
   <div class="section">
     <button data-action="delete">Delete</button>
     <button data-action="remove">Remove All</button>
   </div>
-
   <div class="section">
     <label> Open   :  <output name="gambit-open"  style="opacity:0.7; font-style:italic;"> [,,,,,]</output> </label>
   </div>
@@ -153,7 +162,6 @@ layout: "play"
   <div class="section">
     <label> LowestPiece: <output name="gambit-piece"    style="opacity:0.7; font-style:italic;"> Queen </output> </label>
   </div>
-
   <div class="section scroll-box" id="gambit-list"></div>
     <!-- advsq entries go here -->
     <!-- N quad src -> dst : area -->
@@ -164,17 +172,14 @@ layout: "play"
 
 <div class="panel" id="advsq-window">
   <div class="panel-title">AdvSq Panel</div>
-
   <div class="section">
     <button data-action="place">Place</button>
     <button data-action="remove">Remove</button>
   </div>
-
   <div class="section">
     <button data-action="grow">Grow</button>
     <button data-action="shrink">Shrink</button>
   </div>
-
   <div class="section">
     <label> Source Tile  <input  name="advsq-src"       type="text"    value="KB4,4" maxlength="7" style="width: 60px;"> </label>
   </div>
@@ -211,7 +216,7 @@ layout: "play"
     <label> Stride Type: <output name="advsq-strideType"style="opacity:0.7; font-style:italic;"></output> </label>
   </div>
   <div class="section">
-    <label> Move Type:   <output name="advsq-moveType"  style="opacity:0.7; font-style:italic;"> Q|L|D </output> </label>
+    <label> Move Type:   <output name="advsq-moveType"  style="opacity:0.7; font-style:italic;"> Q|L|D|O </output> </label>
   </div>
   <div class="section">
     <label> Overlap:     <output name="advsq-overlap"   style="opacity:0.7; font-style:italic;"> B|Q|H|F </output> </label>
@@ -219,7 +224,6 @@ layout: "play"
   <div class="section">
     <label> Piece:       <output name="advsq-piece"     style="opacity:0.7; font-style:italic;"> R|B|D|Q|S|N </output> </label>
   </div>
-
   <!-- Optional: key hints (visual only) -->
   <div class="section" style="font-size: 13px; font-weight: bold; color: #666;">
     Slip & Slide +: k i j
@@ -227,13 +231,11 @@ layout: "play"
   <div class="section" style="font-size: 13px; font-weight: bold; color: #666;">
     Slip & Slide -: K I J
   </div>
-
   <div class="section">
     <button data-action="nextQuad">Next Quad</button>
     <button data-action="nextPlane">Next Plane</button>
     <button data-action="nextPiece">Next Piece</button>
   </div>
-
   <div class="section">
     <label> Offboard Visibility
       <input type="range" name="advsq-opacity" min="0" max="1" step="0.01" value="0.5"> </label>
@@ -242,11 +244,9 @@ layout: "play"
 
 <div class="panel" id="compass-window">
   <div class="panel-title">Compass Panel</div>
-
   <div class="section">
     <button data-action="Rays" disabled>Rays</button>
   </div>
-
   <div class="section">
     <button data-action="Apexes" disabled>Apexes</button>
   </div>
@@ -254,9 +254,8 @@ layout: "play"
 
 <div class="panel" id="game-window">
   <div class="panel-title">Game Panel</div>
-
   <div class="section">
-    <button data-action="newGame" disabled>New Game</button>
+    <button data-action="newGame">New Game</button>
   </div>
   <div class="section">
     <button data-action="undo">Undo</button>
@@ -267,10 +266,9 @@ layout: "play"
     <button data-action="forward">Forward>></button>
   </div>
   <div class="section">
-    <button data-action="load" disabled>Load</button>
-    <button data-action="save" disabled>Save</button>
+    <button data-action="load">Load</button>
+    <button data-action="save">Save</button>
   </div>
-
   <div class="section scroll-box" id="undo-state">
     <!-- tbd go here -->
   </div>
@@ -278,14 +276,12 @@ layout: "play"
 
 <div class="panel" id="camera-window">
   <div class="panel-title">Camera Panel</div>
-
   <div class="section">
     <button data-action="ZoomIn"> Zoom In </button>
     <button data-action="ZoomOut">Zoom Out</button>
     <button data-action="Ascend"> Ascend  </button>
     <button data-action="Descend">Descend </button>
   </div>
-
   <div class="section">
     <label> <input type="radio" name="camera-pov" value="white"    data-action="SetPOV"> White </label>
     <label> <input type="radio" name="camera-pov" value="neutral"  data-action="SetPOV" checked> Neutral </label>
@@ -296,24 +292,19 @@ layout: "play"
 
 <div class="panel" id="viewer-window">
   <div class="panel-title">Viewer Panel</div>
-
   <div class="section">
     <button data-action="ShowTrays" disabled> Show Trays </button>
     <button data-action="HideTrays" disabled> Hide Trays </button>
   </div>
-
   <div class="section">
     <label> 'Gap' <input name="viewer-trayGap" disabled type="number" min="0" step="1" value="1" max="3"> </label>
   </div>
-
   <div class="section">
     <label> 'Sep' <input name="viewer-traySep" type="number" disabled min="1.0" step="0.1" value="1.5" max="2.0"> </label>
   </div>
-
   <div class="section">
     <button data-action="ToggleAnimation"> Toggle Animation </button>
   </div>
-
   <div class="section">
     <label> Jitter Range <input type="range" name="viewer-range" min="0" max="1" step="0.01" value="0.2"> </label>
     <label> Jitter Speed <input type="range" name="viewer-speed" min="0" max="1" step="0.01" value="0.2"> </label>

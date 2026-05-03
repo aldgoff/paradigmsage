@@ -38,4 +38,9 @@ export function pixels2vts( [x, y, z], Sxy = dims.Sxy, Sz = dims.Sz, center = [d
     Math.round((z + center[2]) / Sxy)   // y
   ];
 }
+// Seampoint: more global functions...
+
+// --- Helpers ---
+// Seampoint: more local functions...
+
 

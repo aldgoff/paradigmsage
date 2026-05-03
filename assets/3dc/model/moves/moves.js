@@ -1,24 +1,24 @@
-/* File: advsqs.js
-  Path: ./3dc/advsqs/advsqs.js
-  Purpose: desc
+/* File: moves.js
+  Path: ./3dc/model/moves/moves.js
+  Purpose: The moves portion of the state of the game.
   Author: Allan Goff
-  Date: 4/15/26
-  Recommended access: import * as advsqs.
+  Date: 4/30/26
+  Recommended access: import * as mMoves from ../../model/moves/moves.js
   UI: the export functions.
   Philosophy: should be able to delete a module by deleting its directory.
 */
 
 // --- Load JSON ---
-import advsqsData from "./advsqs.json" assert { type: "json" };
-  const advsqsModule = advsqsData.advsqs_module;
-  const category  = advsqsModule.category;
+import movesData from "./moves.json" assert { type: "json" };
+  const movesModule = movesData.moves_module;
+  const move  = movesModule.Move;
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
   import * as state  from "../../model/state/state.js";
 // Seampoint: more imports...
 
-const buffer = "AdvSqs";   // State buffer (state.js).
+const buffer = "Moves";   // State buffer (state.js).
 
 // --- UI ---
 export function makeEntry(payload) {
@@ -119,8 +119,15 @@ export function clearEntireBuffer() {
 
 
 // TODO: Deprecate pre UI standardization.
-export function clearBuffer() {
-  state.clearBuffer("AdvSqs");      // Update undo buffer.
+export function createState(payload, index) { // Create the state entry from raw data.
+  console.log("model: moves.js - createState(payload, index)", payload, index);
+  // TODO: code model: moves - createState().
+
+  let { action, player, piece, src, dst, sec, capture, opts } = payload;
+  let turn = Math.floor((index + 1) / 2);
+  let entry = { turn, player, piece, src, action, dst, sec };
+
+  return entry;
 }
 // Seampoint: more global functions...
 

@@ -14,13 +14,14 @@ import gameData from "./game.json" assert { type: "json" };
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
-import * as cGambits from "../../controller/gambits/gambits.js";
+  import * as cGambits from "../../controller/gambits/gambits.js";
 
-import * as state    from "../../model/state/state.js";
+  import * as state    from "../../model/state/state.js";
 
-import * as boards   from "../../view/boards/boards.js";
-import * as vAdvsqs  from "../../view/advsqs/advsqs.js";
-import * as vGambits from "../../view/gambits/gambits.js";
+  import * as boards   from "../../view/boards/boards.js";
+  import * as vAdvsqs  from "../../view/advsqs/advsqs.js";
+  import * as vGambits from "../../view/gambits/gambits.js";
+  import * as vMoves   from "../../view/moves/moves.js";
 // Seampoint: more imports...
 
 // --- UI ---
@@ -43,10 +44,12 @@ export function panelDispatch(payload) {
   }
 
 export function showUndoStatus() {  // Show undo buffers in Game panel.
+  console.log("cntrl: game.js - showUndoStatus():");
+
   const el = document.getElementById("undo-state");
 
   const keys = state.getStateKeys();
-  const undo = state.getBufferCount();
+  const undo = state.getBufferIndex();
 
   const text = keys
     .map((key) => {
@@ -64,7 +67,9 @@ export function showUndoStatus() {  // Show undo buffers in Game panel.
 function handleNewGame() {
   console.log("cntrl: game.js - handleNewGame()");
   // TODO: game.js - handleNewGame().
-  }
+
+  console.log(state.getStateKeys());
+}
 
 function handleUndo() {
   const keyIndex = state.prevKeyIndex();
@@ -72,13 +77,13 @@ function handleUndo() {
   if(!keyIndex) { // Edge case, blank canvas, "Bottom Sentry".
     console.log("Bottom Sentry");
     vAdvsqs.clearAdvsq();
-    // clear other buffers.
+    // TODO: clear other buffers.
     boards.clearBoard();
     showUndoStatus();
     return;
   }
 
-  if(keyIndex.arrayKey === "AdvSqs") {
+  if(     keyIndex.arrayKey === "AdvSqs") {
     vAdvsqs.clearAdvsq();
     const specs = state.fetchCurrentState("AdvSqs");
     if(specs) {
@@ -89,28 +94,33 @@ function handleUndo() {
   else if(keyIndex.arrayKey === "Gambits") {
     vAdvsqs.clearAdvsq();
 
-    vGambits.refreshPanel();
-
-    const count = state.getBufferCount().Gambits;
-    const idx = count; // first "future" item
-
+    const idx = state.getBufferIndex().Gambits;
     const group = cGambits.getGambitGroup(idx);
     if (group) {
       vGambits.derenderGambit(group);
+      vGambits.refreshPanel();
     }
     }
   else if(keyIndex.arrayKey === "Moves") {
     vAdvsqs.clearAdvsq();
-    // clear gambits.
+    vGambits.clearGambits();
+
+    const entry = state.fetchCurrentMove();
+    if(entry) {
+      vMoves.undoMove(entry);
+      vMoves.updatePanel();
+    }
     }
   else if(keyIndex.arrayKey === "Setup") {
-    boards.clearBoard();
-    // clear gambits.
+    vAdvsqs.clearAdvsq();
+    vGambits.clearGambits().
     // clear moves.
+
+    boards.clearBoard();
     const specs = state.fetchCurrentState("Setup");
     console.log("specs", specs);
     if(specs) {
-      boards.makeBoard(specs);
+      boards.makeSetup(specs);
     }
     showUndoStatus();  // Show undo status in the panel.
     }
@@ -132,7 +142,7 @@ function handleRedo() {
     const specs = state.fetchCurrentState("Setup");
     boards.clearBoard(specs);
     if(specs) {
-      boards.makeBoard(specs);
+      boards.makeSetup(specs);
     }
     }
   else if(keyIndex.arrayKey === "Moves") {
@@ -145,7 +155,7 @@ function handleRedo() {
 
     vGambits.refreshPanel();
 
-    const count = state.getBufferCount().Gambits;
+    const count = state.getBufferIndex().Gambits;
     const idx = count - 1; // newly active item
 
     const group = cGambits.getGambitGroup(idx);
@@ -190,7 +200,7 @@ function handleRewind() {
     }
   else if (keyIndex.arrayKey === "Gambits") {
     vAdvsqs.clearAdvsq();
-    state.setBufferCount("AdvSqs", 0);
+    state.setBufferIndex("AdvSqs", 0);
     cGambits.rerunGambits();
     }
   else if (keyIndex.arrayKey === "Moves") {
@@ -201,7 +211,7 @@ function handleRewind() {
     boards.clearBoard();
     const specs = state.fetchCurrentState("Setup");
     if (specs) {
-      boards.makeBoard(specs);
+      boards.makeSetup(specs);
     }
     }
   else {
@@ -214,7 +224,7 @@ function handleRewind() {
 function handleFastForward() {
   console.log("cntrl: game.js - handleFastForward()");
 
-  const counts = state.getBufferCount();
+  const counts = state.getBufferIndex();
 
   let startKey = null;
 
@@ -235,26 +245,27 @@ function handleFastForward() {
     if (keyIndex.arrayKey === "Setup") {
       const specs = state.fetchCurrentState("Setup");
       boards.clearBoard();
-      if (specs) boards.makeBoard(specs);
-    }
-
+      if (specs) {
+        boards.makeSetup(specs);
+        cGambits.rebindOverlaysToBoard();
+      }
+      // if (specs) boards.makeBoard(specs);
+      }
     else if (keyIndex.arrayKey === "Moves") {
       const specs = state.fetchCurrentState("Moves");
-      // TODO
-    }
-
+      // TODO: fastforward moves.
+      }
     else if (keyIndex.arrayKey === "Gambits") {
       vGambits.refreshPanel();
 
-      const count = state.getBufferCount().Gambits;
+      const count = state.getBufferIndex().Gambits;
       const idx = count - 1;
 
       const group = cGambits.getGambitGroup(idx);
       if (group) {
         vGambits.renderGambit(group);
       }
-    }
-
+      }
     else if (keyIndex.arrayKey === "AdvSqs") {
       const specs = state.fetchCurrentState("AdvSqs");
       vAdvsqs.clearAdvsq();
@@ -262,7 +273,7 @@ function handleFastForward() {
         vAdvsqs.makeAdvsq(specs);
         vAdvsqs.setAdvsqPanelParams(specs);
       }
-    }
+      }
 
     else {
       throw new Error("Unknown buffer:", keyIndex.arrayKey);
@@ -273,29 +284,68 @@ function handleFastForward() {
   }
 
   showUndoStatus();
-  }
+}
 
-function handleLoad() {
+async function handleLoad() {
   console.log("cntrl: game.js - handleLoad()");
-  // TODO: game.js - handleLoad().
 
-  // Dev/Debug code - temporary.
-  console.log("cntrl: game.js... getStateKeys()", state.getStateKeys());
-  console.log("cntrl: game.js... getBufferCount()", state.getBufferCount());
-  console.log("cntrl: game.js... getState()", state.getState());
-  console.log("cntrl: game.js... getNull()", state.getNull());
+  try {
+    const text = await navigator.clipboard.readText();
+    const newState = JSON.parse(text);
+
+    state.setNull();      // Reset state completely.
+
+    for(const key of state.getStateKeys()) {   // Load all buffers (no rendering).
+      const entries = newState[key] || [];
+
+      for(const entry of entries) {
+        state.pushNewState(key, entry);
+      }
+
+      state.setBufferIndex(key, 0); // Reset all indexes to 0.
+    }
+
+    showUndoStatus(); // Good visual indicator of successful load.
+
+  } catch (err) {
+    console.error("Load failed:", err);
+  }
   }
 
 function handleSave() {
   console.log("cntrl: game.js - handleSave()");
-  // TODO: game.js - handleSave().
-  const lastState = state.fetchCurrentSetup();  // Temp: being used for undo feedback, not button's intended purpose.
-  const index = state.getBufferCount(); // All of them.
-  const setupIndex = index.Setup;     // Just the setup index
-  console.log("Current Setup Undo:", setupIndex, lastState);
+
+  diagnostic(true);
+  
+  const stateStr = JSON.stringify(state.getState());  // One long single string.
+  console.log(stateStr);
+  
+  const stateString = JSON.stringify(state.getState(), null, 2);  // Pretty print with 2 space idents.
+  navigator.clipboard.writeText(stateString)
+    .then(() => {
+      console.log("State copied to clipboard");
+    })
+    .catch(err => {
+      console.error("Clipboard write failed:", err);
+    });
   }
 // Seampoint: more handle functions...
 
 // --- Helpers ---
+function diagnostic(enabled=false) {
+  if(!enabled) return;
+
+  const bufferList = [ "Setup", "Moves", "Gambits", "AdvSqs"];
+
+  for(const buffer of bufferList) {
+    console.log("  ", buffer, state.getState()[buffer]);
+  }
+
+  for(const buffer of bufferList) {
+    const idx = state.getBufferIndex()[buffer]; 
+    const currEntry = state.fetchCurrentState(buffer);
+    console.log("  ", idx, currEntry);
+  }
+}
 // Seampoint: more local functions...
 

@@ -14,7 +14,7 @@
 import coordsData from "./coords.json" assert { type: "json" };
   const coordsModule = coordsData.coords_module;
   const boardSpecs = coordsModule.board_specs;
-  // Seampoint: more imports...
+// Seampoint: more imports...
 
 // --- UI ---
 // -- Public API (both notations) --
@@ -168,4 +168,7 @@ export function onBoardVts(vts, specName = "8x8x8") {
   return onBoardRcs(rcs, spec);
 }
 // Seampoint: more global functions...
+
+// --- Helpers ---
+// Seampoint: more local functions...
 

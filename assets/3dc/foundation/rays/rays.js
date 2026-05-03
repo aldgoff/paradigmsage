@@ -20,7 +20,7 @@ import raysData from "./rays.json" assert { type: "json" };
   const DUKE   = raysModule.duke;
   const APEX   = raysModule.apex;
   const KNIGHT = raysModule.knight;
-  // Seampoint: more imports...
+// Seampoint: more imports...
 
 // --- UI ---
 // -- Core (VTS only) --

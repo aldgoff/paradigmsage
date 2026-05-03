@@ -14,10 +14,10 @@ import decoratorsData from "./decorators.json" assert { type: "json" };
   const scales     = decoratorsModule.scales;
   const pallet     = decoratorsModule.pallet;
   const decorators = decoratorsModule.decorators;
-  // Seampoint: more objects.
+// Seampoint: more objects...
 
 // --- Build upon previous layers ---
-// Seampoint: more imports.
+// Seampoint: more imports...
 
 // --- UI ---
 export function module() {
@@ -254,7 +254,7 @@ export function resolveColors(names, pallet) {  // Convert pallet color names to
     return color;
   });
 }
-// Seampoint: more global functions.
+// Seampoint: more global functions...
 
 // --- Helpers ---
 function resolveDefinition(def, pallet) {
@@ -340,5 +340,5 @@ function renderDecorator(meshTile, baseColor, def, zOffset=0.00) {
 
   return overlays;
 }
-// Seampoint: more local functions.
+// Seampoint: more local functions...
 

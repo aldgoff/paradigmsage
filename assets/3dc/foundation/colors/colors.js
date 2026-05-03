@@ -12,7 +12,7 @@ import colorsData from "./colors.json" assert { type: "json" };
   const colorsModule = colorsData.colors_module;
   const BISHOP = colorsModule.bishop_color;
   const DUKE   = colorsModule.duke_color;
-  // Seampoint: more imports...
+// Seampoint: more imports...
 
 // --- Build upon previous layers ---
 import * as coords from "../coords/coords.js";
@@ -65,4 +65,7 @@ export function dukeColorVts(vts /* spec-independent */) {
   return block[`${ux},${uy}`];  // "gold"|"ruby"|"jade"|"silver".
 }
 // Seampoint: more global functions...
+
+// --- Helpers ---
+// Seampoint: more local functions...
 

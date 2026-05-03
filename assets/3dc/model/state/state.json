@@ -1,6 +1,7 @@
 {
   "state_module": {
     "_example": "A sequence of 4 invertible undo/redo arrays.",
+    "_cannonicalSchema": "Each model layer module file is responsible for complying to this standard.",
     "Setup": [
       { "board": [8,8,8],    "play": "off",    "trays": "none",    "gap": 0, "initialPos": "std|list", "itemized": {"white": [], "black": []} },
       { "board": [10,8,8],   "play": "off",    "trays": "none",    "gap": 0, "initialPos": "std|list", "itemized": {"white": [], "black": []} },
@@ -17,8 +18,20 @@
       { "board": [4,4,4],    "play": "game",   "trays": "real", "gap": 0 }
     ],
     "Moves": [
-      { "turn": 1, "moves": ["P-K4,4", "P-Q4,3"], "coords": ["", ""], "annotations": ["", "..."] },
-      { "turn": 2, "moves": ["PxP",   "N-KB3,3"], "coords": ["...", ""], "annotations": ["", ""] },
+      { "turn":  1, "player": "White", "piece": "P", "src": "K2,2", "action": "move", "dst": "K4,4", "captured": "", "sec": "", "annotations": "ch" },
+      { "turn":  1, "player": "Black", "piece": "R", "src": "K1,1", "action": "capture", "dst": "K4,6", "captured": "B", "sec": "Q5,6", "annotations": "ch" },
+      { "turn": 14, "player": "White", "piece": "S", "src": "K2,2", "action": "fission", "dst": "K4,4", "captured": "RB", "sec": "Q5,6", "annotations": "ch" },
+      { "turn": 14, "player": "White", "action": "fission", "steps": [
+        { "color": "W", "piece": "S", "image": "piece", "src": "KB1,1",  "dst": null },
+        { "color": "W", "piece": "S", "image": "ghost", "src": "TKB1,1", "dst": null },
+        { "color": "W", "piece": "B", "image": "ghost", "src": null,     "dst": "TKB1,2" },
+        { "color": "W", "piece": "D", "image": "ghost", "src": null,     "dst": "TKB2,1" },
+
+        { "color": "W", "piece": "B", "image": "piece", "src": null,   "dst": "QB3,5" },
+        { "color": "B", "piece": "N", "image": "piece", "src": "K6,6", "dst": "TKN1,1" },
+        { "color": "W", "piece": "D", "image": "piece", "src": null,   "dst": "K6,6" }
+
+      ], "annotations": "ch" },
       { "turn": 3, "moves": ["qnP-QN3,4", "..."], "coords": ["...", "..."], "annotations": ["...", "..."] }
     ],
     "Gambits": [

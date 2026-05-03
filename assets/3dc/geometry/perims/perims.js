@@ -8,7 +8,6 @@
 */
 
 // --- Build upon the previous layers ---
-// Seampoint: more imports...
 import * as utils  from "../../../../utils/utils.js";
 
 import * as coords from "../../foundation/coords/coords.js";

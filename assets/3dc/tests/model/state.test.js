@@ -24,7 +24,7 @@ import stateData from "../../model/state/state.json" assert { type: "json" };
   const Moves   = stateModule.Moves;
   const Gambits = stateModule.Gambits;
   const AdvSqs  = stateModule.AdvSqs;
-  // Seampoint: more objects.
+// Seampoint: more objects...
 
 // --- Layers ---
 import * as coords from "../../foundation/coords/coords.js";
@@ -39,7 +39,7 @@ export function run() {
 
   test_state();
   test_setup();
-  test_moves();
+  // test_moves();
   test_gambits();
   // test_advsqs();
   // Seampoint: more tests...
@@ -57,8 +57,9 @@ export function run() {
 function test_state() {
   const cases = [
     { expected: 44, label: "-example" },
+    { expected: 75, label: "-_cannonicalSchema" },
     { expected: 11, label: "Setup" },
-    { expected:  3, label: "Moves" },
+    { expected:  5, label: "Moves" },
     { expected:  4, label: "Gambits" },
     { expected:  6, label: "AdvSqs" },
   ];

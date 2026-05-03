@@ -1,5 +1,5 @@
 {
-  "modules_module": {
+  "setup_module": {
     "category": {
       "key1": "value1",
       "key2": 123,

@@ -100,13 +100,21 @@
 │   │   │   │   ├── gambits.js
 │   │   │   │   ├── gambits.json
 │   │   │   │   └── gambits.md
-│   │   │   ├── grammar.js
 │   │   │   ├── model.js
 │   │   │   ├── model.json
 │   │   │   ├── model.md
+│   │   │   ├── moves
+│   │   │   │   ├── moves.js
+│   │   │   │   ├── moves.json
+│   │   │   │   └── moves.md
 │   │   │   ├── notation
+│   │   │   │   ├── grammar.js
 │   │   │   │   ├── notation.js
 │   │   │   │   └── notation.json
+│   │   │   ├── setup
+│   │   │   │   ├── setup.js
+│   │   │   │   ├── setup.json
+│   │   │   │   └── setup.md
 │   │   │   └── state
 │   │   │       ├── state.js
 │   │   │       ├── state.json
@@ -134,8 +142,6 @@
 │   │   │   │   └── quads.test.js
 │   │   │   ├── integration
 │   │   │   ├── model
-│   │   │   │   ├── Obsolete
-│   │   │   │   │   └── gambit.test.js
 │   │   │   │   └── state.test.js
 │   │   │   ├── templates
 │   │   │   │   └── modules.test.js
@@ -162,6 +168,9 @@
 │   │       │   ├── gambits.json
 │   │       │   └── gambits.md
 │   │       ├── moves
+│   │       │   ├── moves.js
+│   │       │   ├── moves.json
+│   │       │   └── moves.md
 │   │       ├── pieces
 │   │       ├── registerHandlers.js
 │   │       ├── render
@@ -182,6 +191,10 @@
 │   │       │   ├── scenes.js
 │   │       │   ├── scenes.json
 │   │       │   └── scenes.md
+│   │       ├── setup
+│   │       │   ├── setup.js
+│   │       │   ├── setup.json
+│   │       │   └── setup.md
 │   │       ├── tiles
 │   │       │   ├── tiles.js
 │   │       │   ├── tiles.json
@@ -475,4 +488,4 @@
 │           └── poc.js
 └── themes
 
-103 directories, 372 files
+105 directories, 383 files

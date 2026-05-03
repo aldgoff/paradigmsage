@@ -1,0 +1,50 @@
+{
+  "moves_module": {
+    "_comment1": "Canonical notations - entries in the state buffer.",
+    "Move": { "action": "move|capture|enpassant|castle|promote|duke_decay|bishop_decay|fission",
+      "turn": 0,
+      "player": "White|Black",
+      "piece": "R|B|D|Q|N|S|P|K",
+      "src": "<LL>x,y",
+      "dst": "<LL>x,y",
+      "type": "quadrant|linear|duplex|overlap - derivable from src/dst but expensive",
+      "quadList": [],
+      "special": {
+        "capture": {
+          "piece": "R|B|D|Q|N|S|P|K"
+        },
+        "enpassant":    {},
+        "castle":       {},
+        "promote":      {},
+        "duke_decay":   {},
+        "bishop_decay": {},
+        "fission":      {},
+        "_last": "tbd"
+      },
+      "annotations": {
+        "check": "ch",
+        "discovered_check": "dc<n>",
+        "enpassant": "ep",
+        "trapdoor": "td",
+        "_tbd": "Those that are expensive to recompute should be stored."
+      },
+      "_last": "Can infer pieces/planes from quad - existing efficient functions."
+    },
+    "_comment2": "What the panel scroll-box layout should look like.",
+    "columns": [
+      { "field": "turn", "width": 3 },
+      { "field": "whiteMove", "width": 12 },
+      { "field": "blackMove", "width": 12 },
+      { "field": "whiteCoords", "width": 10 },
+      { "field": "blackCoords", "width": 10 },
+      { "field": "whiteAnnotations", "width": 12 },
+      { "field": "blackAnnotations", "width": 12 }
+    ],
+    "Examples": [
+      "1  P-K4,4     P-Q4,3      ",
+      "2  PxP        N-KB3,3     white-coords  black-coords  white-annotations  black-annotations",
+      "3  qnP-QN3,4  ......      white-coords  ...           white-annotations  ..."
+    ]
+  }
+}
+

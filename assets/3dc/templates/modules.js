@@ -1,9 +1,9 @@
 /* File: modules.js
-  Path: ./3dc/modules/modules.js
+  Path: ./3dc/layer/modules/modules.js
   Purpose: desc
   Author: Allan Goff
-  Date: 4/15/26
-  Recommended access: import * as modules.
+  Date: 5/03/26
+  Recommended access: import * as modules from ../../layer/modules/modules.js
   UI: the export functions.
 */
 
@@ -11,19 +11,22 @@
 import modulesData from "./modules.json" assert { type: "json" };
   const modulesModule = modulesData.modules_module;
   const category  = modulesModule.category;
-  // Seampoint: more objects.
+// Seampoint: more objects...
 
 // --- Build upon previous layers ---
 import * as planes from "../geometry/planes/planes.js";
 import * as quads  from "../geometry/quads/quads.js";
-// Seampoint: more imports.
+// Seampoint: more imports...
 
 
 // --- UI ---
 export function UI() {
-  console.log("control: modules.js - UI()");
+  console.log("layer: modules.js - UI()");
   
   return "whatever";
   }
-// Seampoint: more global functions.
+// Seampoint: more global functions...
+
+// --- Helpers ---
+// Seampoint: more local functions...
 

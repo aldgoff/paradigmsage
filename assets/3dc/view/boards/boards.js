@@ -11,7 +11,7 @@
 import boardsData from "./boards.json" assert { type: "json" };
   const boardsModule = boardsData.boards_module;
   const category  = boardsModule.category;
-  // Seampoint: more objects.
+// Seampoint: more objects...
 
 // --- Build upon previous layers ---
 import * as view       from "../view.js";
@@ -19,7 +19,7 @@ import * as tiles      from "../tiles/tiles.js";
 import * as decorators from "../decorators/decorators.js";
 import * as cameras    from "../render/cameras.js";
 import * as renders    from "../render/renders.js";
-// Seampoint: more imports.
+// Seampoint: more imports...
 
 let currentBoard = null;
 
@@ -88,7 +88,7 @@ export function clearBoard() {
     currentBoard = null;
   }
 }
-// Seampoint: more global functions.
+// Seampoint: more global functions...
 
 // --- Helpers ---
 function addEventListener(scene, renderer, camera, tileMap) {

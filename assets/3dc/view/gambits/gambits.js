@@ -11,21 +11,21 @@
 import gambitsData from "./gambits.json" assert { type: "json" };
   const gambitsModule = gambitsData.gambits_module;
   const category  = gambitsModule.category;
-// Seampoint: more objects.
+// Seampoint: more objects...
 
 // --- Build upon previous layers ---
-import * as state   from "../../model/state/state.js";
+  import * as state   from "../../model/state/state.js";
 
-import * as view   from "../../view/view.js";
-// Seampoint: more imports.
+  import * as view   from "../../view/view.js";
+// Seampoint: more imports...
 
+// --- Globals ---
 let activeAnimation = null;
 
 // --- UI ---
-export function UI() {  // Under test, rather stupid.
-  console.log("view: gambits.js - UI()");
-  
-  return "whatever";
+export function clearGambits() {
+  console.log("view: gambits.js - clearGambits()");
+  // TODO: write clearGambits().
 }
 
 export function renderGambit(group, { animate = false } = {}) {
@@ -93,7 +93,7 @@ export function refreshPanel() {
   const el = document.getElementById("gambit-list");
   if (!el) return;
 
-  const count = state.getBufferCount().Gambits;
+  const count = state.getBufferIndex().Gambits;
 
   const children = el.children;
 
@@ -115,7 +115,7 @@ export function updatePanel(gambit) {
   const { Q, src, dst, area } = gambit;
 
   // --- freeze index ---
-  const count = state.getBufferCount().Gambits;
+  const count = state.getBufferIndex().Gambits;
 
   // --- column widths ---
   const idxCol  = String(count).padStart(2);    // right-aligned

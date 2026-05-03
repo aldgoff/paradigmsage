@@ -14,6 +14,8 @@ import advsqsData from "./advsqs.json" assert { type: "json" };
 // Seampoint: more objects...
 
 // --- Build upon the previous layers ---
+import * as utils from "../../../utils/utils.js";
+
 import {getBoardSpec,
 } from "../../foundation/coords/coords.js";
 import {bishopColor,
@@ -40,10 +42,6 @@ import {getStride,
 
 const _private = Symbol("AdvSq");
 
-function add(a, b) {  // belongs in perims as a feature.
-  return [a[0] + b[0], a[1] + b[1], a[2] + b[2]];
-}
-
 // --- UI ---
 export class AdvSq {
   constructor(token, { source, quad, rayPair, k }) {
@@ -63,11 +61,11 @@ export class AdvSq {
     for (let i=0; i<=k; i++) {        // Each successive perimeter.
       this.perims[i] = getStride({ quad, k: i }); // return {k, stride, E1, apex, E2 };
       let perim = this.perims[i];
-      perim.E1   = add(source, perim.E1);
-      perim.apex = add(source, perim.apex);
-      perim.E2   = add(source, perim.E2);
+      perim.E1   = utils.add(source, perim.E1);
+      perim.apex = utils.add(source, perim.apex);
+      perim.E2   = utils.add(source, perim.E2);
       for(let s=0; s<this.perims[i].stride.length; s++) {
-        this.perims[i].stride[s] = add(source, this.perims[i].stride[s]);
+        this.perims[i].stride[s] = utils.add(source, this.perims[i].stride[s]);
       }
     }
   }

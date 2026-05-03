@@ -1,9 +1,9 @@
 /* File: gambits.js
-  Path: ./3dc/gambits/gambits.js
+  Path: ./3dc/controller/gambits/gambits.js
   Purpose: Collects advsqs into a set that stays on the board - gambit analysis.
   Author: Allan Goff
   Date: 4/23/26
-  Recommended access: import * as gambits.
+  Recommended access: import * as cGambits from ../../controller/gambits/gambits.js
   UI: the export functions.
 */
 
@@ -14,17 +14,18 @@ import gambitsData from "./gambits.json" assert { type: "json" };
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
-import * as game    from "../../controller/game/game.js";
-import * as cAdvsqs from "../../controller/advsqs/advsqs.js";
+  import * as game     from "../../controller/game/game.js";
+  import * as cAdvsqs  from "../../controller/advsqs/advsqs.js";
 
-import * as state   from "../../model/state/state.js";
-import * as planes  from "../../geometry/planes/planes.js";    // resolveDstTile().
-import * as mAdvsqs from "../../model/advsqs/advsqs.js";
-import * as mGambits from "../../model/gambits/gambits.js";
- 
-import * as view     from "../../view/view.js";
-import * as vAdvsqs  from "../../view/advsqs/advsqs.js";
-import * as vGambits from "../../view/gambits/gambits.js";
+  import * as state    from "../../model/state/state.js";
+  import * as planes   from "../../geometry/planes/planes.js";    // resolveDstTile().
+  import * as mAdvsqs  from "../../model/advsqs/advsqs.js";
+  import * as mGambits from "../../model/gambits/gambits.js";
+  
+  import * as view     from "../../view/view.js";
+  import * as tiles    from "../../view/tiles/tiles.js";
+  import * as vAdvsqs  from "../../view/advsqs/advsqs.js";
+  import * as vGambits from "../../view/gambits/gambits.js";
 // Seampoint: more imports...
 
 /* TODO: Gambit additions:
@@ -53,8 +54,9 @@ export function panelDispatch(payload) {
   const { action } = payload;
   switch (action) {
     case "freezeQ":  handleFreezeQuadrant(); break;
-    case "freezeL":  handleFreezeLinear(); break;
-    case "freezeO":  handleFreezeOverlap(); break;
+    case "freezeL":  handleFreezeAsLinear(); break;
+    case "freezeO":  handleFreezeWithOverlaps(); break;
+    case "freezeP":  handleFreezeAsAPlane(); break;
     case "delete":   handleDelete(); break;
     case "remove":   handleRemoveAll(); break;
     default: throw new Error(`Unknown gambit action ${action}.`);  break;
@@ -69,7 +71,7 @@ export function rerunGambits() {
   console.log("cntrl: gambits.js - rerunGambits()");
 
   const count = state.getBufferLength("Gambits");
-  const active = state.getBufferCount().Gambits; // ← KEY LINE
+  const active = state.getBufferIndex().Gambits; // ← KEY LINE
 
   // --- Hide ALL gambits ---
   for (let i = 0; i < count; i++) {
@@ -90,6 +92,47 @@ export function rerunGambits() {
   vGambits.refreshPanel();
 }
 
+// Suspicious code
+export function getLastActiveGambitIndex() {
+  const count = state.getBufferIndex().Gambits;
+  return count; // after undo, this is the removed one
+  }
+export function rebindOverlaysToBoard() {
+  console.log("cntrl: gambits.js - rebindOverlaysToBoard()");
+
+  const tileMap = view.context.tileMap;
+  if (!tileMap) return;
+
+  for (const [idx, group] of gambitGroupRegistry.entries()) {
+    if (!group?.userData?.overlays) continue;
+
+    for (const overlay of group.userData.overlays) {
+      const oldTile = overlay.userData?.parentTile;
+      if (!oldTile) continue;
+
+      const coords = oldTile.userData?.coords;
+      if (!coords) continue;
+
+      // --- lookup NEW tile ---
+      const newTile = tiles.getTileMesh(tileMap, coords);
+      if (!newTile) {
+        console.warn("Rebind failed: no tile for coords", coords);
+        continue;
+      }
+
+      // --- detach from old tile (if still attached) ---
+      if (overlay.parent) {
+        overlay.parent.remove(overlay);
+      }
+
+      // --- rebind ---
+      newTile.add(overlay);
+      overlay.userData.parentTile = newTile;
+    }
+  }
+}
+// Seampoint: more global functions...
+
 // --- Handle Functions ---
 export function handleFreezeQuadrant() {
   console.log("cntrl: gambits.js - handleFreezeQuadrant().");
@@ -104,7 +147,7 @@ export function handleFreezeQuadrant() {
   const {gambit, group} = mGambits.makeGambit(curr);  // Gambit: create.
 
   state.pushNewGambit(gambit);                        // Change state.
-  const idx = state.getBufferCount().Gambits - 1;
+  const idx = state.getBufferIndex().Gambits - 1;
 
   gambitGroupRegistry.set(idx, group);
   vGambits.renderGambit(group, { animate: true });    // Render.
@@ -113,23 +156,26 @@ export function handleFreezeQuadrant() {
   game.showUndoStatus();                              // Update game panel (undo).
 }
 
-/*** ----- ----- ----- ***/
-
-function handleFreezeLinear() {
+function handleFreezeAsLinear() {
   console.log("cntrl: gambits.js - handleFreezeLinear()");
   // TODO: change state - handleFreezeLinear().
   }
 
-function handleFreezeOverlay() {
+function handleFreezeWithOverlaps() {
   console.log("cntrl: gambits.js - handleFreezeOverlay()");
   // TODO: change state - handleFreezeOverlay().
+  }
+
+function handleFreezeAsAPlane() {
+  console.log("cntrl: gambits.js - handleFreezeAsAPlane()");
+  // TODO: change state - handleFreezeAsAPlane().
   }
 
 function handleDelete() {
   console.log("cntrl: gambits.js - handleDelete()");
 
   // --- Get current index ---
-  const count = state.getBufferCount().Gambits;
+  const count = state.getBufferIndex().Gambits;
   if (count === 0) return;
 
   const idx = count - 1;
@@ -147,7 +193,7 @@ function handleDelete() {
   gambits.splice(idx, 1);
 
   // --- Update buffer count ---
-  state.setBufferCount("Gambits", idx);
+  state.setBufferIndex("Gambits", idx);
 
   // --- Optional: clean panel (simple version: rebuild later) ---
   const panel = document.getElementById("gambit-list");
@@ -162,7 +208,7 @@ function handleDelete() {
 function handleRemoveAll() {
   console.log("cntrl: gambits.js - handleRemoveAll()");
 
-  const count = state.getBufferCount().Gambits;
+  const count = state.getBufferIndex().Gambits;
   if (count === 0) return;
 
   // --- Remove all groups from scene ---
