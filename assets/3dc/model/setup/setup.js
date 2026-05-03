@@ -41,17 +41,25 @@ export function fetchLastEntry() {
   const len = state.getBufferLength(buffer);
   if (len === 0) return null;
 
-  const entry = state.getState()[buffer][len - 1];
+  const prev = state.getCurrentIndex(buffer);
+  state.setBufferIndex(buffer, len);
+  const entry = state.fetchCurrentState(buffer);
+  state.setBufferIndex(buffer, prev);
+
   return entry;
   }
 
 export function fetchThisEntry(idx) {
   console.log(`model: ${buffer}.js - fetchThisEntry(idx):`, idx);
 
-  const arr = state.getState()[buffer];
-  if (!arr || idx < 0 || idx >= arr.length) return null;
+  const len = state.getBufferLength(buffer);
+  if (idx < 0 || idx >= len) return null;
 
-  const entry = arr[idx];
+  const prev = state.getCurrentIndex(buffer);
+  state.setBufferIndex(buffer, idx + 1);
+  const entry = state.fetchCurrentState(buffer);
+  state.setBufferIndex(buffer, prev);
+
   return entry;
 }
 
@@ -76,7 +84,7 @@ export function replaceEntry(entry, idx) {
 export function clearCurrentEntry() {
   console.log(`model: ${buffer}.js - clearCurrentEntry()`);
 
-  const i = state.getBufferIndex()[buffer];
+  const i = state.getCurrentIndex(buffer);
   if (i === 0) return;
 
   state.deleteState(buffer, i - 1);

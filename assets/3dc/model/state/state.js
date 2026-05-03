@@ -30,12 +30,13 @@ let bufferIndex = { // Current element in buffer.
   AdvSqs:  0
 }
 
+// --- UI ---
 export function getBufferIndex() {
   return bufferIndex;
   }
 export function setBufferIndex(key, value) {
   bufferIndex[key] = value;
-}
+  }
 
 export function getBufferLength(buffer) {
   const arr = state[buffer];
@@ -49,7 +50,7 @@ export function clearBuffer(buffer) { // Leaves meshes in scene, be sure to call
   console.log("model: state.js - clearBuffer(buffer):", buffer);
   state[buffer].length = 0;
   bufferIndex[buffer] = 0;
-}
+  }
 
 export function prevKeyIndex() {
   const order = ["AdvSqs", "Gambits", "Moves", "Setup"];
@@ -110,8 +111,43 @@ export function nextKeyIndex() {
 
   return null;
 }
+/* ----- ----- ----- ----- */
 
-// --- UI ---
+export function trimStateToIndex(buffer) {
+  console.log("model: state.js - trimStateToIndex(buffer):", buffer);
+
+  if (!(buffer in state)) return;
+
+  const i = bufferIndex[buffer];
+  state[buffer] = state[buffer].slice(0, i);
+  }
+
+export function resetAllIndices() {
+  console.log("model: state.js - resetAllIndices()");
+
+  for (const key of Object.keys(bufferIndex)) {
+    bufferIndex[key] = 0;
+  }
+  }
+
+export function setBuffer(buffer, entries) {
+  console.log("model: state.js - setBuffer(buffer, entries):", buffer, entries);
+
+  if (!(buffer in state)) return;
+
+  state[buffer] = structuredClone(entries);
+  bufferIndex[buffer] = entries.length;
+  }
+
+export function getCurrentIndex(buffer) {
+  return bufferIndex[buffer];
+  }
+
+export function isAtEnd(buffer) {
+  return bufferIndex[buffer] === state[buffer].length;
+}
+/* ----- ----- ----- ----- */
+
 export function setState(newState) {
   state = structuredClone(newState);
   }
@@ -194,17 +230,17 @@ export function truncateState(buffer, idx) {
   bufferIndex[buffer] = Math.min(bufferIndex[buffer], idx);
 }
 
-/* ----- ----- ----- ----- */
+/* Shortcut functions - make args clearer. */
 export function fetchCurrentState(buffer) {
   const arr = state[buffer];
   const i = bufferIndex[buffer];
   if (i === 0) return null;
   return arr[i - 1];  
   }
-export const fetchCurrentSetup  = () => fetchCurrentState("Setup");
-export const fetchCurrentMove   = () => fetchCurrentState("Moves");
-export const fetchCurrentGambit = () => fetchCurrentState("Gambits");
-export const fetchCurrentAdvsq  = () => fetchCurrentState("AdvSqs");
+  export const fetchCurrentSetup  = () => fetchCurrentState("Setup");
+  export const fetchCurrentMove   = () => fetchCurrentState("Moves");
+  export const fetchCurrentGambit = () => fetchCurrentState("Gambits");
+  export const fetchCurrentAdvsq  = () => fetchCurrentState("AdvSqs");
 
 export function replaceCurrentState(buffer, values) {
   const arr = state[buffer];
@@ -213,10 +249,10 @@ export function replaceCurrentState(buffer, values) {
   if (i === 0) return null;
   arr[i - 1] = structuredClone(values);  
   }
-export const replaceCurrentSetup  = (values) => replaceCurrentState("Setup",   values);
-export const replaceCurrentMove   = (values) => replaceCurrentState("Moves",   values);
-export const replaceCurrentGambit = (values) => replaceCurrentState("Gambits", values);
-export const replaceCurrentAdvsq  = (values) => replaceCurrentState("AdvSqs",  values);
+  export const replaceCurrentSetup  = (values) => replaceCurrentState("Setup",   values);
+  export const replaceCurrentMove   = (values) => replaceCurrentState("Moves",   values);
+  export const replaceCurrentGambit = (values) => replaceCurrentState("Gambits", values);
+  export const replaceCurrentAdvsq  = (values) => replaceCurrentState("AdvSqs",  values);
 
 export function pushNewState(buffer, values) {  // Uses current index, will branch if idx<length.
   console.log("model: state.js - pushNewState(buffer, values):", buffer, values);
@@ -231,10 +267,10 @@ export function pushNewState(buffer, values) {  // Uses current index, will bran
   state[buffer].push(structuredClone(values));  // Push new state onto undo buffer.
   bufferIndex[buffer] = i + 1;                    // Advance the index.
   }
-export const pushNewSetup  = (values) => pushNewState("Setup",   values);
-export const pushNewMove   = (values) => pushNewState("Moves",   values);
-export const pushNewGambit = (values) => pushNewState("Gambits", values);
-export const pushNewAdvsq  = (values) => pushNewState("AdvSqs",  values);
+  export const pushNewSetup  = (values) => pushNewState("Setup",   values);
+  export const pushNewMove   = (values) => pushNewState("Moves",   values);
+  export const pushNewGambit = (values) => pushNewState("Gambits", values);
+  export const pushNewAdvsq  = (values) => pushNewState("AdvSqs",  values);
 /* ----- ----- ----- ----- */
 
 export function collapseKeyIndex() {

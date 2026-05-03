@@ -67,6 +67,8 @@ export function showUndoStatus() {  // Show undo buffers in Game panel.
 function handleNewGame() {
   console.log("cntrl: game.js - handleNewGame()");
   // TODO: game.js - handleNewGame().
+
+  console.log(state.getStateKeys());
   }
 
 function handleUndo() {

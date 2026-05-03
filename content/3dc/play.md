@@ -255,7 +255,7 @@ layout: "play"
 <div class="panel" id="game-window">
   <div class="panel-title">Game Panel</div>
   <div class="section">
-    <button data-action="newGame" disabled>New Game</button>
+    <button data-action="newGame">New Game</button>
   </div>
   <div class="section">
     <button data-action="undo">Undo</button>
