@@ -7,21 +7,15 @@
   UI: the export functions.
 */
 
-/* Notes:
- * Will want to leverage JSON stringify and parse.
- * const str = JSON.stringify(setup);
- * const obj = JSON.parse(str);
-*/
-
 // --- Load JSON ---
 import modelData from "./model.json" assert { type: "json" };
   const modelModule = modelData.model_module;
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
-import * as control from "../controller/controller.js";
-import * as view    from "../view/view.js";
-import * as state   from "./state/state.js";  // All the undoable state code.
+  import * as control from "../controller/controller.js";
+  import * as view    from "../view/view.js";
+  import * as state   from "./state/state.js";  // All the undoable state code.
 // Seampoint: more imports...
 
 // --- UI ---

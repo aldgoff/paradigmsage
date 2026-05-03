@@ -59,6 +59,7 @@
   vi: Merge branch '3dc' - Offboard tiles w/ opacity, decorators, responsive advs panel, duplex/apex.
   vi: Merge branch '3dc' - Merge week 6 (advsq panel, gambit panel, latent bugs, tests, stride stability, derived quantities).
   vi: Merge branch '3dc' - Merge & tag progress: gambits, undo, MVC compliance, viewer, jitter, bugs, todos, rewind/forward, race condition.
+  vi: Merge branch '3dc' - Standardize UI across layers, load/save, time symmetric idiom for moves, complete state UI functions.
   git log --oneline --decorate --graph --all --boundary -n 50
   git push origin main
   ```

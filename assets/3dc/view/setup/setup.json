@@ -1,0 +1,11 @@
+{
+  "setup_module": {
+    "state": {
+      "Setup": [],
+      "Moves": [],
+      "Gambits": [],
+      "Advsq": []
+    }
+  }
+}
+

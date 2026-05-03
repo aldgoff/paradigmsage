@@ -69,7 +69,7 @@ function handleNewGame() {
   // TODO: game.js - handleNewGame().
 
   console.log(state.getStateKeys());
-  }
+}
 
 function handleUndo() {
   const keyIndex = state.prevKeyIndex();
@@ -310,7 +310,7 @@ async function handleLoad() {
   } catch (err) {
     console.error("Load failed:", err);
   }
-}
+  }
 
 function handleSave() {
   console.log("cntrl: game.js - handleSave()");

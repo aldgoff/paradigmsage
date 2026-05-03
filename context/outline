@@ -191,6 +191,10 @@
 │   │       │   ├── scenes.js
 │   │       │   ├── scenes.json
 │   │       │   └── scenes.md
+│   │       ├── setup
+│   │       │   ├── setup.js
+│   │       │   ├── setup.json
+│   │       │   └── setup.md
 │   │       ├── tiles
 │   │       │   ├── tiles.js
 │   │       │   ├── tiles.json
@@ -484,4 +488,4 @@
 │           └── poc.js
 └── themes
 
-104 directories, 380 files
+105 directories, 383 files

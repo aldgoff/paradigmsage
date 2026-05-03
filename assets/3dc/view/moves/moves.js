@@ -14,17 +14,11 @@ import movesData from "./moves.json" assert { type: "json" };
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
-import * as state   from "../../model/state/state.js";
-import * as quads  from "../../geometry/quads/quads.js";
+  import * as state   from "../../model/state/state.js";
+  import * as quads  from "../../geometry/quads/quads.js";
 // Seampoint: more imports...
 
 // --- UI ---
-export function UI() {
-  console.log("view: moves.js - UI()");
-  
-  return "whatever";
-}
-
 export function undoMove(move) {
   console.log("view: moves.js - undoMove(move)", move);
   // TODO: write undoMove().

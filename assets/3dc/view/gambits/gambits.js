@@ -14,20 +14,15 @@ import gambitsData from "./gambits.json" assert { type: "json" };
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
-import * as state   from "../../model/state/state.js";
+  import * as state   from "../../model/state/state.js";
 
-import * as view   from "../../view/view.js";
+  import * as view   from "../../view/view.js";
 // Seampoint: more imports...
 
+// --- Globals ---
 let activeAnimation = null;
 
 // --- UI ---
-export function UI() {  // Under test, rather stupid.
-  console.log("view: gambits.js - UI()");
-  
-  return "whatever";
-}
-
 export function clearGambits() {
   console.log("view: gambits.js - clearGambits()");
   // TODO: write clearGambits().
