@@ -100,7 +100,6 @@
 │   │   │   │   ├── gambits.js
 │   │   │   │   ├── gambits.json
 │   │   │   │   └── gambits.md
-│   │   │   ├── grammar.js
 │   │   │   ├── model.js
 │   │   │   ├── model.json
 │   │   │   ├── model.md
@@ -109,8 +108,13 @@
 │   │   │   │   ├── moves.json
 │   │   │   │   └── moves.md
 │   │   │   ├── notation
+│   │   │   │   ├── grammar.js
 │   │   │   │   ├── notation.js
 │   │   │   │   └── notation.json
+│   │   │   ├── setup
+│   │   │   │   ├── setup.js
+│   │   │   │   ├── setup.json
+│   │   │   │   └── setup.md
 │   │   │   └── state
 │   │   │       ├── state.js
 │   │   │       ├── state.json
@@ -480,4 +484,4 @@
 │           └── poc.js
 └── themes
 
-103 directories, 377 files
+104 directories, 380 files

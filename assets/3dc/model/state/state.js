@@ -151,7 +151,7 @@ export const replaceCurrentMove   = (values) => replaceCurrentState("Moves",   v
 export const replaceCurrentGambit = (values) => replaceCurrentState("Gambits", values);
 export const replaceCurrentAdvsq  = (values) => replaceCurrentState("AdvSqs",  values);
 
-export function pushNewState(buffer, values) {
+export function pushNewState(buffer, values) {  // Uses current index, will branch if idx<length.
   console.log("model: state.js - pushNewState(buffer, values):", buffer, values);
 
   if (!(buffer in state)) {

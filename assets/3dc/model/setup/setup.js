@@ -1,28 +1,28 @@
-/* File: advsqs.js
-  Path: ./3dc/advsqs/advsqs.js
+/* File: setup.js
+  Path: ./3dc/setup/setup.js
   Purpose: desc
   Author: Allan Goff
-  Date: 4/15/26
-  Recommended access: import * as advsqs.
+  Date: 5/02/26
+  Recommended access: import * as setup.
   UI: the export functions.
   Philosophy: should be able to delete a module by deleting its directory.
 */
 
 // --- Load JSON ---
-import advsqsData from "./advsqs.json" assert { type: "json" };
-  const advsqsModule = advsqsData.advsqs_module;
-  const category  = advsqsModule.category;
+import setupData from "./setup.json" assert { type: "json" };
+  const setupModule = setupData.setup_module;
+  const category  = setupModule.category;
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
   import * as state  from "../../model/state/state.js";
 // Seampoint: more imports...
 
-const buffer = "AdvSqs";   // State buffer (state.js).
+const buffer = "Setup";   // State buffer (state.js).
 
 // --- UI ---
 export function UI() {
-  console.log("control: advsqs.js - UI()");
+  console.log("control: setup.js - UI()");
 }
 
 export function makeEntry(payload) { const entry=null; return entry; }
@@ -43,10 +43,9 @@ export function clearEntireBuffer() {}
 
 // TODO: Deprecate pre UI standardization.
 export function clearBuffer() {
-  state.clearBuffer("AdvSqs");      // Update undo buffer.
+  state.clearBuffer("Setup");      // Update undo buffer.
 }
 // Seampoint: more global functions...
 
 // --- Helpers ---
 // Seampoint: more local functions...
-
