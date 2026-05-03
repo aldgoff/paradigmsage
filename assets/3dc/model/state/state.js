@@ -127,7 +127,74 @@ export function setNull() {
 export function getNull() {
   return { Setup: [], Moves: [], Gambits: [], AdvSqs: [] };
 }
+/* ----- ----- ----- ----- */
 
+export function insertState(buffer, values, idx) {
+  console.log("model: state.js - insertState(buffer, values, idx):", buffer, values, idx);
+
+  if (!(buffer in state)) {
+    throw new Error(`Unknown state buffer: ${buffer}`);
+  }
+
+  const arr = state[buffer];
+  if (!arr || idx < 0 || idx > arr.length) return;
+
+  const i = bufferIndex[buffer];
+
+  // Branch if inserting before current index
+  if (idx < i) {
+    state[buffer] = arr.slice(0, i);
+  }
+
+  state[buffer].splice(idx, 0, structuredClone(values));
+  bufferIndex[buffer] = idx + 1;
+  }
+
+export function replaceState(buffer, values, idx) {
+  console.log("model: state.js - replaceState(buffer, values, idx):", buffer, values, idx);
+
+  if (!(buffer in state)) {
+    throw new Error(`Unknown state buffer: ${buffer}`);
+  }
+
+  const arr = state[buffer];
+  if (!arr || idx < 0 || idx >= arr.length) return;
+
+  arr[idx] = structuredClone(values);
+  bufferIndex[buffer] = idx + 1;
+  }
+
+export function deleteState(buffer, idx) {
+  console.log("model: state.js - deleteState(buffer, idx):", buffer, idx);
+
+  if (!(buffer in state)) {
+    throw new Error(`Unknown state buffer: ${buffer}`);
+  }
+
+  const arr = state[buffer];
+  if (!arr || idx < 0 || idx >= arr.length) return;
+
+  arr.splice(idx, 1);
+
+  const i = bufferIndex[buffer];
+  if (i > idx) bufferIndex[buffer] = i - 1;
+  }
+
+export function truncateState(buffer, idx) {
+  console.log("model: state.js - truncateState(buffer, idx):", buffer, idx);
+
+  if (!(buffer in state)) {
+    throw new Error(`Unknown state buffer: ${buffer}`);
+  }
+
+  const arr = state[buffer];
+  if (!arr || idx < 0 || idx > arr.length) return;
+
+  state[buffer] = arr.slice(0, idx);
+  bufferIndex[buffer] = Math.min(bufferIndex[buffer], idx);
+}
+
+/* ----- ----- ----- ----- */
 export function fetchCurrentState(buffer) {
   const arr = state[buffer];
   const i = bufferIndex[buffer];
@@ -168,6 +235,7 @@ export const pushNewSetup  = (values) => pushNewState("Setup",   values);
 export const pushNewMove   = (values) => pushNewState("Moves",   values);
 export const pushNewGambit = (values) => pushNewState("Gambits", values);
 export const pushNewAdvsq  = (values) => pushNewState("AdvSqs",  values);
+/* ----- ----- ----- ----- */
 
 export function collapseKeyIndex() {
   const order = ["AdvSqs", "Gambits", "Moves", "Setup"];

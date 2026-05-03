@@ -18,10 +18,16 @@ title: "Quick Start"
     - Rook: red
     - Bishop: green
     - Duke: blue
+    - Note the exensive feedback on the features of advancement squares, important jargon.
+  - Gambit Panel: Use the **Freeze Quadrant** button capture the existing advsq.
+  - Move Panel: Use to pretend move pieces (not yet rendered) - it is a test of the Move buffer in the undo system.
   - Camera Panel: Play with zoom, POV, etc.
-  - Game Panel: undo working for the AdvSq panel, not so much (yet) for the rest.
+  - Game Panel: undo working for all four state buffers, mostly - load and save now work.
+  - Viewer Panel: Animation rotates the board back and forth around the Z-axis between settable limits and a range of velocities.
+    - Really helps to see the planar nature of the moves.
+    - Use in conjuncture with the camer panel's POV radio buttons.
 
-  Inwork Panels: View, Moves, Gambits, Compasses.
+  Inwork Panels: Moves, Gambits, Compasses.
 
   **Raycasting** demonstrated by toggling circles on clicked tiles.
 
@@ -44,13 +50,22 @@ title: "Quick Start"
     - Note that tiles in advsqs can extend off the board.
     - Use the **Offboard Visibility** slider to affect their opacity.
 
+## Gambit Panel
+  - Accumulate advancement squares on the board to build an understanding of how moves and pieces interact.
+  - Currently only quadrant moves can be frozen into a gambit.
+  - Later this will be expanded to include linear moves and those surprising overlap tiles inherent to the queen.
+
+## Move Panel
+  - Primarily it is intended to list the moves of the game.
+  - Currently serving double duty as a test vehicle for creating reversible moves for the undo system (Game panel).
+
 ## Game Panel
   - Then try the **undo/redo/rerun** buttons.
   - Movement in 2D is natural, evolution has programmed us to perceive lines, and motion along them.
   - Movement in 3D chess is counter-intutitive.
   - A line has only two possible directions, but a quadrant has 4 (6 for the bishop).
   - 2D: there are only two types of lines, and only two of each, for a total of 8 directions.
-  - 3D: there are three types of planes, three rook, four bishop, and six duke; thus a total of 60 directions.
+  - 3D: there are three types of planes, three rook, four bishop, and six duke; thus a total of **60 directions**.
 
   **Annoying bug - undoing back into board construction is not yet working.**
 

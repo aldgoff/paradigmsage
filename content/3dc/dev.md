@@ -82,7 +82,7 @@ title: "Dev"
   - 5/02/26 - Replace bufferCount with bufferIndex. Time symmetric idiom for moves. Expand MVC idiom for moves. Implement load and save. UI standardization model layer.
 
  ### Week 8:
-  - 5/03/26 - tbd
+  - 5/03/26 - Draft common UI functions for model layer.
 
  ### Week 9:
   - 5/10/26 - tbd
