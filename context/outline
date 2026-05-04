@@ -34,6 +34,10 @@
 │   │   │   │   ├── moves.js
 │   │   │   │   ├── moves.json
 │   │   │   │   └── moves.md
+│   │   │   ├── pieces
+│   │   │   │   ├── pieces.js
+│   │   │   │   ├── pieces.json
+│   │   │   │   └── pieces.md
 │   │   │   ├── setup
 │   │   │   │   ├── setup.js
 │   │   │   │   ├── setup.json
@@ -111,6 +115,10 @@
 │   │   │   │   ├── grammar.js
 │   │   │   │   ├── notation.js
 │   │   │   │   └── notation.json
+│   │   │   ├── pieces
+│   │   │   │   ├── pieces.js
+│   │   │   │   ├── pieces.json
+│   │   │   │   └── pieces.md
 │   │   │   ├── setup
 │   │   │   │   ├── setup.js
 │   │   │   │   ├── setup.json
@@ -172,6 +180,9 @@
 │   │       │   ├── moves.json
 │   │       │   └── moves.md
 │   │       ├── pieces
+│   │       │   ├── pieces.js
+│   │       │   ├── pieces.json
+│   │       │   └── pieces.md
 │   │       ├── registerHandlers.js
 │   │       ├── render
 │   │       │   ├── cameras.js
@@ -488,4 +499,4 @@
 │           └── poc.js
 └── themes
 
-105 directories, 383 files
+107 directories, 392 files

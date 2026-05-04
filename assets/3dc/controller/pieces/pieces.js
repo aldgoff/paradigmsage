@@ -1,16 +1,16 @@
-/* File: setup.js
-  Path: ./3dc/view/setup/setup.js
+/* File: pieces.js
+  Path: ./3dc/controller/pieces/pieces.js
   Purpose: desc
   Author: Allan Goff
   Date: 5/03/26
-  Recommended access: import * as setup from ../../view/setup/setup.js
+  Recommended access: import * as pieces from ../../controller/pieces/pieces.js
   UI: the export functions.
 */
 
 // --- Load JSON ---
-import setupData from "./setup.json" assert { type: "json" };
-  const setupModule = setupData.setup_module;
-  // const category  = setupModule.category;
+import piecesData from "./pieces.json" assert { type: "json" };
+  const piecesModule = piecesData.pieces_module;
+  const category  = piecesModule.category;
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
@@ -21,7 +21,7 @@ import * as quads  from "../../geometry/quads/quads.js";
 
 // --- UI ---
 export function UI() {
-  console.log("view: setup.js - UI()");
+  console.log("cntrl: pieces.js - UI()");
   
   return "whatever";
   }

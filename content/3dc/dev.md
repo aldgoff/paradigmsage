@@ -83,6 +83,7 @@ title: "Dev"
 
  ### Week 8:
   - 5/03/26 - Draft common UI functions for model layer. Complete state UI functions. Add setup dir in view layer.
+  - 5/04/26 - Plumb pieces.
 
  ### Week 9:
   - 5/10/26 - tbd
