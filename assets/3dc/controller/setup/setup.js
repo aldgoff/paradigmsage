@@ -17,8 +17,10 @@ import setupData from "./setup.json" assert { type: "json" };
 import * as game     from "../../controller/game/game.js";
 
 import * as state    from "../../model/state/state.js";
+import * as mSetup    from "../../model/setup/setup.js";
 
 import * as boards   from "../../view/boards/boards.js";
+import * as vSetup from "../../view/setup/setup.js";
 import * as vGambits from "../../view/gambits/gambits.js";
 // Seampoint: more imports...
 
@@ -30,11 +32,11 @@ export function panelDispatch(payload) {    // Dispatch payload from panel to ha
 
   const { action, 
     boardSize,  // 8x8x8|10x8x8|10x10x10.
-    play,       // Off|rules|puzzle.
     trayType,   // Real|factory.
-    visible,    // True|False.
-    gap,        // 0|1|2|3.
-    initialPos  // std|manual.
+    initialPos, // std|manual.
+    play,       // Off|rules|puzzle. TODO: future|deprecate
+    visible,    // True|False. TODO: future|deprecate
+    gap,        // 0|1|2|3. TODO: future|deprecate
   } = payload;
 
   switch (action) {
@@ -55,13 +57,19 @@ function handleMakeBoard(payload) { // Setup handler.
 
   const { action, boardSize, trayType, initialPos } = payload;  // Informative.
 
-  state.pushNewSetup(payload);           // Log state change in undo buffer.
-
-  // const { action, boardSize, play, trayType, visible, gap, initialPos } = payload;
-  // boards.makeSetup(payload);             // Render.
-  // Need to update state buffers.
-  // Need to update setup panel.
+  const nextEntry = mSetup.makeEntry(payload);        // Transform panel payload into state entry.
+  const currEntry = mSetup.fetchCurrentEntry();
+  if(currEntry != null) {
+    vSetup.clear(currEntry);
+    if(!state.isAtEnd("Setup")) {
+      // TODO: clear all later entries.
+    }
   }
+  state.pushNewSetup(nextEntry);                  // Log state change in undo buffer.
+  vSetup.render(nextEntry);                       // Render the new board and trays.
+  vSetup.refreshPanel(nextEntry);                 // Only needed by panels with derived fields.
+  // TODO: clear all later buffers; a new board invalidates moves, gambits, and the exploratory advsq.
+}
 
 function handleShowTrays(visible) {
   console.log("control: game.js - handleShowTrays(visible):", visible);

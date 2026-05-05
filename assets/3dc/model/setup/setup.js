@@ -24,7 +24,9 @@ const buffer = "Setup";   // State buffer (state.js).
 export function makeEntry(payload) {
   console.log(`model: ${buffer}.js - makeEntry(payload):`, payload);
 
-  const entry = null; // TODO: build entry specific to this module
+  const { action, boardSize, trayType, initialPos } = payload;  // Informative, but becomes stale pretty quick.
+
+  const entry = payload;
   return entry;
   }
 

@@ -40,22 +40,17 @@ let currentAdvsq = null;
 // --- UI ---
 export function render(advsq) {
   console.log("view: advsqs.js - render(advsq)", advsq);
-  // TODO: write render().
+
+  if(!advsq) return;
+
+  makeAdvsq(advsq);
+  refreshPanel(advsq);
   } 
 
 export function clear(advsq) {
   console.log("view: advsqs.js - clear(advsq)", advsq);
-  // TODO: write clear().
-}
-
-export function undo(advsq) {
-  console.log("view: advsqs.js - undo(advsq)", advsq);
-  // TODO: write undo().
-  }
-
-export function redo(advsq) {
-  console.log("view: advsqs.js - redo(advsq)", advsq);
-  // TODO: write redo().
+  
+  clearAdvsq();
 }
 
 export function refreshPanel(advsq) {

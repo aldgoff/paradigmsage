@@ -22,30 +22,32 @@ import setupData from "./setup.json" assert { type: "json" };
   // Seampoint: more imports...
 
 // --- UI ---
-export function render(setup) {
-  console.log("view: setup.js - render(setup)", setup);
-  // TODO: write render().
+export function clear(entry) {
+  console.log("view: setup.js - clear(entry)", entry);
 
-  vBoards.render(setup);
-  vTrays.render(setup);
+  const { action, boardSize, trayType, initialPos } = entry;  // Informative.
+
+  vBoards.clear(entry);
+  vTrays.clear(entry);
   }
   
-export function clear(setup) {
-  console.log("view: setup.js - clear(setup)", setup);
-  // TODO: write clear().
+export function render(entry) {
+  console.log("view: setup.js - render(entry)", entry);
 
-  vBoards.clear(setup);
-  vTrays.clear(setup);
+  const { action, boardSize, trayType, initialPos } = entry;  // Informative.
+
+  vBoards.render(entry);
+  vTrays.render(entry);
 }
   
-export function refreshPanel(setup) {
-  // TODO: write refreshPanel(setup).
-  console.log("view : setup.js - refreshPanel(setup):", setup);
+export function refreshPanel(entry) {
+  // TODO: write refreshPanel(entry).
+  console.log("view : setup.js - refreshPanel(entry):", entry);
 
   const panel = document.getElementById("setup-window");
   if(!panel) return;
 
-  const { action, boardSize, trayType, initialPos } = setup;
+  const { action, boardSize, trayType, initialPos } = entry;
 
   const sizeRadio     = panel.querySelector( `input[name="board-size"][value="${boardSize}"]`);
   const trayTypeRadio = panel.querySelector( `input[name="tray-type"][value="${trayType}"]`);
