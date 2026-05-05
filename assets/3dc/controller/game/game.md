@@ -409,8 +409,29 @@
   ]
 }
 
-**2-4-3-6**
+## 5. Examples
+ ### 5.0 Null State
+  **0-0-0-0**
+{"Setup":[],"Moves":[],"Gambits":[],"AdvSqs":[]}
 
+ ### 5.1 Setup
+  **2-0-0-0**
+{"Setup":[{"action":"makeBoard","boardSize":"8x8x8","trayType":"real","initialPos":"standard"},{"action":"makeBoard","boardSize":"10x8x8","trayType":"none","initialPos":"manual"}],"Moves":[],"Gambits":[],"AdvSqs":[]}
+
+ ### 5.2 Setup, Advsqs
+  **2-0-0-6**
+{"Setup":[{"action":"makeBoard","boardSize":"8x8x8","trayType":"real","initialPos":"standard"},{"action":"makeBoard","boardSize":"10x8x8","trayType":"none","initialPos":"manual"}],"Moves":[],"Gambits":[],"AdvSqs":[{"srcTile":[0,0,0],"quad":1,"perimeter":0,"stride":0,"opacity":0.5},{"srcTile":[0,0,0],"quad":1,"perimeter":1,"stride":2,"opacity":0.5},{"srcTile":[0,0,0],"quad":1,"perimeter":2,"stride":3,"opacity":0.5},{"srcTile":[0,0,0],"quad":1,"perimeter":3,"stride":4,"opacity":0.5},{"srcTile":[0,0,0],"quad":1,"perimeter":4,"stride":5,"opacity":0.5},{"srcTile":[0,0,0],"quad":1,"perimeter":5,"stride":6,"opacity":0.5}]}
+
+ ### 5.3 Moves, Gambits
+  **0-4-3-0**
+{"Setup":[],"Moves":[{"turn":1,"player":"White","piece":"P","src":"K2,2","dst":"K4,4","action":"move","sec":""},{"turn":1,"player":"Black","piece":"P","src":"K2,2","dst":"K4,4","action":"move","sec":""},{"turn":2,"player":"White","piece":"P","src":"Q2,2","dst":"Q4,4","action":"move","sec":""},{"turn":2,"player":"Black","piece":"N","src":"KN1,1","dst":"K3,3","action":"move","sec":""}],"Gambits":[{"Q":1,"src":"KB4,4","dst":"KB6,6","area":9},{"Q":13,"src":"Q4,4","dst":"KN7,4","area":16},{"Q":38,"src":"Q4,4","dst":"KR8,8","area":25}],"AdvSqs":[]}
+
+ ### 5.4 Advsqs
+  **0-0-0-6**
+{"Setup":[],"Moves":[],"Gambits":[],"AdvSqs":[{"srcTile":[0,0,0],"quad":1,"perimeter":0,"stride":0,"opacity":0.5},{"srcTile":[0,0,0],"quad":1,"perimeter":1,"stride":2,"opacity":0.5},{"srcTile":[0,0,0],"quad":1,"perimeter":2,"stride":3,"opacity":0.5},{"srcTile":[0,0,0],"quad":1,"perimeter":3,"stride":4,"opacity":0.5},{"srcTile":[0,0,0],"quad":1,"perimeter":4,"stride":5,"opacity":0.5},{"srcTile":[0,0,0],"quad":1,"perimeter":5,"stride":6,"opacity":0.5}]}
+
+ ### 5.5 Setup, Moves, Gambits, Advsqs
+  **2-4-3-6**
 {"Setup":[{"action":"makeBoard","boardSize":"8x8x8","trayType":"real","initialPos":"standard"},{"action":"makeBoard","boardSize":"10x8x8","trayType":"none","initialPos":"manual"}],"Moves":[{"turn":1,"player":"White","piece":"P","src":"K2,2","dst":"K4,4","action":"move","sec":""},{"turn":1,"player":"Black","piece":"P","src":"K2,2","dst":"K4,4","action":"move","sec":""},{"turn":2,"player":"White","piece":"P","src":"Q2,2","dst":"Q4,4","action":"move","sec":""},{"turn":2,"player":"Black","piece":"N","src":"KN1,1","dst":"K3,3","action":"move","sec":""}],"Gambits":[{"Q":1,"src":"KB4,4","dst":"KB6,6","area":9},{"Q":13,"src":"Q4,4","dst":"KN7,4","area":16},{"Q":38,"src":"Q4,4","dst":"KR8,8","area":25}],"AdvSqs":[{"srcTile":[0,0,0],"quad":1,"perimeter":0,"stride":0,"opacity":0.5},{"srcTile":[0,0,0],"quad":1,"perimeter":1,"stride":2,"opacity":0.5},{"srcTile":[0,0,0],"quad":1,"perimeter":2,"stride":3,"opacity":0.5},{"srcTile":[0,0,0],"quad":1,"perimeter":3,"stride":4,"opacity":0.5},{"srcTile":[0,0,0],"quad":1,"perimeter":4,"stride":5,"opacity":0.5},{"srcTile":[0,0,0],"quad":1,"perimeter":5,"stride":6,"opacity":0.5}]}
 
 {

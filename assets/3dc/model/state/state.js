@@ -31,6 +31,56 @@ let bufferIndex = { // Current element in buffer.
 }
 
 // --- UI ---
+export function getCurrentBuffer() {
+  const keys = getStateKeys(); // ["Setup","Moves","Gambits","AdvSqs"]
+  let current = null;
+
+  for (const key of keys) {
+    if (bufferIndex[key] > 0) {
+      current = key;
+    }
+  }
+
+  return current;
+}
+export function getNextBuffer() {
+  const keys = getStateKeys(); // ["Setup","Moves","Gambits","AdvSqs"]
+  const current = getCurrentBuffer();
+
+  if (!current) {
+    // no current → return first non-empty buffer
+    for (const key of keys) {
+      if (getBufferLength(key) > 0) return key;
+    }
+    return null;
+  }
+
+  const startIdx = keys.indexOf(current);
+
+  for (let i = startIdx + 1; i < keys.length; i++) {
+    const key = keys[i];
+    if (getBufferLength(key) > 0) return key;
+  }
+
+  return null; // top sentry
+}
+export function getPrevBuffer() {
+  const keys = getStateKeys(); // ["Setup","Moves","Gambits","AdvSqs"]
+  const current = getCurrentBuffer();
+
+  if (!current) return null;
+
+  const startIdx = keys.indexOf(current);
+
+  for (let i = startIdx - 1; i >= 0; i--) {
+    const key = keys[i];
+    if (getBufferLength(key) > 0) return key;
+  }
+
+  return null; // bottom sentry
+}
+
+
 export function getBufferIndex() {
   return bufferIndex;
   }
@@ -145,6 +195,10 @@ export function getCurrentIndex(buffer) {
 
 export function isAtEnd(buffer) {
   return bufferIndex[buffer] === state[buffer].length;
+  }
+
+export function isAtBeg(buffer) {
+  return bufferIndex[buffer] <= 1;
 }
 /* ----- ----- ----- ----- */
 

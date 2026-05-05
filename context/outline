@@ -274,6 +274,7 @@
 │   │   ├── _index.md
 │   │   ├── clues.md
 │   │   ├── dev.md
+│   │   ├── metaphysics.md
 │   │   ├── play.md
 │   │   ├── quickStart.md
 │   │   └── rationale.md
@@ -499,4 +500,4 @@
 │           └── poc.js
 └── themes
 
-107 directories, 392 files
+107 directories, 393 files
