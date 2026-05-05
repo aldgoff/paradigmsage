@@ -44,7 +44,7 @@ export function render(advsq) {
   if(!advsq) return;
 
   makeAdvsq(advsq);
-  refreshPanel(advsq);
+  // refreshPanel(advsq);
   } 
 
 export function clear(advsq) {

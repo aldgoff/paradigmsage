@@ -16,8 +16,9 @@ import advsqsData from "./advsqs.json" assert { type: "json" };
 // --- Build upon previous layers ---
   import * as game   from "../../controller/game/game.js";
 
-  import * as state  from "../../model/state/state.js";
-  import * as coords from "../../foundation/coords/coords.js";  // normalizeTileToVts().
+  import * as state   from "../../model/state/state.js";
+  import * as mAdvsqs from "../../model/advsqs/advsqs.js";
+  import * as coords  from "../../foundation/coords/coords.js";  // normalizeTileToVts().
 
   import * as vAdvsqs  from "../../view/advsqs/advsqs.js";
   import * as vGambits from "../../view/gambits/gambits.js";
@@ -57,19 +58,21 @@ function handlePlace(payload) {
                                                                             // Manipulate fields.
   const newAdvsq = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
 
-  applyAdvsq(newAdvsq); // Log state change, render, update control panel.}
+  const nextEntry = mAdvsqs.makeEntry(payload);        // Transform panel payload into state entry.
+
+  applyEntry(nextEntry);
   }
 
 function handleRemove(payload) {
-  console.log("cntrl: advsqs.js - handleRemove()");
+  console.log("cntrl: advsqs.js - handleRemove(payload)", payload);
   
   let { srcTile, quad, perimeter, stride, opacity } = blank(payload);       // Unpack primary fields.
                                                                             // Manipulate fields.
-  const newAdvsq = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
+  const newAdvsq = { srcTile: [0,0,0], quad: 1, perimeter: 0, stride: 0, opacity };           // Repack normalized fields.
 
   state.clearBuffer("AdvSqs");           // Log state change in undo buffer.
   vAdvsqs.clearAdvsq();             // Render.
-  vAdvsqs.setAdvsqPanelInitialParams(newAdvsq);   // Update the control panel.
+  vAdvsqs.refreshPanel(newAdvsq);   // Update the control panel.
   }
 
 function handleGrow(payload) {
@@ -89,9 +92,11 @@ function handleGrow(payload) {
   }
   perimeter++;                                                              // Manipulate fields.
 
-  const newAdvsq = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
+  const nextEntry = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
 
-  applyAdvsq(newAdvsq); // Log state change, render, update control panel.}
+  applyEntry(nextEntry);  // Clear curr, branch, state change, render, refresh panel.
+
+  // applyAdvsq(newAdvsq); // Log state change, render, update control panel.}
   }
 
 function handleShrink(payload) {
@@ -108,9 +113,10 @@ function handleShrink(payload) {
   }
   if(--perimeter < 0) perimeter = 0.                                        // Manipulate fields.
 
-  const newAdvsq = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
+  const nextEntry = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
 
-  applyAdvsq(newAdvsq); // Log state change, render, update control panel.}
+  applyEntry(nextEntry);  // Clear curr, branch, state change, render, refresh panel.
+  // applyAdvsq(newAdvsq); // Log state change, render, update control panel.}
   }
 
 function handleUpdateParam(payload) {
@@ -134,9 +140,10 @@ function handleUpdateParam(payload) {
   }
   if(perimeter === 0) stride = 0;
 
-  const newAdvsq = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
+  const nextEntry = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
 
-  applyAdvsq(newAdvsq); // Log state change, render, update control panel.}
+  applyEntry(nextEntry);  // Clear curr, branch, state change, render, refresh panel.
+  // applyAdvsq(newAdvsq); // Log state change, render, update control panel.}
   }
 
 function handleNudgeSrc(payload) {
@@ -147,17 +154,18 @@ function handleNudgeSrc(payload) {
   const current = state.fetchCurrentAdvsq();                           // Prepacked normalized fields.
   if (!current) return;
 
-  let newAdvsq = {      // Safe clone.
+  let nextEntry = {      // Safe clone.
     ...current,
     srcTile: [...current.srcTile]
   };
 
-  if (axis === "z")      newAdvsq.srcTile[0] += delta;                      // Manipulate fields.
-  else if (axis === "x") newAdvsq.srcTile[1] += delta;
-  else if (axis === "y") newAdvsq.srcTile[2] += delta;
+  if (axis === "z")      nextEntry.srcTile[0] += delta;                      // Manipulate fields.
+  else if (axis === "x") nextEntry.srcTile[1] += delta;
+  else if (axis === "y") nextEntry.srcTile[2] += delta;
   else throw new Error("Invalid axis");
 
-  applyAdvsq(newAdvsq); // Log state change, render, update control panel.}
+  applyEntry(nextEntry);  // Clear curr, branch, state change, render, refresh panel.
+  // applyAdvsq(newAdvsq); // Log state change, render, update control panel.}
   }
 
 function handleNextQuad(payload) {
@@ -173,9 +181,10 @@ function handleNextQuad(payload) {
   }
   stride = 1; // First stride.
 
-  const newAdvsq = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
+  const nextEntry = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
 
-  applyAdvsq(newAdvsq); // Log state change, render, update control panel.}
+  applyEntry(nextEntry);  // Clear curr, branch, state change, render, refresh panel.
+  // applyAdvsq(newAdvsq); // Log state change, render, update control panel.}
   }
 
 function handleNextPlane(payload) {
@@ -191,9 +200,10 @@ function handleNextPlane(payload) {
   }
   stride = 1; // First stride.
 
-  const newAdvsq = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
+  const nextEntry = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
 
-  applyAdvsq(newAdvsq); // Log state change, render, update control panel.}
+  applyEntry(nextEntry);  // Clear curr, branch, state change, render, refresh panel.
+  // applyAdvsq(newAdvsq); // Log state change, render, update control panel.}
   }
 
 function handleNextPiece(payload) {
@@ -209,9 +219,10 @@ function handleNextPiece(payload) {
   }
   stride = 1; // First stride.
 
-  const newAdvsq = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
+  const nextEntry = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
 
-  applyAdvsq(newAdvsq); // Log state change, render, update control panel.}
+  applyEntry(nextEntry);  // Clear curr, branch, state change, render, refresh panel.
+  // applyAdvsq(newAdvsq); // Log state change, render, update control panel.}
 }
 
 // --- Helpers ---
@@ -242,6 +253,21 @@ function blank(payload) { // Convert panel strings to numbers, arrays, etc.
   return blank;
 }
 
+function applyEntry(entry) {   // Clear curr, branch, state change, render, refresh panel.
+  const currEntry = mAdvsqs.fetchCurrentEntry();
+  if(currEntry) {
+    vAdvsqs.clear(currEntry);
+    if(!state.isAtEnd("AdvSqs")) {    // Branch the undo list, toss the rest.
+      const idx = state.getCurrentIndex("AdvSqs");
+      state.truncateState("AdvSqs", idx);
+    }
+  }
+  state.pushNewAdvsq(entry);      // Log state change in undo buffer.
+  vAdvsqs.render(entry);          // Render the new advsq.
+  vAdvsqs.refreshPanel(entry);    // Only needed by panels with derived fields.
+}
+
+// DEPRECATED.
 function applyAdvsq(newAdvsq) { // Log state change, render, update control panel.
   state.pushNewAdvsq(newAdvsq);            // Undo.
   vAdvsqs.makeAdvsq(newAdvsq);             // Render.

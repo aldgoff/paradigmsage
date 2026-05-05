@@ -15,7 +15,8 @@ import advsqsData from "./advsqs.json" assert { type: "json" };
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
-  import * as state  from "../../model/state/state.js";
+  import * as cAdvsqs from "../../controller/advsqs/advsqs.js";
+  import * as state   from "../../model/state/state.js";
 // Seampoint: more imports...
 
 const buffer = "AdvSqs";   // State buffer (state.js).
@@ -24,7 +25,9 @@ const buffer = "AdvSqs";   // State buffer (state.js).
 export function makeEntry(payload) {
   console.log(`model: ${buffer}.js - makeEntry(payload):`, payload);
 
-  const entry = null; // TODO: build entry specific to this module
+  let { srcTile, quad, perimeter, stride, opacity } = cAdvsqs.normalize(payload);   // Unpack primary fields.
+  const entry = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
+
   return entry;
   }
 
@@ -33,7 +36,7 @@ export function fetchCurrentEntry() {
 
   const entry = state.fetchCurrentState(buffer);
   return entry;
-  }
+}
 
 export function fetchLastEntry() {
   console.log(`model: ${buffer}.js - fetchLastEntry()`);
