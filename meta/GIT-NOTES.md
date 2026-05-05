@@ -1,5 +1,8 @@
 # ParadigmSage - Git Notes
 
+## Hugo Server Start
+  hugo server --disableFastRender --buildFuture
+
 ## Branching and Publishing Model
   For serialization topics (like PoP), use git branches to stage release publications.
   Content for upcoming releases are developed on stage branches.

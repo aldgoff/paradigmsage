@@ -24,7 +24,7 @@ import * as vGambits from "../../view/gambits/gambits.js";
 
 // --- UI ---
 export function panelDispatch(payload) {    // Dispatch payload from panel to handle event functions.
-  // console.log("cntrl: setup.js - panelDispatch(payload):", payload);
+  console.log("cntrl: setup.js - panelDispatch(payload):", payload);
 
   vGambits.cancelAnimation();
 
@@ -36,7 +36,6 @@ export function panelDispatch(payload) {    // Dispatch payload from panel to ha
     gap,        // 0|1|2|3.
     initialPos  // std|manual.
   } = payload;
-  console.log("control: setup.js - panelDispatch(payload)", payload);
 
   switch (action) {
     case "makeBoard":   handleMakeBoard(payload); break;
@@ -45,6 +44,8 @@ export function panelDispatch(payload) {    // Dispatch payload from panel to ha
     case "updateParam": handleTrayGap(payload); break;
     default: throw new Error(`Unknown setup action ${action}.`);
   }
+
+  game.showUndoStatus();                          // Update game panel (undo).
   }
 // Seampoint: more global functions...
 

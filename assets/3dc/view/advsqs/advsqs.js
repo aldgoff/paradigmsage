@@ -14,7 +14,7 @@ import advsqsData from "./advsqs.json" assert { type: "json" };
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
-import * as utils  from "../../../utils/debug.js";
+  import * as utils  from "../../../utils/debug.js";
   import * as state    from "../../model/state/state.js";
   import * as coords   from "../../foundation/coords/coords.js";
   import * as planes   from "../../geometry/planes/planes.js";
@@ -38,6 +38,61 @@ let advsqPanelInitialParams = null;
 let currentAdvsq = null;
 
 // --- UI ---
+export function render(advsq) {
+  console.log("view: advsqs.js - render(advsq)", advsq);
+  // TODO: write render().
+  } 
+
+export function clear(advsq) {
+  console.log("view: advsqs.js - clear(advsq)", advsq);
+  // TODO: write clear().
+}
+
+export function undo(advsq) {
+  console.log("view: advsqs.js - undo(advsq)", advsq);
+  // TODO: write undo().
+  }
+
+export function redo(advsq) {
+  console.log("view: advsqs.js - redo(advsq)", advsq);
+  // TODO: write redo().
+}
+
+export function refreshPanel(advsq) {
+  console.log("view : advsqs.js - refreshPanel(advsq):", advsq);
+
+  const panel = document.getElementById("advsq-window");
+  if (!panel) return;
+
+  const { srcTile, quad, perimeter, stride, opacity } = advsq;
+
+  const derived = computeAdvsqDerived({quad, perimeter, stride});                   // Compute derived fields.
+
+  panel.querySelector('[name="advsq-nickname"]').textContent  = derived.nickname;     // Update quad derived fields.
+  panel.querySelector('[name="advsq-pieceQuad"]').textContent = derived.pieceQuad;
+  panel.querySelector('[name="advsq-planeQuad"]').textContent = derived.planeQuad;
+  panel.querySelector('[name="advsq-plane"]').textContent     = derived.plane;
+  panel.querySelector('[name="advsq-quadType"]').textContent  = derived.quadType;
+
+  panel.querySelector('[name="advsq-length"]').textContent   = derived.length;        // Update perimeter derived fields.
+  panel.querySelector('[name="advsq-area"]').textContent     = derived.area;
+  panel.querySelector('[name="advsq-onboard"]').textContent  = derived.onboard;
+  
+  panel.querySelector('[name="advsq-strideType"]').textContent  = derived.strideType; // Update stride derived fields.
+  panel.querySelector('[name="advsq-moveType"]').textContent    = derived.moveType;
+  panel.querySelector('[name="advsq-overlap"]').textContent     = derived.overlap;
+  panel.querySelector('[name="advsq-piece"]').textContent       = derived.piece;
+
+  const srcTileStr = coords.vtsToBoard(advsq.srcTile);
+  panel.querySelector('[name="advsq-src"]').value          = srcTileStr;            // Update the primary fields.
+  panel.querySelector('[name="advsq-quad"]').value         = quad
+  panel.querySelector('[name="advsq-perimeter"]').value    = perimeter;
+  panel.querySelector('[name="advsq-stride"]').value       = stride;
+  panel.querySelector('[name="advsq-opacity"]').value      = opacity;
+
+}
+
+
 export function setAdvsqPanelInitialParams() {
   advsqPanelInitialParams = getAdvsqPanelParams();
   }

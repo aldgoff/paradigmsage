@@ -23,6 +23,73 @@ import gambitsData from "./gambits.json" assert { type: "json" };
 let activeAnimation = null;
 
 // --- UI ---
+export function undo(gambit) {
+  console.log("view: gambits.js - undo(gambit)", gambit);
+  // TODO: write undoGambits().
+  }
+
+export function redo(gambit) {
+  console.log("view: gambits.js - redo(gambit)", gambit);
+  // TODO: write redoGambits().
+}
+
+export function addLineToPanel(gambit) {
+  console.log("view: gambits.js - addLineToPanel(gambit)", gambit);
+
+  const el = document.getElementById("gambit-list");
+  if (!el) return;
+
+  const { Q, src, dst, area } = gambit;
+
+  // --- freeze index ---
+  const count = state.getBufferIndex().Gambits;
+
+  // --- column widths ---
+  const idxCol  = String(count).padStart(2);    // right-aligned
+  const qCol    = `Q${Q}`.padEnd(3);            // "Q37  "
+  const srcCol  = String(src).padEnd(5);        // "KB4,4  "
+  const dstCol  = String(dst).padEnd(8);        // allow offboard arrays
+  const areaCol = String(area).padStart(2);     // right-aligned
+
+  // --- final line ---
+  const line = `${idxCol} ${qCol} ${srcCol} → ${dstCol}:${areaCol}`;
+
+  const div = document.createElement("div");
+  div.textContent = line;
+
+  // --- Dim future entries ---
+  const idx = count - 1; // current entry index
+
+  const thisIdx = state.getBufferLength("Gambits") - 1;
+
+  if (thisIdx >= count) {
+    div.style.opacity = "0.3";
+  }
+
+  el.appendChild(div);
+  el.scrollTop = el.scrollHeight;
+
+  return;
+  }
+
+export function refreshPanel() {
+  // console.log("view: gambits.js - refreshPanel()");
+  const el = document.getElementById("gambit-list");
+  if (!el) return;
+
+  const count = state.getBufferIndex().Gambits;
+
+  const children = el.children;
+
+  for (let i = 0; i < children.length; i++) {
+    if (i < count) {
+      children[i].style.opacity = "1.0";   // active
+    } else {
+      children[i].style.opacity = "0.3";   // future
+    }
+  }
+}
+
 export function clearGambits() {
   console.log("view: gambits.js - clearGambits()");
   // TODO: write clearGambits().
@@ -86,23 +153,6 @@ export function clearGambit(group) {
   } else {
     // fallback (shouldn't usually happen, but safe)
     view.context.scene.remove(group);
-  }
-  }
-
-export function refreshPanel() {
-  const el = document.getElementById("gambit-list");
-  if (!el) return;
-
-  const count = state.getBufferIndex().Gambits;
-
-  const children = el.children;
-
-  for (let i = 0; i < children.length; i++) {
-    if (i < count) {
-      children[i].style.opacity = "1.0";   // active
-    } else {
-      children[i].style.opacity = "0.3";   // future
-    }
   }
   }
 

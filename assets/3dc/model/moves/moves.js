@@ -24,7 +24,9 @@ const buffer = "Moves";   // State buffer (state.js).
 export function makeEntry(payload) {
   console.log(`model: ${buffer}.js - makeEntry(payload):`, payload);
 
-  const entry = null; // TODO: build entry specific to this module
+  const index = state.getBufferIndex()["Moves"] + 1;
+  const entry = createState(payload, index); // Index is used to determine the turn.
+
   return entry;
   }
 
@@ -125,7 +127,7 @@ export function createState(payload, index) { // Create the state entry from raw
 
   let { action, player, piece, src, dst, sec, capture, opts } = payload;
   let turn = Math.floor((index + 1) / 2);
-  let entry = { turn, player, piece, src, action, dst, sec };
+  let entry = { turn, player, piece, src, dst, action, sec };
 
   return entry;
 }

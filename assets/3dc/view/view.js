@@ -327,7 +327,7 @@ function buildSetupPayload(panel, action) {
     action,
     boardSize:  panel.querySelector('input[name="board-size"]:checked')?.value,
     trayType:   panel.querySelector('input[name="tray-type"]:checked')?.value,
-    initialPos: panel.querySelector('input[name="initial-pos"]')?.value,
+    initialPos: panel.querySelector('input[name="initial-pos"]:checked')?.value,
   };
   }
 
@@ -335,13 +335,13 @@ function buildMovePayload(panel, action) {
   console.log("     ---------- view: view.js");
   return {
     action,
-    player:  panel.querySelector('input[name="move-player"]:checked')?.value,
-    piece:   panel.querySelector('[name="move-piece"]')?.value,
-    src:     panel.querySelector('[name="move-src"]')?.value,
-    dst:     panel.querySelector('[name="move-dst"]')?.value,
-    sec:     panel.querySelector('[name="move-2nd"]')?.value,
-    capture: panel.querySelector('[name="move-capture"]')?.value,
-    opts:    panel.querySelector('[name="move-opts"]')?.value,
+    player:   panel.querySelector('input[name="move-player"]:checked')?.value,
+    piece:    panel.querySelector('[name="move-piece"]')?.value,
+    src:      panel.querySelector('[name="move-src"]')?.value,
+    dst:      panel.querySelector('[name="move-dst"]')?.value,
+    sec:      panel.querySelector('[name="move-2nd"]')?.value,
+    captured: panel.querySelector('[name="move-capture"]')?.value,
+    opts:     panel.querySelector('[name="move-opts"]')?.value,
   };
   }
 

@@ -19,32 +19,15 @@ import movesData from "./moves.json" assert { type: "json" };
 // Seampoint: more imports...
 
 // --- UI ---
-export function undoMove(move) {
-  console.log("view: moves.js - undoMove(move)", move);
-  // TODO: write undoMove().
-}
-
-export function clearMoves() {
-  console.log("view: moves.js - clearMoves()");
-  // TODO: write clearMoves().
-}
-
-export function updatePanel() {
-  console.log("view: moves.js - updatePanel()");
-  // TODO: write updatePanel().
-}
-
-export function renderMove(move) {
-  console.log("view: moves.js - renderMove(move)", move);
-  // TODO: write renderMove().
-  return;
+export function undo(move) {
+  console.log("view: moves.js - undo(move)", move);
+  // TODO: write undo().
   }
 
-export function derenderMove(move) {
-  console.log("view: moves.js - derenderMove(move)", move);
-  // TODO: write derenderMove().
-  return;
-  }
+export function redo(move) {
+  console.log("view: moves.js - redo(move)", move);
+  // TODO: write redo().
+}
 
 export function addLineToPanel(move) {
   console.log("view: moves.js - addLineToPanel(move)", move);
@@ -94,6 +77,35 @@ export function addLineToPanel(move) {
 
   return;
   }
+  
+export function refreshPanel() {
+  const el = document.getElementById("move-list");
+  if (!el) return;
+
+  const count = state.getBufferIndex().Moves;
+
+  const children = el.children;
+
+  for (let i = 0; i < children.length; i++) {
+    if (i < count) {
+      children[i].style.opacity = "1.0";   // active
+    } else {
+      children[i].style.opacity = "0.3";   // future
+    }
+  }
+}
+
+export function renderMove(move) {  // Used to render a just created move via panel.
+  console.log("view: moves.js - renderMove(move)", move);
+  // TODO: write renderMove().
+  return;
+  }
+
+export function derenderMove(move) {
+  console.log("view: moves.js - derenderMove(move)", move);
+  // TODO: write derenderMove().
+  return;
+}
 // Seampoint: more global functions...
 
 // --- Helpers ---

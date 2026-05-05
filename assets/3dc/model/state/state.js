@@ -230,12 +230,23 @@ export function truncateState(buffer, idx) {
   bufferIndex[buffer] = Math.min(bufferIndex[buffer], idx);
 }
 
+export function fetchPrevState(buffer) {
+  const i = bufferIndex[buffer];
+  if (i <= 1) return null;
+  return state[buffer][i-2];  
+  }
+
+export function fetchNextState(buffer) {
+  const i = bufferIndex[buffer];
+  if (i >= getBufferLength(buffer)) return null;
+  return state[buffer][i];  
+}
+
 /* Shortcut functions - make args clearer. */
 export function fetchCurrentState(buffer) {
-  const arr = state[buffer];
   const i = bufferIndex[buffer];
   if (i === 0) return null;
-  return arr[i - 1];  
+  return state[buffer][i-1];  
   }
   export const fetchCurrentSetup  = () => fetchCurrentState("Setup");
   export const fetchCurrentMove   = () => fetchCurrentState("Moves");

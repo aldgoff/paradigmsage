@@ -31,7 +31,16 @@ export function panelDispatch(payload) {
 
   vGambits.cancelAnimation();
 
-  const { action } = payload;
+  const { action, 
+    player,   // White|Black
+    piece,    // R|B|D|Q|N|S|P|K
+    src,      // K2,2
+    dst,      // K4,4
+    sec,      // QB5,6
+    captured, // R|B|D|Q|N|S|P|K
+    opts      // TBD?
+  } = payload;
+
   switch (action) {
     case "move":         handleMove(payload); break;
     case "capture":      handleCapture(payload); break;
@@ -45,20 +54,30 @@ export function panelDispatch(payload) {
   }
 
   game.showUndoStatus();                          // Update game panel (undo).
+  }
+
+export function normalize(payload) { // Convert panel strings to vts arrays.
+  let { player, piece, src, dst, capture, sec, opts } = payload;   // Unpack panel fields.
+
+  src = src ? coords.normalizeTileToVts(src) : null;
+  dst = dst ? coords.normalizeTileToVts(dst) : null;
+  sec = sec ? coords.normalizeTileToVts(sec) : null;
+
+  const normed = { player, piece, src, dst, capture, sec, opts }; // Repack panel fields.
+
+  return normed;
 }
 // Seampoint: more global functions...
 
 // --- Handle Functions ---
 function handleMove(payload) {
   console.log("cntrl: moves.js - handleMove(payload)", payload);
-  // TODO: change state - handleMove().
 
-  const index = state.getBufferIndex()["Moves"] + 1;
-  const entry = mMoves.createState(payload, index); // Index is used to determine the turn.
-  state.pushNewMove(entry);         // Change state.
+  const entry = mMoves.makeEntry(payload);  // Create entry.
+  state.pushNewMove(entry);                 // Change state.
 
-  vMoves.renderMove(entry);         // Render.
-  vMoves.addLineToPanel(entry);        // Update panel.
+  vMoves.renderMove(entry);                 // Render.
+  vMoves.addLineToPanel(entry);             // Update panel.
   }
 
 function handleCapture(payload) {
@@ -98,16 +117,5 @@ function handleFission(payload) {
 // Seampoint: more handle functions...
 
 // --- Helpers...
-export function normalize(payload) { // Convert panel strings to vts arrays.
-  let { player, piece, src, dst, capture, sec, opts } = payload;   // Unpack panel fields.
-
-  src = src ? coords.normalizeTileToVts(src) : null;
-  dst = dst ? coords.normalizeTileToVts(dst) : null;
-  sec = sec ? coords.normalizeTileToVts(sec) : null;
-
-  const normed = { player, piece, src, dst, capture, sec, opts }; // Repack panel fields.
-
-  return normed;
-  }
 // Seampoint: more local functions...
 

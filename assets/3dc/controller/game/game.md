@@ -197,3 +197,359 @@
  ### 2.2 Current Bugs
   Moves and gambits not rendering or updating panels.
 
+## 3. Debug Moves
+{"Setup":[],"Moves":[{"turn":1,"player":"White","piece":"P","src":"K2,2","action":"move","dst":"K4,4","sec":""},{"turn":1,"player":"Black","piece":"P","src":"K2,2","action":"move","dst":"K4,4","sec":""},{"turn":2,"player":"White","piece":"P","src":"Q2,2","action":"move","dst":"K4,4","sec":""}],"Gambits":[],"AdvSqs":[]}
+
+{"Setup":[],"Moves":[{"turn":1,"player":"White","piece":"P","src":"K2,2","action":"move","dst":"K4,4","sec":""},{"turn":1,"player":"Black","piece":"P","src":"K2,2","action":"move","dst":"K4,4","sec":""},{"turn":2,"player":"White","piece":"P","src":"Q2,2","action":"move","dst":"K4,4","sec":""},{"turn":2,"player":"Black","piece":"N","src":"KN1,1","dst":"KB3,3","action":"move","sec":""}],"Gambits":[],"AdvSqs":[]}
+
+{
+  "Setup": [],
+  "Moves": [
+    {
+      "turn": 1,
+      "player": "White",
+      "piece": "P",
+      "src": "K2,2",
+      "action": "move",
+      "dst": "K4,4",
+      "sec": ""
+    },
+    {
+      "turn": 1,
+      "player": "Black",
+      "piece": "P",
+      "src": "K2,2",
+      "action": "move",
+      "dst": "K4,4",
+      "sec": ""
+    },
+    {
+      "turn": 2,
+      "player": "White",
+      "piece": "P",
+      "src": "Q2,2",
+      "action": "move",
+      "dst": "K4,4",
+      "sec": ""
+    },
+    {
+      "turn": 2,
+      "player": "Black",
+      "piece": "N",
+      "src": "KN1,1",
+      "dst": "KB3,3",
+      "action": "move",
+      "sec": ""
+    }
+  ],
+  "Gambits": [],
+  "AdvSqs": []
+}
+
+## 4. Example Full Undo
+  **1-4-3-8**
+  
+{"Setup":[{"action":"makeBoard","boardSize":"8x8x8","initialPos":"standard"}],"Moves":[{"turn":1,"player":"White","piece":"P","src":"K2,2","dst":"K4,4","action":"move","sec":""},{"turn":1,"player":"Black","piece":"P","src":"K2,2","dst":"K4,4","action":"move","sec":""},{"turn":2,"player":"White","piece":"P","src":"Q2,2","dst":"Q4,4","action":"move","sec":""},{"turn":2,"player":"Black","piece":"N","src":"KN1,1","dst":"K3,3","action":"move","sec":""}],"Gambits":[{"Q":1,"src":"KB4,4","dst":"KB6,6","area":9},{"Q":13,"src":"Q4,4","dst":"KN7,4","area":16},{"Q":38,"src":"Q4,4","dst":"KR8,8","area":25}],"AdvSqs":[{"srcTile":[0,0,0],"quad":1,"perimeter":0,"stride":0,"opacity":0.5},{"srcTile":[0,0,0],"quad":1,"perimeter":1,"stride":2,"opacity":0.5},{"srcTile":[0,0,0],"quad":1,"perimeter":2,"stride":3,"opacity":0.5},{"srcTile":[0,0,0],"quad":1,"perimeter":3,"stride":4,"opacity":0.5},{"srcTile":[0,1,0],"quad":1,"perimeter":3,"stride":4,"opacity":0.5},{"srcTile":[0,1,1],"quad":1,"perimeter":3,"stride":4,"opacity":0.5},{"srcTile":[0,2,1],"quad":1,"perimeter":3,"stride":4,"opacity":0.5},{"srcTile":[0,2,2],"quad":1,"perimeter":3,"stride":4,"opacity":0.5}]}
+
+{
+  "Setup": [
+    {
+      "action": "makeBoard",
+      "boardSize": "8x8x8",
+      "initialPos": "standard"
+    }
+  ],
+  "Moves": [
+    {
+      "turn": 1,
+      "player": "White",
+      "piece": "P",
+      "src": "K2,2",
+      "dst": "K4,4",
+      "action": "move",
+      "sec": ""
+    },
+    {
+      "turn": 1,
+      "player": "Black",
+      "piece": "P",
+      "src": "K2,2",
+      "dst": "K4,4",
+      "action": "move",
+      "sec": ""
+    },
+    {
+      "turn": 2,
+      "player": "White",
+      "piece": "P",
+      "src": "Q2,2",
+      "dst": "Q4,4",
+      "action": "move",
+      "sec": ""
+    },
+    {
+      "turn": 2,
+      "player": "Black",
+      "piece": "N",
+      "src": "KN1,1",
+      "dst": "K3,3",
+      "action": "move",
+      "sec": ""
+    }
+  ],
+  "Gambits": [
+    {
+      "Q": 1,
+      "src": "KB4,4",
+      "dst": "KB6,6",
+      "area": 9
+    },
+    {
+      "Q": 13,
+      "src": "Q4,4",
+      "dst": "KN7,4",
+      "area": 16
+    },
+    {
+      "Q": 38,
+      "src": "Q4,4",
+      "dst": "KR8,8",
+      "area": 25
+    }
+  ],
+  "AdvSqs": [
+    {
+      "srcTile": [
+        0,
+        0,
+        0
+      ],
+      "quad": 1,
+      "perimeter": 0,
+      "stride": 0,
+      "opacity": 0.5
+    },
+    {
+      "srcTile": [
+        0,
+        0,
+        0
+      ],
+      "quad": 1,
+      "perimeter": 1,
+      "stride": 2,
+      "opacity": 0.5
+    },
+    {
+      "srcTile": [
+        0,
+        0,
+        0
+      ],
+      "quad": 1,
+      "perimeter": 2,
+      "stride": 3,
+      "opacity": 0.5
+    },
+    {
+      "srcTile": [
+        0,
+        0,
+        0
+      ],
+      "quad": 1,
+      "perimeter": 3,
+      "stride": 4,
+      "opacity": 0.5
+    },
+    {
+      "srcTile": [
+        0,
+        1,
+        0
+      ],
+      "quad": 1,
+      "perimeter": 3,
+      "stride": 4,
+      "opacity": 0.5
+    },
+    {
+      "srcTile": [
+        0,
+        1,
+        1
+      ],
+      "quad": 1,
+      "perimeter": 3,
+      "stride": 4,
+      "opacity": 0.5
+    },
+    {
+      "srcTile": [
+        0,
+        2,
+        1
+      ],
+      "quad": 1,
+      "perimeter": 3,
+      "stride": 4,
+      "opacity": 0.5
+    },
+    {
+      "srcTile": [
+        0,
+        2,
+        2
+      ],
+      "quad": 1,
+      "perimeter": 3,
+      "stride": 4,
+      "opacity": 0.5
+    }
+  ]
+}
+
+**2-4-3-6**
+
+{"Setup":[{"action":"makeBoard","boardSize":"8x8x8","trayType":"real","initialPos":"standard"},{"action":"makeBoard","boardSize":"10x8x8","trayType":"none","initialPos":"manual"}],"Moves":[{"turn":1,"player":"White","piece":"P","src":"K2,2","dst":"K4,4","action":"move","sec":""},{"turn":1,"player":"Black","piece":"P","src":"K2,2","dst":"K4,4","action":"move","sec":""},{"turn":2,"player":"White","piece":"P","src":"Q2,2","dst":"Q4,4","action":"move","sec":""},{"turn":2,"player":"Black","piece":"N","src":"KN1,1","dst":"K3,3","action":"move","sec":""}],"Gambits":[{"Q":1,"src":"KB4,4","dst":"KB6,6","area":9},{"Q":13,"src":"Q4,4","dst":"KN7,4","area":16},{"Q":38,"src":"Q4,4","dst":"KR8,8","area":25}],"AdvSqs":[{"srcTile":[0,0,0],"quad":1,"perimeter":0,"stride":0,"opacity":0.5},{"srcTile":[0,0,0],"quad":1,"perimeter":1,"stride":2,"opacity":0.5},{"srcTile":[0,0,0],"quad":1,"perimeter":2,"stride":3,"opacity":0.5},{"srcTile":[0,0,0],"quad":1,"perimeter":3,"stride":4,"opacity":0.5},{"srcTile":[0,0,0],"quad":1,"perimeter":4,"stride":5,"opacity":0.5},{"srcTile":[0,0,0],"quad":1,"perimeter":5,"stride":6,"opacity":0.5}]}
+
+{
+  "Setup": [
+    {
+      "action": "makeBoard",
+      "boardSize": "8x8x8",
+      "initialPos": "standard"
+    },
+    {
+      "action": "makeBoard",
+      "boardSize": "10x8x8",
+      "initialPos": "standard"
+    }
+  ],
+  "Moves": [
+    {
+      "turn": 1,
+      "player": "White",
+      "piece": "P",
+      "src": "K2,2",
+      "dst": "K4,4",
+      "action": "move",
+      "sec": ""
+    },
+    {
+      "turn": 1,
+      "player": "Black",
+      "piece": "P",
+      "src": "K2,2",
+      "dst": "K4,4",
+      "action": "move",
+      "sec": ""
+    },
+    {
+      "turn": 2,
+      "player": "White",
+      "piece": "P",
+      "src": "Q2,2",
+      "dst": "Q4,4",
+      "action": "move",
+      "sec": ""
+    },
+    {
+      "turn": 2,
+      "player": "Black",
+      "piece": "N",
+      "src": "KN1,1",
+      "dst": "K3,3",
+      "action": "move",
+      "sec": ""
+    }
+  ],
+  "Gambits": [
+    {
+      "Q": 1,
+      "src": "KB4,4",
+      "dst": "KB6,6",
+      "area": 9
+    },
+    {
+      "Q": 13,
+      "src": "Q4,4",
+      "dst": "KN7,4",
+      "area": 16
+    },
+    {
+      "Q": 38,
+      "src": "Q4,4",
+      "dst": "KR8,8",
+      "area": 25
+    }
+  ],
+  "AdvSqs": [
+    {
+      "srcTile": [
+        0,
+        0,
+        0
+      ],
+      "quad": 1,
+      "perimeter": 0,
+      "stride": 0,
+      "opacity": 0.5
+    },
+    {
+      "srcTile": [
+        0,
+        0,
+        0
+      ],
+      "quad": 1,
+      "perimeter": 1,
+      "stride": 2,
+      "opacity": 0.5
+    },
+    {
+      "srcTile": [
+        0,
+        0,
+        0
+      ],
+      "quad": 1,
+      "perimeter": 2,
+      "stride": 3,
+      "opacity": 0.5
+    },
+    {
+      "srcTile": [
+        0,
+        0,
+        0
+      ],
+      "quad": 1,
+      "perimeter": 3,
+      "stride": 4,
+      "opacity": 0.5
+    },
+    {
+      "srcTile": [
+        0,
+        0,
+        0
+      ],
+      "quad": 1,
+      "perimeter": 4,
+      "stride": 5,
+      "opacity": 0.5
+    },
+    {
+      "srcTile": [
+        0,
+        0,
+        0
+      ],
+      "quad": 1,
+      "perimeter": 5,
+      "stride": 6,
+      "opacity": 0.5
+    }
+  ]
+}

@@ -152,7 +152,7 @@ export class AdvSq {
     let k = 0;
     for(const perim of this.perims) {
       const perimOnboard = onboardTiles(this.source, this.quad, k);
-      console.log("this.source, this.quad, this.k", this.source, this.quad, k, perimOnboard);
+      // console.log("this.source, this.quad, this.k", this.source, this.quad, k, perimOnboard);
       onboard += perimOnboard;
       k++;
     }
