@@ -3,7 +3,7 @@
   Purpose: Create a 3D chess board, add to scene, delete previous.
   Author: Allan Goff
   Date: 4/14/26
-  Recommended access: import * as boards.
+  Recommended access: import * as vBoards from ../../view/boards/boards.js
   UI: the export functions.
 */
 
@@ -14,17 +14,31 @@ import boardsData from "./boards.json" assert { type: "json" };
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
-import * as view       from "../view.js";
-import * as tiles      from "../tiles/tiles.js";
-import * as decorators from "../decorators/decorators.js";
-import * as cameras    from "../render/cameras.js";
-import * as renders    from "../render/renders.js";
+  import * as view       from "../view.js";
+  import * as tiles      from "../tiles/tiles.js";
+  import * as decorators from "../decorators/decorators.js";
+  import * as cameras    from "../render/cameras.js";
+  import * as renders    from "../render/renders.js";
 // Seampoint: more imports...
 
 let currentBoard = null;
 
 // --- UI ---
-export function makeSetup(payload) {
+export function render(setup) {
+  console.log("view: boards.js - render(setup)", setup);
+
+  const dims = setup.boardSize.split("x").map(Number);
+  makeBoard(dims);
+}
+
+export function clear(setup) {
+  console.log("view: boards.js - clear(setup)", setup);
+
+  clearBoard();
+}
+
+
+export function makeSetup(payload) {  // DEPRECATE.
   console.log("view: boards.js - makeSetup(payload):", payload);
 
   const { action, boardSize, trayType, trayGap } = payload;

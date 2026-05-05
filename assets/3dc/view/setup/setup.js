@@ -16,27 +16,26 @@ import setupData from "./setup.json" assert { type: "json" };
 // --- Build upon previous layers ---
   import * as planes from "../../geometry/planes/planes.js";
   import * as quads  from "../../geometry/quads/quads.js";
-// Seampoint: more imports...
+
+  import * as vBoards from "../../view/boards/boards.js"
+  import * as vTrays  from "../../view/trays/trays.js"
+  // Seampoint: more imports...
 
 // --- UI ---
 export function render(setup) {
   console.log("view: setup.js - render(setup)", setup);
   // TODO: write render().
+
+  vBoards.render(setup);
+  vTrays.render(setup);
   }
   
 export function clear(setup) {
   console.log("view: setup.js - clear(setup)", setup);
   // TODO: write clear().
-}
 
-export function undo(setup) {
-  console.log("view: setup.js - undo(setup)", setup);
-  // TODO: write undo().
-  }
-
-export function redo(setup) {
-  console.log("view: setup.js - redo(setup)", setup);
-  // TODO: write redo().
+  vBoards.clear(setup);
+  vTrays.clear(setup);
 }
   
 export function refreshPanel(setup) {
@@ -72,16 +71,6 @@ export function clearSetupPanelParams(params) {
   if(sizeRadio) sizeRadio.checked = true;
   if(trayTypeRadio) trayTypeRadio.checked = true;
   if(initPosRadio) initPosRadio.checked = true;
-}
-
-export function clearSetupPanelParams1(params) {
-  console.log("view : setup.js - clearSetupPanelParams(params):", params);
-
-  const panel = document.getElementById("setup-window");
-  if (!panel) return;
-
-  panel.querySelector('[name="setup-board-size"]').value         = 1;
-
 }
 // Seampoint: more global functions...
 

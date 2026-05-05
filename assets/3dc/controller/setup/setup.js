@@ -53,10 +53,12 @@ export function panelDispatch(payload) {    // Dispatch payload from panel to ha
 function handleMakeBoard(payload) { // Setup handler.
   console.log("control: game.js - handleMakeBoard(payload):", payload);
 
-  const { action, boardSize, play, trayType, visible, gap, initialPos } = payload;
+  const { action, boardSize, trayType, initialPos } = payload;  // Informative.
 
   state.pushNewSetup(payload);           // Log state change in undo buffer.
-  boards.makeSetup(payload);             // Render.
+
+  // const { action, boardSize, play, trayType, visible, gap, initialPos } = payload;
+  // boards.makeSetup(payload);             // Render.
   // Need to update state buffers.
   // Need to update setup panel.
   }

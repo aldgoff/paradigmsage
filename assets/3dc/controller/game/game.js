@@ -256,7 +256,6 @@ function handleFastForward() {
     // --- 1 → N ---
     if (idx === 1 && len > 1) {
       fastForwardCurrentBuffer(buffer);
-      showUndoStatus();
       return;
     }
 
@@ -269,7 +268,6 @@ function handleFastForward() {
 
     // fallback safety
     fastForwardCurrentBuffer(buffer);
-    showUndoStatus();
     return;
   }
 
