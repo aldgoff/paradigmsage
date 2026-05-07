@@ -61,9 +61,7 @@ export function panelDispatch(payload) {
 function handlePlace(payload) {
   console.log("cntrl: advsqs.js - handlePlace(payload)", payload);
 
-  let { srcTile, quad, perimeter, stride, opacity } = normalize(payload);   // Unpack primary fields.
-                                                                            // Manipulate fields.
-  const newAdvsq = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
+  const { srcTile, quad, perimeter, stride, opacity } = payload;  // Informative.
 
   const nextEntry = mAdvsqs.makeEntry(payload);        // Transform panel payload into state entry.
 
@@ -253,7 +251,7 @@ function blank(payload) { // Convert panel strings to numbers, arrays, etc.
 }
 
 function applyEntry(entry) {   // Clear curr, branch, state change, render, refresh panel.
-  const currEntry = mAdvsqs.fetchCurrentEntry();
+  const currEntry = mAdvsqs.fetchCurrentEntry(); // Clear previous board.
   if(currEntry) {
     vAdvsqs.clear(currEntry);
     if(!state.isAtEnd("AdvSqs")) {    // Branch the undo list, toss the rest.
@@ -261,6 +259,7 @@ function applyEntry(entry) {   // Clear curr, branch, state change, render, refr
       state.truncateState("AdvSqs", idx);
     }
   }
+
   state.pushNewAdvsq(entry);      // Log state change in undo buffer.
   vAdvsqs.render(entry);          // Render the new advsq.
   vAdvsqs.refreshPanel(entry);    // Only needed by panels with derived fields.

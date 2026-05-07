@@ -80,9 +80,11 @@ export function panelDispatch(payload) {
 function handleMove(payload) {
   console.log("cntrl: moves.js - handleMove(payload)", payload);
 
-  const entry = mMoves.makeEntry(payload);  // Create entry.
-  state.pushNewMove(entry);                 // Change state.
+  const { action, player, piece, src, dst, sec, captured, opts } = payload;  // Informative.
 
+  const entry = mMoves.makeEntry(payload);  // Create entry.
+
+  state.pushNewMove(entry);                 // Change state.
   vMoves.renderMove(entry);                 // Render.
   vMoves.addLineToPanel(entry);             // Update panel.
   }
