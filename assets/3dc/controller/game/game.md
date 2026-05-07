@@ -574,3 +574,6 @@
     }
   ]
 }
+
+## Debug Gambits
+{"Setup":[{"action":"makeBoard","boardSize":"8x8x8"}],"Moves":[],"Gambits":[{"Q":1,"src":"KB4,4","dst":"KB6,6","area":9,"srcTile":[2,0,0],"quad":1,"perimeter":2,"stride":3,"opacity":0.5},{"Q":13,"src":"Q4,4","dst":"KN7,4","area":16,"srcTile":[0,0,0],"quad":13,"perimeter":3,"stride":1,"opacity":0.5},{"Q":38,"src":"Q4,4","dst":"KR8,8","area":25,"srcTile":[0,0,0],"quad":38,"perimeter":4,"stride":1,"opacity":0.5}],"AdvSqs":[]}

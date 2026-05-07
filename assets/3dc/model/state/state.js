@@ -86,6 +86,13 @@ export function getBufferIndex() {
   }
 export function setBufferIndex(key, value) {
   bufferIndex[key] = value;
+}
+
+export function setBufferIdx(key, value) {
+  bufferIndex[key] = value;
+  }
+export function getBufferIdx(key) {
+  return bufferIndex[key];
   }
 
 export function getBufferLength(buffer) {

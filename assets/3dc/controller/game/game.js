@@ -412,8 +412,8 @@ function processUndoBuffer(key, idx) {
   else if(key === "Gambits") {
     const gambit = state.fetchCurrentState("Gambits");
     if(gambit != null) {
+      vGambits.undo(gambit, idx);
       state.setBufferIndex("Gambits", idx-1);
-      vGambits.undo(gambit);
       vGambits.refreshPanel();
       return true;
     }
@@ -421,9 +421,9 @@ function processUndoBuffer(key, idx) {
   else if(key === "Moves") {
     const move = state.fetchCurrentState("Moves");
     if(move != null) {
-      state.setBufferIndex("Moves", idx-1);
       vMoves.undo(move);
       vMoves.refreshPanel();
+      state.setBufferIndex("Moves", idx-1);
       return true;
     }
     }
@@ -440,9 +440,7 @@ function processUndoBuffer(key, idx) {
       state.setBufferIndex("Setup", idx-1);
       }
     else if(prev !=  null && curr === null) {
-      vSetup.render(prev);      // Render previous setup (board and trays), if any.
       vSetup.refreshPanel(prev);
-      state.setBufferIndex("Setup", idx-1);
       }
     else if(prev !=  null && curr !=  null) {
       vSetup.clear(curr);       // Clear current setup (board and trays).
@@ -484,7 +482,7 @@ function processRedoBuffer(key, idx) {
     const gambit = state.fetchNextState("Gambits");
     if(gambit != null) {
       state.setBufferIndex("Gambits", idx + 1);
-      vGambits.redo(gambit);
+      vGambits.redo(gambit, idx+1);
       vGambits.refreshPanel();
       return true;
     }
@@ -493,7 +491,7 @@ function processRedoBuffer(key, idx) {
     const move = state.fetchNextState("Moves");
     if(move != null) {
       state.setBufferIndex("Moves", idx + 1);
-      vMoves.redo(move);
+      vMoves.redo(move, idx);
       vMoves.refreshPanel();
       return true;
     }

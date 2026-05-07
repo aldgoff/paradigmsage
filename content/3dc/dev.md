@@ -86,7 +86,18 @@ title: "Dev"
   - 5/04/26 - Plumb pieces. Add metaphysics page.
   - 5/05/26 - Debug undo/redo and refresh panel. Debug rewind/FF. Plumb trays. Apply payload/entry canon to setup. Apply pipeline canon to advsqs.
   - 5/06/26 - Null.
-  - 5/07/26 - Parallelism in buffer modules. ApplyEntry parallelism. Use processRedoBuffer. Restore gambit functionality.
+  - 5/07/26 - Parallelism in buffer modules. ApplyEntry parallelism. Use processRedoBuffer. More parallelsim. Fix gambit undo/redo. Restore gambit functionality.
+
+     ---------- view: view.js
+cntrl: gambits.js - panelDispatch(payload): {action: 'freezeQ'}
+cntrl: gambits.js - handleFreezeQuadrant()...currAdvsq {srcTile: Array(3), quad: 1, perimeter: 2, stride: 3, opacity: 0.5}
+model: state.js - clearBuffer(buffer): AdvSqs
+view : advsqs.js - clearAdvsqPanelParams(srcTile): Q4,4
+model: Gambits.js - makeEntry(advsq): {srcTile: Array(3), quad: 1, perimeter: 2, stride: 3, opacity: 0.5}
+model: gambits.js - makeGambit(specs). {srcTile: Array(3), quad: 1, perimeter: 2, stride: 3, opacity: 0.5}
+model: state.js - pushNewState(buffer, values): Gambits {Q: 1, src: 'KB4,4', dst: 'KB6,6', area: 9}
+view: gambits.js - renderGambit(group) Group {isObject3D: true, uuid: '6afa56d3-7a24-4e42-8a16-40d08274f74e', name: '', type: 'Group', parent: null, …}
+view: gambits.js - addLineToPanel(gambit) {Q: 1, src: 'KB4,4', dst: 'KB6,6', area: 9}
 
  ### Week 9:
   - 5/10/26 - tbd

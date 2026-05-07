@@ -21,27 +21,63 @@ import gambitsData from "./gambits.json" assert { type: "json" };
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
+  import * as cGambits from "../../controller/gambits/gambits.js";
+
   import * as state  from "../../model/state/state.js";
+  import * as coords from "../../foundation/coords/coords.js";
 
   import * as view   from "../../view/view.js";
 // Seampoint: more imports...
 
 // --- Globals ---
 let activeAnimation = null;
+const gambitGroupRegistry = new Map();  // Holds mesh data for re-rendering gambits.
 
 // --- UI ---
-export function undo(gambit) {
-  console.log("view: gambits.js - undo(gambit)", gambit);
+export function makeGroup(entry) {
+  console.log("view : gambits.js - makeGroup(entry).", entry);
+
+  const {     Q,src,dst,area, srcTile,quad,perimeter,stride,opacity } = entry; // Prepare gambit state data.
+  const sq = {Q,src,dst,area };
+  const advsq = {             srcTile,quad,perimeter,stride,opacity };
+
+  const group = view.buildAdvSqGroup(advsq); // {srcTile: Array(3), quad: 1, perimeter: 0, stride: 0, opacity: 0.5}
+
+  return group;
+  }
+export function setGroupRegistry(idx, group) {
+  gambitGroupRegistry.set(idx, group);
+  }
+export function getGroupRegistry() {
+  return gambitGroupRegistry;
+}
+
+export function undo(gambit, idx) {
+  console.log("view : gambits.js - undo(gambit, idx)", gambit, idx);
   // TODO: write undoGambits().
+  if(idx > 0) {
+    const group = gambitGroupRegistry.get(idx-1);
+    // console.log("view : gambits.js - undo()...idx, group", idx, group);
+    if(group) {
+      derenderGambit(group);
+    }
+  }
   }
 
-export function redo(gambit) {
-  console.log("view: gambits.js - redo(gambit)", gambit);
+export function redo(gambit, idx) {
+  console.log("view : gambits.js - redo(gambit, idx)", gambit, idx);
   // TODO: write redoGambits().
+  // if(!state.isAtEnd("Gambits")) {
+    const group = gambitGroupRegistry.get(idx-1);
+    // console.log("view : gambits.js - redo()...idx, group", idx, group);
+    if(group) {
+      renderGambit(group);
+    }
+  // }
 }
 
 export function addLineToPanel(gambit) {
-  console.log("view: gambits.js - addLineToPanel(gambit)", gambit);
+  console.log("view : gambits.js - addLineToPanel(gambit)", gambit);
 
   const el = document.getElementById("gambit-list");
   if (!el) return;
@@ -77,7 +113,7 @@ export function addLineToPanel(gambit) {
   }
 
 export function refreshPanel() {
-  // console.log("view: gambits.js - refreshPanel()");
+  // console.log("view : gambits.js - refreshPanel()");
   const el = document.getElementById("gambit-list");
   if (!el) return;
 
@@ -95,12 +131,12 @@ export function refreshPanel() {
 }
 
 export function clear() {
-  console.log("view: gambits.js - clearGambits()");
+  console.log("view : gambits.js - clearGambits()");
   // TODO: write clearGambits().
   }
 
 export function clearGambits() {
-  console.log("view: gambits.js - clearGambits()");
+  console.log("view : gambits.js - clearGambits()");
   // TODO: write clearGambits().
   }
 
@@ -112,7 +148,7 @@ export function cancelAnimation() {
 }
 
 export function render(group, { animate = false } = {}) {
-  console.log("view: gambits.js - renderGambit(group)", group);
+  console.log("view : gambits.js - renderGambit( not shown)");
 
   view.context.scene.add(group);
 
@@ -132,7 +168,7 @@ export function render(group, { animate = false } = {}) {
   }
 
 export function renderGambit(group, { animate = false } = {}) {
-  console.log("view: gambits.js - renderGambit(group)", group);
+  console.log("view : gambits.js - renderGambit(...)");
 
   view.context.scene.add(group);
 
@@ -152,7 +188,7 @@ export function renderGambit(group, { animate = false } = {}) {
   }
 
 export function derenderGambit(group) {
-  console.log("view: gambits.js - derenderGambit(group)", group);
+  console.log("view : gambits.js - derenderGambit(...)",);
 
   if (!group) return;
 
@@ -172,7 +208,7 @@ export function derenderGambit(group) {
   }
 
 export function clearGambit(group) {
-  console.log("view: gambits.js - clearGambit(group)", group);
+  console.log("view : gambits.js - clearGambit(group)", group);
 
   if (!group) return;
 
@@ -193,7 +229,7 @@ export function clearGambit(group) {
   }
 
 export function updatePanel(gambit) {
-  console.log("view: gambits.js - updatePanel(gambit)", gambit);
+  console.log("view : gambits.js - updatePanel(gambit)", gambit);
 
   const el = document.getElementById("gambit-list");
   if (!el) return;

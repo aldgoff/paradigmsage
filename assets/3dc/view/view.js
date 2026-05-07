@@ -58,7 +58,7 @@
   import * as game       from "../controller/game/game.js";
   import * as viewer     from "../controller/viewer/viewer.js";
 
-  import * as advsqs     from "../geometry/advsqs/advsqs.js";
+  import * as vAdvsqs    from "../geometry/advsqs/advsqs.js";
   import * as decorators from "./decorators/decorators.js";
   import * as quads      from "../geometry/quads/quads.js";
 
@@ -114,11 +114,13 @@ export function init(playBoard) { // PlayBoard is the 3D canvas from the THREE r
 }
 
 export function buildAdvSqGroup(specs) { // Params: srcTile, quad, perimeter, stride, opacity.
+  console.log("view : gambits.js - buildAdvSqGroup(specs).", specs);
+
   const group = new THREE.Group();
 
   const { srcTile, quad, perimeter, stride, opacity } = specs;
 
-  const advsq = advsqs.AdvSq.fromQuad(srcTile, quad, perimeter);
+  const advsq = vAdvsqs.AdvSq.fromQuad(srcTile, quad, perimeter);
   const piece = advsq.getPiece();
   const perims = advsq.getPerims();
 

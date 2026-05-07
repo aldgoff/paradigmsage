@@ -34,8 +34,14 @@ const buffer = "Gambits";   // State buffer (state.js).
 export function makeEntry(advsq) {
   console.log(`model: ${buffer}.js - makeEntry(advsq):`, advsq);
 
-  const entry = null; // TODO: build entry specific to this module.
-  
+  const { srcTile, quad, perimeter, stride, opacity } = advsq;
+
+  const src = coords.vtsToBoard(srcTile); // Convert to positional notation for onboard tiles, vts for rest.
+  const dst = planes.resolveDstTile(srcTile, quad, perimeter, stride);  // Derive dst tile.
+  const area = (perimeter+1)*(perimeter+1);
+
+  const entry = { Q: quad,src,dst,area, srcTile,quad,perimeter,stride,opacity }; // Prepare gambit state data.
+
   return entry;
   }
 
@@ -127,9 +133,23 @@ export function clearEntireBuffer() {
 
   state.clearBuffer(buffer);
 }
-
-
 // TODO: Deprecate pre UI standardization.
+export function makeGroupFromEntry(entry) {
+  console.log("model: gambits.js - makeGroupFromEntry(entry).", entry);
+  const { Q,src,dst,area, srcTile,quad,perimeter,stride,opacity } = entry; // Prepare gambit state data.
+
+  const advsq = {srcTile, quad, perimeter, stride, opacity};// {srcTile: Array(3), quad: 1, perimeter: 2, stride: 3, opacity: 0.5}
+  const group = view.buildAdvSqGroup(advsq); // {srcTile: Array(3), quad: 1, perimeter: 0, stride: 0, opacity: 0.5}
+
+  return group;
+}
+export function makeGroup(advsq) {
+  console.log("model: gambits.js - makeGroup(advsq).", advsq);
+
+  const group = view.buildAdvSqGroup(advsq); // {srcTile: Array(3), quad: 1, perimeter: 0, stride: 0, opacity: 0.5}
+
+  return group;
+}
 export function makeGambit(specs) {
   console.log("model: gambits.js - makeGambit(specs).", specs);
 
@@ -137,12 +157,10 @@ export function makeGambit(specs) {
   const dst = planes.resolveDstTile(srcTile, quad, perimeter, stride);  // Derive dst tile.
   const src = coords.vtsToBoard(srcTile); // Convert to positional notation for onboard tiles, vts for rest.
   
-  const group = view.buildAdvSqGroup(specs); // {srcTile: Array(3), quad: 1, perimeter: 0, stride: 0, opacity: 0.5}
-
   const area = (perimeter+1)*(perimeter+1);
   const gambit = { Q: quad, src, dst, area };   // Prepare gambit state data.
 
-  return {gambit, group};
+  return gambit;
 }
 // Seampoint: more global functions...
 

@@ -159,15 +159,18 @@ export function handleFreezeQuadrant() {
   vAdvsqs.clearAdvsqPanelParams("Q4,4");              // Update panel.
 
   const entry = mGambits.makeEntry(currAdvsq);        // Transform panel payload into state entry.
+  applyEntry(entry);
 
-  const {gambit, group} = mGambits.makeGambit(currAdvsq);  // Gambit: create.
+  // const gambit = mGambits.makeGambit(currAdvsq);  // Gambit: create.
+  // console.log("*** currAdvsq", currAdvsq);
+  // console.log("*** gambit", gambit);
+  // const group = mGambits.makeGroup(currAdvsq);  // Gambit: create.
 
-  state.pushNewGambit(gambit);                        // Change state.
-    const idx = state.getBufferIndex().Gambits - 1;
-    gambitGroupRegistry.set(idx, group);
-  vGambits.render(group, { animate: true });    // Render.
-  vGambits.addLineToPanel(gambit);                       // Update panel.
-  // vGambits.updatePanel(gambit);                       // Update panel.
+  // const idx = state.getBufferIndex().Gambits - 1;
+  // gambitGroupRegistry.set(idx, group);
+  // state.pushNewGambit(gambit);                        // Change state.
+  // vGambits.render(group, { animate: true });    // Render.
+  // vGambits.addLineToPanel(gambit);                       // Update panel.
 }
 
 function handleFreezeAsLinear() {
@@ -248,5 +251,16 @@ function handleRemoveAll() {
 }
 
 // --- Helpers ---
+function applyEntry(entry) {   // Group, state, render, panel.
+  console.log("cntrl: gambits.js - applyEntry(entry)", entry);
+
+  state.pushNewGambit(entry);                     // Change state.
+    const idx = state.getBufferIndex().Gambits - 1; // Create and register group.
+    const group = vGambits.makeGroup(entry);
+    gambitGroupRegistry.set(idx, group);        // TODO: should not need both.
+    vGambits.setGroupRegistry(idx, group);
+  vGambits.render(group, { animate: true });      // Render.
+  vGambits.addLineToPanel(entry);                 // Add line to panel.
+}
 // Seampoint: more local functions...
 
