@@ -85,7 +85,7 @@ function handleMove(payload) {
   const entry = mMoves.makeEntry(payload);  // Create entry.
 
   state.pushNewMove(entry);                 // Change state.
-  vMoves.renderMove(entry);                 // Render.
+  vMoves.render(entry);                 // Render.
   vMoves.addLineToPanel(entry);             // Update panel.
   }
 

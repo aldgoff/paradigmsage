@@ -33,7 +33,7 @@ import setupData from "./setup.json" assert { type: "json" };
 
 // --- UI ---
 export function panelDispatch(payload) {    // Dispatch payload from panel to handle event functions.
-  console.log("cntrl: setup.js - panelDispatch(payload):", payload);
+  // console.log("cntrl: setup.js - panelDispatch(payload):", payload);
 
   vGambits.cancelAnimation();
 
@@ -72,13 +72,11 @@ function handleMakeBoard(payload) { // Setup handler.
 function handleShowTrays(visible) {
   console.log("control: game.js - handleShowTrays(visible):", visible);
   // TODO: change state - handleShowTrays().
-  game.showUndoStatus();  // Show undo status in the panel.
   }
 
 function handleHideTrays(visible) {
   console.log("control: game.js - handleHideTrays(visible):", visible);
   // TODO: change state - handleHideTrays()
-  game.showUndoStatus();  // Show undo status in the panel.
   }
 
 function handleTrayGap(payload) {
@@ -87,7 +85,6 @@ function handleTrayGap(payload) {
   const { action, boardSize, play, trayType, visible, gap, initialPos } = payload;
 
   // TODO: change state - handleTrayGap().
-  game.showUndoStatus();  // Show undo status in the panel.
 }
 // --- Helpers ---
 function applyEntry(entry) {

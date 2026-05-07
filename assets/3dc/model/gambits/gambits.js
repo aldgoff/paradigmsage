@@ -31,10 +31,11 @@ import gambitsData from "./gambits.json" assert { type: "json" };
 const buffer = "Gambits";   // State buffer (state.js).
 
 // --- UI ---
-export function makeEntry(payload) {
-  console.log(`model: ${buffer}.js - makeEntry(payload):`, payload);
+export function makeEntry(advsq) {
+  console.log(`model: ${buffer}.js - makeEntry(advsq):`, advsq);
 
-  const entry = null; // TODO: build entry specific to this module
+  const entry = null; // TODO: build entry specific to this module.
+  
   return entry;
   }
 
@@ -125,6 +126,23 @@ export function clearEntireBuffer() {
   console.log(`model: ${buffer}.js - clearEntireBuffer()`);
 
   state.clearBuffer(buffer);
+}
+
+
+// TODO: Deprecate pre UI standardization.
+export function makeGambit(specs) {
+  console.log("model: gambits.js - makeGambit(specs).", specs);
+
+  const { srcTile, quad, perimeter, stride, opacity } = specs;
+  const dst = planes.resolveDstTile(srcTile, quad, perimeter, stride);  // Derive dst tile.
+  const src = coords.vtsToBoard(srcTile); // Convert to positional notation for onboard tiles, vts for rest.
+  
+  const group = view.buildAdvSqGroup(specs); // {srcTile: Array(3), quad: 1, perimeter: 0, stride: 0, opacity: 0.5}
+
+  const area = (perimeter+1)*(perimeter+1);
+  const gambit = { Q: quad, src, dst, area };   // Prepare gambit state data.
+
+  return {gambit, group};
 }
 // Seampoint: more global functions...
 

@@ -112,6 +112,12 @@ export function cancelAnimation() {
   }
 }
 
+export function render(move) {  // Used to render a just created move via panel.
+  console.log("view: moves.js - renderMove(move)", move);
+  // TODO: write renderMove().
+  return;
+  }
+
 export function renderMove(move) {  // Used to render a just created move via panel.
   console.log("view: moves.js - renderMove(move)", move);
   // TODO: write renderMove().

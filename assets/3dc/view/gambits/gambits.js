@@ -60,15 +60,12 @@ export function addLineToPanel(gambit) {
 
   // --- final line ---
   const line = `${idxCol} ${qCol} ${srcCol} → ${dstCol}:${areaCol}`;
-
   const div = document.createElement("div");
   div.textContent = line;
 
   // --- Dim future entries ---
   const idx = count - 1; // current entry index
-
   const thisIdx = state.getBufferLength("Gambits") - 1;
-
   if (thisIdx >= count) {
     div.style.opacity = "0.3";
   }
@@ -97,6 +94,11 @@ export function refreshPanel() {
   }
 }
 
+export function clear() {
+  console.log("view: gambits.js - clearGambits()");
+  // TODO: write clearGambits().
+  }
+
 export function clearGambits() {
   console.log("view: gambits.js - clearGambits()");
   // TODO: write clearGambits().
@@ -108,6 +110,26 @@ export function cancelAnimation() {
     activeAnimation = null;
   }
 }
+
+export function render(group, { animate = false } = {}) {
+  console.log("view: gambits.js - renderGambit(group)", group);
+
+  view.context.scene.add(group);
+
+  // --- Re-attach overlays ---
+  if (group.userData?.overlays) {
+    group.userData.overlays.forEach(o => {
+      const tile = o.userData?.parentTile;
+      if (tile && !o.parent) {
+        tile.add(o);
+      }
+    });
+  }
+
+  if (animate) {
+    animateFreezeTransition(group);
+  }
+  }
 
 export function renderGambit(group, { animate = false } = {}) {
   console.log("view: gambits.js - renderGambit(group)", group);

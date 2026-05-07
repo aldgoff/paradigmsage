@@ -37,8 +37,13 @@ export function panelDispatch(payload) {
 
   vGambits.cancelAnimation();
 
-  const { action, srcTile, quad, perimeter, stride, opacity } = payload;
-  console.log("cntrl: advsqs.js - panelDispatch(payload)", payload);
+  const { action, 
+    srcTile,      // board or vts (TODO: inwork)
+    quad,         // 1-60
+    perimeter,    // 0-N
+    stride,       // 0-2perimeter+1
+    opacity       // Offboard tiles (0.0 to 1.0)
+  } = payload;
 
   switch (action) {
     case "place":       handlePlace(payload); break;

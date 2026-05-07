@@ -55,11 +55,12 @@ const gambitGroupRegistry = new Map();  // Holds mesh data for re-rendering gamb
 
 // --- UI ---
 export function panelDispatch(payload) {
-  // console.log("cntrl: gambits.js - panelDispatch(payload):", payload);
+  console.log("cntrl: gambits.js - panelDispatch(payload):", payload);
 
   vGambits.cancelAnimation();
 
   const { action } = payload;
+
   switch (action) {
     case "freezeQ":  handleFreezeQuadrant(); break;
     case "freezeL":  handleFreezeAsLinear(); break;
@@ -69,6 +70,8 @@ export function panelDispatch(payload) {
     case "remove":   handleRemoveAll(); break;
     default: throw new Error(`Unknown gambit action ${action}.`);  break;
   }
+
+  game.showUndoStatus();                          // Update game panel (undo).
 }
 
 export function getGambitGroup(idx) {
@@ -143,25 +146,28 @@ export function rebindOverlaysToBoard() {
 
 // --- Handle Functions ---
 export function handleFreezeQuadrant() {
-  console.log("cntrl: gambits.js - handleFreezeQuadrant().");
+  // console.log("cntrl: gambits.js - handleFreezeQuadrant().");
 
-  const curr = state.fetchCurrentAdvsq(); // Get current advsq, if any.
-  if(!curr) return;
+  const currAdvsq = state.fetchCurrentAdvsq(); // Get current advsq, if any.
+  if(!currAdvsq) return;
+
+  const { srcTile, quad, perimeter, stride, opacity } = currAdvsq;  // Informative.
+  console.log("cntrl: gambits.js - handleFreezeQuadrant()...currAdvsq", currAdvsq);
 
   state.clearBuffer("AdvSqs");                        // Advsq: change state.
   vAdvsqs.clearAdvsq();                               // De-render.
   vAdvsqs.clearAdvsqPanelParams("Q4,4");              // Update panel.
 
-  const {gambit, group} = mGambits.makeGambit(curr);  // Gambit: create.
+  const entry = mGambits.makeEntry(currAdvsq);        // Transform panel payload into state entry.
+
+  const {gambit, group} = mGambits.makeGambit(currAdvsq);  // Gambit: create.
 
   state.pushNewGambit(gambit);                        // Change state.
-  const idx = state.getBufferIndex().Gambits - 1;
-
-  gambitGroupRegistry.set(idx, group);
-  vGambits.renderGambit(group, { animate: true });    // Render.
-  vGambits.updatePanel(gambit);                       // Update panel.
-
-  game.showUndoStatus();                              // Update game panel (undo).
+    const idx = state.getBufferIndex().Gambits - 1;
+    gambitGroupRegistry.set(idx, group);
+  vGambits.render(group, { animate: true });    // Render.
+  vGambits.addLineToPanel(gambit);                       // Update panel.
+  // vGambits.updatePanel(gambit);                       // Update panel.
 }
 
 function handleFreezeAsLinear() {
@@ -210,7 +216,6 @@ function handleDelete() {
   }
 
   // --- Update undo UI ---
-  game.showUndoStatus();
   }
 
 function handleRemoveAll() {
@@ -240,7 +245,6 @@ function handleRemoveAll() {
   }
 
   // --- Update undo UI ---
-  game.showUndoStatus();
 }
 
 // --- Helpers ---
