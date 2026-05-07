@@ -24,8 +24,9 @@ import setupData from "./setup.json" assert { type: "json" };
   import * as planes from "../../geometry/planes/planes.js";
   import * as quads  from "../../geometry/quads/quads.js";
 
-  import * as vBoards from "../../view/boards/boards.js"
-  import * as vTrays  from "../../view/trays/trays.js"
+  import * as vBoards  from "../../view/boards/boards.js"
+  import * as vTrays   from "../../view/trays/trays.js"
+  import * as cGambits from "../../controller/gambits/gambits.js"
 // Seampoint: more imports...
 
 // --- UI ---
@@ -45,6 +46,8 @@ export function render(entry) {
 
   vBoards.render(entry);
   vTrays.render(entry);
+
+  // cGambits.rebindOverlaysToBoard();
   }
   
 export function refreshPanel(entry) {

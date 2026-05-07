@@ -422,8 +422,8 @@ function processUndoBuffer(key, idx) {
     const move = state.fetchCurrentState("Moves");
     if(move != null) {
       vMoves.undo(move);
-      vMoves.refreshPanel();
       state.setBufferIndex("Moves", idx-1);
+      vMoves.refreshPanel();
       return true;
     }
     }

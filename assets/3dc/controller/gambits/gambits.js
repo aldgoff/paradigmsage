@@ -17,7 +17,6 @@
 // --- Load JSON ---
 import gambitsData from "./gambits.json" assert { type: "json" };
   const gambitsModule = gambitsData.gambits_module;
-  const category  = gambitsModule.category;
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
@@ -74,6 +73,7 @@ export function panelDispatch(payload) {
   game.showUndoStatus();                          // Update game panel (undo).
 }
 
+// Suspicious code
 export function getGambitGroup(idx) {
   return gambitGroupRegistry.get(idx);
   }
@@ -101,9 +101,8 @@ export function rerunGambits() {
   }
 
   vGambits.refreshPanel();
-}
+  }
 
-// Suspicious code
 export function getLastActiveGambitIndex() {
   const count = state.getBufferIndex().Gambits;
   return count; // after undo, this is the removed one
@@ -145,14 +144,13 @@ export function rebindOverlaysToBoard() {
 // Seampoint: more global functions...
 
 // --- Handle Functions ---
-export function handleFreezeQuadrant() {
+function handleFreezeQuadrant() {
   // console.log("cntrl: gambits.js - handleFreezeQuadrant().");
 
   const currAdvsq = state.fetchCurrentAdvsq(); // Get current advsq, if any.
   if(!currAdvsq) return;
 
   const { srcTile, quad, perimeter, stride, opacity } = currAdvsq;  // Informative.
-  console.log("cntrl: gambits.js - handleFreezeQuadrant()...currAdvsq", currAdvsq);
 
   state.clearBuffer("AdvSqs");                        // Advsq: change state.
   vAdvsqs.clearAdvsq();                               // De-render.
@@ -160,18 +158,7 @@ export function handleFreezeQuadrant() {
 
   const entry = mGambits.makeEntry(currAdvsq);        // Transform panel payload into state entry.
   applyEntry(entry);
-
-  // const gambit = mGambits.makeGambit(currAdvsq);  // Gambit: create.
-  // console.log("*** currAdvsq", currAdvsq);
-  // console.log("*** gambit", gambit);
-  // const group = mGambits.makeGroup(currAdvsq);  // Gambit: create.
-
-  // const idx = state.getBufferIndex().Gambits - 1;
-  // gambitGroupRegistry.set(idx, group);
-  // state.pushNewGambit(gambit);                        // Change state.
-  // vGambits.render(group, { animate: true });    // Render.
-  // vGambits.addLineToPanel(gambit);                       // Update panel.
-}
+  }
 
 function handleFreezeAsLinear() {
   console.log("cntrl: gambits.js - handleFreezeLinear()");
@@ -249,6 +236,7 @@ function handleRemoveAll() {
 
   // --- Update undo UI ---
 }
+// Seampoint: more helper functions...
 
 // --- Helpers ---
 function applyEntry(entry) {   // Group, state, render, panel.

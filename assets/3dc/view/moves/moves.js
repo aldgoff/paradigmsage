@@ -89,6 +89,7 @@ export function addLineToPanel(move) {
   }
 
 export function refreshPanel() {
+  // console.log("view : moves.js - refreshPanel()");
   const el = document.getElementById("move-list");
   if (!el) return;
 
