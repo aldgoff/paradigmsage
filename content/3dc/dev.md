@@ -86,7 +86,7 @@ title: "Dev"
   - 5/04/26 - Plumb pieces. Add metaphysics page.
   - 5/05/26 - Debug undo/redo and refresh panel. Debug rewind/FF. Plumb trays. Apply payload/entry canon to setup. Apply pipeline canon to advsqs.
   - 5/06/26 - Null.
-  - 5/07/26 - Parallelism in buffer modules. ApplyEntry parallelism. Restore gambit functionality.
+  - 5/07/26 - Parallelism in buffer modules. ApplyEntry parallelism. Use processRedoBuffer. Restore gambit functionality.
 
  ### Week 9:
   - 5/10/26 - tbd

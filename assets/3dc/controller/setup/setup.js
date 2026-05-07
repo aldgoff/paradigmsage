@@ -64,18 +64,9 @@ function handleMakeBoard(payload) { // Setup handler.
 
   const { action, boardSize, trayType, initialPos } = payload;  // Informative.
 
-  const nextEntry = mSetup.makeEntry(payload);        // Transform panel payload into state entry.
-  const currEntry = mSetup.fetchCurrentEntry();
-  if(currEntry != null) {
-    vSetup.clear(currEntry);
-    if(!state.isAtEnd("Setup")) {
-      // TODO: clear all later entries.
-    }
-  }
-  state.pushNewSetup(nextEntry);                  // Log state change in undo buffer.
-  vSetup.render(nextEntry);                       // Render the new board and trays.
-  vSetup.refreshPanel(nextEntry);                 // Only needed by panels with derived fields.
-  // TODO: clear all later buffers; a new board invalidates moves, gambits, and the exploratory advsq.
+  const nextEntry = mSetup.makeEntry(payload);    // Transform panel payload into state entry.
+  
+  applyEntry(nextEntry);
 }
 
 function handleShowTrays(visible) {
@@ -97,6 +88,21 @@ function handleTrayGap(payload) {
 
   // TODO: change state - handleTrayGap().
   game.showUndoStatus();  // Show undo status in the panel.
+}
+// --- Helpers ---
+function applyEntry(entry) {
+  const currEntry = mSetup.fetchCurrentEntry(); // Clear previous board.
+  if(currEntry != null) {
+    vSetup.clear(currEntry);
+    if(!state.isAtEnd("Setup")) {
+      // TODO: clear all later entries.
+    }
+  }
+
+  state.pushNewSetup(entry);                  // Log state change in undo buffer.
+  vSetup.render(entry);                       // Render the new board and trays.
+  vSetup.refreshPanel(entry);                 // Only needed by panels with derived fields.
+  // TODO: clear all later buffers; a new board invalidates moves, gambits, and the exploratory advsq.
 }
 // Seampoint: more local functions...
 

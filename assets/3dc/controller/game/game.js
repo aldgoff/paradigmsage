@@ -102,72 +102,8 @@ function handleRedo() {
     if(idx === len) continue;
     top = false;
 
-    if(     key === "Setup") {
-      const curr = state.fetchCurrentState("Setup");
-      const next = state.fetchNextState("Setup");
-
-      if(     curr === null && next === null) { // No boards or trays in load at all.
-        continue;
-        }
-      else if(curr === null && next != null) {  // Transition to first board.
-        vSetup.render(next);
-        state.setBufferIndex("Setup", idx+1);
-        vSetup.refreshPanel(next);
-        }
-      else if(curr != null && next === null) {  // At top of Setup buffer.
-        vSetup.refreshPanel(curr);
-        }
-      else if(curr != null && next != null) {
-        vSetup.clear(curr);   // Clear current setup (board and trays).
-        vSetup.render(next);  // Render next setup (board and trays).
-        state.setBufferIndex("Setup", idx+1);
-        vSetup.refreshPanel(next);
-      }
+    if(processRedoBuffer(key, idx)) {
       break;
-      }
-    else if(key === "Moves") {
-      const move = state.fetchNextState("Moves");
-      if(move != null) {
-        state.setBufferIndex("Moves", idx+1);
-        vMoves.redo(move);
-        vMoves.refreshPanel();
-        break;
-      }
-      }
-    else if(key === "Gambits") {
-      const gambit = state.fetchNextState("Gambits");
-      if(gambit != null) {
-        state.setBufferIndex("Gambits", idx+1);
-        vGambits.redo(gambit);
-        vGambits.refreshPanel();
-        break;
-      }
-      }
-    else if(key === "AdvSqs") {
-      const curr = state.fetchCurrentState("AdvSqs");
-      const next = state.fetchNextState("AdvSqs");
-
-      if(     curr === null && next === null) {
-        continue;
-        }
-      else if(curr === null && next != null) {
-        vAdvsqs.render(next);
-        state.setBufferIndex("AdvSqs", idx+1);
-        vAdvsqs.refreshPanel(next);
-        }
-      else if(curr != null && next === null) {
-        vAdvsqs.refreshPanel(curr);
-        }
-      else if(curr != null && next != null) {
-        vAdvsqs.clear(curr);
-        vAdvsqs.render(next);
-        state.setBufferIndex("AdvSqs", idx+1);
-        vAdvsqs.refreshPanel(next);
-      }
-      break;
-      }
-    else {  // Unreachable.
-      throw new Error("Unknown or missing key in redo", key);
     }
   }
   showUndoStatus();
@@ -546,7 +482,7 @@ function processRedoBuffer(key, idx) {
     }
   else if(key === "Gambits") {
     const gambit = state.fetchNextState("Gambits");
-    if (gambit != null) {
+    if(gambit != null) {
       state.setBufferIndex("Gambits", idx + 1);
       vGambits.redo(gambit);
       vGambits.refreshPanel();
@@ -555,7 +491,7 @@ function processRedoBuffer(key, idx) {
     }
   else if(key === "Moves") {
     const move = state.fetchNextState("Moves");
-    if (move != null) {
+    if(move != null) {
       state.setBufferIndex("Moves", idx + 1);
       vMoves.redo(move);
       vMoves.refreshPanel();
