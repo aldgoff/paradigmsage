@@ -3,9 +3,15 @@
   Purpose: desc
   Author: Allan Goff
   Date: 4/15/26
-  Recommended access: import * as advsqs.
+  Recommended access: import * as mAdvsqs from ../../model/advsqs/advsqa.js
   UI: the export functions.
-  Philosophy: should be able to delete a module by deleting its directory.
+  Philosophy: Dlete a module by deleting its directory - not so much.
+    controller/ model/ view/
+    play.md - DOM
+    main.js - regressions
+    view.js - wire, build payload
+    game.js - rewind, FF
+    state.js - undo, redo
 */
 
 // --- Load JSON ---
@@ -19,6 +25,7 @@ import advsqsData from "./advsqs.json" assert { type: "json" };
   import * as state   from "../../model/state/state.js";
 // Seampoint: more imports...
 
+// --- Globals ---
 const buffer = "AdvSqs";   // State buffer (state.js).
 
 // --- UI ---
@@ -118,12 +125,6 @@ export function clearEntireBuffer() {
   console.log(`model: ${buffer}.js - clearEntireBuffer()`);
 
   state.clearBuffer(buffer);
-}
-
-
-// TODO: Deprecate pre UI standardization.
-export function clearBuffer() {
-  state.clearBuffer("AdvSqs");      // Update undo buffer.
 }
 // Seampoint: more global functions...
 

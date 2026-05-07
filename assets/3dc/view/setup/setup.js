@@ -3,8 +3,15 @@
   Purpose: desc
   Author: Allan Goff
   Date: 5/03/26
-  Recommended access: import * as setup from ../../view/setup/setup.js
+  Recommended access: import * as vSetup from ../../view/setup/setup.js
   UI: the export functions.
+  Philosophy: Delete a module by deleting its directory - not so much.
+    controller/ model/ view/
+    play.md - DOM
+    main.js - regressions
+    view.js - wire, build payload
+    game.js - rewind, FF
+    state.js - undo, redo
 */
 
 // --- Load JSON ---
@@ -19,7 +26,7 @@ import setupData from "./setup.json" assert { type: "json" };
 
   import * as vBoards from "../../view/boards/boards.js"
   import * as vTrays  from "../../view/trays/trays.js"
-  // Seampoint: more imports...
+// Seampoint: more imports...
 
 // --- UI ---
 export function clear(entry) {

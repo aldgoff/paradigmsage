@@ -3,8 +3,15 @@
   Purpose: Controller code to setup board and trays.
   Author: Allan Goff
   Date: 4/22/26
-  Recommended access: import * as setup.
+  Recommended access: import * as cSetup from ../../control/setup/setup.js
   UI: the export functions.
+  Philosophy: Dlete a module by deleting its directory - not so much.
+    controller/ model/ view/
+    play.md - DOM
+    main.js - regressions
+    view.js - wire, build payload
+    game.js - rewind, FF
+    state.js - undo, redo
 */
 
 // --- Load JSON ---
@@ -14,14 +21,14 @@ import setupData from "./setup.json" assert { type: "json" };
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
-import * as game     from "../../controller/game/game.js";
+  import * as game     from "../../controller/game/game.js";
 
-import * as state    from "../../model/state/state.js";
-import * as mSetup    from "../../model/setup/setup.js";
+  import * as state    from "../../model/state/state.js";
+  import * as mSetup   from "../../model/setup/setup.js";
 
-import * as boards   from "../../view/boards/boards.js";
-import * as vSetup from "../../view/setup/setup.js";
-import * as vGambits from "../../view/gambits/gambits.js";
+  import * as boards   from "../../view/boards/boards.js";
+  import * as vSetup   from "../../view/setup/setup.js";
+  import * as vGambits from "../../view/gambits/gambits.js";
 // Seampoint: more imports...
 
 // --- UI ---

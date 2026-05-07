@@ -3,8 +3,15 @@
   Purpose: desc
   Author: Allan Goff
   Date: 4/15/26
-  Recommended access: import * as vGambits.
+  Recommended access: import * as vGambits from ../../view/gambits/gambits.js
   UI: the export functions.
+  Philosophy: Dlete a module by deleting its directory - not so much.
+    controller/ model/ view/
+    play.md - DOM
+    main.js - regressions
+    view.js - wire, build payload
+    game.js - rewind, FF
+    state.js - undo, redo
 */
 
 // --- Load JSON ---
@@ -14,7 +21,7 @@ import gambitsData from "./gambits.json" assert { type: "json" };
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
-  import * as state   from "../../model/state/state.js";
+  import * as state  from "../../model/state/state.js";
 
   import * as view   from "../../view/view.js";
 // Seampoint: more imports...
@@ -93,6 +100,13 @@ export function refreshPanel() {
 export function clearGambits() {
   console.log("view: gambits.js - clearGambits()");
   // TODO: write clearGambits().
+  }
+
+export function cancelAnimation() {
+  if (activeAnimation) {
+    activeAnimation.cancelled = true;
+    activeAnimation = null;
+  }
 }
 
 export function renderGambit(group, { animate = false } = {}) {
@@ -206,7 +220,7 @@ function applyOpacity(obj, opacity) {
   if (obj.children && obj.children.length > 0) {
     obj.children.forEach(child => applyOpacity(child, opacity));
   }
-}
+  }
 
 function animateFreezeTransition(group, duration = 0.8) {
   const overlays = group.userData?.overlays || [];
@@ -249,13 +263,6 @@ function animateFreezeTransition(group, duration = 0.8) {
   }
 
   requestAnimationFrame(step);
-}
-
-export function cancelAnimation() {
-  if (activeAnimation) {
-    activeAnimation.cancelled = true;
-    activeAnimation = null;
-  }
 }
 // Seampoint: more local functions...
 

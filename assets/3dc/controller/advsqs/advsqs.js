@@ -5,6 +5,13 @@
   Date: 4/21/26
   Recommended access: import * as cAdvsqs from ../../controller/advsqs/advsqa.js
   UI: the export functions.
+  Philosophy: Dlete a module by deleting its directory - not so much.
+    controller/ model/ view/
+    play.md - DOM
+    main.js - regressions
+    view.js - wire, build payload
+    game.js - rewind, FF
+    state.js - undo, redo
 */
 
 // --- Load JSON ---
@@ -95,8 +102,6 @@ function handleGrow(payload) {
   const nextEntry = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
 
   applyEntry(nextEntry);  // Clear curr, branch, state change, render, refresh panel.
-
-  // applyAdvsq(newAdvsq); // Log state change, render, update control panel.}
   }
 
 function handleShrink(payload) {
@@ -116,7 +121,6 @@ function handleShrink(payload) {
   const nextEntry = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
 
   applyEntry(nextEntry);  // Clear curr, branch, state change, render, refresh panel.
-  // applyAdvsq(newAdvsq); // Log state change, render, update control panel.}
   }
 
 function handleUpdateParam(payload) {
@@ -143,7 +147,6 @@ function handleUpdateParam(payload) {
   const nextEntry = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
 
   applyEntry(nextEntry);  // Clear curr, branch, state change, render, refresh panel.
-  // applyAdvsq(newAdvsq); // Log state change, render, update control panel.}
   }
 
 function handleNudgeSrc(payload) {
@@ -165,7 +168,6 @@ function handleNudgeSrc(payload) {
   else throw new Error("Invalid axis");
 
   applyEntry(nextEntry);  // Clear curr, branch, state change, render, refresh panel.
-  // applyAdvsq(newAdvsq); // Log state change, render, update control panel.}
   }
 
 function handleNextQuad(payload) {
@@ -184,7 +186,6 @@ function handleNextQuad(payload) {
   const nextEntry = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
 
   applyEntry(nextEntry);  // Clear curr, branch, state change, render, refresh panel.
-  // applyAdvsq(newAdvsq); // Log state change, render, update control panel.}
   }
 
 function handleNextPlane(payload) {
@@ -203,7 +204,6 @@ function handleNextPlane(payload) {
   const nextEntry = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
 
   applyEntry(nextEntry);  // Clear curr, branch, state change, render, refresh panel.
-  // applyAdvsq(newAdvsq); // Log state change, render, update control panel.}
   }
 
 function handleNextPiece(payload) {
@@ -222,7 +222,6 @@ function handleNextPiece(payload) {
   const nextEntry = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
 
   applyEntry(nextEntry);  // Clear curr, branch, state change, render, refresh panel.
-  // applyAdvsq(newAdvsq); // Log state change, render, update control panel.}
 }
 
 // --- Helpers ---
@@ -265,13 +264,6 @@ function applyEntry(entry) {   // Clear curr, branch, state change, render, refr
   state.pushNewAdvsq(entry);      // Log state change in undo buffer.
   vAdvsqs.render(entry);          // Render the new advsq.
   vAdvsqs.refreshPanel(entry);    // Only needed by panels with derived fields.
-}
-
-// DEPRECATED.
-function applyAdvsq(newAdvsq) { // Log state change, render, update control panel.
-  state.pushNewAdvsq(newAdvsq);            // Undo.
-  vAdvsqs.makeAdvsq(newAdvsq);             // Render.
-  vAdvsqs.setAdvsqPanelParams(newAdvsq);   // Panel.
 }
 // Seampoint: more local functions...
 

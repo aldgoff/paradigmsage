@@ -5,6 +5,13 @@
   Date: 4/23/26
   Recommended access: import * as cGambits from ../../controller/gambits/gambits.js
   UI: the export functions.
+  Philosophy: Dlete a module by deleting its directory - not so much.
+    controller/ model/ view/
+    play.md - DOM
+    main.js - regressions
+    view.js - wire, build payload
+    game.js - rewind, FF
+    state.js - undo, redo
 */
 
 // --- Load JSON ---
@@ -43,6 +50,7 @@ import gambitsData from "./gambits.json" assert { type: "json" };
   * 12. ✅ Plumbing for test suite
 */
 
+// --- Globals ---
 const gambitGroupRegistry = new Map();  // Holds mesh data for re-rendering gambits.
 
 // --- UI ---

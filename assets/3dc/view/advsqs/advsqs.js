@@ -3,8 +3,15 @@
   Purpose: Place the decorators on the board for the advsq.
   Author: Allan Goff
   Date: 4/15/26
-  Recommended access: import * as advsqs.
+  Recommended access: import * as vAdvsqs from ../../view/advsqs/advsqa.js
   UI: the export functions.
+  Philosophy: Dlete a module by deleting its directory - not so much.
+    controller/ model/ view/
+    play.md - DOM
+    main.js - regressions
+    view.js - wire, build payload
+    game.js - rewind, FF
+    state.js - undo, redo
 */
 
 // --- Load JSON ---
@@ -86,7 +93,6 @@ export function refreshPanel(advsq) {
   panel.querySelector('[name="advsq-opacity"]').value      = opacity;
 
 }
-
 
 export function setAdvsqPanelInitialParams() {
   advsqPanelInitialParams = getAdvsqPanelParams();

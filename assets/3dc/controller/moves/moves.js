@@ -5,6 +5,13 @@
   Date: 4/27/26
   Recommended access: import * as cMoves from ../../controller/moves/moves.js
   UI: the export functions.
+  Philosophy: Delete a module by deleting its directory - not so much.
+    controller/ model/ view/
+    play.md - DOM
+    main.js - regressions
+    view.js - wire, build payload
+    game.js - rewind, FF
+    state.js - undo, redo
 */
 
 // --- Load JSON ---

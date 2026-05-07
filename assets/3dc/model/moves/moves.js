@@ -5,7 +5,13 @@
   Date: 4/30/26
   Recommended access: import * as mMoves from ../../model/moves/moves.js
   UI: the export functions.
-  Philosophy: should be able to delete a module by deleting its directory.
+  Philosophy: Delete a module by deleting its directory - not so much.
+    controller/ model/ view/
+    play.md - DOM
+    main.js - regressions
+    view.js - wire, build payload
+    game.js - rewind, FF
+    state.js - undo, redo
 */
 
 // --- Load JSON ---
@@ -18,6 +24,7 @@ import movesData from "./moves.json" assert { type: "json" };
   import * as state  from "../../model/state/state.js";
 // Seampoint: more imports...
 
+// --- Globals ---
 const buffer = "Moves";   // State buffer (state.js).
 
 // --- UI ---
@@ -25,7 +32,10 @@ export function makeEntry(payload) {
   console.log(`model: ${buffer}.js - makeEntry(payload):`, payload);
 
   const index = state.getBufferIndex()["Moves"] + 1;
-  const entry = createState(payload, index); // Index is used to determine the turn.
+
+  let { action, player, piece, src, dst, sec, capture, opts } = payload;
+  let turn = Math.floor((index + 1) / 2);
+  let entry = { turn, player, piece, src, dst, action, sec };
 
   return entry;
   }
@@ -117,19 +127,6 @@ export function clearEntireBuffer() {
   console.log(`model: ${buffer}.js - clearEntireBuffer()`);
 
   state.clearBuffer(buffer);
-}
-
-
-// TODO: Deprecate pre UI standardization.
-export function createState(payload, index) { // Create the state entry from raw data.
-  console.log("model: moves.js - createState(payload, index)", payload, index);
-  // TODO: code model: moves - createState().
-
-  let { action, player, piece, src, dst, sec, capture, opts } = payload;
-  let turn = Math.floor((index + 1) / 2);
-  let entry = { turn, player, piece, src, dst, action, sec };
-
-  return entry;
 }
 // Seampoint: more global functions...
 
