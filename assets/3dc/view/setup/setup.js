@@ -45,7 +45,7 @@ export function render(entry) {
 
   vBoards.render(entry);
   vTrays.render(entry);
-}
+  }
   
 export function refreshPanel(entry) {
   // TODO: write refreshPanel(entry).

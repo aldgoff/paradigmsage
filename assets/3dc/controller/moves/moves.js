@@ -63,7 +63,7 @@ export function panelDispatch(payload) {
   game.showUndoStatus();                          // Update game panel (undo).
   }
 
-export function normalize(payload) { // Convert panel strings to vts arrays.
+ function normalize(payload) { // Convert panel strings to vts arrays.
   let { player, piece, src, dst, capture, sec, opts } = payload;   // Unpack panel fields.
 
   src = src ? coords.normalizeTileToVts(src) : null;

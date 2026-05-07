@@ -25,6 +25,9 @@ import movesData from "./moves.json" assert { type: "json" };
   import * as quads  from "../../geometry/quads/quads.js";
 // Seampoint: more imports...
 
+// --- Globals ---
+let activeAnimation = null;
+
 // --- UI ---
 export function undo(move) {
   console.log("view: moves.js - undo(move)", move);
@@ -99,6 +102,13 @@ export function refreshPanel() {
     } else {
       children[i].style.opacity = "0.3";   // future
     }
+  }
+}
+
+export function cancelAnimation() {
+  if (activeAnimation) {
+    activeAnimation.cancelled = true;
+    activeAnimation = null;
   }
 }
 

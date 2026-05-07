@@ -55,7 +55,7 @@ export function panelDispatch(payload) {    // Dispatch payload from panel to ha
   }
 
   game.showUndoStatus();                          // Update game panel (undo).
-  }
+}
 // Seampoint: more global functions...
 
 // --- Handle Functions ---

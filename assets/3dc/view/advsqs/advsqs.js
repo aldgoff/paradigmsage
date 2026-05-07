@@ -45,6 +45,12 @@ let advsqPanelInitialParams = null;
 let currentAdvsq = null;
 
 // --- UI ---
+export function clear(advsq) {
+  console.log("view: advsqs.js - clear(advsq)", advsq);
+  
+  clearAdvsq();
+  }
+
 export function render(advsq) {
   console.log("view: advsqs.js - render(advsq)", advsq);
 
@@ -53,12 +59,6 @@ export function render(advsq) {
   makeAdvsq(advsq);
   // refreshPanel(advsq);
   } 
-
-export function clear(advsq) {
-  console.log("view: advsqs.js - clear(advsq)", advsq);
-  
-  clearAdvsq();
-}
 
 export function refreshPanel(advsq) {
   console.log("view : advsqs.js - refreshPanel(advsq):", advsq);
