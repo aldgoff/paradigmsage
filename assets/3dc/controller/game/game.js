@@ -98,23 +98,26 @@ function handleUndo() {
   }
 
 function handleRedo() {
-  const keys = state.getStateKeys();
-  let top = true;
+  let buffer = state.getCurrBuffer();
 
-  for(const key of keys) {
-    const idx = state.getCurrentIndex(key);
-    const len = state.getBufferLength(key);
-    if(idx === len) continue;
-    top = false;
-
-    if(processRedoBuffer(key, idx)) {
-      break;
-    }
+  if (buffer === null) {
+    buffer = state.getNextBuffer();
+    if (!buffer) return console.log("Top Sentry");
   }
+
+  const idx = state.getCurrentIndex(buffer);
+  const len = state.getBufferLength(buffer);
+
+  if (idx < len) {
+    processRedoBuffer(buffer, idx);
+  } else {
+    buffer = state.getNextBuffer();
+    if (!buffer) return console.log("Top Sentry");
+    processRedoBuffer(buffer, 0);
+  }
+
   showUndoStatus();
   assertStateConsistency();
-
-  if(top) { console.log("Top Sentry"); }
 }
 
 function handleRewind() {
@@ -200,6 +203,8 @@ function handleFastForward() {
 async function handleLoad() {
   console.log("cntrl: game.js - handleLoad()");
 
+  hardReset();
+
   try {
     const text = await navigator.clipboard.readText();
     const newState = JSON.parse(text);
@@ -232,7 +237,7 @@ async function handleLoad() {
     // vSetup.refreshPanel(setup);
     vMoves.refreshPanel();
     vGambits.refreshPanel();
-    // vAdvsqs.refreshPanel(advsq);
+    vAdvsqs.clearAdvsqPanelParams("KR4,4");
 
     showUndoStatus(); // Good visual indicator of successful load.
 
@@ -529,5 +534,29 @@ function assertStateConsistency() {
       console.error("Index out of bounds", key, i, len);
     }
   }
-}// Seampoint: more local functions...
+}
+
+function hardReset() {
+  // --- View ---
+  vAdvsqs.clearAdvsq();
+  vGambits.clearGambits();
+  vMoves.clearMoves?.();
+  boards.clearBoard();
+
+  // --- Derived / caches ---
+  cGambits.reset?.();
+
+  // --- Model ---
+  state.setState({
+    Setup: [],
+    Moves: [],
+    Gambits: [],
+    AdvSqs: []
+  });
+
+  for (const key of state.getStateKeys()) {
+    state.setBufferIndex(key, 0);
+  }
+}
+// Seampoint: more local functions...
 

@@ -87,6 +87,7 @@ title: "Dev"
   - 5/05/26 - Debug undo/redo and refresh panel. Debug rewind/FF. Plumb trays. Apply payload/entry canon to setup. Apply pipeline canon to advsqs.
   - 5/06/26 - Null.
   - 5/07/26 - Parallelism in buffer modules. ApplyEntry parallelism. Use processRedoBuffer. More parallelsim. Fix gambit undo/redo. Restore gambit functionality. State QC.
+  - 5/08/26 - Fix redo on load.
 
      ---------- view: view.js
 cntrl: gambits.js - panelDispatch(payload): {action: 'freezeQ'}
