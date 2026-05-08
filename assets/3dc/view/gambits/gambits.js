@@ -85,7 +85,7 @@ export function addLineToPanel(gambit) {
   const { Q, src, dst, area } = gambit;
 
   // --- freeze index ---
-  const count = state.getBufferIndex().Gambits;
+  const count = state.getIndices().Gambits;
 
   // --- column widths ---
   const idxCol  = String(count).padStart(2);    // right-aligned
@@ -117,7 +117,7 @@ export function refreshPanel() {
   const el = document.getElementById("gambit-list");
   if (!el) return;
 
-  const count = state.getBufferIndex().Gambits;
+  const count = state.getIndices().Gambits;
 
   const children = el.children;
 
@@ -237,7 +237,7 @@ export function updatePanel(gambit) {
   const { Q, src, dst, area } = gambit;
 
   // --- freeze index ---
-  const count = state.getBufferIndex().Gambits;
+  const count = state.getIndices().Gambits;
 
   // --- column widths ---
   const idxCol  = String(count).padStart(2);    // right-aligned

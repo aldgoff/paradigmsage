@@ -25,6 +25,11 @@ import gameData from "./game.json" assert { type: "json" };
   import * as vSetup   from "../../view/setup/setup.js";
 // Seampoint: more imports...
 
+/* TODO: Game improvements:
+ * Split out roles.
+ * Refactor duplicate structures/logic.
+*/
+
 // --- UI ---
 export function panelDispatch(payload) {
   // console.log("cntrl: game.js - panelDispatch(payload):", payload);
@@ -50,7 +55,7 @@ export function showUndoStatus() {  // Show undo buffers in Game panel.
   const el = document.getElementById("undo-state");
 
   const keys = state.getStateKeys();
-  const undo = state.getBufferIndex();
+  const undo = state.getIndices();
 
   const text = keys
     .map((key) => {
@@ -113,48 +118,39 @@ function handleRedo() {
 }
 
 function handleRewind() {
-  let buffer = state.getCurrentBuffer();
   const keys = state.getStateKeys();
+  let buffer = state.getCurrBuffer();
 
-  if (buffer === null) {
-    console.log("Bottom Sentry");
-    return;
+  if(buffer === null) { // Bottom Sentry.
+    return console.log("Bottom Sentry 1");
   }
 
-  for (let attempt = 0; attempt < keys.length; attempt++) {
+  for(let attempt = 0; attempt < keys.length; attempt++) {  // Rewind until next breakpoint.
     const idx = state.getCurrentIndex(buffer);
     const len = state.getBufferLength(buffer);
 
-    if (len === 0) {
-      buffer = state.getPrevBuffer();
-      if (!buffer) return console.log("Bottom Sentry");
+    if(len === 0) {                   // Skip empty buffers...
       continue;
-    }
-
-    // --- N → 1 ---
-    if (idx === len && len > 1) {
+      }
+    else if(idx === len && len > 1) {      // --- N → 1 ---
       rewindCurrentBuffer(buffer);
       showUndoStatus();
       return;
-    }
-
-    // --- 1 → 0 ---
-    if (idx === 1) {
+      }
+    else if(idx === 1) {                   // --- 1 → 0 ---
       processUndoBuffer(buffer, idx);
       showUndoStatus();
       return;
-    }
-
-    // --- 0 → prev buffer ---
-    if (idx === 0) {
+      }
+    else if(idx === 0) {                   // --- 0 → prev buffer ---
       buffer = state.getPrevBuffer();
-      if (!buffer) return console.log("Bottom Sentry");
+      if (!buffer) return console.log("Bottom Sentry 3");
       continue;
+      }
+    else {
+      throw new Error("Impossible rewind state.");
     }
 
-    // fallback
-    rewindCurrentBuffer(buffer);
-    showUndoStatus();
     return;
   }
 
@@ -162,48 +158,39 @@ function handleRewind() {
   }
 
 function handleFastForward() {
-  let buffer = state.getCurrentBuffer();
   const keys = state.getStateKeys();
+  let buffer = state.getCurrBuffer();  // Can be null if all indexes are zero.
 
-  // If nothing active, start at first non-empty buffer
-  if (buffer === null) {
+  if(buffer === null) {  // If nothing active, start at first non-empty buffer.
     buffer = state.getNextBuffer();
-    if (!buffer) return console.log("Top Sentry");
+    if(!buffer) return console.log("Top Sentry 1");
   }
 
-  for (let attempt = 0; attempt < keys.length; attempt++) {
+  for(let attempt = 0; attempt < keys.length; attempt++) {
     const idx = state.getCurrentIndex(buffer);
     const len = state.getBufferLength(buffer);
 
-    // Skip empty buffers safely
-    if (len === 0) {
-      buffer = state.getNextBuffer();
-      if (!buffer) return console.log("Top Sentry");
+    if(len === 0) {                   // Skip empty buffers...
       continue;
-    }
-
-    // --- 0 → 1 ---
-    if (idx === 0) {
+      }
+    else if(idx === 0) {                   // --- 0 → 1 ---
       processRedoBuffer(buffer, idx);
       showUndoStatus();
       return;
-    }
-
-    // --- 1 → N ---
-    if (idx === 1 && len > 1) {
+      }
+    else if(idx === 1 && len > 1) {        // --- 1 → N ---
       fastForwardCurrentBuffer(buffer);
       return;
-    }
-
-    // --- N → next buffer ---
-    if (idx === len) {
+      }
+    else if(idx === len) {                 // --- N → next buffer ---
       buffer = state.getNextBuffer();
-      if (!buffer) return console.log("Top Sentry");
+      if (!buffer) return console.log("Top Sentry 3");
       continue;
+      }
+    else {
+      throw new Error("Impossible FF state.");
     }
 
-    // fallback safety
-    fastForwardCurrentBuffer(buffer);
     return;
   }
 
@@ -277,11 +264,6 @@ function handleSave() {
 function rewindCurrentBuffer(buffer) {
   const idx = state.getCurrentIndex(buffer);
 
-  if(idx <= 1) {
-    console.log("Already at bottom of buffer:", buffer);
-    return;
-  }
-
   // --- Setup / AdvSqs (snapshot buffers) ---
   if(     buffer === "Setup") {
     const curr = state.fetchCurrentState("Setup");
@@ -327,11 +309,6 @@ function rewindCurrentBuffer(buffer) {
 function fastForwardCurrentBuffer(buffer) {
   const idx = state.getCurrentIndex(buffer);
   const len = state.getBufferLength(buffer);
-
-  if(idx >= len) {
-    console.log("Already at top of buffer:", buffer);
-    return;
-  }
 
   // --- Setup / AdvSqs (snapshot buffers) ---
   if(     buffer === "Setup") {
@@ -532,7 +509,7 @@ function diagnostic(enabled=false) {
   }
 
   for(const buffer of bufferList) {
-    const idx = state.getBufferIndex()[buffer]; 
+    const idx = state.getIndices()[buffer]; 
     const currEntry = state.fetchCurrentState(buffer);
     console.log("  ", idx, currEntry);
   }

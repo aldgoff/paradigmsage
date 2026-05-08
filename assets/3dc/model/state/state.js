@@ -23,7 +23,7 @@ let state = { // This is the state history of the game: setup-moves-gambits-advs
   AdvSqs:  []
   };
 
-let bufferIndex = { // Current element in buffer.
+let indexes = { // Current element in each buffer, a key-value object.
   Setup:   0,
   Moves:   0,
   Gambits: 0,
@@ -31,105 +31,83 @@ let bufferIndex = { // Current element in buffer.
 }
 
 // --- UI ---
-export function getCurrentBuffer() {
-  const keys = getStateKeys(); // ["Setup","Moves","Gambits","AdvSqs"]
-  let current = null;
+export function getStateKeys() {    // ["Setup","Moves","Gambits","AdvSqs"] (in state order).
+  return Object.keys(state);
+}
 
-  for (const key of keys) {
-    if (bufferIndex[key] > 0) {
-      current = key;
+/* ----- May Transition Buffers ----- */
+export function getCurrBuffer() {   // Returns highest-order active buffer (index > 0), or null if none.
+  console.log("model: state.js - getCurrBuffer");
+  const keys = getStateKeys();
+  let currBuffer = null;
+
+  for(const key of keys) {
+    if(indexes[key] > 0) {
+      currBuffer = key;
     }
   }
 
-  return current;
-}
-export function getNextBuffer() {
-  const keys = getStateKeys(); // ["Setup","Moves","Gambits","AdvSqs"]
-  const current = getCurrentBuffer();
+  return currBuffer;
+  }
 
-  if (!current) {
-    // no current → return first non-empty buffer
-    for (const key of keys) {
-      if (getBufferLength(key) > 0) return key;
+export function getNextBuffer() {   // Returns next non-empty buffer after the current buffer, or first non-empty buffer if none is active, else null.
+  const keys = getStateKeys(); 
+  const currBuffer = getCurrBuffer();
+
+  if(!currBuffer) { // Return first non-empty buffer.
+    for(const key of keys) {
+      if(getBufferLength(key) > 0) return key;
     }
     return null;
   }
 
-  const startIdx = keys.indexOf(current);
+  const startIdx = keys.indexOf(currBuffer);
 
-  for (let i = startIdx + 1; i < keys.length; i++) {
+  for(let i = startIdx + 1; i < keys.length; i++) {
     const key = keys[i];
-    if (getBufferLength(key) > 0) return key;
+    if(getBufferLength(key) > 0) return key;
   }
 
   return null; // top sentry
-}
-export function getPrevBuffer() {
-  const keys = getStateKeys(); // ["Setup","Moves","Gambits","AdvSqs"]
-  const current = getCurrentBuffer();
+  }
 
-  if (!current) return null;
+export function getPrevBuffer() {   // Returns previous non-empty buffer before the current buffer, or null if none exists.
+  const keys = getStateKeys();
+  const currBuffer = getCurrBuffer();
 
-  const startIdx = keys.indexOf(current);
+  if(!currBuffer) return null;
 
-  for (let i = startIdx - 1; i >= 0; i--) {
+  const startIdx = keys.indexOf(currBuffer);
+
+  for(let i = startIdx - 1; i >= 0; i--) {
     const key = keys[i];
-    if (getBufferLength(key) > 0) return key;
+    if(getBufferLength(key) > 0) return key;
   }
 
   return null; // bottom sentry
-}
-
-
-export function getBufferIndex() {
-  return bufferIndex;
-  }
-export function setBufferIndex(key, value) {
-  bufferIndex[key] = value;
-}
-
-export function setBufferIdx(key, value) {
-  bufferIndex[key] = value;
-  }
-export function getBufferIdx(key) {
-  return bufferIndex[key];
-  }
-
-export function getBufferLength(buffer) {
-  const arr = state[buffer];
-  return arr ? arr.length : 0;
-  }
-export function getStateKeys() {
-  return Object.keys(state);
-}
-
-export function clearBuffer(buffer) { // Leaves meshes in scene, be sure to call the clear routine.
-  console.log("model: state.js - clearBuffer(buffer):", buffer);
-  state[buffer].length = 0;
-  bufferIndex[buffer] = 0;
   }
 
 export function prevKeyIndex() {
-  const order = ["AdvSqs", "Gambits", "Moves", "Setup"];
+  const order = [...getStateKeys()].reverse();  // ["AdvSqs", "Gambits", "Moves", "Setup"]
 
-  for (let k = 0; k < order.length; k++) {
+  for(let k = 0; k < order.length; k++) {
     const key = order[k];
-    let i = bufferIndex[key];
+    let i = indexes[key];
 
-    if (i > 0) {
+    if(i > 0) {
       i = i - 1;
-      bufferIndex[key] = i;
+      indexes[key] = i;
 
-      if (i > 0) {
+      if(i > 0) {
         return { arrayKey: key, index: i - 1 };
       }
 
       // fall through to lower buffers
-      for (let j = k + 1; j < order.length; j++) {
+      for(let j = k + 1; j < order.length; j++) {
         const prevKey = order[j];
-        const prevI = bufferIndex[prevKey];
+        const prevI = indexes[prevKey];
 
-        if (prevI > 0) {
+        if(prevI > 0) {
           return { arrayKey: prevKey, index: prevI - 1 };
         }
       }
@@ -142,25 +120,25 @@ export function prevKeyIndex() {
   }
 
 export function nextKeyIndex() {
-  const order = ["Setup", "Moves", "Gambits", "AdvSqs"];
+  const order = getStateKeys(); // ["Setup", "Moves", "Gambits", "AdvSqs"]
 
-  for (let k = 0; k < order.length; k++) {
+  for(let k = 0; k < order.length; k++) {
     const key = order[k];
-    let i = bufferIndex[key];
+    let i = indexes[key];
     const max = state[key].length;
 
-    if (i < max) {
-      bufferIndex[key] = i + 1;
+    if(i < max) {
+      indexes[key] = i + 1;
       return { arrayKey: key, index: i };
     }
 
-    for (let j = k + 1; j < order.length; j++) {
+    for(let j = k + 1; j < order.length; j++) {
       const nextKey = order[j];
-      const nextI = bufferIndex[nextKey];
+      const nextI = indexes[nextKey];
       const nextMax = state[nextKey].length;
 
-      if (nextI < nextMax) {
-        bufferIndex[nextKey] = nextI + 1;
+      if(nextI < nextMax) {
+        indexes[nextKey] = nextI + 1;
         return { arrayKey: nextKey, index: nextI };
       }
     }
@@ -168,62 +146,108 @@ export function nextKeyIndex() {
 
   return null;
 }
-/* ----- ----- ----- ----- */
 
-export function trimStateToIndex(buffer) {
+/* ----- Buffer Specific ----- */
+export function getCurrentIndex(buffer) { // Active element in this buffer (0 <= i <= len).
+  return indexes[buffer];
+  }
+
+export function isAtEnd(buffer) {         // Index = length.
+  return indexes[buffer] === state[buffer].length;
+  }
+
+export function isAtBeg(buffer) {         // Index = one.
+  return indexes[buffer] === 1;
+  }
+
+export function isInactive(buffer) {      // Index = zero.
+  return indexes[buffer] === 0;
+  }
+
+export function fetchPrevState(buffer) {
+  const i = indexes[buffer];
+  if(i <= 1) return null;
+  return state[buffer][i-2];  
+  }
+
+export function fetchNextState(buffer) {
+  const i = indexes[buffer];
+  if(i >= getBufferLength(buffer)) return null;
+  return state[buffer][i];  
+  }
+
+export function getBufferLength(buffer) { // Number of items in this buffer (0-N).
+  const arr = state[buffer];
+  return arr ? arr.length : 0;
+}
+
+/* ----- Getters & Setters for the State Arrays ----- */
+export function getIndices() {              // Fetch copy of index array.
+  return indexes;
+  }
+
+export function setIndices(newIndices) {    // Replace entire buffer index array.
+  indexes = newIndices;
+  }
+
+export function getState() {                // Fetch copy of state array (the 4 buffers).
+  return state;
+  }
+
+export function setState(newState) {        // Create a whole new state (all 4 buffers).
+  state = structuredClone(newState);
+  }
+
+export function setNull() {                 // Set state to null.
+  state = { Setup: [], Moves: [], Gambits: [], AdvSqs: [] };
+  }
+
+export function getNull() {                 // Get the null state.
+  return { Setup: [], Moves: [], Gambits: [], AdvSqs: [] };
+  }
+
+export function resetAllIndices() {         // Zero out all the indices.
+  console.log("model: state.js - resetAllIndices()");
+
+  for(const key of Object.keys(indexes)) {
+    indexes[key] = 0;
+  }
+}
+
+/* ----- Setters & Getters for  ----- */
+export function setBufferIndex(buffer, value) {
+  indexes[buffer] = value;
+  }
+
+export function getBufferIndex(buffer) { // Not used yet.
+  return indexes[buffer];
+}
+
+/* ----- ----- ----- ----- */
+export function clearBuffer(buffer) { // Leaves meshes in scene, be sure to call the clear routine.
+  console.log("model: state.js - clearBuffer(buffer):", buffer);
+  state[buffer].length = 0;
+  indexes[buffer] = 0;
+}
+
+export function trimStateToIndex(buffer) {  // Not used yet.
   console.log("model: state.js - trimStateToIndex(buffer):", buffer);
 
-  if (!(buffer in state)) return;
+  if(!(buffer in state)) return;
 
-  const i = bufferIndex[buffer];
+  const i = indexes[buffer];
   state[buffer] = state[buffer].slice(0, i);
   }
 
-export function resetAllIndices() {
-  console.log("model: state.js - resetAllIndices()");
-
-  for (const key of Object.keys(bufferIndex)) {
-    bufferIndex[key] = 0;
-  }
-  }
-
-export function setBuffer(buffer, entries) {
+export function setBuffer(buffer, entries) {  // Not used yet.
   console.log("model: state.js - setBuffer(buffer, entries):", buffer, entries);
 
   if (!(buffer in state)) return;
 
   state[buffer] = structuredClone(entries);
-  bufferIndex[buffer] = entries.length;
+  indexes[buffer] = entries.length;
   }
 
-export function getCurrentIndex(buffer) {
-  return bufferIndex[buffer];
-  }
-
-export function isAtEnd(buffer) {
-  return bufferIndex[buffer] === state[buffer].length;
-  }
-
-export function isAtBeg(buffer) {
-  return bufferIndex[buffer] <= 1;
-}
-/* ----- ----- ----- ----- */
-
-export function setState(newState) {
-  state = structuredClone(newState);
-  }
-
-export function getState() {
-  return state;
-  }
-
-export function setNull() {
-  state = { Setup: [], Moves: [], Gambits: [], AdvSqs: [] };
-  }
-
-export function getNull() {
-  return { Setup: [], Moves: [], Gambits: [], AdvSqs: [] };
-}
 /* ----- ----- ----- ----- */
 
 export function insertState(buffer, values, idx) {
@@ -236,7 +260,7 @@ export function insertState(buffer, values, idx) {
   const arr = state[buffer];
   if (!arr || idx < 0 || idx > arr.length) return;
 
-  const i = bufferIndex[buffer];
+  const i = indexes[buffer];
 
   // Branch if inserting before current index
   if (idx < i) {
@@ -244,7 +268,7 @@ export function insertState(buffer, values, idx) {
   }
 
   state[buffer].splice(idx, 0, structuredClone(values));
-  bufferIndex[buffer] = idx + 1;
+  indexes[buffer] = idx + 1;
   }
 
 export function replaceState(buffer, values, idx) {
@@ -258,7 +282,7 @@ export function replaceState(buffer, values, idx) {
   if (!arr || idx < 0 || idx >= arr.length) return;
 
   arr[idx] = structuredClone(values);
-  bufferIndex[buffer] = idx + 1;
+  indexes[buffer] = idx + 1;
   }
 
 export function deleteState(buffer, idx) {
@@ -273,8 +297,8 @@ export function deleteState(buffer, idx) {
 
   arr.splice(idx, 1);
 
-  const i = bufferIndex[buffer];
-  if (i > idx) bufferIndex[buffer] = i - 1;
+  const i = indexes[buffer];
+  if (i > idx) indexes[buffer] = i - 1;
   }
 
 export function truncateState(buffer, idx) {
@@ -288,24 +312,12 @@ export function truncateState(buffer, idx) {
   if (!arr || idx < 0 || idx > arr.length) return;
 
   state[buffer] = arr.slice(0, idx);
-  bufferIndex[buffer] = Math.min(bufferIndex[buffer], idx);
-}
-
-export function fetchPrevState(buffer) {
-  const i = bufferIndex[buffer];
-  if (i <= 1) return null;
-  return state[buffer][i-2];  
-  }
-
-export function fetchNextState(buffer) {
-  const i = bufferIndex[buffer];
-  if (i >= getBufferLength(buffer)) return null;
-  return state[buffer][i];  
+  indexes[buffer] = Math.min(indexes[buffer], idx);
 }
 
 /* Shortcut functions - make args clearer. */
 export function fetchCurrentState(buffer) {
-  const i = bufferIndex[buffer];
+  const i = indexes[buffer];
   if (i === 0) return null;
   return state[buffer][i-1];  
   }
@@ -314,10 +326,10 @@ export function fetchCurrentState(buffer) {
   export const fetchCurrentGambit = () => fetchCurrentState("Gambits");
   export const fetchCurrentAdvsq  = () => fetchCurrentState("AdvSqs");
 
-export function replaceCurrentState(buffer, values) {
+export function replaceCurrentState(buffer, values) { // Not used, yet.
   const arr = state[buffer];
   if(!arr || !arr.length) return null;
-  const i = bufferIndex[buffer];
+  const i = indexes[buffer];
   if (i === 0) return null;
   arr[i - 1] = structuredClone(values);  
   }
@@ -333,11 +345,11 @@ export function pushNewState(buffer, values) {  // Uses current index, will bran
     throw new Error(`Unknown state buffer: ${buffer}`);
   }
 
-  const i = bufferIndex[buffer];
+  const i = indexes[buffer];
 
   state[buffer] = state[buffer].slice(0, i);    // Branch truncates current buffer if mid-history.
   state[buffer].push(structuredClone(values));  // Push new state onto undo buffer.
-  bufferIndex[buffer] = i + 1;                    // Advance the index.
+  indexes[buffer] = i + 1;                    // Advance the index.
   }
   export const pushNewSetup  = (values) => pushNewState("Setup",   values);
   export const pushNewMove   = (values) => pushNewState("Moves",   values);
@@ -345,20 +357,20 @@ export function pushNewState(buffer, values) {  // Uses current index, will bran
   export const pushNewAdvsq  = (values) => pushNewState("AdvSqs",  values);
 /* ----- ----- ----- ----- */
 
-export function collapseKeyIndex() {
-  const order = ["AdvSqs", "Gambits", "Moves", "Setup"];
+// export function collapseKeyIndex() {
+//   const order = ["AdvSqs", "Gambits", "Moves", "Setup"];
 
-  for (const key of order) {
-    const i = bufferIndex[key];
+//   for (const key of order) {
+//     const i = indexes[key];
 
-    if (i > 1) {
-      bufferIndex[key] = 1;
-      return { arrayKey: key, index: 0 };
-    }
-  }
+//     if (i > 1) {
+//       indexes[key] = 1;
+//       return { arrayKey: key, index: 0 };
+//     }
+//   }
 
-  return null; // Bottom Sentry
-}
+//   return null; // Bottom Sentry
+// }
 // Seampoint: more global functions...
 
 // --- Helpers ---

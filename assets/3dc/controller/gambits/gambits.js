@@ -82,7 +82,7 @@ export function rerunGambits() {
   console.log("cntrl: gambits.js - rerunGambits()");
 
   const count = state.getBufferLength("Gambits");
-  const active = state.getBufferIndex().Gambits; // ← KEY LINE
+  const active = state.getIndices().Gambits; // ← KEY LINE
 
   // --- Hide ALL gambits ---
   for (let i = 0; i < count; i++) {
@@ -104,7 +104,7 @@ export function rerunGambits() {
   }
 
 export function getLastActiveGambitIndex() {
-  const count = state.getBufferIndex().Gambits;
+  const count = state.getIndices().Gambits;
   return count; // after undo, this is the removed one
   }
 export function rebindOverlaysToBoard() {
@@ -147,7 +147,7 @@ export function rebindOverlaysToBoard() {
 function handleFreezeQuadrant() {
   // console.log("cntrl: gambits.js - handleFreezeQuadrant().");
 
-  const currAdvsq = state.fetchCurrentAdvsq(); // Get current advsq, if any.
+  const currAdvsq = state.fetchCurrentState("AdvSqs"); // Get current advsq, if any.
   if(!currAdvsq) return;
 
   const { srcTile, quad, perimeter, stride, opacity } = currAdvsq;  // Informative.
@@ -179,7 +179,7 @@ function handleDelete() {
   console.log("cntrl: gambits.js - handleDelete()");
 
   // --- Get current index ---
-  const count = state.getBufferIndex().Gambits;
+  const count = state.getIndices().Gambits;
   if (count === 0) return;
 
   const idx = count - 1;
@@ -211,7 +211,7 @@ function handleDelete() {
 function handleRemoveAll() {
   console.log("cntrl: gambits.js - handleRemoveAll()");
 
-  const count = state.getBufferIndex().Gambits;
+  const count = state.getIndices().Gambits;
   if (count === 0) return;
 
   // --- Remove all groups from scene ---
@@ -243,7 +243,7 @@ function applyEntry(entry) {   // Group, state, render, panel.
   console.log("cntrl: gambits.js - applyEntry(entry)", entry);
 
   state.pushNewGambit(entry);                     // Change state.
-    const idx = state.getBufferIndex().Gambits - 1; // Create and register group.
+    const idx = state.getIndices().Gambits - 1; // Create and register group.
     const group = vGambits.makeGroup(entry);
     gambitGroupRegistry.set(idx, group);        // TODO: should not need both.
     vGambits.setGroupRegistry(idx, group);

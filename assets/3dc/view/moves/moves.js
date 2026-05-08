@@ -48,7 +48,7 @@ export function addLineToPanel(move) {
   const { turn, player, piece, src, action, dst, sec } = move;
 
   // --- freeze index ---
-  const index = state.getBufferIndex().Moves;
+  const index = state.getIndices().Moves;
 
   // --- column widths ---
   const turnCol = (String(turn).padStart(3)).padEnd(4);
@@ -93,7 +93,7 @@ export function refreshPanel() {
   const el = document.getElementById("move-list");
   if (!el) return;
 
-  const count = state.getBufferIndex().Moves;
+  const count = state.getIndices().Moves;
 
   const children = el.children;
 

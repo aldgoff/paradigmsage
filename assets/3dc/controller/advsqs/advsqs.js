@@ -135,7 +135,7 @@ function handleUpdateParam(payload) {
   if(stride > maxStride) {  // Is stride panel limited or perimeter limited?
     stride = maxStride;
 
-    const currAdvsq = state.fetchCurrentAdvsq();
+    const currAdvsq = state.fetchCurrentState("AdvSqs")();
     const currPerimeter = currAdvsq.perimeter;
 
     if(perimeter === currPerimeter) { // Panel limited.
@@ -157,7 +157,7 @@ function handleNudgeSrc(payload) {
 
   const { axis, delta } = payload;
 
-  const current = state.fetchCurrentAdvsq();                           // Prepacked normalized fields.
+  const current = state.fetchCurrentState("AdvSqs")();                           // Prepacked normalized fields.
   if (!current) return;
 
   let nextEntry = {      // Safe clone.

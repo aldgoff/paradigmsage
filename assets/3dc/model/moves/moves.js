@@ -31,7 +31,7 @@ const buffer = "Moves";   // State buffer (state.js).
 export function makeEntry(payload) {
   console.log(`model: ${buffer}.js - makeEntry(payload):`, payload);
 
-  const index = state.getBufferIndex()["Moves"] + 1;
+  const index = state.getIndices()["Moves"] + 1;
 
   let { action, player, piece, src, dst, sec, capture, opts } = payload;
   let turn = Math.floor((index + 1) / 2);
