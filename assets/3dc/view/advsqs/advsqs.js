@@ -241,11 +241,9 @@ function getActiveBoardSpec() {
     return coords.getBoardSpec("8x8x8"); // fallback
   }
 
-  const latest = setupArray[setupArray.length - 1];
-  const board = latest.board; // [z,x,y]
-
-  const boardStr = board.join("x"); // "8x8x8"
-
+  const curr = state.fetchCurrentState("Setup");
+  if (!curr) return coords.getBoardSpec("8x8x8");
+  const boardStr = curr.boardSize;
   return coords.getBoardSpec(boardStr);
 }
 

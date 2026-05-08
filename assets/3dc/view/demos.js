@@ -12,12 +12,12 @@
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
-import * as coordsMaps from "./render/coordsMaps.js"
-import * as tiles      from "./tiles/tiles.js";
-import * as decorators from "./decorators/decorators.js";
-import * as cameras    from "./render/cameras.js";
-import * as renders    from "./render/renders.js";
-import * as boards     from "./boards/boards.js";
+  import * as coordsMaps from "./render/coordsMaps.js"
+  import * as tiles      from "./tiles/tiles.js";
+  import * as decorators from "./decorators/decorators.js";
+  import * as cameras    from "./render/cameras.js";
+  import * as renders    from "./render/renders.js";
+  import * as boards     from "./boards/boards.js";
 // Seampoint: more imports...
 
 // --- Demo for development ---

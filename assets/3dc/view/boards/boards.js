@@ -22,6 +22,7 @@ import boardsData from "./boards.json" assert { type: "json" };
 // Seampoint: more imports...
 
 let currentBoard = null;
+let clickHandler = null;
 
 // --- UI ---
 export function render(setup) {
@@ -29,33 +30,12 @@ export function render(setup) {
 
   const dims = setup.boardSize.split("x").map(Number);
   makeBoard(dims);
-}
+  }
 
 export function clear(setup) {
   console.log("view: boards.js - clear(setup)", setup);
 
   clearBoard();
-}
-
-
-export function makeSetup(payload) {  // DEPRECATE.
-  console.log("view: boards.js - makeSetup(payload):", payload);
-
-  const { action, boardSize, trayType, trayGap } = payload;
-
-  // state.pushNewSetup(payload);
-
-  const dimensions = boardSize.split("x").map(n => Number(n));
-  makeBoard(dimensions);
-}
-
-export function makeGame(payload) {
-  console.log("view: boards.js - makeGame(payload):", payload);
-  // Call make board.
-  // Call add trays.
-  // Show|Hide|gap
-  // Rules
-  // Initial position
 }
 
 // --- UI ---
@@ -97,27 +77,34 @@ export function makeBoard(dimensions) {
   }
 
 export function clearBoard() {
+  console.log("view: boards.js - clearBoard()...view.context:", view.context);
   if (currentBoard) {
     view.context.scene.remove(currentBoard);
     currentBoard = null;
   }
+
+  view.context.tileMap.clear();
 }
 // Seampoint: more global functions...
 
 // --- Helpers ---
 function addEventListener(scene, renderer, camera, tileMap) {
-  renderer.domElement.addEventListener("click", (event) => {
-  const coords = getTileFromClick(event, camera, scene, renderer);
 
-  if (!coords) return;
-
-  // → here you trigger decorator logic
-  const meshTile = tiles.getTileMesh(tileMap, coords);
-
-  if (meshTile) {
-    toggleDecorator(meshTile);  // Hard coded for now as src or dst.
+  if (clickHandler) {
+    renderer.domElement.removeEventListener("click", clickHandler);
   }
-  });
+
+  clickHandler = (event) => {
+    const coords = getTileFromClick(event, camera, scene, renderer);
+    if (!coords) return;
+
+    const meshTile = tiles.getTileMesh(tileMap, coords);
+    if (meshTile) {
+      toggleDecorator(meshTile);
+    }
+  };
+
+  renderer.domElement.addEventListener("click", clickHandler);
   }
 
 function getTileFromClick(event, camera, scene, renderer) {
