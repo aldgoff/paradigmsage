@@ -47,10 +47,9 @@
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
-  import * as run        from "./registerHandlers.js";
+  // import * as run        from "./registerHandlers.js";
   import * as renders    from "./render/renders.js";
   import * as coordsMaps from "./render/coordsMaps.js";
-  import * as demos      from "./demos.js";
   import * as tiles      from "./tiles/tiles.js";
 
   import * as utils      from "../../../utils/utils.js";
@@ -67,24 +66,11 @@
 
 export let context;   // Contains things like: scene, renderer, camera, tileMap...
 
-// --- Demo for development ---
-function demo(playBoard) {
-  if (!playBoard) return false;
-
-  const context = renders.init(playBoard);
-
-  demos.run(context);
-
-  return;
-}
-
 // --- UI ---
 export function init(playBoard) {
   context = renders.init(playBoard);
   context.tileMap = new Map();
   context.tileGeometry = new THREE.BoxGeometry(...coordsMaps.vts2xyz(tiles.tileSize()));
-
-  window.addEventListener("keydown", handleAdvsqKeys);  // TODO: find better home.
 
   game.showUndoStatus();
   const {range, speed} = viewer.getJitterValues();
@@ -279,33 +265,5 @@ function decorateTile(coords, piece, decorator, group, opacity, zOffset=0.00) {
 //   });
 // }
 
-function handleAdvsqKeys(e) {
-  // console.log("KEY EVENT", e.key);
-
-  if (["INPUT", "TEXTAREA"].includes(e.target.tagName)) return;
-
-  const cb = run.callback.advsq;
-  if (!cb) return;
-
-  let axis = null;
-  let delta = 0;
-
-  const shift = e.shiftKey;
-
-  switch (e.key.toLowerCase()) {
-    case "k": axis = "z"; delta = shift ? -1 : +1; break;
-    case "i": axis = "x"; delta = shift ? -1 : +1; break;
-    case "j": axis = "y"; delta = shift ? -1 : +1; break;
-    default: return;
-  }
-
-  e.preventDefault(); // <-- ALSO IMPORTANT
-
-  cb({
-    action: "nudgeSrc",
-    axis,
-    delta
-  });
-}
 // Seampoint: more local functions...
 
