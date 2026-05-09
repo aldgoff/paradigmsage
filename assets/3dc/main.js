@@ -7,16 +7,19 @@
 
 import * as control from "./controller/controller.js";
 
-console.log("main.js: 3dc/main.js");
+console.log("main: 3dc/main.js - asynchronous game launch and regression tests.");
+console.log("--------------------");
 
+// Launch Game.
 const playBoard = document.getElementById("3dc-board"); // 3D canvas (Three render engine).
-
-if (playBoard) {
+if(playBoard) {
   control.init(playBoard);
 }
+console.log("--------------------");
 
-if (location.hostname === "localhost") {
-  console.log("Running tests...");
+// Run regressions.
+if(location.hostname === "localhost") {
+  console.log("Running regression tests...");
   // Import and run module tests here.
   import("./tests/templates/modules.test.js").then(m => m.run());
 
@@ -36,6 +39,4 @@ if (location.hostname === "localhost") {
   import("./tests/view/gambits.test.js").then(m => m.run());
   // Seampoint: more module tests.
 }
-
-console.log("--------------------");
 

@@ -115,7 +115,7 @@ function computeAngleFromPov() {
 
 // --- UI ---
 export function init(zoom, pov, focalPoint=[0,0,0]) {
-  console.log("view: camera.js - Init()");
+  console.log("view : camera.js - Init()");
   specs.pov  = POV[pov];
   specs.focalPoint = focalPoint;
 

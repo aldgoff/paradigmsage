@@ -40,7 +40,7 @@ export function redo(move) {
 }
 
 export function addLineToPanel(move) {
-  console.log("view: moves.js - addLineToPanel(move)", move);
+  console.log("view : moves.js - addLineToPanel(move)", move);
 
   const el = document.getElementById("move-list");
   if (!el) return;

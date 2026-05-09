@@ -21,7 +21,7 @@ import * as quads  from "../geometry/quads/quads.js";
 
 // --- UI ---
 export function UI() {
-  console.log("layer: modules.js - UI()");
+  // console.log("layer: modules.js - UI()");
   
   return "whatever";
   }

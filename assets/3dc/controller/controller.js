@@ -45,23 +45,23 @@
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
-import * as setup     from "../controller/setup/setup.js";
-import * as moves     from "../controller/moves/moves.js";
-import * as gambits   from "../controller/gambits/gambits.js";
-import * as cAdvsqs   from "../controller/advsqs/advsqs.js";
-import * as compasses from "../controller/compasses/compasses.js";
+  import * as setup     from "../controller/setup/setup.js";
+  import * as moves     from "../controller/moves/moves.js";
+  import * as gambits   from "../controller/gambits/gambits.js";
+  import * as cAdvsqs   from "../controller/advsqs/advsqs.js";
+  import * as compasses from "../controller/compasses/compasses.js";
 
-import * as game      from "../controller/game/game.js";
+  import * as game      from "../controller/game/game.js";
 
-import * as camera    from "../controller/camera/camera.js";
-import * as viewer    from "../controller/viewer/viewer.js";
+  import * as camera    from "../controller/camera/camera.js";
+  import * as viewer    from "../controller/viewer/viewer.js";
 
-import * as model    from "../model/model.js";
-import * as state    from "../model/state/state.js";
+  import * as model    from "../model/model.js";
+  import * as state    from "../model/state/state.js";
 
-import * as view     from "../view/view.js";
-import * as register from "../view/registerHandlers.js";
-import * as vAdvsqs  from "../view/advsqs/advsqs.js";
+  import * as view     from "../view/view.js";
+  import * as register from "../view/registerHandlers.js";
+  import * as vAdvsqs  from "../view/advsqs/advsqs.js";
 
 //TODO: DEPRECATED exampleRegistration
 import * as example  from "../exampleRegistration/control.js";
@@ -69,7 +69,7 @@ import * as example  from "../exampleRegistration/control.js";
 
 // --- UI ---
 export function init(playBoard) {
-  console.log("controller.init(): 3dc/controller/controller.js");
+  console.log("control.init(): 3dc/controller/controller.js");
 
   //TODO: DEPRECATED exampleRegistration
   // example.demoRegistration();
@@ -159,42 +159,40 @@ import stateData from "../model/state/state.json" assert { type: "json" };
 function demo() {
   console.log("Demo undo/redo state architecture.");
 
-  state.setNull();                                      // Initial state, all null.
+  state.setNull();                                                // Initial state, all null.
   console.log(JSON.parse(JSON.stringify(state.getState())));
 
+  state.pushNewAdvsq(seed.AdvSqs[0]);                             // Explore an advancement square.
+  state.pushNewAdvsq(seed.AdvSqs[1]);
+  state.pushNewAdvsq(seed.AdvSqs[2]);
   console.log(JSON.parse(JSON.stringify(state.getState())));
 
-  state.pushAdvSq(seed.AdvSqs[0]);                      // Explore an advancement square.
-  state.pushAdvSq(seed.AdvSqs[1]);
-  state.pushAdvSq(seed.AdvSqs[2]);
+  state.freeze(structuredClone(seed.AdvSqs[1]));                  // Add to Gambits.
   console.log(JSON.parse(JSON.stringify(state.getState())));
 
-  state.freeze(structuredClone(seed.AdvSqs[1]));                         // Add to Gambits.
+  state.recordMove(structuredClone(state.getState().Gambits[0])); // Make a move from the Gambits.
   console.log(JSON.parse(JSON.stringify(state.getState())));
 
-  state.recordMove(structuredClone(state.getState().Gambits[0]));       // Make a move from the Gambits.
+  state.pushNewAdvsq(seed.AdvSqs[0]);                             // Explore an advancement square.
+  state.pushNewAdvsq(seed.AdvSqs[1]);
+  state.pushNewAdvsq(seed.AdvSqs[2]);
   console.log(JSON.parse(JSON.stringify(state.getState())));
 
-  state.pushAdvSq(seed.AdvSqs[0]);                      // Explore an advancement square.
-  state.pushAdvSq(seed.AdvSqs[1]);
-  state.pushAdvSq(seed.AdvSqs[2]);
+  state.freeze(structuredClone(state.getState().AdvSqs[1]));      // Add to Gambits.
   console.log(JSON.parse(JSON.stringify(state.getState())));
 
-  state.freeze(structuredClone(state.getState().AdvSqs[1]));             // Add to Gambits.
+  state.pushNewAdvsq(seed.AdvSqs[0]);                             // Explore an advancement square.
+  state.pushNewAdvsq(seed.AdvSqs[1]);
+  state.pushNewAdvsq(seed.AdvSqs[2]);
   console.log(JSON.parse(JSON.stringify(state.getState())));
 
-  state.pushAdvSq(seed.AdvSqs[0]);                      // Explore an advancement square.
-  state.pushAdvSq(seed.AdvSqs[1]);
-  state.pushAdvSq(seed.AdvSqs[2]);
+  state.freeze(structuredClone(state.getState().AdvSqs[0]));      // Add to Gambits.
   console.log(JSON.parse(JSON.stringify(state.getState())));
 
-  state.freeze(structuredClone(state.getState().AdvSqs[0]));             // Add to Gambits.
-  console.log(JSON.parse(JSON.stringify(state.getState())));
-
-  state.pushAdvSq(seed.AdvSqs[0]);                      // Explore an advancement square.
-  state.pushAdvSq(seed.AdvSqs[1]);
-  state.pushAdvSq(seed.AdvSqs[2]);
-  state.pushAdvSq(seed.AdvSqs[3]);
+  state.pushNewAdvsq(seed.AdvSqs[0]);                             // Explore an advancement square.
+  state.pushNewAdvsq(seed.AdvSqs[1]);
+  state.pushNewAdvsq(seed.AdvSqs[2]);
+  state.pushNewAdvsq(seed.AdvSqs[3]);
   console.log(JSON.parse(JSON.stringify(state.getState())));
 }
 
