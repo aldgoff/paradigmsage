@@ -55,7 +55,18 @@ export function panelDispatch(payload) {    // Dispatch payload from panel to ha
   }
 
   game.showUndoStatus();                          // Update game panel (undo).
-}
+  }
+
+export function buildPayload(panel, action) {
+  console.log("     ---------- cntrl: setup.js");
+  return {
+    action,
+    boardSize:  panel.querySelector('input[name="board-size"]:checked')?.value,
+    trayType:   panel.querySelector('input[name="tray-type"]:checked')?.value,
+    initialPos: panel.querySelector('input[name="initial-pos"]:checked')?.value,
+  };
+  }
+
 // Seampoint: more global functions...
 
 // --- Handle Functions ---

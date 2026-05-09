@@ -49,6 +49,11 @@ export function panelDispatch(payload) {
   }
   }
 
+export function buildPayload(panel, action) {
+  console.log("     ---------- cntrl: game.js");
+  return { action };
+  }
+
 export function showUndoStatus() {  // Show undo buffers in Game panel.
   console.log("cntrl: game.js - showUndoStatus():");
 

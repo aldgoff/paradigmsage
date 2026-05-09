@@ -71,6 +71,11 @@ export function panelDispatch(payload) {
   }
 
   game.showUndoStatus();                          // Update game panel (undo).
+  }
+
+export function buildPayload(panel, action) {
+  console.log("     ---------- cntrl: gambits.js");
+  return { action };
 }
 
 // Suspicious code

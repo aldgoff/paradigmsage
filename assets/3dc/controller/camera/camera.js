@@ -31,10 +31,28 @@ export function panelDispatch(payload) {
     case "ZoomOut": handleZoomOut(); break;
     case "Ascend":  handleAscend(); break;
     case "Descend": handleDescend(); break;
-    case "SetPOV":  handlePOV(value); break;
+    case "SetPOV":  handlePOV(value); break;  // TODO: eliminate one.
+    case "updateParam": handlePOV(value); break;
     default: throw new Error(`Unknown camera action ${action} value ${value}.`); break;
   }
+  }
+
+  export function buildPayload(panel, action) {
+  if (action === "SetPOV") {
+    const radio = panel.querySelector('input[name="camera-pov"]:checked');
+    return {
+      action,
+      value: radio?.value
+    };
+  }
+
+  return { action };
 }
+export function buildPayload1(panel, action) { // Not subject to undo.
+  console.log("     ---------- cntrl: camera.js");
+  return { action };
+}
+
 // Seampoint: more global functions...
 
 function handleZoomIn() {             // Camera handlers. Not subject to undo.
@@ -56,9 +74,14 @@ function handleAscend() {
 function handleDescend() {
   const tilt = -10;
   cameras.shiftVertical(tilt);
-  }
+}
 
 function handlePOV(pov) {
+  console.log("POV input:", pov);
+  console.log("POV lookup:", cameras.POV?.[pov]); // or wherever POV lives
+  cameras.selectPOV(pov, [0, 0, 0]);
+}
+function handlePOV1(pov) {
   cameras.selectPOV(pov, [0, 0, 0]);
 }
 // Seampoint: more handlers...

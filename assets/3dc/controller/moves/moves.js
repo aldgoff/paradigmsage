@@ -57,6 +57,8 @@ export function panelDispatch(payload) {
     case "duke-decay":   handleDukeDecay(payload); break;
     case "bishop-decay": handleBishopDecay(payload); break;
     case "fission":      handleFission(payload); break;
+    case "updateParam":  break;
+
     default: throw new Error(`Unknown moves action ${action}.`);  break;
   }
 
@@ -73,7 +75,22 @@ export function panelDispatch(payload) {
   const normed = { player, piece, src, dst, capture, sec, opts }; // Repack panel fields.
 
   return normed;
+  }
+
+export function buildPayload(panel, action) {
+  console.log("     ---------- cntrl: moves.js");
+  return {
+    action,
+    player:   panel.querySelector('input[name="move-player"]:checked')?.value,
+    piece:    panel.querySelector('[name="move-piece"]')?.value,
+    src:      panel.querySelector('[name="move-src"]')?.value,
+    dst:      panel.querySelector('[name="move-dst"]')?.value,
+    sec:      panel.querySelector('[name="move-2nd"]')?.value,
+    captured: panel.querySelector('[name="move-capture"]')?.value,
+    opts:     panel.querySelector('[name="move-opts"]')?.value,
+  };
 }
+
 // Seampoint: more global functions...
 
 // --- Handle Functions ---

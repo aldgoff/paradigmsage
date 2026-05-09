@@ -43,6 +43,17 @@ export function panelDispatch(payload) {
   }
 }
 
+export function buildPayload(panel, action) { // Not subject to undo.
+  console.log("     ---------- cntrl: viewer.js");
+  return { 
+    action,
+    gap:   panel.querySelector('[name="viewer-trayGap"]')?.value,
+    sep:   panel.querySelector('[name="viewer-traySep"]')?.value,
+    range: panel.querySelector('[name="viewer-range"]')?.value,
+    speed: panel.querySelector('[name="viewer-speed"]')?.value,
+  };
+}
+
 export function getJitterValues(panelId = "viewer-window") {
   const panel = document.getElementById(panelId);
   if (!panel) return;

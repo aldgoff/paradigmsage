@@ -35,7 +35,7 @@ import advsqsData from "./advsqs.json" assert { type: "json" };
 export function panelDispatch(payload) {
   // console.log("cntrl: advsqs.js - panelDispatch(payload):", payload);
 
-  vGambits.cancelAnimation();
+  vGambits.cancelAnimation(); // TODO: view leakage, need a better solution.
 
   const { action, 
     srcTile,      // board or vts (TODO: inwork)
@@ -59,7 +59,20 @@ export function panelDispatch(payload) {
   }
 
   game.showUndoStatus();    // Show undo buffer status in game panel.
+  }
+
+export function buildPayload(panel, action) {
+  console.log("     ---------- cntrl: advsqs.js");
+  return {  // TODO: base off new entry in json file.
+    action,
+    srcTile:  panel.querySelector('[name="advsq-src"]')?.value,
+    quad:     panel.querySelector('[name="advsq-quad"]')?.value,
+    perimeter:panel.querySelector('[name="advsq-perimeter"]')?.value,
+    stride:   panel.querySelector('[name="advsq-stride"]')?.value,
+    opacity:  panel.querySelector('[name="advsq-opacity"]')?.value,
+  };
 }
+
 // Seampoint: more global functions...
 
 // --- Handle Functions ---
