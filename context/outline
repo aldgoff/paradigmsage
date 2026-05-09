@@ -21,6 +21,7 @@
 │   │   │   │   ├── compasses.json
 │   │   │   │   └── compasses.md
 │   │   │   ├── controller.js
+│   │   │   ├── controller.json
 │   │   │   ├── controller.md
 │   │   │   ├── gambits
 │   │   │   │   ├── gambits.js
@@ -127,6 +128,10 @@
 │   │   │       ├── state.js
 │   │   │       ├── state.json
 │   │   │       └── state.md
+│   │   ├── panels
+│   │   │   ├── panels.js
+│   │   │   ├── panels.json
+│   │   │   └── panels.md
 │   │   ├── templates
 │   │   │   ├── modules.js
 │   │   │   ├── modules.json
@@ -165,7 +170,6 @@
 │   │       │   ├── boards.js
 │   │       │   ├── boards.json
 │   │       │   └── boards.md
-│   │       ├── brainstorming.md
 │   │       ├── decorators
 │   │       │   ├── decorators.js
 │   │       │   ├── decorators.json
@@ -183,7 +187,6 @@
 │   │       │   ├── pieces.js
 │   │       │   ├── pieces.json
 │   │       │   └── pieces.md
-│   │       ├── registerHandlers.js
 │   │       ├── render
 │   │       │   ├── cameras.js
 │   │       │   ├── cameras.json
@@ -195,6 +198,7 @@
 │   │       │   ├── lights.json
 │   │       │   ├── lights.md
 │   │       │   ├── obsolete
+│   │       │   │   ├── brainstorming.md
 │   │       │   │   └── initThree.js
 │   │       │   ├── renders.js
 │   │       │   ├── renders.json
@@ -504,4 +508,4 @@
 │           └── poc.js
 └── themes
 
-108 directories, 396 files
+109 directories, 399 files

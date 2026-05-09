@@ -119,8 +119,8 @@ layout: "play"
     <button data-action="duke-decay">Duke Decay</button>
     <button data-action="bishop-decay">Bishop Decay</button>
     <button data-action="fission">Fission</button>
-    <label> <input type="radio" name="move-player" value="White" data-action="Player" checked> W </label>
-    <label> <input type="radio" name="move-player" value="Black" data-action="Player"> B </label>
+    <label> <input type="radio" name="move-player" value="White" checked> W </label>
+    <label> <input type="radio" name="move-player" value="Black"> B </label>
   </div>
   <div class="section">
     <label> SrcTile <input name="move-src" type="text" value="K2,2" maxlength="7" style="width: 44px;"> </label>
