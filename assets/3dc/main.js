@@ -7,7 +7,7 @@
 
 import * as control from "./controller/controller.js";
 
-console.log("main: 3dc/main.js - asynchronous game launch and regression tests.");
+console.log("main: 3dc/main.js - asynchronous launch of game and regression tests.");
 console.log("--------------------");
 
 // Launch Game.
@@ -20,6 +20,7 @@ console.log("--------------------");
 // Run regressions.
 if(location.hostname === "localhost") {
   console.log("Running regression tests...");
+  
   // Import and run module tests here.
   import("./tests/templates/modules.test.js").then(m => m.run());
 
