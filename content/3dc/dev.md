@@ -88,6 +88,7 @@ title: "Dev"
   - 5/06/26 - Null.
   - 5/07/26 - Parallelism in buffer modules. ApplyEntry parallelism. Use processRedoBuffer. More parallelsim. Fix gambit undo/redo. Restore gambit functionality. State QC.
   - 5/08/26 - Fix redo on load. Fix stale board bug and limit listeners to 1.
+  - 5/09/26 - Refine view specs. Re-arch view.
 
  ### Week 9:
   - 5/10/26 - tbd

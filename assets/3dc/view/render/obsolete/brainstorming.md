@@ -1,5 +1,5 @@
 # View Spec
-  Desc
+  Give AI basic idea of the view layer.
 
 ## 1. Brainstorming
   User needs to see an orthographic projection of the tiles which make up the board. 
@@ -16,32 +16,29 @@
   They therefore anchor the levels, imply the vts shell, and provide quick feedback on the pieces captured. 
   Is this clear?
 
-## 2. Follow on Specs
-Goddamn return versus shift return...starting over...
-2. Definitions
-  A. The levels are the rook's Horizontal planes.
-  B. Decorators are color coded by piece: red-rook, green-bishop, blue-duke, queen-purple, knight-yellow, stack-orange, king-purplish, pawns-red/green/blue.
-  C. The last perimeter (where the advsq is blocked) has hollow decorators. I have 3 pages of appendices defining the decorators.
-  D. Both quadrants (advsqs) are shown around the linear move (in all 2, or 3 planes). It might be useful to have tint difference to make the planes more visually isolatable.
-  E. Tiles and pieces are clickable, probably as a toggle. Thus the board is also a command interface.
-3. No, it must be tuned, a human selects the values by eye - the values are stored in the json. Easy experimentation.
-4. We work on this together.
-5. I thought this obvious.
-Recommend 3D rendering library.
-We will need a 2d floating canvas for commands, buttons, move listing, and other things we haven't thought of.
+ ### 1.1. Follow on Specs
+  1. Definitions
+    A. The levels are the rook's Horizontal planes.
+    B. Decorators are color coded by piece: red-rook, green-bishop, blue-duke, queen-purple, knight-yellow, stack-orange, king-purplish, pawns-red/green/blue.
+    C. The last perimeter (where the advsq is blocked) has hollow decorators. I have 3 pages of appendices defining the decorators.
+    D. Both quadrants (advsqs) are shown around the linear move (in all 2, or 3 planes). It might be useful to have tint difference to make the planes more visually isolatable.
+    E. Tiles and pieces are clickable, probably as a toggle. Thus the board is also a command interface.
+  2. No, it must be tuned, a human selects the values by eye - the values are stored in the json. Easy experimentation.
+  Need a 2d floating canvas for commands, buttons, move listing, and other things we haven't thought of.
 
-## 3. More Follow Up
-  2. Obvious
+ ### 1.2. More Follow Up
+  1. Obvious
     A. Planes slant in different directions, 13, their tiles decorated, same colors as base pieces. 
     B. Piece move options on a click, TBD, lots of opportunites for clever UI.
     C. There are decorators for linear moves.
     D. Jitter is sufficient to disambgiuate depth.
-  3. Color Exhaustion
+  2. Color Exhaustion
     Bishop and decorator colors are flat, duke colors are shiny (metal and gem planes).
-  4. Recommended Render tool
+  3. Recommended Render tool:
     Three.js.
+  4. Recommended using DOM for the 2D panels.
 
-## 4. High Objectives:
+ ### 1.3. High Objectives:
   - Levels = rook horizontal planes
   - Deorator color endcoding
     - Rook - red
@@ -58,13 +55,4 @@ We will need a 2d floating canvas for commands, buttons, move listing, and other
   - Tile ratios, decorators, spacing tuned by eye, stored in JSON.
   - Layer separation: 3D rendered board, floating control overlay (2D DOM/canvas).
 
-
-
-## 1. Purpose/Concepts/Example/Canonical/Formats/Parsing/Architecture/Functions/Data/...
-  text
- ### 1.1 SubSection
-  text
-## N. Invariants (typically last section)
-  Formally redundant consequences of the spec that must always hold.
-  Used as drift guards and cross-checks across data, code, and tests.
 
