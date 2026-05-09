@@ -1,15 +1,5 @@
 {
   "controller_module": {
-    "panels": [
-      "setup-window",
-      "move-window",
-      "gambit-window",
-      "advsq-window",
-      "compass-window",
-      "game-window",
-      "camera-window",
-      "viewer-window"
-    ]
   }
 }
 

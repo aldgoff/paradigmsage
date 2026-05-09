@@ -65,7 +65,7 @@
   import * as cameras    from "../view/render/cameras.js";
 // Seampoint: more imports...
 
-export let context;
+export let context;   // Contains things like: scene, renderer, camera, tileMap...
 
 // --- Demo for development ---
 function demo(playBoard) {
@@ -79,38 +79,16 @@ function demo(playBoard) {
 }
 
 // --- UI ---
-export function init(playBoard) { // PlayBoard is the 3D canvas from the THREE renderer.
-  console.log("view.init(): 3dc/view/init.js");
+export function init(playBoard) {
+  context = renders.init(playBoard);
+  context.tileMap = new Map();
+  context.tileGeometry = new THREE.BoxGeometry(...coordsMaps.vts2xyz(tiles.tileSize()));
 
-  if(false) {  // POC.
-    const context = demo(playBoard); // Display POC board, decorators, raycasting.
-    }
-  else {      // Growing the panel and undo features.
-    context = renders.init(playBoard);
-    context.tileMap = new Map();
-    context.tileGeometry = new THREE.BoxGeometry(...coordsMaps.vts2xyz(tiles.tileSize()));
-    // demos.run(context);
-  }
-
-  wirePanel("setup-window",       "setup",   buildSetupPayload,   { onChangeFull: true });
-  wirePanelButtons("move-window", "move",    buildMovePayload,    { onChangeFull: true });
-  wirePanel("gambit-window",      "gambit",  buildGambitPayload,  { onChangeFull: true });
-  wirePanel("advsq-window",       "advsq",   buildAdvsqPayload,   { onChangeFull: true });
-  wirePanel("compass-window",     "compass", buildCompassPayload, { onChangeFull: true });
-
-  wirePanel("game-window",        "game",    buildGamePayload,    { onChangeFull: true });
-
-  wireSimplePanel("camera-window", "camera", buildCameraPayload, { onChangeFull: true }); // Not subject to undo.
-  wirePanel(      "viewer-window", "viewer", buildViewerPayload, { onChangeFull: true });
-
-  window.addEventListener("keydown", handleAdvsqKeys);
-  // Seampoint: more listeners...
+  window.addEventListener("keydown", handleAdvsqKeys);  // TODO: find better home.
 
   game.showUndoStatus();
   const {range, speed} = viewer.getJitterValues();
   cameras.setJitter(range, speed);
-
-  return;
 }
 
 export function buildAdvSqGroup(specs) { // Params: srcTile, quad, perimeter, stride, opacity.
@@ -213,93 +191,93 @@ function decorateTile(coords, piece, decorator, group, opacity, zOffset=0.00) {
   }
 }
 
-function wirePanel(panelId, callbackName, buildPayload, options = {}) {
-  const panel = document.getElementById(panelId);
-  if (!panel) return;
+// function wirePanel(panelId, callbackName, buildPayload, options = {}) {
+//   const panel = document.getElementById(panelId);
+//   if (!panel) return;
 
-  const cb = run.callback[callbackName];
-  if (!cb) return;
+//   const cb = run.callback[callbackName];
+//   if (!cb) return;
 
-  panel.addEventListener("change", (e) => {
-    if (!options.onChangeFull) return;
+//   panel.addEventListener("change", (e) => {
+//     if (!options.onChangeFull) return;
 
-    const payload = buildPayload(panel, "updateParam");
-    cb(payload);
-  });
+//     const payload = buildPayload(panel, "updateParam");
+//     cb(payload);
+//   });
 
-  panel.addEventListener("click", (e) => {
-    const btn = e.target.closest("button");
-    if (!btn) return;
+//   panel.addEventListener("click", (e) => {
+//     const btn = e.target.closest("button");
+//     if (!btn) return;
 
-    const action = btn.dataset.action;
-    if (!action) return;
+//     const action = btn.dataset.action;
+//     if (!action) return;
 
-    const cb = run.callback[callbackName];
-    if (typeof cb !== "function") return;
+//     const cb = run.callback[callbackName];
+//     if (typeof cb !== "function") return;
 
-    const payload = buildPayload(panel, action);
-    cb(payload);
-  });
-  }
+//     const payload = buildPayload(panel, action);
+//     cb(payload);
+//   });
+//   }
 
-function wirePanelButtons(panelId, callbackName, buildPayload, options = {}) {
-  const panel = document.getElementById(panelId);
-  if (!panel) return;
+// function wirePanelButtons(panelId, callbackName, buildPayload, options = {}) {
+//   const panel = document.getElementById(panelId);
+//   if (!panel) return;
 
-  const cb = run.callback[callbackName];
-  if (!cb) return;
+//   const cb = run.callback[callbackName];
+//   if (!cb) return;
 
-  panel.addEventListener("click", (e) => {
-    const btn = e.target.closest("button");
-    if (!btn) return;
+//   panel.addEventListener("click", (e) => {
+//     const btn = e.target.closest("button");
+//     if (!btn) return;
 
-    const action = btn.dataset.action;
-    if (!action) return;
+//     const action = btn.dataset.action;
+//     if (!action) return;
 
-    const cb = run.callback[callbackName];
-    if (typeof cb !== "function") return;
+//     const cb = run.callback[callbackName];
+//     if (typeof cb !== "function") return;
 
-    const payload = buildPayload(panel, action);
-    cb(payload);
-  });
-  }
+//     const payload = buildPayload(panel, action);
+//     cb(payload);
+//   });
+//   }
 
-function wireSimplePanel(panelId, callbackName, buildPayload) {
-  const panel = document.getElementById(panelId);
-  if (!panel) return;
+// function wireSimplePanel(panelId, callbackName, buildPayload) {
+//   const panel = document.getElementById(panelId);
+//   if (!panel) return;
 
-  const cb = run.callback[callbackName];
-  if (!cb) return;
+//   const cb = run.callback[callbackName];
+//   if (!cb) return;
 
-  // --- Radios (change → immediate action) ---
-  panel.addEventListener("change", (e) => {
-    const cb = run.callback[callbackName];
-    if (!cb) return;
+//   // --- Radios (change → immediate action) ---
+//   panel.addEventListener("change", (e) => {
+//     const cb = run.callback[callbackName];
+//     if (!cb) return;
 
-    const radio = e.target.closest('input[type="radio"]');
-    if (!radio) return;
+//     const radio = e.target.closest('input[type="radio"]');
+//     if (!radio) return;
 
-    const action = radio.dataset.action;
-    if (!action) return;
+//     const action = radio.dataset.action;
+//     if (!action) return;
 
-    cb({
-      action,
-      value: radio.value
-    });
-  });
+//     cb({
+//       action,
+//       value: radio.value
+//     });
+//   });
 
-  // --- Buttons (click → full payload) ---
-  panel.addEventListener("click", (e) => {
-    const btn = e.target.closest("button");
-    if (!btn) return;
+//   // --- Buttons (click → full payload) ---
+//   panel.addEventListener("click", (e) => {
+//     const btn = e.target.closest("button");
+//     if (!btn) return;
 
-    const action = btn.dataset.action;
-    if (!action) return;
+//     const action = btn.dataset.action;
+//     if (!action) return;
 
-    const payload = buildPayload(panel, action);
-    cb(payload);
-  });
-}
+//     const payload = buildPayload(panel, action);
+//     cb(payload);
+//   });
+// }
 
 function handleAdvsqKeys(e) {
   // console.log("KEY EVENT", e.key);
@@ -328,71 +306,6 @@ function handleAdvsqKeys(e) {
     axis,
     delta
   });
-}
-
-function buildSetupPayload(panel, action) {
-  console.log("     ---------- view: view.js");
-  return {
-    action,
-    boardSize:  panel.querySelector('input[name="board-size"]:checked')?.value,
-    trayType:   panel.querySelector('input[name="tray-type"]:checked')?.value,
-    initialPos: panel.querySelector('input[name="initial-pos"]:checked')?.value,
-  };
-  }
-
-function buildMovePayload(panel, action) {
-  console.log("     ---------- view: view.js");
-  return {
-    action,
-    player:   panel.querySelector('input[name="move-player"]:checked')?.value,
-    piece:    panel.querySelector('[name="move-piece"]')?.value,
-    src:      panel.querySelector('[name="move-src"]')?.value,
-    dst:      panel.querySelector('[name="move-dst"]')?.value,
-    sec:      panel.querySelector('[name="move-2nd"]')?.value,
-    captured: panel.querySelector('[name="move-capture"]')?.value,
-    opts:     panel.querySelector('[name="move-opts"]')?.value,
-  };
-  }
-
-function buildGambitPayload(panel, action) {
-  console.log("     ---------- view: view.js");
-  return { action };
-  }
-
-function buildAdvsqPayload(panel, action) {
-  console.log("     ---------- view: view.js");
-  return {
-    action,
-    srcTile:  panel.querySelector('[name="advsq-src"]')?.value,
-    quad:     panel.querySelector('[name="advsq-quad"]')?.value,
-    perimeter:panel.querySelector('[name="advsq-perimeter"]')?.value,
-    stride:   panel.querySelector('[name="advsq-stride"]')?.value,
-    opacity:  panel.querySelector('[name="advsq-opacity"]')?.value,
-  };
-  }
-
-function buildCompassPayload(panel, action) {
-  console.log("     ---------- view: view.js");
-  return { action };
-}
-
-function buildGamePayload(panel, action) {
-  console.log("     ---------- view: view.js");
-  return { action };
-}
-
-function buildCameraPayload(panel, action) { // Not subject to undo.
-  return { action };
-  }
-
-function buildViewerPayload(panel, action) { // Not subject to undo.
-  return { 
-    action,
-    gap:   panel.querySelector('[name="viewer-trayGap"]')?.value,
-    sep:   panel.querySelector('[name="viewer-traySep"]')?.value,
-    range: panel.querySelector('[name="viewer-range"]')?.value,
-    speed: panel.querySelector('[name="viewer-speed"]')?.value,
-  };
 }
 // Seampoint: more local functions...
 

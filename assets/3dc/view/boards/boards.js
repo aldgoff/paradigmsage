@@ -3,8 +3,27 @@
   Purpose: Create a 3D chess board, add to scene, delete previous.
   Author: Allan Goff
   Date: 4/14/26
+  QC: 5/8/26
   Recommended access: import * as vBoards from ../../view/boards/boards.js
   UI: the export functions.
+*/
+
+/* TODO: QC checklist
+  1) Move addEventListener out of makeBoard into one-time init
+  2) ✅ Remove implicit teardown inside makeBoard; enforce clearBoard as sole inverse
+  3) Restrict raycasting to currentBoard instead of scene.children
+  4) ✅ Eliminate dual use of tileMap (global vs parameter); choose one model
+  5) Replace window.THREE with explicit module import
+  6) ✅ Ensure tileMap.clear() is always called before new board construction
+  7) Add guard for meshTile.userData.overlays before iteration
+  8) ✅ Add temporary diagnostics for missed clicks (coords === null)
+  9) ✅ Remove unused imports (cameras, renders)
+  10) ✅ Ensure event listener is singular (maintain invariant)
+  11) Validate no stray scene nodes remain beyond currentBoard
+  12) Verify tiles.initTileUserData does not retain cross-board references
+  13) Confirm getTileMesh never returns stale mesh after tileMap.clear()
+  14) Ensure currentBoard is the only authoritative board reference
+  15) Add sanity checks for board dimension consistency during rebuild
 */
 
 // --- Load JSON ---
@@ -17,8 +36,6 @@ import boardsData from "./boards.json" assert { type: "json" };
   import * as view       from "../view.js";
   import * as tiles      from "../tiles/tiles.js";
   import * as decorators from "../decorators/decorators.js";
-  import * as cameras    from "../render/cameras.js";
-  import * as renders    from "../render/renders.js";
 // Seampoint: more imports...
 
 let currentBoard = null;
@@ -42,7 +59,7 @@ export function clear(setup) {
 export function makeBoard(dimensions) {
   console.log("view: boards.js - makeBoard(dimensions):", dimensions);
 
-  if(currentBoard) { view.context.scene.remove(currentBoard); }
+  if(currentBoard) { clearBoard(); }
 
   const Z = dimensions[0]/2;  // 8.
   const X = dimensions[1]/2;  // 8.
@@ -54,17 +71,14 @@ export function makeBoard(dimensions) {
 
   const boardGroup = new THREE.Group();
 
-  const tileGeometry = view.context.tileGeometry  // ✅
-  const tileMap = view.context.tileMap;   // ✅ SHARED
-
   let count = 0;
   for(let z=Sz; z<=Z; z++) {  // Create the board.
     for(let x=Sx; x<=X; x++) {
       for(let y=Sy; y<=Y; y++) {
         let pos = [z, x, y];
         let tile = tiles.getTileAttributes(pos);
-        let meshTile = tiles.createMeshTile(tile, tileGeometry, pos);
-        tiles.initTileUserData(meshTile, tile, pos, tileMap);
+        let meshTile = tiles.createMeshTile(tile, view.context.tileGeometry, pos);
+        tiles.initTileUserData(meshTile, tile, pos, view.context.tileMap);
         boardGroup.add(meshTile); // Add tile to board.
         count++;
       }
@@ -73,13 +87,18 @@ export function makeBoard(dimensions) {
   view.context.scene.add(boardGroup);              // Add board to scene.
   currentBoard = boardGroup;
 
-  addEventListener(view.context.scene, view.context.renderer, view.context.camera, tileMap);
+  addEventListener(view.context.scene, view.context.renderer, view.context.camera, view.context.tileMap);
   }
 
 export function clearBoard() {
   console.log("view: boards.js - clearBoard()...view.context:", view.context);
   if (currentBoard) {
     view.context.scene.remove(currentBoard);
+    console.log(
+      "Scene children:",
+      view.context.scene.children.map(c => c.type)
+    );
+    // console.log("scene.children.length", view.context.scene.children.length);
     currentBoard = null;
   }
 
@@ -96,7 +115,10 @@ function addEventListener(scene, renderer, camera, tileMap) {
 
   clickHandler = (event) => {
     const coords = getTileFromClick(event, camera, scene, renderer);
-    if (!coords) return;
+    if (!coords) {
+      console.log("Ray casting: click off board.");
+      return;
+    }
 
     const meshTile = tiles.getTileMesh(tileMap, coords);
     if (meshTile) {
