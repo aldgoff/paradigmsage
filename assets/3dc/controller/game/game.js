@@ -58,6 +58,7 @@ export function showUndoStatus() {  // Show undo buffers in Game panel.
   console.log("cntrl: game.js - showUndoStatus():");
 
   const el = document.getElementById("undo-state");
+  if (!el) return;
 
   const keys = state.getStateKeys();
   const undo = state.getIndices();
@@ -130,39 +131,42 @@ function handleRewind() {
   let buffer = state.getCurrBuffer();
 
   if(buffer === null) { // Bottom Sentry.
-    return console.log("Bottom Sentry 1");
+    return console.log("Bottom Sentry");
   }
 
   for(let attempt = 0; attempt < keys.length; attempt++) {  // Rewind until next breakpoint.
     const idx = state.getCurrentIndex(buffer);
     const len = state.getBufferLength(buffer);
-
-    if(len === 0) {                   // Skip empty buffers...
-      continue;
-      }
-    else if(idx === len && len > 1) {      // --- N → 1 ---
-      rewindCurrentBuffer(buffer);
-      showUndoStatus();
-      return;
-      }
-    else if(idx === 1) {                   // --- 1 → 0 ---
-      processUndoBuffer(buffer, idx);
-      showUndoStatus();
-      return;
-      }
-    else if(idx === 0) {                   // --- 0 → prev buffer ---
+  
+    if(     isEmpty(len)) {           // crossDown;
       buffer = state.getPrevBuffer();
-      if (!buffer) return console.log("Bottom Sentry 3");
-      continue;
+      if(!buffer) return console.log("Bottom Sentry");
+      const N = state.getBufferLength(buffer);
+      processUndoBuffer(buffer, N);
+      break;
+      }
+    else if(canCollapseDown(idx)) {   // collapseDown;
+      rewindCurrentBuffer(buffer);
+      break;
+      }
+    else if(canStepDown(idx)) {       // stepDown;
+      processUndoBuffer(buffer, idx);
+      break;
+      }
+    else if(canCrossDown(idx)) {      // crossDown;
+      buffer = state.getPrevBuffer();
+      if(!buffer) return console.log("Bottom Sentry");
+      const N = state.getBufferLength(buffer);
+      processUndoBuffer(buffer, N);
+      break;
       }
     else {
       throw new Error("Impossible rewind state.");
     }
-
-    return;
   }
 
-  console.error("Rewind failed to progress");
+  showUndoStatus();
+  assertStateConsistency();
   }
 
 function handleFastForward() {
@@ -171,39 +175,51 @@ function handleFastForward() {
 
   if(buffer === null) {  // If nothing active, start at first non-empty buffer.
     buffer = state.getNextBuffer();
-    if(!buffer) return console.log("Top Sentry 1");
+    if(!buffer) return console.log("Top Sentry");
   }
 
   for(let attempt = 0; attempt < keys.length; attempt++) {
     const idx = state.getCurrentIndex(buffer);
     const len = state.getBufferLength(buffer);
 
-    if(len === 0) {                   // Skip empty buffers...
-      continue;
-      }
-    else if(idx === 0) {                   // --- 0 → 1 ---
-      processRedoBuffer(buffer, idx);
-      showUndoStatus();
-      return;
-      }
-    else if(idx === 1 && len > 1) {        // --- 1 → N ---
-      fastForwardCurrentBuffer(buffer);
-      return;
-      }
-    else if(idx === len) {                 // --- N → next buffer ---
+    if(   isEmpty(len)) {               // crossUp;
       buffer = state.getNextBuffer();
-      if (!buffer) return console.log("Top Sentry 3");
-      continue;
+      if (!buffer) return console.log("Top Sentry");
+      processRedoBuffer(buffer, 0);
+      break;
+      }
+    else if(canStepUp(idx, len)) {      // stepUp;
+      processRedoBuffer(buffer, idx);
+      break;
+      }
+    else if(canCollapseUp(idx, len)) {  // collapseUp;
+      fastForwardCurrentBuffer(buffer);
+      break;
+      }
+    else if(canCrossUp(idx, len)) {     // crossUp;
+      buffer = state.getNextBuffer();
+      if (!buffer) return console.log("Top Sentry");
+      processRedoBuffer(buffer, 0);
+      break;
       }
     else {
       throw new Error("Impossible FF state.");
     }
-
-    return;
   }
 
-  console.error("FastForward failed to progress");
+  showUndoStatus();
+  assertStateConsistency();
 }
+
+function canCollapseDown(idx)     { return idx > 1; }
+function canStepDown(idx)         { return idx === 1; }
+function canCrossDown(idx)        { return idx === 0; }
+
+function canCollapseUp(idx, len)  { return idx > 0 && idx < len; }
+function canStepUp(idx, len)      { return idx === 0 && len > 0; }
+function canCrossUp(idx, len)     { return idx === len; }
+
+/* ----- ----- ----- ----- */
 
 async function handleLoad() {
   console.log("cntrl: game.js - handleLoad()");
@@ -245,7 +261,6 @@ async function handleLoad() {
     vAdvsqs.clearAdvsqPanelParams("KR4,4");
 
     showUndoStatus(); // Good visual indicator of successful load.
-
   } catch (err) {
     console.error("Load failed:", err);
   }
@@ -311,9 +326,6 @@ function rewindCurrentBuffer(buffer) {
   else {
     throw new Error("Unknown buffer:", buffer);
   }
-
-  showUndoStatus();
-  assertStateConsistency();
   }
 
 function fastForwardCurrentBuffer(buffer) {
@@ -364,9 +376,6 @@ function fastForwardCurrentBuffer(buffer) {
   else {
     throw new Error("Unknown buffer:", buffer);
   }
-
-  showUndoStatus();
-  assertStateConsistency();
   }
 
 function processUndoBuffer(key, idx) {

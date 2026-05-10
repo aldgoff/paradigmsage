@@ -96,7 +96,7 @@ function makeDraggable(element) {
   });
   }
 
-function wirePanel(panelEl, module, panel) {
+function wirePanel(panelEl, module, panel) {  // data-action means command; no data-action means parameter (DOM in play.md).
   const dispatch = module.panelDispatch;
   const build    = module.buildPayload;
 
