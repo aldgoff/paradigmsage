@@ -32,8 +32,8 @@ const buffer = "AdvSqs";   // State buffer (state.js).
 export function makeEntry(payload) {
   console.log(`model: ${buffer}.js - makeEntry(payload):`, payload);
 
-  let { srcTile, quad, perimeter, stride, opacity } = cAdvsqs.normalize(payload);   // Unpack primary fields.
-  const entry = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
+  let { src, srcTile, quad, perimeter, stride, opacity } = payload;  // Unpack primary fields.
+  const entry = { src, srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
 
   return entry;
   }

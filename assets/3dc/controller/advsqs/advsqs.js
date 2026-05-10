@@ -21,11 +21,11 @@ import advsqsData from "./advsqs.json" assert { type: "json" };
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
-  import * as game   from "../../controller/game/game.js";
+  import * as game     from "../../controller/game/game.js";
 
-  import * as state   from "../../model/state/state.js";
-  import * as mAdvsqs from "../../model/advsqs/advsqs.js";
-  import * as coords  from "../../foundation/coords/coords.js";  // normalizeTileToVts().
+  import * as state    from "../../model/state/state.js";
+  import * as mAdvsqs  from "../../model/advsqs/advsqs.js";
+  import * as coords   from "../../foundation/coords/coords.js";  // normalizeTileToVts().
 
   import * as vAdvsqs  from "../../view/advsqs/advsqs.js";
   import * as vGambits from "../../view/gambits/gambits.js";
@@ -38,11 +38,12 @@ export function panelDispatch(payload) {
   vGambits.cancelAnimation(); // TODO: view leakage, need a better solution.
 
   const { action, 
-    srcTile,      // board or vts (TODO: inwork)
+    src,          // board (positional notation))
+    srcTile,      // vts (TODO: inwork)
     quad,         // 1-60
     perimeter,    // 0-N
-    stride,       // 0-2perimeter+1
-    opacity       // Offboard tiles (0.0 to 1.0)
+    stride,       // 0-2*perimeter+1
+    opacity       // Offboard tiles (0.00 to 1.00)
   } = payload;
 
   switch (action) {
@@ -65,11 +66,12 @@ export function buildPayload(panel, action) {
   console.log("     ---------- cntrl: advsqs.js");
   return {  // TODO: base off new entry in json file.
     action,
-    srcTile:  panel.querySelector('[name="advsq-src"]')?.value,
-    quad:     panel.querySelector('[name="advsq-quad"]')?.value,
-    perimeter:panel.querySelector('[name="advsq-perimeter"]')?.value,
-    stride:   panel.querySelector('[name="advsq-stride"]')?.value,
-    opacity:  panel.querySelector('[name="advsq-opacity"]')?.value,
+    src:       panel.querySelector('[name="advsq-src"]')?.value,
+    srcTile:   coords.normalizeTileToVts(panel.querySelector('[name="advsq-src"]')?.value),
+    quad:      Number(panel.querySelector('[name="advsq-quad"]')?.value),
+    perimeter: Number(panel.querySelector('[name="advsq-perimeter"]')?.value),
+    stride:    Number(panel.querySelector('[name="advsq-stride"]')?.value),
+    opacity:   Number(panel.querySelector('[name="advsq-opacity"]')?.value),
   };
 }
 
@@ -79,7 +81,7 @@ export function buildPayload(panel, action) {
 function handlePlace(payload) {
   console.log("cntrl: advsqs.js - handlePlace(payload)", payload);
 
-  const { srcTile, quad, perimeter, stride, opacity } = payload;  // Informative.
+  let { src, srcTile, quad, perimeter, stride, opacity } = payload;  // Unpack primary fields.
 
   const nextEntry = mAdvsqs.makeEntry(payload);        // Transform panel payload into state entry.
 
@@ -89,9 +91,9 @@ function handlePlace(payload) {
 function handleRemove(payload) {
   console.log("cntrl: advsqs.js - handleRemove(payload)", payload);
   
-  let { srcTile, quad, perimeter, stride, opacity } = blank(payload);       // Unpack primary fields.
+  let { src, srcTile, quad, perimeter, stride, opacity } = payload;  // Unpack primary fields.
                                                                             // Manipulate fields.
-  const newAdvsq = { srcTile: [0,0,0], quad: 1, perimeter: 0, stride: 0, opacity };           // Repack normalized fields.
+  const newAdvsq = blank(payload);           // Repack normalized fields.
 
   state.clearBuffer("AdvSqs");           // Log state change in undo buffer.
   vAdvsqs.clearAdvsq();             // Render.
@@ -101,7 +103,7 @@ function handleRemove(payload) {
 function handleGrow(payload) {
   console.log("cntrl: advsqs.js - handleGrow(payload)", payload);
 
-  let { srcTile, quad, perimeter, stride, opacity } = normalize(payload);   // Unpack primary fields.
+  let { src, srcTile, quad, perimeter, stride, opacity } = payload;  // Unpack primary fields.
   
   if(perimeter > 0) {                                                 // Stride stability idiom (apex, or fixed distance from E1/E2).
     if(     stride <= 1)               { stride = stride; }           // E1 (or off) - stays on end tile.
@@ -115,7 +117,7 @@ function handleGrow(payload) {
   }
   perimeter++;                                                              // Manipulate fields.
 
-  const nextEntry = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
+  const nextEntry = { src, srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
 
   applyEntry(nextEntry);  // Clear curr, branch, state change, render, refresh panel.
   }
@@ -123,7 +125,7 @@ function handleGrow(payload) {
 function handleShrink(payload) {
   console.log("cntrl: advsqs.js - handleShrink(payload)", payload);
 
-  let { srcTile, quad, perimeter, stride, opacity } = normalize(payload);   // Unpack primary fields.
+  let { src, srcTile, quad, perimeter, stride, opacity } = payload;  // Unpack primary fields.
   
   if(perimeter >= 1) {                                                // Stride stability idiom (apex, or fixed distance from E1/E2).
     if(     stride <= 1)               { stride = stride; }           // E1 (or off) - stays on end tile.
@@ -134,7 +136,7 @@ function handleShrink(payload) {
   }
   if(--perimeter < 0) perimeter = 0.                                        // Manipulate fields.
 
-  const nextEntry = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
+  const nextEntry = { src, srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
 
   applyEntry(nextEntry);  // Clear curr, branch, state change, render, refresh panel.
   }
@@ -142,7 +144,7 @@ function handleShrink(payload) {
 function handleUpdateParam(payload) {
   console.log("cntrl: advsqs.js - handleUpdateParam(payload)", payload);
 
-  let { srcTile, quad, perimeter, stride, opacity } = normalize(payload);   // Unpack primary fields.
+  let { src, srcTile, quad, perimeter, stride, opacity } = payload;  // Unpack primary fields.
 
   const maxStride = 2 * perimeter + 1;                                      // Manipulate fields.
   if(stride > maxStride) {  // Is stride panel limited or perimeter limited?
@@ -160,7 +162,7 @@ function handleUpdateParam(payload) {
   }
   if(perimeter === 0) stride = 0;
 
-  const nextEntry = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
+  const nextEntry = { src, srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
 
   applyEntry(nextEntry);  // Clear curr, branch, state change, render, refresh panel.
   }
@@ -189,7 +191,7 @@ function handleNudgeSrc(payload) {
 function handleNextQuad(payload) {
   console.log("cntrl: advsqs.js - handleNewQuad(payload)", payload);
 
-  let { srcTile, quad, perimeter, stride, opacity } = normalize(payload);   // Unpack primary fields.
+  let { src, srcTile, quad, perimeter, stride, opacity } = payload;  // Unpack primary fields.
                                                                             // Manipulate fields.
   if(      1 <= quad && quad <= 12) { ++quad; if(quad%4 === 1) quad -= 4; }   // Next rook quad.
   else if(13 <= quad && quad <= 36) { ++quad; if(quad%6 === 1) quad -= 6; }   // Next bishop quad.
@@ -199,7 +201,7 @@ function handleNextQuad(payload) {
   }
   stride = 1; // First stride.
 
-  const nextEntry = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
+  const nextEntry = { src, srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
 
   applyEntry(nextEntry);  // Clear curr, branch, state change, render, refresh panel.
   }
@@ -207,7 +209,7 @@ function handleNextQuad(payload) {
 function handleNextPlane(payload) {
   console.log("cntrl: advsqs.js - handleNextPlane(payload)", payload);
 
-  let { srcTile, quad, perimeter, stride, opacity } = normalize(payload);   // Unpack primary fields.
+  let { src, srcTile, quad, perimeter, stride, opacity } = payload;  // Unpack primary fields.
                                                                             // Manipulate fields.
   if(      1 <= quad && quad <= 12) { quad += 4; if(quad > 12) quad =  1; }   // Change rook plane.
   else if(13 <= quad && quad <= 36) { quad += 6; if(quad > 36) quad = 13; }   // Change bishop plane.
@@ -217,7 +219,7 @@ function handleNextPlane(payload) {
   }
   stride = 1; // First stride.
 
-  const nextEntry = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
+  const nextEntry = { src, srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
 
   applyEntry(nextEntry);  // Clear curr, branch, state change, render, refresh panel.
   }
@@ -225,7 +227,7 @@ function handleNextPlane(payload) {
 function handleNextPiece(payload) {
   console.log("cntrl: advsqs.js - handleNextPiece(payload)", payload);
 
-  let { srcTile, quad, perimeter, stride, opacity } = normalize(payload);   // Unpack primary fields.
+  let { src, srcTile, quad, perimeter, stride, opacity } = payload;  // Unpack primary fields.
                                                                             // Manipulate fields.
   if(      1 <= quad && quad <= 12) { quad = 13; }                            // Change rook to bishop plane.
   else if(13 <= quad && quad <= 36) { quad = 37; }                            // Change bishop to duke plane.
@@ -235,35 +237,36 @@ function handleNextPiece(payload) {
   }
   stride = 1; // First stride.
 
-  const nextEntry = { srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
+  const nextEntry = { src, srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
 
   applyEntry(nextEntry);  // Clear curr, branch, state change, render, refresh panel.
 }
 
 // --- Helpers ---
-export function normalize(payload) { // Convert panel strings to numbers, arrays, etc.
-  let { srcTile, quad, perimeter, stride, opacity } = payload;  // Unpack primary fields.
+// function normalize(payload) { // Convert panel strings to numbers, arrays, etc.
+//   let { srcTile, quad, perimeter, stride, opacity } = payload;  // Unpack primary fields.
 
-  srcTile   = coords.normalizeTileToVts(srcTile);               // Convert numeric fields.
-  quad      = Number(quad);  
-  perimeter = Number(perimeter);
-  stride    = Number(stride);
-  opacity   = Number(opacity);
+//   srcTile   = coords.normalizeTileToVts(srcTile);               // Convert numeric fields.
+//   quad      = Number(quad);  
+//   perimeter = Number(perimeter);
+//   stride    = Number(stride);
+//   opacity   = Number(opacity);
 
-  const normed = { srcTile, quad, perimeter, stride, opacity }; // Repack primary fields.
+//   const normed = { srcTile, quad, perimeter, stride, opacity }; // Repack primary fields.
 
-  return normed;
-  }
+//   return normed;
+//   }
 
 function blank(payload) { // Convert panel strings to numbers, arrays, etc.
-  let { srcTile, quad, perimeter, stride, opacity } = payload;  // Unpack primary fields.
+  let { src, srcTile, quad, perimeter, stride, opacity } = payload;  // Unpack primary fields.
 
+  src       = "Q4,4";
   srcTile   = [0,0,0];  // "Q4,4"
   quad      = 1;  
   perimeter = 0;
   stride    = 0;
 
-  const blank = { srcTile, quad, perimeter, stride, opacity }; // Repack primary fields.
+  const blank = { src, srcTile, quad, perimeter, stride, opacity }; // Repack primary fields.
 
   return blank;
 }

@@ -608,3 +608,306 @@
 ### (1-1-1-1)
   {"Setup":[{"action":"makeBoard","boardSize":"8x8x8"}],"Moves":[{"turn":1,"player":"White","piece":"P","src":"K2,2","dst":"K4,4","action":"move","sec":""}],"Gambits":[{"Q":1,"src":"KB4,4","dst":"KB7,7","area":16,"srcTile":[2,0,0],"quad":1,"perimeter":3,"stride":4,"opacity":0.5}],"AdvSqs":[{"srcTile":[0,0,0],"quad":1,"perimeter":3,"stride":0,"opacity":0.5}]}
 
+### Changes in Advsq Payload
+### Sort form
+  {"Setup":[{"action":"makeBoard","boardSize":"8x8x8"}],"Moves":[{"turn":1,"player":"White","piece":"P","src":"K2,2","dst":"K4,4","action":"move","sec":""},{"turn":1,"player":"Black","piece":"P","src":"K2,2","dst":"K4,4","action":"move","sec":""},{"turn":2,"player":"White","piece":"P","src":"K2,2","dst":"Q4,4","action":"move","sec":""}],"Gambits":[{"Q":1,"src":"KB4,4","dst":"KB6,6","area":9,"srcTile":[2,0,0],"quad":1,"perimeter":2,"stride":3,"opacity":0.5},{"Q":13,"src":"Q4,4","dst":"KN7,4","area":16,"srcTile":[0,0,0],"quad":13,"perimeter":3,"stride":1,"opacity":0.5},{"Q":38,"src":"Q4,4","dst":"KR8,8","area":25,"srcTile":[0,0,0],"quad":38,"perimeter":4,"stride":1,"opacity":0.5}],"AdvSqs":[{"srcTile":[0,0,0],"quad":1,"perimeter":0,"stride":0,"opacity":0.5},{"src":"Q4,4","srcTile":[0,0,0],"quad":1,"perimeter":1,"stride":2,"opacity":0.5},{"src":"Q4,4","srcTile":[0,0,0],"quad":1,"perimeter":2,"stride":3,"opacity":0.5},{"src":"Q4,4","srcTile":[0,1,0],"quad":1,"perimeter":2,"stride":3,"opacity":0.5},{"src":"Q4,4","srcTile":[0,1,1],"quad":1,"perimeter":2,"stride":3,"opacity":0.5}]}
+
+### Long Form
+  {
+    "Setup": [
+      {
+        "action": "makeBoard",
+        "boardSize": "8x8x8"
+      }
+    ],
+    "Moves": [
+      {
+        "turn": 1,
+        "player": "White",
+        "piece": "P",
+        "src": "K2,2",
+        "dst": "K4,4",
+        "action": "move",
+        "sec": ""
+      },
+      {
+        "turn": 1,
+        "player": "Black",
+        "piece": "P",
+        "src": "K2,2",
+        "dst": "K4,4",
+        "action": "move",
+        "sec": ""
+      },
+      {
+        "turn": 2,
+        "player": "White",
+        "piece": "P",
+        "src": "K2,2",
+        "dst": "Q4,4",
+        "action": "move",
+        "sec": ""
+      }
+    ],
+    "Gambits": [
+      {
+        "Q": 1,
+        "src": "KB4,4",
+        "dst": "KB6,6",
+        "area": 9,
+        "srcTile": [
+          2,
+          0,
+          0
+        ],
+        "quad": 1,
+        "perimeter": 2,
+        "stride": 3,
+        "opacity": 0.5
+      },
+      {
+        "Q": 13,
+        "src": "Q4,4",
+        "dst": "KN7,4",
+        "area": 16,
+        "srcTile": [
+          0,
+          0,
+          0
+        ],
+        "quad": 13,
+        "perimeter": 3,
+        "stride": 1,
+        "opacity": 0.5
+      },
+      {
+        "Q": 38,
+        "src": "Q4,4",
+        "dst": "KR8,8",
+        "area": 25,
+        "srcTile": [
+          0,
+          0,
+          0
+        ],
+        "quad": 38,
+        "perimeter": 4,
+        "stride": 1,
+        "opacity": 0.5
+      }
+    ],
+    "AdvSqs": [
+      {
+        "srcTile": [
+          0,
+          0,
+          0
+        ],
+        "quad": 1,
+        "perimeter": 0,
+        "stride": 0,
+        "opacity": 0.5
+      },
+      {
+        "src": "Q4,4",
+        "srcTile": [
+          0,
+          0,
+          0
+        ],
+        "quad": 1,
+        "perimeter": 1,
+        "stride": 2,
+        "opacity": 0.5
+      },
+      {
+        "src": "Q4,4",
+        "srcTile": [
+          0,
+          0,
+          0
+        ],
+        "quad": 1,
+        "perimeter": 2,
+        "stride": 3,
+        "opacity": 0.5
+      },
+      {
+        "src": "Q4,4",
+        "srcTile": [
+          0,
+          1,
+          0
+        ],
+        "quad": 1,
+        "perimeter": 2,
+        "stride": 3,
+        "opacity": 0.5
+      },
+      {
+        "src": "Q4,4",
+        "srcTile": [
+          0,
+          1,
+          1
+        ],
+        "quad": 1,
+        "perimeter": 2,
+        "stride": 3,
+        "opacity": 0.5
+      }
+    ]
+  }
+
+## Refactored Advsq Payload
+### Short Form
+  {"Setup":[{"action":"makeBoard","boardSize":"8x8x8"}],"Moves":[{"turn":1,"player":"White","piece":"P","src":"K2,2","dst":"K4,4","action":"move","sec":""},{"turn":1,"player":"Black","piece":"P","src":"K2,2","dst":"K4,4","action":"move","sec":""},{"turn":2,"player":"White","piece":"P","src":"K2,2","dst":"Q4,4","action":"move","sec":""}],"Gambits":[{"Q":1,"src":"KB4,4","dst":"KB6,6","area":9,"srcTile":[2,0,0],"quad":1,"perimeter":2,"stride":3,"opacity":0.5},{"Q":13,"src":"Q4,4","dst":"KN7,4","area":16,"srcTile":[0,0,0],"quad":13,"perimeter":3,"stride":1,"opacity":0.5},{"Q":38,"src":"Q4,4","dst":"KR8,8","area":25,"srcTile":[0,0,0],"quad":38,"perimeter":4,"stride":1,"opacity":0.5}],"AdvSqs":[{"src":"Q4,4","srcTile":[0,0,0],"quad":1,"perimeter":0,"stride":0,"opacity":0.5},{"src":"Q4,4","srcTile":[0,0,0],"quad":1,"perimeter":1,"stride":2,"opacity":0.5},{"src":"Q4,4","srcTile":[0,0,0],"quad":1,"perimeter":2,"stride":3,"opacity":0.5},{"src":"Q4,4","srcTile":[0,1,0],"quad":1,"perimeter":2,"stride":3,"opacity":0.5},{"src":"Q4,4","srcTile":[0,1,1],"quad":1,"perimeter":2,"stride":3,"opacity":0.5}]}
+
+### Long Form
+  {
+    "Setup": [
+      {
+        "action": "makeBoard",
+        "boardSize": "8x8x8"
+      }
+    ],
+    "Moves": [
+      {
+        "turn": 1,
+        "player": "White",
+        "piece": "P",
+        "src": "K2,2",
+        "dst": "K4,4",
+        "action": "move",
+        "sec": ""
+      },
+      {
+        "turn": 1,
+        "player": "Black",
+        "piece": "P",
+        "src": "K2,2",
+        "dst": "K4,4",
+        "action": "move",
+        "sec": ""
+      },
+      {
+        "turn": 2,
+        "player": "White",
+        "piece": "P",
+        "src": "K2,2",
+        "dst": "Q4,4",
+        "action": "move",
+        "sec": ""
+      }
+    ],
+    "Gambits": [
+      {
+        "Q": 1,
+        "src": "KB4,4",
+        "dst": "KB6,6",
+        "area": 9,
+        "srcTile": [
+          2,
+          0,
+          0
+        ],
+        "quad": 1,
+        "perimeter": 2,
+        "stride": 3,
+        "opacity": 0.5
+      },
+      {
+        "Q": 13,
+        "src": "Q4,4",
+        "dst": "KN7,4",
+        "area": 16,
+        "srcTile": [
+          0,
+          0,
+          0
+        ],
+        "quad": 13,
+        "perimeter": 3,
+        "stride": 1,
+        "opacity": 0.5
+      },
+      {
+        "Q": 38,
+        "src": "Q4,4",
+        "dst": "KR8,8",
+        "area": 25,
+        "srcTile": [
+          0,
+          0,
+          0
+        ],
+        "quad": 38,
+        "perimeter": 4,
+        "stride": 1,
+        "opacity": 0.5
+      }
+    ],
+    "AdvSqs": [
+      {
+        "src": "Q4,4",
+        "srcTile": [
+          0,
+          0,
+          0
+        ],
+        "quad": 1,
+        "perimeter": 0,
+        "stride": 0,
+        "opacity": 0.5
+      },
+      {
+        "src": "Q4,4",
+        "srcTile": [
+          0,
+          0,
+          0
+        ],
+        "quad": 1,
+        "perimeter": 1,
+        "stride": 2,
+        "opacity": 0.5
+      },
+      {
+        "src": "Q4,4",
+        "srcTile": [
+          0,
+          0,
+          0
+        ],
+        "quad": 1,
+        "perimeter": 2,
+        "stride": 3,
+        "opacity": 0.5
+      },
+      {
+        "src": "Q4,4",
+        "srcTile": [
+          0,
+          1,
+          0
+        ],
+        "quad": 1,
+        "perimeter": 2,
+        "stride": 3,
+        "opacity": 0.5
+      },
+      {
+        "src": "Q4,4",
+        "srcTile": [
+          0,
+          1,
+          1
+        ],
+        "quad": 1,
+        "perimeter": 2,
+        "stride": 3,
+        "opacity": 0.5
+      }
+    ]
+  }
+
