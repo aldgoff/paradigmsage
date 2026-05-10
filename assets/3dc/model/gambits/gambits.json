@@ -1,37 +1,59 @@
 {
   "state_module": {
-    "_example": "A sequence of 5 invertible undo/redo arrays.",
-    "_TODO:": "dup with state_module",
-    "Setup": [
-      { "board": [8,8,8],    "play": "off",    "trays": "none",    "gap": 0 },
-      { "board": [10,8,8],   "play": "off",    "trays": "none",    "gap": 0 },
-      { "board": [10,10,10], "play": "off",    "trays": "none",    "gap": 0 },
-
-      { "board": [8,8,8],    "play": "game",   "trays": "real",    "gap": 0 },
-      { "board": [8,8,8],    "play": "puzzle", "trays": "factory", "gap": 0 },
-      { "board": [8,8,8],    "play": "game",   "trays": "real",    "gap": 1 },
-      { "board": [8,8,8],    "play": "game",   "trays": "real",    "gap": 2 },
-      { "board": [8,8,8],    "play": "game",   "trays": "real",    "gap": 3 },
-
-      { "board": [6,6,6],    "play": "game",   "trays": "real", "gap": 0 },
-      { "board": [5,5,5],    "play": "game",   "trays": "real", "gap": 0 },
-      { "board": [4,4,4],    "play": "game",   "trays": "real", "gap": 0 }
-    ],
-    "Moves": [
-      { "turn": 1, "moves": ["P-K4,4", "P-Q4,3"], "coords": ["", ""], "annotations": ["", "..."] },
-      { "turn": 2, "moves": ["PxP", "N-KB3,3"], "coords": ["...", ""], "annotations": ["", ""] },
-      { "turn": 3, "moves": ["qnP-QN3,4", "..."], "coords": ["...", "..."], "annotations": ["...", "..."] }
-    ],
-    "Gambits": [
-      { "turn": 1, "moves": ["P-K4,4", "P-Q4,3"], "coords": ["", ""], "annotations": ["", "..."] },
-      { "turn": 2, "moves": ["PxP", "N-KB3,3"], "coords": ["...", ""], "annotations": ["", ""] },
-      { "turn": 3, "moves": ["qnP-QN3,4", "..."], "coords": ["...", "..."], "annotations": ["...", "..."] }
-    ],
-    "AdvSqs": [
-      { "src": "Q3,3", "dst": "KB2,2" }, 
-      { "src": "Q3,3", "dst": "KN3,3" }, 
-      { "src": "Q3,3", "dst": "Q1,1" }
-    ]
+    "gambitTypes": {
+      "names": ["quadrant", "linear", "duplex", "overlap"],
+      "_last": "a first start"
+    },
+    "gambitConstraints": {
+      "_last": "tbd"
+    },
+    "gambitExamples": {
+      "quadrant": {
+        "type": "quadrant",
+        "piece": "rook",
+        "src": "Q4,4",
+        "dst": "Q6,5",
+        "advsq": {"src": "Q4,4", "quad": 1, "perimeter": 2, "stride": 4},
+        "opacity": 0.50
+      },
+      "linear": {
+        "type": "linear",
+        "piece": "rook",
+        "src": "Q4,4",
+        "dst": "Q6,4",
+        "ray": "right_fore",
+        "advsqs": [
+          [{"src": "Q4,4", "quad": 1, "perimeter": 2, "stride": 5, "area": 9}, {"src": "Q4,4", "quad": 2, "perimeter": 2, "stride": 1, "area": 9}],
+          [{"src": "Q4,4", "quad": 5, "perimeter": 2, "stride": 5, "area": 9}, {"src": "Q4,4", "quad": 6, "perimeter": 2, "stride": 1, "area": 9}]
+        ],
+        "opacity": 0.50
+      },
+      "duplex": {
+        "type": "duplex",
+        "piece": "duke",
+        "src": "Q4,4",
+        "dst": "Q6,4",
+        "ray": "right_fore",
+        "advsqs": [
+          {"src": "Q4,4", "quad": 46, "perimeter": 1, "stride": 2, "area": 4},
+          {"src": "Q4,4", "quad": 50, "perimeter": 1, "stride": 2, "area": 4}
+        ],
+        "opacity": 0.50
+      },
+      "overlap": {
+        "type": "hotspot",
+        "piece": "queen",
+        "src": "Q4,4",
+        "dst": "Q6,4",
+        "ray": "right_fore",
+        "advsqs": [
+          [{"src": "Q4,4", "quad":  1, "perimeter": 2, "stride": 5, "area": 9}, {"src": "Q4,4", "quad":  2, "perimeter": 2, "stride": 1, "area": 9}],
+          [{"src": "Q4,4", "quad":  5, "perimeter": 2, "stride": 5, "area": 9}, {"src": "Q4,4", "quad":  6, "perimeter": 2, "stride": 1, "area": 9}],
+          [{"src": "Q4,4", "quad": 46, "perimeter": 1, "stride": 2, "area": 4}, {"src": "Q4,4", "quad": 50, "perimeter": 1, "stride": 2, "area": 4}]
+        ],
+        "opacity": 0.50
+      }
+    }
   }
 }
 
