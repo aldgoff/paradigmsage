@@ -211,11 +211,13 @@ function handleFastForward() {
   assertStateConsistency();
 }
 
+function isEmpty(len) { return len === 0; }
+
 function canCollapseDown(idx)     { return idx > 1; }
 function canStepDown(idx)         { return idx === 1; }
 function canCrossDown(idx)        { return idx === 0; }
 
-function canCollapseUp(idx, len)  { return idx > 0 && idx < len; }
+function canCollapseUp(idx, len)  { return 0 < idx && idx < len; }
 function canStepUp(idx, len)      { return idx === 0 && len > 0; }
 function canCrossUp(idx, len)     { return idx === len; }
 
