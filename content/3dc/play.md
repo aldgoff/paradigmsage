@@ -222,7 +222,7 @@ layout: "play"
     <label> Overlap:     <output name="advsq-overlap"   style="opacity:0.7; font-style:italic;"> B|Q|H|F </output> </label>
   </div>
   <div class="section">
-    <label> Piece:       <output name="advsq-piece"     style="opacity:0.7; font-style:italic;"> R|B|D|Q|S|N </output> </label>
+    <label> Pieces:      <output name="advsq-piece"     style="opacity:0.7; font-style:italic;"> R|B|D|Q|N|S|P|K </output> </label>
   </div>
   <!-- Optional: key hints (visual only) -->
   <div class="section" style="font-size: 13px; font-weight: bold; color: #666;">

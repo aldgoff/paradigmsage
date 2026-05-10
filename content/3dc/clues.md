@@ -28,5 +28,13 @@ title: "Clues"
   - 4/30/26 - In 3D, there are *three plane types*: *orthogonal* (rook), *skew* (bishop) and *slant* (duke).
   - 5/01/26 - In 3D, the number of planes is *not constant*: rooks move in *three*, bishops in *four*, and dukes in *six*.
   - 5/02/26 - Motion is along a *pair of rays*, in *4 directions* for rook and duke, *6 directions* for bishops.
-  - 5/03/26 - Thus...
+  - 5/03/26 - Thus, in 3D a piece has at most *60 directions* it can move in.
+  - 5/04/26 - These directions are called *quadrants*.
+  - 5/05/26 - In 2D, motion is in *straight lines*.
+  - 5/06/26 - In 3D, motion is in *flat planes*.
+  - 5/07/26 - The board has been *promoted by a dimension*, so must the moves.
+  - 5/08/26 - *Planar moves* preserve the endgames.
+  - 5/09/26 - A rook and king can checkmate a lone king – with exactly the same *algorithm*.
+  - 5/10/26 - A *one pawn advantage* can secure the game.
+  - 5/11/26 - Finally, a rule set that yields play which *feels like chess*.
 
