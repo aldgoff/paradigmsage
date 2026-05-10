@@ -91,7 +91,6 @@ export function refreshPanel(advsq) {
   panel.querySelector('[name="advsq-perimeter"]').value    = perimeter;
   panel.querySelector('[name="advsq-stride"]').value       = stride;
   panel.querySelector('[name="advsq-opacity"]').value      = opacity;
-
 }
 
 export function setAdvsqPanelInitialParams() {
@@ -245,7 +244,7 @@ function getActiveBoardSpec() {
   if (!curr) return coords.getBoardSpec("8x8x8");
   const boardStr = curr.boardSize;
   return coords.getBoardSpec(boardStr);
-}
+  }
 
 function computeAdvsqDerived({ quad, perimeter, stride }) {
   // console.log("view : advsqs.js - computeAdvsqDerived()", { quad, perimeter, stride });

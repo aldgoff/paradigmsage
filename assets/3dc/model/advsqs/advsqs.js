@@ -30,7 +30,7 @@ const buffer = "AdvSqs";   // State buffer (state.js).
 
 // --- UI ---
 export function makeEntry(payload) {
-  console.log(`model: ${buffer}.js - makeEntry(payload):`, payload);
+  console.log(`model: advsqs.js - makeEntry(payload):`, payload);
 
   let { src, srcTile, quad, perimeter, stride, opacity } = payload;  // Unpack primary fields.
   const entry = { src, srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
@@ -39,14 +39,14 @@ export function makeEntry(payload) {
   }
 
 export function fetchCurrentEntry() {
-  console.log(`model: ${buffer}.js - fetchCurrentEntry()`);
+  console.log(`model: advsqs.js - fetchCurrentEntry()`);
 
   const entry = state.fetchCurrentState(buffer);
   return entry;
 }
 
 export function fetchLastEntry() {
-  console.log(`model: ${buffer}.js - fetchLastEntry()`);
+  console.log(`model: advsqs.js - fetchLastEntry()`);
 
   const len = state.getBufferLength(buffer);
   if (len === 0) return null;
@@ -60,7 +60,7 @@ export function fetchLastEntry() {
   }
 
 export function fetchThisEntry(idx) {
-  console.log(`model: ${buffer}.js - fetchThisEntry(idx):`, idx);
+  console.log(`model: advsqs.js - fetchThisEntry(idx):`, idx);
 
   const len = state.getBufferLength(buffer);
   if (idx < 0 || idx >= len) return null;
@@ -74,25 +74,25 @@ export function fetchThisEntry(idx) {
 }
 
 export function addEntry(entry) {
-  console.log(`model: ${buffer}.js - addEntry(entry):`, entry);
+  console.log(`model: advsqs.js - addEntry(entry):`, entry);
 
   state.pushNewState(buffer, entry);
   }
 
 export function insertEntry(entry, idx) {
-  console.log(`model: ${buffer}.js - insertEntry(entry, idx):`, entry, idx);
+  console.log(`model: advsqs.js - insertEntry(entry, idx):`, entry, idx);
 
   state.insertState(buffer, entry, idx);
   }
 
 export function replaceEntry(entry, idx) {
-  console.log(`model: ${buffer}.js - replaceEntry(entry, idx):`, entry, idx);
+  console.log(`model: advsqs.js - replaceEntry(entry, idx):`, entry, idx);
 
   state.replaceState(buffer, entry, idx);
 }
 
 export function clearCurrentEntry() {
-  console.log(`model: ${buffer}.js - clearCurrentEntry()`);
+  console.log(`model: advsqs.js - clearCurrentEntry()`);
 
   const i = state.getCurrentIndex(buffer);
   if (i === 0) return;
@@ -101,7 +101,7 @@ export function clearCurrentEntry() {
   }
 
 export function clearLastEntry() {
-  console.log(`model: ${buffer}.js - clearLastEntry()`);
+  console.log(`model: advsqs.js - clearLastEntry()`);
 
   const len = state.getBufferLength(buffer);
   if (len === 0) return;
@@ -110,19 +110,19 @@ export function clearLastEntry() {
   }
 
 export function clearThisEntry(idx) {
-  console.log(`model: ${buffer}.js - clearThisEntry(idx):`, idx);
+  console.log(`model: advsqs.js - clearThisEntry(idx):`, idx);
 
   state.deleteState(buffer, idx);
   }
 
 export function clearRestOfBuffer(idx) {
-  console.log(`model: ${buffer}.js - clearRestOfBuffer(idx):`, idx);
+  console.log(`model: advsqs.js - clearRestOfBuffer(idx):`, idx);
 
   state.truncateState(buffer, idx);
   }
 
 export function clearEntireBuffer() {
-  console.log(`model: ${buffer}.js - clearEntireBuffer()`);
+  console.log(`model: advsqs.js - clearEntireBuffer()`);
 
   state.clearBuffer(buffer);
 }

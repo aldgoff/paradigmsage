@@ -2,10 +2,12 @@
   "advsqs_module": {
     "_status": "Unused.",
     "Parameters": {
-      "Source": "Q4,4",
-      "Quad": [0, 60],
-      "Perimeter": [0, 9],
-      "Stride": [0, 19],
+      "src": "Q4,4",
+      "srcTile": [0,0,0],
+      "quad": [0, 60],
+      "perimeter": [0, 9],
+      "stride": [0, 19],
+      "opacity": [0.00, 1.00],
       "_last": "no comma"
     },
     "Derived": {
@@ -24,7 +26,10 @@
       "_last": "no comma"
     },
     "Examples": {
-      "Rook": { "src": "Q4,4", "quad": 1, "perimeter": 3, "stride": 4 }
+      "rook":   { "src": "Q4,4", "srcTile": [0,0,0], "quad":  1, "perimeter": 3, "stride": 4, "opacity": 0.50 },
+      "bishop": { "src": "Q4,4", "srcTile": [0,0,0], "quad": 13, "perimeter": 4, "stride": 1, "opacity": 0.50 },
+      "duke":   { "src": "Q4,4", "srcTile": [0,0,0], "quad": 37, "perimeter": 5, "stride": 0, "opacity": 0.50 },
+      "_last": "no comma"
     }
   }
 }

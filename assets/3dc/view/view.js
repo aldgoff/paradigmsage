@@ -47,7 +47,6 @@
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
-  // import * as run        from "./registerHandlers.js";
   import * as renders    from "./render/renders.js";
   import * as coordsMaps from "./render/coordsMaps.js";
   import * as tiles      from "./tiles/tiles.js";
@@ -64,6 +63,7 @@
   import * as cameras    from "../view/render/cameras.js";
 // Seampoint: more imports...
 
+// --- Globals ---
 export let context;   // Contains things like: scene, renderer, camera, tileMap...
 
 // --- UI ---
@@ -75,7 +75,7 @@ export function init(playBoard) {
   game.showUndoStatus();
   const {range, speed} = viewer.getJitterValues();
   cameras.setJitter(range, speed);
-}
+  }
 
 export function buildAdvSqGroup(specs) { // Params: srcTile, quad, perimeter, stride, opacity.
   console.log("view : gambits.js - buildAdvSqGroup(specs).", specs);
@@ -176,94 +176,5 @@ function decorateTile(coords, piece, decorator, group, opacity, zOffset=0.00) {
     group.userData.overlays.push(...overlays);
   }
 }
-
-// function wirePanel(panelId, callbackName, buildPayload, options = {}) {
-//   const panel = document.getElementById(panelId);
-//   if (!panel) return;
-
-//   const cb = run.callback[callbackName];
-//   if (!cb) return;
-
-//   panel.addEventListener("change", (e) => {
-//     if (!options.onChangeFull) return;
-
-//     const payload = buildPayload(panel, "updateParam");
-//     cb(payload);
-//   });
-
-//   panel.addEventListener("click", (e) => {
-//     const btn = e.target.closest("button");
-//     if (!btn) return;
-
-//     const action = btn.dataset.action;
-//     if (!action) return;
-
-//     const cb = run.callback[callbackName];
-//     if (typeof cb !== "function") return;
-
-//     const payload = buildPayload(panel, action);
-//     cb(payload);
-//   });
-//   }
-
-// function wirePanelButtons(panelId, callbackName, buildPayload, options = {}) {
-//   const panel = document.getElementById(panelId);
-//   if (!panel) return;
-
-//   const cb = run.callback[callbackName];
-//   if (!cb) return;
-
-//   panel.addEventListener("click", (e) => {
-//     const btn = e.target.closest("button");
-//     if (!btn) return;
-
-//     const action = btn.dataset.action;
-//     if (!action) return;
-
-//     const cb = run.callback[callbackName];
-//     if (typeof cb !== "function") return;
-
-//     const payload = buildPayload(panel, action);
-//     cb(payload);
-//   });
-//   }
-
-// function wireSimplePanel(panelId, callbackName, buildPayload) {
-//   const panel = document.getElementById(panelId);
-//   if (!panel) return;
-
-//   const cb = run.callback[callbackName];
-//   if (!cb) return;
-
-//   // --- Radios (change → immediate action) ---
-//   panel.addEventListener("change", (e) => {
-//     const cb = run.callback[callbackName];
-//     if (!cb) return;
-
-//     const radio = e.target.closest('input[type="radio"]');
-//     if (!radio) return;
-
-//     const action = radio.dataset.action;
-//     if (!action) return;
-
-//     cb({
-//       action,
-//       value: radio.value
-//     });
-//   });
-
-//   // --- Buttons (click → full payload) ---
-//   panel.addEventListener("click", (e) => {
-//     const btn = e.target.closest("button");
-//     if (!btn) return;
-
-//     const action = btn.dataset.action;
-//     if (!action) return;
-
-//     const payload = buildPayload(panel, action);
-//     cb(payload);
-//   });
-// }
-
 // Seampoint: more local functions...
 

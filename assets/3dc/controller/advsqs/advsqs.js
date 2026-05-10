@@ -5,7 +5,7 @@
   Date: 4/21/26
   Recommended access: import * as cAdvsqs from ../../controller/advsqs/advsqa.js
   UI: the export functions.
-  Philosophy: Dlete a module by deleting its directory - not so much.
+  Philosophy: Delete a module by deleting its directory - not so much.
     controller/ model/ view/
     play.md - DOM
     main.js - regressions
@@ -17,7 +17,6 @@
 // --- Load JSON ---
 import advsqsData from "./advsqs.json" assert { type: "json" };
   const advsqsModule = advsqsData.advsqs_module;
-  const category  = advsqsModule.category;
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
@@ -64,8 +63,8 @@ export function panelDispatch(payload) {
 
 export function buildPayload(panel, action) {
   console.log("     ---------- cntrl: advsqs.js");
-  return {  // TODO: base off new entry in json file.
-    action,
+  
+  return { action, // TODO: base off new entry in json file.
     src:       panel.querySelector('[name="advsq-src"]')?.value,
     srcTile:   coords.normalizeTileToVts(panel.querySelector('[name="advsq-src"]')?.value),
     quad:      Number(panel.querySelector('[name="advsq-quad"]')?.value),
@@ -243,20 +242,6 @@ function handleNextPiece(payload) {
 }
 
 // --- Helpers ---
-// function normalize(payload) { // Convert panel strings to numbers, arrays, etc.
-//   let { srcTile, quad, perimeter, stride, opacity } = payload;  // Unpack primary fields.
-
-//   srcTile   = coords.normalizeTileToVts(srcTile);               // Convert numeric fields.
-//   quad      = Number(quad);  
-//   perimeter = Number(perimeter);
-//   stride    = Number(stride);
-//   opacity   = Number(opacity);
-
-//   const normed = { srcTile, quad, perimeter, stride, opacity }; // Repack primary fields.
-
-//   return normed;
-//   }
-
 function blank(payload) { // Convert panel strings to numbers, arrays, etc.
   let { src, srcTile, quad, perimeter, stride, opacity } = payload;  // Unpack primary fields.
 
