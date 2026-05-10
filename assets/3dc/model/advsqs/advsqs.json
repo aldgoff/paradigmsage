@@ -1,14 +1,30 @@
 {
   "advsqs_module": {
-    "category": {
-      "key1": "value1",
-      "key2": 123,
-      "array": [-1,  0,  0]
+    "_status": "Unused.",
+    "Parameters": {
+      "Source": "Q4,4",
+      "Quad": [0, 60],
+      "Perimeter": [0, 9],
+      "Stride": [0, 19],
+      "_last": "no comma"
+    },
+    "Derived": {
+      "BP": [1, 24],
+      "P": [1, 6],
+      "nickname": "",
+      "plane": "One of 13",
+      "quadType": ["none", "edge", "face"],
+      "length": [0, 19],
+      "area": [1, 4, 9, 16, 25, 36, 49, 64, 81, 100],
+      "onBoard": [1, 100],
+      "strideType": ["Source", "E1", "Body", "Apex", "Duplex", "Third", "E2"],
+      "moveType": ["Q", "L", "D", "O"],
+      "overlapType": ["Brook", "Qtile", "Hotspot", "Feynmann"],
+      "pieces": ["R", "B", "D", "Q", "N", "S", "P", "K" ],
+      "_last": "no comma"
     },
     "Examples": {
-      "_comment": "YadaYada",
-      "_status": "deprecated",
-      "_doc": "Because I said so."
+      "Rook": { "src": "Q4,4", "quad": 1, "perimeter": 3, "stride": 4 }
     }
   }
 }

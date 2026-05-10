@@ -224,7 +224,7 @@ layout: "play"
   <div class="section">
     <label> Pieces:      <output name="advsq-piece"     style="opacity:0.7; font-style:italic;"> R|B|D|Q|N|S|P|K </output> </label>
   </div>
-  <!-- Optional: key hints (visual only) -->
+  <!-- Key hints (visual only) -->
   <div class="section" style="font-size: 13px; font-weight: bold; color: #666;">
     Slip & Slide +: k i j
   </div>
