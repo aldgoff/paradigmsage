@@ -94,6 +94,7 @@ function handleUndo() {
     bottom = false;
 
     if(processUndoBuffer(key, idx)) {
+      // cGambits.rebindOverlaysToBoard();
       break;
     }
   }
@@ -116,10 +117,12 @@ function handleRedo() {
 
   if (idx < len) {
     processRedoBuffer(buffer, idx);
+    // cGambits.rebindOverlaysToBoard();
   } else {
     buffer = state.getNextBuffer();
     if (!buffer) return console.log("Top Sentry");
     processRedoBuffer(buffer, 0);
+    // cGambits.rebindOverlaysToBoard();
   }
 
   showUndoStatus();
@@ -143,6 +146,7 @@ function handleRewind() {
       if(!buffer) return console.log("Bottom Sentry");
       const N = state.getBufferLength(buffer);
       processUndoBuffer(buffer, N);
+      // cGambits.rebindOverlaysToBoard();
       break;
       }
     else if(canCollapseDown(idx)) {   // collapseDown;
@@ -151,6 +155,7 @@ function handleRewind() {
       }
     else if(canStepDown(idx)) {       // stepDown;
       processUndoBuffer(buffer, idx);
+      // cGambits.rebindOverlaysToBoard();
       break;
       }
     else if(canCrossDown(idx)) {      // crossDown;
@@ -158,6 +163,7 @@ function handleRewind() {
       if(!buffer) return console.log("Bottom Sentry");
       const N = state.getBufferLength(buffer);
       processUndoBuffer(buffer, N);
+      // cGambits.rebindOverlaysToBoard();
       break;
       }
     else {
@@ -186,10 +192,12 @@ function handleFastForward() {
       buffer = state.getNextBuffer();
       if (!buffer) return console.log("Top Sentry");
       processRedoBuffer(buffer, 0);
+      // cGambits.rebindOverlaysToBoard();
       break;
       }
     else if(canStepUp(idx, len)) {      // stepUp;
       processRedoBuffer(buffer, idx);
+      // cGambits.rebindOverlaysToBoard();
       break;
       }
     else if(canCollapseUp(idx, len)) {  // collapseUp;
@@ -200,6 +208,7 @@ function handleFastForward() {
       buffer = state.getNextBuffer();
       if (!buffer) return console.log("Top Sentry");
       processRedoBuffer(buffer, 0);
+      // cGambits.rebindOverlaysToBoard();
       break;
       }
     else {
@@ -317,12 +326,14 @@ function rewindCurrentBuffer(buffer) {
     while (state.getCurrentIndex("Moves") > 1) {
       const idx = state.getCurrentIndex("Moves");
       if (!processUndoBuffer("Moves", idx)) break;
+      // cGambits.rebindOverlaysToBoard();
     }
     }
   else if(buffer === "Gambits") {
     while (state.getCurrentIndex("Gambits") > 1) {
       const idx = state.getCurrentIndex("Gambits");
       if (!processUndoBuffer("Gambits", idx)) break;
+      // cGambits.rebindOverlaysToBoard();
     }
     }
   else {
@@ -361,6 +372,7 @@ function fastForwardCurrentBuffer(buffer) {
     while (state.getCurrentIndex("Moves") < len) {
       const idx = state.getCurrentIndex("Moves");
       if (!processRedoBuffer("Moves", idx)) break;
+      // cGambits.rebindOverlaysToBoard();
     }
 
     vMoves.refreshPanel();
@@ -370,6 +382,7 @@ function fastForwardCurrentBuffer(buffer) {
     while (state.getCurrentIndex("Gambits") < len) {
       const idx = state.getCurrentIndex("Gambits");
       if (!processRedoBuffer("Gambits", idx)) break;
+      // cGambits.rebindOverlaysToBoard();
     }    
 
     vGambits.refreshPanel();

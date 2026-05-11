@@ -45,9 +45,14 @@ const gambitGroupRegistry = new Map();  // Holds mesh data for re-rendering gamb
 export function makeGroup(entry) {
   console.log("view : gambits.js - makeGroup(entry).", entry);
 
-  const {     Q,src,dst,area, srcTile,quad,perimeter,stride,opacity } = entry; // Prepare gambit state data.
-  const sq = {Q,src,dst,area };
-  const advsq = {             srcTile,quad,perimeter,stride,opacity };
+  const { Q, src, dst, area, advsqs } = entry;
+
+  const base = advsqs?.[0];
+  if (!base) throw new Error("Invalid entry: missing advsqs[0]");
+
+  const { srcTile, quad, perimeter, stride, opacity } = base;
+
+  const advsq = { srcTile, quad, perimeter, stride, opacity };
 
   const group = view.buildAdvSqGroup(advsq); // {srcTile: Array(3), quad: 1, perimeter: 0, stride: 0, opacity: 0.5}
 

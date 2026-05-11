@@ -49,9 +49,6 @@ import gambitsData from "./gambits.json" assert { type: "json" };
   * 12. ✅ Plumbing for test suite
 */
 
-// --- Globals ---
-const gambitGroupRegistry = new Map();  // Holds mesh data for re-rendering gambits.
-
 // --- UI ---
 export function panelDispatch(payload) {
   console.log("cntrl: gambits.js - panelDispatch(payload):", payload);
@@ -80,7 +77,7 @@ export function buildPayload(panel, action) {
 
 // Suspicious code
 export function getGambitGroup(idx) {
-  return gambitGroupRegistry.get(idx);
+  return vGambits.getGroupRegistry().get(idx);
   }
 
 export function rerunGambits() {
@@ -91,7 +88,7 @@ export function rerunGambits() {
 
   // --- Hide ALL gambits ---
   for (let i = 0; i < count; i++) {
-    const group = gambitGroupRegistry.get(i);
+    const group = vGambits.getGroupRegistry().get(i);
     if (group) {
       vGambits.derenderGambit(group);
     }
@@ -99,7 +96,7 @@ export function rerunGambits() {
 
   // --- Re-render ACTIVE ones (usually just index 0) ---
   for (let i = 0; i < active; i++) {
-    const group = gambitGroupRegistry.get(i);
+    const group = vGambits.getGroupRegistry().get(i);
     if (group) {
       vGambits.renderGambit(group); // no animation
     }
@@ -111,14 +108,55 @@ export function rerunGambits() {
 export function getLastActiveGambitIndex() {
   const count = state.getIndices().Gambits;
   return count; // after undo, this is the removed one
+}
+
+export function rebindOverlaysToBoard2() {  // Failed, worse off.
+  console.log("cntrl: gambits.js - rebindOverlaysToBoard()");
+
+  const tileMap = view.context.tileMap;
+  if (!tileMap) return;
+
+  for (const [idx, group] of vGambits.getGroupRegistry().entries()) {
+    if (!group?.userData?.overlays) continue;
+
+    group.userData.overlays.forEach(overlay => {
+
+      // --- STEP 2: use coords (NOT parentTile) ---
+      const coords = overlay.userData?.coords;
+      if (!coords) {
+        console.warn("Overlay missing coords", overlay);
+        return;
+      }
+
+      const newTile = tiles.getTileMesh(tileMap, coords);
+
+      // --- detach from whatever it was attached to ---
+      if (overlay.parent) {
+        overlay.parent.remove(overlay);
+      }
+
+      // --- STEP 3: handle BOTH cases ---
+      if (newTile) {
+        // ON-BOARD
+        newTile.add(overlay);
+        overlay.userData.parentTile = newTile;
+
+      } else {
+        // OFF-BOARD
+        group.add(overlay);
+        overlay.userData.parentTile = null;
+      }
+    });
   }
+}
+
 export function rebindOverlaysToBoard() {
   console.log("cntrl: gambits.js - rebindOverlaysToBoard()");
 
   const tileMap = view.context.tileMap;
   if (!tileMap) return;
 
-  for (const [idx, group] of gambitGroupRegistry.entries()) {
+  for (const [idx, group] of vGambits.getGroupRegistry().entries()) {
     if (!group?.userData?.overlays) continue;
 
     for (const overlay of group.userData.overlays) {
@@ -191,11 +229,11 @@ function handleDelete() {
   const idx = count - 1;
 
   // --- Remove group from scene ---
-  const group = gambitGroupRegistry.get(idx);
+  const group = vGambits.getGroupRegistry().get(idx);
   console.log("cntrl: gambits.js - handleDelete()...group, idx", group, idx);
   if (group) {
     vGambits.clearGambit(group);
-    gambitGroupRegistry.delete(idx);
+    vGambits.getGroupRegistry().delete(idx);
   }
 
   // --- Remove from state buffer ---
@@ -222,14 +260,14 @@ function handleRemoveAll() {
 
   // --- Remove all groups from scene ---
   for (let i = 0; i < count; i++) {
-    const group = gambitGroupRegistry.get(i);
+    const group = vGambits.getGroupRegistry().get(i);
     if (group) {
       vGambits.clearGambit(group);
     }
   }
 
   // --- Clear registry ---
-  gambitGroupRegistry.clear();
+  vGambits.getGroupRegistry().clear();
 
   // --- Clear state buffer ---
   state.clearBuffer("Gambits");
@@ -251,8 +289,8 @@ function applyEntry(entry) {   // Group, state, render, panel.
   state.pushNewGambit(entry);                     // Change state.
     const idx = state.getIndices().Gambits - 1; // Create and register group.
     const group = vGambits.makeGroup(entry);
-    gambitGroupRegistry.set(idx, group);        // TODO: should not need both.
     vGambits.setGroupRegistry(idx, group);
+
   vGambits.render(group, { animate: true });      // Render.
   vGambits.addLineToPanel(entry);                 // Add line to panel.
 }
