@@ -83,6 +83,13 @@ title: "Dev"
 
  ### Week 8:
   - 5/03/26 - Draft common UI functions for model layer. Complete state UI functions. Add setup dir in view layer.
+  - 5/04/26 - Plumb pieces. Add metaphysics page.
+  - 5/05/26 - Debug undo/redo and refresh panel. Debug rewind/FF. Plumb trays. Apply payload/entry canon to setup. Apply pipeline canon to advsqs.
+  - 5/06/26 - Null.
+  - 5/07/26 - Parallelism in buffer modules. ApplyEntry parallelism. Use processRedoBuffer. More parallelsim. Fix gambit undo/redo. Restore gambit functionality. State QC.
+  - 5/08/26 - Fix redo on load. Fix stale board bug and limit listeners to 1.
+  - 5/09/26 - Refine view specs. Clean up main. Delete deprecated demos. Copy panel builders into modules. Re-arch view into panels. Cleanup view.js. Fix move button bug. Fix FF & rewind bugs.
+  - 5/10/26 - Clues. Advsq json & spec files. Src tile positional versus vts. Gambit jsons.
 
  ### Week 9:
   - 5/10/26 - tbd

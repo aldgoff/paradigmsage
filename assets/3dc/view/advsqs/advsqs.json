@@ -1,11 +1,6 @@
 {
   "advsqs_module": {
-    "_status": "Currently unused.",
-    "category": {
-      "key1": "value1",
-      "key2": 123,
-      "array": [-1,  0,  0]
-    },
+    "_status": "Unused.",
     "base": {
       "object": { "planeType": "orthogonal" },
       "set":    { "planeType": "skew" },
@@ -14,11 +9,6 @@
         "goodName": { "quadType": "edge", "samIam": "DrSeuss" },
         "niceName": { "size": 8 }
       }
-    },
-    "Examples": {
-      "_comment": "YadaYada",
-      "_status": "deprecated",
-      "_doc": "Because I said so."
     }
   }
 }

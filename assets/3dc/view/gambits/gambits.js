@@ -3,8 +3,15 @@
   Purpose: desc
   Author: Allan Goff
   Date: 4/15/26
-  Recommended access: import * as vGambits.
+  Recommended access: import * as vGambits from ../../view/gambits/gambits.js
   UI: the export functions.
+  Philosophy: Dlete a module by deleting its directory - not so much.
+    controller/ model/ view/
+    play.md - DOM
+    main.js - regressions
+    view.js - wire, build payload
+    game.js - rewind, FF
+    state.js - undo, redo
 */
 
 // --- Load JSON ---
@@ -14,22 +21,154 @@ import gambitsData from "./gambits.json" assert { type: "json" };
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
-  import * as state   from "../../model/state/state.js";
+  import * as cGambits from "../../controller/gambits/gambits.js";
+
+  import * as state  from "../../model/state/state.js";
+  import * as coords from "../../foundation/coords/coords.js";
 
   import * as view   from "../../view/view.js";
 // Seampoint: more imports...
 
 // --- Globals ---
 let activeAnimation = null;
+const gambitGroupRegistry = new Map();  // Holds mesh data for re-rendering gambits.
 
 // --- UI ---
-export function clearGambits() {
-  console.log("view: gambits.js - clearGambits()");
-  // TODO: write clearGambits().
+export function makeGroup(entry) {
+  console.log("view : gambits.js - makeGroup(entry).", entry);
+
+  const {     Q,src,dst,area, srcTile,quad,perimeter,stride,opacity } = entry; // Prepare gambit state data.
+  const sq = {Q,src,dst,area };
+  const advsq = {             srcTile,quad,perimeter,stride,opacity };
+
+  const group = view.buildAdvSqGroup(advsq); // {srcTile: Array(3), quad: 1, perimeter: 0, stride: 0, opacity: 0.5}
+
+  return group;
+  }
+export function setGroupRegistry(idx, group) {
+  gambitGroupRegistry.set(idx, group);
+  }
+export function getGroupRegistry() {
+  return gambitGroupRegistry;
 }
 
+export function undo(gambit, idx) {
+  console.log("view : gambits.js - undo(gambit, idx)", gambit, idx);
+  // TODO: write undoGambits().
+  if(idx > 0) {
+    const group = gambitGroupRegistry.get(idx-1);
+    // console.log("view : gambits.js - undo()...idx, group", idx, group);
+    if(group) {
+      derenderGambit(group);
+    }
+  }
+  }
+
+export function redo(gambit, idx) {
+  console.log("view : gambits.js - redo(gambit, idx)", gambit, idx);
+  // TODO: write redoGambits().
+  // if(!state.isAtEnd("Gambits")) {
+    const group = gambitGroupRegistry.get(idx-1);
+    // console.log("view : gambits.js - redo()...idx, group", idx, group);
+    if(group) {
+      renderGambit(group);
+    }
+  // }
+}
+
+export function addLineToPanel(gambit) {
+  console.log("view : gambits.js - addLineToPanel(gambit)", gambit);
+
+  const el = document.getElementById("gambit-list");
+  if (!el) return;
+
+  const { Q, src, dst, area } = gambit;
+
+  // --- freeze index ---
+  const count = state.getIndices().Gambits;
+
+  // --- column widths ---
+  const idxCol  = String(count).padStart(2);    // right-aligned
+  const qCol    = `Q${Q}`.padEnd(3);            // "Q37  "
+  const srcCol  = String(src).padEnd(5);        // "KB4,4  "
+  const dstCol  = String(dst).padEnd(8);        // allow offboard arrays
+  const areaCol = String(area).padStart(2);     // right-aligned
+
+  // --- final line ---
+  const line = `${idxCol} ${qCol} ${srcCol} → ${dstCol}:${areaCol}`;
+  const div = document.createElement("div");
+  div.textContent = line;
+
+  // --- Dim future entries ---
+  const idx = count - 1; // current entry index
+  const thisIdx = state.getBufferLength("Gambits") - 1;
+  if (thisIdx >= count) {
+    div.style.opacity = "0.3";
+  }
+
+  el.appendChild(div);
+  el.scrollTop = el.scrollHeight;
+
+  return;
+  }
+
+export function refreshPanel() {
+  // console.log("view : gambits.js - refreshPanel()");
+  const el = document.getElementById("gambit-list");
+  if (!el) return;
+
+  const count = state.getIndices().Gambits;
+
+  const children = el.children;
+
+  for (let i = 0; i < children.length; i++) {
+    if (i < count) {
+      children[i].style.opacity = "1.0";   // active
+    } else {
+      children[i].style.opacity = "0.3";   // future
+    }
+  }
+}
+
+export function clear() {
+  console.log("view : gambits.js - clearGambits()");
+  // TODO: write clearGambits().
+  }
+
+export function clearGambits() {
+  console.log("view : gambits.js - clearGambits()");
+  // TODO: write clearGambits().
+  }
+
+export function cancelAnimation() {
+  if (activeAnimation) {
+    activeAnimation.cancelled = true;
+    activeAnimation = null;
+  }
+}
+
+export function render(group, { animate = false } = {}) {
+  console.log("view : gambits.js - renderGambit( not shown)");
+
+  view.context.scene.add(group);
+
+  // --- Re-attach overlays ---
+  if (group.userData?.overlays) {
+    group.userData.overlays.forEach(o => {
+      const tile = o.userData?.parentTile;
+      if (tile && !o.parent) {
+        tile.add(o);
+      }
+    });
+  }
+
+  if (animate) {
+    animateFreezeTransition(group);
+  }
+  }
+
 export function renderGambit(group, { animate = false } = {}) {
-  console.log("view: gambits.js - renderGambit(group)", group);
+  console.log("view : gambits.js - renderGambit(...)");
 
   view.context.scene.add(group);
 
@@ -49,7 +188,7 @@ export function renderGambit(group, { animate = false } = {}) {
   }
 
 export function derenderGambit(group) {
-  console.log("view: gambits.js - derenderGambit(group)", group);
+  console.log("view : gambits.js - derenderGambit(...)",);
 
   if (!group) return;
 
@@ -69,7 +208,7 @@ export function derenderGambit(group) {
   }
 
 export function clearGambit(group) {
-  console.log("view: gambits.js - clearGambit(group)", group);
+  console.log("view : gambits.js - clearGambit(group)", group);
 
   if (!group) return;
 
@@ -89,25 +228,8 @@ export function clearGambit(group) {
   }
   }
 
-export function refreshPanel() {
-  const el = document.getElementById("gambit-list");
-  if (!el) return;
-
-  const count = state.getBufferIndex().Gambits;
-
-  const children = el.children;
-
-  for (let i = 0; i < children.length; i++) {
-    if (i < count) {
-      children[i].style.opacity = "1.0";   // active
-    } else {
-      children[i].style.opacity = "0.3";   // future
-    }
-  }
-  }
-
 export function updatePanel(gambit) {
-  console.log("view: gambits.js - updatePanel(gambit)", gambit);
+  console.log("view : gambits.js - updatePanel(gambit)", gambit);
 
   const el = document.getElementById("gambit-list");
   if (!el) return;
@@ -115,7 +237,7 @@ export function updatePanel(gambit) {
   const { Q, src, dst, area } = gambit;
 
   // --- freeze index ---
-  const count = state.getBufferIndex().Gambits;
+  const count = state.getIndices().Gambits;
 
   // --- column widths ---
   const idxCol  = String(count).padStart(2);    // right-aligned
@@ -156,7 +278,7 @@ function applyOpacity(obj, opacity) {
   if (obj.children && obj.children.length > 0) {
     obj.children.forEach(child => applyOpacity(child, opacity));
   }
-}
+  }
 
 function animateFreezeTransition(group, duration = 0.8) {
   const overlays = group.userData?.overlays || [];
@@ -199,13 +321,6 @@ function animateFreezeTransition(group, duration = 0.8) {
   }
 
   requestAnimationFrame(step);
-}
-
-export function cancelAnimation() {
-  if (activeAnimation) {
-    activeAnimation.cancelled = true;
-    activeAnimation = null;
-  }
 }
 // Seampoint: more local functions...
 

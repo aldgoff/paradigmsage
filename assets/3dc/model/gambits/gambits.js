@@ -3,9 +3,15 @@
   Purpose: desc
   Author: Allan Goff
   Date: 4/15/26
-  Recommended access: import * as gambits.
+  Recommended access: import * as mGambits from ../../model/gambits/gambits.js
   UI: the export functions.
-  Philosophy: should be able to delete a module by deleting its directory.
+  Philosophy: Dlete a module by deleting its directory - not so much.
+    controller/ model/ view/
+    play.md - DOM
+    main.js - regressions
+    view.js - wire, build payload
+    game.js - rewind, FF
+    state.js - undo, redo
 */
 
 // --- Load JSON ---
@@ -15,20 +21,27 @@ import gambitsData from "./gambits.json" assert { type: "json" };
 
 // --- Build upon previous layers ---
   import * as state  from "../../model/state/state.js";
-
   import * as planes from "../../geometry/planes/planes.js";
   import * as coords from "../../foundation/coords/coords.js";
 
   import * as view   from "../../view/view.js";
 // Seampoint: more imports..
 
+// --- Globals ---
 const buffer = "Gambits";   // State buffer (state.js).
 
 // --- UI ---
-export function makeEntry(payload) {
-  console.log(`model: ${buffer}.js - makeEntry(payload):`, payload);
+export function makeEntry(advsq) {
+  console.log(`model: ${buffer}.js - makeEntry(advsq):`, advsq);
 
-  const entry = null; // TODO: build entry specific to this module
+  const { srcTile, quad, perimeter, stride, opacity } = advsq;
+
+  const src = coords.vtsToBoard(srcTile); // Convert to positional notation for onboard tiles, vts for rest.
+  const dst = planes.resolveDstTile(srcTile, quad, perimeter, stride);  // Derive dst tile.
+  const area = (perimeter+1)*(perimeter+1);
+
+  const entry = { Q: quad,src,dst,area, srcTile,quad,perimeter,stride,opacity }; // Prepare gambit state data.
+
   return entry;
   }
 
@@ -120,9 +133,23 @@ export function clearEntireBuffer() {
 
   state.clearBuffer(buffer);
 }
-
-
 // TODO: Deprecate pre UI standardization.
+export function makeGroupFromEntry(entry) {
+  console.log("model: gambits.js - makeGroupFromEntry(entry).", entry);
+  const { Q,src,dst,area, srcTile,quad,perimeter,stride,opacity } = entry; // Prepare gambit state data.
+
+  const advsq = {srcTile, quad, perimeter, stride, opacity};// {srcTile: Array(3), quad: 1, perimeter: 2, stride: 3, opacity: 0.5}
+  const group = view.buildAdvSqGroup(advsq); // {srcTile: Array(3), quad: 1, perimeter: 0, stride: 0, opacity: 0.5}
+
+  return group;
+}
+export function makeGroup(advsq) {
+  console.log("model: gambits.js - makeGroup(advsq).", advsq);
+
+  const group = view.buildAdvSqGroup(advsq); // {srcTile: Array(3), quad: 1, perimeter: 0, stride: 0, opacity: 0.5}
+
+  return group;
+}
 export function makeGambit(specs) {
   console.log("model: gambits.js - makeGambit(specs).", specs);
 
@@ -130,12 +157,10 @@ export function makeGambit(specs) {
   const dst = planes.resolveDstTile(srcTile, quad, perimeter, stride);  // Derive dst tile.
   const src = coords.vtsToBoard(srcTile); // Convert to positional notation for onboard tiles, vts for rest.
   
-  const group = view.buildAdvSqGroup(specs); // {srcTile: Array(3), quad: 1, perimeter: 0, stride: 0, opacity: 0.5}
-
   const area = (perimeter+1)*(perimeter+1);
   const gambit = { Q: quad, src, dst, area };   // Prepare gambit state data.
 
-  return {gambit, group};
+  return gambit;
 }
 // Seampoint: more global functions...
 

@@ -72,7 +72,7 @@ export function isTileInPlane(tile, v1, v2) {
 
 export function onboardTiles(srcVts, quad, k) {
   let onboard = 0;
-  console.log("model: perims.js - onboardTiles(srcVts, quad, k)", srcVts, quad, k);
+  // console.log("model: perims.js - onboardTiles(srcVts, quad, k)", srcVts, quad, k);
 
   const res = getStride({quad, k});
   for(let tile of res.stride) {

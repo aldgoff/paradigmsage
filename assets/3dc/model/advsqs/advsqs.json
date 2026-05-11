@@ -1,14 +1,35 @@
 {
   "advsqs_module": {
-    "category": {
-      "key1": "value1",
-      "key2": 123,
-      "array": [-1,  0,  0]
+    "_status": "Unused.",
+    "Parameters": {
+      "src": "Q4,4",
+      "srcTile": [0,0,0],
+      "quad": [0, 60],
+      "perimeter": [0, 9],
+      "stride": [0, 19],
+      "opacity": [0.00, 1.00],
+      "_last": "no comma"
+    },
+    "Derived": {
+      "BP": [1, 24],
+      "P": [1, 6],
+      "nickname": "",
+      "plane": "One of 13",
+      "quadType": ["none", "edge", "face"],
+      "length": [0, 19],
+      "area": [1, 4, 9, 16, 25, 36, 49, 64, 81, 100],
+      "onBoard": [1, 100],
+      "strideType": ["Source", "E1", "Body", "Apex", "Duplex", "Third", "E2"],
+      "moveType": ["Q", "L", "D", "O"],
+      "overlapType": ["Brook", "Qtile", "Hotspot", "Feynmann"],
+      "pieces": ["R", "B", "D", "Q", "N", "S", "P", "K" ],
+      "_last": "no comma"
     },
     "Examples": {
-      "_comment": "YadaYada",
-      "_status": "deprecated",
-      "_doc": "Because I said so."
+      "rook":   { "src": "Q4,4", "srcTile": [0,0,0], "quad":  1, "perimeter": 3, "stride": 4, "opacity": 0.50 },
+      "bishop": { "src": "Q4,4", "srcTile": [0,0,0], "quad": 13, "perimeter": 4, "stride": 1, "opacity": 0.50 },
+      "duke":   { "src": "Q4,4", "srcTile": [0,0,0], "quad": 37, "perimeter": 5, "stride": 0, "opacity": 0.50 },
+      "_last": "no comma"
     }
   }
 }

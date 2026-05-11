@@ -1,0 +1,16 @@
+{
+  "panels_module": {
+    "panels": [
+      "setup",
+      "move",
+      "gambit",
+      "advsq",
+      "compass",
+      "game",
+      "camera",
+      "viewer"
+    ]
+  }
+}
+
+

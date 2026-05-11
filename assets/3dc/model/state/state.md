@@ -60,7 +60,7 @@
       - Annotations: typically two digit acronyms in lower case (ch, dc, ep, castling, etc.).
   - A *branch* zeroes all later *moves*.
 
-## 4. Gambits (UR array 4)
+## 4. Gambits (UR array 3)
   - The advsqs of gambit analysis are stored, to be replayed at will via the undo/redo system.
   - Each player is free to explore how a small set of advsqs interact.
     - There is no apriori limit to the number of such captured advsqs.
@@ -70,7 +70,7 @@
   - Making a move **zeros** the **gambit** history, and *increments* the *move* history by one.
   - A *branch* zeroes all later *advsqs* in the analysis.
 
-## 5. AdvSqs (UR array 5)
+## 5. AdvSqs (UR array 4)
   - The location and extent of a single advsq is stored, to be replayed at will via the undo/redo system.
     - It's parameters can be modified in a variety of ways.
     - An advsq can be added to the gambits list - it gets *frozen* to the board.

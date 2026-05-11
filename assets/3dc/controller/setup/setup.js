@@ -3,8 +3,15 @@
   Purpose: Controller code to setup board and trays.
   Author: Allan Goff
   Date: 4/22/26
-  Recommended access: import * as setup.
+  Recommended access: import * as cSetup from ../../control/setup/setup.js
   UI: the export functions.
+  Philosophy: Dlete a module by deleting its directory - not so much.
+    controller/ model/ view/
+    play.md - DOM
+    main.js - regressions
+    view.js - wire, build payload
+    game.js - rewind, FF
+    state.js - undo, redo
 */
 
 // --- Load JSON ---
@@ -14,12 +21,14 @@ import setupData from "./setup.json" assert { type: "json" };
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
-import * as game     from "../../controller/game/game.js";
+  import * as game     from "../../controller/game/game.js";
 
-import * as state    from "../../model/state/state.js";
+  import * as state    from "../../model/state/state.js";
+  import * as mSetup   from "../../model/setup/setup.js";
 
-import * as boards   from "../../view/boards/boards.js";
-import * as vGambits from "../../view/gambits/gambits.js";
+  import * as boards   from "../../view/boards/boards.js";
+  import * as vSetup   from "../../view/setup/setup.js";
+  import * as vGambits from "../../view/gambits/gambits.js";
 // Seampoint: more imports...
 
 // --- UI ---
@@ -30,13 +39,12 @@ export function panelDispatch(payload) {    // Dispatch payload from panel to ha
 
   const { action, 
     boardSize,  // 8x8x8|10x8x8|10x10x10.
-    play,       // Off|rules|puzzle.
     trayType,   // Real|factory.
-    visible,    // True|False.
-    gap,        // 0|1|2|3.
-    initialPos  // std|manual.
+    initialPos, // std|manual.
+    play,       // Off|rules|puzzle. TODO: future|deprecate
+    visible,    // True|False. TODO: future|deprecate
+    gap,        // 0|1|2|3. TODO: future|deprecate
   } = payload;
-  console.log("control: setup.js - panelDispatch(payload)", payload);
 
   switch (action) {
     case "makeBoard":   handleMakeBoard(payload); break;
@@ -45,31 +53,41 @@ export function panelDispatch(payload) {    // Dispatch payload from panel to ha
     case "updateParam": handleTrayGap(payload); break;
     default: throw new Error(`Unknown setup action ${action}.`);
   }
+
+  game.showUndoStatus();                          // Update game panel (undo).
   }
+
+export function buildPayload(panel, action) {
+  console.log("     ---------- cntrl: setup.js");
+  return {
+    action,
+    boardSize:  panel.querySelector('input[name="board-size"]:checked')?.value,
+    trayType:   panel.querySelector('input[name="tray-type"]:checked')?.value,
+    initialPos: panel.querySelector('input[name="initial-pos"]:checked')?.value,
+  };
+  }
+
 // Seampoint: more global functions...
 
 // --- Handle Functions ---
 function handleMakeBoard(payload) { // Setup handler.
   console.log("control: game.js - handleMakeBoard(payload):", payload);
 
-  const { action, boardSize, play, trayType, visible, gap, initialPos } = payload;
+  const { action, boardSize, trayType, initialPos } = payload;  // Informative.
 
-  state.pushNewSetup(payload);           // Log state change in undo buffer.
-  boards.makeSetup(payload);             // Render.
-  // Need to update state buffers.
-  // Need to update setup panel.
-  }
+  const nextEntry = mSetup.makeEntry(payload);    // Transform panel payload into state entry.
+  
+  applyEntry(nextEntry);
+}
 
 function handleShowTrays(visible) {
   console.log("control: game.js - handleShowTrays(visible):", visible);
   // TODO: change state - handleShowTrays().
-  game.showUndoStatus();  // Show undo status in the panel.
   }
 
 function handleHideTrays(visible) {
   console.log("control: game.js - handleHideTrays(visible):", visible);
   // TODO: change state - handleHideTrays()
-  game.showUndoStatus();  // Show undo status in the panel.
   }
 
 function handleTrayGap(payload) {
@@ -78,7 +96,21 @@ function handleTrayGap(payload) {
   const { action, boardSize, play, trayType, visible, gap, initialPos } = payload;
 
   // TODO: change state - handleTrayGap().
-  game.showUndoStatus();  // Show undo status in the panel.
+}
+// --- Helpers ---
+function applyEntry(entry) {
+  const currEntry = mSetup.fetchCurrentEntry(); // Clear previous board.
+  if(currEntry != null) {
+    vSetup.clear(currEntry);
+    if(!state.isAtEnd("Setup")) {
+      // TODO: clear all later entries.
+    }
+  }
+
+  state.pushNewSetup(entry);                  // Log state change in undo buffer.
+  vSetup.render(entry);                       // Render the new board and trays.
+  vSetup.refreshPanel(entry);                 // Only needed by panels with derived fields.
+  // TODO: clear all later buffers; a new board invalidates moves, gambits, and the exploratory advsq.
 }
 // Seampoint: more local functions...
 

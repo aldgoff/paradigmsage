@@ -3,9 +3,15 @@
   Purpose: desc
   Author: Allan Goff
   Date: 5/02/26
-  Recommended access: import * as setup.
+  Recommended access: import * as mSetup from ../../model/setup/setup.js
   UI: the export functions.
-  Philosophy: should be able to delete a module by deleting its directory.
+  Philosophy: Delete a module by deleting its directory - not so much.
+    controller/ model/ view/
+    play.md - DOM
+    main.js - regressions
+    view.js - wire, build payload
+    game.js - rewind, FF
+    state.js - undo, redo
 */
 
 // --- Load JSON ---
@@ -18,13 +24,16 @@ import setupData from "./setup.json" assert { type: "json" };
   import * as state  from "../../model/state/state.js";
 // Seampoint: more imports...
 
+// --- Globals ---
 const buffer = "Setup";   // State buffer (state.js).
 
 // --- UI ---
 export function makeEntry(payload) {
   console.log(`model: ${buffer}.js - makeEntry(payload):`, payload);
 
-  const entry = null; // TODO: build entry specific to this module
+  const { action, boardSize, trayType, initialPos } = payload;  // Informative, but becomes stale pretty quick.
+
+  const entry = payload;
   return entry;
   }
 
@@ -115,12 +124,6 @@ export function clearEntireBuffer() {
   console.log(`model: ${buffer}.js - clearEntireBuffer()`);
 
   state.clearBuffer(buffer);
-}
-
-
-// TODO: Deprecate pre UI standardization.
-export function clearBuffer() {
-  state.clearBuffer("Setup");      // Update undo buffer.
 }
 // Seampoint: more global functions...
 

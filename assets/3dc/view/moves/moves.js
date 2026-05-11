@@ -5,6 +5,13 @@
   Date: 4/30/26
   Recommended access: import * as vMoves from ../../view/moves/moves.js
   UI: the export functions.
+  Philosophy: Delete a module by deleting its directory - not so much.
+    controller/ model/ view/
+    play.md - DOM
+    main.js - regressions
+    view.js - wire, build payload
+    game.js - rewind, FF
+    state.js - undo, redo
 */
 
 // --- Load JSON ---
@@ -18,36 +25,22 @@ import movesData from "./moves.json" assert { type: "json" };
   import * as quads  from "../../geometry/quads/quads.js";
 // Seampoint: more imports...
 
+// --- Globals ---
+let activeAnimation = null;
+
 // --- UI ---
-export function undoMove(move) {
-  console.log("view: moves.js - undoMove(move)", move);
-  // TODO: write undoMove().
-}
-
-export function clearMoves() {
-  console.log("view: moves.js - clearMoves()");
-  // TODO: write clearMoves().
-}
-
-export function updatePanel() {
-  console.log("view: moves.js - updatePanel()");
-  // TODO: write updatePanel().
-}
-
-export function renderMove(move) {
-  console.log("view: moves.js - renderMove(move)", move);
-  // TODO: write renderMove().
-  return;
+export function undo(move) {
+  console.log("view: moves.js - undo(move)", move);
+  // TODO: write undo().
   }
 
-export function derenderMove(move) {
-  console.log("view: moves.js - derenderMove(move)", move);
-  // TODO: write derenderMove().
-  return;
-  }
+export function redo(move) {
+  console.log("view: moves.js - redo(move)", move);
+  // TODO: write redo().
+}
 
 export function addLineToPanel(move) {
-  console.log("view: moves.js - addLineToPanel(move)", move);
+  console.log("view : moves.js - addLineToPanel(move)", move);
 
   const el = document.getElementById("move-list");
   if (!el) return;
@@ -55,7 +48,7 @@ export function addLineToPanel(move) {
   const { turn, player, piece, src, action, dst, sec } = move;
 
   // --- freeze index ---
-  const index = state.getBufferIndex().Moves;
+  const index = state.getIndices().Moves;
 
   // --- column widths ---
   const turnCol = (String(turn).padStart(3)).padEnd(4);
@@ -94,6 +87,49 @@ export function addLineToPanel(move) {
 
   return;
   }
+
+export function refreshPanel() {
+  // console.log("view : moves.js - refreshPanel()");
+  const el = document.getElementById("move-list");
+  if (!el) return;
+
+  const count = state.getIndices().Moves;
+
+  const children = el.children;
+
+  for (let i = 0; i < children.length; i++) {
+    if (i < count) {
+      children[i].style.opacity = "1.0";   // active
+    } else {
+      children[i].style.opacity = "0.3";   // future
+    }
+  }
+}
+
+export function cancelAnimation() {
+  if (activeAnimation) {
+    activeAnimation.cancelled = true;
+    activeAnimation = null;
+  }
+}
+
+export function render(move) {  // Used to render a just created move via panel.
+  console.log("view: moves.js - renderMove(move)", move);
+  // TODO: write renderMove().
+  return;
+  }
+
+export function renderMove(move) {  // Used to render a just created move via panel.
+  console.log("view: moves.js - renderMove(move)", move);
+  // TODO: write renderMove().
+  return;
+  }
+
+export function derenderMove(move) {
+  console.log("view: moves.js - derenderMove(move)", move);
+  // TODO: write derenderMove().
+  return;
+}
 // Seampoint: more global functions...
 
 // --- Helpers ---

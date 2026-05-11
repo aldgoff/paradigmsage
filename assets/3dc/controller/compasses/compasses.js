@@ -14,18 +14,45 @@ import compassesData from "./compasses.json" assert { type: "json" };
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
-import * as quads  from "../../geometry/quads/quads.js";
+  import * as game     from "../../controller/game/game.js";
+
+  import * as vGambits from "../../view/gambits/gambits.js";
 // Seampoint: more imports...
 
-
 // --- UI ---
-export function UI() {
-  console.log("cntrl: compasses.js - UI()");
-  
-  return "whatever";
+export function panelDispatch(payload) {
+  console.log("cntrl: compasses.js - panelDispatch(payload):", payload);
+
+  vGambits.cancelAnimation();
+
+  const { action, 
+    rays,
+    apexes,
+  } = payload;
+
+  switch (action) {
+    case "rays":     handleRays(payload); break;
+    case "apexes":   handleApexes(payload); break;
+    default: throw new Error(`Unknown compasses action ${action}, payload ${JSON.stringify(payload)}.`);
   }
+
+  game.showUndoStatus();    // Show undo buffer status in game panel.
+}
+
+export function buildPayload(panel, action) {
+  console.log("     ---------- cntrl: compasses.js");
+  return { action };
+}
+
 // Seampoint: more global functions...
 
 // --- Helpers ---
+function handleRays(payload) {
+  console.log("cntrl: compasses.js - handleRays(payload):", payload);
+  }
+
+function handleApexes(payload) {
+  console.log("cntrl: compasses.js - handleApexes(payload):", payload);
+}
 // Seampoint: more local functions...
 

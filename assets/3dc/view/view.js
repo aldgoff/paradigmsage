@@ -5,6 +5,13 @@
   Date: 4/02/26
   Recommended access: import * as view.
   UI: the export functions.
+  Philosophy: Delete a module by deleting its directory - not so much.
+    controller/ model/ view/
+    play.md - DOM
+    main.js - regressions
+    view.js - wire, build payload
+    game.js - rewind, FF
+    state.js - undo, redo
 */
 
 /** Roles:
@@ -40,10 +47,8 @@
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
-  import * as run        from "./registerHandlers.js";
   import * as renders    from "./render/renders.js";
   import * as coordsMaps from "./render/coordsMaps.js";
-  import * as demos      from "./demos.js";
   import * as tiles      from "./tiles/tiles.js";
 
   import * as utils      from "../../../utils/utils.js";
@@ -51,67 +56,35 @@
   import * as game       from "../controller/game/game.js";
   import * as viewer     from "../controller/viewer/viewer.js";
 
-  import * as advsqs     from "../geometry/advsqs/advsqs.js";
+  import * as vAdvsqs    from "../geometry/advsqs/advsqs.js";
   import * as decorators from "./decorators/decorators.js";
   import * as quads      from "../geometry/quads/quads.js";
 
   import * as cameras    from "../view/render/cameras.js";
 // Seampoint: more imports...
 
-export let context;
-
-// --- Demo for development ---
-function demo(playBoard) {
-  if (!playBoard) return false;
-
-  const context = renders.init(playBoard);
-
-  demos.run(context);
-
-  return;
-}
+// --- Globals ---
+export let context;   // Contains things like: scene, renderer, camera, tileMap...
 
 // --- UI ---
-export function init(playBoard) { // PlayBoard is the 3D canvas from the THREE renderer.
-  console.log("view.init(): 3dc/view/init.js");
-
-  if(false) {  // POC.
-    const context = demo(playBoard); // Display POC board, decorators, raycasting.
-    }
-  else {      // Growing the panel and undo features.
-    context = renders.init(playBoard);
-    context.tileMap = new Map();
-    context.tileGeometry = new THREE.BoxGeometry(...coordsMaps.vts2xyz(tiles.tileSize()));
-    // demos.run(context);
-  }
-
-  wirePanel("setup-window",       "setup",   buildSetupPayload,   { onChangeFull: true });
-  wirePanelButtons("move-window", "move",    buildMovePayload,    { onChangeFull: true });
-  wirePanel("gambit-window",      "gambit",  buildGambitPayload,  { onChangeFull: true });
-  wirePanel("advsq-window",       "advsq",   buildAdvsqPayload,   { onChangeFull: true });
-  wirePanel("compass-window",     "compass", buildCompassPayload, { onChangeFull: true });
-
-  wirePanel("game-window",        "game",    buildGamePayload,    { onChangeFull: true });
-
-  wireSimplePanel("camera-window", "camera", buildCameraPayload, { onChangeFull: true }); // Not subject to undo.
-  wirePanel(      "viewer-window", "viewer", buildViewerPayload, { onChangeFull: true });
-
-  window.addEventListener("keydown", handleAdvsqKeys);
-  // Seampoint: more listeners...
+export function init(playBoard) {
+  context = renders.init(playBoard);
+  context.tileMap = new Map();
+  context.tileGeometry = new THREE.BoxGeometry(...coordsMaps.vts2xyz(tiles.tileSize()));
 
   game.showUndoStatus();
   const {range, speed} = viewer.getJitterValues();
   cameras.setJitter(range, speed);
-
-  return;
-}
+  }
 
 export function buildAdvSqGroup(specs) { // Params: srcTile, quad, perimeter, stride, opacity.
+  console.log("view : gambits.js - buildAdvSqGroup(specs).", specs);
+
   const group = new THREE.Group();
 
   const { srcTile, quad, perimeter, stride, opacity } = specs;
 
-  const advsq = advsqs.AdvSq.fromQuad(srcTile, quad, perimeter);
+  const advsq = vAdvsqs.AdvSq.fromQuad(srcTile, quad, perimeter);
   const piece = advsq.getPiece();
   const perims = advsq.getPerims();
 
@@ -202,188 +175,6 @@ function decorateTile(coords, piece, decorator, group, opacity, zOffset=0.00) {
     group.userData.overlays = group.userData.overlays || [];
     group.userData.overlays.push(...overlays);
   }
-}
-
-function wirePanel(panelId, callbackName, buildPayload, options = {}) {
-  const panel = document.getElementById(panelId);
-  if (!panel) return;
-
-  const cb = run.callback[callbackName];
-  if (!cb) return;
-
-  panel.addEventListener("change", (e) => {
-    if (!options.onChangeFull) return;
-
-    const payload = buildPayload(panel, "updateParam");
-    cb(payload);
-  });
-
-  panel.addEventListener("click", (e) => {
-    const btn = e.target.closest("button");
-    if (!btn) return;
-
-    const action = btn.dataset.action;
-    if (!action) return;
-
-    const cb = run.callback[callbackName];
-    if (typeof cb !== "function") return;
-
-    const payload = buildPayload(panel, action);
-    cb(payload);
-  });
-  }
-
-function wirePanelButtons(panelId, callbackName, buildPayload, options = {}) {
-  const panel = document.getElementById(panelId);
-  if (!panel) return;
-
-  const cb = run.callback[callbackName];
-  if (!cb) return;
-
-  panel.addEventListener("click", (e) => {
-    const btn = e.target.closest("button");
-    if (!btn) return;
-
-    const action = btn.dataset.action;
-    if (!action) return;
-
-    const cb = run.callback[callbackName];
-    if (typeof cb !== "function") return;
-
-    const payload = buildPayload(panel, action);
-    cb(payload);
-  });
-  }
-
-function wireSimplePanel(panelId, callbackName, buildPayload) {
-  const panel = document.getElementById(panelId);
-  if (!panel) return;
-
-  const cb = run.callback[callbackName];
-  if (!cb) return;
-
-  // --- Radios (change → immediate action) ---
-  panel.addEventListener("change", (e) => {
-    const cb = run.callback[callbackName];
-    if (!cb) return;
-
-    const radio = e.target.closest('input[type="radio"]');
-    if (!radio) return;
-
-    const action = radio.dataset.action;
-    if (!action) return;
-
-    cb({
-      action,
-      value: radio.value
-    });
-  });
-
-  // --- Buttons (click → full payload) ---
-  panel.addEventListener("click", (e) => {
-    const btn = e.target.closest("button");
-    if (!btn) return;
-
-    const action = btn.dataset.action;
-    if (!action) return;
-
-    const payload = buildPayload(panel, action);
-    cb(payload);
-  });
-}
-
-function handleAdvsqKeys(e) {
-  // console.log("KEY EVENT", e.key);
-
-  if (["INPUT", "TEXTAREA"].includes(e.target.tagName)) return;
-
-  const cb = run.callback.advsq;
-  if (!cb) return;
-
-  let axis = null;
-  let delta = 0;
-
-  const shift = e.shiftKey;
-
-  switch (e.key.toLowerCase()) {
-    case "k": axis = "z"; delta = shift ? -1 : +1; break;
-    case "i": axis = "x"; delta = shift ? -1 : +1; break;
-    case "j": axis = "y"; delta = shift ? -1 : +1; break;
-    default: return;
-  }
-
-  e.preventDefault(); // <-- ALSO IMPORTANT
-
-  cb({
-    action: "nudgeSrc",
-    axis,
-    delta
-  });
-}
-
-function buildSetupPayload(panel, action) {
-  console.log("     ---------- view: view.js");
-  return {
-    action,
-    boardSize:  panel.querySelector('input[name="board-size"]:checked')?.value,
-    trayType:   panel.querySelector('input[name="tray-type"]:checked')?.value,
-    initialPos: panel.querySelector('input[name="initial-pos"]')?.value,
-  };
-  }
-
-function buildMovePayload(panel, action) {
-  console.log("     ---------- view: view.js");
-  return {
-    action,
-    player:  panel.querySelector('input[name="move-player"]:checked')?.value,
-    piece:   panel.querySelector('[name="move-piece"]')?.value,
-    src:     panel.querySelector('[name="move-src"]')?.value,
-    dst:     panel.querySelector('[name="move-dst"]')?.value,
-    sec:     panel.querySelector('[name="move-2nd"]')?.value,
-    capture: panel.querySelector('[name="move-capture"]')?.value,
-    opts:    panel.querySelector('[name="move-opts"]')?.value,
-  };
-  }
-
-function buildGambitPayload(panel, action) {
-  console.log("     ---------- view: view.js");
-  return { action };
-  }
-
-function buildAdvsqPayload(panel, action) {
-  console.log("     ---------- view: view.js");
-  return {
-    action,
-    srcTile:  panel.querySelector('[name="advsq-src"]')?.value,
-    quad:     panel.querySelector('[name="advsq-quad"]')?.value,
-    perimeter:panel.querySelector('[name="advsq-perimeter"]')?.value,
-    stride:   panel.querySelector('[name="advsq-stride"]')?.value,
-    opacity:  panel.querySelector('[name="advsq-opacity"]')?.value,
-  };
-  }
-
-function buildCompassPayload(panel, action) {
-  console.log("     ---------- view: view.js");
-  return { action };
-}
-
-function buildGamePayload(panel, action) {
-  console.log("     ---------- view: view.js");
-  return { action };
-}
-
-function buildCameraPayload(panel, action) { // Not subject to undo.
-  return { action };
-  }
-
-function buildViewerPayload(panel, action) { // Not subject to undo.
-  return { 
-    action,
-    gap:   panel.querySelector('[name="viewer-trayGap"]')?.value,
-    sep:   panel.querySelector('[name="viewer-traySep"]')?.value,
-    range: panel.querySelector('[name="viewer-range"]')?.value,
-    speed: panel.querySelector('[name="viewer-speed"]')?.value,
-  };
 }
 // Seampoint: more local functions...
 

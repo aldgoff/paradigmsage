@@ -21,6 +21,7 @@
 │   │   │   │   ├── compasses.json
 │   │   │   │   └── compasses.md
 │   │   │   ├── controller.js
+│   │   │   ├── controller.json
 │   │   │   ├── controller.md
 │   │   │   ├── gambits
 │   │   │   │   ├── gambits.js
@@ -34,6 +35,10 @@
 │   │   │   │   ├── moves.js
 │   │   │   │   ├── moves.json
 │   │   │   │   └── moves.md
+│   │   │   ├── pieces
+│   │   │   │   ├── pieces.js
+│   │   │   │   ├── pieces.json
+│   │   │   │   └── pieces.md
 │   │   │   ├── setup
 │   │   │   │   ├── setup.js
 │   │   │   │   ├── setup.json
@@ -111,6 +116,10 @@
 │   │   │   │   ├── grammar.js
 │   │   │   │   ├── notation.js
 │   │   │   │   └── notation.json
+│   │   │   ├── pieces
+│   │   │   │   ├── pieces.js
+│   │   │   │   ├── pieces.json
+│   │   │   │   └── pieces.md
 │   │   │   ├── setup
 │   │   │   │   ├── setup.js
 │   │   │   │   ├── setup.json
@@ -119,6 +128,10 @@
 │   │   │       ├── state.js
 │   │   │       ├── state.json
 │   │   │       └── state.md
+│   │   ├── panels
+│   │   │   ├── panels.js
+│   │   │   ├── panels.json
+│   │   │   └── panels.md
 │   │   ├── templates
 │   │   │   ├── modules.js
 │   │   │   ├── modules.json
@@ -157,7 +170,6 @@
 │   │       │   ├── boards.js
 │   │       │   ├── boards.json
 │   │       │   └── boards.md
-│   │       ├── brainstorming.md
 │   │       ├── decorators
 │   │       │   ├── decorators.js
 │   │       │   ├── decorators.json
@@ -172,7 +184,9 @@
 │   │       │   ├── moves.json
 │   │       │   └── moves.md
 │   │       ├── pieces
-│   │       ├── registerHandlers.js
+│   │       │   ├── pieces.js
+│   │       │   ├── pieces.json
+│   │       │   └── pieces.md
 │   │       ├── render
 │   │       │   ├── cameras.js
 │   │       │   ├── cameras.json
@@ -184,6 +198,7 @@
 │   │       │   ├── lights.json
 │   │       │   ├── lights.md
 │   │       │   ├── obsolete
+│   │       │   │   ├── brainstorming.md
 │   │       │   │   └── initThree.js
 │   │       │   ├── renders.js
 │   │       │   ├── renders.json
@@ -199,6 +214,10 @@
 │   │       │   ├── tiles.js
 │   │       │   ├── tiles.json
 │   │       │   └── tiles.md
+│   │       ├── trays
+│   │       │   ├── trays.js
+│   │       │   ├── trays.json
+│   │       │   └── trays.md
 │   │       ├── view.js
 │   │       ├── view.json
 │   │       └── view.md
@@ -263,6 +282,7 @@
 │   │   ├── _index.md
 │   │   ├── clues.md
 │   │   ├── dev.md
+│   │   ├── metaphysics.md
 │   │   ├── play.md
 │   │   ├── quickStart.md
 │   │   └── rationale.md
@@ -488,4 +508,4 @@
 │           └── poc.js
 └── themes
 
-105 directories, 383 files
+109 directories, 399 files

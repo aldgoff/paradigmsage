@@ -62,7 +62,7 @@ layout: "play"
   }
 
   #setup-window   { top:  260px; left:   80px; }  /* DOM Control Panels */
-  #move-window    { top: 1130px; left:   80px; }
+  #move-window    { top: 1180px; left:   80px; }
   #gambit-window  { top:  830px; left:   80px; }
   #advsq-window   { top:  260px; left:  255px; }
   #compass-window { top:  260px; left:  600px; }
@@ -93,16 +93,16 @@ layout: "play"
     <!-- <button data-action="addTrays">Add Trays</button> -->
   </div>
   <div class="section">
-    <label> <input type="radio" disabled name="tray-type" value="none"> None </label><br>
-    <label> <input type="radio" disabled name="tray-type" value="real"> Real </label><br>
-    <label> <input type="radio" disabled name="tray-type" value="factory"> Factory </label><br>
+    <label> <input type="radio" name="tray-type" value="none"> None </label><br>
+    <label> <input type="radio" name="tray-type" value="real"> Real </label><br>
+    <label> <input type="radio" name="tray-type" value="factory"> Factory </label><br>
   </div>  
   <div class="section">
     <label>Initial Position</lable>
   </div>  
   <div class="section">
-    <label> <input type="radio" disabled name="initial-pos" value="standard"> Standard </label><br>
-    <label> <input type="radio" disabled name="initial-pos" value="manual"> Manual </label><br>
+    <label> <input type="radio" name="initial-pos" value="standard"> Standard </label><br>
+    <label> <input type="radio" name="initial-pos" value="manual"> Manual </label><br>
   </div>  
   </div>
 
@@ -119,8 +119,8 @@ layout: "play"
     <button data-action="duke-decay">Duke Decay</button>
     <button data-action="bishop-decay">Bishop Decay</button>
     <button data-action="fission">Fission</button>
-    <label> <input type="radio" name="move-player" value="White" data-action="Player" checked> W </label>
-    <label> <input type="radio" name="move-player" value="Black" data-action="Player"> B </label>
+    <label> <input type="radio" name="move-player" value="White" checked> W </label>
+    <label> <input type="radio" name="move-player" value="Black"> B </label>
   </div>
   <div class="section">
     <label> SrcTile <input name="move-src" type="text" value="K2,2" maxlength="7" style="width: 44px;"> </label>
@@ -128,9 +128,9 @@ layout: "play"
     <label> 2ndTile <input name="move-2nd" type="text" value="" maxlength="7" style="width: 44px;"> </label>
   </div>
   <div class="section">
-    <label> Piece   <input name="move-piece"   type="text" value="P" maxlength="3" style="width: 24px;"> </label>
-    <label> Capture <input name="move-capture" type="text" value="Q" maxlength="3" style="width: 24px;"> </label>
-    <label> Opts:   <output name="move-opts" style="opacity:0.7; font-style:italic;"> R|B|D|Q|N|S|P|K</output> </label>
+    <label> Piece    <input name="move-piece"   type="text" value="P" maxlength="3" style="width: 24px;"> </label>
+    <label> Captured <input name="move-capture" type="text" value="Q" maxlength="3" style="width: 24px;"> </label>
+    <label> Opts:    <output name="move-opts" style="opacity:0.7; font-style:italic;"> R|B|D|Q|N|S|P|K</output> </label>
   </div>
   <div class="section scroll-box" id="move-list"></div>
   </div>
@@ -222,9 +222,9 @@ layout: "play"
     <label> Overlap:     <output name="advsq-overlap"   style="opacity:0.7; font-style:italic;"> B|Q|H|F </output> </label>
   </div>
   <div class="section">
-    <label> Piece:       <output name="advsq-piece"     style="opacity:0.7; font-style:italic;"> R|B|D|Q|S|N </output> </label>
+    <label> Pieces:      <output name="advsq-piece"     style="opacity:0.7; font-style:italic;"> R|B|D|Q|N|S|P|K </output> </label>
   </div>
-  <!-- Optional: key hints (visual only) -->
+  <!-- Key hints (visual only) -->
   <div class="section" style="font-size: 13px; font-weight: bold; color: #666;">
     Slip & Slide +: k i j
   </div>

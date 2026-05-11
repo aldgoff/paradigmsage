@@ -5,6 +5,13 @@
   Date: 4/27/26
   Recommended access: import * as cMoves from ../../controller/moves/moves.js
   UI: the export functions.
+  Philosophy: Delete a module by deleting its directory - not so much.
+    controller/ model/ view/
+    play.md - DOM
+    main.js - regressions
+    view.js - wire, build payload
+    game.js - rewind, FF
+    state.js - undo, redo
 */
 
 // --- Load JSON ---
@@ -31,7 +38,16 @@ export function panelDispatch(payload) {
 
   vGambits.cancelAnimation();
 
-  const { action } = payload;
+  const { action, 
+    player,   // White|Black
+    piece,    // R|B|D|Q|N|S|P|K
+    src,      // K2,2
+    dst,      // K4,4
+    sec,      // QB5,6
+    captured, // R|B|D|Q|N|S|P|K
+    opts      // TBD?
+  } = payload;
+
   switch (action) {
     case "move":         handleMove(payload); break;
     case "capture":      handleCapture(payload); break;
@@ -41,24 +57,53 @@ export function panelDispatch(payload) {
     case "duke-decay":   handleDukeDecay(payload); break;
     case "bishop-decay": handleBishopDecay(payload); break;
     case "fission":      handleFission(payload); break;
+    case "updateParam":  break;
+
     default: throw new Error(`Unknown moves action ${action}.`);  break;
   }
 
   game.showUndoStatus();                          // Update game panel (undo).
+  }
+
+ function normalize(payload) { // Convert panel strings to vts arrays.
+  let { player, piece, src, dst, capture, sec, opts } = payload;   // Unpack panel fields.
+
+  src = src ? coords.normalizeTileToVts(src) : null;
+  dst = dst ? coords.normalizeTileToVts(dst) : null;
+  sec = sec ? coords.normalizeTileToVts(sec) : null;
+
+  const normed = { player, piece, src, dst, capture, sec, opts }; // Repack panel fields.
+
+  return normed;
+  }
+
+export function buildPayload(panel, action) {
+  console.log("     ---------- cntrl: moves.js");
+  return {
+    action,
+    player:   panel.querySelector('input[name="move-player"]:checked')?.value,
+    piece:    panel.querySelector('[name="move-piece"]')?.value,
+    src:      panel.querySelector('[name="move-src"]')?.value,
+    dst:      panel.querySelector('[name="move-dst"]')?.value,
+    sec:      panel.querySelector('[name="move-2nd"]')?.value,
+    captured: panel.querySelector('[name="move-capture"]')?.value,
+    opts:     panel.querySelector('[name="move-opts"]')?.value,
+  };
 }
+
 // Seampoint: more global functions...
 
 // --- Handle Functions ---
 function handleMove(payload) {
   console.log("cntrl: moves.js - handleMove(payload)", payload);
-  // TODO: change state - handleMove().
 
-  const index = state.getBufferIndex()["Moves"] + 1;
-  const entry = mMoves.createState(payload, index); // Index is used to determine the turn.
-  state.pushNewMove(entry);         // Change state.
+  const { action, player, piece, src, dst, sec, captured, opts } = payload;  // Informative.
 
-  vMoves.renderMove(entry);         // Render.
-  vMoves.addLineToPanel(entry);        // Update panel.
+  const entry = mMoves.makeEntry(payload);  // Create entry.
+
+  state.pushNewMove(entry);                 // Change state.
+  vMoves.render(entry);                 // Render.
+  vMoves.addLineToPanel(entry);             // Update panel.
   }
 
 function handleCapture(payload) {
@@ -98,16 +143,5 @@ function handleFission(payload) {
 // Seampoint: more handle functions...
 
 // --- Helpers...
-export function normalize(payload) { // Convert panel strings to vts arrays.
-  let { player, piece, src, dst, capture, sec, opts } = payload;   // Unpack panel fields.
-
-  src = src ? coords.normalizeTileToVts(src) : null;
-  dst = dst ? coords.normalizeTileToVts(dst) : null;
-  sec = sec ? coords.normalizeTileToVts(sec) : null;
-
-  const normed = { player, piece, src, dst, capture, sec, opts }; // Repack panel fields.
-
-  return normed;
-  }
 // Seampoint: more local functions...
 

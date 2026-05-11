@@ -5,12 +5,18 @@
   Date: 4/23/26
   Recommended access: import * as cGambits from ../../controller/gambits/gambits.js
   UI: the export functions.
+  Philosophy: Dlete a module by deleting its directory - not so much.
+    controller/ model/ view/
+    play.md - DOM
+    main.js - regressions
+    view.js - wire, build payload
+    game.js - rewind, FF
+    state.js - undo, redo
 */
 
 // --- Load JSON ---
 import gambitsData from "./gambits.json" assert { type: "json" };
   const gambitsModule = gambitsData.gambits_module;
-  const category  = gambitsModule.category;
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
@@ -43,15 +49,17 @@ import gambitsData from "./gambits.json" assert { type: "json" };
   * 12. ✅ Plumbing for test suite
 */
 
+// --- Globals ---
 const gambitGroupRegistry = new Map();  // Holds mesh data for re-rendering gambits.
 
 // --- UI ---
 export function panelDispatch(payload) {
-  // console.log("cntrl: gambits.js - panelDispatch(payload):", payload);
+  console.log("cntrl: gambits.js - panelDispatch(payload):", payload);
 
   vGambits.cancelAnimation();
 
   const { action } = payload;
+
   switch (action) {
     case "freezeQ":  handleFreezeQuadrant(); break;
     case "freezeL":  handleFreezeAsLinear(); break;
@@ -61,8 +69,16 @@ export function panelDispatch(payload) {
     case "remove":   handleRemoveAll(); break;
     default: throw new Error(`Unknown gambit action ${action}.`);  break;
   }
+
+  game.showUndoStatus();                          // Update game panel (undo).
+  }
+
+export function buildPayload(panel, action) {
+  console.log("     ---------- cntrl: gambits.js");
+  return { action };
 }
 
+// Suspicious code
 export function getGambitGroup(idx) {
   return gambitGroupRegistry.get(idx);
   }
@@ -71,7 +87,7 @@ export function rerunGambits() {
   console.log("cntrl: gambits.js - rerunGambits()");
 
   const count = state.getBufferLength("Gambits");
-  const active = state.getBufferIndex().Gambits; // ← KEY LINE
+  const active = state.getIndices().Gambits; // ← KEY LINE
 
   // --- Hide ALL gambits ---
   for (let i = 0; i < count; i++) {
@@ -90,11 +106,10 @@ export function rerunGambits() {
   }
 
   vGambits.refreshPanel();
-}
+  }
 
-// Suspicious code
 export function getLastActiveGambitIndex() {
-  const count = state.getBufferIndex().Gambits;
+  const count = state.getIndices().Gambits;
   return count; // after undo, this is the removed one
   }
 export function rebindOverlaysToBoard() {
@@ -134,27 +149,21 @@ export function rebindOverlaysToBoard() {
 // Seampoint: more global functions...
 
 // --- Handle Functions ---
-export function handleFreezeQuadrant() {
-  console.log("cntrl: gambits.js - handleFreezeQuadrant().");
+function handleFreezeQuadrant() {
+  // console.log("cntrl: gambits.js - handleFreezeQuadrant().");
 
-  const curr = state.fetchCurrentAdvsq(); // Get current advsq, if any.
-  if(!curr) return;
+  const currAdvsq = state.fetchCurrentState("AdvSqs"); // Get current advsq, if any.
+  if(!currAdvsq) return;
+
+  const { srcTile, quad, perimeter, stride, opacity } = currAdvsq;  // Informative.
 
   state.clearBuffer("AdvSqs");                        // Advsq: change state.
   vAdvsqs.clearAdvsq();                               // De-render.
   vAdvsqs.clearAdvsqPanelParams("Q4,4");              // Update panel.
 
-  const {gambit, group} = mGambits.makeGambit(curr);  // Gambit: create.
-
-  state.pushNewGambit(gambit);                        // Change state.
-  const idx = state.getBufferIndex().Gambits - 1;
-
-  gambitGroupRegistry.set(idx, group);
-  vGambits.renderGambit(group, { animate: true });    // Render.
-  vGambits.updatePanel(gambit);                       // Update panel.
-
-  game.showUndoStatus();                              // Update game panel (undo).
-}
+  const entry = mGambits.makeEntry(currAdvsq);        // Transform panel payload into state entry.
+  applyEntry(entry);
+  }
 
 function handleFreezeAsLinear() {
   console.log("cntrl: gambits.js - handleFreezeLinear()");
@@ -175,7 +184,7 @@ function handleDelete() {
   console.log("cntrl: gambits.js - handleDelete()");
 
   // --- Get current index ---
-  const count = state.getBufferIndex().Gambits;
+  const count = state.getIndices().Gambits;
   if (count === 0) return;
 
   const idx = count - 1;
@@ -202,13 +211,12 @@ function handleDelete() {
   }
 
   // --- Update undo UI ---
-  game.showUndoStatus();
   }
 
 function handleRemoveAll() {
   console.log("cntrl: gambits.js - handleRemoveAll()");
 
-  const count = state.getBufferIndex().Gambits;
+  const count = state.getIndices().Gambits;
   if (count === 0) return;
 
   // --- Remove all groups from scene ---
@@ -232,9 +240,20 @@ function handleRemoveAll() {
   }
 
   // --- Update undo UI ---
-  game.showUndoStatus();
 }
+// Seampoint: more helper functions...
 
 // --- Helpers ---
+function applyEntry(entry) {   // Group, state, render, panel.
+  console.log("cntrl: gambits.js - applyEntry(entry)", entry);
+
+  state.pushNewGambit(entry);                     // Change state.
+    const idx = state.getIndices().Gambits - 1; // Create and register group.
+    const group = vGambits.makeGroup(entry);
+    gambitGroupRegistry.set(idx, group);        // TODO: should not need both.
+    vGambits.setGroupRegistry(idx, group);
+  vGambits.render(group, { animate: true });      // Render.
+  vGambits.addLineToPanel(entry);                 // Add line to panel.
+}
 // Seampoint: more local functions...
 
