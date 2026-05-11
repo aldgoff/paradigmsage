@@ -1,46 +1,62 @@
 # Gambits View Spec
-  Describe how gambits are rendered.
+  Describe how gambits are shown.
 
 ## 1. Purpose
-  Advsqs are captured (frozen) into a growing gambit from which an eventual move will be selected.
+  - Render gambit on the board.
+  - Show rows in the scroll box.
+  - Update derived data.
+  - Manage buttons.
 
-## 2. Strategy
-  Need to think through how this interface is going to work.
+## 2. Render
+  - For now, just lay them out in order.
+  - Layering conflicts yield flickering overlap tiles when animation is on.
+  - That bug is a feature at this point.
+  - Eventually replacd with linear and overlap decorators.
 
- ### 2.1 AI Prompt
-  We have done no button enable logic yet.
-  If the stride is not on an end tile, then we have a pure quadrant move.
-  Thus the FreezeQuad button should be enabled, but the FreezeLinear should not.
-  However, if the stride is on the apex tile, then overlap becomes possible.
-  Thus the FreezeOverlap button should be enabled.
-  However, I don't want to prevent capturing a single quad even when not pure.
-  It may be bad representation during play but will have benefits during teaching and training.
-  Now which buttons are enabled provides feedback about the nature of the src/dst tile relationship.
-  However, button management is tricky, and changes to a UI cascade through a code base.
-  I think we wait for the polish pass.
-  In the meantime, the derived fields can provide the same benefit.
+## 3. Rows
+  - See json file.
+  - Thoughts about pawns for small forward quads
+    - a: advance like a rook
+    - b: capture like a bishop
+    - d: capture like a duke
+  - Capture type might be more informative than area in the panel scrollbox row.
 
-  Except, the derived fields are for the gambit entries in the undo buffer.
-  We need similar fields for the advsq itself, to live on the AdvSq panel.
+## 4. Derived Data
+ ### 4.1 Open
+  - List of open quadrants in the gambit.
+    - For now, all of them.
+    - TODO: restrict after pieces module.
 
-  Some of this belongs in a json file. Do we already have it? Perhaps in the geometry layer?
-  Perhaps the overlap files? Check those out.
-  Do we have enough defined to implement a clean gambits UI?
+ ### 4.2 Blocked
+  - List of blocked quadrants in the gambit.
+    - For now, none of them.
+    - TODO: expand after pieces module.
 
- ### 2.2 AI Response?
-  Very, very verbose. Summary, use the overlap module.
+ ### 4.3 Move Type
+  - Show for current index in the undo buffer.
+  - Full word, not abbreviation as in the rows.
 
-## 3. MVC Control Flow
- ### 3. Creation
-  - Clone the advsq from the advsq layer.
-  - State Layer:
-    - Log in undo buffer - ```idx = state.pushNewGambit(gambit);```
-    - Update undo list - ```game.showUndoStatus()```
-  - View Layer:
-    - Render
-    - Update panel
+ ### 4.4 Overlap Type
+  - Show for current index in the undo buffer.
+  - Full word, not abbreviation as in the rows.
 
- ### 3. Undo
- ### 3. Redo
- ### 3. Rerun
+ ### 4.5 Lowest Piece
+  - Show for current index in the undo buffer.
+  - Full word, not abbreviation as in the rows.
+  - Should include pawn and king.
+
+## 5. Buttons
+  - Freeze Quadrant button is always enabled.
+    - May not represent a full move, but has benefits for teaching and training.
+  - Expose functions to enable/disable buttons to be used by the advsq module.
+    - enableFreezeLinearButton()
+    - enableFreezeDuplexButton()
+    - enableFreezeOverlapButton()
+  - Piece specific buttons enabled according to the rules.
+  - Plane button enabled if advsq more than just the src tile.
+  - Rest of buttons depend on row list and undo index.
+
+## 6. Notes
+  - Button status provides feedback about the nature of the src/dst tile relationship.
+  - Button management is tricky, and changes to a UI cascade through a code base.
 

@@ -1,8 +1,8 @@
 # Gambit Model Spec
-  How to spport gambits in 3D chess.
+  Describe how gambits are represented in 3D chess.
 
 ## 1. Purpose
-  Nail down how gambits are to work, this is more complicated than it looks.
+  Specify format of the undo entry.
 
 ## 2. Gambits (UR array 3)
   - The advsqs of gambit analysis are stored, to be replayed at will via the undo/redo system.
@@ -15,34 +15,63 @@
   - A *branch* zeroes all later *advsqs* in the analysis.
 
 ## 3. Capturing AdvSqs
+  - *See the json file*.
+
+ ### 3.0 Advsqs
+  - Quadrant → advsqs: [1]
+  - Duplex   → advsqs: [2]
+  - Linear   → advsqs: [[2],[2]] (or for duke, [[2],[2],[2]])
+  - Overlap  → advsqs: mixed groups
+
  ### 3.1 Freeze Quadrant
   The current advsq is frozen as a single quadrant move into the gambits list.
-  - "Gambits":[{
-    "Q":1,"src":"KB4,4","dst":"KB6,6","area":9,"opacity":0.5,"AdvSqs":[
-      {"quad":1,"perimeter":2,"stride":3}
-    ]
-    }],
-
+  The advsq element is copied over directly as the single element in the quad array (advsqs).
 
  ### 3.2 Freeze Linear
   Requires the stride tile to be either E1 or E2.
+  - The advsq list will consist of either 2 or 3 advsq pairs.
 
  ### 3.3 Freeze Duplex
   Requires the stride tile to be apex (duplex) in a face quadrant.
+  - The advsq list will consist of 2 advsqs.
 
  ### 3.4 Freeze Overlap
-  Requires...
+  - Requirement depends on which type of quad is being explored by the advsq panel:
+    - Rook: stride must be an apex tile.
+    - Bishop: stride must be E1 or E2.
+    - Duke: stride must be an apex tile (not a duplex tile).
 
+  - The advsq list depends on the overlap type:
+    - Brook: one rook advsq, two pairs of bishop advsqs (linear), all quads same size.
+    - Qtile: one rook advsq, two pairs of bishop advsqs (linear), one duke advsq (half the number of perimeters)
+    - Hotspot: two pairs of rook advsqs (linear), one pair of duke advsqs.
+    - Feynman: 2 advsqs, one bishop, one duke, of different sizes.
 
+ ### 3.5 Freeze Knight
+  - Shows small group of target tiles, all of which include the dst tile as the first element.
+    - Corner (3)
+    - Edge (2)
+    - Faces [(8),(8)]
+    - Duke color
 
-  - The location and extent of a single advsq is stored, to be replayed at will via the undo/redo system.
-    - It's parameters can be modified in a variety of ways.
-    - An advsq can be added to the gambits list - it gets *frozen* to the board.
-    - This does not zero the undo array, but it does truncated it to this instance.
-    - If a single history contains multiple desired advsqs, they must be frozen in reverse order.
-  - A branch will zero out all later positions of that advsq.
+ ### 3.6 Freeze Pawn
+  - Limited range and direction apply.
+  - Three types of moves.
+    - Advance (single & double, Q1 only).
+    - Bishop capture (predator, sling, reduced, bead).
+    - Duke capture (dash, dart).
 
- ### 5.1
+ ### 3.7 Freeze King
+  - Linear moves only.
+  - TODO: later...
+
+ ### 3.8 Freeze Plane
+  - This is for pedagogical purposes.
+  - Fills in every quad in the plane the advsq is in.
+  - An array of 4 or 6 advsq with common src and same perimeter.
+  - Stride does not apply.
+
+## 4. Representational Challenges
   There are subtle challenges here.
 
   An advsq can be defined by a source and destination tile (src, dst).

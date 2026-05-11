@@ -136,12 +136,26 @@ layout: "play"
   </div>
 
 <div class="panel" id="gambit-window">
-  <div class="panel-title">Gambit Panel</div>
+  <div class="panel-title">Gambit Panel (Freeze)</div>
   <div class="section">
-    <button data-action="freezeQ">Freeze Quadrant</button>
-    <button data-action="freezeL" disabled>Freeze as Linear</button>
-    <button data-action="freezeO" disabled>Freeze with Overlaps</button>
-    <button data-action="freezeP" disabled>Freeze as a plane</button>
+    <button data-action="freezeQ">Quadrant</button>
+    <button data-action="freezeL">Linear</button>
+  </div>
+  <div class="section">
+    <button data-action="freezeD">Duplex</button>
+    <button data-action="freezeO">Overlap</button>
+   </div>
+  <div class="section">
+    <button data-action="freezeQ">Knight</button>
+    <button data-action="freezeQ">Pawn</button>
+  </div>
+  <div class="section">
+    <button data-action="freezeQ">King</button>
+    <button data-action="freezeP">Plane</button>
+  </div>
+  <div class="section">
+    <button data-action="delete">Expand</button>
+    <button data-action="remove">Contract</button>
   </div>
   <div class="section">
     <button data-action="delete">Delete</button>
@@ -154,13 +168,13 @@ layout: "play"
     <label> Blocked:  <output name="gambit-blocked"  style="opacity:0.7; font-style:italic;"> [,,,,,] </output> </label>
   </div>
   <div class="section">
-    <label> MoveType:    <output name="gambit-moveType" style="opacity:0.7; font-style:italic;"> Quadrant </output> </label>
+    <label> Move Type:    <output name="gambit-moveType" style="opacity:0.7; font-style:italic;"> Quadrant </output> </label>
   </div>
   <div class="section">
-    <label> Overlap:     <output name="gambit-overlap"  style="opacity:0.7; font-style:italic;"> Qtile|etc </output> </label>
+    <label> Overlap Type:     <output name="gambit-overlap"  style="opacity:0.7; font-style:italic;"> Qtile|etc </output> </label>
   </div>
   <div class="section">
-    <label> LowestPiece: <output name="gambit-piece"    style="opacity:0.7; font-style:italic;"> Queen </output> </label>
+    <label> Lowest Piece: <output name="gambit-piece"    style="opacity:0.7; font-style:italic;"> Queen </output> </label>
   </div>
   <div class="section scroll-box" id="gambit-list"></div>
     <!-- advsq entries go here -->

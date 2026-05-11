@@ -27,6 +27,19 @@ import gambitsData from "./gambits.json" assert { type: "json" };
   import * as view   from "../../view/view.js";
 // Seampoint: more imports..
 
+/* TODO: Gambit additions:
+ * 0. HandleLoad
+ * 1. Rebuild groups on load
+ * 2. No single source of registry
+ * 3. Entry not canonical
+ * 4. Load does not restore indexed state correctly
+ * 5. Load does not use rerunGambits()
+ * 6. Group creation path is unclear
+ * 7. Delete by passes state API
+ * 8. Hard coded UI reset values
+ * 9. Panel + state desync possibility.
+*/
+
 // --- Globals ---
 const buffer = "Gambits";   // State buffer (state.js).
 
@@ -34,13 +47,14 @@ const buffer = "Gambits";   // State buffer (state.js).
 export function makeEntry(advsq) {
   console.log(`model: ${buffer}.js - makeEntry(advsq):`, advsq);
 
-  const { srcTile, quad, perimeter, stride, opacity } = advsq;
+  const { src, srcTile, quad, perimeter, stride, opacity } = advsq;
 
-  const src = coords.vtsToBoard(srcTile); // Convert to positional notation for onboard tiles, vts for rest.
+  // const src = coords.vtsToBoard(srcTile); // Convert to positional notation for onboard tiles, vts for rest.
   const dst = planes.resolveDstTile(srcTile, quad, perimeter, stride);  // Derive dst tile.
   const area = (perimeter+1)*(perimeter+1);
 
-  const entry = { Q: quad,src,dst,area, srcTile,quad,perimeter,stride,opacity }; // Prepare gambit state data.
+  const advsqs = [{ src, srcTile, quad, perimeter, stride, opacity }];
+  const entry = { Q: quad,src,dst,area, advsqs }; // Prepare gambit state data.
 
   return entry;
   }

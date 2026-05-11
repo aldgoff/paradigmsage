@@ -89,8 +89,8 @@ title: "Dev"
   - 5/07/26 - Parallelism in buffer modules. ApplyEntry parallelism. Use processRedoBuffer. More parallelsim. Fix gambit undo/redo. Restore gambit functionality. State QC.
   - 5/08/26 - Fix redo on load. Fix stale board bug and limit listeners to 1.
   - 5/09/26 - Refine view specs. Clean up main. Delete deprecated demos. Copy panel builders into modules. Re-arch view into panels. Cleanup view.js. Fix move button bug. Fix FF & rewind bugs.
-  - 5/10/26 - Clues. Advsq json & spec files. Src tile positional versus vts. Gambit jsons.
 
  ### Week 9:
-  - 5/10/26 - tbd
+  - 5/10/26 - Clues. Advsq json & spec files. Src tile positional versus vts. Gambit jsons.
+  - 5/11/26 - Gambit specs and json files.
 

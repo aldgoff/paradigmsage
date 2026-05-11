@@ -4,8 +4,10 @@
       "Quadrant",
       "Linear",
       "Duplex",
+      "Overlap",
       "_last"
     ],
+    "MoveAbrv": ["Q", "L", "D", "O"],
     "OverlapTiles": [
       "Brook",
       "Qtile",
@@ -13,28 +15,20 @@
       "Feynman",
       "_last"
     ],
+    "OveralapAbrv": ["B", "Q", "H", "F"],
     "Piece": [
       "Rook",
       "Bishop",
       "Duke",
-      "Stack",
       "Queen",
+      "Knight",
+      "Stack",
+      "Pawn",
+      "King",
       "_last"
     ],
-    "Example": {
-      "type": "FeynmanTile",
-      "src": "KB4,4",
-      "dst": "QN6,6",
-      "contributors": [
-        { "Q": 19, "k": 2, "stride": 3, "piece": "bishop" },
-        { "Q": 40, "k": 3, "stride": 6, "piece": "duke" }
-      ]
-    },
-    "Examples": {
-      "_comment": "YadaYada",
-      "_status": "deprecated",
-      "_doc": "Because I said so."
-    }
+    "PieceAbrv": ["R", "B", "D", "Q", "N", "S", "P", "K"],
+    "_last": "no comma"
   }
 }
 

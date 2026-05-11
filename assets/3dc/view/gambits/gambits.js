@@ -29,6 +29,14 @@ import gambitsData from "./gambits.json" assert { type: "json" };
   import * as view   from "../../view/view.js";
 // Seampoint: more imports...
 
+/* TODO: Gambit additions:
+ * 1. Review rendering code.
+ * 2. Upgrade rows format to new standard.
+ * 3. Write updateDerived data function.
+ * 4. Expose button enable functions.
+ * 5. Code to extract quads from the gambit.
+*/
+
 // --- Globals ---
 let activeAnimation = null;
 const gambitGroupRegistry = new Map();  // Holds mesh data for re-rendering gambits.

@@ -155,10 +155,11 @@ function handleFreezeQuadrant() {
   const currAdvsq = state.fetchCurrentState("AdvSqs"); // Get current advsq, if any.
   if(!currAdvsq) return;
 
-  const { srcTile, quad, perimeter, stride, opacity } = currAdvsq;  // Informative.
+  const { src, srcTile, quad, perimeter, stride, opacity } = currAdvsq;  // Informative.
+  console.log("cntrl: gambits.js - handleFreezeQuadrant()...currAdvsq", currAdvsq);
 
   state.clearBuffer("AdvSqs");                        // Advsq: change state.
-  vAdvsqs.clearAdvsq();                               // De-render.
+  vAdvsqs.clearAdvsq();                               // De-render. // TODO: move to view layer.
   vAdvsqs.clearAdvsqPanelParams("Q4,4");              // Update panel.
 
   const entry = mGambits.makeEntry(currAdvsq);        // Transform panel payload into state entry.
