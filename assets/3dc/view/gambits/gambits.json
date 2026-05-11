@@ -1,6 +1,28 @@
 {
   "gambits_module": {
-      "_comment": "not used yet"
+    "schema": {
+      "seq": 1, "move": 60, "piece": "R", "src": "Q2,2", "dst": "Q4,4", "feedback": 9
+    },
+    "rowExamples": [
+      " 1 Q3  R Q4,4  → Q2,2  :  9",
+      " 2 Q13 B Q2,2  → KR4,4 :  9",
+      " 3 Q37 D Q2,2  → Q4,4  :  4",
+      " 4 L1  R Q2,2  → Q2,4  : 15",
+      " 5 L26 D Q2,2  → KB4,4 : 28",
+      " 6 D1  D Q2,2  → KB2,2 :  4",
+      " 7 D6  D Q2,2  → KB2,2 :  4",
+      " 8 OB  Q Q2,2  → Q4,4  : 'bishop-ray'",
+      " 9 OQ  S Q2,2  → Q4,4  : 'bishop-ray'",
+      "10 OH  Q Q2,2  → Q4,4  : 'rook-ray'",
+      "11 OF  S Q2,2  → Q4,4  : 'tbd'",
+      "12 Nc  N Q2,2  → Q4,4  : corner|edge|face",
+      "13 Pa  p Q2,2  → Q4,4  : single|double",
+      "14 Pb  b Q2,2  x KB3,3 : predator|sling|reduced|bead",
+      "15 Pd  d Q2,2  x Q4,4  : dart|dash",
+      "16 L26 K K1,1  → Q1,1  : TODO: king move in gambits",
+      "17 *   - Q4,4  Q1-Q4   : horizontal|...",
+      "_last"
+    ]
   }
 }
 

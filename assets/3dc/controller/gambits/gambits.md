@@ -1,8 +1,8 @@
 # Gambits Spec
-  How to convert advsqs exploration into a gambit analysis.
+  Describe how advsqs are turned into gambits.
 
 ## 1. Purpose
-  Capture selected advsqs into a set on the board.
+  Create undo entry for gambits.
 
 ## 2. Data
   The quad/perimeter/stride notation of the AdvSq panel is converted to src/dst format.
@@ -33,25 +33,57 @@
   They differ in their extrapolations.
 
  ### 3.1 Freeze Quadrant
-  Straight capture, just the indicated advsq.
+  - Straight capture, stride cannot be zero.
+  - Prepare one quadrant.
 
  ### 3.2 Freeze Linear
-  If the stride tile is an end tile (E1, E2), or a duplex tile,
-  then there is the option to capture the advancement rectangles.
+  - If stride is not E1 or E2, return.
+  - Use geometry layer to determine the rest of the quadrants.
+  - Pepare 2 (or 3) pairs of quads as advancement rectangles.
 
- ### 3.3 Freeze Overlap
-  If the stride tile is an overlap tile (brook, qtile, hotspot, Feynman),
-  then there is the option to capture all the advancement manifolds.
+ ### 3.3 Freeze Duplex
+  - If piece is not duke, or stride is not duplex, return.
+  - Use geometry layer to determine the cross plane.
+  - Prepare one pair of quads.
 
- ### 3.4 Prev/Next
-  May not be useful...tbd
+ ### 3.4 Freeze Overlap
+  - If stride is not an overlap tile (brook, qtile, hotspot, Feynman), return.
+  - Use geometry layer to determine the plane and quad sets.
 
- ### 3.5 Delete
-  Simple deletes the selected gambit, this not the same as an undo branch.
+ ### 3.5 Knight
+  - Determine set of knight tiles. (Is it better to have a knight panel?)
+    - 3 corners
+    - 2 edges
+    - two groups of 8 face tiles
+    - duke color
+  - First tile in each list is the dst tile.
+  - I'm now conviced we need a knight panel.
+
+ ### 3.6 Pawn
+  - Perimeter must be 1 or 2 (if shackled).
+  - Quadrant must head toward promotion.
+
+ ### 3.7 King
+  - Move must be linear, with perimeter 1.
+
+ ### 3.8 Plane
+  - Requires src tile.
+  - Requires one quad in the plane.
+  - Or a knight dst tile.
+  - Stride is ignored.
+
+ ### 3.9 Expand
+  - All gambits can be *scaled*, increase perimeter - move type dependent.
+
+ ### 3.10 Contract
+  - All gambits can be *scaled*, decrease perimeter - move type dependent.
+
+ ### 3.11 Delete
+  - Deletes selected gambit; not the same as an undo branch.
   - Uses the undo index as the selection mechanim.
 
- ### 3.6 Deselect
-  Many not be useful...tbd.
+ ### 3.12 Remove All
+  Delete em all.
 
 ## 4. Gambit Panel Derived Fields
   Based on the cpatured advsq, several features can be abstracted.

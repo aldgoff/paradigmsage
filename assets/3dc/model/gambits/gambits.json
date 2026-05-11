@@ -1,27 +1,28 @@
 {
-  "state_module": {
-    "gambitTypes": {
-      "names": ["quadrant", "linear", "duplex", "overlap"],
-      "_last": "a first start"
+  "gambits_module": {
+    "moveTypes": {
+      "names": ["quadrant", "linear", "duplex", "overlap", "knight", "pawn", "king", "plane"],
+      "missing": "TODO: may not belong here... castling|enPassant|promotion|shackling",
+      "_last": "no comma"
     },
     "gambitConstraints": {
-      "_last": "tbd"
+      "_last": "TODO: tbd - gambit constraints."
     },
     "gambitExamples": {
       "quadrant": {
-        "type": "quadrant",
+        "move": "quadrant",
         "piece": "rook",
         "src": "Q4,4",
         "dst": "Q6,5",
-        "advsq": {"src": "Q4,4", "quad": 1, "perimeter": 2, "stride": 4},
+        "advsqs": [{"src": "Q4,4", "quad": 1, "perimeter": 2, "stride": 4, "area": 9}],
         "opacity": 0.50
       },
       "linear": {
-        "type": "linear",
+        "move": "linear",
         "piece": "rook",
         "src": "Q4,4",
         "dst": "Q6,4",
-        "ray": "right_fore",
+        "ray": "ray-name",
         "advsqs": [
           [{"src": "Q4,4", "quad": 1, "perimeter": 2, "stride": 5, "area": 9}, {"src": "Q4,4", "quad": 2, "perimeter": 2, "stride": 1, "area": 9}],
           [{"src": "Q4,4", "quad": 5, "perimeter": 2, "stride": 5, "area": 9}, {"src": "Q4,4", "quad": 6, "perimeter": 2, "stride": 1, "area": 9}]
@@ -29,11 +30,11 @@
         "opacity": 0.50
       },
       "duplex": {
-        "type": "duplex",
+        "move": "duplex",
         "piece": "duke",
         "src": "Q4,4",
         "dst": "Q6,4",
-        "ray": "right_fore",
+        "ray": "face-ray-name",
         "advsqs": [
           {"src": "Q4,4", "quad": 46, "perimeter": 1, "stride": 2, "area": 4},
           {"src": "Q4,4", "quad": 50, "perimeter": 1, "stride": 2, "area": 4}
@@ -41,16 +42,85 @@
         "opacity": 0.50
       },
       "overlap": {
-        "type": "hotspot",
-        "piece": "queen",
+        "move": "overlap",
+        "piece": "stack|queen",
+        "tile": "brook|qtile|hotspot|feynman",
         "src": "Q4,4",
         "dst": "Q6,4",
-        "ray": "right_fore",
+        "ray": "face-ray-name|edge-ray-name",
         "advsqs": [
           [{"src": "Q4,4", "quad":  1, "perimeter": 2, "stride": 5, "area": 9}, {"src": "Q4,4", "quad":  2, "perimeter": 2, "stride": 1, "area": 9}],
           [{"src": "Q4,4", "quad":  5, "perimeter": 2, "stride": 5, "area": 9}, {"src": "Q4,4", "quad":  6, "perimeter": 2, "stride": 1, "area": 9}],
           [{"src": "Q4,4", "quad": 46, "perimeter": 1, "stride": 2, "area": 4}, {"src": "Q4,4", "quad": 50, "perimeter": 1, "stride": 2, "area": 4}]
         ],
+        "opacity": 0.50
+      },
+      "knight": {
+        "move": "knight",
+        "piece": "knight",
+        "pattern": "corner|edge|faces",
+        "src": "KB3,3",
+        "dst": "KR2,1", 
+        "corner": ["KR2,1", "KR1,2", "KN1,1"],
+        "edge":   ["KR2,1", "KR4,1"],
+        "faces":  [
+          ["KR2,1", "KR1,2", "KR4,1", "KR1,4", "KR5,2", "KR2,5", "KR5,4", "KR4,5"],
+          ["KR2,1", "KR4,1", "KN5,1", "K5,1",  "Q4,1",  "Q2,1",  "K1,1",  "KN1,1"]
+        ],
+        "opacity": 0.50
+      },
+      "pawns": [
+        { "move": "pawn",
+          "piece": "as-rook",
+          "mode": "advance",
+          "variant": "single|double",
+          "src": "Q2,2",
+          "dst": "Q4,4",
+          "advsqs": [{"src": "Q2,2", "quad": 1, "perimeter": 2, "stride": 4, "area": 4}],
+          "opacity": 0.50
+        },
+        { "move": "pawn",
+          "piece": "as-bishop",
+          "mode": "capture",
+          "variant": "predator|sling|reduced|bead",
+          "src": "Q2,2",
+          "dst": "KB3,3",
+          "advsqs": [{"src": "Q2,2", "quad": 13, "perimeter": 1, "stride": 2, "area": 4}],
+          "opacity": 0.50
+        },
+        { "move": "pawn",
+          "piece": "as-duke",
+          "mode": "capture",
+          "variant": "dart|dash",
+          "src": "Q2,2",
+          "dst": "Q4,4",
+          "advsqs": [{"src": "Q2,2", "quad": 37, "perimeter": 1, "stride": 2, "area": 2}],
+          "opacity": 0.50
+        }
+      ],
+      "king": {
+        "move": "linear",
+        "piece": "king",
+        "type": "face|edge|corner",
+        "src": "K1,1",
+        "dst": "Q2,1", 
+        "face":   ["TODO: king face move."],
+        "edge":   ["TODO: king edge move."],
+        "corner": ["TODO: king corner move."],
+        "opacity": 0.50
+      },
+      "plane": {
+        "move": "plane",
+        "piece": "rook|bishop|duke|knight",
+        "type": "ortho|skew|slant",
+        "src": "Q4,4",
+        "advsqs": [
+          {"src": "Q4,4", "quad": 1, "perimeter": 2, "stride": 0, "area": 9}, 
+          {"src": "Q4,4", "quad": 2, "perimeter": 2, "stride": 0, "area": 9},
+          {"src": "Q4,4", "quad": 3, "perimeter": 2, "stride": 0, "area": 9}, 
+          {"src": "Q4,4", "quad": 4, "perimeter": 2, "stride": 0, "area": 9}
+        ],
+        "cube": ["TODO: list of 24 tiles, empty if not knight."],
         "opacity": 0.50
       }
     }
