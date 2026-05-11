@@ -63,6 +63,7 @@
   vi: Merge branch '3dc' - Merge week 6 (advsq panel, gambit panel, latent bugs, tests, stride stability, derived quantities).
   vi: Merge branch '3dc' - Merge & tag progress: gambits, undo, MVC compliance, viewer, jitter, bugs, todos, rewind/forward, race condition.
   vi: Merge branch '3dc' - Standardize UI across layers, load/save, time symmetric idiom for moves, complete state UI functions.
+  vi: Merge branch '3dc' - QC. Undo/redo rewind/FF bugs. Delete deprecated items. Plumb trays. May buildPayload canonical.
   git log --oneline --decorate --graph --all --boundary -n 50
   git push origin main
   ```
