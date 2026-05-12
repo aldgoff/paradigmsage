@@ -89,7 +89,8 @@ export function buildPayload(panel, action) {
   console.log("     ---------- cntrl: gambits.js");
   return { action };
 }
-
+// TEMPORARY:
+// rerunGambits is required for undo/redo until incremental undo is implemented
 export function rerunGambits() {
   console.log("cntrl: gambits.js - rerunGambits()");
 
@@ -127,33 +128,47 @@ function handleFreezeQuadrant(currAdvsq) {
 function handleFreezeAsLinear(currAdvsq) {
   console.log("cntrl: gambits.js - handleFreezeLinear()");
   // TODO: change state - handleFreezeLinear().
-  }
+
+  // applyEntry(entry);  // Eventually.
+}
 
 function handleFreezeAsDuplex(currAdvsq) {
   console.log("cntrl: gambits.js - handleFreezeAsDuplex()");
   // TODO: change state - handleFreezeAsDuplex().
+
+  // applyEntry(entry);  // Eventually.
   }
 
 function handleFreezeWithOverlaps(currAdvsq) {
   console.log("cntrl: gambits.js - handleFreezeOverlay()");
   // TODO: change state - handleFreezeOverlay().
+
+  // applyEntry(entry);  // Eventually.
 }
 
 function handleFreezeAsKnight(currAdvsq) {
   console.log("cntrl: gambits.js - handleFreezeAsKnight()");
   //TODO: Complete handleFreezeAsKnight().
-  }
+ 
+  // applyEntry(entry);  // Eventually.
+ }
 function handleFreezeAsPawn(currAdvsq) {
   console.log("cntrl: gambits.js - handleFreezeAsPawn()");
   //TODO: Complete handleFreezeAsPawn().
+
+  // applyEntry(entry);  // Eventually.
   }
 function handleFreezeAsKing(currAdvsq) {
   console.log("cntrl: gambits.js - handleFreezeAsKing()");
   //TODO: Complete handleFreezeAsKing().
+
+  // applyEntry(entry);  // Eventually.
   }
 function handleFreezeAsAPlane(currAdvsq) {
   console.log("cntrl: gambits.js - handleFreezeAsAPlane()");
   //TODO: Complete handleFreezeAsAPlane().
+
+  // applyEntry(entry);  // Eventually.
 }
 
 function handleExpand() {
@@ -168,40 +183,23 @@ function handleContract() {
 
 function handleDelete() {
   console.log("cntrl: gambits.js - handleDelete()");
-
-  const active = state.getCurrentIndex("Gambits");
-  if (active === 0) return;
-
-  const idx = active - 1;
-
-  // --- Remove from state ---
-  const gambits = state.getState().Gambits;
-  gambits.splice(idx, 1);
-
-  // --- Update index ---
-  state.setBufferIndex("Gambits", idx);
-
-  // --- Rebuild view + panel ---
-  rerunGambits();
+  // TODO: Write handleDelete() in cGambits.
   }
 
 function handleRemoveAll() {
   console.log("cntrl: gambits.js - handleRemoveAll()");
-
-  const active = state.getCurrentIndex("Gambits");
-  if (active === 0) return;
-
-  // --- Clear state ---
-  state.clearBuffer("Gambits");
-
-  // --- Rebuild (clears everything visually + panel) ---
-  rerunGambits();
+  // TODO: Write handleRemoveAll() in cGambits.
 }
 // Seampoint: more helper functions...
 
 // --- Helpers ---
 function applyEntry(entry) {   // Group, state, render, panel.
   console.log("cntrl: gambits.js - applyEntry(entry)", entry);
+
+  if(!state.isAtEnd("Gambits")) {
+    const idx = state.getCurrentIndex("Gambits");
+    state.truncateState("Gambits", idx);
+  }
 
   state.pushNewGambit(entry);                     // Change state.
   const group = vGambits.makeGroup(entry);        // Recreate from entry.

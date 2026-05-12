@@ -138,7 +138,64 @@ function decoratePerimeter(lastPerim, perim, piece, quadType, group, opacity, st
     if(lastPerim && (i === strideNo)) decorateTile(stride[j], piece, "dst", group, opacity, zOffset);
   }
   }
-function decorateTile(coords, piece, decorator, group, opacity, zOffset=0.00) {
+ 
+function decorateTile(coords, piece, decorator, group, opacity, zOffset = 0.00) {
+  let meshTile = tiles.getTileMesh(context.tileMap, coords);
+
+  if (!meshTile) {
+    const pos = coords;
+    const tile = tiles.getTileAttributes(pos);
+
+    meshTile = tiles.createMeshTile(tile, context.tileGeometry, pos);
+
+    // --- Visual setup ---
+    meshTile.material.forEach(mat => {
+      mat.transparent = true;
+      mat.opacity = opacity;
+    });
+
+    meshTile.children.forEach(child => {
+      if (child.type === "LineSegments") {
+        child.material.transparent = true;
+        child.material.opacity = opacity;
+      }
+    });
+
+    // --- Tile identity ---
+    meshTile.userData = {
+      isTile: true,
+      coords: pos,
+      faceColor: tile.faceColor,
+      isOffboard: true,
+
+      // ✅ REQUIRED: ownership tag
+      entry: group.userData.entry
+    };
+
+    // --- Attach to group (ownership root) ---
+    group.add(meshTile);
+  }
+
+  const faceColor = meshTile.userData.faceColor;
+
+  const overlays = decorators.decorate(faceColor, meshTile, piece, decorator, zOffset);
+
+  if (overlays) {
+    overlays.forEach(o => {
+      o.userData = o.userData || {};
+
+      o.userData.parentTile = meshTile;
+      o.userData.isOverlay = true;
+
+      // ✅ REQUIRED: ownership tag
+      o.userData.entry = group.userData.entry;
+    });
+
+    // ✅ REQUIRED: tracked overlays for fast removal
+    group.userData.overlays.push(...overlays);
+  }
+}
+function decorateTile1(coords, piece, decorator, group, opacity, zOffset=0.00) {
   let meshTile = tiles.getTileMesh(context.tileMap, coords);
   if (!meshTile) {
 
@@ -175,6 +232,7 @@ function decorateTile(coords, piece, decorator, group, opacity, zOffset=0.00) {
       o.userData = o.userData || {};
       o.userData.parentTile = meshTile;
       o.userData.isOverlay = true;
+      o.userData.entry = group.userData.entry;
     });
 
     group.userData.overlays.push(...overlays);

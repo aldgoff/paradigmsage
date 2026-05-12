@@ -410,8 +410,10 @@ function processUndoBuffer(key, idx) {
   else if(key === "Gambits") {
     const gambit = state.fetchCurrentState("Gambits");
     if (gambit != null) {
+      // vGambits.undo(gambit);
       state.setBufferIndex("Gambits", idx - 1); // Update from state.
       cGambits.rerunGambits();                  // Rebuild from state.
+      vGambits.refreshPanel();
       return true;
     }
   }
@@ -480,6 +482,8 @@ function processRedoBuffer(key, idx) {
     if (gambit != null) {
       state.setBufferIndex("Gambits", idx + 1); // Update from state.
       cGambits.rerunGambits();                  // Rebuild from state.
+      // vGambits.redo(gambit);
+      vGambits.refreshPanel();
       return true;
     }
   }
@@ -487,7 +491,7 @@ function processRedoBuffer(key, idx) {
     const move = state.fetchNextState("Moves");
     if(move != null) {
       state.setBufferIndex("Moves", idx + 1);
-      vMoves.redo(move, idx);
+      vMoves.redo(move);
       vMoves.refreshPanel();
       return true;
     }
