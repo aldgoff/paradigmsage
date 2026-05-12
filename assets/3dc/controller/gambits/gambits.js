@@ -58,12 +58,27 @@ export function panelDispatch(payload) {
   const { action } = payload;
 
   switch (action) {
-    case "freezeQ":  handleFreezeQuadrant(); break;
-    case "freezeL":  handleFreezeAsLinear(); break;
-    case "freezeO":  handleFreezeWithOverlaps(); break;
-    case "freezeP":  handleFreezeAsAPlane(); break;
-    case "delete":   handleDelete(); break;
-    case "remove":   handleRemoveAll(); break;
+    case "expand":   handleExpand();                           return;
+    case "contract": handleContract();                         return;
+    case "delete":   handleDelete();    game.showUndoStatus(); return;
+    case "remove":   handleRemoveAll(); game.showUndoStatus(); return;
+  }
+
+  const currAdvsq = state.fetchCurrentState("AdvSqs"); // Get current advsq, if any.
+  if(!currAdvsq) return;
+
+  const { src, srcTile, quad, perimeter, stride, opacity } = currAdvsq;  // Informative.
+
+  switch (action) {
+    case "freezeQ":  handleFreezeQuadrant(currAdvsq); break;
+    case "freezeL":  handleFreezeAsLinear(currAdvsq); break;
+    case "freezeD":  handleFreezeAsDuplex(currAdvsq); break;
+    case "freezeO":  handleFreezeWithOverlaps(currAdvsq); break;
+
+    case "freezeN":  handleFreezeAsKnight(currAdvsq); break;
+    case "freezeP":  handleFreezeAsPawn(currAdvsq); break;
+    case "freezeK":  handleFreezeAsKing(currAdvsq); break;
+    case "asAPlane": handleFreezeAsAPlane(currAdvsq); break;
     default: throw new Error(`Unknown gambit action ${action}.`);  break;
   }
 
@@ -98,13 +113,8 @@ export function rerunGambits() {
 // Seampoint: more global functions...
 
 // --- Handle Functions ---
-function handleFreezeQuadrant() {
-  // console.log("cntrl: gambits.js - handleFreezeQuadrant().");
-
-  const currAdvsq = state.fetchCurrentState("AdvSqs"); // Get current advsq, if any.
-  if(!currAdvsq) return;
-
-  const { src, srcTile, quad, perimeter, stride, opacity } = currAdvsq;  // Informative.
+function handleFreezeQuadrant(currAdvsq) {
+  console.log("cntrl: gambits.js - handleFreezeQuadrant(currAdvsq).", currAdvsq);
 
   state.clearBuffer("AdvSqs");                        // Advsq: change state.
   vAdvsqs.clearAdvsq();                               // De-render. // TODO: move to view layer.
@@ -114,20 +124,47 @@ function handleFreezeQuadrant() {
   applyEntry(entry);
   }
 
-function handleFreezeAsLinear() {
+function handleFreezeAsLinear(currAdvsq) {
   console.log("cntrl: gambits.js - handleFreezeLinear()");
   // TODO: change state - handleFreezeLinear().
   }
 
-function handleFreezeWithOverlaps() {
-  console.log("cntrl: gambits.js - handleFreezeOverlay()");
-  // TODO: change state - handleFreezeOverlay().
+function handleFreezeAsDuplex(currAdvsq) {
+  console.log("cntrl: gambits.js - handleFreezeAsDuplex()");
+  // TODO: change state - handleFreezeAsDuplex().
   }
 
-function handleFreezeAsAPlane() {
-  console.log("cntrl: gambits.js - handleFreezeAsAPlane()");
-  // TODO: change state - handleFreezeAsAPlane().
+function handleFreezeWithOverlaps(currAdvsq) {
+  console.log("cntrl: gambits.js - handleFreezeOverlay()");
+  // TODO: change state - handleFreezeOverlay().
 }
+
+function handleFreezeAsKnight(currAdvsq) {
+  console.log("cntrl: gambits.js - handleFreezeAsKnight()");
+  //TODO: Complete handleFreezeAsKnight().
+  }
+function handleFreezeAsPawn(currAdvsq) {
+  console.log("cntrl: gambits.js - handleFreezeAsPawn()");
+  //TODO: Complete handleFreezeAsPawn().
+  }
+function handleFreezeAsKing(currAdvsq) {
+  console.log("cntrl: gambits.js - handleFreezeAsKing()");
+  //TODO: Complete handleFreezeAsKing().
+  }
+function handleFreezeAsAPlane(currAdvsq) {
+  console.log("cntrl: gambits.js - handleFreezeAsAPlane()");
+  //TODO: Complete handleFreezeAsAPlane().
+}
+
+function handleExpand() {
+  console.log("cntrl: gambits.js - handleExpand()");
+  //TODO: Complete handleExpand().
+  }
+
+function handleContract() {
+  console.log("cntrl: gambits.js - handleContract()");
+  //TODO: Complete handleContract().
+  }
 
 function handleDelete() {
   console.log("cntrl: gambits.js - handleDelete()");
