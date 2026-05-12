@@ -100,11 +100,8 @@ function handleMove(payload) {
   const { action, player, piece, src, dst, sec, captured, opts } = payload;  // Informative.
 
   const entry = mMoves.makeEntry(payload);  // Create entry.
-
-  state.pushNewMove(entry);                 // Change state.
-  vMoves.render(entry);                 // Render.
-  vMoves.addLineToPanel(entry);             // Update panel.
-  }
+  applyEntry(entry);
+}
 
 function handleCapture(payload) {
   console.log("cntrl: moves.js - handleCapture(payload)", payload);
@@ -143,5 +140,26 @@ function handleFission(payload) {
 // Seampoint: more handle functions...
 
 // --- Helpers...
+function applyEntry(entry) {
+  console.log("cntrl: moves.js - applyEntry(entry)", entry);
+
+  const currEntry = mMoves.fetchCurrentEntry(); // Clear previous move.
+  if(currEntry != null) {
+    vMoves.clear(currEntry);
+    if(!state.isAtEnd("Moves")) {     // Branches the undo history, discards original branch.
+      // TODO: clear all later move entries.
+      // const idx = state.getCurrentIndex("Moves"); // Not quite working...
+      // state.truncateState("Moves", idx);
+    }
+  }
+
+  state.pushNewMove(entry);           // Change state.
+  vMoves.render(entry);               // Render.
+  vMoves.addLineToPanel(entry);       // Add line to panel.
+
+  // TODO: remove all entries in the downstream buffers; 
+  // a new move invalidates gambits and advsqs.
+}
+
 // Seampoint: more local functions...
 

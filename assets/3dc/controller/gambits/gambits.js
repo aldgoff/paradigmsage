@@ -49,9 +49,6 @@ import gambitsData from "./gambits.json" assert { type: "json" };
   * 12. ✅ Plumbing for test suite
 */
 
-// --- Globals ---
-const gambitGroupRegistry = new Map();  // TODO: Deprecate? Holds mesh data for re-rendering gambits.
-
 // --- UI ---
 export function panelDispatch(payload) {
   console.log("cntrl: gambits.js - panelDispatch(payload):", payload);
@@ -108,7 +105,6 @@ function handleFreezeQuadrant() {
   if(!currAdvsq) return;
 
   const { src, srcTile, quad, perimeter, stride, opacity } = currAdvsq;  // Informative.
-  console.log("cntrl: gambits.js - handleFreezeQuadrant()...currAdvsq", currAdvsq);
 
   state.clearBuffer("AdvSqs");                        // Advsq: change state.
   vAdvsqs.clearAdvsq();                               // De-render. // TODO: move to view layer.
@@ -164,67 +160,6 @@ function handleRemoveAll() {
   // --- Rebuild (clears everything visually + panel) ---
   rerunGambits();
 }
-function handleDelete1() {  // TODO: Currently wrong, needs rewrite.
-  console.log("cntrl: gambits.js - handleDelete()");
-
-  // --- Get current index ---
-  const count = state.getIndices().Gambits;
-  if (count === 0) return;
-
-  const idx = count - 1;
-
-  // --- Remove group from scene ---
-  const group = gambitGroupRegistry.get(idx);
-  console.log("cntrl: gambits.js - handleDelete()...group, idx", group, idx);
-  if (group) {
-    gambitGroupRegistry.delete(idx);
-    cGambits.rerunGambits();
-  }
-
-  // --- Remove from state buffer ---
-  const gambits = state.getState().Gambits;
-  gambits.splice(idx, 1);
-
-  // --- Update buffer count ---
-  state.setBufferIndex("Gambits", idx);
-
-  // --- Optional: clean panel (simple version: rebuild later) ---
-  const panel = document.getElementById("gambit-list");
-  if (panel && panel.lastChild) {
-    panel.removeChild(panel.lastChild);
-  }
-
-  // --- Update undo UI ---
-  }
-
-function handleRemoveAll1() {  // TODO: Currently wrong, needs rewrite.
-  console.log("cntrl: gambits.js - handleRemoveAll()");
-
-  const count = state.getIndices().Gambits;
-  if (count === 0) return;
-
-  // --- Remove all groups from scene ---
-  for (let i = 0; i < count; i++) {
-    const group = gambitGroupRegistry.get(i);
-    if (group) {
-      vGambits.clearGambit(group);
-    }
-  }
-
-  // --- Clear registry ---
-  gambitGroupRegistry.clear();
-
-  // --- Clear state buffer ---
-  state.clearBuffer("Gambits");
-
-  // --- Clear panel ---
-  const panel = document.getElementById("gambit-list");
-  if (panel) {
-    panel.textContent = "";
-  }
-
-  // --- Update undo UI ---
-}
 // Seampoint: more helper functions...
 
 // --- Helpers ---
@@ -235,6 +170,9 @@ function applyEntry(entry) {   // Group, state, render, panel.
   const group = vGambits.makeGroup(entry);        // Recreate from entry.
   vGambits.render(group, { animate: true });      // Render.
   vGambits.addLineToPanel(entry);                 // Add line to panel.
+
+  // TODO: remove all entries in the downstream buffers; 
+  // a new gambit invalidates advsqs. ?? May happen automagically upon advsq ingest.
 }
 // Seampoint: more local functions...
 

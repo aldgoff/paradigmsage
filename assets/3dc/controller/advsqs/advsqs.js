@@ -83,7 +83,6 @@ function handlePlace(payload) {
   let { src, srcTile, quad, perimeter, stride, opacity } = payload;  // Unpack primary fields.
 
   const nextEntry = mAdvsqs.makeEntry(payload);        // Transform panel payload into state entry.
-
   applyEntry(nextEntry);
   }
 
@@ -257,18 +256,20 @@ function blank(payload) { // Convert panel strings to numbers, arrays, etc.
 }
 
 function applyEntry(entry) {   // Clear curr, branch, state change, render, refresh panel.
+  console.log("cntrl: advsqs.js - applyEntry(entry)", entry);
+
   const currEntry = mAdvsqs.fetchCurrentEntry(); // Clear previous board.
   if(currEntry) {
     vAdvsqs.clear(currEntry);
-    if(!state.isAtEnd("AdvSqs")) {    // Branch the undo list, toss the rest.
-      const idx = state.getCurrentIndex("AdvSqs");
+    if(!state.isAtEnd("AdvSqs")) {    // Branches the undo history, discards original branch.
+      const idx = state.getCurrentIndex("AdvSqs");  // Seems to work
       state.truncateState("AdvSqs", idx);
     }
   }
 
-  state.pushNewAdvsq(entry);      // Log state change in undo buffer.
-  vAdvsqs.render(entry);          // Render the new advsq.
-  vAdvsqs.refreshPanel(entry);    // Only needed by panels with derived fields.
+  state.pushNewAdvsq(entry);          // Log state change in undo buffer.
+  vAdvsqs.render(entry);              // Render the new advsq.
+  vAdvsqs.refreshPanel(entry);        // Only needed by panels with derived fields.
 }
 // Seampoint: more local functions...
 

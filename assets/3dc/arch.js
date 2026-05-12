@@ -7,21 +7,21 @@
 */
 
 /* Tree - 4/16/26.
-MacBookPro:paradigmsage adgoff$ tree -L 1 assets/3dc
-assets/3dc
-├── arch.js
-├── controller
-├── dev
-├── exampleRegistration
-├── foundation
-├── geometry
-├── main.js
-├── model
-├── Obsolete
-├── templates
-├── tests
-└── view
-10 directories, 2 files
+  MacBookPro:paradigmsage adgoff$ tree -L 1 assets/3dc
+  assets/3dc
+  ├── arch.js
+  ├── controller
+  ├── dev
+  ├── exampleRegistration
+  ├── foundation
+  ├── geometry
+  ├── main.js
+  ├── model
+  ├── Obsolete
+  ├── templates
+  ├── tests
+  └── view
+  10 directories, 2 files
 */
 
 /* Control Flow:
@@ -56,4 +56,23 @@ assets/3dc
       - geometry
       - model
 */
+
+// Control functions:
+function panelDispatch(payload) {}
+function buildPayload(panel, action) {}
+
+function handleButtons(payload) {}
+
+function applyEntry(entry) {
+  // 1. clear current view
+  // 2. handle Setup branching
+  // 3. push new Setup state
+  // 4. render board
+  // 5. update panel
+  // 6. invalidate downstream buffers
+}
+
+// Misc. Understandings...
+function clear(entry) {}  // Derenders, dims row entry (if any), leaves entry in the state buffer.
+function remove(entry) {} // Removes entry from the state buffer, collapsing downward, and clears.
 

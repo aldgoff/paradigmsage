@@ -76,7 +76,6 @@ function handleMakeBoard(payload) { // Setup handler.
   const { action, boardSize, trayType, initialPos } = payload;  // Informative.
 
   const nextEntry = mSetup.makeEntry(payload);    // Transform panel payload into state entry.
-  
   applyEntry(nextEntry);
 }
 
@@ -97,20 +96,27 @@ function handleTrayGap(payload) {
 
   // TODO: change state - handleTrayGap().
 }
+
 // --- Helpers ---
 function applyEntry(entry) {
+  console.log("cntrl: setup.js - applyEntry(entry)", entry);
+
   const currEntry = mSetup.fetchCurrentEntry(); // Clear previous board.
   if(currEntry != null) {
     vSetup.clear(currEntry);
-    if(!state.isAtEnd("Setup")) {
-      // TODO: clear all later entries.
+    if(!state.isAtEnd("Setup")) {     // Branches the undo history, discards original branch.
+      // TODO: clear all later setup entries.
+      // const idx = state.getCurrentIndex("Setup"); // Not quite working...
+      // state.truncateState("Setup", idx);
     }
   }
 
-  state.pushNewSetup(entry);                  // Log state change in undo buffer.
-  vSetup.render(entry);                       // Render the new board and trays.
-  vSetup.refreshPanel(entry);                 // Only needed by panels with derived fields.
-  // TODO: clear all later buffers; a new board invalidates moves, gambits, and the exploratory advsq.
+  state.pushNewSetup(entry);          // Log state change in undo buffer.
+  vSetup.render(entry);               // Render the new board and trays.
+  vSetup.refreshPanel(entry);         // Only needed by panels with derived fields.
+
+  // TODO: remove all entries in the downstream buffers; 
+  // a new board invalidates moves, gambits, and advsqs.
 }
 // Seampoint: more local functions...
 
