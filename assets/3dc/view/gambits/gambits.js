@@ -39,49 +39,30 @@ import gambitsData from "./gambits.json" assert { type: "json" };
 
 // --- Globals ---
 let activeAnimation = null;
-const gambitGroupRegistry = new Map();  // Holds mesh data for re-rendering gambits.
 
 // --- UI ---
 export function makeGroup(entry) {
   console.log("view : gambits.js - makeGroup(entry).", entry);
 
-  const {     Q,src,dst,area, srcTile,quad,perimeter,stride,opacity } = entry; // Prepare gambit state data.
-  const sq = {Q,src,dst,area };
-  const advsq = {             srcTile,quad,perimeter,stride,opacity };
+  const { Q, src, dst, area, advsqs } = entry;
+
+  const advsq = advsqs?.[0];
+  if (!advsq) {
+    console.error("Invalid gambit entry (no advsq):", entry);
+    return;
+  }
 
   const group = view.buildAdvSqGroup(advsq); // {srcTile: Array(3), quad: 1, perimeter: 0, stride: 0, opacity: 0.5}
 
   return group;
-  }
-export function setGroupRegistry(idx, group) {
-  gambitGroupRegistry.set(idx, group);
-  }
-export function getGroupRegistry() {
-  return gambitGroupRegistry;
 }
 
-export function undo(gambit, idx) {
-  console.log("view : gambits.js - undo(gambit, idx)", gambit, idx);
-  // TODO: write undoGambits().
-  if(idx > 0) {
-    const group = gambitGroupRegistry.get(idx-1);
-    // console.log("view : gambits.js - undo()...idx, group", idx, group);
-    if(group) {
-      derenderGambit(group);
-    }
-  }
+export function undo() {
+  cGambits.rerunGambits();
   }
 
-export function redo(gambit, idx) {
-  console.log("view : gambits.js - redo(gambit, idx)", gambit, idx);
-  // TODO: write redoGambits().
-  // if(!state.isAtEnd("Gambits")) {
-    const group = gambitGroupRegistry.get(idx-1);
-    // console.log("view : gambits.js - redo()...idx, group", idx, group);
-    if(group) {
-      renderGambit(group);
-    }
-  // }
+export function redo() {
+  cGambits.rerunGambits();
 }
 
 export function addLineToPanel(gambit) {
@@ -138,15 +119,37 @@ export function refreshPanel() {
   }
 }
 
-export function clear() {
+export function clear() { // Canonical arch.
   console.log("view : gambits.js - clearGambits()");
   // TODO: write clearGambits().
-  }
+}
 
-export function clearGambits() {
+export function clearGambits() {  // Still in use.
   console.log("view : gambits.js - clearGambits()");
-  // TODO: write clearGambits().
+
+  const scene = view.context.scene;
+
+  // --- 1. Remove ALL groups (offboard + containers) ---
+  scene.children
+    .filter(obj => obj.userData?.overlays)
+    .forEach(group => {
+      derenderGambit(group);
+    });
+
+  // --- 2. Remove ANY stray overlays still attached to tiles ---
+  const tileMap = view.context.tileMap;
+  if (!tileMap) return;
+
+  for (const tile of tileMap.values()) {
+    if (!tile.children) continue;
+
+    tile.children
+      .filter(child => child.userData?.isOverlay)
+      .forEach(overlay => {
+        tile.remove(overlay);
+      });
   }
+}
 
 export function cancelAnimation() {
   if (activeAnimation) {
@@ -156,27 +159,7 @@ export function cancelAnimation() {
 }
 
 export function render(group, { animate = false } = {}) {
-  console.log("view : gambits.js - renderGambit( not shown)");
-
-  view.context.scene.add(group);
-
-  // --- Re-attach overlays ---
-  if (group.userData?.overlays) {
-    group.userData.overlays.forEach(o => {
-      const tile = o.userData?.parentTile;
-      if (tile && !o.parent) {
-        tile.add(o);
-      }
-    });
-  }
-
-  if (animate) {
-    animateFreezeTransition(group);
-  }
-  }
-
-export function renderGambit(group, { animate = false } = {}) {
-  console.log("view : gambits.js - renderGambit(...)");
+  console.log("view : gambits.js - render( not shown)");
 
   view.context.scene.add(group);
 

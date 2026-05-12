@@ -68,6 +68,7 @@ export let context;   // Contains things like: scene, renderer, camera, tileMap.
 
 // --- UI ---
 export function init(playBoard) {
+  console.log("view : view.js - init(playBoard).", playBoard);
   context = renders.init(playBoard);
   context.tileMap = new Map();
   context.tileGeometry = new THREE.BoxGeometry(...coordsMaps.vts2xyz(tiles.tileSize()));
@@ -78,9 +79,13 @@ export function init(playBoard) {
   }
 
 export function buildAdvSqGroup(specs) { // Params: srcTile, quad, perimeter, stride, opacity.
-  console.log("view : gambits.js - buildAdvSqGroup(specs).", specs);
+  console.log("view : view.js - buildAdvSqGroup(specs).", specs);
 
+  // const group = new THREE.Group();
   const group = new THREE.Group();
+
+  group.userData = group.userData || {};
+  group.userData.overlays = [];
 
   const { srcTile, quad, perimeter, stride, opacity } = specs;
 
@@ -136,11 +141,10 @@ function decoratePerimeter(lastPerim, perim, piece, quadType, group, opacity, st
 function decorateTile(coords, piece, decorator, group, opacity, zOffset=0.00) {
   let meshTile = tiles.getTileMesh(context.tileMap, coords);
   if (!meshTile) {
-    const tileGeometry = new THREE.BoxGeometry(...coordsMaps.vts2xyz(tiles.tileSize()));
 
     let pos = coords;
     let tile = tiles.getTileAttributes(pos);
-    meshTile = tiles.createMeshTile(tile, tileGeometry, pos);
+    meshTile = tiles.createMeshTile(tile, context.tileGeometry, pos);
     meshTile.material.forEach(mat => {      // Faces and edges.
       mat.transparent = true;
       mat.opacity = opacity;   // tweak as desired
@@ -170,9 +174,9 @@ function decorateTile(coords, piece, decorator, group, opacity, zOffset=0.00) {
     overlays.forEach(o => {
       o.userData = o.userData || {};
       o.userData.parentTile = meshTile;
+      o.userData.isOverlay = true;
     });
 
-    group.userData.overlays = group.userData.overlays || [];
     group.userData.overlays.push(...overlays);
   }
 }

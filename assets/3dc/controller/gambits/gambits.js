@@ -50,7 +50,7 @@ import gambitsData from "./gambits.json" assert { type: "json" };
 */
 
 // --- Globals ---
-const gambitGroupRegistry = new Map();  // Holds mesh data for re-rendering gambits.
+const gambitGroupRegistry = new Map();  // TODO: Deprecate? Holds mesh data for re-rendering gambits.
 
 // --- UI ---
 export function panelDispatch(payload) {
@@ -78,73 +78,25 @@ export function buildPayload(panel, action) {
   return { action };
 }
 
-// Suspicious code
-export function getGambitGroup(idx) {
-  return gambitGroupRegistry.get(idx);
-  }
-
 export function rerunGambits() {
   console.log("cntrl: gambits.js - rerunGambits()");
 
   const count = state.getBufferLength("Gambits");
-  const active = state.getIndices().Gambits; // ← KEY LINE
+  const active = state.getCurrentIndex("Gambits");
 
   // --- Hide ALL gambits ---
-  for (let i = 0; i < count; i++) {
-    const group = gambitGroupRegistry.get(i);
-    if (group) {
-      vGambits.derenderGambit(group);
-    }
-  }
+  vGambits.clearGambits();
 
-  // --- Re-render ACTIVE ones (usually just index 0) ---
+  // --- Re-render all ---
   for (let i = 0; i < active; i++) {
-    const group = gambitGroupRegistry.get(i);
-    if (group) {
-      vGambits.renderGambit(group); // no animation
-    }
+    const entry = mGambits.fetchThisEntry(i);
+    if (!entry) continue;
+
+    const group = vGambits.makeGroup(entry);
+    vGambits.render(group);
   }
 
   vGambits.refreshPanel();
-  }
-
-export function getLastActiveGambitIndex() {
-  const count = state.getIndices().Gambits;
-  return count; // after undo, this is the removed one
-  }
-export function rebindOverlaysToBoard() {
-  console.log("cntrl: gambits.js - rebindOverlaysToBoard()");
-
-  const tileMap = view.context.tileMap;
-  if (!tileMap) return;
-
-  for (const [idx, group] of gambitGroupRegistry.entries()) {
-    if (!group?.userData?.overlays) continue;
-
-    for (const overlay of group.userData.overlays) {
-      const oldTile = overlay.userData?.parentTile;
-      if (!oldTile) continue;
-
-      const coords = oldTile.userData?.coords;
-      if (!coords) continue;
-
-      // --- lookup NEW tile ---
-      const newTile = tiles.getTileMesh(tileMap, coords);
-      if (!newTile) {
-        console.warn("Rebind failed: no tile for coords", coords);
-        continue;
-      }
-
-      // --- detach from old tile (if still attached) ---
-      if (overlay.parent) {
-        overlay.parent.remove(overlay);
-      }
-
-      // --- rebind ---
-      newTile.add(overlay);
-      overlay.userData.parentTile = newTile;
-    }
-  }
 }
 // Seampoint: more global functions...
 
@@ -179,9 +131,40 @@ function handleFreezeWithOverlaps() {
 function handleFreezeAsAPlane() {
   console.log("cntrl: gambits.js - handleFreezeAsAPlane()");
   // TODO: change state - handleFreezeAsAPlane().
-  }
+}
 
 function handleDelete() {
+  console.log("cntrl: gambits.js - handleDelete()");
+
+  const active = state.getCurrentIndex("Gambits");
+  if (active === 0) return;
+
+  const idx = active - 1;
+
+  // --- Remove from state ---
+  const gambits = state.getState().Gambits;
+  gambits.splice(idx, 1);
+
+  // --- Update index ---
+  state.setBufferIndex("Gambits", idx);
+
+  // --- Rebuild view + panel ---
+  rerunGambits();
+  }
+
+function handleRemoveAll() {
+  console.log("cntrl: gambits.js - handleRemoveAll()");
+
+  const active = state.getCurrentIndex("Gambits");
+  if (active === 0) return;
+
+  // --- Clear state ---
+  state.clearBuffer("Gambits");
+
+  // --- Rebuild (clears everything visually + panel) ---
+  rerunGambits();
+}
+function handleDelete1() {  // TODO: Currently wrong, needs rewrite.
   console.log("cntrl: gambits.js - handleDelete()");
 
   // --- Get current index ---
@@ -194,8 +177,8 @@ function handleDelete() {
   const group = gambitGroupRegistry.get(idx);
   console.log("cntrl: gambits.js - handleDelete()...group, idx", group, idx);
   if (group) {
-    vGambits.clearGambit(group);
     gambitGroupRegistry.delete(idx);
+    cGambits.rerunGambits();
   }
 
   // --- Remove from state buffer ---
@@ -214,7 +197,7 @@ function handleDelete() {
   // --- Update undo UI ---
   }
 
-function handleRemoveAll() {
+function handleRemoveAll1() {  // TODO: Currently wrong, needs rewrite.
   console.log("cntrl: gambits.js - handleRemoveAll()");
 
   const count = state.getIndices().Gambits;
@@ -249,10 +232,7 @@ function applyEntry(entry) {   // Group, state, render, panel.
   console.log("cntrl: gambits.js - applyEntry(entry)", entry);
 
   state.pushNewGambit(entry);                     // Change state.
-    const idx = state.getIndices().Gambits - 1; // Create and register group.
-    const group = vGambits.makeGroup(entry);
-    gambitGroupRegistry.set(idx, group);        // TODO: should not need both.
-    vGambits.setGroupRegistry(idx, group);
+  const group = vGambits.makeGroup(entry);        // Recreate from entry.
   vGambits.render(group, { animate: true });      // Render.
   vGambits.addLineToPanel(entry);                 // Add line to panel.
 }

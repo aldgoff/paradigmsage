@@ -1058,3 +1058,10 @@
     "AdvSqs": []
   }
  
+ ## Advsqs Work Through Board Undo and Load
+  {"Setup":[{"action":"makeBoard","boardSize":"8x8x8"}],"Moves":[],"Gambits":[],"AdvSqs":[{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":0,"stride":0,"opacity":0.5},{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":1,"stride":2,"opacity":0.5},{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":2,"stride":3,"opacity":0.5},{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":3,"stride":4,"opacity":0.5},{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":4,"stride":5,"opacity":0.5},{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":5,"stride":6,"opacity":0.5}]}
+
+  {"Setup":[{"action":"makeBoard","boardSize":"8x8x8"},{"action":"makeBoard","boardSize":"10x8x8"},{"action":"makeBoard","boardSize":"10x10x10"}],"Moves":[],"Gambits":[],"AdvSqs":[{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":0,"stride":0,"opacity":0.5},{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":1,"stride":2,"opacity":0.5},{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":2,"stride":3,"opacity":0.5},{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":3,"stride":4,"opacity":0.5},{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":4,"stride":5,"opacity":0.5},{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":5,"stride":6,"opacity":0.5},{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":6,"stride":7,"opacity":0.5}]}
+
+ ### (1-0-3-0)
+  {"Setup":[{"action":"makeBoard","boardSize":"8x8x8"}],"Moves":[],"Gambits":[{"Q":1,"src":"KB4,4","dst":[2,5,5],"area":36,"advsqs":[{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":5,"stride":6,"opacity":0.5}]},{"Q":13,"src":"Q4,4","dst":"KN7,4","area":16,"advsqs":[{"src":"Q4,4","srcTile":[0,0,0],"quad":13,"perimeter":3,"stride":1,"opacity":0.5}]},{"Q":38,"src":"Q4,4","dst":"KR8,8","area":25,"advsqs":[{"src":"Q4,4","srcTile":[0,0,0],"quad":38,"perimeter":4,"stride":1,"opacity":0.5}]}],"AdvSqs":[]}
