@@ -45,9 +45,9 @@ let advsqPanelInitialParams = null;
 let currentAdvsq = null;
 
 // --- UI ---
-export function clearAdvsq() {
-  // console.log("view : advsqs.js - clearAdvsq():");
-
+export function clear(advsq) {
+  console.log("view: advsqs.js - clear(advsq)", advsq);
+  
   if (!currentAdvsq) return;
 
   if(currentAdvsq.userData?.overlays) {  // Remove overlays from ALL tiles (board + offboard).
@@ -59,12 +59,6 @@ export function clearAdvsq() {
   view.context.scene.remove(currentAdvsq);  // Remove offboard tiles (group children).
 
   currentAdvsq = null;
-}
-
-export function clear(advsq) {
-  console.log("view: advsqs.js - clear(advsq)", advsq);
-  
-  clearAdvsq();
   }
 
 export function render(advsq) {
@@ -291,7 +285,7 @@ function strideDerived(q, k, s) {
 function makeAdvsq(specs) {
   console.log("view : advsqs.js - makeAdvsq(specs):", specs);
 
-  clearAdvsq();
+  clear();
 
   const group = view.buildAdvSqGroup(specs);
 

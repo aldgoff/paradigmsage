@@ -124,7 +124,7 @@ function handleRedo() {
 
   showUndoStatus();
   assertStateConsistency();
-}
+  }
 
 function handleRewind() {
   const keys = state.getStateKeys();
@@ -211,18 +211,6 @@ function handleFastForward() {
   assertStateConsistency();
 }
 
-function isEmpty(len) { return len === 0; }
-
-function canCollapseDown(idx)     { return idx > 1; }
-function canStepDown(idx)         { return idx === 1; }
-function canCrossDown(idx)        { return idx === 0; }
-
-function canCollapseUp(idx, len)  { return 0 < idx && idx < len; }
-function canStepUp(idx, len)      { return idx === 0 && len > 0; }
-function canCrossUp(idx, len)     { return idx === len; }
-
-/* ----- ----- ----- ----- */
-
 async function handleLoad() {
   console.log("cntrl: game.js - handleLoad()");
 
@@ -247,10 +235,10 @@ async function handleLoad() {
       for(const entry of entries) {
         state.pushNewState(key, entry);
         if(key === "Moves") {
-          vMoves.addLineToPanel(entry);
+          vMoves.pushPanelLine(entry);
         }
         else if(key === "Gambits") {
-          vGambits.addLineToPanel(entry);
+          vGambits.pushPanelLine(entry);
         }
       }
 
@@ -288,6 +276,18 @@ function handleSave() {
 // Seampoint: more handle functions...
 
 // --- Helpers ---
+function isEmpty(len) { return len === 0; }
+
+function canCollapseDown(idx)     { return idx > 1; }
+function canStepDown(idx)         { return idx === 1; }
+function canCrossDown(idx)        { return idx === 0; }
+
+function canCollapseUp(idx, len)  { return 0 < idx && idx < len; }
+function canStepUp(idx, len)      { return idx === 0 && len > 0; }
+function canCrossUp(idx, len)     { return idx === len; }
+
+/* ----- ----- ----- ----- */
+
 function rewindCurrentBuffer(buffer) {
   const idx = state.getCurrentIndex(buffer);
 
@@ -556,7 +556,7 @@ function assertStateConsistency() {
 
 function hardReset() {
   // --- View ---
-  vAdvsqs.clearAdvsq();
+  vAdvsqs.clear();
   vGambits.clearGambits();
   vMoves.clearMoves?.();
   boards.clearBoard();

@@ -39,53 +39,32 @@ export function redo(move) {
   // TODO: write redo().
 }
 
-export function addLineToPanel(move) {
-  console.log("view : moves.js - addLineToPanel(move)", move);
+export function pushPanelLine(move) {
+  console.log("view : moves.js - pushPanelLine(move)", move);
 
   const el = document.getElementById("move-list");
-  if (!el) return;
+  if(!el) return;
 
-  const { turn, player, piece, src, action, dst, sec } = move;
-
-  // --- freeze index ---
-  const index = state.getIndices().Moves;
-
-  // --- column widths ---
-  const turnCol = (String(turn).padStart(3)).padEnd(4);
-  // const playerCol = `${player}`.padEnd(6);
-  const pieceCol = `${piece}`.padEnd(1);
-  const moveCol = "-";
-  const dstCol = `${dst}`.padEnd(6);
-
-  let whiteCol = "";
-  let blackCol = "";
-  if(player === "White") {
-    whiteCol = `${pieceCol}${moveCol}${dstCol}`;
-    blackCol = "...     ";
-  }
-  else {
-    whiteCol = "        ";
-    blackCol = `${pieceCol}${moveCol}${dstCol}`;
-  }
-  const annotationsCol = ".....    .....";
-
-  // --- final line ---
-  const line = `${turnCol} ${whiteCol} ${blackCol} ${annotationsCol}`;
+  const line = assembleLine(move);
 
   const div = document.createElement("div");
   div.textContent = line;
 
-  // --- Dim future entries ---
-  const thisIdx = state.getBufferLength("Moves") - 1;
-  if (thisIdx >= index) {
-    div.style.opacity = "0.3";
-  }
-
   // Write to the scroll box.
   el.appendChild(div);
   el.scrollTop = el.scrollHeight;
+  }
 
-  return;
+export function popPanelLine() {
+  console.log("view : moves.js - popPanelLine()");
+
+  const el = document.getElementById("move-list");
+  if(!el) return;
+
+  const last = el.lastElementChild;
+  if(!last) return;
+
+  el.removeChild(last);
   }
 
 export function refreshPanel() {
@@ -133,5 +112,25 @@ export function derenderMove(move) {
 // Seampoint: more global functions...
 
 // --- Helpers ---
+function assembleLine(move) {
+  const { turn, player, piece, src, action, dst, sec } = move;
+
+  const index = state.getIndices().Moves;
+
+  // --- column widths ---
+  const turnCol = (String(turn).padStart(3)).padEnd(4);
+  const pieceCol = `${piece}`.padEnd(1);
+  const moveCol = "-";
+  const dstCol = `${dst}`.padEnd(6);
+
+  const whiteCol = (player === "White") ? `${pieceCol}${moveCol}${dstCol}`: "        ";
+  const blackCol = (player === "Black") ? `${pieceCol}${moveCol}${dstCol}`: "        ";
+
+  const annotationsCol = ".....    .....";
+
+  const line = `${turnCol} ${whiteCol} ${blackCol} ${annotationsCol}`;
+
+  return line;
+}
 // Seampoint: more local functions...
 

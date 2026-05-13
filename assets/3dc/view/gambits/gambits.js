@@ -101,40 +101,32 @@ export function redo1(gambit) {
   // TODO: write redo().
 }
 
-export function addLineToPanel(gambit) {
-  console.log("view : gambits.js - addLineToPanel(gambit)", gambit);
+export function pushPanelLine(gambit) {
+  console.log("view : gambits.js - pushPanelLine(gambit)", gambit);
 
   const el = document.getElementById("gambit-list");
-  if (!el) return;
+  if(!el) return;
 
-  const { Q, src, dst, area } = gambit;
+  const line = assembleLine(gambit);
 
-  // --- freeze index ---
-  const count = state.getIndices().Gambits;
-
-  // --- column widths ---
-  const idxCol  = String(count).padStart(2);    // right-aligned
-  const qCol    = `Q${Q}`.padEnd(3);            // "Q37  "
-  const srcCol  = String(src).padEnd(5);        // "KB4,4  "
-  const dstCol  = String(dst).padEnd(8);        // allow offboard arrays
-  const areaCol = String(area).padStart(2);     // right-aligned
-
-  // --- final line ---
-  const line = `${idxCol} ${qCol} ${srcCol} → ${dstCol}:${areaCol}`;
   const div = document.createElement("div");
   div.textContent = line;
 
-  // --- Dim future entries ---
-  const idx = count - 1; // current entry index
-  const thisIdx = state.getBufferLength("Gambits") - 1;
-  if (thisIdx >= count) {
-    div.style.opacity = "0.3";
-  }
-
+  // Write to the scroll box.
   el.appendChild(div);
   el.scrollTop = el.scrollHeight;
+  }
 
-  return;
+export function popPanelLine() {
+  console.log("view : gambits.js - popPanelLine()");
+
+  const el = document.getElementById("gambit-list");
+  if(!el) return;
+
+  const last = el.lastElementChild;
+  if(!last) return;
+
+  el.removeChild(last);
   }
 
 export function refreshPanel() {
@@ -299,7 +291,25 @@ function derenderGambit(group) {
   } else {
     view.context.scene.remove(group);
   }
+  }
+
+function assembleLine(gambit) {
+  const { Q, src, dst, area } = gambit;
+
+  const count = state.getIndices().Gambits;
+
+  // --- column widths ---
+  const idxCol  = String(count).padStart(2);    // right-aligned
+  const qCol    = `Q${Q}`.padEnd(3);            // "Q37  "
+  const srcCol  = String(src).padEnd(5);        // "KB4,4  "
+  const dstCol  = String(dst).padEnd(8);        // allow offboard arrays
+  const areaCol = String(area).padStart(2);     // right-aligned
+
+  const line = `${idxCol} ${qCol} ${srcCol} → ${dstCol}:${areaCol}`;
+
+  return line;
 }
+
 // Seampoint: more local functions...
 
 /* TODO: Gambit additions:

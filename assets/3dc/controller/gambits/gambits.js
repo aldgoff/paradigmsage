@@ -103,7 +103,7 @@ function handleFreezeQuadrant(currAdvsq) {
   console.log("cntrl: gambits.js - handleFreezeQuadrant(currAdvsq).", currAdvsq);
 
   state.clearBuffer("AdvSqs");                        // Advsq: change state.
-  vAdvsqs.clearAdvsq();                               // De-render. // TODO: move to view layer.
+  vAdvsqs.clear();                                    // De-render. // TODO: move to view layer.
   vAdvsqs.clearAdvsqPanelParams("Q4,4");              // Update panel.
 
   const entry = mGambits.makeEntry(currAdvsq);        // Transform panel payload into state entry.
@@ -189,7 +189,7 @@ function applyEntry(entry) {   // Group, state, render, panel.
   state.pushNewGambit(entry);                     // Change state.
   const group = vGambits.makeGroup(entry);        // Recreate from entry.
   vGambits.render(group, { animate: true });      // Render.
-  vGambits.addLineToPanel(entry);                 // Add line to panel.
+  vGambits.pushPanelLine(entry);                 // Add line to panel.
 
   // TODO: remove all entries in the downstream buffers; 
   // a new gambit invalidates advsqs. ?? May happen automagically upon advsq ingest.

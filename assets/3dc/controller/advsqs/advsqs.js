@@ -93,7 +93,7 @@ function handleRemove(payload) {
   const newAdvsq = blank(payload);           // Repack normalized fields.
 
   state.clearBuffer("AdvSqs");           // Log state change in undo buffer.
-  vAdvsqs.clearAdvsq();             // Render.
+  vAdvsqs.clear();             // Render.
   vAdvsqs.refreshPanel(newAdvsq);   // Update the control panel.
   }
 

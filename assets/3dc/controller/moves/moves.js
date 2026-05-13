@@ -154,7 +154,7 @@ function applyEntry(entry) {
 
   state.pushNewMove(entry);           // Change state.
   vMoves.render(entry);               // Render.
-  vMoves.addLineToPanel(entry);       // Add line to panel.
+  vMoves.pushPanelLine(entry);        // Add line to panel.
 
   // TODO: remove all entries in the downstream buffers; 
   // a new move invalidates gambits and advsqs.

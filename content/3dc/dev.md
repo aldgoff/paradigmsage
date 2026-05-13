@@ -94,5 +94,5 @@ title: "Dev"
   - 5/10/26 - Clues. Advsq json & spec files. Src tile positional versus vts. Gambit jsons.
   - 5/11/26 - Gambit specs and json files. Merge to confirm no hard to resolved merge errors.
   - 5/12/26 - Board undo on gambits. Align applyEntry(). Align gambits with panel buttons. Gambit better but still requires rerunGambits. UI Surface Reduction.
-  - 5/13/26 - Canonical UI.
+  - 5/13/26 - Canonical UI. Push & pop panel lines.
 

@@ -75,11 +75,14 @@ function applyEntry(entry) {        // Calls state functions, and view functions
 // Model functions:
 function makeEntry(payload) { return entry; }
 
-// View functions:
+// View functions (exploratory):
 function clear(entry) {}
 function render(entry) {}
 function refreshPanel(entry) {}
-function addLineToPanel(entry) {}
+
+// View functions (accumulators):
+function pushPanelLine(entry) {}
+function popPanelLine() {}
 
 // Misc. Understandings...
 function clear(entry) {}  // Derenders, dims row entry (if any), leaves entry in the state buffer.
