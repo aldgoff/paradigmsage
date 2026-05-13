@@ -27,19 +27,6 @@ import gambitsData from "./gambits.json" assert { type: "json" };
   import * as view   from "../../view/view.js";
 // Seampoint: more imports..
 
-/* TODO: Gambit additions:
- * 0. HandleLoad
- * 1. Rebuild groups on load
- * 2. No single source of registry
- * 3. Entry not canonical
- * 4. Load does not restore indexed state correctly
- * 5. Load does not use rerunGambits()
- * 6. Group creation path is unclear
- * 7. Delete by passes state API
- * 8. Hard coded UI reset values
- * 9. Panel + state desync possibility.
-*/
-
 // --- UI ---
 export function makeEntry(advsq) {
   console.log(`model: gambits.js - makeEntry(advsq):`, advsq);
@@ -74,4 +61,17 @@ export function fetchThisEntry(idx) {
 
 // --- Helpers ---
 // Seampoint: more local functions...
+
+/* TODO: Gambit additions:
+ * 0. HandleLoad
+ * 1. Rebuild groups on load
+ * 2. No single source of registry
+ * 3. Entry not canonical
+ * 4. Load does not restore indexed state correctly
+ * 5. Load does not use rerunGambits()
+ * 6. Group creation path is unclear
+ * 7. Delete by passes state API
+ * 8. Hard coded UI reset values
+ * 9. Panel + state desync possibility.
+*/
 

@@ -90,7 +90,6 @@ export function buildPayload(panel, action) {
     opts:     panel.querySelector('[name="move-opts"]')?.value,
   };
 }
-
 // Seampoint: more global functions...
 
 // --- Handle Functions ---
@@ -101,7 +100,7 @@ function handleMove(payload) {
 
   const entry = mMoves.makeEntry(payload);  // Create entry.
   applyEntry(entry);
-}
+  }
 
 function handleCapture(payload) {
   console.log("cntrl: moves.js - handleCapture(payload)", payload);

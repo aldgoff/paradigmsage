@@ -34,21 +34,6 @@ import gambitsData from "./gambits.json" assert { type: "json" };
   import * as vGambits from "../../view/gambits/gambits.js";
 // Seampoint: more imports...
 
-/* TODO: Gambit additions:
-  *  1. ✅ Clear AdvSq buffer
-  *  2. ✅ Render (with animation)
-  *  3. Compute derived fields
-  *  4. ✅ Add to scroll window
-  *  5. ✅ Put resolveDstTile under test
-  *  6. ✅ Move add and scale and isSame to utils.
-  *  7. ✅ Test aliases to AI (skipped)
-  *  8. ✅ If that passes, port geo into subdirs.
-  *  9. ✅ Update specs
-  * 10. Freeze Linear
-  * 11. Freeze Overlap
-  * 12. ✅ Plumbing for test suite
-*/
-
 // --- UI ---
 export function panelDispatch(payload) {
   console.log("cntrl: gambits.js - panelDispatch(payload):", payload);
@@ -130,7 +115,7 @@ function handleFreezeAsLinear(currAdvsq) {
   // TODO: change state - handleFreezeLinear().
 
   // applyEntry(entry);  // Eventually.
-}
+  }
 
 function handleFreezeAsDuplex(currAdvsq) {
   console.log("cntrl: gambits.js - handleFreezeAsDuplex()");
@@ -210,4 +195,19 @@ function applyEntry(entry) {   // Group, state, render, panel.
   // a new gambit invalidates advsqs. ?? May happen automagically upon advsq ingest.
 }
 // Seampoint: more local functions...
+
+/* TODO: Gambit additions:
+  *  1. ✅ Clear AdvSq buffer
+  *  2. ✅ Render (with animation)
+  *  3. Compute derived fields
+  *  4. ✅ Add to scroll window
+  *  5. ✅ Put resolveDstTile under test
+  *  6. ✅ Move add and scale and isSame to utils.
+  *  7. ✅ Test aliases to AI (skipped)
+  *  8. ✅ If that passes, port geo into subdirs.
+  *  9. ✅ Update specs
+  * 10. Freeze Linear
+  * 11. Freeze Overlap
+  * 12. ✅ Plumbing for test suite
+*/
 

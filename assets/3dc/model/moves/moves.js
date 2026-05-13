@@ -28,10 +28,11 @@ import movesData from "./moves.json" assert { type: "json" };
 export function makeEntry(payload) {
   console.log(`model: moves.js - makeEntry(payload):`, payload);
 
-  const index = state.getIndices()["Moves"] + 1;
-
   let { action, player, piece, src, dst, sec, capture, opts } = payload;
+
+  const index = state.getIndices()["Moves"] + 1;
   let turn = Math.floor((index + 1) / 2);
+
   let entry = { turn, player, piece, src, dst, action, sec };
 
   return entry;

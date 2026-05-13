@@ -61,9 +61,9 @@
 function panelDispatch(payload) {}
 function buildPayload(panel, action) {}
 
-function handleButtons(payload) {}
+function handleButtons(payload) {}  // Calls makeEntry function.
 
-function applyEntry(entry) {
+function applyEntry(entry) {        // Calls state functions, and view functions.
   // 1. clear current view
   // 2. handle Setup branching
   // 3. push new Setup state
@@ -71,6 +71,15 @@ function applyEntry(entry) {
   // 5. update panel
   // 6. invalidate downstream buffers
 }
+
+// Model functions:
+function makeEntry(payload) { return entry; }
+
+// View functions:
+function clear(entry) {}
+function render(entry) {}
+function refreshPanel(entry) {}
+function addLineToPanel(entry) {}
 
 // Misc. Understandings...
 function clear(entry) {}  // Derenders, dims row entry (if any), leaves entry in the state buffer.

@@ -8,24 +8,6 @@
   UI: the export functions.
 */
 
-/* TODO: QC checklist
-  1) Move addEventListener out of makeBoard into one-time init
-  2) ✅ Remove implicit teardown inside makeBoard; enforce clearBoard as sole inverse
-  3) Restrict raycasting to currentBoard instead of scene.children
-  4) ✅ Eliminate dual use of tileMap (global vs parameter); choose one model
-  5) Replace window.THREE with explicit module import
-  6) ✅ Ensure tileMap.clear() is always called before new board construction
-  7) Add guard for meshTile.userData.overlays before iteration
-  8) ✅ Add temporary diagnostics for missed clicks (coords === null)
-  9) ✅ Remove unused imports (cameras, renders)
-  10) ✅ Ensure event listener is singular (maintain invariant)
-  11) Validate no stray scene nodes remain beyond currentBoard
-  12) Verify tiles.initTileUserData does not retain cross-board references
-  13) Confirm getTileMesh never returns stale mesh after tileMap.clear()
-  14) Ensure currentBoard is the only authoritative board reference
-  15) Add sanity checks for board dimension consistency during rebuild
-*/
-
 // --- Load JSON ---
 import boardsData from "./boards.json" assert { type: "json" };
   const boardsModule = boardsData.boards_module;
@@ -184,4 +166,22 @@ function toggleDecorator(meshTile) {
   }
 }
 // Seampoint: more local functions...
+
+/* TODO: QC checklist
+  1) Move addEventListener out of makeBoard into one-time init
+  2) ✅ Remove implicit teardown inside makeBoard; enforce clearBoard as sole inverse
+  3) Restrict raycasting to currentBoard instead of scene.children
+  4) ✅ Eliminate dual use of tileMap (global vs parameter); choose one model
+  5) Replace window.THREE with explicit module import
+  6) ✅ Ensure tileMap.clear() is always called before new board construction
+  7) Add guard for meshTile.userData.overlays before iteration
+  8) ✅ Add temporary diagnostics for missed clicks (coords === null)
+  9) ✅ Remove unused imports (cameras, renders)
+  10) ✅ Ensure event listener is singular (maintain invariant)
+  11) Validate no stray scene nodes remain beyond currentBoard
+  12) Verify tiles.initTileUserData does not retain cross-board references
+  13) Confirm getTileMesh never returns stale mesh after tileMap.clear()
+  14) Ensure currentBoard is the only authoritative board reference
+  15) Add sanity checks for board dimension consistency during rebuild
+*/
 

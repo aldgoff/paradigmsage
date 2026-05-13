@@ -27,7 +27,7 @@ import advsqsData from "./advsqs.json" assert { type: "json" };
 export function makeEntry(payload) {
   console.log(`model: advsqs.js - makeEntry(payload):`, payload);
 
-  let { src, srcTile, quad, perimeter, stride, opacity } = payload;  // Informative.
+  let { action, src, srcTile, quad, perimeter, stride, opacity } = payload;  // Informative.
 
   const entry = payload;
 

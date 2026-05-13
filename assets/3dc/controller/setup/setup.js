@@ -65,8 +65,7 @@ export function buildPayload(panel, action) {
     trayType:   panel.querySelector('input[name="tray-type"]:checked')?.value,
     initialPos: panel.querySelector('input[name="initial-pos"]:checked')?.value,
   };
-  }
-
+}
 // Seampoint: more global functions...
 
 // --- Handle Functions ---
@@ -77,7 +76,7 @@ function handleMakeBoard(payload) { // Setup handler.
 
   const nextEntry = mSetup.makeEntry(payload);    // Transform panel payload into state entry.
   applyEntry(nextEntry);
-}
+  }
 
 function handleShowTrays(visible) {
   console.log("control: game.js - handleShowTrays(visible):", visible);

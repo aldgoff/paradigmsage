@@ -73,7 +73,6 @@ export function buildPayload(panel, action) {
     opacity:   Number(panel.querySelector('[name="advsq-opacity"]')?.value),
   };
 }
-
 // Seampoint: more global functions...
 
 // --- Handle Functions ---
@@ -241,20 +240,6 @@ function handleNextPiece(payload) {
 }
 
 // --- Helpers ---
-function blank(payload) { // Convert panel strings to numbers, arrays, etc.
-  let { src, srcTile, quad, perimeter, stride, opacity } = payload;  // Unpack primary fields.
-
-  src       = "Q4,4";
-  srcTile   = [0,0,0];  // "Q4,4"
-  quad      = 1;  
-  perimeter = 0;
-  stride    = 0;
-
-  const blank = { src, srcTile, quad, perimeter, stride, opacity }; // Repack primary fields.
-
-  return blank;
-}
-
 function applyEntry(entry) {   // Clear curr, branch, state change, render, refresh panel.
   console.log("cntrl: advsqs.js - applyEntry(entry)", entry);
 
@@ -271,5 +256,21 @@ function applyEntry(entry) {   // Clear curr, branch, state change, render, refr
   vAdvsqs.render(entry);              // Render the new advsq.
   vAdvsqs.refreshPanel(entry);        // Only needed by panels with derived fields.
 }
+
+function blank(payload) { // Convert panel strings to numbers, arrays, etc.
+  let { src, srcTile, quad, perimeter, stride, opacity } = payload;  // Unpack primary fields.
+
+  src       = "Q4,4";
+  srcTile   = [0,0,0];  // "Q4,4"
+  quad      = 1;  
+  perimeter = 0;
+  stride    = 0;
+
+  const blank = { src, srcTile, quad, perimeter, stride, opacity }; // Repack primary fields.
+
+  return blank;
+}
+
+
 // Seampoint: more local functions...
 

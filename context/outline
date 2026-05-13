@@ -337,7 +337,6 @@
 │   │   ├── instructions.md
 │   │   ├── limits.md
 │   │   ├── play.md
-│   │   ├── research.md
 │   │   ├── superposition.md
 │   │   └── variants.md
 │   ├── qtp
@@ -509,4 +508,4 @@
 │           └── poc.js
 └── themes
 
-109 directories, 400 files
+109 directories, 399 files
