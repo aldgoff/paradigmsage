@@ -101,7 +101,7 @@ function handleTrayGap(payload) {
 function applyEntry(entry) {
   console.log("cntrl: setup.js - applyEntry(entry)", entry);
 
-  const currEntry = mSetup.fetchCurrentEntry(); // Clear previous board.
+  const currEntry = state.fetchCurrentState("Setup"); // Clear previous board.
   if(currEntry != null) {
     vSetup.clear(currEntry);
     if(!state.isAtEnd("Setup")) {     // Branches the undo history, discards original branch.

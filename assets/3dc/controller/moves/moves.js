@@ -143,9 +143,9 @@ function handleFission(payload) {
 function applyEntry(entry) {
   console.log("cntrl: moves.js - applyEntry(entry)", entry);
 
-  const currEntry = mMoves.fetchCurrentEntry(); // Clear previous move.
+  const currEntry = state.fetchCurrentState("Moves"); // Clear previous move.
   if(currEntry != null) {
-    vMoves.clear(currEntry);
+    // vMoves.clear(currEntry);
     if(!state.isAtEnd("Moves")) {     // Branches the undo history, discards original branch.
       // TODO: clear all later move entries.
       // const idx = state.getCurrentIndex("Moves"); // Not quite working...

@@ -258,7 +258,7 @@ function blank(payload) { // Convert panel strings to numbers, arrays, etc.
 function applyEntry(entry) {   // Clear curr, branch, state change, render, refresh panel.
   console.log("cntrl: advsqs.js - applyEntry(entry)", entry);
 
-  const currEntry = mAdvsqs.fetchCurrentEntry(); // Clear previous board.
+  const currEntry = state.fetchCurrentState("AdvSqs"); // Clear previous board.
   if(currEntry) {
     vAdvsqs.clear(currEntry);
     if(!state.isAtEnd("AdvSqs")) {    // Branches the undo history, discards original branch.
