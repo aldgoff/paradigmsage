@@ -306,7 +306,7 @@ function rewindCurrentBuffer(buffer) {
     const curr = state.fetchCurrentState("AdvSqs");
     const first = state.getState().AdvSqs[0];
 
-    if (curr) vAdvsqs.clear(curr);
+    vAdvsqs.removeFromScene();
     vAdvsqs.render(first);
     vAdvsqs.refreshPanel(first);
 
@@ -349,7 +349,7 @@ function fastForwardCurrentBuffer(buffer) {
     const curr = state.fetchCurrentState("AdvSqs");
     const last = state.getState().AdvSqs[len - 1];
 
-    if (curr) vAdvsqs.clear(curr);
+    vAdvsqs.removeFromScene();
     vAdvsqs.render(last);
     vAdvsqs.refreshPanel(last);
 
@@ -388,7 +388,7 @@ function processUndoBuffer(key, idx) {
     if(     prev === null && curr === null) {
       }
     else if(prev === null && curr !=  null) {
-      vAdvsqs.clear(curr);       // Clear current advsq.
+      vAdvsqs.removeFromScene();       // Clear current advsq.
       vAdvsqs.clearAdvsqPanelParams("Q4,4");
       state.setBufferIndex("AdvSqs", idx-1);
       return true;
@@ -400,7 +400,7 @@ function processUndoBuffer(key, idx) {
       return true;
       }
     else if(prev !=  null && curr !=  null) {
-      vAdvsqs.clear(curr);       // Clear current advsq.
+      vAdvsqs.removeFromScene();       // Clear current advsq.
       vAdvsqs.render(prev);      // Render previous advsq.
       vAdvsqs.refreshPanel(prev);
       state.setBufferIndex("AdvSqs", idx-1);
@@ -470,7 +470,7 @@ function processRedoBuffer(key, idx) {
       vAdvsqs.refreshPanel(curr); // At top, nothing new to render.
       }
     else if(curr != null && next != null) {
-      vAdvsqs.clear(curr);       // Clear current advsq.
+      vAdvsqs.removeFromScene();       // Clear current advsq.
       vAdvsqs.render(next);      // Render next advsq.
       vAdvsqs.refreshPanel(next);
       state.setBufferIndex("AdvSqs", idx + 1);
@@ -556,7 +556,7 @@ function assertStateConsistency() {
 
 function hardReset() {
   // --- View ---
-  vAdvsqs.clear();
+  vAdvsqs.removeFromScene();
   vGambits.clearGambits();
   vMoves.clearMoves?.();
   boards.clearBoard();

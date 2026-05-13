@@ -42,24 +42,24 @@ import advsqsData from "./advsqs.json" assert { type: "json" };
 
 // --- Globals ---
 let advsqPanelInitialParams = null;
-let currentAdvsq = null;
+let currAdvsqGroup = null;
 
 // --- UI ---
-export function clear(advsq) {
-  console.log("view: advsqs.js - clear(advsq)", advsq);
-  
-  if (!currentAdvsq) return;
+export function removeFromScene() {
+  console.log("view : advsqs.js - removeFromScene():");
 
-  if(currentAdvsq.userData?.overlays) {  // Remove overlays from ALL tiles (board + offboard).
-    currentAdvsq.userData.overlays.forEach(o => {
+  if (!currAdvsqGroup) return;
+
+  if(currAdvsqGroup.userData?.overlays) {  // Remove overlays from ALL tiles (board + offboard).
+    currAdvsqGroup.userData.overlays.forEach(o => {
       if (o.parent) o.parent.remove(o);
     });
   }
 
-  view.context.scene.remove(currentAdvsq);  // Remove offboard tiles (group children).
+  view.context.scene.remove(currAdvsqGroup);  // Remove offboard tiles (group children).
 
-  currentAdvsq = null;
-  }
+  currAdvsqGroup = null;
+}
 
 export function render(advsq) {
   console.log("view: advsqs.js - render(advsq)", advsq);
@@ -285,12 +285,12 @@ function strideDerived(q, k, s) {
 function makeAdvsq(specs) {
   console.log("view : advsqs.js - makeAdvsq(specs):", specs);
 
-  clear();
+  removeFromScene();
 
   const group = view.buildAdvSqGroup(specs);
 
   view.context.scene.add(group);
-  currentAdvsq = group;
+  currAdvsqGroup = group;
 }
 
 function getAdvsqPanelParams() {
