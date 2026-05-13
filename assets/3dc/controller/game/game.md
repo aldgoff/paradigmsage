@@ -1075,4 +1075,33 @@
  ### 1-0-0-6
   {"Setup":[{"action":"makeBoard","boardSize":"8x8x8"}],"Moves":[],"Gambits":[],"AdvSqs":[{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":0,"stride":0,"opacity":0.5},{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":1,"stride":2,"opacity":0.5},{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":2,"stride":3,"opacity":0.5},{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":3,"stride":4,"opacity":0.5},{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":4,"stride":5,"opacity":0.5},{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":5,"stride":6,"opacity":0.5}]}
 
+## Linear Move Example 
+ ### Horizontal Rook Plane
+  {"Setup":[{"action":"makeBoard","boardSize":"8x8x8"}],"Moves":[],"Gambits":[{"Q":1,"src":"KB4,4","dst":"KB4,7","area":16,"advsqs":[{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":3,"stride":7,"opacity":0.5}]},{"Q":2,"src":"KB4,4","dst":"KB1,7","area":16,"advsqs":[{"src":"KB4,4","srcTile":[2,0,0],"quad":2,"perimeter":3,"stride":0,"opacity":0.5}]}],"AdvSqs":[]}
+
+ ### Both Rook Planes
+  {"Setup":[{"action":"makeBoard","boardSize":"8x8x8"}],"Moves":[],"Gambits":[{"Q":1,"src":"KB4,4","dst":"KB4,7","area":16,"advsqs":[{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":3,"stride":7,"opacity":0.5}]},{"Q":2,"src":"KB4,4","dst":"KB1,7","area":16,"advsqs":[{"src":"KB4,4","srcTile":[2,0,0],"quad":2,"perimeter":3,"stride":0,"opacity":0.5}]},{"Q":5,"src":"KB4,4","dst":[5,0,0],"area":16,"advsqs":[{"src":"KB4,4","srcTile":[2,0,0],"quad":5,"perimeter":3,"stride":1,"opacity":0.5}]},{"Q":6,"src":"KB4,4","dst":"QB4,7","area":16,"advsqs":[{"src":"KB4,4","srcTile":[2,0,0],"quad":6,"perimeter":3,"stride":0,"opacity":0.5}]}],"AdvSqs":[]}
+
+### Constructured Rook Linear Move
+  {"Setup":[{"action":"makeBoard","boardSize":"8x8x8"}],"Moves":[],"Gambits":[{"move":"linear","piece":"rook","src":"KB4,4","dst":"KB4,6","ray":"right_fore","advsqs":[[{"srcTile":[2,0,0],"quad":1,"perimeter":2,"stride":5,"opacity":0.5},{"srcTile":[2,0,0],"quad":2,"perimeter":2,"stride":5,"opacity":0.5}],[{"srcTile":[2,0,0],"quad":5,"perimeter":2,"stride":5,"opacity":0.5},{"srcTile":[2,0,0],"quad":6,"perimeter":2,"stride":5,"opacity":0.5}]],"opacity":0.5}],"AdvSqs":[{"action":"place","src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":0,"stride":0,"opacity":0.5},{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":1,"stride":2,"opacity":0.5},{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":2,"stride":3,"opacity":0.5},{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":2,"stride":4,"opacity":0.5},{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":2,"stride":5,"opacity":0.5}]}
+
+  {"Setup":[{"action":"makeBoard","boardSize":"8x8x8"}],"Moves":[],"Gambits":[],"AdvSqs":[{"action":"place","src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":0,"stride":0,"opacity":0.5},{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":1,"stride":2,"opacity":0.5},{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":2,"stride":3,"opacity":0.5},{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":2,"stride":4,"opacity":0.5},{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":2,"stride":5,"opacity":0.5}]}
+
+  {"Setup":[{"action":"makeBoard","boardSize":"8x8x8"}],"Moves":[],"Gambits":[{"move":"linear","piece":"rook","src":"KB4,4","dst":"KB4,6","ray":"right_fore","advsqs":[[{"srcTile":[2,0,0],"quad":1,"perimeter":2,"stride":5,"area":9},{"srcTile":[2,0,0],"quad":2,"perimeter":2,"stride":5,"area":9}],[{"srcTile":[2,0,0],"quad":5,"perimeter":2,"stride":5,"area":9},{"srcTile":[2,0,0],"quad":6,"perimeter":2,"stride":5,"area":9}]],"opacity":0.5}],"AdvSqs":[{"action":"place","src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":0,"stride":0,"opacity":0.5},{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":1,"stride":2,"opacity":0.5},{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":2,"stride":3,"opacity":0.5},{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":2,"stride":4,"opacity":0.5},{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":2,"stride":5,"opacity":0.5}]}
+
+  {"Setup":[{"action":"makeBoard","boardSize":"8x8x8"}],
+  "Moves":[],
+  "Gambits":[{"move":"linear","piece":"rook","src":"KB4,4","dst":"KB4,6","ray":"right_fore",
+    "advsqs":[
+      [{"srcTile":[2,0,0],"quad":1,"perimeter":2,"stride":5,"area":9},{"srcTile":[2,0,0],"quad":2,"perimeter":2,"stride":5,"area":9}],
+      [{"srcTile":[2,0,0],"quad":5,"perimeter":2,"stride":5,"area":9},{"srcTile":[2,0,0],"quad":6,"perimeter":2,"stride":5,"area":9}]
+      ],
+      "opacity":0.5}],
+  "AdvSqs":[
+    {"action":"place","src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":0,"stride":0,"opacity":0.5},
+    {"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":1,"stride":2,"opacity":0.5},
+    {"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":2,"stride":3,"opacity":0.5},
+    {"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":2,"stride":4,"opacity":0.5},
+    {"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":2,"stride":5,"opacity":0.5}
+    ]}
 

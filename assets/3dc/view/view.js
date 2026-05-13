@@ -27,7 +27,7 @@
   import * as game       from "../controller/game/game.js";
   import * as viewer     from "../controller/viewer/viewer.js";
 
-  import * as vAdvsqs    from "../geometry/advsqs/advsqs.js";
+  import * as gAdvsqs    from "../geometry/advsqs/advsqs.js";
   import * as decorators from "./decorators/decorators.js";
   import * as quads      from "../geometry/quads/quads.js";
 
@@ -60,7 +60,7 @@ export function buildAdvSqGroup(specs) { // Params: srcTile, quad, perimeter, st
 
   const { src, srcTile, quad, perimeter, stride, opacity } = specs;
 
-  const advsq = vAdvsqs.AdvSq.fromQuad(srcTile, quad, perimeter);
+  const advsq = gAdvsqs.AdvSq.fromQuad(srcTile, quad, perimeter);
   const piece = advsq.getPiece();
   const perims = advsq.getPerims();
 

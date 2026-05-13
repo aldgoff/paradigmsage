@@ -20,11 +20,15 @@ import gambitsData from "./gambits.json" assert { type: "json" };
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
+  import * as utils    from "../../../utils/utils.js";  
+
   import * as game     from "../../controller/game/game.js";
   import * as cAdvsqs  from "../../controller/advsqs/advsqs.js";
 
   import * as state    from "../../model/state/state.js";
   import * as planes   from "../../geometry/planes/planes.js";    // resolveDstTile().
+  import * as quads    from "../../geometry/quads/quads.js";
+  import * as gAdvsqs  from "../../geometry/advsqs/advsqs.js";
   import * as mAdvsqs  from "../../model/advsqs/advsqs.js";
   import * as mGambits from "../../model/gambits/gambits.js";
   
@@ -102,55 +106,128 @@ export function rerunGambits() {
 function handleFreezeQuadrant(currAdvsq) {
   console.log("cntrl: gambits.js - handleFreezeQuadrant(currAdvsq).", currAdvsq);
 
+  const { src, srcTile, quad, perimeter, stride, opacity } = currAdvsq;
+
   state.clearBuffer("AdvSqs");                        // Advsq: change state.
   vAdvsqs.removeFromScene();                          // De-render. // TODO: move to view layer.
   vAdvsqs.clearAdvsqPanelParams("Q4,4");              // Update panel.
 
   const entry = mGambits.makeEntry(currAdvsq);        // Transform panel payload into state entry.
   applyEntry(entry);
-  }
+}
 
 function handleFreezeAsLinear(currAdvsq) {
-  console.log("cntrl: gambits.js - handleFreezeLinear()");
-  // TODO: change state - handleFreezeLinear().
+  console.log("cntrl: gambits.js - handleFreezeAsLinear(currAdvsq)", currAdvsq);
 
-  // applyEntry(entry);  // Eventually.
+  const { src, srcTile, quad, perimeter, stride, opacity } = currAdvsq;
+
+  state.clearBuffer("AdvSqs");                        // Advsq: change state.
+  vAdvsqs.removeFromScene();                          // De-render. // TODO: move to view layer.
+  vAdvsqs.clearAdvsqPanelParams("Q4,4");              // Update panel.
+
+  const { entry, line } = mGambits.makeLinearEntry(currAdvsq);
+  applyLinearEntry({ entry, line });
+}
+
+// --- Helpers ---
+function resolveStrideRay(currAdvsq, rayPair) {
+  console.log("cntrl: gambits.js - resolveStrideRay(currAdvsq, rayPair)", currAdvsq, rayPair);
+
+  const { srcTile, quad, perimeter, stride } = currAdvsq;
+
+  const advsq = gAdvsqs.AdvSq.fromQuad(srcTile, quad, perimeter);
+  const perims = advsq.getPerims();
+  const last = perims[perims.length - 1];
+
+  const strideTile = last.stride[stride - 1];  // <-- actual coord
+
+  if (utils.isSame(strideTile, last.E1)) return rayPair[0];
+  if (utils.isSame(strideTile, last.E2)) return rayPair[1];
+
+  const e2 = 2*perimeter + 1;
+  throw new Error(`Stride tile was ${stride}, must be E1(1) or E2(${e2})`);
   }
 
+function findQuadsForRay(ray) {
+  console.log("cntrl: gambits.js - findQuadsForRay(ray)", ray);
+
+  const result = [];
+
+  for (let Q = 1; Q <= 60; Q++) {
+    const rec = quads.pqrTable(Q);
+    if (rec.rayPair.includes(ray)) {
+      result.push(Q);
+    }
+  }
+
+  return result;
+  }
+
+function groupByPlane(quadsList) {
+  console.log("cntrl: gambits.js - groupByPlane(quadsList)", quadsList);
+
+  const map = new Map();
+
+  quadsList.forEach(Q => {
+    const plane = quads.quadToPlane(Q);
+
+    if (!map.has(plane)) map.set(plane, []);
+    map.get(plane).push(Q);
+  });
+
+  return [...map.values()]; // each = one rectangle (2 quads)
+  }
+
+function buildAdvRects(srcTile, quadPairs, perimeter, stride, opacity) {
+  console.log("cntrl: gambits.js - buildAdvRects(...)", srcTile, quadPairs, perimeter, stride, opacity);
+
+  const area = (perimeter+1)*(perimeter+1);
+
+  return quadPairs.map(pair => {
+    return pair.map(Q => ({
+      srcTile,
+      quad: Q,
+      perimeter,
+      stride,
+      area
+    }));
+  });
+}
+
 function handleFreezeAsDuplex(currAdvsq) {
-  console.log("cntrl: gambits.js - handleFreezeAsDuplex()");
+  console.log("cntrl: gambits.js - handleFreezeAsDuplex(currAdvsq)", currAdvsq);
   // TODO: change state - handleFreezeAsDuplex().
 
   // applyEntry(entry);  // Eventually.
   }
 
 function handleFreezeWithOverlaps(currAdvsq) {
-  console.log("cntrl: gambits.js - handleFreezeOverlay()");
+  console.log("cntrl: gambits.js - handleFreezeOverlay(currAdvsq)", currAdvsq);
   // TODO: change state - handleFreezeOverlay().
 
   // applyEntry(entry);  // Eventually.
 }
 
 function handleFreezeAsKnight(currAdvsq) {
-  console.log("cntrl: gambits.js - handleFreezeAsKnight()");
+  console.log("cntrl: gambits.js - handleFreezeAsKnight(currAdvsq)", );
   //TODO: Complete handleFreezeAsKnight().
  
   // applyEntry(entry);  // Eventually.
  }
 function handleFreezeAsPawn(currAdvsq) {
-  console.log("cntrl: gambits.js - handleFreezeAsPawn()");
+  console.log("cntrl: gambits.js - handleFreezeAsPawn(currAdvsq)", currAdvsq);
   //TODO: Complete handleFreezeAsPawn().
 
   // applyEntry(entry);  // Eventually.
   }
 function handleFreezeAsKing(currAdvsq) {
-  console.log("cntrl: gambits.js - handleFreezeAsKing()");
+  console.log("cntrl: gambits.js - handleFreezeAsKing(currAdvsq)", currAdvsq);
   //TODO: Complete handleFreezeAsKing().
 
   // applyEntry(entry);  // Eventually.
   }
 function handleFreezeAsAPlane(currAdvsq) {
-  console.log("cntrl: gambits.js - handleFreezeAsAPlane()");
+  console.log("cntrl: gambits.js - handleFreezeAsAPlane(currAdvsq)", currAdvsq);
   //TODO: Complete handleFreezeAsAPlane().
 
   // applyEntry(entry);  // Eventually.
@@ -189,11 +266,22 @@ function applyEntry(entry) {   // Group, state, render, panel.
   state.pushNewGambit(entry);                     // Change state.
   const group = vGambits.makeGroup(entry);        // Recreate from entry.
   vGambits.render(group, { animate: true });      // Render.
-  vGambits.pushPanelLine(entry);                 // Add line to panel.
+  vGambits.pushPanelLine(entry);                  // Add line to panel.
 
   // TODO: remove all entries in the downstream buffers; 
   // a new gambit invalidates advsqs. ?? May happen automagically upon advsq ingest.
 }
+
+function applyLinearEntry({entry, line}) {   // Group, state, render, panel.
+  console.log("cntrl: gambits.js - applyLinearEntry({entry, line})", {entry, line});
+ 
+  state.pushNewGambit(entry);                     // Change state.
+  // const group = vGambits.makeGroup(entry);        // Recreate from entry.
+  // vGambits.render(group, { animate: true });      // Render.
+  vGambits.pushPanelLine(line);                   // Append line to panel.
+}
+
+
 // Seampoint: more local functions...
 
 /* TODO: Gambit additions:

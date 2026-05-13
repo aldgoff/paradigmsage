@@ -3,7 +3,7 @@
     "schema": {
       "seq": 1, "move": 60, "piece": "R", "src": "Q2,2", "dst": "Q4,4", "feedback": 9
     },
-    "rowExamples": [
+    "lineExamples": [
       " 1 Q3  R Q4,4  → Q2,2  :  9",
       " 2 Q13 B Q2,2  → KR4,4 :  9",
       " 3 Q37 D Q2,2  → Q4,4  :  4",

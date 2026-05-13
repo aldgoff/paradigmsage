@@ -65,6 +65,7 @@
   vi: Merge branch '3dc' - Standardize UI across layers, load/save, time symmetric idiom for moves, complete state UI functions.
   vi: Merge branch '3dc' - QC. Undo/redo rewind/FF bugs. Delete deprecated items. Plumb trays. May buildPayload canonical.
   vi: Merge branch '3dc' - Safe merge of gambit specs and json.
+  vi: Merge branch '3dc' - Fix board gambit undo bug, UI surface reduction, plumb freeze linear gambit.
   git log --oneline --decorate --graph --all --boundary -n 50
   git push origin main
   ```

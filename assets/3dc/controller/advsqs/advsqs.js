@@ -266,7 +266,5 @@ function blank(payload) { // Convert panel strings to numbers, arrays, etc.
 
   return blank;
 }
-
-
 // Seampoint: more local functions...
 

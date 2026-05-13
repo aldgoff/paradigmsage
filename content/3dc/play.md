@@ -29,7 +29,7 @@ layout: "play"
     cursor: move;
     }
   #gambit-window {
-    width: 200px;
+    width: 280px;
   }
   #gambit-list {
     font-family: monospace;
