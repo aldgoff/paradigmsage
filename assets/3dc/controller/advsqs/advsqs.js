@@ -243,7 +243,6 @@ function handleNextPiece(payload) {
 function applyEntry(entry) {   // Clear curr, branch, state change, render, refresh panel.
   console.log("cntrl: advsqs.js - applyEntry(entry)", entry);
 
-  vAdvsqs.removeFromScene();                         // Derenders.
   if(!state.isAtEnd("AdvSqs")) {                // Branches undo history, discards original branch.
     const idx = state.getCurrentIndex("AdvSqs");
     state.truncateState("AdvSqs", idx);

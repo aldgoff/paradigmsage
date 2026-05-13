@@ -285,7 +285,7 @@ function strideDerived(q, k, s) {
 function makeAdvsq(specs) {
   console.log("view : advsqs.js - makeAdvsq(specs):", specs);
 
-  removeFromScene();
+  removeFromScene();  // Derenders.
 
   const group = view.buildAdvSqGroup(specs);
 

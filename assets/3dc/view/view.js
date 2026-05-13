@@ -81,13 +81,12 @@ export function init(playBoard) {
 export function buildAdvSqGroup(specs) { // Params: srcTile, quad, perimeter, stride, opacity.
   console.log("view : view.js - buildAdvSqGroup(specs).", specs);
 
-  // const group = new THREE.Group();
   const group = new THREE.Group();
 
   group.userData = group.userData || {};
   group.userData.overlays = [];
 
-  const { srcTile, quad, perimeter, stride, opacity } = specs;
+  const { src, srcTile, quad, perimeter, stride, opacity } = specs;
 
   const advsq = vAdvsqs.AdvSq.fromQuad(srcTile, quad, perimeter);
   const piece = advsq.getPiece();
@@ -104,42 +103,36 @@ export function buildAdvSqGroup(specs) { // Params: srcTile, quad, perimeter, st
     const quadType = quads.quadToQuadType(quad);
     const lastPerim = (k === perims.length - 1);
 
-    decoratePerimeter(
-      lastPerim,
-      perim,
-      piece,
-      quadType,
-      group,
-      opacity,
-      stride,
-      0.05
-    );
+    decoratePerimeter(lastPerim, perim, piece, quadType, group, opacity, stride, 0.05);
   }
 
+  console.log("view : view.js - buildAdvSqGroup()...group", group);
   return group;
 }
 // Seampoint: more global functions...
 
 // --- Helpers ---
 function decoratePerimeter(lastPerim, perim, piece, quadType, group, opacity, strideNo, zOffset=0.00) {
-  // console.log("view : advsqs.js - decoratePerimeter(perim)", perim);
+  // console.log("view : view.js - decoratePerimeter(perim)", perim);
+
   const end  = (piece    === "duke") ? "end3":   "end2";
   const apex = (quadType === "face") ? "duplex": "apex";
 
   const stride = perim.stride;
   for(let i=1; i<=stride.length; i++) {
     const j = i - 1;
-    if(     utils.isSame(stride[j], perim.E1)  ) decorateTile(stride[j], piece, end,  group, opacity);
-    else if(utils.isSame(stride[j], perim.apex)) decorateTile(stride[j], piece, apex, group, opacity);
-    else if(utils.isSame(stride[j], perim.E2)  ) decorateTile(stride[j], piece, end,  group, opacity);
-    else {
-      decorateTile(stride[j], piece, "body", group, opacity);
+    if(     utils.isSame(stride[j], perim.E1)  ) decorateTile(stride[j], piece, end,    group, opacity);
+    else if(utils.isSame(stride[j], perim.apex)) decorateTile(stride[j], piece, apex,   group, opacity);
+    else if(utils.isSame(stride[j], perim.E2)  ) decorateTile(stride[j], piece, end,    group, opacity);
+    else {                                       decorateTile(stride[j], piece, "body", group, opacity);
     }
-    if(lastPerim && (i === strideNo)) decorateTile(stride[j], piece, "dst", group, opacity, zOffset);
+    if(lastPerim && (i === strideNo))            decorateTile(stride[j], piece, "dst",  group, opacity, zOffset);
   }
   }
- 
+
 function decorateTile(coords, piece, decorator, group, opacity, zOffset = 0.00) {
+  // console.log("view : view.js - decorateTile(...).");
+
   let meshTile = tiles.getTileMesh(context.tileMap, coords);
 
   if (!meshTile) {
@@ -148,8 +141,7 @@ function decorateTile(coords, piece, decorator, group, opacity, zOffset = 0.00) 
 
     meshTile = tiles.createMeshTile(tile, context.tileGeometry, pos);
 
-    // --- Visual setup ---
-    meshTile.material.forEach(mat => {
+    meshTile.material.forEach(mat => {      // Visual setup.
       mat.transparent = true;
       mat.opacity = opacity;
     });
@@ -161,19 +153,10 @@ function decorateTile(coords, piece, decorator, group, opacity, zOffset = 0.00) 
       }
     });
 
-    // --- Tile identity ---
-    meshTile.userData = {
-      isTile: true,
-      coords: pos,
-      faceColor: tile.faceColor,
-      isOffboard: true,
+    // Tile identity.
+    meshTile.userData = { isTile: true, coords: pos, faceColor: tile.faceColor, isOffboard: true, entry: group.userData.entry }; // Ownership tag.
 
-      // ✅ REQUIRED: ownership tag
-      entry: group.userData.entry
-    };
-
-    // --- Attach to group (ownership root) ---
-    group.add(meshTile);
+    group.add(meshTile);  // Attach to group (ownership root).
   }
 
   const faceColor = meshTile.userData.faceColor;
@@ -185,57 +168,14 @@ function decorateTile(coords, piece, decorator, group, opacity, zOffset = 0.00) 
       o.userData = o.userData || {};
 
       o.userData.parentTile = meshTile;
-      o.userData.isOverlay = true;
-
-      // ✅ REQUIRED: ownership tag
-      o.userData.entry = group.userData.entry;
+      o.userData.isOverlay  = true;
+      o.userData.entry      = group.userData.entry;  // Ownership tag.
     });
 
-    // ✅ REQUIRED: tracked overlays for fast removal
-    group.userData.overlays.push(...overlays);
-  }
-}
-function decorateTile1(coords, piece, decorator, group, opacity, zOffset=0.00) {
-  let meshTile = tiles.getTileMesh(context.tileMap, coords);
-  if (!meshTile) {
+    group.userData.overlays.push(...overlays);  // Tracked overlays for fast removal.
 
-    let pos = coords;
-    let tile = tiles.getTileAttributes(pos);
-    meshTile = tiles.createMeshTile(tile, context.tileGeometry, pos);
-    meshTile.material.forEach(mat => {      // Faces and edges.
-      mat.transparent = true;
-      mat.opacity = opacity;   // tweak as desired
-    });
-    meshTile.children.forEach(child => {     // Frame.
-      if (child.type === "LineSegments") {
-        child.material.transparent = true;
-        child.material.opacity = opacity  // match tile or slightly higher (e.g. 0.4)
-      }
-    });
-
-    meshTile.userData = {
-      isTile: true,
-      coords: pos,
-      faceColor: tile.faceColor,
-      isOffboard: true
-    };
-
-    group.add(meshTile);
-  }
-
-  const faceColor = meshTile.userData.faceColor;
-
-  const overlays = decorators.decorate(faceColor, meshTile, piece, decorator, zOffset);
-
-  if (overlays) {
-    overlays.forEach(o => {
-      o.userData = o.userData || {};
-      o.userData.parentTile = meshTile;
-      o.userData.isOverlay = true;
-      o.userData.entry = group.userData.entry;
-    });
-
-    group.userData.overlays.push(...overlays);
+    // console.log("view : view.js - decorateTile(...)...group.userData.overlays", group.userData.overlays);
+    // console.log("decorator:", decorator, "count:", group.userData.overlays.length);
   }
 }
 // Seampoint: more local functions...
