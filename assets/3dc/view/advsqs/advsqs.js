@@ -42,14 +42,24 @@ import advsqsData from "./advsqs.json" assert { type: "json" };
 
 // --- Globals ---
 let advsqPanelInitialParams = null;
-let currentAdvsq = null;
+let currAdvsqGroup = null;
 
 // --- UI ---
-export function clear(advsq) {
-  console.log("view: advsqs.js - clear(advsq)", advsq);
-  
-  clearAdvsq();
+export function removeFromScene() {
+  console.log("view : advsqs.js - removeFromScene():");
+
+  if (!currAdvsqGroup) return;
+
+  if(currAdvsqGroup.userData?.overlays) {  // Remove overlays from ALL tiles (board + offboard).
+    currAdvsqGroup.userData.overlays.forEach(o => {
+      if (o.parent) o.parent.remove(o);
+    });
   }
+
+  view.context.scene.remove(currAdvsqGroup);  // Remove offboard tiles (group children).
+
+  currAdvsqGroup = null;
+}
 
 export function render(advsq) {
   console.log("view: advsqs.js - render(advsq)", advsq);
@@ -99,23 +109,6 @@ export function setAdvsqPanelInitialParams() {
 
 export function getAdvsqPanelInitialParams() {
   return advsqPanelInitialParams;
-  }
-
-export function getAdvsqPanelParams() {
-  console.log("view : advsqs.js - getAdvsqPanelParams():");
-
-  const panel = document.getElementById("advsq-window");
-  if (!panel) return;
-
-  const params = {
-    srcTile:   panel.querySelector('[name="advsq-src"]')?.value,
-    quad:      panel.querySelector('[name="advsq-quad"]')?.value,
-    perimeter: panel.querySelector('[name="advsq-perimeter"]')?.value,
-    stride:    panel.querySelector('[name="advsq-stride"]')?.value,
-    opacity:   panel.querySelector('[name="advsq-opacity"]')?.value,
-  };
-
-  return params;
   }
 
 export function clearAdvsqPanelParams(srcTile) {
@@ -181,54 +174,6 @@ export function setAdvsqPanelParams(params) {
   panel.querySelector('[name="advsq-perimeter"]').value    = params.perimeter;
   panel.querySelector('[name="advsq-stride"]').value       = params.stride;
   panel.querySelector('[name="advsq-opacity"]').value      = params.opacity;
-  }
-
-export function specsToPanelParams(specs) {
-  console.log("view : advsqs.js - specsToPanelParams(specs):", specs);
-
-  if(!specs) return getAdvsqPanelInitialParams();
-
-  const spec = getActiveBoardSpec();
-  // TODO: get boardspec from setup panel.
-  // const spec = coords.getBoardSpec("8x8x8");
-  console.log("   specs", specs);
-  let src = coords.vtsToBoard(specs.srcTile, spec);
-  console.log("   spec", spec);
-
-  return {
-    srcTile:   specs.srcTile,
-    quad:      specs.quad,
-    perimeter: specs.perimeter,
-    stride:    specs.stride,
-    opacity:   specs.opacity
-  };
-  }
-
-export function makeAdvsq(specs) {
-  console.log("view : advsqs.js - makeAdvsq(specs):", specs);
-
-  clearAdvsq();
-
-  const group = view.buildAdvSqGroup(specs);
-
-  view.context.scene.add(group);
-  currentAdvsq = group;
-  }
-
-export function clearAdvsq() {
-  // console.log("view : advsqs.js - clearAdvsq():");
-
-  if (!currentAdvsq) return;
-
-  if(currentAdvsq.userData?.overlays) {  // Remove overlays from ALL tiles (board + offboard).
-    currentAdvsq.userData.overlays.forEach(o => {
-      if (o.parent) o.parent.remove(o);
-    });
-  }
-
-  view.context.scene.remove(currentAdvsq);  // Remove offboard tiles (group children).
-
-  currentAdvsq = null;
 }
 // Seampoint: more global functions...
 
@@ -336,5 +281,55 @@ function strideDerived(q, k, s) {
 
   return { strideType, moveType, overlap, piece };
 }
+
+function makeAdvsq(specs) {
+  console.log("view : advsqs.js - makeAdvsq(specs):", specs);
+
+  removeFromScene();  // Derenders.
+
+  const group = view.buildAdvSqGroup(specs);
+
+  view.context.scene.add(group);
+  currAdvsqGroup = group;
+}
+
+function getAdvsqPanelParams() {
+  console.log("view : advsqs.js - getAdvsqPanelParams():");
+
+  const panel = document.getElementById("advsq-window");
+  if (!panel) return;
+
+  const params = {
+    srcTile:   panel.querySelector('[name="advsq-src"]')?.value,
+    quad:      panel.querySelector('[name="advsq-quad"]')?.value,
+    perimeter: panel.querySelector('[name="advsq-perimeter"]')?.value,
+    stride:    panel.querySelector('[name="advsq-stride"]')?.value,
+    opacity:   panel.querySelector('[name="advsq-opacity"]')?.value,
+  };
+
+  return params;
+}
+
+function specsToPanelParams(specs) {
+  console.log("view : advsqs.js - specsToPanelParams(specs):", specs);
+
+  if(!specs) return getAdvsqPanelInitialParams();
+
+  const spec = getActiveBoardSpec();
+  // TODO: get boardspec from setup panel.
+  // const spec = coords.getBoardSpec("8x8x8");
+  console.log("   specs", specs);
+  let src = coords.vtsToBoard(specs.srcTile, spec);
+  console.log("   spec", spec);
+
+  return {
+    srcTile:   specs.srcTile,
+    quad:      specs.quad,
+    perimeter: specs.perimeter,
+    stride:    specs.stride,
+    opacity:   specs.opacity
+  };
+}
+
 // Seampoint: more local functions...
 

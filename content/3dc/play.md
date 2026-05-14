@@ -29,7 +29,7 @@ layout: "play"
     cursor: move;
     }
   #gambit-window {
-    width: 200px;
+    width: 280px;
   }
   #gambit-list {
     font-family: monospace;
@@ -146,16 +146,16 @@ layout: "play"
     <button data-action="freezeO">Overlap</button>
    </div>
   <div class="section">
-    <button data-action="freezeQ">Knight</button>
-    <button data-action="freezeQ">Pawn</button>
+    <button data-action="freezeN">Knight</button>
+    <button data-action="freezeP">Pawn</button>
   </div>
   <div class="section">
-    <button data-action="freezeQ">King</button>
-    <button data-action="freezeP">Plane</button>
+    <button data-action="freezeK">King</button>
+    <button data-action="asAPlane">Plane</button>
   </div>
   <div class="section">
-    <button data-action="delete">Expand</button>
-    <button data-action="remove">Contract</button>
+    <button data-action="expand">Expand</button>
+    <button data-action="contract">Contract</button>
   </div>
   <div class="section">
     <button data-action="delete">Delete</button>

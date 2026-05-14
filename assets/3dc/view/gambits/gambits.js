@@ -39,90 +39,102 @@ import gambitsData from "./gambits.json" assert { type: "json" };
 
 // --- Globals ---
 let activeAnimation = null;
-const gambitGroupRegistry = new Map();  // Holds mesh data for re-rendering gambits.
 
 // --- UI ---
 export function makeGroup(entry) {
   console.log("view : gambits.js - makeGroup(entry).", entry);
 
   const { Q, src, dst, area, advsqs } = entry;
-
-  const base = advsqs?.[0];
-  if (!base) throw new Error("Invalid entry: missing advsqs[0]");
-
-  const { srcTile, quad, perimeter, stride, opacity } = base;
-
-  const advsq = { srcTile, quad, perimeter, stride, opacity };
+  
+  const advsq = advsqs?.[0];
+  if (!advsq) {
+    console.error("Invalid gambit entry (no advsq):", entry);
+    return;
+  }
 
   const group = view.buildAdvSqGroup(advsq); // {srcTile: Array(3), quad: 1, perimeter: 0, stride: 0, opacity: 0.5}
+  group.userData.entry = entry;
 
   return group;
-  }
-export function setGroupRegistry(idx, group) {
-  gambitGroupRegistry.set(idx, group);
-  }
-export function getGroupRegistry() {
-  return gambitGroupRegistry;
 }
 
-export function undo(gambit, idx) {
-  console.log("view : gambits.js - undo(gambit, idx)", gambit, idx);
-  // TODO: write undoGambits().
-  if(idx > 0) {
-    const group = gambitGroupRegistry.get(idx-1);
-    // console.log("view : gambits.js - undo()...idx, group", idx, group);
-    if(group) {
-      derenderGambit(group);
-    }
+export function undo(gambit) {
+  const scene = view.context.scene;
+
+  const group = scene.children.find(
+    g => g.userData?.entry === gambit
+  );
+
+  if (group) {
+    derenderGambit(group);
   }
   }
 
-export function redo(gambit, idx) {
-  console.log("view : gambits.js - redo(gambit, idx)", gambit, idx);
-  // TODO: write redoGambits().
-  // if(!state.isAtEnd("Gambits")) {
-    const group = gambitGroupRegistry.get(idx-1);
-    // console.log("view : gambits.js - redo()...idx, group", idx, group);
-    if(group) {
-      renderGambit(group);
-    }
-  // }
+export function redo(gambit) {
+  const group = makeGroup(gambit);
+
+  group.userData.entry = gambit;
+
+  render(group);
 }
 
-export function addLineToPanel(gambit) {
-  console.log("view : gambits.js - addLineToPanel(gambit)", gambit);
+export function undo1(gambit) {
+  console.log("view: gambits.js - undo(gambit)", gambit);
+  /* INPUT: gambit (entry being undone)
+    1. Identify the rendered group corresponding to this gambit
+      - iterate scene.children
+      - match via group.userData (e.g. src, quad, perimeter, stride)
+    2. If group found:
+      → call derenderGambit(group)
+          - removes overlays from tiles
+          - removes offboard tiles/group
+    3. Do NOT touch state (game.js handles index)
+    4. Return  
+  */
+
+  // TODO: write undo().
+  }
+export function redo1(gambit) {
+  console.log("view: gambits.js - redo(gambit)", gambit);
+  /* INPUT: gambit (entry being redone)
+    1. Build group:
+      group = makeGroup(gambit)
+    2. Attach identity:
+      group.userData.entry = gambit
+    3. Render:
+      render(group)
+    4. Return
+  */
+
+  // TODO: write redo().
+}
+
+export function pushPanelLine(gambit) {
+  console.log("view : gambits.js - pushPanelLine(gambit)", gambit);
 
   const el = document.getElementById("gambit-list");
-  if (!el) return;
+  if(!el) return;
 
-  const { Q, src, dst, area } = gambit;
+  const line = assembleLine(gambit);
 
-  // --- freeze index ---
-  const count = state.getIndices().Gambits;
-
-  // --- column widths ---
-  const idxCol  = String(count).padStart(2);    // right-aligned
-  const qCol    = `Q${Q}`.padEnd(3);            // "Q37  "
-  const srcCol  = String(src).padEnd(5);        // "KB4,4  "
-  const dstCol  = String(dst).padEnd(8);        // allow offboard arrays
-  const areaCol = String(area).padStart(2);     // right-aligned
-
-  // --- final line ---
-  const line = `${idxCol} ${qCol} ${srcCol} → ${dstCol}:${areaCol}`;
   const div = document.createElement("div");
   div.textContent = line;
 
-  // --- Dim future entries ---
-  const idx = count - 1; // current entry index
-  const thisIdx = state.getBufferLength("Gambits") - 1;
-  if (thisIdx >= count) {
-    div.style.opacity = "0.3";
-  }
-
+  // Write to the scroll box.
   el.appendChild(div);
   el.scrollTop = el.scrollHeight;
+  }
 
-  return;
+export function popPanelLine() {
+  console.log("view : gambits.js - popPanelLine()");
+
+  const el = document.getElementById("gambit-list");
+  if(!el) return;
+
+  const last = el.lastElementChild;
+  if(!last) return;
+
+  el.removeChild(last);
   }
 
 export function refreshPanel() {
@@ -143,141 +155,58 @@ export function refreshPanel() {
   }
 }
 
-export function clear() {
+export function clearGambits() {  // Still in use.
   console.log("view : gambits.js - clearGambits()");
-  // TODO: write clearGambits().
+
+  const scene = view.context.scene;
+
+  // --- 1. Remove ALL groups (offboard + containers) ---
+  scene.children
+    .filter(obj => obj.userData?.overlays)
+    .forEach(group => {
+      derenderGambit(group);
+    });
+
+  // --- 2. Remove ANY stray overlays still attached to tiles ---
+  const tileMap = view.context.tileMap;
+  if (!tileMap) return;
+
+  for (const tile of tileMap.values()) {
+    if (!tile.children) continue;
+
+    tile.children
+      .filter(child => child.userData?.isOverlay)
+      .forEach(overlay => {
+        tile.remove(overlay);
+      });
+  }
   }
 
-export function clearGambits() {
-  console.log("view : gambits.js - clearGambits()");
-  // TODO: write clearGambits().
+export function render(group, { animate = false } = {}) {
+  console.log("view : gambits.js - render( not shown)");
+
+  view.context.scene.add(group);
+
+  // --- Re-attach overlays ---
+  if (group.userData?.overlays) {
+    group.userData.overlays.forEach(o => {
+      const tile = o.userData?.parentTile;
+      if (tile && !o.parent) {
+        tile.add(o);
+      }
+    });
   }
+
+  if (animate) {
+    animateFreezeTransition(group);
+  }
+}
 
 export function cancelAnimation() {
   if (activeAnimation) {
     activeAnimation.cancelled = true;
     activeAnimation = null;
   }
-}
-
-export function render(group, { animate = false } = {}) {
-  console.log("view : gambits.js - renderGambit( not shown)");
-
-  view.context.scene.add(group);
-
-  // --- Re-attach overlays ---
-  if (group.userData?.overlays) {
-    group.userData.overlays.forEach(o => {
-      const tile = o.userData?.parentTile;
-      if (tile && !o.parent) {
-        tile.add(o);
-      }
-    });
-  }
-
-  if (animate) {
-    animateFreezeTransition(group);
-  }
-  }
-
-export function renderGambit(group, { animate = false } = {}) {
-  console.log("view : gambits.js - renderGambit(...)");
-
-  view.context.scene.add(group);
-
-  // --- Re-attach overlays ---
-  if (group.userData?.overlays) {
-    group.userData.overlays.forEach(o => {
-      const tile = o.userData?.parentTile;
-      if (tile && !o.parent) {
-        tile.add(o);
-      }
-    });
-  }
-
-  if (animate) {
-    animateFreezeTransition(group);
-  }
-  }
-
-export function derenderGambit(group) {
-  console.log("view : gambits.js - derenderGambit(...)",);
-
-  if (!group) return;
-
-  // --- Remove overlays (THIS is what clears onboard visuals) ---
-  if (group.userData?.overlays) {
-    group.userData.overlays.forEach(o => {
-      if (o.parent) o.parent.remove(o);
-    });
-  }
-
-  // --- Remove offboard tiles ---
-  if (group.parent) {
-    group.parent.remove(group);
-  } else {
-    view.context.scene.remove(group);
-  }
-  }
-
-export function clearGambit(group) {
-  console.log("view : gambits.js - clearGambit(group)", group);
-
-  if (!group) return;
-
-  // --- Remove overlays from ALL tiles (board + offboard) ---
-  if (group.userData?.overlays) {
-    group.userData.overlays.forEach(o => {
-      if (o.parent) o.parent.remove(o);
-    });
-  }
-
-  // --- Remove the group itself (offboard tiles, etc.) ---
-  if (group.parent) {
-    group.parent.remove(group);
-  } else {
-    // fallback (shouldn't usually happen, but safe)
-    view.context.scene.remove(group);
-  }
-  }
-
-export function updatePanel(gambit) {
-  console.log("view : gambits.js - updatePanel(gambit)", gambit);
-
-  const el = document.getElementById("gambit-list");
-  if (!el) return;
-
-  const { Q, src, dst, area } = gambit;
-
-  // --- freeze index ---
-  const count = state.getIndices().Gambits;
-
-  // --- column widths ---
-  const idxCol  = String(count).padStart(2);    // right-aligned
-  const qCol    = `Q${Q}`.padEnd(3);            // "Q37  "
-  const srcCol  = String(src).padEnd(5);        // "KB4,4  "
-  const dstCol  = String(dst).padEnd(8);        // allow offboard arrays
-  const areaCol = String(area).padStart(2);     // right-aligned
-
-  // --- final line ---
-  const line = `${idxCol} ${qCol} ${srcCol} → ${dstCol}:${areaCol}`;
-
-  const div = document.createElement("div");
-  div.textContent = line;
-
-  // --- Dim future entries ---
-  const idx = count - 1; // current entry index
-
-  const thisIdx = state.getBufferLength("Gambits") - 1;
-
-  if (thisIdx >= count) {
-    div.style.opacity = "0.3";
-  }
-
-  el.appendChild(div);
-  el.scrollTop = el.scrollHeight;
-
-  return;
 }
 // Seampoint: more global functions...
 
@@ -334,6 +263,68 @@ function animateFreezeTransition(group, duration = 0.8) {
   }
 
   requestAnimationFrame(step);
+  }
+
+function derenderGambit(group) {
+  console.log("view : gambits.js - derenderGambit(...)",);
+  console.log("derender entry:", group.userData.entry);
+  console.log("overlays tracked:", group.userData.overlays?.length);
+
+  if (!group) return;
+
+  // --- Remove overlays (THIS is what clears onboard visuals) ---
+  if (group.userData?.overlays) {
+    group.userData.overlays.forEach(o => {
+      if (o.parent) o.parent.remove(o);
+    });
+  }
+
+  // ✅ INSERT HERE (right after overlay loop)
+
+  // --- Remove any missed overlays by entry ---
+  const tileMap = view.context.tileMap;
+
+  for (const tile of tileMap.values()) {
+    if (!tile.children) continue;
+
+    tile.children
+      .filter(child => child.userData?.entry === group.userData.entry)
+      .forEach(child => tile.remove(child));
+  }
+
+
+  // --- Remove offboard tiles ---
+  if (group.parent) {
+    group.parent.remove(group);
+  } else {
+    view.context.scene.remove(group);
+  }
+  }
+
+function assembleLine(gambit) {
+  const { Q, src, dst, area } = gambit;
+
+  const count = state.getIndices().Gambits;
+
+  // --- column widths ---
+  const idxCol  = String(count).padStart(2);    // right-aligned
+  const qCol    = `Q${Q}`.padEnd(3);            // "Q37  "
+  const srcCol  = String(src).padEnd(5);        // "KB4,4  "
+  const dstCol  = String(dst).padEnd(8);        // allow offboard arrays
+  const areaCol = String(area).padStart(2);     // right-aligned
+
+  const line = `${idxCol} ${qCol} ${srcCol} → ${dstCol}:${areaCol}`;
+
+  return line;
 }
+
 // Seampoint: more local functions...
+
+/* TODO: Gambit additions:
+ * 1. Review rendering code.
+ * 2. Upgrade rows format to new standard.
+ * 3. Write updateDerived data function.
+ * 4. Expose button enable functions.
+ * 5. Code to extract quads from the gambit.
+*/
 

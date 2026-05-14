@@ -46,8 +46,6 @@ export function render(entry) {
 
   vBoards.render(entry);
   vTrays.render(entry);
-
-  // cGambits.rebindOverlaysToBoard();
   }
   
 export function refreshPanel(entry) {

@@ -127,7 +127,7 @@ function handleRedo() {
 
   showUndoStatus();
   assertStateConsistency();
-}
+  }
 
 function handleRewind() {
   const keys = state.getStateKeys();
@@ -220,18 +220,6 @@ function handleFastForward() {
   assertStateConsistency();
 }
 
-function isEmpty(len) { return len === 0; }
-
-function canCollapseDown(idx)     { return idx > 1; }
-function canStepDown(idx)         { return idx === 1; }
-function canCrossDown(idx)        { return idx === 0; }
-
-function canCollapseUp(idx, len)  { return 0 < idx && idx < len; }
-function canStepUp(idx, len)      { return idx === 0 && len > 0; }
-function canCrossUp(idx, len)     { return idx === len; }
-
-/* ----- ----- ----- ----- */
-
 async function handleLoad() {
   console.log("cntrl: game.js - handleLoad()");
 
@@ -256,10 +244,10 @@ async function handleLoad() {
       for(const entry of entries) {
         state.pushNewState(key, entry);
         if(key === "Moves") {
-          vMoves.addLineToPanel(entry);
+          vMoves.pushPanelLine(entry);
         }
         else if(key === "Gambits") {
-          vGambits.addLineToPanel(entry);
+          vGambits.pushPanelLine(entry);
         }
       }
 
@@ -297,6 +285,18 @@ function handleSave() {
 // Seampoint: more handle functions...
 
 // --- Helpers ---
+function isEmpty(len) { return len === 0; }
+
+function canCollapseDown(idx)     { return idx > 1; }
+function canStepDown(idx)         { return idx === 1; }
+function canCrossDown(idx)        { return idx === 0; }
+
+function canCollapseUp(idx, len)  { return 0 < idx && idx < len; }
+function canStepUp(idx, len)      { return idx === 0 && len > 0; }
+function canCrossUp(idx, len)     { return idx === len; }
+
+/* ----- ----- ----- ----- */
+
 function rewindCurrentBuffer(buffer) {
   const idx = state.getCurrentIndex(buffer);
 
@@ -315,7 +315,7 @@ function rewindCurrentBuffer(buffer) {
     const curr = state.fetchCurrentState("AdvSqs");
     const first = state.getState().AdvSqs[0];
 
-    if (curr) vAdvsqs.clear(curr);
+    vAdvsqs.removeFromScene();
     vAdvsqs.render(first);
     vAdvsqs.refreshPanel(first);
 
@@ -360,7 +360,7 @@ function fastForwardCurrentBuffer(buffer) {
     const curr = state.fetchCurrentState("AdvSqs");
     const last = state.getState().AdvSqs[len - 1];
 
-    if (curr) vAdvsqs.clear(curr);
+    vAdvsqs.removeFromScene();
     vAdvsqs.render(last);
     vAdvsqs.refreshPanel(last);
 
@@ -401,7 +401,7 @@ function processUndoBuffer(key, idx) {
     if(     prev === null && curr === null) {
       }
     else if(prev === null && curr !=  null) {
-      vAdvsqs.clear(curr);       // Clear current advsq.
+      vAdvsqs.removeFromScene();       // Clear current advsq.
       vAdvsqs.clearAdvsqPanelParams("Q4,4");
       state.setBufferIndex("AdvSqs", idx-1);
       return true;
@@ -413,7 +413,7 @@ function processUndoBuffer(key, idx) {
       return true;
       }
     else if(prev !=  null && curr !=  null) {
-      vAdvsqs.clear(curr);       // Clear current advsq.
+      vAdvsqs.removeFromScene();       // Clear current advsq.
       vAdvsqs.render(prev);      // Render previous advsq.
       vAdvsqs.refreshPanel(prev);
       state.setBufferIndex("AdvSqs", idx-1);
@@ -422,13 +422,14 @@ function processUndoBuffer(key, idx) {
     }
   else if(key === "Gambits") {
     const gambit = state.fetchCurrentState("Gambits");
-    if(gambit != null) {
-      vGambits.undo(gambit, idx);
-      state.setBufferIndex("Gambits", idx-1);
+    if (gambit != null) {
+      // vGambits.undo(gambit);
+      state.setBufferIndex("Gambits", idx - 1); // Update from state.
+      cGambits.rerunGambits();                  // Rebuild from state.
       vGambits.refreshPanel();
       return true;
     }
-    }
+  }
   else if(key === "Moves") {
     const move = state.fetchCurrentState("Moves");
     if(move != null) {
@@ -482,7 +483,7 @@ function processRedoBuffer(key, idx) {
       vAdvsqs.refreshPanel(curr); // At top, nothing new to render.
       }
     else if(curr != null && next != null) {
-      vAdvsqs.clear(curr);       // Clear current advsq.
+      vAdvsqs.removeFromScene();       // Clear current advsq.
       vAdvsqs.render(next);      // Render next advsq.
       vAdvsqs.refreshPanel(next);
       state.setBufferIndex("AdvSqs", idx + 1);
@@ -491,18 +492,19 @@ function processRedoBuffer(key, idx) {
     }
   else if(key === "Gambits") {
     const gambit = state.fetchNextState("Gambits");
-    if(gambit != null) {
-      state.setBufferIndex("Gambits", idx + 1);
-      vGambits.redo(gambit, idx+1);
+    if (gambit != null) {
+      state.setBufferIndex("Gambits", idx + 1); // Update from state.
+      cGambits.rerunGambits();                  // Rebuild from state.
+      // vGambits.redo(gambit);
       vGambits.refreshPanel();
       return true;
     }
-    }
+  }
   else if(key === "Moves") {
     const move = state.fetchNextState("Moves");
     if(move != null) {
       state.setBufferIndex("Moves", idx + 1);
-      vMoves.redo(move, idx);
+      vMoves.redo(move);
       vMoves.refreshPanel();
       return true;
     }
@@ -567,7 +569,7 @@ function assertStateConsistency() {
 
 function hardReset() {
   // --- View ---
-  vAdvsqs.clearAdvsq();
+  vAdvsqs.removeFromScene();
   vGambits.clearGambits();
   vMoves.clearMoves?.();
   boards.clearBoard();

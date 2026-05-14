@@ -41,12 +41,12 @@
       { "Q": 1, "src": "Q3,3", "dst": [6,3,3], "area": 0 }
     ],
     "AdvSqs": [
-      { "srcTile": [0,0,0], "quad": 1, "perimeter": 2, "stride": 0, "opacity": 0.50 },
-      { "srcTile": [0,0,0], "quad": 1, "perimeter": 3, "stride": 0, "opacity": 0.50 },
-      { "srcTile": [0,0,0], "quad": 1, "perimeter": 2, "stride": 1, "opacity": 0.50 },
-      { "srcTile": [0,0,0], "quad": 1, "perimeter": 2, "stride": 2, "opacity": 0.50 },
-      { "srcTile": [0,0,0], "quad": 2, "perimeter": 2, "stride": 2, "opacity": 0.50 },
-      { "srcTile": [0,0,0], "quad":13, "perimeter": 2, "stride": 0, "opacity": 0.50 }
+      { "src": "Q4,4", "srcTile": [0,0,0], "quad": 1, "perimeter": 2, "stride": 0, "opacity": 0.50 },
+      { "src": "Q4,4", "srcTile": [0,0,0], "quad": 1, "perimeter": 3, "stride": 0, "opacity": 0.50 },
+      { "src": "Q4,4", "srcTile": [0,0,0], "quad": 1, "perimeter": 2, "stride": 1, "opacity": 0.50 },
+      { "src": "Q4,4", "srcTile": [0,0,0], "quad": 1, "perimeter": 2, "stride": 2, "opacity": 0.50 },
+      { "src": "Q4,4", "srcTile": [0,0,0], "quad": 2, "perimeter": 2, "stride": 2, "opacity": 0.50 },
+      { "src": "Q4,4", "srcTile": [0,0,0], "quad":13, "perimeter": 2, "stride": 0, "opacity": 0.50 }
     ]
   }
 }

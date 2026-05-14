@@ -73,7 +73,6 @@ export function buildPayload(panel, action) {
     opacity:   Number(panel.querySelector('[name="advsq-opacity"]')?.value),
   };
 }
-
 // Seampoint: more global functions...
 
 // --- Handle Functions ---
@@ -83,7 +82,6 @@ function handlePlace(payload) {
   let { src, srcTile, quad, perimeter, stride, opacity } = payload;  // Unpack primary fields.
 
   const nextEntry = mAdvsqs.makeEntry(payload);        // Transform panel payload into state entry.
-
   applyEntry(nextEntry);
   }
 
@@ -92,11 +90,11 @@ function handleRemove(payload) {
   
   let { src, srcTile, quad, perimeter, stride, opacity } = payload;  // Unpack primary fields.
                                                                             // Manipulate fields.
-  const newAdvsq = blank(payload);           // Repack normalized fields.
+  const newAdvsq = blank(payload);        // Repack normalized fields.
 
-  state.clearBuffer("AdvSqs");           // Log state change in undo buffer.
-  vAdvsqs.clearAdvsq();             // Render.
-  vAdvsqs.refreshPanel(newAdvsq);   // Update the control panel.
+  state.clearBuffer("AdvSqs");            // Log state change in undo buffer.
+  vAdvsqs.removeFromScene();              // Derender.
+  vAdvsqs.refreshPanel(newAdvsq);         // Update the control panel.
   }
 
 function handleGrow(payload) {
@@ -242,6 +240,19 @@ function handleNextPiece(payload) {
 }
 
 // --- Helpers ---
+function applyEntry(entry) {   // Clear curr, branch, state change, render, refresh panel.
+  console.log("cntrl: advsqs.js - applyEntry(entry)", entry);
+
+  if(!state.isAtEnd("AdvSqs")) {                // Branches undo history, discards original branch.
+    const idx = state.getCurrentIndex("AdvSqs");
+    state.truncateState("AdvSqs", idx);
+  }
+
+  state.pushNewAdvsq(entry);          // Log state change in undo buffer.
+  vAdvsqs.render(entry);              // Render the new advsq.
+  vAdvsqs.refreshPanel(entry);        // Only needed by panels with derived fields.
+}
+
 function blank(payload) { // Convert panel strings to numbers, arrays, etc.
   let { src, srcTile, quad, perimeter, stride, opacity } = payload;  // Unpack primary fields.
 
@@ -254,21 +265,6 @@ function blank(payload) { // Convert panel strings to numbers, arrays, etc.
   const blank = { src, srcTile, quad, perimeter, stride, opacity }; // Repack primary fields.
 
   return blank;
-}
-
-function applyEntry(entry) {   // Clear curr, branch, state change, render, refresh panel.
-  const currEntry = mAdvsqs.fetchCurrentEntry(); // Clear previous board.
-  if(currEntry) {
-    vAdvsqs.clear(currEntry);
-    if(!state.isAtEnd("AdvSqs")) {    // Branch the undo list, toss the rest.
-      const idx = state.getCurrentIndex("AdvSqs");
-      state.truncateState("AdvSqs", idx);
-    }
-  }
-
-  state.pushNewAdvsq(entry);      // Log state change in undo buffer.
-  vAdvsqs.render(entry);          // Render the new advsq.
-  vAdvsqs.refreshPanel(entry);    // Only needed by panels with derived fields.
 }
 // Seampoint: more local functions...
 

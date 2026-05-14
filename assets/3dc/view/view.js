@@ -14,35 +14,6 @@
     state.js - undo, redo
 */
 
-/** Roles:
- * Layer: View (Projection & Visualization)
- *
- * Purpose:
- * Projects the abstract constraint system into human-readable form.
- *
- * Ontology:
- * - The board is a projection, not the system itself
- * - Visuals are approximations of higher-dimensional relations
- *
- * Responsibilities:
- * - Render board state
- * - Visualize manifolds (planes, perimeters)
- * - Display transitions and highlights
- *
- * Does NOT:
- * - Contain game logic
- * - Validate moves
- * - Define rules
- *
- * Inputs:
- * - Canonical state
- * - Transition descriptors
- * - Optional manifold traces
- *
- * Notes:
- * Avoid encoding logic assumptions in visuals (e.g., paths).
-*/
-
 // --- Load JSON ---
 // Seampoint: more objects...
 
@@ -56,7 +27,7 @@
   import * as game       from "../controller/game/game.js";
   import * as viewer     from "../controller/viewer/viewer.js";
 
-  import * as vAdvsqs    from "../geometry/advsqs/advsqs.js";
+  import * as gAdvsqs    from "../geometry/advsqs/advsqs.js";
   import * as decorators from "./decorators/decorators.js";
   import * as quads      from "../geometry/quads/quads.js";
 
@@ -68,6 +39,8 @@ export let context;   // Contains things like: scene, renderer, camera, tileMap.
 
 // --- UI ---
 export function init(playBoard) {
+  console.log("view : view.js - init(playBoard).", playBoard);
+
   context = renders.init(playBoard);
   context.tileMap = new Map();
   context.tileGeometry = new THREE.BoxGeometry(...coordsMaps.vts2xyz(tiles.tileSize()));
@@ -78,13 +51,16 @@ export function init(playBoard) {
   }
 
 export function buildAdvSqGroup(specs) { // Params: srcTile, quad, perimeter, stride, opacity.
-  console.log("view : gambits.js - buildAdvSqGroup(specs).", specs);
+  console.log("view : view.js - buildAdvSqGroup(specs).", specs);
 
   const group = new THREE.Group();
 
-  const { srcTile, quad, perimeter, stride, opacity } = specs;
+  group.userData = group.userData || {};
+  group.userData.overlays = [];
 
-  const advsq = vAdvsqs.AdvSq.fromQuad(srcTile, quad, perimeter);
+  const { src, srcTile, quad, perimeter, stride, opacity } = specs;
+
+  const advsq = gAdvsqs.AdvSq.fromQuad(srcTile, quad, perimeter);
   const piece = advsq.getPiece();
   const perims = advsq.getPerims();
 
@@ -99,67 +75,60 @@ export function buildAdvSqGroup(specs) { // Params: srcTile, quad, perimeter, st
     const quadType = quads.quadToQuadType(quad);
     const lastPerim = (k === perims.length - 1);
 
-    decoratePerimeter(
-      lastPerim,
-      perim,
-      piece,
-      quadType,
-      group,
-      opacity,
-      stride,
-      0.05
-    );
+    decoratePerimeter(lastPerim, perim, piece, quadType, group, opacity, stride, 0.05);
   }
 
+  console.log("view : view.js - buildAdvSqGroup()...group", group);
   return group;
 }
 // Seampoint: more global functions...
 
 // --- Helpers ---
 function decoratePerimeter(lastPerim, perim, piece, quadType, group, opacity, strideNo, zOffset=0.00) {
-  // console.log("view : advsqs.js - decoratePerimeter(perim)", perim);
+  // console.log("view : view.js - decoratePerimeter(perim)", perim);
+
   const end  = (piece    === "duke") ? "end3":   "end2";
   const apex = (quadType === "face") ? "duplex": "apex";
 
   const stride = perim.stride;
   for(let i=1; i<=stride.length; i++) {
     const j = i - 1;
-    if(     utils.isSame(stride[j], perim.E1)  ) decorateTile(stride[j], piece, end,  group, opacity);
-    else if(utils.isSame(stride[j], perim.apex)) decorateTile(stride[j], piece, apex, group, opacity);
-    else if(utils.isSame(stride[j], perim.E2)  ) decorateTile(stride[j], piece, end,  group, opacity);
-    else {
-      decorateTile(stride[j], piece, "body", group, opacity);
+    if(     utils.isSame(stride[j], perim.E1)  ) decorateTile(stride[j], piece, end,    group, opacity);
+    else if(utils.isSame(stride[j], perim.apex)) decorateTile(stride[j], piece, apex,   group, opacity);
+    else if(utils.isSame(stride[j], perim.E2)  ) decorateTile(stride[j], piece, end,    group, opacity);
+    else {                                       decorateTile(stride[j], piece, "body", group, opacity);
     }
-    if(lastPerim && (i === strideNo)) decorateTile(stride[j], piece, "dst", group, opacity, zOffset);
+    if(lastPerim && (i === strideNo))            decorateTile(stride[j], piece, "dst",  group, opacity, zOffset);
   }
   }
-function decorateTile(coords, piece, decorator, group, opacity, zOffset=0.00) {
-  let meshTile = tiles.getTileMesh(context.tileMap, coords);
-  if (!meshTile) {
-    const tileGeometry = new THREE.BoxGeometry(...coordsMaps.vts2xyz(tiles.tileSize()));
 
-    let pos = coords;
-    let tile = tiles.getTileAttributes(pos);
-    meshTile = tiles.createMeshTile(tile, tileGeometry, pos);
-    meshTile.material.forEach(mat => {      // Faces and edges.
+function decorateTile(coords, piece, decorator, group, opacity, zOffset = 0.00) {
+  // console.log("view : view.js - decorateTile(...).");
+
+  let meshTile = tiles.getTileMesh(context.tileMap, coords);
+
+  if (!meshTile) {
+    const pos = coords;
+    const tile = tiles.getTileAttributes(pos);
+
+    meshTile = tiles.createMeshTile(tile, context.tileGeometry, pos);
+
+    meshTile.material.forEach(mat => {      // Visual setup.
       mat.transparent = true;
-      mat.opacity = opacity;   // tweak as desired
+      mat.opacity = opacity;
     });
-    meshTile.children.forEach(child => {     // Frame.
+
+    meshTile.children.forEach(child => {
       if (child.type === "LineSegments") {
         child.material.transparent = true;
-        child.material.opacity = opacity  // match tile or slightly higher (e.g. 0.4)
+        child.material.opacity = opacity;
       }
     });
 
-    meshTile.userData = {
-      isTile: true,
-      coords: pos,
-      faceColor: tile.faceColor,
-      isOffboard: true
-    };
+    // Tile identity.
+    meshTile.userData = { isTile: true, coords: pos, faceColor: tile.faceColor, isOffboard: true, entry: group.userData.entry }; // Ownership tag.
 
-    group.add(meshTile);
+    group.add(meshTile);  // Attach to group (ownership root).
   }
 
   const faceColor = meshTile.userData.faceColor;
@@ -169,11 +138,16 @@ function decorateTile(coords, piece, decorator, group, opacity, zOffset=0.00) {
   if (overlays) {
     overlays.forEach(o => {
       o.userData = o.userData || {};
+
       o.userData.parentTile = meshTile;
+      o.userData.isOverlay  = true;
+      o.userData.entry      = group.userData.entry;  // Ownership tag.
     });
 
-    group.userData.overlays = group.userData.overlays || [];
-    group.userData.overlays.push(...overlays);
+    group.userData.overlays.push(...overlays);  // Tracked overlays for fast removal.
+
+    // console.log("view : view.js - decorateTile(...)...group.userData.overlays", group.userData.overlays);
+    // console.log("decorator:", decorator, "count:", group.userData.overlays.length);
   }
 }
 // Seampoint: more local functions...

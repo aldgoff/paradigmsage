@@ -21,110 +21,17 @@ import advsqsData from "./advsqs.json" assert { type: "json" };
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
-  import * as cAdvsqs from "../../controller/advsqs/advsqs.js";
-  import * as state   from "../../model/state/state.js";
 // Seampoint: more imports...
-
-// --- Globals ---
-const buffer = "AdvSqs";   // State buffer (state.js).
 
 // --- UI ---
 export function makeEntry(payload) {
   console.log(`model: advsqs.js - makeEntry(payload):`, payload);
 
-  let { src, srcTile, quad, perimeter, stride, opacity } = payload;  // Unpack primary fields.
-  const entry = { src, srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
+  let { action, src, srcTile, quad, perimeter, stride, opacity } = payload;  // Informative.
+
+  const entry = payload;
 
   return entry;
-  }
-
-export function fetchCurrentEntry() {
-  console.log(`model: advsqs.js - fetchCurrentEntry()`);
-
-  const entry = state.fetchCurrentState(buffer);
-  return entry;
-}
-
-export function fetchLastEntry() {
-  console.log(`model: advsqs.js - fetchLastEntry()`);
-
-  const len = state.getBufferLength(buffer);
-  if (len === 0) return null;
-
-  const prev = state.getCurrentIndex(buffer);
-  state.setBufferIndex(buffer, len);
-  const entry = state.fetchCurrentState(buffer);
-  state.setBufferIndex(buffer, prev);
-
-  return entry;
-  }
-
-export function fetchThisEntry(idx) {
-  console.log(`model: advsqs.js - fetchThisEntry(idx):`, idx);
-
-  const len = state.getBufferLength(buffer);
-  if (idx < 0 || idx >= len) return null;
-
-  const prev = state.getCurrentIndex(buffer);
-  state.setBufferIndex(buffer, idx + 1);
-  const entry = state.fetchCurrentState(buffer);
-  state.setBufferIndex(buffer, prev);
-
-  return entry;
-}
-
-export function addEntry(entry) {
-  console.log(`model: advsqs.js - addEntry(entry):`, entry);
-
-  state.pushNewState(buffer, entry);
-  }
-
-export function insertEntry(entry, idx) {
-  console.log(`model: advsqs.js - insertEntry(entry, idx):`, entry, idx);
-
-  state.insertState(buffer, entry, idx);
-  }
-
-export function replaceEntry(entry, idx) {
-  console.log(`model: advsqs.js - replaceEntry(entry, idx):`, entry, idx);
-
-  state.replaceState(buffer, entry, idx);
-}
-
-export function clearCurrentEntry() {
-  console.log(`model: advsqs.js - clearCurrentEntry()`);
-
-  const i = state.getCurrentIndex(buffer);
-  if (i === 0) return;
-
-  state.deleteState(buffer, i - 1);
-  }
-
-export function clearLastEntry() {
-  console.log(`model: advsqs.js - clearLastEntry()`);
-
-  const len = state.getBufferLength(buffer);
-  if (len === 0) return;
-
-  state.deleteState(buffer, len - 1);
-  }
-
-export function clearThisEntry(idx) {
-  console.log(`model: advsqs.js - clearThisEntry(idx):`, idx);
-
-  state.deleteState(buffer, idx);
-  }
-
-export function clearRestOfBuffer(idx) {
-  console.log(`model: advsqs.js - clearRestOfBuffer(idx):`, idx);
-
-  state.truncateState(buffer, idx);
-  }
-
-export function clearEntireBuffer() {
-  console.log(`model: advsqs.js - clearEntireBuffer()`);
-
-  state.clearBuffer(buffer);
 }
 // Seampoint: more global functions...
 
