@@ -47,10 +47,11 @@ export function panelDispatch(payload) {
   const { action } = payload;
 
   switch (action) {
-    case "expand":   handleExpand();                           return;
-    case "contract": handleContract();                         return;
-    case "delete":   handleDelete();    game.showUndoStatus(); return;
-    case "remove":   handleRemoveAll(); game.showUndoStatus(); return;
+    case "nextPlane": handleNextPlane();                        return;
+    case "expand":    handleExpand();                           return;
+    case "contract":  handleContract();                         return;
+    case "delete":    handleDelete();    game.showUndoStatus(); return;
+    case "remove":    handleRemoveAll(); game.showUndoStatus(); return;
   }
 
   const currAdvsq = state.fetchCurrentState("AdvSqs"); // Get current advsq, if any.
@@ -232,6 +233,23 @@ function handleFreezeAsAPlane(currAdvsq) {
 
   // applyEntry(entry);  // Eventually.
 }
+
+let rotation = 0; // 0-12: duke: %4=0 => all, else 1,2,3 - rook|bishop: %3=0 => all, else 1,2.
+function handleNextPlane() {
+  console.log("cntrl: gambits.js - handleNextPlane()");
+  //TODO: Complete handleNextPlane().
+
+  // Get current gambit.
+  const entry = state.fetchCurrentState("Gambits");
+  if(!entry) return;
+  console.log("cntrl: gambits.js - handleNextPlane()...entry:", entry);
+
+  // Is it a linear, duplex, or overlap gambit?
+  if (!["linear", "duplex", "overlap"].includes(entry.move)) {
+    return;
+  }
+  vGambits.planeRotation(entry, ++rotation);
+  }
 
 function handleExpand() {
   console.log("cntrl: gambits.js - handleExpand()");

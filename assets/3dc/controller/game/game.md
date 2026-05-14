@@ -1105,3 +1105,6 @@
     {"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":2,"stride":5,"opacity":0.5}
     ]}
 
+### Improving Base Piece Linear Moves (1-0-2-0)
+  {"Setup":[{"action":"makeBoard","boardSize":"8x8x8"}],"Moves":[],"Gambits":[{"move":"linear","piece":"rook","src":"KB4,4","dst":"KB4,8","ray":"right_fore","advsqs":[[{"srcTile":[2,0,0],"quad":1,"perimeter":4,"stride":1,"area":25},{"srcTile":[2,0,0],"quad":2,"perimeter":4,"stride":1,"area":25}],[{"srcTile":[2,0,0],"quad":5,"perimeter":4,"stride":1,"area":25},{"srcTile":[2,0,0],"quad":6,"perimeter":4,"stride":1,"area":25}]],"opacity":0.5},{"move":"linear","piece":"bishop","src":"Q4,4","dst":"K5,1","ray":"LFU","advsqs":[[{"srcTile":[-3,-3,-3],"quad":18,"perimeter":4,"stride":1,"area":25},{"srcTile":[-3,-3,-3],"quad":13,"perimeter":4,"stride":1,"area":25}],[{"srcTile":[-3,-3,-3],"quad":25,"perimeter":4,"stride":1,"area":25},{"srcTile":[-3,-3,-3],"quad":26,"perimeter":4,"stride":1,"area":25}]],"opacity":0.5}],"AdvSqs":[]}
+

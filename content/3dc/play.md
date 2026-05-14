@@ -148,6 +148,7 @@ layout: "play"
     <button data-action="freezeP">Pawn</button>
     <button data-action="freezeK">King</button>
     <button data-action="asAPlane">Plane</button>
+    <button data-action="nextPlane">Next</button>
   </div>
   <div class="section">
     <button data-action="expand">Expand</button>

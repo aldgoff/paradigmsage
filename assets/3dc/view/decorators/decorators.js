@@ -24,7 +24,7 @@ export function module() {
   return decoratorsModule;
 }
 
-export function decorate(baseColor, meshTile, piece, decoratorName, zOffset=0.00) {
+export function decorate(baseColor, meshTile, piece, decoratorName, zOffset=0.00, decIntensity=1.0) {
   // console.log("view: decorators.js - decorate(baseColor, meshTile, piece, decoratorName)", baseColor, meshTile, piece, decoratorName);
   const defRaw = decorators[piece][decoratorName];
   if (!defRaw || Object.keys(defRaw).length === 0) {
@@ -33,7 +33,7 @@ export function decorate(baseColor, meshTile, piece, decoratorName, zOffset=0.00
 
   const resolved = resolveDefinition(defRaw, pallet);
 
-  const overlays = renderDecorator(meshTile, baseColor, resolved, zOffset);
+  const overlays = renderDecorator(meshTile, baseColor, resolved, zOffset, decIntensity);
 
   return overlays;
   }
@@ -47,13 +47,13 @@ export function applyBaseZones({ base, zones=[] }) {
     }));
   }
 
-export function drawInsetQuad(mesh, scale, color, zOffset=0.00) { // For source, body, end1,2,3, and apex tiles.
+export function drawInsetQuad(mesh, scale, color, zOffset=0.00, decIntensity=1.0) { // For source, body, end1,2,3, and apex tiles.
   const THREE = window.THREE;
   const geom = new THREE.PlaneGeometry(1, 1);
   const mat = new THREE.MeshBasicMaterial({
     color,
     transparent: true,
-    opacity: 0.95,
+    opacity: 0.95 * decIntensity,
     side: THREE.DoubleSide
   });
 
@@ -71,7 +71,7 @@ export function drawInsetQuad(mesh, scale, color, zOffset=0.00) { // For source,
   return overlay;
   }
 
-export function drawInsetDualDiamonds(mesh, scale, def) {
+export function drawInsetDualDiamonds(mesh, scale, def, decIntensity=1.0) {
   const THREE = window.THREE;
   const group = new THREE.Group();
 
@@ -85,7 +85,7 @@ export function drawInsetDualDiamonds(mesh, scale, def) {
     const bgMat = new THREE.MeshBasicMaterial({
       color: def.background,
       transparent: true,
-      opacity: 0.95,
+      opacity: 0.95 * decIntensity,
       side: THREE.DoubleSide
     });
 
@@ -114,7 +114,7 @@ export function drawInsetDualDiamonds(mesh, scale, def) {
       const mat = new THREE.MeshBasicMaterial({
         color,
         transparent: true,
-        opacity: 0.95,
+        opacity: 0.95 * decIntensity,
         side: THREE.DoubleSide
       });
 
@@ -144,7 +144,7 @@ export function drawInsetDualDiamonds(mesh, scale, def) {
   return group;
   }
 
-export function drawInsetTriDiamonds(mesh, scale, def) {
+export function drawInsetTriDiamonds(mesh, scale, def, decIntensity=1.0) {
   const THREE = window.THREE;
   const group = new THREE.Group();
 
@@ -158,7 +158,7 @@ export function drawInsetTriDiamonds(mesh, scale, def) {
     const bgMat = new THREE.MeshBasicMaterial({
       color: def.background,
       transparent: true,
-      opacity: 0.95,
+      opacity: 0.95 * decIntensity,
       side: THREE.DoubleSide
     });
 
@@ -189,7 +189,7 @@ export function drawInsetTriDiamonds(mesh, scale, def) {
       const mat = new THREE.MeshBasicMaterial({
         color,
         transparent: true,
-        opacity: 0.95,
+        opacity: 0.95 * decIntensity,
         side: THREE.DoubleSide
       });
 
@@ -220,14 +220,14 @@ export function drawInsetTriDiamonds(mesh, scale, def) {
   return group;
   }
 
-export function drawInsetCircle(mesh, scale, color, zOffset=0) { // For src & dst tiles, toggled by mouse clicks.
+export function drawInsetCircle(mesh, scale, color, zOffset=0, decIntensity=1.0) { // For src & dst tiles, toggled by mouse clicks.
   console.log("view: decorators.js - drawInsetCircle(mesh, scale, color, zOffset=0)", mesh, scale, color, zOffset=0);
   const THREE = window.THREE;
   const geom = new THREE.CircleGeometry(0.5, 32);
   const mat = new THREE.MeshBasicMaterial({
     color,
     transparent: true,
-    opacity: 0.95,
+    opacity: 0.95 * decIntensity,
     side: THREE.DoubleSide
   });
 
@@ -293,7 +293,7 @@ function resolveDefinition(def, pallet) {
   throw new Error("Invalid decorator definition");
   }
 
-function renderDecorator(meshTile, baseColor, def, zOffset=0.00) {
+function renderDecorator(meshTile, baseColor, def, zOffset=0.00, decIntensity=1.0) {
   const overlays = [];
 
   switch (def.type) {
@@ -305,7 +305,7 @@ function renderDecorator(meshTile, baseColor, def, zOffset=0.00) {
       });
 
       layers.forEach(layer => {
-        const overlay = drawInsetQuad(meshTile, layer.scale, layer.color, zOffset);
+        const overlay = drawInsetQuad(meshTile, layer.scale, layer.color, zOffset, decIntensity);
         meshTile.add(overlay);
         overlays.push(overlay);
       });
@@ -314,21 +314,21 @@ function renderDecorator(meshTile, baseColor, def, zOffset=0.00) {
     }
 
     case "dual": {
-      const group = drawInsetDualDiamonds(meshTile, scales[1], def);
+      const group = drawInsetDualDiamonds(meshTile, scales[1], def, decIntensity);
       meshTile.add(group);
       overlays.push(group);
       break;
     }
 
     case "tri": {
-      const group = drawInsetTriDiamonds(meshTile, scales[1], def);
+      const group = drawInsetTriDiamonds(meshTile, scales[1], def, decIntensity);
       meshTile.add(group);
       overlays.push(group);
       break;
     }
 
     case "stride": {
-      const group = drawInsetCircle(meshTile, scales[1], def);
+      const group = drawInsetCircle(meshTile, scales[1], def, decIntensity);
       meshTile.add(group);
       overlays.push(group);
       break;

@@ -48,7 +48,8 @@ export function makeGroup(entry) {
   group.userData.entry = entry;
 
   return group;
-}
+  }
+
 export function makeLinearGroup(entry) {
   console.log("view : gambits.js - makeLinearGroup(entry).", entry);
 
@@ -58,8 +59,90 @@ export function makeLinearGroup(entry) {
   group.userData.entry = entry;
 
   return group;
-}
+  }
 
+export function planeRotation(entry, rotation) {
+  console.log("view : gambits.js - planeRotation(rotation, entry).", rotation, entry);
+
+  const scene = view.context.scene;
+  if (!scene) { return; }
+
+  const group = scene.children.find(g => {
+
+    const e = g.userData?.entry;
+
+    if (!e) return false;
+
+    return (
+      e.move === entry.move &&
+      e.piece === entry.piece &&
+      e.src === entry.src &&
+      e.dst === entry.dst
+    );
+  });
+
+  if (!group) { return; }
+
+  const planeGroups = group.userData?.planes || [];
+
+  if (planeGroups.length === 0) return;
+
+  // --- Determine cycle size ---
+  const modes = (entry.piece === "duke") ? 4 : 3;
+
+  // mode:
+  // rook/bishop: 0=all, 1=plane1, 2=plane2
+  // duke:        0=all, 1=plane1, 2=plane2, 3=plane3
+  const mode = rotation % modes;
+
+  console.log("planeRotation()...mode:", mode);
+
+  // --- ALL PLANES ---
+  if (mode === 0) {
+
+    planeGroups.forEach(pg => {
+      applyOverlayOpacity(
+        pg.userData?.overlays || [],
+        1.0
+      );
+    });
+
+    return;
+  }
+
+  // --- SINGLE PLANE EMPHASIS ---
+  planeGroups.forEach((pg, idx) => {
+    const active = (idx === mode - 1);
+    const opacity = active ? 1.0 : 0.10;
+
+    applyOverlayOpacity(
+      pg.userData?.overlays || [],
+      opacity
+    );
+  });
+  }
+
+function applyOverlayOpacity(overlays, opacity) {
+  overlays.forEach(o => {
+    applyMaterialOpacity(o, opacity);
+  });
+  }
+
+function applyMaterialOpacity(obj, opacity) {
+  // console.log("applyMaterialOpacity", obj, opacity);
+
+  if (obj.material) {
+    obj.material.transparent = true;
+    obj.material.opacity = opacity;
+  }
+
+  if (obj.children?.length) {
+    obj.children.forEach(child =>
+      applyMaterialOpacity(child, opacity)
+    );
+  }
+}
+/* ----- ----- ----- ----- */
 export function undo(gambit) {
   const scene = view.context.scene;
 
@@ -158,20 +241,35 @@ export function render(group, { animate = false } = {}) {
 
   view.context.scene.add(group);
 
-  // --- Re-attach overlays ---
-  if (group.userData?.overlays) {
-    group.userData.overlays.forEach(o => {
+  // --- helper ---
+  function attachOverlays(overlays) {
+    overlays.forEach(o => {
       const tile = o.userData?.parentTile;
+
       if (tile && !o.parent) {
         tile.add(o);
       }
     });
   }
 
+  // --- Root overlays ---
+  attachOverlays(
+    group.userData?.overlays || []
+  );
+
+  // --- Plane overlays ---
+  const planeGroups = group.userData?.planes || [];
+
+  planeGroups.forEach(pg => {
+    attachOverlays(
+      pg.userData?.overlays || []
+    );
+  });
+
   if (animate) {
     animateFreezeTransition(group);
   }
-}
+  }
 
 export function cancelAnimation() {
   if (activeAnimation) {
@@ -269,7 +367,7 @@ function derenderGambit(group) {
   } else {
     view.context.scene.remove(group);
   }
-}
+  }
 
 function assembleLine(line) {
   const { symbol, value, piece, src, dst, feedback } = line;
@@ -297,5 +395,6 @@ function assembleLine(line) {
  * 3. Write updateDerived data function.
  * 4. Expose button enable functions.
  * 5. Code to extract quads from the gambit.
+ * 6. Remove decIntensity.
 */
 
