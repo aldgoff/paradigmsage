@@ -56,8 +56,101 @@ export function makeGroup(entry) {
   group.userData.entry = entry;
 
   return group;
-}
+  }
 
+export function makeLinearGroup(entry) {
+  console.log("view : gambits.js - makeLinearGroup(entry).", entry);
+
+  const { move, piece, src, dst, ray, advsqs, opacity } = entry;
+
+  const group = view.buildAdvRectGroups(entry);
+  group.userData.entry = entry;
+
+  return group;
+  }
+
+export function planeRotation(entry, rotation) {
+  console.log("view : gambits.js - planeRotation(rotation, entry).", rotation, entry);
+
+  const scene = view.context.scene;
+  if (!scene) { return; }
+
+  const group = scene.children.find(g => {
+
+    const e = g.userData?.entry;
+
+    if (!e) return false;
+
+    return (
+      e.move === entry.move &&
+      e.piece === entry.piece &&
+      e.src === entry.src &&
+      e.dst === entry.dst
+    );
+  });
+
+  if (!group) { return; }
+
+  const planeGroups = group.userData?.planes || [];
+
+  if (planeGroups.length === 0) return;
+
+  // --- Determine cycle size ---
+  const modes = (entry.piece === "duke") ? 4 : 3;
+
+  // mode:
+  // rook/bishop: 0=all, 1=plane1, 2=plane2
+  // duke:        0=all, 1=plane1, 2=plane2, 3=plane3
+  const mode = rotation % modes;
+
+  console.log("planeRotation()...mode:", mode);
+
+  // --- ALL PLANES ---
+  if (mode === 0) {
+
+    planeGroups.forEach(pg => {
+      applyOverlayOpacity(
+        pg.userData?.overlays || [],
+        1.0
+      );
+    });
+
+    return;
+  }
+
+  // --- SINGLE PLANE EMPHASIS ---
+  planeGroups.forEach((pg, idx) => {
+    const active = (idx === mode - 1);
+    const opacity = active ? 1.0 : 0.10;
+
+    applyOverlayOpacity(
+      pg.userData?.overlays || [],
+      opacity
+    );
+  });
+  }
+
+function applyOverlayOpacity(overlays, opacity) {
+  overlays.forEach(o => {
+    applyMaterialOpacity(o, opacity);
+  });
+  }
+
+function applyMaterialOpacity(obj, opacity) {
+  // console.log("applyMaterialOpacity", obj, opacity);
+
+  if (obj.material) {
+    obj.material.transparent = true;
+    obj.material.opacity = opacity;
+  }
+
+  if (obj.children?.length) {
+    obj.children.forEach(child =>
+      applyMaterialOpacity(child, opacity)
+    );
+  }
+}
+/* ----- ----- ----- ----- */
 export function undo(gambit) {
   const scene = view.context.scene;
 
@@ -78,47 +171,16 @@ export function redo(gambit) {
   render(group);
 }
 
-export function undo1(gambit) {
-  console.log("view: gambits.js - undo(gambit)", gambit);
-  /* INPUT: gambit (entry being undone)
-    1. Identify the rendered group corresponding to this gambit
-      - iterate scene.children
-      - match via group.userData (e.g. src, quad, perimeter, stride)
-    2. If group found:
-      → call derenderGambit(group)
-          - removes overlays from tiles
-          - removes offboard tiles/group
-    3. Do NOT touch state (game.js handles index)
-    4. Return  
-  */
-
-  // TODO: write undo().
-  }
-export function redo1(gambit) {
-  console.log("view: gambits.js - redo(gambit)", gambit);
-  /* INPUT: gambit (entry being redone)
-    1. Build group:
-      group = makeGroup(gambit)
-    2. Attach identity:
-      group.userData.entry = gambit
-    3. Render:
-      render(group)
-    4. Return
-  */
-
-  // TODO: write redo().
-}
-
-export function pushPanelLine(gambit) {
-  console.log("view : gambits.js - pushPanelLine(gambit)", gambit);
+export function pushPanelLine(line) {
+  console.log("view : gambits.js - pushPanelLine(line)", line);
 
   const el = document.getElementById("gambit-list");
   if(!el) return;
 
-  const line = assembleLine(gambit);
+  const row = assembleLine(line);
 
   const div = document.createElement("div");
-  div.textContent = line;
+  div.textContent = row;
 
   // Write to the scroll box.
   el.appendChild(div);
@@ -187,20 +249,35 @@ export function render(group, { animate = false } = {}) {
 
   view.context.scene.add(group);
 
-  // --- Re-attach overlays ---
-  if (group.userData?.overlays) {
-    group.userData.overlays.forEach(o => {
+  // --- helper ---
+  function attachOverlays(overlays) {
+    overlays.forEach(o => {
       const tile = o.userData?.parentTile;
+
       if (tile && !o.parent) {
         tile.add(o);
       }
     });
   }
 
+  // --- Root overlays ---
+  attachOverlays(
+    group.userData?.overlays || []
+  );
+
+  // --- Plane overlays ---
+  const planeGroups = group.userData?.planes || [];
+
+  planeGroups.forEach(pg => {
+    attachOverlays(
+      pg.userData?.overlays || []
+    );
+  });
+
   if (animate) {
     animateFreezeTransition(group);
   }
-}
+  }
 
 export function cancelAnimation() {
   if (activeAnimation) {
@@ -292,7 +369,6 @@ function derenderGambit(group) {
       .forEach(child => tile.remove(child));
   }
 
-
   // --- Remove offboard tiles ---
   if (group.parent) {
     group.parent.remove(group);
@@ -301,23 +377,24 @@ function derenderGambit(group) {
   }
   }
 
-function assembleLine(gambit) {
-  const { Q, src, dst, area } = gambit;
+function assembleLine(line) {
+  const { symbol, value, piece, src, dst, feedback } = line;
+
+  // const { Q, src, dst, area } = gambit;
 
   const count = state.getIndices().Gambits;
 
   // --- column widths ---
   const idxCol  = String(count).padStart(2);    // right-aligned
-  const qCol    = `Q${Q}`.padEnd(3);            // "Q37  "
+  const qCol    = `${symbol}${value} ${piece}`.padEnd(6);            // "Q37 R "
   const srcCol  = String(src).padEnd(5);        // "KB4,4  "
   const dstCol  = String(dst).padEnd(8);        // allow offboard arrays
-  const areaCol = String(area).padStart(2);     // right-aligned
+  const areaCol = String(feedback).padStart(2);     // right-aligned
 
-  const line = `${idxCol} ${qCol} ${srcCol} → ${dstCol}:${areaCol}`;
+  const row = `${idxCol} ${qCol} ${srcCol} → ${dstCol}:${areaCol}`;
 
-  return line;
+  return row;
 }
-
 // Seampoint: more local functions...
 
 /* TODO: Gambit additions:
@@ -326,5 +403,6 @@ function assembleLine(gambit) {
  * 3. Write updateDerived data function.
  * 4. Expose button enable functions.
  * 5. Code to extract quads from the gambit.
+ * 6. Remove decIntensity.
 */
 

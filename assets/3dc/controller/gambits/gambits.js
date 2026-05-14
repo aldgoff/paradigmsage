@@ -47,10 +47,11 @@ export function panelDispatch(payload) {
   const { action } = payload;
 
   switch (action) {
-    case "expand":   handleExpand();                           return;
-    case "contract": handleContract();                         return;
-    case "delete":   handleDelete();    game.showUndoStatus(); return;
-    case "remove":   handleRemoveAll(); game.showUndoStatus(); return;
+    case "nextPlane": handleNextPlane();                        return;
+    case "expand":    handleExpand();                           return;
+    case "contract":  handleContract();                         return;
+    case "delete":    handleDelete();    game.showUndoStatus(); return;
+    case "remove":    handleRemoveAll(); game.showUndoStatus(); return;
   }
 
   const currAdvsq = state.fetchCurrentState("AdvSqs"); // Get current advsq, if any.
@@ -112,9 +113,9 @@ function handleFreezeQuadrant(currAdvsq) {
   vAdvsqs.removeFromScene();                          // De-render. // TODO: move to view layer.
   vAdvsqs.clearAdvsqPanelParams("Q4,4");              // Update panel.
 
-  const entry = mGambits.makeEntry(currAdvsq);        // Transform panel payload into state entry.
-  applyEntry(entry);
-}
+  const { entry, line } = mGambits.makeQuadrantEntry(currAdvsq); // Transform panel payload into state entry and panel line.
+  applyQuadrantEntry({ entry, line });
+  }
 
 function handleFreezeAsLinear(currAdvsq) {
   console.log("cntrl: gambits.js - handleFreezeAsLinear(currAdvsq)", currAdvsq);
@@ -233,6 +234,23 @@ function handleFreezeAsAPlane(currAdvsq) {
   // applyEntry(entry);  // Eventually.
 }
 
+let rotation = 0; // 0-12: duke: %4=0 => all, else 1,2,3 - rook|bishop: %3=0 => all, else 1,2.
+function handleNextPlane() {
+  console.log("cntrl: gambits.js - handleNextPlane()");
+  //TODO: Complete handleNextPlane().
+
+  // Get current gambit.
+  const entry = state.fetchCurrentState("Gambits");
+  if(!entry) return;
+  console.log("cntrl: gambits.js - handleNextPlane()...entry:", entry);
+
+  // Is it a linear, duplex, or overlap gambit?
+  if (!["linear", "duplex", "overlap"].includes(entry.move)) {
+    return;
+  }
+  vGambits.planeRotation(entry, ++rotation);
+  }
+
 function handleExpand() {
   console.log("cntrl: gambits.js - handleExpand()");
   //TODO: Complete handleExpand().
@@ -255,33 +273,32 @@ function handleRemoveAll() {
 // Seampoint: more helper functions...
 
 // --- Helpers ---
-function applyEntry(entry) {   // Group, state, render, panel.
-  console.log("cntrl: gambits.js - applyEntry(entry)", entry);
+function applyQuadrantEntry({ entry, line }) {   // Group, state, render, panel.
+  console.log("cntrl: gambits.js - applyQuadrantEntry(entry)", entry);
 
   if(!state.isAtEnd("Gambits")) {
     const idx = state.getCurrentIndex("Gambits");
     state.truncateState("Gambits", idx);
   }
+  // TODO: if not at end, branch undo buffer. 
 
   state.pushNewGambit(entry);                     // Change state.
   const group = vGambits.makeGroup(entry);        // Recreate from entry.
   vGambits.render(group, { animate: true });      // Render.
-  vGambits.pushPanelLine(entry);                  // Add line to panel.
+  vGambits.pushPanelLine(line);                   // Add line to panel.
 
-  // TODO: remove all entries in the downstream buffers; 
-  // a new gambit invalidates advsqs. ?? May happen automagically upon advsq ingest.
-}
+  }
 
 function applyLinearEntry({entry, line}) {   // Group, state, render, panel.
   console.log("cntrl: gambits.js - applyLinearEntry({entry, line})", {entry, line});
  
+  // TODO: if not at end, branch undo buffer. 
+
   state.pushNewGambit(entry);                     // Change state.
-  // const group = vGambits.makeGroup(entry);        // Recreate from entry.
-  // vGambits.render(group, { animate: true });      // Render.
+  const group = vGambits.makeLinearGroup(entry);  // Recreate from entry.
+  vGambits.render(group, { animate: true });      // Render.
   vGambits.pushPanelLine(line);                   // Append line to panel.
 }
-
-
 // Seampoint: more local functions...
 
 /* TODO: Gambit additions:

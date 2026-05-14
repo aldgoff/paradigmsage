@@ -81,10 +81,59 @@ export function buildAdvSqGroup(specs) { // Params: srcTile, quad, perimeter, st
   console.log("view : view.js - buildAdvSqGroup()...group", group);
   return group;
 }
+export function buildAdvRectGroups(entry) { // Params: srcTile, quad, perimeter, stride, opacity.
+  console.log("view : view.js - buildAdvRectGroups(entry).", entry);
+
+  const group = new THREE.Group();
+  
+  group.userData = group.userData || {};
+  group.userData.overlays = []; // deprecating...?
+  group.userData.planes = [];
+
+  const { move, piece, src, dst, ray, advsqs, opacity } = entry;
+  const { srcTile, quad, perimeter, stride, area } = advsqs[0][0];
+
+  const advsq = gAdvsqs.AdvSq.fromQuad(srcTile, quad, perimeter);
+  const perims = advsq.getPerims();
+
+  decorateTile(perims[0].stride[0], piece, "source", group, opacity); // Source tile.
+  const linear = (piece  === "duke") ? "linear3" : "linear2";         // Linear tiles.
+  for (let k=1; k<perims.length; k++) {
+    const perim = perims[k];
+    decorateTile(perims[k].stride[2*k], piece, linear, group, opacity);
+  }
+
+  const planes = advsqs.length;
+  for(let p=0; p<planes; p++) {
+    const planeGroup = new THREE.Group();
+    planeGroup.userData = planeGroup.userData || {};
+    planeGroup.userData.overlays = [];
+
+    for(let q=0; q<2; q++) {
+      const { quad, perimeter } = advsqs[p][q];
+      const advsq = gAdvsqs.AdvSq.fromQuad(srcTile, quad, perimeter);
+      const perims = advsq.getPerims();
+      const linear = (q%2) ? true : false;
+
+      for (let k=1; k<perims.length; k++) {
+        const perim = perims[k];
+        const quadType = quads.quadToQuadType(quad);
+        const lastPerim = (k === perims.length - 1);
+
+        const dst = stride;
+        decorateRectPerimeter(lastPerim, perim, piece, quadType, planeGroup, opacity, dst, linear, 0.05);
+      }
+    }
+    group.add(planeGroup);
+    group.userData.planes.push(planeGroup);
+  }
+
+  return group;
+}
 // Seampoint: more global functions...
 
 // --- Helpers ---
-function decoratePerimeter(lastPerim, perim, piece, quadType, group, opacity, strideNo, zOffset=0.00) {
+function decoratePerimeter(lastPerim, perim, piece, quadType, group, opacity, dst, zOffset=0.00) {
   // console.log("view : view.js - decoratePerimeter(perim)", perim);
 
   const end  = (piece    === "duke") ? "end3":   "end2";
@@ -98,12 +147,39 @@ function decoratePerimeter(lastPerim, perim, piece, quadType, group, opacity, st
     else if(utils.isSame(stride[j], perim.E2)  ) decorateTile(stride[j], piece, end,    group, opacity);
     else {                                       decorateTile(stride[j], piece, "body", group, opacity);
     }
-    if(lastPerim && (i === strideNo))            decorateTile(stride[j], piece, "dst",  group, opacity, zOffset);
+    if(lastPerim && (i === dst))                 decorateTile(stride[j], piece, "dst",  group, opacity, zOffset);
   }
   }
 
-function decorateTile(coords, piece, decorator, group, opacity, zOffset = 0.00) {
-  // console.log("view : view.js - decorateTile(...).");
+function decorateRectPerimeter(lastPerim, perim, piece, quadType, group, opacity, dst, quad2, zOffset=0.00) {
+  // console.log("view : view.js - decorateRectPerimeter(perim)", perim);
+
+  const end  = (piece    === "duke") ? "end3":   "end2";
+  const apex = (quadType === "face") ? "duplex": "apex";
+
+  const stride = perim.stride;
+  for(let i=1; i<=stride.length; i++) {
+    const j = i - 1;
+
+    if(quad2) {
+      if(     utils.isSame(stride[j], perim.E1)  ) ;
+      else if(utils.isSame(stride[j], perim.apex)) decorateTile(stride[j], piece, apex,   group, opacity);
+      else if(utils.isSame(stride[j], perim.E2)  ) decorateTile(stride[j], piece, end,    group, opacity);
+      else {                                       decorateTile(stride[j], piece, "body", group, opacity);
+      }
+    }
+    else {
+      if(     utils.isSame(stride[j], perim.E1)  ) decorateTile(stride[j], piece, end,    group, opacity);
+      else if(utils.isSame(stride[j], perim.apex)) decorateTile(stride[j], piece, apex,   group, opacity);
+      else if(utils.isSame(stride[j], perim.E2)  ) ;//decorateTile(stride[j], piece, end,    group, opacity);
+      else {                                       decorateTile(stride[j], piece, "body", group, opacity);
+      }
+    }
+  }
+  }
+
+function decorateTile(coords, piece, decorator, group, opacity, zOffset = 0.00, decIntensity=1.0) {
+  // console.log("view : view.js - decorateTile(...)...decIntensity:", decIntensity);
 
   let meshTile = tiles.getTileMesh(context.tileMap, coords);
 
@@ -133,7 +209,7 @@ function decorateTile(coords, piece, decorator, group, opacity, zOffset = 0.00) 
 
   const faceColor = meshTile.userData.faceColor;
 
-  const overlays = decorators.decorate(faceColor, meshTile, piece, decorator, zOffset);
+  const overlays = decorators.decorate(faceColor, meshTile, piece, decorator, zOffset, decIntensity);
 
   if (overlays) {
     overlays.forEach(o => {
