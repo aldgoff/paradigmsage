@@ -49,6 +49,16 @@ export function makeGroup(entry) {
 
   return group;
 }
+export function makeLinearGroup(entry) {
+  console.log("view : gambits.js - makeLinearGroup(entry).", entry);
+
+  const { move, piece, src, dst, ray, advsqs, opacity } = entry;
+
+  const group = view.buildAdvRectGroups(entry);
+  group.userData.entry = entry;
+
+  return group;
+}
 
 export function undo(gambit) {
   const scene = view.context.scene;
@@ -70,47 +80,16 @@ export function redo(gambit) {
   render(group);
 }
 
-export function undo1(gambit) {
-  console.log("view: gambits.js - undo(gambit)", gambit);
-  /* INPUT: gambit (entry being undone)
-    1. Identify the rendered group corresponding to this gambit
-      - iterate scene.children
-      - match via group.userData (e.g. src, quad, perimeter, stride)
-    2. If group found:
-      → call derenderGambit(group)
-          - removes overlays from tiles
-          - removes offboard tiles/group
-    3. Do NOT touch state (game.js handles index)
-    4. Return  
-  */
-
-  // TODO: write undo().
-  }
-export function redo1(gambit) {
-  console.log("view: gambits.js - redo(gambit)", gambit);
-  /* INPUT: gambit (entry being redone)
-    1. Build group:
-      group = makeGroup(gambit)
-    2. Attach identity:
-      group.userData.entry = gambit
-    3. Render:
-      render(group)
-    4. Return
-  */
-
-  // TODO: write redo().
-}
-
-export function pushPanelLine(gambit) {
-  console.log("view : gambits.js - pushPanelLine(gambit)", gambit);
+export function pushPanelLine(line) {
+  console.log("view : gambits.js - pushPanelLine(line)", line);
 
   const el = document.getElementById("gambit-list");
   if(!el) return;
 
-  const line = assembleLine(gambit);
+  const row = assembleLine(line);
 
   const div = document.createElement("div");
-  div.textContent = line;
+  div.textContent = row;
 
   // Write to the scroll box.
   el.appendChild(div);
@@ -284,32 +263,32 @@ function derenderGambit(group) {
       .forEach(child => tile.remove(child));
   }
 
-
   // --- Remove offboard tiles ---
   if (group.parent) {
     group.parent.remove(group);
   } else {
     view.context.scene.remove(group);
   }
-  }
+}
 
-function assembleLine(gambit) {
-  const { Q, src, dst, area } = gambit;
+function assembleLine(line) {
+  const { symbol, value, piece, src, dst, feedback } = line;
+
+  // const { Q, src, dst, area } = gambit;
 
   const count = state.getIndices().Gambits;
 
   // --- column widths ---
   const idxCol  = String(count).padStart(2);    // right-aligned
-  const qCol    = `Q${Q}`.padEnd(3);            // "Q37  "
+  const qCol    = `${symbol}${value} ${piece}`.padEnd(6);            // "Q37 R "
   const srcCol  = String(src).padEnd(5);        // "KB4,4  "
   const dstCol  = String(dst).padEnd(8);        // allow offboard arrays
-  const areaCol = String(area).padStart(2);     // right-aligned
+  const areaCol = String(feedback).padStart(2);     // right-aligned
 
-  const line = `${idxCol} ${qCol} ${srcCol} → ${dstCol}:${areaCol}`;
+  const row = `${idxCol} ${qCol} ${srcCol} → ${dstCol}:${areaCol}`;
 
-  return line;
+  return row;
 }
-
 // Seampoint: more local functions...
 
 /* TODO: Gambit additions:

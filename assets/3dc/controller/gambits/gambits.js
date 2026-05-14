@@ -112,9 +112,9 @@ function handleFreezeQuadrant(currAdvsq) {
   vAdvsqs.removeFromScene();                          // De-render. // TODO: move to view layer.
   vAdvsqs.clearAdvsqPanelParams("Q4,4");              // Update panel.
 
-  const entry = mGambits.makeEntry(currAdvsq);        // Transform panel payload into state entry.
-  applyEntry(entry);
-}
+  const { entry, line } = mGambits.makeQuadarantEntry(currAdvsq); // Transform panel payload into state entry and panel line.
+  applyQuadrantEntry({ entry, line });
+  }
 
 function handleFreezeAsLinear(currAdvsq) {
   console.log("cntrl: gambits.js - handleFreezeAsLinear(currAdvsq)", currAdvsq);
@@ -255,33 +255,32 @@ function handleRemoveAll() {
 // Seampoint: more helper functions...
 
 // --- Helpers ---
-function applyEntry(entry) {   // Group, state, render, panel.
-  console.log("cntrl: gambits.js - applyEntry(entry)", entry);
+function applyQuadrantEntry({ entry, line }) {   // Group, state, render, panel.
+  console.log("cntrl: gambits.js - applyQuadrantEntry(entry)", entry);
 
   if(!state.isAtEnd("Gambits")) {
     const idx = state.getCurrentIndex("Gambits");
     state.truncateState("Gambits", idx);
   }
+  // TODO: if not at end, branch undo buffer. 
 
   state.pushNewGambit(entry);                     // Change state.
   const group = vGambits.makeGroup(entry);        // Recreate from entry.
   vGambits.render(group, { animate: true });      // Render.
-  vGambits.pushPanelLine(entry);                  // Add line to panel.
+  vGambits.pushPanelLine(line);                   // Add line to panel.
 
-  // TODO: remove all entries in the downstream buffers; 
-  // a new gambit invalidates advsqs. ?? May happen automagically upon advsq ingest.
-}
+  }
 
 function applyLinearEntry({entry, line}) {   // Group, state, render, panel.
   console.log("cntrl: gambits.js - applyLinearEntry({entry, line})", {entry, line});
  
+  // TODO: if not at end, branch undo buffer. 
+
   state.pushNewGambit(entry);                     // Change state.
-  // const group = vGambits.makeGroup(entry);        // Recreate from entry.
-  // vGambits.render(group, { animate: true });      // Render.
+  const group = vGambits.makeLinearGroup(entry);  // Recreate from entry.
+  vGambits.render(group, { animate: true });      // Render.
   vGambits.pushPanelLine(line);                   // Append line to panel.
 }
-
-
 // Seampoint: more local functions...
 
 /* TODO: Gambit additions:

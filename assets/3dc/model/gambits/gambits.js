@@ -32,8 +32,8 @@ import gambitsData from "./gambits.json" assert { type: "json" };
 // Seampoint: more imports..
 
 // --- UI ---
-export function makeEntry(advsq) {
-  console.log(`model: gambits.js - makeEntry(advsq):`, advsq);
+export function makeQuadarantEntry(advsq) {
+  console.log(`model: gambits.js - makeQuadarantEntry(advsq):`, advsq);
 
   const { src, srcTile, quad, perimeter, stride, opacity } = advsq;
 
@@ -43,8 +43,14 @@ export function makeEntry(advsq) {
 
   const advsqs = [{ src, srcTile, quad, perimeter, stride, opacity }];
   const entry = { Q: quad,src,dst,area, advsqs }; // Prepare gambit state data.
+  
+  let p = "D";
+  if( 1<= quad && quad <= 12)  p = "R";
+  if(13<= quad && quad <= 36)  p = "B";
 
-  return entry;
+  const line = { symbol: "Q", value: quad, piece: p, src, dst, feedback: area };
+
+  return {entry, line};
 }
 
 export function makeLinearEntry(advsq) {
@@ -61,13 +67,16 @@ export function makeLinearEntry(advsq) {
   let piece = "duke";
   if( 1<= quad && quad <= 12)  piece = "rook";
   if(13<= quad && quad <= 36)  piece = "bishop";
+  let p = "D";
+  if( 1<= quad && quad <= 12)  p = "R";
+  if(13<= quad && quad <= 36)  p = "B";
 
   const dst = planes.resolveDstTile(srcTile, quad, perimeter, stride);  // Derive dst tile.
 
   const entry = { move: "linear", piece, src, dst, ray, advsqs: rects, opacity };
 
-  const line = { Q: `L R`, src, dst, area: ray }; // Prepare gambit state data.
-  console.log(`model: gambits.js - makeLinearEntry()...line`, line);
+  const line = { symbol: "L", value: 1, piece: p, src, dst, feedback: ray };
+  // const line = { Q: `L${p}`, src, dst, area: ray }; // Prepare gambit state data.
 
   return { entry, line };
 }

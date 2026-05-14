@@ -61,16 +61,16 @@ layout: "play"
     padding: 4px;
   }
 
-  #setup-window   { top:  260px; left:   80px; }  /* DOM Control Panels */
-  #move-window    { top: 1180px; left:   80px; }
-  #gambit-window  { top:  830px; left:   80px; }
-  #advsq-window   { top:  260px; left:  255px; }
-  #compass-window { top:  260px; left:  600px; }
+  #setup-window   { top:  260px; left:   40px; }  /* DOM Control Panels */
+  #move-window    { top: 1180px; left:   40px; }
+  #gambit-window  { top:  880px; left:   40px; }
+  #advsq-window   { top:  260px; left:  210px; }
+  #compass-window { top:  260px; left:  560px; }
 
-  #game-window    { top:  260px; left:  430px; }
+  #game-window    { top:  260px; left:  390px; }
 
-  #camera-window { top:   510px; left:  430px; }
-  #viewer-window { top:   560px; left:   80px; }
+  #camera-window { top:   510px; left:  390px; }
+  #viewer-window { top:   560px; left:   40px; }
   /* Seampont - more DOM control panels... */
 </style>
 
@@ -140,24 +140,18 @@ layout: "play"
   <div class="section">
     <button data-action="freezeQ">Quadrant</button>
     <button data-action="freezeL">Linear</button>
-  </div>
-  <div class="section">
     <button data-action="freezeD">Duplex</button>
     <button data-action="freezeO">Overlap</button>
    </div>
   <div class="section">
     <button data-action="freezeN">Knight</button>
     <button data-action="freezeP">Pawn</button>
-  </div>
-  <div class="section">
     <button data-action="freezeK">King</button>
     <button data-action="asAPlane">Plane</button>
   </div>
   <div class="section">
     <button data-action="expand">Expand</button>
     <button data-action="contract">Contract</button>
-  </div>
-  <div class="section">
     <button data-action="delete">Delete</button>
     <button data-action="remove">Remove All</button>
   </div>

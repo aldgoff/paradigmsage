@@ -81,10 +81,51 @@ export function buildAdvSqGroup(specs) { // Params: srcTile, quad, perimeter, st
   console.log("view : view.js - buildAdvSqGroup()...group", group);
   return group;
 }
+export function buildAdvRectGroups(entry) { // Params: srcTile, quad, perimeter, stride, opacity.
+  console.log("view : view.js - buildAdvRectGroups(entry).", entry);
+
+  const group = new THREE.Group();
+
+  group.userData = group.userData || {};
+  group.userData.overlays = [];
+
+  const { move, piece, src, dst, ray, advsqs, opacity } = entry;
+  const { srcTile, quad, perimeter, stride, area } = advsqs[0][0];
+
+  const advsq = gAdvsqs.AdvSq.fromQuad(srcTile, quad, perimeter);
+  const perims = advsq.getPerims();
+
+  decorateTile(perims[0].stride[0], piece, "source", group, opacity);
+
+  const planes = advsqs.length;
+  for(let p=0; p<planes; p++) {
+    console.log("*** render each plane.");
+    const first = (p===0) ? true : false;
+
+    for(let q=0; q<2; q++) {
+      console.log("*** render each quad.");
+      const { quad, perimeter } = advsqs[p][q];
+      const advsq = gAdvsqs.AdvSq.fromQuad(srcTile, quad, perimeter);
+      const perims = advsq.getPerims();
+      const linear = (q%2) ? true : false;
+
+      for (let k = 1; k < perims.length; k++) {
+        const perim = perims[k];
+        const quadType = quads.quadToQuadType(quad);
+        const lastPerim = (k === perims.length - 1);
+
+        const dst = stride;
+        decorateRectPerimeter(lastPerim, perim, piece, quadType, group, opacity, dst, first, linear, 0.05);
+      }
+    }
+  }
+
+  return group;
+}
 // Seampoint: more global functions...
 
 // --- Helpers ---
-function decoratePerimeter(lastPerim, perim, piece, quadType, group, opacity, strideNo, zOffset=0.00) {
+function decoratePerimeter(lastPerim, perim, piece, quadType, group, opacity, dst, zOffset=0.00) {
   // console.log("view : view.js - decoratePerimeter(perim)", perim);
 
   const end  = (piece    === "duke") ? "end3":   "end2";
@@ -98,7 +139,35 @@ function decoratePerimeter(lastPerim, perim, piece, quadType, group, opacity, st
     else if(utils.isSame(stride[j], perim.E2)  ) decorateTile(stride[j], piece, end,    group, opacity);
     else {                                       decorateTile(stride[j], piece, "body", group, opacity);
     }
-    if(lastPerim && (i === strideNo))            decorateTile(stride[j], piece, "dst",  group, opacity, zOffset);
+    if(lastPerim && (i === dst))                 decorateTile(stride[j], piece, "dst",  group, opacity, zOffset);
+  }
+  }
+
+function decorateRectPerimeter(lastPerim, perim, piece, quadType, group, opacity, dst, first, linear, zOffset=0.00) {
+  // console.log("view : view.js - decorateRectPerimeter(perim)", perim);
+
+  const end  = (piece    === "duke") ? "end3":   "end2";
+  const apex = (quadType === "face") ? "duplex": "apex";
+
+  const stride = perim.stride;
+  for(let i=1; i<=stride.length; i++) {
+    const j = i - 1;
+
+    if(linear) {
+      if(     utils.isSame(stride[j], perim.E1)  ) {if(first) decorateTile(stride[j], piece, "linear2",    group, opacity);}
+      else if(utils.isSame(stride[j], perim.apex)) decorateTile(stride[j], piece, apex,   group, opacity);
+      else if(utils.isSame(stride[j], perim.E2)  ) decorateTile(stride[j], piece, end,    group, opacity);
+      else {                                       decorateTile(stride[j], piece, "body", group, opacity);
+      }
+    }
+    else {
+      if(     utils.isSame(stride[j], perim.E1)  ) decorateTile(stride[j], piece, end,    group, opacity);
+      else if(utils.isSame(stride[j], perim.apex)) decorateTile(stride[j], piece, apex,   group, opacity);
+      else if(utils.isSame(stride[j], perim.E2)  ) ;//decorateTile(stride[j], piece, end,    group, opacity);
+      else {                                       decorateTile(stride[j], piece, "body", group, opacity);
+      }
+    }
+    // if(lastPerim && (i === dst))                 decorateTile(stride[j], piece, "dst",  group, opacity, zOffset);
   }
   }
 
