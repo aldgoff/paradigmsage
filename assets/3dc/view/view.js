@@ -99,11 +99,10 @@ export function buildAdvRectGroups(entry) { // Params: srcTile, quad, perimeter,
 
   const planes = advsqs.length;
   for(let p=0; p<planes; p++) {
-    console.log("*** render each plane.");
+  // for(let p=0; p<1; p++) {  // Until next button is working.
     const first = (p===0) ? true : false;
 
     for(let q=0; q<2; q++) {
-      console.log("*** render each quad.");
       const { quad, perimeter } = advsqs[p][q];
       const advsq = gAdvsqs.AdvSq.fromQuad(srcTile, quad, perimeter);
       const perims = advsq.getPerims();
@@ -143,18 +142,19 @@ function decoratePerimeter(lastPerim, perim, piece, quadType, group, opacity, ds
   }
   }
 
-function decorateRectPerimeter(lastPerim, perim, piece, quadType, group, opacity, dst, first, linear, zOffset=0.00) {
+function decorateRectPerimeter(lastPerim, perim, piece, quadType, group, opacity, dst, first, quad2, zOffset=0.00) {
   // console.log("view : view.js - decorateRectPerimeter(perim)", perim);
 
   const end  = (piece    === "duke") ? "end3":   "end2";
   const apex = (quadType === "face") ? "duplex": "apex";
+  const linear = (piece  === "duke") ? "linear3" : "linear2";
 
   const stride = perim.stride;
   for(let i=1; i<=stride.length; i++) {
     const j = i - 1;
 
-    if(linear) {
-      if(     utils.isSame(stride[j], perim.E1)  ) {if(first) decorateTile(stride[j], piece, "linear2",    group, opacity);}
+    if(quad2) {
+      if(     utils.isSame(stride[j], perim.E1)  ) {if(first) decorateTile(stride[j], piece, linear, group, opacity);}
       else if(utils.isSame(stride[j], perim.apex)) decorateTile(stride[j], piece, apex,   group, opacity);
       else if(utils.isSame(stride[j], perim.E2)  ) decorateTile(stride[j], piece, end,    group, opacity);
       else {                                       decorateTile(stride[j], piece, "body", group, opacity);
@@ -167,7 +167,6 @@ function decorateRectPerimeter(lastPerim, perim, piece, quadType, group, opacity
       else {                                       decorateTile(stride[j], piece, "body", group, opacity);
       }
     }
-    // if(lastPerim && (i === dst))                 decorateTile(stride[j], piece, "dst",  group, opacity, zOffset);
   }
   }
 

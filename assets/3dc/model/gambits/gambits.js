@@ -32,8 +32,8 @@ import gambitsData from "./gambits.json" assert { type: "json" };
 // Seampoint: more imports..
 
 // --- UI ---
-export function makeQuadarantEntry(advsq) {
-  console.log(`model: gambits.js - makeQuadarantEntry(advsq):`, advsq);
+export function makeQuadrantEntry(advsq) {
+  console.log(`model: gambits.js - makeQuadrantEntry(advsq):`, advsq);
 
   const { src, srcTile, quad, perimeter, stride, opacity } = advsq;
 
@@ -136,6 +136,7 @@ function groupByPlane(quadsList) {
 
   const map = new Map();
 
+  // --- group by plane ---
   quadsList.forEach(Q => {
     const plane = quads.quadToPlane(Q);
 
@@ -143,7 +144,33 @@ function groupByPlane(quadsList) {
     map.get(plane).push(Q);
   });
 
-  return [...map.values()]; // each = one rectangle (2 quads)
+  // --- normalize each pair (handle cyclic adjacency) ---
+  const result = [];
+
+  for (const pair of map.values()) {
+    if (pair.length !== 2) {
+      console.warn("Unexpected quad group:", pair);
+      result.push(pair);
+      continue;
+    }
+
+    let [a, b] = pair;
+
+    // --- FIX: enforce cyclic ordering ---
+    const diff = Math.abs(a - b);
+
+    // If they wrap around (e.g. 1 & 4), flip
+    if (diff > 2) {
+      [a, b] = [b, a];
+    }
+
+    // Optional: enforce consistent left→right ordering via ray
+    // (stronger, if needed later)
+
+    result.push([a, b]);
+  }
+
+  return result;
   }
 
 function buildAdvRects(srcTile, quadPairs, perimeter, stride, opacity) {

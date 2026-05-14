@@ -95,5 +95,5 @@ title: "Dev"
   - 5/11/26 - Gambit specs and json files. Merge to confirm no hard to resolved merge errors.
   - 5/12/26 - Board undo on gambits. Align applyEntry(). Align gambits with panel buttons. Gambit better but still requires rerunGambits. UI Surface Reduction.
   - 5/13/26 - Canonical UI. Push & pop panel lines. Make advsq mesh group clear. QC view.js. Compute gambit for a linear entry. Stats spreadsheet.
-  - 5/14/26 - Render linear gambits.
+  - 5/14/26 - Render linear gambits. Debug linear gambits.
 

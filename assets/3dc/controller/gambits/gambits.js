@@ -112,7 +112,7 @@ function handleFreezeQuadrant(currAdvsq) {
   vAdvsqs.removeFromScene();                          // De-render. // TODO: move to view layer.
   vAdvsqs.clearAdvsqPanelParams("Q4,4");              // Update panel.
 
-  const { entry, line } = mGambits.makeQuadarantEntry(currAdvsq); // Transform panel payload into state entry and panel line.
+  const { entry, line } = mGambits.makeQuadrantEntry(currAdvsq); // Transform panel payload into state entry and panel line.
   applyQuadrantEntry({ entry, line });
   }
 
