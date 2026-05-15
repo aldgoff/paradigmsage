@@ -178,8 +178,8 @@ function decorateRectPerimeter(lastPerim, perim, piece, quadType, group, opacity
   }
   }
 
-function decorateTile(coords, piece, decorator, group, opacity, zOffset = 0.00, decIntensity=1.0) {
-  // console.log("view : view.js - decorateTile(...)...decIntensity:", decIntensity);
+function decorateTile(coords, piece, decorator, group, opacity, zOffset = 0.00) {
+  // console.log("view : view.js - decorateTile(...)");
 
   let meshTile = tiles.getTileMesh(context.tileMap, coords);
 
@@ -209,7 +209,7 @@ function decorateTile(coords, piece, decorator, group, opacity, zOffset = 0.00, 
 
   const faceColor = meshTile.userData.faceColor;
 
-  const overlays = decorators.decorate(faceColor, meshTile, piece, decorator, zOffset, decIntensity);
+  const overlays = decorators.decorate(faceColor, meshTile, piece, decorator, zOffset);
 
   if (overlays) {
     overlays.forEach(o => {

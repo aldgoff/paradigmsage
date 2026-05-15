@@ -33,8 +33,8 @@ import gambitsData from "./gambits.json" assert { type: "json" };
 let activeAnimation = null;
 
 // --- UI ---
-export function makeGroup(entry) {
-  console.log("view : gambits.js - makeGroup(entry).", entry);
+export function makeQuadGroup(entry) {
+  console.log("view : gambits.js - makeQuadGroup(entry).", entry);
 
   const { Q, src, dst, area, advsqs } = entry;
   
@@ -156,7 +156,7 @@ export function undo(gambit) {
   }
 
 export function redo(gambit) {
-  const group = makeGroup(gambit);
+  const group = makeQuadGroup(gambit);
 
   group.userData.entry = gambit;
 
@@ -348,8 +348,6 @@ function derenderGambit(group) {
     });
   }
 
-  // ✅ INSERT HERE (right after overlay loop)
-
   // --- Remove any missed overlays by entry ---
   const tileMap = view.context.tileMap;
 
@@ -395,6 +393,6 @@ function assembleLine(line) {
  * 3. Write updateDerived data function.
  * 4. Expose button enable functions.
  * 5. Code to extract quads from the gambit.
- * 6. Remove decIntensity.
+ * 6. ✅ Remove decIntensity.
 */
 

@@ -95,7 +95,7 @@ export function rerunGambits() {
     const entry = mGambits.fetchThisEntry(i);
     if (!entry) continue;
 
-    const group = vGambits.makeGroup(entry);
+    const group = vGambits.makeQuadGroup(entry);
     vGambits.render(group);
   }
 
@@ -283,7 +283,7 @@ function applyQuadrantEntry({ entry, line }) {   // Group, state, render, panel.
   // TODO: if not at end, branch undo buffer. 
 
   state.pushNewGambit(entry);                     // Change state.
-  const group = vGambits.makeGroup(entry);        // Recreate from entry.
+  const group = vGambits.makeQuadGroup(entry);        // Recreate from entry.
   vGambits.render(group, { animate: true });      // Render.
   vGambits.pushPanelLine(line);                   // Add line to panel.
 
