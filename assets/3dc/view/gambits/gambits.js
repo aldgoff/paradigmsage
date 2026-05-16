@@ -61,6 +61,17 @@ export function makeLinearGroup(entry) {
   return group;
   }
 
+export function makeDuplexGroup(entry) {
+  console.log("view : gambits.js - makeDuplexGroup(entry).", entry);
+
+  const { move, piece, src, dst, ray, advsqs, opacity } = entry;
+
+  const group = view.buildDuplexGroup(entry);
+  group.userData.entry = entry;
+
+  return group;
+  }
+
 export function planeRotation(entry, rotation) {
   console.log("view : gambits.js - planeRotation(rotation, entry).", rotation, entry);
 

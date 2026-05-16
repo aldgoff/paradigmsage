@@ -13,6 +13,10 @@ import quadsData from "./quads.json" assert { type: "json" };
   export const planeQuadTable  = quadsModule.planeQuadTable;
 // Seampoint: more objects...
 
+// --- Build upon previous layers ---
+  import * as rays from "../../foundation/rays/rays.js";
+// Seampoint: more imports..
+
 const Q_MIN = 1;    // Note the hard coding, not in the json file.
 const Q_MAX = 60;
 
@@ -158,6 +162,70 @@ export function quadToNickname(q) { // 1-60 → nickname.
   const Q = toQ(q);
   const res = pqrTable(Q);
   return res.nickname;
+}
+
+export function findDuplexFaceQuad(faceQuad) {
+
+  const Q = toQ(faceQuad);
+
+  const rec = pqrTable(Q);
+
+  if (rec.piece !== "duke") {
+    throw new Error(
+      `findDuplexFaceQuad: ${Q} is not a duke quad`
+    );
+  }
+
+  if (rec.quadType !== "face") {
+    throw new Error(
+      `findDuplexFaceQuad: ${Q} is not a face quad`
+    );
+  }
+
+  const [r1, r2] = rec.rayPair;
+
+  const v1 = rays.getRayVector(r1);
+  const v2 = rays.getRayVector(r2);
+
+  const apex = [
+    v1[0] + v2[0],
+    v1[1] + v2[1],
+    v1[2] + v2[2]
+  ];
+
+  const dukeQuads = pieceToQuads("duke");
+
+  for (const q of dukeQuads) {
+
+    if (q === Q) continue;
+
+    const qr = pqrTable(q);
+
+    if (qr.quadType !== "face") continue;
+
+    const [s1, s2] = qr.rayPair;
+
+    const w1 = rays.getRayVector(s1);
+    const w2 = rays.getRayVector(s2);
+
+    const candidate = [
+      w1[0] + w2[0],
+      w1[1] + w2[1],
+      w1[2] + w2[2]
+    ];
+
+    if (
+      apex[0] === candidate[0] &&
+      apex[1] === candidate[1] &&
+      apex[2] === candidate[2]
+    ) {
+      return q;
+    }
+  }
+
+  throw new Error(
+    `findDuplexFaceQuad: no companion found for ${Q}`
+  );
 }
 
 // Element to quad routines:
