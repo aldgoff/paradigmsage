@@ -1,21 +1,21 @@
 /* File: viewer.js
-  Path: ./3dc/viewer/viewer.js
+  Path: ./3dc/controller/viewer/viewer.js
   Purpose: Adjust elements which affect view: gap, jitter, and level separation.
   Author: Allan Goff
   Date: 4/27/26
-  Recommended access: import * as viewer.
+  Recommended access: import * as cViewer from ../../controller/viewer/viewer.js
   UI: the export functions.
 */
 
 // --- Load JSON ---
 import viewerData from "./viewer.json" assert { type: "json" };
   const viewerModule = viewerData.viewer_module;
-  const category  = viewerModule.category;
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
-import * as cameras from "../../view/render/cameras.js";
-import * as vGambits from "../../view/gambits/gambits.js";
+  import * as cameras  from "../../view/render/cameras.js";
+  import * as vGambits from "../../view/gambits/gambits.js";
+  import * as vViewer  from "../../view/viewer/viewer.js";
 // Seampoint: more imports...
 
 let lastClickTime = 0;
@@ -41,7 +41,7 @@ export function panelDispatch(payload) {
     case "updateParam":     handleViewerParams({ gap, sep, range, speed }); break;
     default: throw new Error(`Unknown viewer action ${action} payload ${payload}.`); break;
   }
-}
+  }
 
 export function buildPayload(panel, action) { // Not subject to undo.
   console.log("     ---------- cntrl: viewer.js");
@@ -68,13 +68,15 @@ export function getJitterValues(panelId = "viewer-window") {
 // --- Handle Functions ---
 function handleShowTrays(payload) {   // Viewer handlers. Not subject to undo.
   console.log("cntrl: viewer.js - handleShowTrays(payload)", payload);
-  // TODO: show trays.
+
+  vViewer.showTrays();
   }
 
 function handleHideTrays(payload) {
   console.log("cntrl: viewer.js - handleHideTrays(payload)", payload);
-  // TODO: hide trays.
-  }
+
+  vViewer.hideTrays();
+}
 
 function handleToggleAnimation(payload) {
   const now = Date.now();

@@ -99,6 +99,6 @@ title: "Dev"
   - 5/15/26 - Gambits QC.
   - 5/16/26 - Freeze duplex moves. Gambits QC.
 
- ### Week 9:
-  - 5/17/26 - Clues. 
+ ### Week 10:
+  - 5/17/26 - Clues. Trays: show/hide, colors, json driven, board size.
 

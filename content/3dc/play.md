@@ -94,14 +94,14 @@ layout: "play"
   </div>
   <div class="section">
     <label> <input type="radio" name="tray-type" value="none"> None </label><br>
-    <label> <input type="radio" name="tray-type" value="real"> Real </label><br>
+    <label> <input type="radio" name="tray-type" value="real" checked> Real </label><br>
     <label> <input type="radio" name="tray-type" value="factory"> Factory </label><br>
   </div>  
   <div class="section">
     <label>Initial Position</lable>
   </div>  
   <div class="section">
-    <label> <input type="radio" name="initial-pos" value="standard"> Standard </label><br>
+    <label> <input type="radio" name="initial-pos" value="standard" checked> Standard </label><br>
     <label> <input type="radio" name="initial-pos" value="manual"> Manual </label><br>
   </div>  
   </div>
@@ -302,14 +302,14 @@ layout: "play"
 <div class="panel" id="viewer-window">
   <div class="panel-title">Viewer Panel</div>
   <div class="section">
-    <button data-action="ShowTrays" disabled> Show Trays </button>
-    <button data-action="HideTrays" disabled> Hide Trays </button>
+    <button data-action="ShowTrays"> Show Trays </button>
+    <button data-action="HideTrays"> Hide Trays </button>
   </div>
   <div class="section">
-    <label> 'Gap' <input name="viewer-trayGap" disabled type="number" min="0" step="1" value="1" max="3"> </label>
+    <label> Gap <input name="viewer-trayGap" type="number" min="0" step="1" value="1" max="3"> </label>
   </div>
   <div class="section">
-    <label> 'Sep' <input name="viewer-traySep" type="number" disabled min="1.0" step="0.1" value="1.5" max="2.0"> </label>
+    <label> Sep <input name="viewer-traySep" type="number" min="1.0" step="0.1" value="1.5" max="2.0"> </label>
   </div>
   <div class="section">
     <button data-action="ToggleAnimation"> Toggle Animation </button>

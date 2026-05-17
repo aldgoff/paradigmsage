@@ -238,6 +238,7 @@ function handleNextPiece(payload) {
 
   applyEntry(nextEntry);  // Clear curr, branch, state change, render, refresh panel.
 }
+// Seampoint: more handlers...
 
 // --- Helpers ---
 function applyEntry(entry) {   // Clear curr, branch, state change, render, refresh panel.

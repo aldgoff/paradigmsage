@@ -43,5 +43,5 @@ title: "Clues"
   - 5/15/26 - Planar moves preserved the endgames, but *busted the midgame*.
   - 5/16/26 - What kind of a rule would allow a single piece to *block an attack along two paths*?
   - 5/17/26 - A path is an example of a *trajectory*.
-  - 5/18/26 - The very concept of a trajectory must be *abandoned*.
+  - 5/18/26 - The very concept of trajectory must be *abandoned*.
 
