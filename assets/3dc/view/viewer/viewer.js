@@ -74,6 +74,13 @@ export function setTraySep(sep) {
   console.log("view: viewer.js - setTraySep(sep)", sep);
   // TODO: write setTraySep function.
 
+  }
+
+export function refreshTrays() {
+  console.log("view: viewer.js - refreshTrays()");
+  if(!traysVisible) return;
+
+  showTrays();
 }
 // Seampoint: more global functions...
 

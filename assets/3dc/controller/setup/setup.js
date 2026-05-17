@@ -29,6 +29,7 @@ import setupData from "./setup.json" assert { type: "json" };
   import * as boards   from "../../view/boards/boards.js";
   import * as vSetup   from "../../view/setup/setup.js";
   import * as vGambits from "../../view/gambits/gambits.js";
+  import * as vViewer  from "../../view/viewer/viewer.js";
 // Seampoint: more imports...
 
 // --- UI ---
@@ -76,6 +77,8 @@ function handleMakeBoard(payload) { // Setup handler.
 
   const nextEntry = mSetup.makeEntry(payload);    // Transform panel payload into state entry.
   applyEntry(nextEntry);
+
+  vViewer.refreshTrays();
   }
 
 function handleShowTrays(visible) {

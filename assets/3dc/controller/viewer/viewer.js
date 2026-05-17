@@ -76,7 +76,7 @@ function handleHideTrays(payload) {
   console.log("cntrl: viewer.js - handleHideTrays(payload)", payload);
 
   vViewer.hideTrays();
-}
+  }
 
 function handleToggleAnimation(payload) {
   const now = Date.now();
@@ -107,11 +107,16 @@ function handleToggleAnimation(payload) {
 
 function handleViewerParams(params) {
   console.log("cntrl: viewer.js - handleViewerParams(params)", params);
-  // TODO: viewer parameters.
+
+  const { gap, sep, range, speed } = params;
 
   cameras.setJitter(params.range, params.speed);
 
-  // <input type="range" name="offboard-opacity" min="0" max="1" step="0.01" value="0.5"> </label>
+  // tray controls
+  vViewer.setTrayGap(gap);
+
+  // future
+  // vViewer.setTraySep(sep);
 }
 // Seampoint: more handlers...
 
