@@ -36,20 +36,19 @@ import gambitsData from "./gambits.json" assert { type: "json" };
 export function makeQuadrantEntry(advsq) {
   console.log(`model: gambits.js - makeQuadrantEntry(advsq):`, advsq);
 
-  const { src, srcTile, quad, perimeter, stride, opacity } = advsq;
-
-  // const src = coords.vtsToBoard(srcTile); // Convert to positional notation for onboard tiles, vts for rest.
-  const dst = planes.resolveDstTile(srcTile, quad, perimeter, stride);  // Derive dst tile.
+  const { src, srcTile, quad, perimeter, stride, opacity } = advsq; // src & dst.
+  const dst = planes.resolveDstTile(srcTile, quad, perimeter, stride);
   const area = (perimeter+1)*(perimeter+1);
-
-  const advsqs = [{ src, srcTile, quad, perimeter, stride, opacity }];
-  const entry = { Q: quad,src,dst,area, advsqs }; // Prepare gambit state data.
   
-  let p = "D";
+  let p = "D";                                                      // Symbol.
   if( 1<= quad && quad <= 12)  p = "R";
   if(13<= quad && quad <= 36)  p = "B";
+  const symbol = `Q`;
 
-  const line = { symbol: "Q", value: quad, piece: p, src, dst, feedback: area };
+  const advsqs = [{ src, srcTile,quad,perimeter,stride, opacity }]; // Advsqs
+
+  const entry = { Q: quad, src, dst, area, advsqs };                // Return values.
+  const line = { symbol, value: quad, piece: p, src, dst, feedback: area };
 
   return {entry, line};
   }
@@ -57,22 +56,26 @@ export function makeQuadrantEntry(advsq) {
 export function makeLinearEntry(advsq) {
   console.log(`model: gambits.js - makeLinearEntry(advsq):`, advsq);
 
-  const { src, srcTile, quad, perimeter, stride, opacity } = advsq;
+  const { src, srcTile, quad, perimeter, stride, opacity } = advsq; // src & dst.
+  const dst = planes.resolveDstTile(srcTile, quad, perimeter, stride);
 
-  const { rayPair } = quads.pqrTable(quad);
+  const { rayPair } = quads.pqrTable(quad);                         // Ray.
   const ray       = resolveStrideRay(advsq, rayPair);
-  const quadsList = findQuadsForRay(ray);
-  const quadPairs = groupByPlane(quadsList);
-  const rects     = buildAdvRects(srcTile, quadPairs, perimeter, stride, opacity);
 
+  const move = "linear";                                            // Symbol.
   let piece = "duke"; let p = "D";
   if( 1<= quad && quad <= 12) { piece = "rook";    p = "R";}
   if(13<= quad && quad <= 36) { piece = "bishop";  p = "B";}
+  const value = "1";  // TODO: figure out value.
+  const symbol = `L`;
 
-  const dst = planes.resolveDstTile(srcTile, quad, perimeter, stride);  // Derive dst tile.
+  const quadsList = findQuadsForRay(ray);                           // Advrects.
+  const quadPairs = groupByPlane(quadsList);
+  const rects     = buildAdvRects(srcTile, quadPairs, perimeter, stride, opacity);
+  const advsqs    = rects;
 
-  const entry = { move: "linear", piece, src, dst, ray, advsqs: rects, opacity };
-  const line  = { symbol: "L", value: 1, piece: p, src, dst, feedback: ray };
+  const entry = { move, piece, src, dst, ray, advsqs, opacity };    // Return values.
+  const line  = { symbol, value, piece: p, src, dst, feedback: ray };
 
   return { entry, line };
   }
@@ -94,17 +97,15 @@ export function makeDuplexEntry(advsq) {
   const piece = "duke";
   const p = "D";
   const crossPlainsAdv = "MM";  // TODO: figure out cross plane abrvs.
-  const symbol = `${p}${crossPlainsAdv}`;
+  const value = `${crossPlainsAdv}`;
+  const symbol = `${p}`;
 
   const crossQuad = quads.findDuplexFaceQuad(quad);                 // Advsqs.
   const crossAdvsq = { src, srcTile, quad: crossQuad, perimeter, stride, opacity};
   const advsqs = [advsq, crossAdvsq];
 
   const entry = { move, piece, src, dst, ray, advsqs, opacity };    // Return values.
-  const line  = { symbol, piece, src, dst, feedback: ray };
-
-  console.log(`model: gambits.js - rayPair, ray`, rayPair, ray);
-  console.log(`model: gambits.js - crossQuad, line`, crossQuad, line);
+  const line  = { symbol, value, piece: p, src, dst, feedback: ray };
 
   return { entry, line };
 }

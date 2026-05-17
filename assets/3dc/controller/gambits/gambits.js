@@ -306,7 +306,7 @@ function applyQuadrantEntry({ entry, line }) {   // Group, state, render, panel.
   // TODO: if not at end, branch undo buffer. 
 
   state.pushNewGambit(entry);                     // Change state.
-  const group = vGambits.makeQuadGroup(entry);        // Recreate from entry.
+  const group = vGambits.makeQuadGroup(entry);    // Recreate from entry.
   vGambits.render(group, { animate: true });      // Render.
   vGambits.pushPanelLine(line);                   // Add line to panel.
 
@@ -351,5 +351,6 @@ function applyDuplexEntry({entry, line}) {   // Group, state, render, panel.
   * 13. ✅ Plumbing for test suite
   * 14. Add expand & contract feature
   * 15. Next fails if dst is offboard (at least for duplex moves)
+  * 16. Button enable/disable - document.querySelector('[data-action="freezeQ"]').disabled = false;
 */
 

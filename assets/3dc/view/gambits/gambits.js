@@ -386,13 +386,14 @@ function assembleLine(line) {
   const count = state.getIndices().Gambits;
 
   // --- column widths ---
-  const idxCol  = String(count).padStart(2);    // right-aligned
-  const qCol    = `${symbol}${value} ${piece}`.padEnd(6);            // "Q37 R "
-  const srcCol  = String(src).padEnd(5);        // "KB4,4  "
-  const dstCol  = String(dst).padEnd(8);        // allow offboard arrays
-  const areaCol = String(feedback).padStart(2);     // right-aligned
+  const idxCol  = String(count).padStart(2);      // right-aligned
+  const sCol    = `${symbol}${value}`.padEnd(3);  // "Q37 "
+  const pCol    = `${piece}`.padEnd(1);           // "R "
+  const srcCol  = String(src).padEnd(5);          // "KB4,4  "
+  const dstCol  = String(dst).padEnd(8);          // allow offboard arrays
+  const areaCol = String(feedback).padStart(2);   // right-aligned
 
-  const row = `${idxCol} ${qCol} ${srcCol} → ${dstCol}:${areaCol}`;
+  const row = `${idxCol} ${sCol} ${pCol} ${srcCol} → ${dstCol}:${areaCol}`;
 
   return row;
 }
@@ -403,7 +404,7 @@ function assembleLine(line) {
  * 2. Upgrade rows format to new standard.
  * 3. Write updateDerived data function.
  * 4. Expose button enable functions.
- * 5. Code to extract quads from the gambit.
+ * 5. ✅ Code to extract quads from the gambit.
  * 6. ✅ Remove decIntensity.
 */
 

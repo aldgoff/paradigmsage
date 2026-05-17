@@ -75,7 +75,7 @@ export function buildAdvSqGroup(specs) { // Params: srcTile, quad, perimeter, st
     const quadType = quads.quadToQuadType(quad);
     const lastPerim = (k === perims.length - 1);
 
-    decoratePerimeter(lastPerim, perim, piece, quadType, group, opacity, stride, 0.05);
+    decorateQuadPerimeter(lastPerim, perim, piece, quadType, group, opacity, stride, 0.05);
   }
 
   console.log("view : view.js - buildAdvSqGroup()...group", group);
@@ -174,8 +174,8 @@ export function buildDuplexGroup(entry) { // Params: srcTile, quad, perimeter, s
 // Seampoint: more global functions...
 
 // --- Helpers ---
-function decoratePerimeter(lastPerim, perim, piece, quadType, group, opacity, dst, zOffset=0.00) {
-  // console.log("view : view.js - decoratePerimeter(perim)", perim);
+function decorateQuadPerimeter(lastPerim, perim, piece, quadType, group, opacity, dst, zOffset=0.00) {
+  // console.log("view : view.js - decorateQuadPerimeter(perim)", perim);
 
   const end  = (piece    === "duke") ? "end3":   "end2";
   const apex = (quadType === "face") ? "duplex": "apex";

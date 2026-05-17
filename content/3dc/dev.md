@@ -97,5 +97,5 @@ title: "Dev"
   - 5/13/26 - Canonical UI. Push & pop panel lines. Make advsq mesh group clear. QC view.js. Compute gambit for a linear entry. Stats spreadsheet.
   - 5/14/26 - Render linear gambits. Debug linear gambits. Gambit next plane feature.
   - 5/15/26 - Gambits QC.
-  - 5/16/26 - Freeze duplex moves.
+  - 5/16/26 - Freeze duplex moves. Gambits QC.
 
