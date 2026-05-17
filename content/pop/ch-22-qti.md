@@ -2,7 +2,7 @@
 title: "Quantum Temporal Indeterminacy"
 nav-entry: "Ch 22"
 order: "22"
-date: "2026-05-18"
+date: "2026-06-18"
 documents:
   discourse:
     title: "Numbskull"

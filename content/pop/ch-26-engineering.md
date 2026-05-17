@@ -2,7 +2,7 @@
 title: "Engineering"
 nav-entry: "26"
 order: "26"
-date: "2026-06-08"
+date: "2026-07-08"
 draft: false
 documents:
   discourse:
