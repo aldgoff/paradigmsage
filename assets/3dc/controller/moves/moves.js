@@ -3,7 +3,7 @@
   Purpose: Allows moving pieces, shows the list of moves.
   Author: Allan Goff
   Date: 4/27/26
-  Recommended access: import * as cMoves from ../../controller/moves/moves.js
+  Recommended access: import * as cMoves from ""../../controller/moves/moves.js";
   UI: the export functions.
   Philosophy: Delete a module by deleting its directory - not so much.
     controller/ model/ view/
@@ -17,7 +17,6 @@
 // --- Load JSON ---
 import movesData from "./moves.json" assert { type: "json" };
   const movesModule = movesData.moves_module;
-  // const category  = movesModule.category;
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---

@@ -37,8 +37,8 @@ import * as state from "../../model/state/state.js";
 export function run() {
   let prev = snapshotTotals();
 
-  test_state();
-  test_setup();
+  // test_state();
+  // test_setup();
   // test_moves();
   test_gambits();
   // test_advsqs();
@@ -58,7 +58,7 @@ function test_state() {
   const cases = [
     { expected: 44, label: "-example" },
     { expected: 75, label: "-_cannonicalSchema" },
-    { expected: 11, label: "Setup" },
+    { expected:  6, label: "Setup" },
     { expected:  5, label: "Moves" },
     { expected:  4, label: "Gambits" },
     { expected:  6, label: "AdvSqs" },

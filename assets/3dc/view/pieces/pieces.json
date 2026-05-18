@@ -1,14 +1,36 @@
 {
   "pieces_module": {
-    "category": {
-      "key1": "value1",
-      "key2": 123,
-      "array": [-1,  0,  0]
+    "rook": {
+      "aspect": 1.6,
+      "breadth": 0.80
     },
-    "Examples": {
-      "_comment": "YadaYada",
-      "_status": "deprecated",
-      "_doc": "Because I said so."
+    "bishop": {
+      "aspect": 2.0,
+      "breadth": 0.60
+    },
+    "duke": {
+      "aspect": 1.0,
+      "breadth": 0.80
+    },
+    "stack": {
+      "aspect": 1.0,
+      "breadth": 1.00
+    },
+    "queen": {
+      "aspect": 3.0,
+      "breadth": 0.60
+    },
+    "knight": {
+      "aspect": 1.0,
+      "breadth": 0.40
+    },
+    "pawn": {
+      "aspect": 1.0,
+      "breadth": 0.80
+    },
+    "king": {
+      "aspect": 3.5,
+      "breadth": 0.70
     }
   }
 }
