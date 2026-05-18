@@ -3,7 +3,7 @@
   Purpose: The player's interface to setting up, exploring, and playing the game.
   Author: Allan Goff
   Date: 4/02/26
-  Recommended access: import * as control.
+  Recommended access: import * as cCntrl from "../../controller/controller.js";
   UI: the export functions.
 */
 

@@ -3,7 +3,7 @@
   Purpose: desc
   Author: Allan Goff
   Date: 3/30/26
-  Recommended access: import * as overlaps.
+  Recommended access: import * as overlaps from "../../geometry/overlaps/overlaps.js";
   UI: the export functions.
 */
 
@@ -13,7 +13,7 @@ import overlapsData from "./overlaps.json" assert { type: "json" };
 // Seampoint: more objects...
 
 // --- Build upon the previous layers ---
-import { } from "../../foundation/coords/coords.js";
+  import { } from "../../foundation/coords/coords.js";
 // Seampoint: more imports...
 
 // --- UI ---

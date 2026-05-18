@@ -1,9 +1,9 @@
 /* File: trays.js
   Path: ./3dc/view/trays/trays.js
-  Purpose: desc
+  Purpose: Render trays.
   Author: Allan Goff
   Date: 5/05/26
-  Recommended access: import * as vTrays from ../../view/trays/trays.js
+  Recommended access: import * as vTrays from "../../view/trays/trays.js";
   UI: the export functions.
 */
 

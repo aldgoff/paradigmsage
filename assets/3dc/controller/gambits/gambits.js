@@ -3,7 +3,7 @@
   Purpose: Collects advsqs into a set that stays on the board - gambit analysis.
   Author: Allan Goff
   Date: 4/23/26
-  Recommended access: import * as cGambits from ../../controller/gambits/gambits.js
+  Recommended access: import * as cGambits from "../../controller/gambits/gambits.js";
   UI: the export functions.
   Philosophy: Dlete a module by deleting its directory - not so much.
     controller/ model/ view/

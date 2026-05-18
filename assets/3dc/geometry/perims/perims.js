@@ -1,9 +1,9 @@
 /* File: perims.js
   Path: ./3dc/geometry/perims/perims.js
-  Purpose: desc
+  Purpose: Define perimeters and their UI.
   Author: Allan Goff
   Date: 3/00/26
-  Recommended access: import * as perims.
+  Recommended access: import * as perims from "../../geometry/perims/perims.js";
   UI: the export functions.
 */
 

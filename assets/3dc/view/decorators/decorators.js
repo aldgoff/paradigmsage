@@ -1,9 +1,9 @@
 /* File: decorators.js
-  Path: ./3dc/view/decorators.js
+  Path: ./3dc/view/decorators/decorators.js
   Purpose: Apply decorators to tiles.
   Author: Allan Goff
   Date: 4/08/26
-  Recommended access: import * as decorators.
+  Recommended access: import * as vDecorators from "../../view/decorators/decorators.js";
   UI: the export functions.
   #ff1a1a Use FSC color interface to pick colors.
 */

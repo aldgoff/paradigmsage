@@ -1,9 +1,9 @@
 /* File: gambits.js
   Path: ./3dc/view/gambits/gambits.js
-  Purpose: desc
+  Purpose: Render gambits.
   Author: Allan Goff
   Date: 4/15/26
-  Recommended access: import * as vGambits from ../../view/gambits/gambits.js
+  Recommended access: import * as vGambits from "../../view/gambits/gambits.js";
   UI: the export functions.
   Philosophy: Dlete a module by deleting its directory - not so much.
     controller/ model/ view/

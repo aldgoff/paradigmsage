@@ -1,6 +1,6 @@
 /* File: pieces.js
   Path: ./3dc/controller/pieces/pieces.js
-  Purpose: desc
+  Purpose: Commands for moving pieces around.
   Author: Allan Goff
   Date: 5/03/26
   Recommended access: import * as cPieces from "../../controller/pieces/pieces.js";

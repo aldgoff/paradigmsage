@@ -3,7 +3,7 @@
   Purpose: Tile color system (bishop + duke) in VTS space.
   Author: Allan Goff
   Date: 3/20/26
-  Recommended access: import * as colors.
+  Recommended access: import * as colors from "../../foundation/colors/colors.js";
   UI: the export functions.
 */
 
@@ -15,7 +15,8 @@ import colorsData from "./colors.json" assert { type: "json" };
 // Seampoint: more imports...
 
 // --- Build upon previous layers ---
-import * as coords from "../coords/coords.js";
+  import * as coords from "../coords/coords.js";
+// Seampoint: more imports...
 
 // --- UI ---
 // -- Public API (positional notation) --

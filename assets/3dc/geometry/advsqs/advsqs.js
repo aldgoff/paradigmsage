@@ -1,9 +1,9 @@
 /* File: advsqs.js
-  Path: ./3dc/geometry/advsqs.js
+  Path: ./3dc/geometry/advsqs/advsqs.js
   Purpose: desc
   Author: Allan Goff
   Date: 3/29/26
-  Recommended access: import * as mAdvsqs.
+  Recommended access: import * as gAdvsqs from "../../geometry/advsqs/advsqs.js";
   UI: the export functions.
 */
 

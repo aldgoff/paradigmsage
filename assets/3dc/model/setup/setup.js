@@ -1,9 +1,9 @@
 /* File: setup.js
-  Path: ./3dc/setup/setup.js
-  Purpose: desc
+  Path: ./3dc/model/setup/setup.js
+  Purpose: State for the setup panel: payload, entry, line.
   Author: Allan Goff
   Date: 5/02/26
-  Recommended access: import * as mSetup from ../../model/setup/setup.js
+  Recommended access: import * as mSetup from "../../model/setup/setup.js";
   UI: the export functions.
   Philosophy: Delete a module by deleting its directory - not so much.
     controller/ model/ view/

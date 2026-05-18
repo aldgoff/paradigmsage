@@ -1,9 +1,9 @@
 /* File: viewer.js
   Path: ./3dc/view/viewer/viewer.js
-  Purpose: desc
+  Purpose: Render viewer commands.
   Author: Allan Goff
   Date: 5/17/26
-  Recommended access: import * as vViewer from ../../view/viewer/viewer.js
+  Recommended access: import * as vViewer from "../../view/viewer/viewer.js";
   UI: the export functions.
 */
 

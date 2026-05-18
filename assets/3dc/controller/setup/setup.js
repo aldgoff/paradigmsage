@@ -1,9 +1,9 @@
 /* File: setup.js
-  Path: ./3dc/setup/setup.js
+  Path: ./3dc/controller/setup/setup.js
   Purpose: Controller code to setup board and trays.
   Author: Allan Goff
   Date: 4/22/26
-  Recommended access: import * as cSetup from ""../../control/setup/setup.js";
+  Recommended access: import * as cSetup from "../../control/setup/setup.js";
   UI: the export functions.
   Philosophy: Dlete a module by deleting its directory - not so much.
     controller/ model/ view/

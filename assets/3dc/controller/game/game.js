@@ -3,7 +3,7 @@
   Purpose: Game control, including undo.
   Author: Allan Goff
   Date: 4/22/26
-  Recommended access: import * as game.
+  Recommended access: import * as cGame from "../../controller/game/game.js";
   UI: the export functions.
 */
 

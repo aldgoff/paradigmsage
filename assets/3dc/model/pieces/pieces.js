@@ -1,9 +1,9 @@
 /* File: pieces.js
   Path: ./3dc/model/pieces/pieces.js
-  Purpose: desc
+  Purpose: State for pieces.
   Author: Allan Goff
   Date: 5/03/26
-  Recommended access: import * as vPieces from ""../../view/pieces/pieces.js";
+  Recommended access: import * as mPieces from "../../model/pieces/pieces.js";
   UI: the export functions.
 */
 
@@ -20,7 +20,7 @@ import piecesData from "./pieces.json" assert { type: "json" };
   import * as quads  from "../../geometry/quads/quads.js";
 
   import * as vPieces from "../../view/pieces/pieces.js";
-  // Seampoint: more imports...
+// Seampoint: more imports...
 
 // --- Global (example only) ---
   const {

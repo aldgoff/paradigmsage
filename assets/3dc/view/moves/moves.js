@@ -3,7 +3,7 @@
   Purpose: Rendering the view panel and board.
   Author: Allan Goff
   Date: 4/30/26
-  Recommended access: import * as vMoves from ../../view/moves/moves.js
+  Recommended access: import * as vMoves from "../../view/moves/moves.js";
   UI: the export functions.
   Philosophy: Delete a module by deleting its directory - not so much.
     controller/ model/ view/

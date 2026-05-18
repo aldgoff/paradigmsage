@@ -1,9 +1,9 @@
 /* File: camera.js
-  Path: ./3dc/camera/camera.js
+  Path: ./3dc/controller/camera/camera.js
   Purpose: Panel interface to camera control.
   Author: Allan Goff
   Date: 4/27/26
-  Recommended access: import * as camera.
+  Recommended access: import * as cCamera from "../../controller/camera/camera.js";
   UI: the export functions.
 */
 
@@ -14,8 +14,8 @@ import cameraData from "./camera.json" assert { type: "json" };
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
-import * as cameras from "../../view/render/cameras.js";
-import * as vGambits from "../../view/gambits/gambits.js";
+  import * as cameras from "../../view/render/cameras.js";
+  import * as vGambits from "../../view/gambits/gambits.js";
 // Seampoint: more imports.
 
 // --- UI ---

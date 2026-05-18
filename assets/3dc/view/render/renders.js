@@ -1,9 +1,9 @@
 /* File: renders.js
-  Path: ./3dc/view/renders.js
+  Path: ./3dc/view/render/renders.js
   Purpose: Create the renderer.
   Author: Allan Goff
   Date: 4/09/26
-  Recommended access: import * as renders.
+  Recommended access: import * as renders from "../../view/render/renders.js";
   UI: the export functions.
 */
 
@@ -14,9 +14,9 @@ const THREE = window.THREE;
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
-import * as cameras from "./cameras.js";
-import * as scenes  from "./scenes.js";
-import * as lights  from "./lights.js";
+  import * as cameras from "./cameras.js";
+  import * as scenes  from "./scenes.js";
+  import * as lights  from "./lights.js";
 // Seampoint: more imports...
 
 // --- UI ---

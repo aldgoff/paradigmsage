@@ -1,9 +1,9 @@
 /* File: compasses.js
-  Path: ./3dc/compasses/compasses.js
+  Path: ./3dc/controller/compasses/compasses.js
   Purpose: desc
   Author: Allan Goff
   Date: 4/27/26
-  Recommended access: import * as compasses.
+  Recommended access: import * as cCompasses from "../../controller/compasses/compasses.js";
   UI: the export functions.
 */
 

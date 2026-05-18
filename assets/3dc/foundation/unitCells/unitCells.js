@@ -1,9 +1,9 @@
 /* File: unitCells.js
-  Path: ./3dc/foundation/unitCells.js
+  Path: ./3dc/foundation/unitCells/unitCells.js
   Purpose: Resolve the canonicalization problem of which concept is most fundamental.
   Author: Allan Goff
   Date: 3/24/26
-  Recommended access: import * as unitCells.
+  Recommended access: import * as unitCells from "../../foundation/unitCells/unitCells.js";
   UI: the export functions.
 */
 
@@ -12,6 +12,9 @@ import unitCellsData from "./unitCells.json" assert { type: "json" };
   const unitCellsModule = unitCellsData.unitCells_module;
   const unitCells = unitCellsModule;
 // Seampoint: more objects...
+
+// --- Build upon previous layers ---
+// Seampoint: more imports...
 
 // --- UI ---
 // -- Dimension access --

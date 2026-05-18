@@ -3,7 +3,7 @@
   Purpose: The moves portion of the state of the game.
   Author: Allan Goff
   Date: 4/30/26
-  Recommended access: import * as mMoves from ../../model/moves/moves.js
+  Recommended access: import * as mMoves from "../../model/moves/moves.js";
   UI: the export functions.
   Philosophy: Delete a module by deleting its directory - not so much.
     controller/ model/ view/

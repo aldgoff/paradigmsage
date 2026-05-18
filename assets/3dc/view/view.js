@@ -3,7 +3,7 @@
   Purpose: Interface to the view layer, render board, wire the panels, and add event listeners.
   Author: Allan Goff
   Date: 4/02/26
-  Recommended access: import * as view.
+  Recommended access: import * as view from "../view/view.js";
   UI: the export functions.
   Philosophy: Delete a module by deleting its directory - not so much.
     controller/ model/ view/

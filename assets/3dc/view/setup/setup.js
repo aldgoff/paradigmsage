@@ -1,9 +1,9 @@
 /* File: setup.js
   Path: ./3dc/view/setup/setup.js
-  Purpose: desc
+  Purpose: Render board, tray, and initial piece positions.
   Author: Allan Goff
   Date: 5/03/26
-  Recommended access: import * as vSetup from ../../view/setup/setup.js
+  Recommended access: import * as vSetup from "../../view/setup/setup.js";
   UI: the export functions.
   Philosophy: Delete a module by deleting its directory - not so much.
     controller/ model/ view/

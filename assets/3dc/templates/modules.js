@@ -1,9 +1,9 @@
 /* File: modules.js
   Path: ./3dc/layer/modules/modules.js
-  Purpose: desc
+  Purpose: template for code files.
   Author: Allan Goff
   Date: 5/03/26
-  Recommended access: import * as modules from ../../layer/modules/modules.js
+  Recommended access: import * as modules "from ../../layer/modules/modules.js";
   UI: the export functions.
 */
 
@@ -17,7 +17,6 @@ import modulesData from "./modules.json" assert { type: "json" };
   import * as planes from "../geometry/planes/planes.js";
   import * as quads  from "../geometry/quads/quads.js";
 // Seampoint: more imports...
-
 
 // --- UI ---
 export function UI() {

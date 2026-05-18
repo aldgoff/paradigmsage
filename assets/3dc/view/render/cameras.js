@@ -3,7 +3,7 @@
   Purpose: Interface to the camera controls, POV on the board, zoom, etc.
   Author: Allan Goff
   Date: 4/09/26
-  Recommended access: import * as cameras.
+  Recommended access: import * as cameras from "../../view/render/cameras.js";
   UI: the export functions.
 */
 

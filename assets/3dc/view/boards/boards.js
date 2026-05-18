@@ -4,7 +4,7 @@
   Author: Allan Goff
   Date: 4/14/26
   QC: 5/8/26
-  Recommended access: import * as vBoards from ../../view/boards/boards.js
+  Recommended access: import * as vBoards from "../../view/boards/boards.js";
   UI: the export functions.
 */
 

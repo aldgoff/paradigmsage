@@ -3,7 +3,7 @@
   Purpose: Create and morph advancement squares vis srcTile, quad, perimeter, and stride, w/ opacity for offboard tiles.
   Author: Allan Goff
   Date: 4/21/26
-  Recommended access: import * as cAdvsqs from ../../controller/advsqs/advsqa.js
+  Recommended access: import * as cAdvsqs from "../../controller/advsqs/advsqa.js";
   UI: the export functions.
   Philosophy: Delete a module by deleting its directory - not so much.
     controller/ model/ view/

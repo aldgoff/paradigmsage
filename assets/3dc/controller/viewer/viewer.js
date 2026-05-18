@@ -3,7 +3,7 @@
   Purpose: Adjust elements which affect view: gap, jitter, and level separation.
   Author: Allan Goff
   Date: 4/27/26
-  Recommended access: import * as cViewer from ../../controller/viewer/viewer.js
+  Recommended access: import * as cViewer from "../../controller/viewer/viewer.js";
   UI: the export functions.
 */
 

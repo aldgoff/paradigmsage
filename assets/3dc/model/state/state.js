@@ -3,7 +3,7 @@
   Purpose: The state of a 3D Chess game.
   Author: Allan Goff
   Date: 4/06/26
-  Recommended access: import * as state.
+  Recommended access: import * as mState from "../../model/state/state.js";
   UI: the export functions.
 */
 /* const obj = JSON.parse(JSON.stringify(setup)); */

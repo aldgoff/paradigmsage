@@ -3,7 +3,7 @@
   Purpose: Place the decorators on the board for the advsq.
   Author: Allan Goff
   Date: 4/15/26
-  Recommended access: import * as vAdvsqs from ../../view/advsqs/advsqa.js
+  Recommended access: import * as vAdvsqs from "../../view/advsqs/advsqa.js";
   UI: the export functions.
   Philosophy: Dlete a module by deleting its directory - not so much.
     controller/ model/ view/
