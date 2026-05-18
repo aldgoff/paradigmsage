@@ -2,7 +2,7 @@
 title: "Laws of Form"
 nav-entry: "25"
 order: "25"
-date: "2026-06-08"
+date: "2026-07-08"
 draft: false
 documents:
   discourse:

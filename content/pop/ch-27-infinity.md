@@ -2,7 +2,7 @@
 title: "Infinity"
 nav-entry: "27"
 order: "27"
-date: "2026-06-08"
+date: "2026-08-08"
 draft: false
 documents:
   discourse:

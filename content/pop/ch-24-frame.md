@@ -2,7 +2,7 @@
 title: "Frame"
 nav-entry: "Ch 24"
 order: "24"
-date: "2026-06-01"
+date: "2026-07-01"
 documents:
   discourse:
     title: "Search Party"

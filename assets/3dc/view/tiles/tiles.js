@@ -19,8 +19,8 @@ import tilesData from "./tiles.json" assert { type: "json" };
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
-import * as foundation from "../../foundation/colors/colors.js";
-import * as coordsMaps from "../render/coordsMaps.js"
+  import * as foundation from "../../foundation/colors/colors.js";
+  import * as coordsMaps from "../render/coordsMaps.js"
 // Seampoint: more imports...
 
 // --- UI ---

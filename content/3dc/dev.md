@@ -96,4 +96,9 @@ title: "Dev"
   - 5/12/26 - Board undo on gambits. Align applyEntry(). Align gambits with panel buttons. Gambit better but still requires rerunGambits. UI Surface Reduction.
   - 5/13/26 - Canonical UI. Push & pop panel lines. Make advsq mesh group clear. QC view.js. Compute gambit for a linear entry. Stats spreadsheet.
   - 5/14/26 - Render linear gambits. Debug linear gambits. Gambit next plane feature.
+  - 5/15/26 - Gambits QC.
+  - 5/16/26 - Freeze duplex moves. Gambits QC.
+
+ ### Week 10:
+  - 5/17/26 - Clues. Trays: show/hide, colors, json driven, board size. Postpone publish dates. Tray gap code. Primary plane dots on gold tiles.
 

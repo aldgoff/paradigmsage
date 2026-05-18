@@ -2,7 +2,7 @@
 title: "Now and Then"
 nav-entry: "Ch 21"
 order: "21"
-date: "2026-05-18"
+date: "2026-06-18"
 documents:
   discourse:
     title: "There and Back"

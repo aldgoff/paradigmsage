@@ -15,6 +15,7 @@ import boardsData from "./boards.json" assert { type: "json" };
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
+  import * as foundation from "../../foundation/colors/colors.js";
   import * as view       from "../view.js";
   import * as tiles      from "../tiles/tiles.js";
   import * as decorators from "../decorators/decorators.js";
@@ -61,6 +62,11 @@ export function makeBoard(dimensions) {
         let tile = tiles.getTileAttributes(pos);
         let meshTile = tiles.createMeshTile(tile, view.context.tileGeometry, pos);
         tiles.initTileUserData(meshTile, tile, pos, view.context.tileMap);
+
+        if(isPrimaryPlaneMarker(tile, pos)) {        // Primary plane markers.
+          const marker = makePrimaryPlaneMarker();
+          meshTile.add(marker);
+        }
         boardGroup.add(meshTile); // Add tile to board.
         count++;
       }
@@ -89,8 +95,40 @@ export function clearBoard() {
 // Seampoint: more global functions...
 
 // --- Helpers ---
-function addEventListener(scene, renderer, camera, tileMap) {
+function isPrimaryPlaneMarker(tile, pos) {
+  // console.log("view: boards.js - isPrimaryPlaneMarker(tile, pos):", tile, pos);
 
+  const [, x, y] = pos;
+
+  if(x !== y) return false; // Primary plane only.
+
+  const dukeColor = foundation.dukeColorVts(pos);    // Duke color depends on position.
+
+  return (dukeColor === "gold");
+}
+
+function makePrimaryPlaneMarker() {
+  const THREE = window.THREE;
+
+  const geometry =
+    new THREE.SphereGeometry(
+      6,      // radius
+      16,     // width segs
+      16,     // height segs
+      0,
+      Math.PI * 2,
+      0,
+      Math.PI / 2
+    );
+
+  // TODO: solve the level fighting between dots and decorators.
+  const material = new THREE.MeshPhongMaterial({ color: 0x111111 });
+  const marker = new THREE.Mesh( geometry, material);
+
+  return marker;
+}
+
+function addEventListener(scene, renderer, camera, tileMap) {
   if (clickHandler) {
     renderer.domElement.removeEventListener("click", clickHandler);
   }

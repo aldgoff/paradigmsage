@@ -41,8 +41,8 @@ import gambitsData from "./gambits.json" assert { type: "json" };
 let activeAnimation = null;
 
 // --- UI ---
-export function makeGroup(entry) {
-  console.log("view : gambits.js - makeGroup(entry).", entry);
+export function makeQuadGroup(entry) {
+  console.log("view : gambits.js - makeQuadGroup(entry).", entry);
 
   const { Q, src, dst, area, advsqs } = entry;
   
@@ -64,6 +64,17 @@ export function makeLinearGroup(entry) {
   const { move, piece, src, dst, ray, advsqs, opacity } = entry;
 
   const group = view.buildAdvRectGroups(entry);
+  group.userData.entry = entry;
+
+  return group;
+  }
+
+export function makeDuplexGroup(entry) {
+  console.log("view : gambits.js - makeDuplexGroup(entry).", entry);
+
+  const { move, piece, src, dst, ray, advsqs, opacity } = entry;
+
+  const group = view.buildDuplexGroup(entry);
   group.userData.entry = entry;
 
   return group;
@@ -164,7 +175,7 @@ export function undo(gambit) {
   }
 
 export function redo(gambit) {
-  const group = makeGroup(gambit);
+  const group = makeQuadGroup(gambit);
 
   group.userData.entry = gambit;
 
@@ -356,8 +367,6 @@ function derenderGambit(group) {
     });
   }
 
-  // ✅ INSERT HERE (right after overlay loop)
-
   // --- Remove any missed overlays by entry ---
   const tileMap = view.context.tileMap;
 
@@ -385,13 +394,14 @@ function assembleLine(line) {
   const count = state.getIndices().Gambits;
 
   // --- column widths ---
-  const idxCol  = String(count).padStart(2);    // right-aligned
-  const qCol    = `${symbol}${value} ${piece}`.padEnd(6);            // "Q37 R "
-  const srcCol  = String(src).padEnd(5);        // "KB4,4  "
-  const dstCol  = String(dst).padEnd(8);        // allow offboard arrays
-  const areaCol = String(feedback).padStart(2);     // right-aligned
+  const idxCol  = String(count).padStart(2);      // right-aligned
+  const sCol    = `${symbol}${value}`.padEnd(3);  // "Q37 "
+  const pCol    = `${piece}`.padEnd(1);           // "R "
+  const srcCol  = String(src).padEnd(5);          // "KB4,4  "
+  const dstCol  = String(dst).padEnd(8);          // allow offboard arrays
+  const areaCol = String(feedback).padStart(2);   // right-aligned
 
-  const row = `${idxCol} ${qCol} ${srcCol} → ${dstCol}:${areaCol}`;
+  const row = `${idxCol} ${sCol} ${pCol} ${srcCol} → ${dstCol}:${areaCol}`;
 
   return row;
 }
@@ -402,7 +412,7 @@ function assembleLine(line) {
  * 2. Upgrade rows format to new standard.
  * 3. Write updateDerived data function.
  * 4. Expose button enable functions.
- * 5. Code to extract quads from the gambit.
- * 6. Remove decIntensity.
+ * 5. ✅ Code to extract quads from the gambit.
+ * 6. ✅ Remove decIntensity.
 */
 

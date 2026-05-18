@@ -33,7 +33,6 @@ import advsqsData from "./advsqs.json" assert { type: "json" };
   } from "../../geometry/advsqs/advsqs.js";
 
   import * as view       from "../view.js";
-  import * as tiles      from "../tiles/tiles.js";
   import * as decorators from "../decorators/decorators.js";
   import * as cameras    from "../render/cameras.js";
   import * as renders    from "../render/renders.js";

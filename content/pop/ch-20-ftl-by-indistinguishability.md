@@ -2,7 +2,7 @@
 title: "FTL by Indistinguishability"
 nav-entry: "Ch 20"
 order: "20"
-date: "2026-05-18"
+date: "2026-06-18"
 documents:
   discourse:
     title: "Faster Than Letter"

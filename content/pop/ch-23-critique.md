@@ -2,7 +2,7 @@
 title: "Critique"
 nav-entry: "Ch 23"
 order: "23"
-date: "2026-05-25"
+date: "2026-06-25"
 documents:
   discourse:
     title: "Friends"
