@@ -73,6 +73,21 @@
   git log --oneline --decorate --graph --all --boundary -n 50
   git push origin main
   ```
+  
+ ### New Merge Process
+  ```
+  git switch 3dc2
+  # code
+  git add .
+  git commit
+  git push origin 3dc2   # optional but wise
+
+  git switch main
+  git merge --no-ff 3dc2
+  git push origin main
+
+  git switch 3dc2
+  ```
 
  ### Git Tags
   Basic commands.

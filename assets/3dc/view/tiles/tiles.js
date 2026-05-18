@@ -3,7 +3,7 @@
   Purpose: Code for building the tiles.
   Author: Allan Goff
   Date: 4/03/26
-  Recommended access: import * as tiles.
+  Recommended access: import * as tiles from "../../view/tiles/tiles.js";
   UI: the export functions.
 */
 

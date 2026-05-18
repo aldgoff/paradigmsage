@@ -3,7 +3,7 @@
   Purpose: Controller code to setup board and trays.
   Author: Allan Goff
   Date: 4/22/26
-  Recommended access: import * as cSetup from ../../control/setup/setup.js
+  Recommended access: import * as cSetup from ""../../control/setup/setup.js";
   UI: the export functions.
   Philosophy: Dlete a module by deleting its directory - not so much.
     controller/ model/ view/
@@ -32,6 +32,12 @@ import setupData from "./setup.json" assert { type: "json" };
   import * as vViewer  from "../../view/viewer/viewer.js";
 // Seampoint: more imports...
 
+// --- Globals ---
+const pieceList = {
+  "white": { "ref": "abs", "pieces": [], "pawns": [] }, 
+  "black": { "ref": "rel", "pieces": [], "pawns": [] }
+};
+
 // --- UI ---
 export function panelDispatch(payload) {    // Dispatch payload from panel to handle event functions.
   // console.log("cntrl: setup.js - panelDispatch(payload):", payload);
@@ -42,16 +48,13 @@ export function panelDispatch(payload) {    // Dispatch payload from panel to ha
     boardSize,  // 8x8x8|10x8x8|10x10x10.
     trayType,   // Real|factory.
     initialPos, // std|manual.
-    play,       // Off|rules|puzzle. TODO: future|deprecate
-    visible,    // True|False. TODO: future|deprecate
-    gap,        // 0|1|2|3. TODO: future|deprecate
+    pieceList,
   } = payload;
 
   switch (action) {
     case "makeBoard":   handleMakeBoard(payload); break;
-    case "showTrays":   handleShowTrays(payload.visible); break;
-    case "hideTrays":   handleHideTrays(payload.visible); break;
-    case "updateParam": handleTrayGap(payload); break;
+    case "lock":        handleLock(payload); break;
+    case "updateParam": break;
     default: throw new Error(`Unknown setup action ${action}.`);
   }
 
@@ -60,11 +63,14 @@ export function panelDispatch(payload) {    // Dispatch payload from panel to ha
 
 export function buildPayload(panel, action) {
   console.log("     ---------- cntrl: setup.js");
+  const initialPos = panel.querySelector('input[name="initial-pos"]:checked')?.value;
+  const pos = (initialPos === "standard") ? "std" : "list";
   return {
     action,
     boardSize:  panel.querySelector('input[name="board-size"]:checked')?.value,
     trayType:   panel.querySelector('input[name="tray-type"]:checked')?.value,
-    initialPos: panel.querySelector('input[name="initial-pos"]:checked')?.value,
+    initialPos: pos,
+    pieceList,
   };
 }
 // Seampoint: more global functions...
@@ -81,22 +87,17 @@ function handleMakeBoard(payload) { // Setup handler.
   vViewer.refreshTrays();
   }
 
-function handleShowTrays(visible) {
-  console.log("control: game.js - handleShowTrays(visible):", visible);
-  // TODO: change state - handleShowTrays().
-  }
+function handleLock(payload) {
+  console.log("control: game.js - handleLock(payload):", payload);
 
-function handleHideTrays(visible) {
-  console.log("control: game.js - handleHideTrays(visible):", visible);
-  // TODO: change state - handleHideTrays()
-  }
+  const { action, boardSize, trayType, initialPos, pieceList } = payload;  // Informative.
 
-function handleTrayGap(payload) {
-  console.log("control: game.js - handleTrayGap(payload):", payload);
+  const nextEntry = mSetup.makeEntry(payload);    // Transform panel payload into state entry.
+  state.pushNewSetup(nextEntry);          // Log state change in undo buffer.
+  vSetup.pushPanelLine(nextEntry);        // Add line to panel.
+  vSetup.refreshPanel(nextEntry);         // Only needed by panels with derived fields.
 
-  const { action, boardSize, play, trayType, visible, gap, initialPos } = payload;
-
-  // TODO: change state - handleTrayGap().
+  vViewer.refreshTrays();
 }
 
 // --- Helpers ---
@@ -115,6 +116,7 @@ function applyEntry(entry) {
 
   state.pushNewSetup(entry);          // Log state change in undo buffer.
   vSetup.render(entry);               // Render the new board and trays.
+  vSetup.pushPanelLine(entry);        // Add line to panel.
   vSetup.refreshPanel(entry);         // Only needed by panels with derived fields.
 
   // TODO: remove all entries in the downstream buffers; 

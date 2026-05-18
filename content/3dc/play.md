@@ -28,6 +28,13 @@ layout: "play"
     z-index: 20;
     cursor: move;
     }
+  #setup-list {
+    font-family: monospace;
+    white-space: pre;
+  }
+  #setup-window {
+    width: 160px;
+  }
   #gambit-window {
     width: 280px;
   }
@@ -61,7 +68,7 @@ layout: "play"
     padding: 4px;
   }
 
-  #setup-window   { top:  260px; left:   40px; }  /* DOM Control Panels */
+  #setup-window   { top:  260px; left:   20px; }  /* DOM Control Panels */
   #move-window    { top: 1180px; left:   40px; }
   #gambit-window  { top:  880px; left:   40px; }
   #advsq-window   { top:  260px; left:  210px; }
@@ -70,7 +77,7 @@ layout: "play"
   #game-window    { top:  260px; left:  390px; }
 
   #camera-window { top:   510px; left:  390px; }
-  #viewer-window { top:   560px; left:   40px; }
+  #viewer-window { top:   610px; left:   40px; }
   /* Seampont - more DOM control panels... */
 </style>
 
@@ -82,6 +89,7 @@ layout: "play"
   <div class="panel-title">Setup Panel</div>
   <div class="section">
     <button data-action="makeBoard">Make Board</button>
+    <button data-action="lock">Lock</button>
   </div>
   <div class="section">
     <label> <input type="radio" name="board-size" value="8x8x8" checked> 8×8×8 </label><br>
@@ -104,6 +112,7 @@ layout: "play"
     <label> <input type="radio" name="initial-pos" value="standard" checked> Standard </label><br>
     <label> <input type="radio" name="initial-pos" value="manual"> Manual </label><br>
   </div>  
+  <div class="section scroll-box" id="setup-list"></div>
   </div>
 
 <div class="panel" id="move-window">

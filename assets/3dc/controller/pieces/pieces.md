@@ -1,13 +1,23 @@
 # Pieces Spec (control)
-  Desc
+  Control interface to the pieces, panel, keyboard, raycasting.
 
 ## 1. Purpose
-  text
+  Define how to select, place and move pieces.
 
 ## 2. Description
-  text
- 
+  UI should allow a piece to be:
+  - Started in the trays
+  - Moved from tray to board
+  - Moved from tile to tile on the board
+  - Moved from board to tray
+  - Split/recombined (stack only)
 
- ### 2.1 SubSection
-  text
+## 3. Flow
+  - Makeboard button
+  - Show Trays button (default may have trays visible)
+  - Either:
+    - New Game button to move pieces from trays to board.
+    - Make a puzzle:
+      - Drag pieces from trays to/from board to setup puzzle.
+      - Lock button (populates pieceList arrays, output by save).
 

@@ -49,7 +49,6 @@ export function render(entry) {
   }
   
 export function refreshPanel(entry) {
-  // TODO: write refreshPanel(entry).
   console.log("view : setup.js - refreshPanel(entry):", entry);
 
   const panel = document.getElementById("setup-window");
@@ -65,6 +64,22 @@ export function refreshPanel(entry) {
   if(trayTypeRadio) trayTypeRadio.checked = true;
   if(initPosRadio) initPosRadio.checked = true;
 }
+
+export function pushPanelLine(entry) {
+  console.log("view : setup.js - pushPanelLine(entry)", entry);
+
+  const el = document.getElementById("setup-list");
+  if(!el) return;
+
+  const line = assembleLine(entry);
+
+  const div = document.createElement("div");
+  div.textContent = line;
+
+  // Write to the scroll box.
+  el.appendChild(div);
+  el.scrollTop = el.scrollHeight;
+  }
 
 export function clearSetupPanelParams(params) {
   console.log("view : setup.js - clearSetupPanelParams(params):", params);
@@ -85,5 +100,36 @@ export function clearSetupPanelParams(params) {
 // Seampoint: more global functions...
 
 // --- Helpers ---
+function assembleLine(entry) {
+  const { action } = entry;
+
+  if(action === "makeBoard") {
+    const { action, boardSize, trayType, initialPos } = entry;
+  
+    const sizeCol = `${boardSize}`.padEnd(8);
+    const typeCol = `${trayType}`.padEnd(7);
+    const posCol = `${initialPos}`.padEnd(4);
+    const line = `${sizeCol} ${typeCol} ${posCol}`;
+
+    return line;
+  }
+  else if(action === "lock") {
+    const { action, boardSize, trayType, initialPos, pieceList } = entry;
+
+    const White = pieceList.white;
+    const Black = pieceList.black;
+    const wPieceCol = pieceList.white.pieces.length;
+    const wPawnCol  = pieceList.white.pawns.length;
+    const bPieceCol = pieceList.black.pieces.length;
+    const bPawnCol  = pieceList.black.pawns.length;
+    const line = `W:[${wPieceCol}],[${wPawnCol}] - B[${bPieceCol}],[${bPawnCol}]`;
+
+    return line;
+  }
+  else {
+    throw new Error(`Unknown setup action: ${action}.`);
+  }
+}
+
 // Seampoint: more local functions...
 
