@@ -68,6 +68,7 @@
   vi: Merge branch '3dc' - Fix board gambit undo bug, UI surface reduction, plumb freeze linear gambit.
   vi: Merge branch '3dc' - Linear gambits.
   vi: Merge branch '3dc' - Linear gambits next plane feature.
+  vi: Merge branch '3dc' - Duplex gambits, clues, trays, dots.
   git log --oneline --decorate --graph --all --boundary -n 50
   git push origin main
   ```

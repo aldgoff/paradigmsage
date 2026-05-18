@@ -100,5 +100,5 @@ title: "Dev"
   - 5/16/26 - Freeze duplex moves. Gambits QC.
 
  ### Week 10:
-  - 5/17/26 - Clues. Trays: show/hide, colors, json driven, board size. Postpone publish dates. Tray gap code.
+  - 5/17/26 - Clues. Trays: show/hide, colors, json driven, board size. Postpone publish dates. Tray gap code. Primary plane dots on gold tiles.
 

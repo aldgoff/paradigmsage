@@ -116,7 +116,7 @@ function makeTrayGroup(side) {
   }
 
 function buildTrayColumn(trayGroup, columnData, side) {
-  console.log("view: viewer.js - buildTrayColumn(...)", trayGroup, columnData, side);
+  console.log("view: viewer.js - buildTrayColumn(...)", columnData, side);
 
   Object.entries(columnData)
     .forEach(([key, pos]) => {
