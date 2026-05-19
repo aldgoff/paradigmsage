@@ -12,6 +12,10 @@
 │   │   │   │   ├── advsqs.js
 │   │   │   │   ├── advsqs.json
 │   │   │   │   └── advsqs.md
+│   │   │   ├── boards
+│   │   │   │   ├── boards.js
+│   │   │   │   ├── boards.json
+│   │   │   │   └── boards.md
 │   │   │   ├── camera
 │   │   │   │   ├── camera.js
 │   │   │   │   ├── camera.json
@@ -43,6 +47,10 @@
 │   │   │   │   ├── setup.js
 │   │   │   │   ├── setup.json
 │   │   │   │   └── setup.md
+│   │   │   ├── trays
+│   │   │   │   ├── trays.js
+│   │   │   │   ├── trays.json
+│   │   │   │   └── trays.md
 │   │   │   └── viewer
 │   │   │       ├── viewer.js
 │   │   │       ├── viewer.json
@@ -101,6 +109,10 @@
 │   │   │   │   ├── advsqs.js
 │   │   │   │   ├── advsqs.json
 │   │   │   │   └── advsqs.md
+│   │   │   ├── boards
+│   │   │   │   ├── boards.js
+│   │   │   │   ├── boards.json
+│   │   │   │   └── boards.md
 │   │   │   ├── gambits
 │   │   │   │   ├── gambits.js
 │   │   │   │   ├── gambits.json
@@ -124,10 +136,14 @@
 │   │   │   │   ├── setup.js
 │   │   │   │   ├── setup.json
 │   │   │   │   └── setup.md
-│   │   │   └── state
-│   │   │       ├── state.js
-│   │   │       ├── state.json
-│   │   │       └── state.md
+│   │   │   ├── state
+│   │   │   │   ├── state.js
+│   │   │   │   ├── state.json
+│   │   │   │   └── state.md
+│   │   │   └── trays
+│   │   │       ├── trays.js
+│   │   │       ├── trays.json
+│   │   │       └── trays.md
 │   │   ├── panels
 │   │   │   ├── panels.js
 │   │   │   ├── panels.json
@@ -191,9 +207,9 @@
 │   │       │   ├── cameras.js
 │   │       │   ├── cameras.json
 │   │       │   ├── cameras.md
-│   │       │   ├── coordMaps.md
 │   │       │   ├── coordsMaps.js
 │   │       │   ├── coordsMaps.json
+│   │       │   ├── coordsMaps.md
 │   │       │   ├── lights.js
 │   │       │   ├── lights.json
 │   │       │   ├── lights.md
@@ -526,4 +542,4 @@
 │           └── poc.js
 └── themes
 
-111 directories, 415 files
+115 directories, 427 files

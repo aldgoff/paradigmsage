@@ -30,7 +30,7 @@ import piecesData from "./pieces.json" assert { type: "json" };
   //   ref      = "absolute|relative"  // If relative is the standard, uneeded, Black disambiguates.
   // };  // Subtle point, B, D & S are color restricted, and stacks can even be crossed.
 
-// --- Global ---
+// --- Globals ---
   const pieceList = {};
 
   // All sized for 10x10x10 board, thus:
@@ -60,20 +60,24 @@ import piecesData from "./pieces.json" assert { type: "json" };
   // Seampoint: more globals.
 
 // --- UI ---
-export function init() {
-  console.log("model: pieces.js - init(boardSize)", boardSize);
+export function init(entry) {
+  console.log("model: pieces.js - init(entry)", entry);
 
-  const setup = mState.fetchCurrentSetup();                   // Make code work for all three board sizes.
-  if(!setup) {
-    throw new Error("No active setup state.");
-  }
-  const spec = coords.getBoardSpec(setup.boardSize);  
+  const { action, boardSize, trayType, initialPos } = entry;  // Informative.
 
-  pieceList["WKR"] = { loc: "~", pos: "KR1,1", coords: [4,0,0] }; // Place one demo piece in the white tray.
-  whiteTray[8][0][0] = "WKR";
+  for(let piece in pieceList) piece = null;
 
-  console.log("*** ", whiteTray);                           // Debug instrumention.
-  console.log("*** ", pieceList);
+  // const setup = mState.fetchCurrentSetup();                   // Make code work for all three board sizes.
+  // if(!setup) {
+  //   throw new Error("No active setup state.");
+  // }
+  // const spec = coords.getBoardSpec(boardSize);  
+
+  // pieceList["WKR"] = { loc: "~", pos: "KR1,1", coords: [4,0,0] }; // Place one demo piece in the white tray.
+  // whiteTray[8][0][0] = "WKR";
+
+  // console.log("*** ", whiteTray);                           // Debug instrumention.
+  // console.log("*** ", pieceList);
 }
 
 export function exampleCode() {

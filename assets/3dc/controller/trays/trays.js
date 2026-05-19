@@ -1,16 +1,16 @@
-/* File: modules.js
-  Path: ./3dc/layer/modules/modules.js
-  Purpose: template for code files.
+/* File: trays.js
+  Path: ./3dc/controller/trays/trays.js
+  Purpose: Define interface to the trays control module.
   Author: Allan Goff
-  Date: 5/03/26
-  Recommended access: import * as modules from "../../layer/modules/modules.js";
+  Date: 5/19/26
+  Recommended access: import * as cTrays from "../../controller/trays/trays.js";
   UI: the export functions.
 */
 
 // --- Load JSON ---
-import modulesData from "./modules.json" assert { type: "json" };
-  const modulesModule = modulesData.modules_module;
-  const category  = modulesModule.category;
+import traysData from "./trays.json" assert { type: "json" };
+  const traysModule = traysData.trays_module;
+  const category  = traysModule.category;
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
@@ -20,9 +20,9 @@ import modulesData from "./modules.json" assert { type: "json" };
 
 // --- UI ---
 export function UI() {
-  // console.log("layer: modules.js - UI()");
+  // console.log("cntrl: trays.js - UI()");
   
-  return "whatever";
+  return;
   }
 // Seampoint: more global functions...
 

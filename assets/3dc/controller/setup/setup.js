@@ -26,6 +26,8 @@ import setupData from "./setup.json" assert { type: "json" };
   import * as state    from "../../model/state/state.js";
   import * as mSetup   from "../../model/setup/setup.js";
   import * as mPieces  from "../../model/pieces/pieces.js";
+  import * as mTrays   from "../../model/trays/trays.js";
+  import * as mBoards  from "../../model/boards/boards.js";
 
   import * as boards   from "../../view/boards/boards.js";
   import * as vSetup   from "../../view/setup/setup.js";
@@ -78,28 +80,31 @@ export function buildPayload(panel, action) {
 
 // --- Handle Functions ---
 function handleMakeBoard(payload) { // Setup handler.
-  console.log("control: game.js - handleMakeBoard(payload):", payload);
+  console.log("cntrl: game.js - handleMakeBoard(payload):", payload);
 
   const { action, boardSize, trayType, initialPos } = payload;  // Informative.
 
-  const nextEntry = mSetup.makeEntry(payload);    // Transform panel payload into state entry.
-  applyEntry(nextEntry);
+  const entry = mSetup.makeEntry(payload);    // Transform panel payload into state entry.
 
-  mPieces.init();
-  vViewer.refreshTrays();
+  mPieces.init(entry);  // Every piece is in a tray, none are on the board.
+  mTrays.init(entry);   // New Game (games.js) moves them from tray to board, play may begin.
+  mBoards.init(entry);  // Initial occupancy depends on board size and tray type.
+
+  applyEntry(entry);
   }
 
-function handleLock(payload) {
-  console.log("control: game.js - handleLock(payload):", payload);
+function handleLock(payload) {  // Locks initial pos after pieces manually moved from tray to board.
+  console.log("cntrl: game.js - handleLock(payload):", payload);
 
   const { action, boardSize, trayType, initialPos, pieceList } = payload;  // Informative.
 
-  const nextEntry = mSetup.makeEntry(payload);    // Transform panel payload into state entry.
-  state.pushNewSetup(nextEntry);          // Log state change in undo buffer.
-  vSetup.pushPanelLine(nextEntry);        // Add line to panel.
-  vSetup.refreshPanel(nextEntry);         // Only needed by panels with derived fields.
+  const entry = mSetup.makeEntry(payload);    // Transform panel payload into state entry.
 
-  vViewer.refreshTrays();
+  mTrays.disableManualMode(entry);  // Players can no longer move pieces to/from trays, rules do that.
+
+  state.pushNewSetup(entry);          // Log state change in undo buffer.
+  vSetup.pushPanelLine(entry);        // Add line to panel.
+  vSetup.refreshPanel(entry);         // Only needed by panels with derived fields.
 }
 
 // --- Helpers ---
