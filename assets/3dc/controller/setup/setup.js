@@ -25,6 +25,7 @@ import setupData from "./setup.json" assert { type: "json" };
 
   import * as state    from "../../model/state/state.js";
   import * as mSetup   from "../../model/setup/setup.js";
+  import * as mPieces  from "../../model/pieces/pieces.js";
 
   import * as boards   from "../../view/boards/boards.js";
   import * as vSetup   from "../../view/setup/setup.js";
@@ -84,6 +85,7 @@ function handleMakeBoard(payload) { // Setup handler.
   const nextEntry = mSetup.makeEntry(payload);    // Transform panel payload into state entry.
   applyEntry(nextEntry);
 
+  mPieces.init();
   vViewer.refreshTrays();
   }
 

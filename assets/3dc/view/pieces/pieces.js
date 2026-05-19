@@ -36,14 +36,14 @@ export function makeRookMesh(params = {}) {
     color   = 0xffffff
   } = params;
 
-  const [tileHeight, tileWidth] = tiles.tileSize();   // Canonical size fills tile.
+  let [tileHeight, tileWidth] = tiles.tileSize();   // Canonical size fills tile.
 
   const base = tileWidth * breadth;                   // Canonical tile footprint.
   const height = base * aspect;
 
   const geometry = new THREE.BoxGeometry(base, height, base);
 
-  const tileHeight = tiles.tileSize().z;              // Sit flush on tile plane.
+  // const tileHeight = tiles.tileSize().z;              // Sit flush on tile plane.
   geometry.translate(0, (height/2) + (tileHeight/2), 0);
 
   const material = new THREE.MeshPhongMaterial({ color });
