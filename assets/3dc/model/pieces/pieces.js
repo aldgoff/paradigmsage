@@ -77,6 +77,10 @@ function stdInitialPos(entry) {
   // Seampoint - fill up the trays.
 }
 
+export function getPieceList() {
+  return pieceList;
+}
+
 export function exampleCode() {
   console.log("model: pieces.js - exampleCode()");
 

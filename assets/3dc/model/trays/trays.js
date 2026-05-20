@@ -44,10 +44,16 @@ export function init(entry) {
 
 export function getWhiteTray() {
   return whiteTray;
-}
+  }
 
 export function getBlackTray() {
   return blackTray;
+}
+
+export function getGap() {
+  const gap = 0;  // TODO: get gap from panel.
+
+  return gap;
 }
 // Seampoint: more global functions...
 

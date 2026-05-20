@@ -35,6 +35,13 @@ export function init(entry) {
   clearBoard();
 }
 
+export function getBoardSpecs() {
+  const specs = "8x8x8";
+  // TODO: finish getBoardSpecs().
+
+  return specs;
+}
+
 export function getBoardOccupancy() {
   return occupancy;
 }

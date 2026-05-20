@@ -18,9 +18,12 @@ import viewerData from "./viewer.json" assert { type: "json" };
   import * as vViewer  from "../../view/viewer/viewer.js";
 // Seampoint: more imports...
 
-let lastClickTime = 0;
-let clickTimer = null;
-const DOUBLE_CLICK_MS = 200;
+// --- Globals ---
+  let lastClickTime = 0;
+  let clickTimer = null;
+  const DOUBLE_CLICK_MS = 200;
+  let Gap = 1;  // TODO: Default value, must match play.md (DOM) value.
+  // Seampoint: more globals.
 
 // --- UI ---
 export function panelDispatch(payload) {
@@ -33,6 +36,8 @@ export function panelDispatch(payload) {
   sep   = Number(sep);
   range = Number(range);
   speed = Number(speed);
+
+  Gap = gap;
 
   switch (action) {
     case "ShowTrays":       handleShowTrays(payload); break;
@@ -52,6 +57,10 @@ export function buildPayload(panel, action) { // Not subject to undo.
     range: panel.querySelector('[name="viewer-range"]')?.value,
     speed: panel.querySelector('[name="viewer-speed"]')?.value,
   };
+}
+
+export function getGap() {
+  return Gap;
 }
 
 export function getJitterValues(panelId = "viewer-window") {

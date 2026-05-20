@@ -102,4 +102,7 @@ title: "Dev"
  ### Week 10:
   - 5/17/26 - Clues. Trays: show/hide, colors, json driven, board size. Postpone publish dates. Tray gap code. Primary plane dots on gold tiles.
   - 5/18/26 - Plumbing for pieces. QC imports.
-  - 5/19/26 - Occupancy arrays. Flesh out board and tray directories.
+  - 5/19/26 - Occupancy arrays. Flesh out board and tray directories. QC pass on mPieces.
+  - 5/20/26 - Piece render control flow.
+
+  
