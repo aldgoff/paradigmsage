@@ -86,9 +86,9 @@ function handleMakeBoard(payload) { // Setup handler.
 
   const entry = mSetup.makeEntry(payload);    // Transform panel payload into state entry.
 
-  mPieces.init(entry);  // Every piece is in a tray, none are on the board.
   mTrays.init(entry);   // New Game (games.js) moves them from tray to board, play may begin.
   mBoards.init(entry);  // Initial occupancy depends on board size and tray type.
+  mPieces.init(entry);  // Every piece is in a tray, none are on the board.
 
   applyEntry(entry);
   }

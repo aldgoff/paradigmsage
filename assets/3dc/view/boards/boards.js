@@ -21,6 +21,7 @@ import boardsData from "./boards.json" assert { type: "json" };
   import * as decorators from "../decorators/decorators.js";
 // Seampoint: more imports...
 
+// --- Globals ---
 let currentBoard = null;
 let clickHandler = null;
 
