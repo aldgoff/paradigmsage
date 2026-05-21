@@ -25,7 +25,7 @@ export function module() {
 }
 
 export function decorate(baseColor, meshTile, piece, decoratorName, zOffset=0.00) {
-  // console.log("view: decorators.js - decorate(baseColor, meshTile, piece, decoratorName)", baseColor, meshTile, piece, decoratorName);
+  // console.log("view : decorators.js - decorate(baseColor, meshTile, piece, decoratorName)", baseColor, meshTile, piece, decoratorName);
   const defRaw = decorators[piece][decoratorName];
   if (!defRaw || Object.keys(defRaw).length === 0) {
     return []; // Silently ignore json placeholders like "_trailing"
@@ -221,7 +221,7 @@ export function drawInsetTriDiamonds(mesh, scale, def) {
   }
 
 export function drawInsetCircle(mesh, scale, color, zOffset=0) { // For src & dst tiles, toggled by mouse clicks.
-  console.log("view: decorators.js - drawInsetCircle(mesh, scale, color, zOffset=0)", mesh, scale, color, zOffset=0);
+  console.log("view : decorators.js - drawInsetCircle(mesh, scale, color, zOffset=0)", mesh, scale, color, zOffset=0);
   const THREE = window.THREE;
   const geom = new THREE.CircleGeometry(0.5, 32);
   const mat = new THREE.MeshBasicMaterial({
@@ -245,7 +245,7 @@ export function drawInsetCircle(mesh, scale, color, zOffset=0) { // For src & ds
 }
 
 export function resolveColors(names, pallet) {  // Convert pallet color names to hexadecimal.
-  // console.log("view: decorators.js - resolveColors(names, pallet)", names, pallet);
+  // console.log("view : decorators.js - resolveColors(names, pallet)", names, pallet);
   return names.map(name => {
     const color = pallet[name];
     if (!color) {

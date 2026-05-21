@@ -31,7 +31,7 @@ import setupData from "./setup.json" assert { type: "json" };
 
 // --- UI ---
 export function clear(entry) {
-  console.log("view: setup.js - clear(entry)", entry);
+  console.log("view : setup.js - clear(entry)", entry);
 
   const { action, boardSize, trayType, initialPos } = entry;  // Informative.
 
@@ -40,7 +40,7 @@ export function clear(entry) {
   }
   
 export function render(entry) {
-  console.log("view: setup.js - render(entry)", entry);
+  console.log("view : setup.js - render(entry)", entry);
 
   const { action, boardSize, trayType, initialPos } = entry;  // Informative.
 

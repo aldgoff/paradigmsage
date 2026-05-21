@@ -27,21 +27,21 @@ let clickHandler = null;
 
 // --- UI ---
 export function render(setup) {
-  console.log("view: boards.js - render(setup)", setup);
+  console.log("view : boards.js - render(setup)", setup);
 
   const dims = setup.boardSize.split("x").map(Number);
   makeBoard(dims);
   }
 
 export function clear(setup) {
-  console.log("view: boards.js - clear(setup)", setup);
+  console.log("view : boards.js - clear(setup)", setup);
 
   clearBoard();
 }
 
 // --- UI ---
 export function makeBoard(dimensions) {
-  console.log("view: boards.js - makeBoard(dimensions):", dimensions);
+  console.log("view : boards.js - makeBoard(dimensions):", dimensions);
 
   if(currentBoard) { clearBoard(); }
 
@@ -80,7 +80,7 @@ export function makeBoard(dimensions) {
   }
 
 export function clearBoard() {
-  console.log("view: boards.js - clearBoard()...view.context:", view.context);
+  console.log("view : boards.js - clearBoard()...view.context:", view.context);
   if (currentBoard) {
     view.context.scene.remove(currentBoard);
     console.log(
@@ -97,7 +97,7 @@ export function clearBoard() {
 
 // --- Helpers ---
 function isPrimaryPlaneMarker(tile, pos) {
-  // console.log("view: boards.js - isPrimaryPlaneMarker(tile, pos):", tile, pos);
+  // console.log("view : boards.js - isPrimaryPlaneMarker(tile, pos):", tile, pos);
 
   const [, x, y] = pos;
 

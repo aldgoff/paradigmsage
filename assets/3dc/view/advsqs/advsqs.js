@@ -61,7 +61,7 @@ export function removeFromScene() {
 }
 
 export function render(advsq) {
-  console.log("view: advsqs.js - render(advsq)", advsq);
+  console.log("view : advsqs.js - render(advsq)", advsq);
 
   if(!advsq) return;
 

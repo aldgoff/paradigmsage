@@ -21,12 +21,12 @@ import traysData from "./trays.json" assert { type: "json" };
 
 // --- UI ---
 export function render(trays) {
-  console.log("view: trays.js - render(trays)", trays);
+  console.log("view : trays.js - render(trays)", trays);
   // TODO: write render().
   }
   
 export function clear(trays) {
-  console.log("view: trays.js - clear(trays)", trays);
+  console.log("view : trays.js - clear(trays)", trays);
   // TODO: write clear().
 }
 // Seampoint: more global functions...

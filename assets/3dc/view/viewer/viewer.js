@@ -39,7 +39,7 @@ let tileColor = 0xd8c0a8;  // Light brown.
 
 // --- UI ---
 export function showTrays(gap) {
-  console.log("view: viewer.js - showTrays(gap)", gap);
+  console.log("view : viewer.js - showTrays(gap)", gap);
 
   Gap = gap;
 
@@ -55,7 +55,7 @@ export function showTrays(gap) {
   }
 
 export function hideTrays() {
-  console.log("view: viewer.js - hideTrays()");
+  console.log("view : viewer.js - hideTrays()");
 
   clearTrays();
 
@@ -63,9 +63,9 @@ export function hideTrays() {
   }
 
 export function setTrayGap(newGap) {
-  console.log("view: viewer.js - setTrayGap(newGap)", newGap);
+  console.log("view : viewer.js - setTrayGap(newGap)", newGap);
 
-  gap = Math.max(minGap, Math.min(maxGap, newGap));
+  Gap = Math.max(minGap, Math.min(maxGap, newGap));
 
   if (!traysVisible) return;
 
@@ -73,13 +73,13 @@ export function setTrayGap(newGap) {
   }
 
 export function setTraySep(sep) {
-  console.log("view: viewer.js - setTraySep(sep)", sep);
+  console.log("view : viewer.js - setTraySep(sep)", sep);
   // TODO: write setTraySep function.
 
   }
 
 export function refreshTrays() {
-  console.log("view: viewer.js - refreshTrays()");
+  console.log("view : viewer.js - refreshTrays()");
   if(!traysVisible) return;
 
   showTrays(gap);
@@ -100,7 +100,7 @@ function clearTrays() {
   }
 
 function makeTrayGroup(side) {
-  console.log("view: viewer.js - makeTrayGroup(side)", side);
+  console.log("view : viewer.js - makeTrayGroup(side)", side);
 
   const trayGroup = new THREE.Group();
 
@@ -118,7 +118,7 @@ function makeTrayGroup(side) {
   }
 
 function buildTrayColumn(trayGroup, columnData, side) {
-  console.log("view: viewer.js - buildTrayColumn(...)", columnData, side);
+  console.log("view : viewer.js - buildTrayColumn(...)", columnData, side);
 
   Object.entries(columnData)
     .forEach(([key, pos]) => {
