@@ -104,8 +104,8 @@ function renderInTray(player, side, type, tray, pos) {
 
   if(!group) return;
 
-  const grid = [150,100,100]; // TODO: get from some json file.
-  const tileHeight = 6;       // TODO: get from some json file.
+  const grid = [100,100,100]; // TODO: get from some json file.
+  const tileHeight = 5;       // TODO: get from some json file.
   const zOffset = -grid[0]/2 + (tileHeight/2);
   const decoratorGap = 2;
   group.position.set(grid[2]*vts[2]-grid[2]/2, grid[0]*vts[0]+zOffset+decoratorGap, grid[1]*vts[1]-grid[2]/2);
@@ -268,7 +268,7 @@ function makeKnightObject(params = {}) {
 }
 // Seampoint: no more pieces.
 
-function makeRookGeo(tileWidth, rook){
+function makeRookGeo(tileWidth, rook) {
   const { aspect, breadth } = rook;
   const base = tileWidth * breadth;
   const height = base * aspect;

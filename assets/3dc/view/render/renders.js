@@ -27,7 +27,7 @@ export function init(container) {
   });
 
   const scene  = scenes.init();                           // A light blue background.
-  const camera = cameras.init(1000, "neutral", [0,0,0]);  // Zoom, POV, and focalPoint (at board center).
+  const camera = cameras.init(container, 1800, "neutral", [0,0,0]);  // Zoom, POV, and focalPoint (at board center).
   const light  = lights.init(scene);
 
   renderer.setSize(container.width, container.height);
