@@ -14,14 +14,15 @@ import traysData from "./trays.json" assert { type: "json" };
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
-  import * as planes from "../geometry/planes/planes.js";
-  import * as quads  from "../geometry/quads/quads.js";
+  import * as mTrays from "../../model/trays/trays.js";
 // Seampoint: more imports...
 
 // --- UI ---
-export function UI() {
-  // console.log("cntrl: trays.js - UI()");
-  
+export function init(entry) {
+  console.log("cntrl: trays.js - init(entry)", entry);
+
+  mTrays.init(entry);  // Initial occupancy depends on board size and tray type.
+
   return;
   }
 // Seampoint: more global functions...

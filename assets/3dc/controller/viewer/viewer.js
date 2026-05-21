@@ -22,7 +22,7 @@ import viewerData from "./viewer.json" assert { type: "json" };
   let lastClickTime = 0;
   let clickTimer = null;
   const DOUBLE_CLICK_MS = 200;
-  let Gap = 0;  // TODO: Default value, must match play.md (DOM) value.
+  let Gap = 0;                // TODO: Default value, must match play.md (DOM) value.
   // Seampoint: more globals.
 
 // --- UI ---

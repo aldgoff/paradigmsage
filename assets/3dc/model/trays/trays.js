@@ -30,7 +30,7 @@ import traysData from "./trays.json" assert { type: "json" };
 // Seampoint: more globals...
 
 // --- Build upon previous layers ---
-  import * as quads  from "../../geometry/quads/quads.js";
+  import * as vTrays from "../../view/trays/trays.js";
 // Seampoint: more imports...
 
 // --- UI ---
@@ -40,6 +40,8 @@ export function init(entry) {
   const { action, boardSize, trayType, initialPos } = entry;  // Informative.
 
   clearTrays();
+
+  vTrays.render(entry);
 }
 
 export function getWhiteTray() {
@@ -59,7 +61,7 @@ export function getGap() {
 
 // --- Helpers ---
 function clearTrays() {
-  console.log("model: trays.js - clearTrays()");
+  // console.log("model: trays.js - clearTrays()");
 
   let tally = 0;
 
@@ -91,7 +93,7 @@ function clearTrays() {
     }
   }
 
-  console.log(`model: trays.js - cleared ${tally} tray slots.`);
+  // console.log(`model: trays.js - cleared ${tally} tray slots.`);
 }
 // Seampoint: more local functions...
 

@@ -14,7 +14,7 @@ import boardsData from "./boards.json" assert { type: "json" };
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
-  import * as planes from "../../geometry/planes/planes.js";
+  import * as vBoards from "../../view/boards/boards.js";
 // Seampoint: more imports...
 
 // --- Globals ---
@@ -33,6 +33,9 @@ export function init(entry) {
   const { action, boardSize, trayType, initialPos } = entry;  // Informative.
 
   clearBoard();
+
+  vBoards.render(entry);
+
 }
 
 export function getBoardSpecs() {
@@ -50,7 +53,7 @@ export function getBoardOccupancy() {
 
 // --- Helpers ---
 function clearBoard() {
-  console.log("model: boards.js - clearBoard()");
+  // console.log("model: boards.js - clearBoard()");
 
   let tally = 0;
 
@@ -67,7 +70,7 @@ function clearBoard() {
     }
   }
 
-  console.log(`model: boards.js - cleared ${tally} board slots.`);
+  // console.log(`model: boards.js - cleared ${tally} board slots.`);
 }
 
 // Seampoint: more local functions...

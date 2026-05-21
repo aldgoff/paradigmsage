@@ -10,18 +10,18 @@
 // --- Load JSON ---
 import boardsData from "./boards.json" assert { type: "json" };
   const boardsModule = boardsData.boards_module;
-  const category  = boardsModule.category;
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
-  import * as planes from "../geometry/planes/planes.js";
-  import * as quads  from "../geometry/quads/quads.js";
+  import * as mBoards from "../../model/boards/boards.js";
 // Seampoint: more imports...
 
 // --- UI ---
-export function UI() {
-  // console.log("cntrl: boards.js - UI()");
+export function init(entry) {
+  console.log("cntrl: boards.js - init(entry)", entry);
   
+  mBoards.init(entry);  // Initial occupancy depends on board size and tray type.
+
   return;
   }
 // Seampoint: more global functions...

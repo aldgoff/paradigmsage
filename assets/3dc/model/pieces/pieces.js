@@ -51,6 +51,8 @@ export function init(entry) {
   clearPieceState();
 
   stdInitialPos(entry);
+
+  console.log("model: pieces.js - whiteTray", mTrays.getWhiteTray());
 }
 
 function stdInitialPos(entry) {
@@ -69,7 +71,6 @@ function stdInitialPos(entry) {
     pieceList[piece] = { loc: "~", pos, coords: [k,0,0] }; // Place demo pieces in the white tray.
     whiteTray[k][0][0] = piece;
     vPieces.renderPiece(piece);
-    console.log("***", piece, pos, k);
   }
 
   const whitePawns = ["WQRP", "WQNP", "WQBP", "WQQP", "WKKP", "WKBP", "WKNP", "WKRP"];
@@ -80,12 +81,7 @@ function stdInitialPos(entry) {
     pieceList[piece] = { loc: "~", pos, coords: [k,1,1] }; // Place demo pieces in the white tray.
     whiteTray[k][1][1] = piece;
     vPieces.renderPiece(piece);
-    console.log("***", piece, pos, k);
   }
-
-  console.log("*** whiteTray:", whiteTray);                               // Debug instrumention.
-  console.log("*** blackTray:", blackTray);
-  console.log("*** pieceList:", pieceList);
 
   // Seampoint - fill up the trays.
 }
@@ -241,7 +237,7 @@ export function combineStackinTray(piece) {
 
 // --- Helpers ---
 function clearPieceState() {
-  console.log("model: pieces.js - clearPieceState()");
+  // console.log("model: pieces.js - clearPieceState()");
 
   let tally = 0;
 
@@ -249,8 +245,6 @@ function clearPieceState() {
     delete pieceList[key];
     tally++;
   }
-
-  console.log("clearPieceState() tallies:", tally);
 }
 // Seampoint: more local functions...
 

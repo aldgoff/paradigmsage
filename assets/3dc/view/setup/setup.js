@@ -44,8 +44,8 @@ export function render(entry) {
 
   const { action, boardSize, trayType, initialPos } = entry;  // Informative.
 
-  vBoards.render(entry);
-  vTrays.render(entry);
+  // vBoards.render(entry);
+  // vTrays.render(entry);
   }
   
 export function refreshPanel(entry) {

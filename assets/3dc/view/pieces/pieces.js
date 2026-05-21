@@ -40,7 +40,7 @@ import piecesData from "./pieces.json" assert { type: "json" };
 
 // --- UI ---
 export function renderPiece(key) {  // "WKR".
-  console.log("view : pieces.js - renderPiece(key)", key);
+  // console.log("view : pieces.js - renderPiece(key)", key);
 
   const piece = mPieces.getPieceList()[key];              // Parse args.
   if(!piece) throw Error(`No such piece ${key}.`);
@@ -73,7 +73,7 @@ export function derenderPiece(piece) {
 
 // --- Helpers ---
 function renderInTray(player, side, type, tray, pos) {
-  console.log("view : pieces.js - renderInTray(player, type, tray, pos)", player, type, tray, pos);
+  // console.log("view : pieces.js - renderInTray(player, type, tray, pos)", player, type, tray, pos);
   // TODO: finish renderInTray().
 
   let gap = cViewer.getGap();
@@ -86,7 +86,6 @@ function renderInTray(player, side, type, tray, pos) {
   let group = null;
 
   const color = (player === "W") ? 0xffffff : 0x111111;
-  console.log("*** piece color", color);
   switch(type) {
     case "R": group = makeRookObject(  {color}); break;
     case "B": group = makeBishopObject({color}); break;
@@ -98,7 +97,7 @@ function renderInTray(player, side, type, tray, pos) {
     // case "N": group = makeKnightObject({color, side}); break;
     // Seampoint: no more pieces.
     default:
-      console.log(`Unknown piece type ${type}`); return; 
+      console.log(`view : pieces.js - Unknown piece type ${type}`); return; 
       break;
   }
 
@@ -114,20 +113,17 @@ function renderInTray(player, side, type, tray, pos) {
   }
 
 function trayToVts(player, pos, gap) {
-  console.log("view : pieces.js - trayToVts(player, pos, gap)", player, pos, gap);
+  // console.log("view : pieces.js - trayToVts(player, pos, gap)", player, pos, gap);
   // TODO: finish trayToVts().
 
   const specOrName = "8x8x8"; // TODO: get board size from setup.
   let vts = coords.normalizeTileToVts(pos, specOrName); // [4,-3,-3]=>[4,-4,-4] and [-3,-3,-3]=>[-3,-4,-4]
-  console.log("view : pieces.js: vts", vts);
   let displacement = [0, 0, 0];
 
   if(player === "W") {
     displacement = [0, -gap, -gap];
     vts = utils.add(vts, displacement);
   }
-
-  console.log("view : pieces.js:", specOrName, displacement, vts);
 
   return vts;
   }
@@ -152,7 +148,7 @@ function renderOnBoard(player, side, type, pos) {
   // }
 
 function makeRookObject(params = {}) {
-  console.log("view : pieces.js - makeRookObject(params)", params);
+  // console.log("view : pieces.js - makeRookObject(params)", params);
 
   const { color } = params;
   let [tileHeight, tileWidth] = tiles.tileSize();       // Canonical size fills tile.
@@ -167,7 +163,7 @@ function makeRookObject(params = {}) {
   }
 
 function makeBishopObject(params = {}) {
-  console.log("view : pieces.js - makeBishopObject(params)", params);
+  // console.log("view : pieces.js - makeBishopObject(params)", params);
 
   const { color } = params;
   let [tileHeight, tileWidth] = tiles.tileSize();       // Canonical size fills tile.
@@ -182,7 +178,7 @@ function makeBishopObject(params = {}) {
   }
 
 function makeDukeObject(params = {}) {
-  console.log("view : pieces.js - makeDukeObject(params)", params);
+  // console.log("view : pieces.js - makeDukeObject(params)", params);
 
   const { color } = params;
   let [tileHeight, tileWidth] = tiles.tileSize();       // Canonical size fills tile.
@@ -197,7 +193,7 @@ function makeDukeObject(params = {}) {
   }
 
 function makeQueenObject(params = {}) {
-  console.log("view : pieces.js - makeQueenObject(params)", params);
+  // console.log("view : pieces.js - makeQueenObject(params)", params);
 
   const { color } = params;
   let [tileHeight, tileWidth] = tiles.tileSize();       // Canonical size fills tile.
@@ -212,7 +208,7 @@ function makeQueenObject(params = {}) {
   }
 
 function makeKingObject(params = {}) {
-  console.log("view : pieces.js - makeKingObject(params)", params);
+  // console.log("view : pieces.js - makeKingObject(params)", params);
 
   const { color } = params;
   let [tileHeight, tileWidth] = tiles.tileSize();       // Canonical size fills tile.
@@ -232,7 +228,7 @@ function makeKingObject(params = {}) {
 }
 
 function makeStackObject(params = {}) {
-  console.log("view : pieces.js - makeStackObject(params)", params);
+  // console.log("view : pieces.js - makeStackObject(params)", params);
 
   const { color, side } = params;
   let [tileHeight, tileWidth] = tiles.tileSize();   // Canonical size fills tile.
@@ -244,7 +240,7 @@ function makeStackObject(params = {}) {
   }
 
 function makePawnObject(params = {}) {
-  console.log("view : pieces.js - makePawnObject(params)", params);
+  // console.log("view : pieces.js - makePawnObject(params)", params);
 
   const { color, side } = params;
   let [tileHeight, tileWidth] = tiles.tileSize();   // Canonical size fills tile.
@@ -256,7 +252,7 @@ function makePawnObject(params = {}) {
   }
 
 function makeKnightObject(params = {}) {
-  console.log("view : pieces.js - makeKnightObject(params)", params);
+  // console.log("view : pieces.js - makeKnightObject(params)", params);
 
   const { color, side } = params;
   let [tileHeight, tileWidth] = tiles.tileSize();   // Canonical size fills tile.
@@ -272,7 +268,6 @@ function makeRookGeo(tileWidth, rook) {
   const { aspect, breadth } = rook;
   const base = tileWidth * breadth;
   const height = base * aspect;
-  console.log("*** base, height, aspect", base, height, aspect);
   const geometry = new THREE.BoxGeometry(base, height, base);       // Cannonical cube.
   geometry.translate(0, (height/2), 0);
 

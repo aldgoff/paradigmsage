@@ -22,6 +22,9 @@ import setupData from "./setup.json" assert { type: "json" };
 
 // --- Build upon previous layers ---
   import * as game     from "../../controller/game/game.js";
+  import * as cBoards  from "../../controller/boards/boards.js";
+  import * as cTrays   from "../../controller/trays/trays.js";
+  import * as cPieces  from "../../controller/pieces/pieces.js";
 
   import * as state    from "../../model/state/state.js";
   import * as mSetup   from "../../model/setup/setup.js";
@@ -80,7 +83,7 @@ export function buildPayload(panel, action) {
 
 // --- Handle Functions ---
 function handleMakeBoard(payload) { // Setup handler.
-  console.log("cntrl: game.js - handleMakeBoard(payload):", payload);
+  console.log("cntrl: setup.js - handleMakeBoard(payload):", payload);
 
   const { action, boardSize, trayType, initialPos } = payload;  // Informative.
 
@@ -88,9 +91,9 @@ function handleMakeBoard(payload) { // Setup handler.
 
   applyEntry(entry);
 
-  mTrays.init(entry);   // New Game (games.js) moves them from tray to board, play may begin.
-  mBoards.init(entry);  // Initial occupancy depends on board size and tray type.
-  mPieces.init(entry);  // Every piece is in a tray, none are on the board.
+  cTrays.init(entry);   // New Game (games.js) moves them from tray to board, play may begin.
+  cBoards.init(entry);  // Initial occupancy depends on board size and tray type.
+  cPieces.init(entry);  // Every piece is in a tray, none are on the board.
   }
 
 function handleLock(payload) {  // Locks initial pos after pieces manually moved from tray to board.
