@@ -31,15 +31,17 @@ let blackTrayGroup = null;
 
 let traysVisible = false;
 
-let gap = 1;
+let Gap = 0;
 const minGap = 0;
 const maxGap = 3;
 
 let tileColor = 0xd8c0a8;  // Light brown.
 
 // --- UI ---
-export function showTrays() {
-  console.log("view: viewer.js - showTrays()");
+export function showTrays(gap) {
+  console.log("view: viewer.js - showTrays(gap)", gap);
+
+  Gap = gap;
 
   clearTrays();
 
@@ -67,7 +69,7 @@ export function setTrayGap(newGap) {
 
   if (!traysVisible) return;
 
-  showTrays(); // rebuild at new gap
+  showTrays(gap); // rebuild at new gap
   }
 
 export function setTraySep(sep) {
@@ -80,7 +82,7 @@ export function refreshTrays() {
   console.log("view: viewer.js - refreshTrays()");
   if(!traysVisible) return;
 
-  showTrays();
+  showTrays(gap);
 }
 // Seampoint: more global functions...
 
@@ -139,7 +141,7 @@ function applyGap(pos, side) {
 
   const sign = (side === "White") ? -1 : 1;
 
-  return [z, x + sign * gap, y + sign * gap];
+  return [z, x + sign * Gap, y + sign * Gap];
   }
 
 function makeTrayTile(logicalPos, renderPos) {

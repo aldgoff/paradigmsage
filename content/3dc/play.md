@@ -315,7 +315,7 @@ layout: "play"
     <button data-action="HideTrays"> Hide Trays </button>
   </div>
   <div class="section">
-    <label> Gap <input name="viewer-trayGap" type="number" min="0" step="1" value="1" max="3"> </label>
+    <label> Gap <input name="viewer-trayGap" type="number" min="0" step="1" value="0" max="3"> </label>
   </div>
   <div class="section">
     <label> Sep <input name="viewer-traySep" type="number" min="1.0" step="0.1" value="1.5" max="2.0"> </label>

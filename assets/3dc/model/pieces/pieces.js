@@ -61,14 +61,27 @@ function stdInitialPos(entry) {
 
   // For now, assume 8x8x8, later confirm entry compabibility.
 
-  pieceList["WKR"] = { loc: "~", pos: "KR1,1", coords: [8,0,0] }; // Place demo pieces in the white tray.
-  pieceList["WQR"] = { loc: "~", pos: "QR1,1", coords: [1,0,0] };
+  const whitePieces = ["WQRR", "WQNN", "WQBB", "WQQQ", "WKKK", "WKBB", "WKNN", "WKRR"];
+  let positions = ["QR1,1", "QN1,1", "QB1,1", "Q1,1", "K1,1", "KB1,1", "KN1,1", "KR1,1"];
+  for(let k=1; k<=8; k++) {
+    const piece = whitePieces[k-1];
+    const pos = positions[k-1];
+    pieceList[piece] = { loc: "~", pos, coords: [k,0,0] }; // Place demo pieces in the white tray.
+    whiteTray[k][0][0] = piece;
+    vPieces.renderPiece(piece);
+    console.log("***", piece, pos, k);
+  }
 
-  whiteTray[8][0][0] = "WKR";
-  whiteTray[1][0][0] = "WQR";
-
-  vPieces.renderPiece("WKR");
-  vPieces.renderPiece("WQR");
+  const whitePawns = ["WQRP", "WQNP", "WQBP", "WQQP", "WKKP", "WKBP", "WKNP", "WKRP"];
+  positions = ["QR2,2", "QN2,2", "QB2,2", "Q2,2", "K2,2", "KB2,2", "KN2,2", "KR2,2"];
+  for(let k=1; k<=8; k++) {
+    const piece = whitePawns[k-1];
+    const pos = positions[k-1];
+    pieceList[piece] = { loc: "~", pos, coords: [k,1,1] }; // Place demo pieces in the white tray.
+    whiteTray[k][1][1] = piece;
+    vPieces.renderPiece(piece);
+    console.log("***", piece, pos, k);
+  }
 
   console.log("*** whiteTray:", whiteTray);                               // Debug instrumention.
   console.log("*** blackTray:", blackTray);

@@ -22,7 +22,7 @@ import viewerData from "./viewer.json" assert { type: "json" };
   let lastClickTime = 0;
   let clickTimer = null;
   const DOUBLE_CLICK_MS = 200;
-  let Gap = 1;  // TODO: Default value, must match play.md (DOM) value.
+  let Gap = 0;  // TODO: Default value, must match play.md (DOM) value.
   // Seampoint: more globals.
 
 // --- UI ---
@@ -78,7 +78,7 @@ export function getJitterValues(panelId = "viewer-window") {
 function handleShowTrays(payload) {   // Viewer handlers. Not subject to undo.
   console.log("cntrl: viewer.js - handleShowTrays(payload)", payload);
 
-  vViewer.showTrays();
+  vViewer.showTrays(Gap);
   }
 
 function handleHideTrays(payload) {

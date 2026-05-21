@@ -1,12 +1,12 @@
 {
   "pieces_module": {
     "rook": {
-      "aspect": 1.6,
-      "breadth": 0.80
+      "aspect": 1.0,
+      "breadth": 0.40
     },
     "bishop": {
-      "aspect": 2.0,
-      "breadth": 0.60
+      "aspect": 1.4,
+      "breadth": 0.30
     },
     "duke": {
       "aspect": 1.0,
@@ -29,8 +29,8 @@
       "breadth": 0.80
     },
     "king": {
-      "aspect": 3.5,
-      "breadth": 0.70
+      "aspect": 1.0,
+      "breadth": 0.40
     }
   }
 }
