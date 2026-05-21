@@ -274,8 +274,7 @@ function makeRookGeo(tileWidth, rook){
   const height = base * aspect;
   console.log("*** base, height, aspect", base, height, aspect);
   const geometry = new THREE.BoxGeometry(base, height, base);       // Cannonical cube.
-  // geometry.translate(0, (height/2), 0);
-  geometry.translate(0, 0, 0);
+  geometry.translate(0, (height/2), 0);
 
   return geometry;
   }
