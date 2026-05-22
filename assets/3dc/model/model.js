@@ -3,7 +3,7 @@
   Purpose: The state and logic of 3D Chess.
   Author: Allan Goff
   Date: 4/04/26
-  Recommended access: import * as model.
+  Recommended access: import * as model from "../model/model.js";
   UI: the export functions.
 */
 

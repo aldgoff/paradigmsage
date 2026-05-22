@@ -1,9 +1,9 @@
 /* File: renders.js
-  Path: ./3dc/view/renders.js
+  Path: ./3dc/view/render/renders.js
   Purpose: Create the renderer.
   Author: Allan Goff
   Date: 4/09/26
-  Recommended access: import * as renders.
+  Recommended access: import * as renders from "../../view/render/renders.js";
   UI: the export functions.
 */
 
@@ -14,9 +14,9 @@ const THREE = window.THREE;
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
-import * as cameras from "./cameras.js";
-import * as scenes  from "./scenes.js";
-import * as lights  from "./lights.js";
+  import * as cameras from "./cameras.js";
+  import * as scenes  from "./scenes.js";
+  import * as lights  from "./lights.js";
 // Seampoint: more imports...
 
 // --- UI ---
@@ -27,7 +27,7 @@ export function init(container) {
   });
 
   const scene  = scenes.init();                           // A light blue background.
-  const camera = cameras.init(1000, "neutral", [0,0,0]);  // Zoom, POV, and focalPoint (at board center).
+  const camera = cameras.init(container, 1800, "neutral", [0,0,0]);  // Zoom, POV, and focalPoint (at board center).
   const light  = lights.init(scene);
 
   renderer.setSize(container.width, container.height);

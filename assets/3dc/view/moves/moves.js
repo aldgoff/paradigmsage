@@ -3,7 +3,7 @@
   Purpose: Rendering the view panel and board.
   Author: Allan Goff
   Date: 4/30/26
-  Recommended access: import * as vMoves from ../../view/moves/moves.js
+  Recommended access: import * as vMoves from "../../view/moves/moves.js";
   UI: the export functions.
   Philosophy: Delete a module by deleting its directory - not so much.
     controller/ model/ view/
@@ -30,12 +30,12 @@ let activeAnimation = null;
 
 // --- UI ---
 export function undo(move) {
-  console.log("view: moves.js - undo(move)", move);
+  console.log("view : moves.js - undo(move)", move);
   // TODO: write undo().
   }
 
 export function redo(move) {
-  console.log("view: moves.js - redo(move)", move);
+  console.log("view : moves.js - redo(move)", move);
   // TODO: write redo().
 }
 
@@ -93,19 +93,19 @@ export function cancelAnimation() {
 }
 
 export function render(move) {  // Used to render a just created move via panel.
-  console.log("view: moves.js - renderMove(move)", move);
+  console.log("view : moves.js - renderMove(move)", move);
   // TODO: write renderMove().
   return;
   }
 
 export function renderMove(move) {  // Used to render a just created move via panel.
-  console.log("view: moves.js - renderMove(move)", move);
+  console.log("view : moves.js - renderMove(move)", move);
   // TODO: write renderMove().
   return;
   }
 
 export function derenderMove(move) {
-  console.log("view: moves.js - derenderMove(move)", move);
+  console.log("view : moves.js - derenderMove(move)", move);
   // TODO: write derenderMove().
   return;
 }

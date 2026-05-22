@@ -1,9 +1,9 @@
 /* File: quads.js
-  Path: ./3dc/geometry/quads.js
+  Path: ./3dc/geometry/quads/quads.js
   Purpose: Access to quad numbers, planes, and ray pairs.
   Author: Allan Goff
   Date: 3/26/26
-  Recommended access: import * as quads.
+  Recommended access: import * as quads from "../../geometry/quads/quads.js";
   UI: the export functions.
 */
 

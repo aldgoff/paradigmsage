@@ -3,7 +3,7 @@
   Purpose: Define planes and quads.
   Author: Allan Goff
   Date: 3/23/26
-  Recommended access: import * as planes.
+  Recommended access: import * as planes from "../../geometry/planes/planes.js";
   UI: export functions only.
 */
 
@@ -16,12 +16,12 @@ import planesData from "./planes.json" assert { type: "json" };
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
-import * as utils  from "../../../../utils/utils.js";
+  import * as utils  from "../../../../utils/utils.js";
 
-import * as coords from "../../foundation/coords/coords.js";
-import * as rays   from "../../foundation/rays/rays.js";  // getRayVector().
-import * as quads  from "../../geometry/quads/quads.js";  // quadToRayPair().
-import * as perims from "../../geometry/perims/perims.js";  // scale(), add().
+  import * as coords from "../../foundation/coords/coords.js";
+  import * as rays   from "../../foundation/rays/rays.js";  // getRayVector().
+  import * as quads  from "../../geometry/quads/quads.js";  // quadToRayPair().
+  import * as perims from "../../geometry/perims/perims.js";  // scale(), add().
 // Seampoint: more imports...
 
 // --- UI ---

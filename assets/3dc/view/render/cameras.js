@@ -3,7 +3,7 @@
   Purpose: Interface to the camera controls, POV on the board, zoom, etc.
   Author: Allan Goff
   Date: 4/09/26
-  Recommended access: import * as cameras.
+  Recommended access: import * as cameras from "../../view/render/cameras.js";
   UI: the export functions.
 */
 
@@ -114,17 +114,21 @@ function computeAngleFromPov() {
 }
 
 // --- UI ---
-export function init(zoom, pov, focalPoint=[0,0,0]) {
+export function init(container, zoom, pov, focalPoint=[0,0,0]) {
   console.log("view : camera.js - Init()");
   specs.pov  = POV[pov];
   specs.focalPoint = focalPoint;
 
-  const left   = -zoom; // left boundary of view
-  const right  =  zoom; // right boundary
-  const top    =  zoom; // top boundary
-  const bottom = -zoom; // bottom boundary
-  const near   =     1; // near clipping plane
-  const far    =  2000; // far clipping plane
+  const aspect = container.clientWidth / container.clientHeight;
+
+  const left   = -zoom * aspect; // Boundaries of view.
+  const right  =  zoom * aspect;
+  const top    =  zoom;
+  const bottom = -zoom;
+
+  const near   =  0.01; // near clipping plane
+  const far    = 10000; // far clipping plane
+
   const camera = new THREE.OrthographicCamera( left, right, top, bottom,near, far);
   specs.camera = camera;
 

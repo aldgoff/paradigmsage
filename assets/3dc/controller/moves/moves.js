@@ -3,7 +3,7 @@
   Purpose: Allows moving pieces, shows the list of moves.
   Author: Allan Goff
   Date: 4/27/26
-  Recommended access: import * as cMoves from ""../../controller/moves/moves.js";
+  Recommended access: import * as cMoves from "../../controller/moves/moves.js";
   UI: the export functions.
   Philosophy: Delete a module by deleting its directory - not so much.
     controller/ model/ view/
@@ -78,6 +78,7 @@ export function panelDispatch(payload) {
 
 export function buildPayload(panel, action) {
   console.log("     ---------- cntrl: moves.js");
+
   return {
     action,
     player:   panel.querySelector('input[name="move-player"]:checked')?.value,
@@ -95,7 +96,7 @@ export function buildPayload(panel, action) {
 function handleMove(payload) {
   console.log("cntrl: moves.js - handleMove(payload)", payload);
 
-  const { action, player, piece, src, dst, sec, captured, opts } = payload;  // Informative.
+  const { player, piece, src, dst, sec, captured, opts } = payload;  // Informative.
 
   const entry = mMoves.makeEntry(payload);  // Create entry.
   applyEntry(entry);
@@ -103,36 +104,57 @@ function handleMove(payload) {
 
 function handleCapture(payload) {
   console.log("cntrl: moves.js - handleCapture(payload)", payload);
+
+  const { player, piece, src, dst, sec, captured, opts } = payload;  // Informative.
+
   // TODO: change state - handleCapture().
   }
 
 function handleEnpassant(payload) {
   console.log("cntrl: moves.js - handleEnpassant(payload)", payload);
+
+  const { player, piece, src, dst, sec, captured, opts } = payload;  // Informative.
+
   // TODO: change state - handleEnpassant().
   }
 
 function handleCastle(payload) {
   console.log("cntrl: moves.js - handleCastle(payload)", payload);
-  // TODO: change state - handleCastle().
+ 
+  const { player, piece, src, dst, sec, captured, opts } = payload;  // Informative.
+
+ // TODO: change state - handleCastle().
   }
 
 function handlePromote(payload) {
   console.log("cntrl: moves.js - handlePromote(payload)", payload);
+
+  const { player, piece, src, dst, sec, captured, opts } = payload;  // Informative.
+
   // TODO: change state - handlePromote().
   }
 
 function handleDukeDecay(payload) {
   console.log("cntrl: moves.js - handleDukeDecay(payload)", payload);
+
+  const { player, piece, src, dst, sec, captured, opts } = payload;  // Informative.
+
   // TODO: change state - handleDukeDecay().
   }
 
 function handleBishopDecay(payload) {
   console.log("cntrl: moves.js - handleBishopDecay(payload)", payload);
+
+  const { player, piece, src, dst, sec, captured, opts } = payload;  // Informative.
+
   // TODO: change state - handleBishopDecay().
   }
 
 function handleFission(payload) {
   console.log("cntrl: moves.js - handleFission(payload)", payload);
+
+  const { player, piece, src, dst, sec, captured, opts } = payload;  // Informative.
+
   // TODO: change state - handleFission().
 }
 // Seampoint: more handle functions...

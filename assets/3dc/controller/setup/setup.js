@@ -1,9 +1,9 @@
 /* File: setup.js
-  Path: ./3dc/setup/setup.js
+  Path: ./3dc/controller/setup/setup.js
   Purpose: Controller code to setup board and trays.
   Author: Allan Goff
   Date: 4/22/26
-  Recommended access: import * as cSetup from ""../../control/setup/setup.js";
+  Recommended access: import * as cSetup from "../../control/setup/setup.js";
   UI: the export functions.
   Philosophy: Dlete a module by deleting its directory - not so much.
     controller/ model/ view/
@@ -17,14 +17,19 @@
 // --- Load JSON ---
 import setupData from "./setup.json" assert { type: "json" };
   const setupModule = setupData.setup_module;
-  const category  = setupModule.category;
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
   import * as game     from "../../controller/game/game.js";
+  import * as cBoards  from "../../controller/boards/boards.js";
+  import * as cTrays   from "../../controller/trays/trays.js";
+  import * as cPieces  from "../../controller/pieces/pieces.js";
 
   import * as state    from "../../model/state/state.js";
   import * as mSetup   from "../../model/setup/setup.js";
+  import * as mPieces  from "../../model/pieces/pieces.js";
+  import * as mTrays   from "../../model/trays/trays.js";
+  import * as mBoards  from "../../model/boards/boards.js";
 
   import * as boards   from "../../view/boards/boards.js";
   import * as vSetup   from "../../view/setup/setup.js";
@@ -33,10 +38,11 @@ import setupData from "./setup.json" assert { type: "json" };
 // Seampoint: more imports...
 
 // --- Globals ---
-const pieceList = {
-  "white": { "ref": "abs", "pieces": [], "pawns": [] }, 
-  "black": { "ref": "rel", "pieces": [], "pawns": [] }
-};
+  const pieceList = {
+    "white": { "ref": "abs", "pieces": [], "pawns": [] }, 
+    "black": { "ref": "rel", "pieces": [], "pawns": [] }
+  };
+// Seampoint: more globals.
 
 // --- UI ---
 export function panelDispatch(payload) {    // Dispatch payload from panel to handle event functions.
@@ -55,6 +61,7 @@ export function panelDispatch(payload) {    // Dispatch payload from panel to ha
     case "makeBoard":   handleMakeBoard(payload); break;
     case "lock":        handleLock(payload); break;
     case "updateParam": break;
+
     default: throw new Error(`Unknown setup action ${action}.`);
   }
 
@@ -63,9 +70,11 @@ export function panelDispatch(payload) {    // Dispatch payload from panel to ha
 
 export function buildPayload(panel, action) {
   console.log("     ---------- cntrl: setup.js");
+
   const initialPos = panel.querySelector('input[name="initial-pos"]:checked')?.value;
   const pos = (initialPos === "standard") ? "std" : "list";
-  return {
+
+  return {  // payload
     action,
     boardSize:  panel.querySelector('input[name="board-size"]:checked')?.value,
     trayType:   panel.querySelector('input[name="tray-type"]:checked')?.value,
@@ -77,28 +86,32 @@ export function buildPayload(panel, action) {
 
 // --- Handle Functions ---
 function handleMakeBoard(payload) { // Setup handler.
-  console.log("control: game.js - handleMakeBoard(payload):", payload);
+  console.log("cntrl: setup.js - handleMakeBoard(payload):", payload);
 
   const { action, boardSize, trayType, initialPos } = payload;  // Informative.
 
-  const nextEntry = mSetup.makeEntry(payload);    // Transform panel payload into state entry.
-  applyEntry(nextEntry);
+  const entry = mSetup.makeEntry(payload);    // Transform panel payload into state entry.
+  applyEntry(entry);
 
-  vViewer.refreshTrays();
+  cTrays.init(entry);   // New Game (games.js) moves them from tray to board, play may begin.
+  cBoards.init(entry);  // Initial occupancy depends on board size and tray type.
+  cPieces.init(entry);  // Every piece is in a tray, none are on the board.
   }
 
-function handleLock(payload) {
-  console.log("control: game.js - handleLock(payload):", payload);
+function handleLock(payload) {  // Locks initial pos after pieces manually moved from tray to board.
+  console.log("cntrl: game.js - handleLock(payload):", payload);
 
   const { action, boardSize, trayType, initialPos, pieceList } = payload;  // Informative.
 
-  const nextEntry = mSetup.makeEntry(payload);    // Transform panel payload into state entry.
-  state.pushNewSetup(nextEntry);          // Log state change in undo buffer.
-  vSetup.pushPanelLine(nextEntry);        // Add line to panel.
-  vSetup.refreshPanel(nextEntry);         // Only needed by panels with derived fields.
+  const entry = mSetup.makeEntry(payload);    // Transform panel payload into state entry.
 
-  vViewer.refreshTrays();
+  mTrays.disableManualMode(entry);  // Players can no longer move pieces to/from trays, rules do that.
+
+  state.pushNewSetup(entry);          // Log state change in undo buffer.
+  vSetup.pushPanelLine(entry);        // Add line to panel.
+  vSetup.refreshPanel(entry);         // Only needed by panels with derived fields.
 }
+// Seampoint: more handlers...
 
 // --- Helpers ---
 function applyEntry(entry) {

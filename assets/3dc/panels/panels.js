@@ -3,7 +3,7 @@
   Purpose: Arch discipline, reduce touch points to add/delete a panel.
   Author: Allan Goff
   Date: 5/09/26
-  Recommended access: import * as panels from ../../panels/panels.js
+  Recommended access: import * as panels from "../panels/panels.js";
   UI: the export functions.
 */
 

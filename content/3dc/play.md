@@ -28,28 +28,45 @@ layout: "play"
     z-index: 20;
     cursor: move;
     }
-  #setup-list {
-    font-family: monospace;
-    white-space: pre;
+  .panel-stateful {
+    background: rgba(222,240,222,0.94);
+    }
+  .panel-perspective {
+    background: rgba(228,226,238,0.94);
+    }
+  .panel-supportive {
+    background: rgba(220,255,220,0.94);
+    }
+  .panel-temporal {
+    background: rgba(236,232,222,0.95);
   }
+
   #setup-window {
     width: 160px;
-  }
+    }
+  #compass-window {
+    width: 160px;
+    height: 280px;
+    }
   #gambit-window {
     width: 280px;
-  }
-  #gambit-list {
-    font-family: monospace;
-    white-space: pre;
-  }
+    }
   #move-window {
     font-family: monospace;
     width: 350px;
+  }
+  #setup-list {
+    font-family: monospace;
+    white-space: pre;
+    }
+  #gambit-list {
+    font-family: monospace;
+    white-space: pre;
     }
   #move-list {
     font-family: monospace;
     white-space: pre;   /* Allows code to col align text. */
-    }
+  }
   #undo-state {
     height: 66px;
     font-family: monospace;
@@ -67,25 +84,29 @@ layout: "play"
     border: 1px solid #ccc;
     padding: 4px;
   }
-
+  button {
+    background: rgb(238,220,220);
+    border: 1px solid #888;
+  }
+  
   #setup-window   { top:  260px; left:   20px; }  /* DOM Control Panels */
-  #move-window    { top: 1180px; left:   40px; }
-  #gambit-window  { top:  880px; left:   40px; }
+  #move-window    { top: 1180px; left:   20px; }
+  #gambit-window  { top:  880px; left:   20px; }
   #advsq-window   { top:  260px; left:  210px; }
-  #compass-window { top:  260px; left:  560px; }
+  #compass-window { top:  580px; left:   20px; }
 
   #game-window    { top:  260px; left:  390px; }
 
   #camera-window { top:   510px; left:  390px; }
-  #viewer-window { top:   610px; left:   40px; }
+  #viewer-window { top:   660px; left:  390px; }
   /* Seampont - more DOM control panels... */
 </style>
 
 <!-- The 3DC Game... -->
-<canvas id="3dc-board" width="1600" height="2400"></canvas>  <!-- 3D -->
+<canvas id="3dc-board" width="1600" height="2000"></canvas>  <!-- 3D -->
 
 <!-- The DOM Control Panels -->
-<div class="panel" id="setup-window">
+<div class="panel panel-stateful" id="setup-window">
   <div class="panel-title">Setup Panel</div>
   <div class="section">
     <button data-action="makeBoard">Make Board</button>
@@ -115,7 +136,7 @@ layout: "play"
   <div class="section scroll-box" id="setup-list"></div>
   </div>
 
-<div class="panel" id="move-window">
+<div class="panel panel-stateful" id="move-window">
   <div class="panel-title">Move Panel</div>
   <div class="section">
     <button data-action="move">Move</button>
@@ -144,7 +165,7 @@ layout: "play"
   <div class="section scroll-box" id="move-list"></div>
   </div>
 
-<div class="panel" id="gambit-window">
+<div class="panel panel-stateful" id="gambit-window">
   <div class="panel-title">Gambit Panel (Freeze)</div>
   <div class="section">
     <button data-action="freezeQ">Quadrant</button>
@@ -188,7 +209,7 @@ layout: "play"
     <!-- 1 Q13 KB4.4 → KR7,7 : 16 -->
   </div>
 
-<div class="panel" id="advsq-window">
+<div class="panel panel-stateful" id="advsq-window">
   <div class="panel-title">AdvSq Panel</div>
   <div class="section">
     <button data-action="place">Place</button>
@@ -260,7 +281,7 @@ layout: "play"
   </div>
   </div>
 
-<div class="panel" id="compass-window">
+<div class="panel panel-supportive" id="compass-window">
   <div class="panel-title">Compass Panel</div>
   <div class="section">
     <button data-action="Rays" disabled>Rays</button>
@@ -270,7 +291,7 @@ layout: "play"
   </div>
   </div>
 
-<div class="panel" id="game-window">
+<div class="panel panel-temporal" id="game-window">
   <div class="panel-title">Game Panel</div>
   <div class="section">
     <button data-action="newGame">New Game</button>
@@ -292,7 +313,7 @@ layout: "play"
   </div>
   </div>
 
-<div class="panel" id="camera-window">
+<div class="panel panel-perspective" id="camera-window">
   <div class="panel-title">Camera Panel</div>
   <div class="section">
     <button data-action="ZoomIn"> Zoom In </button>
@@ -308,17 +329,17 @@ layout: "play"
   </div>
   </div>
 
-<div class="panel" id="viewer-window">
+<div class="panel panel-perspective" id="viewer-window">
   <div class="panel-title">Viewer Panel</div>
   <div class="section">
     <button data-action="ShowTrays"> Show Trays </button>
     <button data-action="HideTrays"> Hide Trays </button>
   </div>
   <div class="section">
-    <label> Gap <input name="viewer-trayGap" type="number" min="0" step="1" value="1" max="3"> </label>
+    <label> Tray Gap <input name="viewer-trayGap" type="number" min="0" step="1" value="0" max="3"> </label>
   </div>
   <div class="section">
-    <label> Sep <input name="viewer-traySep" type="number" min="1.0" step="0.1" value="1.5" max="2.0"> </label>
+    <label> Level Sep <input name="viewer-levelSep" type="number" min="1.0" step="0.1" value="1.5" max="2.0"> </label>
   </div>
   <div class="section">
     <button data-action="ToggleAnimation"> Toggle Animation </button>

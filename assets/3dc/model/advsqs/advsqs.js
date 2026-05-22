@@ -1,9 +1,9 @@
 /* File: advsqs.js
-  Path: ./3dc/advsqs/advsqs.js
+  Path: ./3dc/model/advsqs/advsqs.js
   Purpose: desc
   Author: Allan Goff
   Date: 4/15/26
-  Recommended access: import * as mAdvsqs from ../../model/advsqs/advsqa.js
+  Recommended access: import * as mAdvsqs from "../../model/advsqs/advsqa.js";
   UI: the export functions.
   Philosophy: Dlete a module by deleting its directory - not so much.
     controller/ model/ view/

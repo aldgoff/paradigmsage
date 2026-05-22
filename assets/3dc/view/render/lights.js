@@ -3,7 +3,7 @@
   Purpose: Interface to the lighting features of the THREE render engine.
   Author: Allan Goff
   Date: 4/09/26
-  Recommended access: import * as lights.
+  Recommended access: import * as lights from "../../view/render/lights.js";
   UI: the export functions.
 */
 
@@ -17,6 +17,9 @@ import lightsData from "./lights.json" assert { type: "json" };
   const fill    = lightsModule.fill;
   const ambient = lightsModule.ambient;
 // Seampoint: more objects...
+
+// --- Build upon previous layers ---
+// Seampoint: more imports...
 
 // --- UI ---
 export function init(scene) {

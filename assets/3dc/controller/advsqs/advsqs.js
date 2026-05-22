@@ -3,7 +3,7 @@
   Purpose: Create and morph advancement squares vis srcTile, quad, perimeter, and stride, w/ opacity for offboard tiles.
   Author: Allan Goff
   Date: 4/21/26
-  Recommended access: import * as cAdvsqs from ../../controller/advsqs/advsqa.js
+  Recommended access: import * as cAdvsqs from "../../controller/advsqs/advsqa.js";
   UI: the export functions.
   Philosophy: Delete a module by deleting its directory - not so much.
     controller/ model/ view/
@@ -64,13 +64,14 @@ export function panelDispatch(payload) {
 export function buildPayload(panel, action) {
   console.log("     ---------- cntrl: advsqs.js");
   
-  return { action, // TODO: base off new entry in json file.
-    src:       panel.querySelector('[name="advsq-src"]')?.value,
+  return {  // payload
+    action,
+    src:                                 panel.querySelector('[name="advsq-src"]')?.value,
     srcTile:   coords.normalizeTileToVts(panel.querySelector('[name="advsq-src"]')?.value),
-    quad:      Number(panel.querySelector('[name="advsq-quad"]')?.value),
-    perimeter: Number(panel.querySelector('[name="advsq-perimeter"]')?.value),
-    stride:    Number(panel.querySelector('[name="advsq-stride"]')?.value),
-    opacity:   Number(panel.querySelector('[name="advsq-opacity"]')?.value),
+    quad:                         Number(panel.querySelector('[name="advsq-quad"]')?.value),
+    perimeter:                    Number(panel.querySelector('[name="advsq-perimeter"]')?.value),
+    stride:                       Number(panel.querySelector('[name="advsq-stride"]')?.value),
+    opacity:                      Number(panel.querySelector('[name="advsq-opacity"]')?.value),
   };
 }
 // Seampoint: more global functions...

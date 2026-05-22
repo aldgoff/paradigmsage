@@ -4,14 +4,13 @@
   Author: Allan Goff
   Date: 4/14/26
   QC: 5/8/26
-  Recommended access: import * as vBoards from ../../view/boards/boards.js
+  Recommended access: import * as vBoards from "../../view/boards/boards.js";
   UI: the export functions.
 */
 
 // --- Load JSON ---
 import boardsData from "./boards.json" assert { type: "json" };
   const boardsModule = boardsData.boards_module;
-  const category  = boardsModule.category;
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
@@ -21,26 +20,28 @@ import boardsData from "./boards.json" assert { type: "json" };
   import * as decorators from "../decorators/decorators.js";
 // Seampoint: more imports...
 
-let currentBoard = null;
-let clickHandler = null;
+// --- Globals ---
+  let currentBoard = null;
+  let clickHandler = null;
+// Seampoint: more globals.
 
 // --- UI ---
 export function render(setup) {
-  console.log("view: boards.js - render(setup)", setup);
+  console.log("view : boards.js - render(setup)", setup);
 
   const dims = setup.boardSize.split("x").map(Number);
   makeBoard(dims);
   }
 
 export function clear(setup) {
-  console.log("view: boards.js - clear(setup)", setup);
+  console.log("view : boards.js - clear(setup)", setup);
 
   clearBoard();
 }
 
 // --- UI ---
 export function makeBoard(dimensions) {
-  console.log("view: boards.js - makeBoard(dimensions):", dimensions);
+  console.log("view : boards.js - makeBoard(dimensions):", dimensions);
 
   if(currentBoard) { clearBoard(); }
 
@@ -79,7 +80,7 @@ export function makeBoard(dimensions) {
   }
 
 export function clearBoard() {
-  console.log("view: boards.js - clearBoard()...view.context:", view.context);
+  console.log("view : boards.js - clearBoard()...view.context:", view.context);
   if (currentBoard) {
     view.context.scene.remove(currentBoard);
     console.log(
@@ -91,12 +92,20 @@ export function clearBoard() {
   }
 
   view.context.tileMap.clear();
+  }
+
+export function setBoardSep(levelSep) {
+  console.log("view : boards.js - setBoardSep(levelSep):", levelSep);
+
+  /* TODO: Board level separaion control flow
+   * 1.
+   */
 }
 // Seampoint: more global functions...
 
 // --- Helpers ---
 function isPrimaryPlaneMarker(tile, pos) {
-  // console.log("view: boards.js - isPrimaryPlaneMarker(tile, pos):", tile, pos);
+  // console.log("view : boards.js - isPrimaryPlaneMarker(tile, pos):", tile, pos);
 
   const [, x, y] = pos;
 
@@ -105,7 +114,7 @@ function isPrimaryPlaneMarker(tile, pos) {
   const dukeColor = foundation.dukeColorVts(pos);    // Duke color depends on position.
 
   return (dukeColor === "gold");
-}
+  }
 
 function makePrimaryPlaneMarker() {
   const THREE = window.THREE;
@@ -126,7 +135,7 @@ function makePrimaryPlaneMarker() {
   const marker = new THREE.Mesh( geometry, material);
 
   return marker;
-}
+  }
 
 function addEventListener(scene, renderer, camera, tileMap) {
   if (clickHandler) {

@@ -2,6 +2,12 @@
   "coordsMaps_module": {
     "dims": {
       "Sxy": 100,
+      "Sz": 100,
+      "center": [50, 50, 50]
+    },
+    "dims1": {
+      "_comment": "deprecated",
+      "Sxy": 100,
       "Sz": 150,
       "center": [50, 75, 50]
     },

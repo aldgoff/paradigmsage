@@ -1,9 +1,9 @@
 /* File: gambits.js
-  Path: ./3dc/gambits/gambits.js
-  Purpose: desc
+  Path: ./3dc/modelgambits/gambits.js
+  Purpose: State for gambits.
   Author: Allan Goff
   Date: 4/15/26
-  Recommended access: import * as mGambits from ../../model/gambits/gambits.js
+  Recommended access: import * as mGambits from "../../model/gambits/gambits.js";
   UI: the export functions.
   Philosophy: Dlete a module by deleting its directory - not so much.
     controller/ model/ view/

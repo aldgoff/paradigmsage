@@ -1,10 +1,9 @@
-
 /* File: view.js
-  Path: ./3dc/view/view.js
+  Path: ./3dc/view/demos.js
   Purpose: POC on render engine, board, tiles, decorators, and raycasting.
   Author: Allan Goff
   Date: 4/02/26
-  Recommended access: import * as demos.
+  Recommended access: import * as demos from "../view/demos.js";
   UI: the export functions.
 */
 

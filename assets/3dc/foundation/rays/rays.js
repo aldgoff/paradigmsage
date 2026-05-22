@@ -3,7 +3,7 @@
   Purpose: Define directional primitives (rays + knight deltas) in VTS space.
   Author: Allan Goff
   Date: 3/20/26
-  Recommended access: import * as rays.
+  Recommended access: import * as rays from "../../foundation/rays/rays.js";
   UI: export functions only.
 
   Notes:
@@ -20,6 +20,9 @@ import raysData from "./rays.json" assert { type: "json" };
   const DUKE   = raysModule.duke;
   const APEX   = raysModule.apex;
   const KNIGHT = raysModule.knight;
+// Seampoint: more imports...
+
+// --- Build upon previous layers ---
 // Seampoint: more imports...
 
 // --- UI ---

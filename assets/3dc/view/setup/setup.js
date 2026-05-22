@@ -1,9 +1,9 @@
 /* File: setup.js
   Path: ./3dc/view/setup/setup.js
-  Purpose: desc
+  Purpose: Render board, tray, and initial piece positions.
   Author: Allan Goff
   Date: 5/03/26
-  Recommended access: import * as vSetup from ../../view/setup/setup.js
+  Recommended access: import * as vSetup from "../../view/setup/setup.js";
   UI: the export functions.
   Philosophy: Delete a module by deleting its directory - not so much.
     controller/ model/ view/
@@ -31,21 +31,18 @@ import setupData from "./setup.json" assert { type: "json" };
 
 // --- UI ---
 export function clear(entry) {
-  console.log("view: setup.js - clear(entry)", entry);
+  console.log("view : setup.js - clear(entry)", entry);
 
   const { action, boardSize, trayType, initialPos } = entry;  // Informative.
 
   vBoards.clear(entry);
-  vTrays.clear(entry);
+  vTrays.destroyTrays();
   }
   
 export function render(entry) {
-  console.log("view: setup.js - render(entry)", entry);
+  console.log("view : setup.js - render(entry)", entry);
 
   const { action, boardSize, trayType, initialPos } = entry;  // Informative.
-
-  vBoards.render(entry);
-  vTrays.render(entry);
   }
   
 export function refreshPanel(entry) {

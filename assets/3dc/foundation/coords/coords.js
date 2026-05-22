@@ -3,7 +3,7 @@
   Purpose: Establish the 3 integral coordinate systems for 3D chess (left-handed).
   Author: Allan Goff
   Date: 3/18/26
-  Recommended access: import * as coords.
+  Recommended access: import * as coords from "../../foundation/coords/coords.js";
   UI: the export functions.
   Terminology:
     - "tile" = any valid tile representation (string "<LL>X,Y" OR vts [z,x,y])
@@ -14,6 +14,9 @@
 import coordsData from "./coords.json" assert { type: "json" };
   const coordsModule = coordsData.coords_module;
   const boardSpecs = coordsModule.board_specs;
+// Seampoint: more imports...
+
+// --- Build upon previous layers ---
 // Seampoint: more imports...
 
 // --- UI ---

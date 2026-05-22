@@ -1,6 +1,6 @@
 /* File: pieces.js
   Path: ./3dc/controller/pieces/pieces.js
-  Purpose: desc
+  Purpose: Commands for moving pieces around.
   Author: Allan Goff
   Date: 5/03/26
   Recommended access: import * as cPieces from "../../controller/pieces/pieces.js";
@@ -13,14 +13,15 @@ import piecesData from "./pieces.json" assert { type: "json" };
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
-  import * as planes from "../../geometry/planes/planes.js";
-  import * as quads  from "../../geometry/quads/quads.js";
+  import * as mPieces from "../../model/pieces/pieces.js";
 // Seampoint: more imports...
 
 // --- UI ---
-export function UI() {
-  console.log("cntrl: pieces.js - UI()");
-  
+export function init(entry) {
+  console.log("cntrl: pieces.js - init(entry)", entry);
+
+  mPieces.init(entry);  // Initial occupancy depends on board size and tray type.
+
   return;
   }
 // Seampoint: more global functions...

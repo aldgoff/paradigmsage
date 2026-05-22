@@ -3,7 +3,7 @@
   Purpose: Interface to the scene features of the THREE render engine.
   Author: Allan Goff
   Date: 4/09/26
-  Recommended access: import * as scenes.
+  Recommended access: import * as scenes from "../../view/render/scenes.js";
   UI: the export functions.
 */
 
@@ -15,6 +15,9 @@ import scenesData from "./scenes.json" assert { type: "json" };
   const scenesModule = scenesData.scenes_module;
   const background  = scenesModule.background;
 // Seampoint: more objects...
+
+// --- Build upon previous layers ---
+// Seampoint: more imports...
 
 // --- UI ---
 export function init() {

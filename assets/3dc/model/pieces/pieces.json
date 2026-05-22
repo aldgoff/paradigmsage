@@ -1,7 +1,7 @@
 {
   "pieces_module": {
     "eights": {
-      "size": "8x8x8x",
+      "size": "8x8x8",
       "initialPos": {
         "White": {
           "ref": "relative",

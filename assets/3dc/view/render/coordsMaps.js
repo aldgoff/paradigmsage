@@ -3,7 +3,7 @@
   Purpose: Coordinate transforms between 3DC vts versus THREE xyz and scene pixels.
   Author: Allan Goff
   Date: 4/02/26
-  Recommended access: import * as coordsMaps.
+  Recommended access: import * as coordsMaps from "../../view/render/coordsMaps.js";
   UI: the export functions.
 */
 
@@ -12,6 +12,10 @@ import coordsMapsData from "./coordsMaps.json" assert { type: "json" };
   const coordsMapsModule = coordsMapsData.coordsMaps_module;
   const dims = coordsMapsModule.dims;
 // Seampoint: more objects...
+
+// --- Build upon previous layers ---
+  import * as cViewer from "../../controller/viewer/viewer.js";
+// Seampoint: more imports...
 
 // --- UI ---
 // TODO: scales are hard coded, need to import from a JSON file.
@@ -23,7 +27,11 @@ export function xyz2vts([x, y, z]) {
   return [y, x, z]
   }
 
-export function vts2pixels( [z, x, y], Sxy = dims.Sxy, Sz = dims.Sz, center = dims.center) {
+export function vts2pixels( [z, x, y], levelSep = null, Sxy = dims.Sxy, Sz = dims.Sz, center = dims.center) {
+  z *= (levelSep == null)
+    ? cViewer.getLevelSep()
+    : levelSep;
+
   return [
     x * Sxy - center[0],
     z * Sz  - center[1],
