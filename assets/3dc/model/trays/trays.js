@@ -40,8 +40,6 @@ export function init(entry) {
   const { action, boardSize, trayType, initialPos } = entry;  // Informative.
 
   clearTrays();
-
-  vTrays.render(entry);
 }
 
 export function getWhiteTray() {
@@ -52,7 +50,7 @@ export function getBlackTray() {
   return blackTray;
 }
 
-export function getGap() {
+export function getTrayGap() {
   const gap = 0;  // TODO: get gap from panel.
 
   return gap;

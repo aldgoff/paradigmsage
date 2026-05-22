@@ -30,8 +30,9 @@ import piecesData from "./pieces.json" assert { type: "json" };
   import * as mTrays  from "../../model/trays/trays.js";
   import * as mBoards from "../../model/boards/boards.js";
 
-  import * as view    from "../../view/view.js";
-  import * as tiles   from "../../view/tiles/tiles.js";
+  import * as view       from "../../view/view.js";
+  import * as coordsMaps from "../render/coordsMaps.js"
+  import * as tiles      from "../../view/tiles/tiles.js";
 // Seampoint: more imports...
 
 // --- Globals ---
@@ -76,7 +77,7 @@ function renderInTray(player, side, type, tray, pos) {
   // console.log("view : pieces.js - renderInTray(player, type, tray, pos)", player, type, tray, pos);
   // TODO: finish renderInTray().
 
-  let gap = cViewer.getGap();
+  let gap = cViewer.getTrayGap();
 
   if(type === "P")  gap += 1; // First tray column.
   else              gap += 2; // Second tray column.
@@ -103,11 +104,11 @@ function renderInTray(player, side, type, tray, pos) {
 
   if(!group) return;
 
-  const grid = [100,100,100]; // TODO: get from some json file.
+  const grid2 = coordsMaps.vts2pixels(vts)
   const tileHeight = 5;       // TODO: get from some json file.
-  const zOffset = -grid[0]/2 + (tileHeight/2);
+  const zOffset = tileHeight/2;
   const decoratorGap = 2;
-  group.position.set(grid[2]*vts[2]-grid[2]/2, grid[0]*vts[0]+zOffset+decoratorGap, grid[1]*vts[1]-grid[2]/2);
+  group.position.set(grid2[0], grid2[1]+zOffset+decoratorGap, grid2[2]);
 
   view.context.scene.add(group);
   }

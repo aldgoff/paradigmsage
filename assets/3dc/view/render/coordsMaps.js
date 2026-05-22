@@ -14,6 +14,7 @@ import coordsMapsData from "./coordsMaps.json" assert { type: "json" };
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
+  import * as cViewer from "../../controller/viewer/viewer.js";
 // Seampoint: more imports...
 
 // --- UI ---
@@ -26,7 +27,11 @@ export function xyz2vts([x, y, z]) {
   return [y, x, z]
   }
 
-export function vts2pixels( [z, x, y], Sxy = dims.Sxy, Sz = dims.Sz, center = dims.center) {
+export function vts2pixels( [z, x, y], levelSep = null, Sxy = dims.Sxy, Sz = dims.Sz, center = dims.center) {
+  z *= (levelSep == null)
+    ? cViewer.getLevelSep()
+    : levelSep;
+
   return [
     x * Sxy - center[0],
     z * Sz  - center[1],

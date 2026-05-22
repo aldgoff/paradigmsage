@@ -35,7 +35,6 @@ export function init(entry) {
   clearBoard();
 
   vBoards.render(entry);
-
 }
 
 export function getBoardSpecs() {

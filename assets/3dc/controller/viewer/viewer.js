@@ -16,52 +16,59 @@ import viewerData from "./viewer.json" assert { type: "json" };
   import * as cameras  from "../../view/render/cameras.js";
   import * as vGambits from "../../view/gambits/gambits.js";
   import * as vViewer  from "../../view/viewer/viewer.js";
+  import * as vTrays   from "../../view/trays/trays.js";
+  import * as vBoards  from "../../view/boards/boards.js";
 // Seampoint: more imports...
 
 // --- Globals ---
   let lastClickTime = 0;
   let clickTimer = null;
-  const DOUBLE_CLICK_MS = 200;
-  let Gap = 0;                // TODO: Default value, must match play.md (DOM) value.
-  // Seampoint: more globals.
+  const DOUBLE_CLICK_MS = 200;  // TODO: Belongs in a json file.
+// Seampoint: more globals.
 
 // --- UI ---
-export function panelDispatch(payload) {
+export function panelDispatch(payload) {    // Dispatch payload from panel to handle event functions.
   console.log("cntrl: viewer.js - panelDispatch(payload)", payload);
 
   vGambits.cancelAnimation();
 
-  let { action, gap, sep, range, speed } = payload;
-  gap   = Number(gap);
-  sep   = Number(sep);
-  range = Number(range);
-  speed = Number(speed);
-
-  Gap = gap;
+  let { action, trayGap, levelSep, range, speed } = payload;
 
   switch (action) {
     case "ShowTrays":       handleShowTrays(payload); break;
     case "HideTrays":       handleHideTrays(payload); break;
     case "ToggleAnimation": handleToggleAnimation(payload); break;
-    case "updateParam":     handleViewerParams({ gap, sep, range, speed }); break;
+    case "updateParam":     handleViewerParams(payload); break;
+    
     default: throw new Error(`Unknown viewer action ${action} payload ${payload}.`); break;
   }
   }
 
 export function buildPayload(panel, action) { // Not subject to undo.
   console.log("     ---------- cntrl: viewer.js");
-  return { 
+
+  return { // payload
     action,
-    gap:   panel.querySelector('[name="viewer-trayGap"]')?.value,
-    sep:   panel.querySelector('[name="viewer-traySep"]')?.value,
-    range: panel.querySelector('[name="viewer-range"]')?.value,
-    speed: panel.querySelector('[name="viewer-speed"]')?.value,
+    trayGap:  Number(panel.querySelector('[name="viewer-trayGap"]')?.value),
+    levelSep: Number(panel.querySelector('[name="viewer-levelSep"]')?.value),
+    range:    Number(panel.querySelector('[name="viewer-range"]')?.value),
+    speed:    Number(panel.querySelector('[name="viewer-speed"]')?.value),
   };
 }
 
-export function getGap() {
-  return Gap;
-}
+export function getTrayGap(panelId = "viewer-window") {
+  const panel = document.getElementById(panelId);
+  if (!panel) return;
+
+  return Number(panel.querySelector('[name="viewer-trayGap"]')?.value);
+  }
+
+export function getLevelSep(panelId = "viewer-window") {
+  const panel = document.getElementById(panelId);
+  if (!panel) return;
+
+  return Number(panel.querySelector('[name="viewer-levelSep"]')?.value);
+  } 
 
 export function getJitterValues(panelId = "viewer-window") {
   const panel = document.getElementById(panelId);
@@ -78,16 +85,24 @@ export function getJitterValues(panelId = "viewer-window") {
 function handleShowTrays(payload) {   // Viewer handlers. Not subject to undo.
   console.log("cntrl: viewer.js - handleShowTrays(payload)", payload);
 
-  vViewer.showTrays(Gap);
+  const { trayGap, levelSep, range, speed } = payload;
+
+  vTrays.makeTrays(trayGap); // Makes trays anew.
   }
 
 function handleHideTrays(payload) {
   console.log("cntrl: viewer.js - handleHideTrays(payload)", payload);
 
-  vViewer.hideTrays();
+  const { trayGap, levelSep, range, speed } = payload;
+
+  vTrays.destroyTrays();
   }
 
 function handleToggleAnimation(payload) {
+  console.log("cntrl: viewer.js - handleToggleAnimation(payload)", payload);
+
+  const { trayGap, levelSep, range, speed } = payload;
+
   const now = Date.now();
 
   // --- DOUBLE CLICK ---
@@ -114,18 +129,16 @@ function handleToggleAnimation(payload) {
   }, DOUBLE_CLICK_MS);
   }
 
-function handleViewerParams(params) {
-  console.log("cntrl: viewer.js - handleViewerParams(params)", params);
+function handleViewerParams(payload) {
+  console.log("cntrl: viewer.js - handleViewerParams(payload)", payload);
 
-  const { gap, sep, range, speed } = params;
+  const { trayGap, levelSep, range, speed } = payload;
 
-  cameras.setJitter(params.range, params.speed);
+  cameras.setJitter(range, speed);
 
-  // tray controls
-  vViewer.setTrayGap(gap);
-
-  // future
-  // vViewer.setTraySep(sep);
+  // Board and trays, levels and gaps.
+  vTrays.setTrayGap(payload);
+  vBoards.setBoardSep(levelSep);
 }
 // Seampoint: more handlers...
 

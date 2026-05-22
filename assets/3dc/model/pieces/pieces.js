@@ -74,7 +74,7 @@ function stdInitialPos(entry) {
   }
 
   const whitePawns = ["WQRP", "WQNP", "WQBP", "WQQP", "WKKP", "WKBP", "WKNP", "WKRP"];
-  positions = ["QR2,2", "QN2,2", "QB2,2", "Q2,2", "K2,2", "KB2,2", "KN2,2", "KR2,2"];
+  positions = ["QR1,1", "QN1,1", "QB1,1", "Q1,1", "K1,1", "KB1,1", "KN1,1", "KR1,1"];
   for(let k=1; k<=8; k++) {
     const piece = whitePawns[k-1];
     const pos = positions[k-1];

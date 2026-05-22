@@ -105,5 +105,5 @@ title: "Dev"
   - 5/19/26 - Occupancy arrays. Flesh out board and tray directories. QC pass on mPieces.
   - 5/20/26 - Piece render control flow.
   - 5/21/26 - Debug vertical aspect error during piece expansion. Fix vertical aspect bug. Standardize view: in console logs. UI planel grouping via color. Flow standards.
-  - 5/22/26 - Standardize control layer code. Fix clipping. Get level sep to work.
+  - 5/22/26 - Standardize control layer code. Fix clipping. Get level sep to work for trays.
 

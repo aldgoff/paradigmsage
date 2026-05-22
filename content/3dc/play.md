@@ -103,7 +103,7 @@ layout: "play"
 </style>
 
 <!-- The 3DC Game... -->
-<canvas id="3dc-board" width="1800" height="2700"></canvas>  <!-- 3D -->
+<canvas id="3dc-board" width="1600" height="2000"></canvas>  <!-- 3D -->
 
 <!-- The DOM Control Panels -->
 <div class="panel panel-stateful" id="setup-window">

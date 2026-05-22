@@ -36,16 +36,13 @@ export function clear(entry) {
   const { action, boardSize, trayType, initialPos } = entry;  // Informative.
 
   vBoards.clear(entry);
-  vTrays.clear(entry);
+  vTrays.destroyTrays();
   }
   
 export function render(entry) {
   console.log("view : setup.js - render(entry)", entry);
 
   const { action, boardSize, trayType, initialPos } = entry;  // Informative.
-
-  // vBoards.render(entry);
-  // vTrays.render(entry);
   }
   
 export function refreshPanel(entry) {

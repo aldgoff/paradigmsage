@@ -21,8 +21,9 @@ import boardsData from "./boards.json" assert { type: "json" };
 // Seampoint: more imports...
 
 // --- Globals ---
-let currentBoard = null;
-let clickHandler = null;
+  let currentBoard = null;
+  let clickHandler = null;
+// Seampoint: more globals.
 
 // --- UI ---
 export function render(setup) {
@@ -91,6 +92,14 @@ export function clearBoard() {
   }
 
   view.context.tileMap.clear();
+  }
+
+export function setBoardSep(levelSep) {
+  console.log("view : boards.js - setBoardSep(levelSep):", levelSep);
+
+  /* TODO: Board level separaion control flow
+   * 1.
+   */
 }
 // Seampoint: more global functions...
 
@@ -105,7 +114,7 @@ function isPrimaryPlaneMarker(tile, pos) {
   const dukeColor = foundation.dukeColorVts(pos);    // Duke color depends on position.
 
   return (dukeColor === "gold");
-}
+  }
 
 function makePrimaryPlaneMarker() {
   const THREE = window.THREE;
@@ -126,7 +135,7 @@ function makePrimaryPlaneMarker() {
   const marker = new THREE.Mesh( geometry, material);
 
   return marker;
-}
+  }
 
 function addEventListener(scene, renderer, camera, tileMap) {
   if (clickHandler) {
