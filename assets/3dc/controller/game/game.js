@@ -10,7 +10,6 @@
 // --- Load JSON ---
 import gameData from "./game.json" assert { type: "json" };
   const gameModule = gameData.game_module;
-  const category  = gameModule.category;
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
@@ -24,11 +23,6 @@ import gameData from "./game.json" assert { type: "json" };
   import * as vMoves   from "../../view/moves/moves.js";
   import * as vSetup   from "../../view/setup/setup.js";
 // Seampoint: more imports...
-
-/* TODO: Game improvements:
- * Split out roles.
- * Refactor duplicate structures/logic.
-*/
 
 // --- UI ---
 export function panelDispatch(payload) {
@@ -590,4 +584,9 @@ function hardReset() {
   }
 }
 // Seampoint: more local functions...
+
+/* TODO: Game improvements:
+ * 1. Split out roles.
+ * 2. Refactor duplicate structures/logic.
+*/
 

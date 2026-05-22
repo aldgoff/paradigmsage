@@ -17,7 +17,6 @@
 // --- Load JSON ---
 import setupData from "./setup.json" assert { type: "json" };
   const setupModule = setupData.setup_module;
-  const category  = setupModule.category;
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
@@ -39,10 +38,11 @@ import setupData from "./setup.json" assert { type: "json" };
 // Seampoint: more imports...
 
 // --- Globals ---
-const pieceList = {
-  "white": { "ref": "abs", "pieces": [], "pawns": [] }, 
-  "black": { "ref": "rel", "pieces": [], "pawns": [] }
-};
+  const pieceList = {
+    "white": { "ref": "abs", "pieces": [], "pawns": [] }, 
+    "black": { "ref": "rel", "pieces": [], "pawns": [] }
+  };
+// Seampoint: more globals.
 
 // --- UI ---
 export function panelDispatch(payload) {    // Dispatch payload from panel to handle event functions.
@@ -61,6 +61,7 @@ export function panelDispatch(payload) {    // Dispatch payload from panel to ha
     case "makeBoard":   handleMakeBoard(payload); break;
     case "lock":        handleLock(payload); break;
     case "updateParam": break;
+
     default: throw new Error(`Unknown setup action ${action}.`);
   }
 
@@ -69,9 +70,11 @@ export function panelDispatch(payload) {    // Dispatch payload from panel to ha
 
 export function buildPayload(panel, action) {
   console.log("     ---------- cntrl: setup.js");
+
   const initialPos = panel.querySelector('input[name="initial-pos"]:checked')?.value;
   const pos = (initialPos === "standard") ? "std" : "list";
-  return {
+
+  return {  // payload
     action,
     boardSize:  panel.querySelector('input[name="board-size"]:checked')?.value,
     trayType:   panel.querySelector('input[name="tray-type"]:checked')?.value,
@@ -88,7 +91,6 @@ function handleMakeBoard(payload) { // Setup handler.
   const { action, boardSize, trayType, initialPos } = payload;  // Informative.
 
   const entry = mSetup.makeEntry(payload);    // Transform panel payload into state entry.
-
   applyEntry(entry);
 
   cTrays.init(entry);   // New Game (games.js) moves them from tray to board, play may begin.
@@ -109,6 +111,7 @@ function handleLock(payload) {  // Locks initial pos after pieces manually moved
   vSetup.pushPanelLine(entry);        // Add line to panel.
   vSetup.refreshPanel(entry);         // Only needed by panels with derived fields.
 }
+// Seampoint: more handlers...
 
 // --- Helpers ---
 function applyEntry(entry) {

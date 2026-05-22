@@ -10,7 +10,6 @@
 // --- Load JSON ---
 import traysData from "./trays.json" assert { type: "json" };
   const traysModule = traysData.trays_module;
-  const category  = traysModule.category;
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---

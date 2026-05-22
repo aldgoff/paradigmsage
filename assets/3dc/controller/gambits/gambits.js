@@ -79,8 +79,7 @@ export function buildPayload(panel, action) {
   console.log("     ---------- cntrl: gambits.js");
   return { action };
 }
-// TEMPORARY:
-// rerunGambits is required for undo/redo until incremental undo is implemented
+// TEMPORARY: rerunGambits is required for undo/redo until incremental undo is implemented
 export function rerunGambits() {
   console.log("cntrl: gambits.js - rerunGambits()");
 

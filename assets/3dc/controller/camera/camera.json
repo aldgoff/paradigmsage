@@ -1,11 +1,5 @@
 {
   "camera_module": {
-    "category": {
-      "key1": "value1",
-      "key2": 123,
-      "array": [-1,  0,  0]
-    },
-    "_last": {}
   }
 }
 

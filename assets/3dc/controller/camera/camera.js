@@ -10,7 +10,6 @@
 // --- Load JSON ---
 import cameraData from "./camera.json" assert { type: "json" };
   const cameraModule = cameraData.camera_module;
-  const category  = cameraModule.category;
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
@@ -37,7 +36,7 @@ export function panelDispatch(payload) {
   }
   }
 
-  export function buildPayload(panel, action) {
+export function buildPayload(panel, action) {
   if (action === "SetPOV") {
     const radio = panel.querySelector('input[name="camera-pov"]:checked');
     return {
@@ -48,11 +47,6 @@ export function panelDispatch(payload) {
 
   return { action };
 }
-export function buildPayload1(panel, action) { // Not subject to undo.
-  console.log("     ---------- cntrl: camera.js");
-  return { action };
-}
-
 // Seampoint: more global functions...
 
 function handleZoomIn() {             // Camera handlers. Not subject to undo.
@@ -77,11 +71,6 @@ function handleDescend() {
 }
 
 function handlePOV(pov) {
-  console.log("POV input:", pov);
-  console.log("POV lookup:", cameras.POV?.[pov]); // or wherever POV lives
-  cameras.selectPOV(pov, [0, 0, 0]);
-}
-function handlePOV1(pov) {
   cameras.selectPOV(pov, [0, 0, 0]);
 }
 // Seampoint: more handlers...
