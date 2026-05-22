@@ -103,7 +103,7 @@ layout: "play"
 </style>
 
 <!-- The 3DC Game... -->
-<canvas id="3dc-board" width="1600" height="2400"></canvas>  <!-- 3D -->
+<canvas id="3dc-board" width="1800" height="2700"></canvas>  <!-- 3D -->
 
 <!-- The DOM Control Panels -->
 <div class="panel panel-stateful" id="setup-window">
@@ -336,10 +336,10 @@ layout: "play"
     <button data-action="HideTrays"> Hide Trays </button>
   </div>
   <div class="section">
-    <label> Gap <input name="viewer-trayGap" type="number" min="0" step="1" value="0" max="3"> </label>
+    <label> Tray Gap <input name="viewer-trayGap" type="number" min="0" step="1" value="0" max="3"> </label>
   </div>
   <div class="section">
-    <label> Sep <input name="viewer-traySep" type="number" min="1.0" step="0.1" value="1.5" max="2.0"> </label>
+    <label> Level Sep <input name="viewer-levelSep" type="number" min="1.0" step="0.1" value="1.5" max="2.0"> </label>
   </div>
   <div class="section">
     <button data-action="ToggleAnimation"> Toggle Animation </button>

@@ -126,8 +126,8 @@ export function init(container, zoom, pov, focalPoint=[0,0,0]) {
   const top    =  zoom;
   const bottom = -zoom;
 
-  const near   =     1; // near clipping plane
-  const far    =  2000; // far clipping plane
+  const near   =  0.01; // near clipping plane
+  const far    = 10000; // far clipping plane
 
   const camera = new THREE.OrthographicCamera( left, right, top, bottom,near, far);
   specs.camera = camera;

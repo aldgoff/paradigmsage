@@ -50,7 +50,7 @@ export function makeBoard(dimensions) {
   const Sz = Z - dimensions[0] + 1;
   const Sx = X - dimensions[1] + 1;
   const Sy = Y - dimensions[2] + 1;
-  console.log("dims:", Sz, Sx, Sy, Z, X, Y);
+  // console.log("dims:", Sz, Sx, Sy, Z, X, Y);
 
   const boardGroup = new THREE.Group();
 
