@@ -36,7 +36,7 @@ title: "Clues"
   - 5/08/26 - *Planar moves* preserve the endgames.
   - 5/09/26 - A rook and king can checkmate a lone king – with exactly the same *algorithm*.
   - 5/10/26 - A *one pawn advantage* can secure the game.
-  - 5/11/26 - Finally, a rule set that yields play which *feels like chess*.
+  - 5/11/26 - The goal was a rule set that yields play which *feels like chess*.
   - 5/12/26 - So, a piece advances *along one ray*, then along the other.
   - 5/13/26 - Or, does it advance *along the other*, then along the one.
   - 5/14/26 - Oops, now every attack has *two paths*, blocking is busted.
@@ -44,4 +44,13 @@ title: "Clues"
   - 5/16/26 - What kind of a rule would allow a single piece to *block an attack along two paths*?
   - 5/17/26 - A path is an example of a *trajectory*.
   - 5/18/26 - The very concept of trajectory must be *abandoned*.
+  - 5/19/26 - If a quadrant defines *direction* then advancement must be *into the quadrant*.
+  - 5/20/26 - Advancement must occur along *both rays simultaneously*.
+  - 5/21/26 - Call this an *advancement square*.
+  - 5/22/26 - For a move to the perimeter to be legal, *every tile* in the advancement square must be *unoccupied*.
+  - 5/23/26 - In 2D, a piece advances *one square* at a time.
+  - 5/24/26 - In 3D, a piece advances *one perimeter* at a time.
+  - 5/25/26 - *Blocking restored*, *gambits restored*, the goal remains, a rule set yielding play which *feels like chess*.
+  - 5/26/26 - Only...what was the *path* the piece took to move from the soure tile to some specific destination tile on the perimeter?
+
 
