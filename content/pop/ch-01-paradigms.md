@@ -35,7 +35,7 @@ params:
   </a>
 
   **Technical Chapter:**  
-  <a href="/assets/pop/act1/Ch01-Paradigms_19.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/act1/Ch01-Paradigms_20.pdf" target="_blank" rel="noopener">
     Open the *Paradigms* chapter in the next tab
   </a>
 

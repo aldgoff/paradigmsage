@@ -27,7 +27,7 @@ params:
   </a>
 
   **Technical Chapter:**  
-  <a href="/assets/pop/act2/Ch16-Bowtie_03.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/act2/Ch16-Bowtie_04.pdf" target="_blank" rel="noopener">
     Open the *Bowtie* chapter in the next tab
   </a>
 

@@ -40,7 +40,7 @@ params:
   </a>
 
   **Technical Chapter:**  
-  <a href="/assets/pop/act2/Ch14-WorldRibbons_04.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/act2/Ch14-World-Ribbons_05.pdf" target="_blank" rel="noopener">
     Open the *World Ribbons* chapter in the next tab
   </a>
 

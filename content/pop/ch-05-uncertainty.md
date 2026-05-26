@@ -29,7 +29,7 @@ params:
   </a>
 
   **Technical Chapter:**  
-  <a href="/assets/pop/act1/Ch05-Uncertainty_07.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/act1/Ch05-Uncertainty_08.pdf" target="_blank" rel="noopener">
     Open the *Uncertainty* chapter in the next tab
   </a>
 

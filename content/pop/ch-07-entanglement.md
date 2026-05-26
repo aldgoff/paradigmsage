@@ -39,7 +39,7 @@ params:
   </a>
 
   **Technical Chapter:**  
-  <a href="/assets/pop/act1/Ch07-Entanglement_08.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/act1/Ch07-Entanglement_09.pdf" target="_blank" rel="noopener">
     Open the *Entanglement* chapter in the next tab
   </a>
 

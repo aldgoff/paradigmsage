@@ -30,7 +30,7 @@ params:
   </a>
 
   **Technical Chapter:**  
-  <a href="/assets/pop/act2/Ch10-Objections_05.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/act2/Ch10-Objections_06.pdf" target="_blank" rel="noopener">
     Open the *Objections* chapter in the next tab
   </a>
 

@@ -33,7 +33,7 @@ params:
   </a>
 
   **Technical Chapter:**  
-  <a href="/assets/pop/act2/Ch12-By-Contradiction_05.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/act2/Ch12-By-Contradiction_06.pdf" target="_blank" rel="noopener">
     Open the *By Contradiction* chapter in the next tab
   </a>
 

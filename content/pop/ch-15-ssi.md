@@ -30,7 +30,7 @@ params:
   </a>
 
   **Technical Chapter:**  
-  <a href="/assets/pop/act2/Ch15-SSI_12.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/act2/Ch15-SSI_13.pdf" target="_blank" rel="noopener">
     Open the *Symmetric Spacetime Intervals* chapter in the next tab
   </a>
 
