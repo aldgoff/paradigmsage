@@ -30,7 +30,7 @@ params:
   </a>
 
   **Technical Chapter:**  
-  <a href="/assets/pop/act2/Ch11-qt3_09.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/act2/Ch11-qt3_11.pdf" target="_blank" rel="noopener">
     Open the *Quantum Tic-Tac-Toe* chapter in the next tab
   </a>
 

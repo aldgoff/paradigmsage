@@ -34,7 +34,7 @@ params:
   </a>
 
   **Technical Chapter:**  
-  <a href="/assets/pop/act1/Ch04-QM_11.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/act1/Ch04-QM_12.pdf" target="_blank" rel="noopener">
     Open the *Quantum Mechanics* chapter in the next tab
   </a>
 

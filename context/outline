@@ -373,6 +373,7 @@
 ├── dev
 │   ├── 3dc-arch.md
 │   ├── calls.md
+│   ├── comics.md
 │   └── playSpecs.md
 ├── dialogs
 │   └── QM-QFT-RED-HERRINGS.md
@@ -452,6 +453,10 @@
 │   ├── Screenshot 2026-05-21 at 12.49.52 PM.png
 │   ├── Screenshot 2026-05-21 at 12.59.10 PM.png
 │   ├── Screenshot 2026-05-21 at 2.00.27 PM.png
+│   ├── Screenshot 2026-05-21 at 2.28.32 PM.png
+│   ├── Screenshot 2026-05-21 at 5.51.54 PM.png
+│   ├── Screenshot 2026-05-21 at 6.00.11 PM.png
+│   ├── Screenshot 2026-05-21 at 6.08.50 PM.png
 │   ├── Screenshot 2026-05-21 at 7.52.58 AM.png
 │   ├── Screenshot 2026-05-21 at 8.05.14 AM.png
 │   ├── Screenshot 2026-05-21 at 8.32.37 AM.png
@@ -500,6 +505,7 @@
 │   │   │   │   ├── Ch07-Entanglement_08.pdf
 │   │   │   │   ├── Ch08-QTP_08.pdf
 │   │   │   │   ├── Ch09-R&D_06.pdf
+│   │   │   │   ├── Ch09-R&D_07.pdf
 │   │   │   │   ├── PD01-Boxes_14.pdf
 │   │   │   │   ├── PD02-SelfReference_10.pdf
 │   │   │   │   ├── PD02-SelfReference_11.pdf
@@ -512,12 +518,15 @@
 │   │   │   │   └── PD09-Quest_08.pdf
 │   │   │   ├── act2
 │   │   │   │   ├── Ch10-Objections_05.pdf
+│   │   │   │   ├── Ch10-Objections_06.pdf
 │   │   │   │   ├── Ch11-QT3_09.pdf
+│   │   │   │   ├── Ch11-QT3_10.pdf
 │   │   │   │   ├── Ch12-By-Contradiction_05.pdf
 │   │   │   │   ├── Ch13-12-Light-Seconds_10.pdf
 │   │   │   │   ├── Ch14-WorldRibbons_04.pdf
 │   │   │   │   ├── Ch15-SSI_12.pdf
 │   │   │   │   ├── Ch16-Bowtie_03.pdf
+│   │   │   │   ├── Ch16-Bowtie_04.pdf
 │   │   │   │   ├── Ch17-Teleportation_02.pdf
 │   │   │   │   ├── Ch18-Indistinguishable_02.pdf
 │   │   │   │   ├── Ch19-Quantum-Optics_03.pdf
@@ -566,4 +575,4 @@
 │           └── poc.js
 └── themes
 
-115 directories, 451 files
+115 directories, 460 files

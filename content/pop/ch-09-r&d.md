@@ -30,7 +30,7 @@ params:
   </a>
 
   **Technical Chapter:**  
-  <a href="/assets/pop/act1/Ch09-R&D_06.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/act1/Ch09-R&D_07.pdf" target="_blank" rel="noopener">
     Open the *R&D* chapter in the next tab
   </a>
 

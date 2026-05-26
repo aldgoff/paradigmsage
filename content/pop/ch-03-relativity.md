@@ -33,7 +33,7 @@ params:
   </a>
 
   **Technical Chapter:**  
-  <a href="/assets/pop/act1/Ch03-Relativity_11.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/act1/Ch03-Relativity_12.pdf" target="_blank" rel="noopener">
     Open the *Relativity* chapter in the next tab
   </a>
 

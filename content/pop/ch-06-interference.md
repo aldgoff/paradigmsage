@@ -33,7 +33,7 @@ params:
   </a>
 
   **Technical Chapter:**  
-  <a href="/assets/pop/act1/Ch06-Interference_08.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/act1/Ch06-Interference_09.pdf" target="_blank" rel="noopener">
     Open the *Interference* chapter in the next tab
   </a>
 
