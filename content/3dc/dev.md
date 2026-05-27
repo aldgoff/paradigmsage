@@ -110,6 +110,7 @@ title: "Dev"
   - 5/24/26 - 
   - 5/25/26 - Start creating comic replacements.
   - 5/26/26 - Replace comics in first 16 chapters.
+  - 5/27/26 - Delete quotes around comic titles.
 
 
 ## Act 1
