@@ -86,6 +86,33 @@ title: "Comics"
   Draw a multi-panel cartoon, black and white, of art students trying (and failing) to reproduce MC Escher’s etching, “Drawing Hands.” 
   Final panel, a pair of students, scheming, “If you draw me, I’ll draw you.”
 
- ### Ch 1 - Title (comic)
+ ### Ch 17 - Teleportation (Deception)
+
+ ### Ch 18 - Indistinguishable (Conundrum)
+  Draw a cartoon, in black and white, with a wise old sage and a young monk. 
+  Sage, “Life is a conundrum.” Monk, “I don’t understand.” Sage, “Precisely.”
+ ### Ch 19 - Quantum Optics (Analogies?)
+
+ ### Ch 20 - FTL by Indistinguishability (Hypothetically)
+
+ ### Ch 21 - Now and Then (Loan Officer)
+
+ ### Ch 22 - QTP (Borrow)
+
+ ### Ch 23 - Critique (Nerds on Vacation)
+
+ ### Ch 24 - Title (comic)
+
+ ### Ch 25 - Title (comic)
+
+ ### Ch 26 - Title (comic)
+
+ ### Ch 27 - Title (comic)
+
+ ### Ch 28 - Title (comic)
+
+ ### Ch 29 - Title (comic)
+
+ ### Ch 30 - Title (comic)
 
 
