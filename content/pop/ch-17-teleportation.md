@@ -28,7 +28,7 @@ params:
   </a>
 
   **Technical Chapter:**  
-  <a href="/assets/pop/act2/Ch17-Teleportation_02.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/act2/Ch17-Teleportation_03.pdf" target="_blank" rel="noopener">
     Open the *Teleportation* chapter in the next tab
   </a>
 

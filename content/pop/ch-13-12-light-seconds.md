@@ -30,7 +30,7 @@ params:
   </a>
 
   **Technical Chapter:**  
-  <a href="/assets/pop/act2/Ch13-12-Light-Seconds_10.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/act2/Ch13-Light-Seconds_11.pdf" target="_blank" rel="noopener">
     Open the *12 Light Seconds* chapter in the next tab
   </a>
 

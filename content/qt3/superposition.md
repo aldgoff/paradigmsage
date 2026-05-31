@@ -226,7 +226,7 @@ title: "Superposition"
   Attend.
   *When* was the cause that move *one* of the game ended up in square 2?
   It was the collapse at the end of move *three*.
-  The cause of move one being *here*, rather than *there*, occured two moves later - the future impacted the past.
+  The cause of move one being *here*, rather than *there*, occurred two moves later - the future impacted the past.
   Dogma is having a stroke.
   
   Our classical paradigm is that the present is an *infinitely thin barrier* between the past and the future.
