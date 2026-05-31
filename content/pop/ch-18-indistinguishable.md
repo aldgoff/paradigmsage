@@ -36,7 +36,7 @@ params:
   </a>
 
   **Technical Chapter:**  
-  <a href="/assets/pop/act2/Ch18-Indistinguishable_02.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/act2/Ch18-Indistinguishable_03.pdf" target="_blank" rel="noopener">
     Open the *Indistinguishable* chapter in the next tab
   </a>
 

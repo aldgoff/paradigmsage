@@ -30,7 +30,7 @@ params:
   </a>
 
   **Technical Chapter:**  
-  <a href="/assets/pop/act2/Ch19-Quantum-Optics_03.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/act2/Ch19-Quantum-Optics_04.pdf" target="_blank" rel="noopener">
     Open the *Quantum Optics* chapter in the next tab
   </a>
 
