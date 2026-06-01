@@ -28,6 +28,8 @@ import traysData from "./trays.json" assert { type: "json" };
 
   let whiteTrayGroup = null;
   let blackTrayGroup = null;
+  let lastTrayGap    = 0;
+  let lastLevelSep   = 1.0;
 
   let traysVisible = false;
 // Seampoint: more globals.
@@ -59,20 +61,29 @@ export function destroyTrays() {
   }
   }
 
-export function setTrayGap(payload) {
-  console.log("view : viewer.js - setTrayGap(payload)", payload);
+export function setLevelSep(levelSep) {
+  console.log("view : viewer.js - setLevelSep(levelSep)", levelSep);
 
-  const { trayGap, levelSep, range, speed } = payload;
+  lastLevelSep = levelSep;
 
-  const gap = Math.max(traySpecs.minGap, Math.min(traySpecs.maxGap, trayGap));
+  if(!traysVisible) return;
 
-  if (!traysVisible) return;
-
-  reprojectTray(whiteTrayGroup, levelSep, -gap);
-  reprojectTray(blackTrayGroup, levelSep,  gap);
+  reprojectTray(whiteTrayGroup, levelSep, -lastTrayGap);
+  reprojectTray(blackTrayGroup, levelSep,  lastTrayGap);
   }
 
-export function reprojectTray(group, levelSep, trayGap) {
+export function setTrayGap(trayGap) {
+  console.log("view : viewer.js - setTrayGap(trayGap)", trayGap);
+
+  lastTrayGap = trayGap;
+
+  if(!traysVisible) return;
+
+  reprojectTray(whiteTrayGroup, lastLevelSep, -trayGap);
+  reprojectTray(blackTrayGroup, lastLevelSep,  trayGap);
+  }
+
+function reprojectTray(group, levelSep, trayGap) {
   console.log("view : trays.js - reprojectTray(group, levelSep, trayGap))", group, levelSep, trayGap);
 
   group.traverse(tile => {

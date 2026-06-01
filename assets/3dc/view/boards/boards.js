@@ -18,7 +18,6 @@ import boardsData from "./boards.json" assert { type: "json" };
   import * as view       from "../view.js";
   import * as tiles      from "../tiles/tiles.js";
   import * as decorators from "../decorators/decorators.js";
-  import * as coordsMaps from "../../view/render/coordsMaps.js";
 // Seampoint: more imports...
 
 // --- Globals ---
@@ -95,23 +94,12 @@ export function clearBoard() {
   view.context.tileMap.clear();
   }
 
-export function setBoardSep(levelSep) {
-  console.log("view : boards.js - setBoardSep(levelSep):", levelSep);
+export function setLevelSep(levelSep) {
+  console.log("view : boards.js - setLevelSep(levelSep):", levelSep);
 
   if(!currentBoard) return;
 
   view.reprojectGroup(currentBoard, levelSep);
-
-  /* TODO: Board level separaion control flow
-   * 1.
-   */
-
-  // currentBoard.traverse(tile => {
-  //   if(!tile.userData?.isTile) return;
-
-  //   const pixels = coordsMaps.vts2pixels(tile.userData.vts, levelSep);
-  //   tile.position.set(...pixels);
-  // });
 }
 // Seampoint: more global functions...
 

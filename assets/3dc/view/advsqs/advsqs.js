@@ -36,7 +36,6 @@ import advsqsData from "./advsqs.json" assert { type: "json" };
   import * as decorators from "../decorators/decorators.js";
   import * as cameras    from "../render/cameras.js";
   import * as renders    from "../render/renders.js";
-  import * as coordsMaps from "../render/coordsMaps.js"
 // Seampoint: more imports...
 
 // --- Globals ---
@@ -175,17 +174,10 @@ export function setAdvsqPanelParams(params) {
   panel.querySelector('[name="advsq-opacity"]').value      = params.opacity;
 }
 
-export function setBoardSep(levelSep) {
+export function setLevelSep(levelSep) {
   if(!currAdvsqGroup) return;
 
   view.reprojectGroup(currAdvsqGroup, levelSep);
-
-  // currAdvsqGroup.traverse(tile => {
-  //   if(!tile.userData?.isTile) return;
-
-  //   const pixels = coordsMaps.vts2pixels(tile.userData.vts, levelSep);
-  //   tile.position.set(...pixels);
-  // });
 }
 // Seampoint: more global functions...
 

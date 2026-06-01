@@ -297,7 +297,7 @@ export function cancelAnimation() {
   }
 }
 
-export function setBoardSep(levelSep) {
+export function setLevelSep(levelSep) {
   const scene = view.context.scene;
 
   scene.children
