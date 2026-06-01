@@ -19,6 +19,7 @@ import viewerData from "./viewer.json" assert { type: "json" };
   import * as vTrays   from "../../view/trays/trays.js";
   import * as vBoards  from "../../view/boards/boards.js";
   import * as vAdvsqs  from "../../view/advsqs/advsqs.js";
+  import * as vPieces  from "../../view/pieces/pieces.js";
 // Seampoint: more imports...
 
 // --- Globals ---
@@ -143,12 +144,13 @@ function handleViewerParams(payload) {
     vTrays.setTrayGap(trayGap);
     lastTrayGap = trayGap;
   }
-  if(levelSep !== lastLevelSep) {    // Levels: trays, boards, advsqs, gambits, pieces.
+  if(levelSep !== lastLevelSep) {    // Level sep: trays, boards, advsqs, gambits, pieces.
     vTrays.setLevelSep(levelSep);
     vBoards.setLevelSep(levelSep);
     vAdvsqs.setLevelSep(levelSep);
     vGambits.setLevelSep(levelSep);
-    // TODO: reproject pieces as well.
+    vPieces.setLevelSep(levelSep);
+
     lastLevelSep = levelSep;
   }
 }

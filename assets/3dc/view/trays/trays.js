@@ -62,7 +62,7 @@ export function destroyTrays() {
   }
 
 export function setLevelSep(levelSep) {
-  console.log("view : viewer.js - setLevelSep(levelSep)", levelSep);
+  console.log("view : trays.js - setLevelSep(levelSep)", levelSep);
 
   lastLevelSep = levelSep;
 
@@ -88,7 +88,6 @@ function reprojectTray(group, levelSep, trayGap) {
 
   group.traverse(tile => {
     if(tile.userData?.isTrayTile) {
-      console.log("view : trays.js - tile.userData", tile.userData);
       reprojectMesh(tile, levelSep, trayGap);
     }
   });  
@@ -157,7 +156,7 @@ function makeTrayTile(logicalPos, renderPos) {
   }
 
 function reprojectMesh(tile, levelSep, trayGap) {
-  console.log("view : trays.js - reprojectMesh(tile, levelSep, trayGap))", tile.userData, levelSep, trayGap);
+  // console.log("view : trays.js - reprojectMesh(tile, levelSep, trayGap))", tile.userData, levelSep, trayGap);
 
   const [z,x,y] = tile.userData.vts;
 
@@ -168,7 +167,6 @@ function reprojectMesh(tile, levelSep, trayGap) {
   ];
 
   const pixels = coordsMaps.vts2pixels(shifted, levelSep);
-  console.log("view : trays.js - shifted, levelSep, pixels", shifted, levelSep, pixels);
 
   tile.position.set(...pixels);
 }

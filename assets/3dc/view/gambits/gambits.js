@@ -38,7 +38,7 @@ import gambitsData from "./gambits.json" assert { type: "json" };
 */
 
 // --- Globals ---
-let activeAnimation = null;
+  let activeAnimation = null;
 
 // --- UI ---
 export function makeQuadGroup(entry) {
@@ -298,6 +298,8 @@ export function cancelAnimation() {
 }
 
 export function setLevelSep(levelSep) {
+  console.log("view : gambits.js - setLevelSep(levelSep):", levelSep);
+
   const scene = view.context.scene;
 
   scene.children

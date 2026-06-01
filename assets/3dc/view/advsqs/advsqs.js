@@ -172,9 +172,11 @@ export function setAdvsqPanelParams(params) {
   panel.querySelector('[name="advsq-perimeter"]').value    = params.perimeter;
   panel.querySelector('[name="advsq-stride"]').value       = params.stride;
   panel.querySelector('[name="advsq-opacity"]').value      = params.opacity;
-}
+  }
 
 export function setLevelSep(levelSep) {
+  console.log("view : advsqs.js - setLevelSep(levelSep):", levelSep);
+
   if(!currAdvsqGroup) return;
 
   view.reprojectGroup(currAdvsqGroup, levelSep);

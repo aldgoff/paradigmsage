@@ -70,7 +70,6 @@ function stdInitialPos(entry) {
     const pos = positions[k-1];
     pieceList[piece] = { loc: "~", pos, coords: [k,0,0] }; // Place demo pieces in the white tray.
     whiteTray[k][0][0] = piece;
-    vPieces.renderPiece(piece);
   }
 
   const whitePawns = ["WQRP", "WQNP", "WQBP", "WQQP", "WKKP", "WKBP", "WKNP", "WKRP"];
@@ -80,8 +79,9 @@ function stdInitialPos(entry) {
     const pos = positions[k-1];
     pieceList[piece] = { loc: "~", pos, coords: [k,1,1] }; // Place demo pieces in the white tray.
     whiteTray[k][1][1] = piece;
-    vPieces.renderPiece(piece);
   }
+
+  vPieces.initPieces();
 
   // Seampoint - fill up the trays.
 }

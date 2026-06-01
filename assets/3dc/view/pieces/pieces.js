@@ -37,9 +37,25 @@ import piecesData from "./pieces.json" assert { type: "json" };
 
 // --- Globals ---
   const THREE = window.THREE;
+  let currPiecesGroup = null;
 // Seampoint: more globals...
 
 // --- UI ---
+export function initPieces() {
+  console.log("view : pieces.js - initPieces()");
+
+  const pieces = mPieces.getPieceList();
+
+  currPiecesGroup = new THREE.Group();
+
+  Object.entries(pieces)
+    .forEach(([key, piece]) =>
+      renderPiece(key)
+    );
+
+  view.context.scene.add(currPiecesGroup);
+}
+
 export function renderPiece(key) {  // "WKR".
   // console.log("view : pieces.js - renderPiece(key)", key);
 
@@ -69,6 +85,19 @@ export function derenderPiece(piece) {
   console.log("view : pieces.js - derenderPiece(piece)", piece);
   // TODO: write function derenderPiece.
 
+}
+
+export function setLevelSep(levelSep) {
+  console.log("view : pieces.js - setLevelSep(levelSep):", levelSep);
+
+  console.log(currPiecesGroup);
+  currPiecesGroup.traverse(obj =>
+    console.log(obj.userData)
+  );
+
+  if(!currPiecesGroup) return;
+
+  view.reprojectGroup(currPiecesGroup, levelSep);
 }
 // Seampoint: more global functions...
 
@@ -110,7 +139,12 @@ function renderInTray(player, side, type, tray, pos) {
   const decoratorGap = 2;
   group.position.set(grid2[0], grid2[1]+zOffset+decoratorGap, grid2[2]);
 
-  view.context.scene.add(group);
+  group.userData.isPiece = true;
+  group.userData.vts = vts;
+
+  currPiecesGroup.add(group);
+
+  // view.context.scene.add(group);
   }
 
 function trayToVts(player, pos, gap) {

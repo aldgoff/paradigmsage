@@ -174,7 +174,6 @@ export function buildDuplexGroup(entry) { // Params: srcTile, quad, perimeter, s
 
 export function reprojectGroup(group, levelSep) {
   group.traverse(obj => {
-    if (!obj.userData?.isTile) return;
     if (!obj.userData?.vts) return;
 
     const pixels = coordsMaps.vts2pixels(obj.userData.vts, levelSep);
