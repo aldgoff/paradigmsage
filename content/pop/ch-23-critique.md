@@ -34,7 +34,7 @@ params:
   </a>
 
   **Technical Chapter:**  
-  <a href="/assets/pop/act2/Ch23-Critique_07.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/act2/Ch23-Critique_08.pdf" target="_blank" rel="noopener">
     Open the *QTI* chapter in the next tab
   </a>
 

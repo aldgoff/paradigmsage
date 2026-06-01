@@ -36,7 +36,7 @@ params:
   </a>
 
   **Technical Chapter:**  
-  <a href="/assets/pop/act2/Ch21-Now-and-Then_04.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/act2/Ch21-NowAndThen_05.pdf" target="_blank" rel="noopener">
     Open the *Now and Then* chapter in the next tab
   </a>
 

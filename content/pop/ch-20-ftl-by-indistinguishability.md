@@ -32,7 +32,7 @@ params:
   </a>
 
   **Technical Chapter:**  
-  <a href="/assets/pop/act2/Ch20-FTLbyIndistinguishability_04.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/act2/Ch20-FTLbyIndistinguishability_05.pdf" target="_blank" rel="noopener">
     Open the *FTL by Indistinguishability* chapter in the next tab
   </a>
 
