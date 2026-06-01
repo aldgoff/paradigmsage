@@ -119,5 +119,5 @@ title: "Dev"
 
  ### Week 12:
   - 5/31/26 - Fix Dale typos.
-  - 6/01/26 - Replace rest of Act 2 comics. Replace Act 3 comics.
+  - 6/01/26 - Replace rest of Act 2 comics. Replace Act 3 comics. Level sep for trays, board, advsqs & gambits.
 

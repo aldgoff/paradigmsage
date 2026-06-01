@@ -139,7 +139,7 @@ export function planeRotation(entry, rotation) {
       opacity
     );
   });
-  }
+}
 
 function applyOverlayOpacity(overlays, opacity) {
   overlays.forEach(o => {
@@ -295,6 +295,16 @@ export function cancelAnimation() {
     activeAnimation.cancelled = true;
     activeAnimation = null;
   }
+}
+
+export function setBoardSep(levelSep) {
+  const scene = view.context.scene;
+
+  scene.children
+    .filter(g => g.userData?.entry)
+    .forEach(g => {
+      view.reprojectGroup(g, levelSep);
+    });
 }
 // Seampoint: more global functions...
 

@@ -18,6 +18,7 @@ import viewerData from "./viewer.json" assert { type: "json" };
   import * as vViewer  from "../../view/viewer/viewer.js";
   import * as vTrays   from "../../view/trays/trays.js";
   import * as vBoards  from "../../view/boards/boards.js";
+  import * as vAdvsqs  from "../../view/advsqs/advsqs.js";
 // Seampoint: more imports...
 
 // --- Globals ---
@@ -139,6 +140,8 @@ function handleViewerParams(payload) {
   // Board and trays, levels and gaps.
   vTrays.setTrayGap(payload);
   vBoards.setBoardSep(levelSep);
+  vAdvsqs.setBoardSep(levelSep);
+  vGambits.setBoardSep(levelSep);
 }
 // Seampoint: more handlers...
 

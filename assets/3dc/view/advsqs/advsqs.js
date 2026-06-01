@@ -40,8 +40,8 @@ import advsqsData from "./advsqs.json" assert { type: "json" };
 // Seampoint: more imports...
 
 // --- Globals ---
-let advsqPanelInitialParams = null;
-let currAdvsqGroup = null;
+  let advsqPanelInitialParams = null;
+  let currAdvsqGroup = null;
 
 // --- UI ---
 export function removeFromScene() {
@@ -174,6 +174,19 @@ export function setAdvsqPanelParams(params) {
   panel.querySelector('[name="advsq-stride"]').value       = params.stride;
   panel.querySelector('[name="advsq-opacity"]').value      = params.opacity;
 }
+
+export function setBoardSep(levelSep) {
+  if(!currAdvsqGroup) return;
+
+  view.reprojectGroup(currAdvsqGroup, levelSep);
+
+  // currAdvsqGroup.traverse(tile => {
+  //   if(!tile.userData?.isTile) return;
+
+  //   const pixels = coordsMaps.vts2pixels(tile.userData.vts, levelSep);
+  //   tile.position.set(...pixels);
+  // });
+}
 // Seampoint: more global functions...
 
 // --- Helpers ---
@@ -279,7 +292,7 @@ function strideDerived(q, k, s) {
   else                                                  piece = basePiece;
 
   return { strideType, moveType, overlap, piece };
-}
+  }
 
 function makeAdvsq(specs) {
   console.log("view : advsqs.js - makeAdvsq(specs):", specs);
@@ -290,7 +303,7 @@ function makeAdvsq(specs) {
 
   view.context.scene.add(group);
   currAdvsqGroup = group;
-}
+  }
 
 function getAdvsqPanelParams() {
   console.log("view : advsqs.js - getAdvsqPanelParams():");
@@ -307,7 +320,7 @@ function getAdvsqPanelParams() {
   };
 
   return params;
-}
+  }
 
 function specsToPanelParams(specs) {
   console.log("view : advsqs.js - specsToPanelParams(specs):", specs);
