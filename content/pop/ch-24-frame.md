@@ -32,7 +32,7 @@ params:
   </a>
 
   **Technical Chapter:**  
-  <a href="/assets/pop/act3/Ch24-Frame_03.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/act3/Ch24-Frame_05.pdf" target="_blank" rel="noopener">
     Open the *Frame* chapter in the next tab
   </a>
 

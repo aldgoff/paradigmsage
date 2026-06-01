@@ -36,7 +36,7 @@ params:
   </a>
 
   **Technical Chapter:**  
-  <a href="/assets/pop/act3/Ch25-LOF_04.pdf" target="_blank" rel="noopener">
+  <a href="/assets/pop/act3/Ch25-LOF_06.pdf" target="_blank" rel="noopener">
     Open the *Laws of Form* chapter in the next tab
   </a>
 
