@@ -71,7 +71,9 @@ export function renderPiece(key) {  // "WKR".
     const tray = (player === "W") 
       ? mTrays.getWhiteTray() 
       : mTrays.getBlackTray();
-      renderInTray(player, side, type, tray, pos);
+      const group = renderInTray(player, side, type, tray, pos);
+      if(group)
+        group.userData.key = key;
     }
   else if(loc === "@") {                                  // Render on board.
       renderOnBoard(player, side, type, pos);
@@ -90,14 +92,53 @@ export function derenderPiece(piece) {
 export function setLevelSep(levelSep) {
   console.log("view : pieces.js - setLevelSep(levelSep):", levelSep);
 
-  console.log(currPiecesGroup);
-  currPiecesGroup.traverse(obj =>
-    console.log(obj.userData)
-  );
-
   if(!currPiecesGroup) return;
 
   view.reprojectGroup(currPiecesGroup, levelSep);
+}
+
+export function reprojectTrayPieces(levelSep, trayGap) {
+  console.log("view : pieces.js - reprojectTrayPieces(levelSep, trayGap):", levelSep, trayGap);
+
+  if(!currPiecesGroup) return;
+
+  const pieces = mPieces.getPieceList();
+
+  currPiecesGroup.traverse(obj => {
+    if(!obj.userData?.isPiece) return;
+
+    const key = obj.userData.key;
+    const piece = pieces[key];
+
+    if(!piece) return;
+    if(piece.loc !== "~") return;
+
+    // Recompute canonical tray VTS.
+    let gap = trayGap;
+
+    const type = key[3];
+
+    if(type === "P") gap += 1;  // TODO: probably wrong for Black.
+    else             gap += 2;
+
+    const player = key[0];
+
+    const vts = trayToVts(player, piece.pos, gap);
+
+    const pixels = coordsMaps.vts2pixels(vts, levelSep);
+
+    const tileHeight = 5;
+    const zOffset = tileHeight / 2;
+    const decoratorGap = 2;
+
+    obj.position.set(
+      pixels[0],
+      pixels[1] + zOffset + decoratorGap,
+      pixels[2]
+    );
+
+    obj.userData.vts = vts;
+  });
 }
 // Seampoint: more global functions...
 
@@ -144,7 +185,7 @@ function renderInTray(player, side, type, tray, pos) {
 
   currPiecesGroup.add(group);
 
-  // view.context.scene.add(group);
+  return group;
   }
 
 function trayToVts(player, pos, gap) {

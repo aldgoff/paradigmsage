@@ -21,6 +21,7 @@ import traysData from "./trays.json" assert { type: "json" };
   import * as view       from "../view.js";
   import * as tiles      from "../tiles/tiles.js";
   import * as coordsMaps from "../../view/render/coordsMaps.js";
+  import * as vPieces    from "../../view/pieces/pieces.js";
 // Seampoint: more imports...
 
 // --- Globals ---
@@ -81,6 +82,8 @@ export function setTrayGap(trayGap) {
 
   reprojectTray(whiteTrayGroup, lastLevelSep, -trayGap);
   reprojectTray(blackTrayGroup, lastLevelSep,  trayGap);
+
+  vPieces.reprojectTrayPieces(lastLevelSep, lastTrayGap);
   }
 
 function reprojectTray(group, levelSep, trayGap) {
