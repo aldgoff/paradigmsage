@@ -28,8 +28,16 @@
   TBD visually, in part to ensure when they line up one does not completely hide another.
 
 ## 4. Rendering Convention
+ ### 4.1 General
   Piece dimensions are controlled exclusively through the JSON aspect/breadth parameters. 
   Geometry code must derive scale from those values rather than introducing independent size constants. 
   The JSON file is the authoritative calibration layer used to balance 
   visibility, aesthetics, and piece differentiation across the full set.
 
+ ### 4.2 Knight
+  The knight is represented by a canonical 5-cube polycube. 
+  The center of the column base cube is the piece anchor. 
+  Chirality distinguishes kingside and queenside knights. 
+  The assembled piece is rotated 45° so the tail points toward the owning player seated on a vertical board edge. 
+  Cubes use engraved bevel-line decoration rather than smoothed geometry.
+  

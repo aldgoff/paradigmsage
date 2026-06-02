@@ -22,7 +22,7 @@
     },
     "knight": {
       "aspect": 1.0,
-      "breadth": 0.40
+      "breadth": 0.20
     },
     "pawn": {
       "aspect": 0.6,

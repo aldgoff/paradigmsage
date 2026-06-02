@@ -165,7 +165,7 @@ function renderInTray(player, side, type, tray, pos) {
     case "K": group = makeKingObject(  {color}); break;
     // case "S": group = makeStackObject({color}); break;
     case "P": group = makePawnObject({color}); break;
-    // case "N": group = makeKnightObject({color, side}); break;
+    case "N": group = makeKnightObject({color, side}); break;
     // Seampoint: no more pieces.
     default:
       console.log(`view : pieces.js - Unknown piece type ${type}`); return; 
@@ -313,7 +313,7 @@ function makeStackObject(params = {}) {
   decorateGroup(group, color);
 
   return group;
-  }
+}
 
 function makePawnObject(params = {}) {
   // console.log("view : pieces.js - makePawnObject(params)", params);
@@ -325,16 +325,18 @@ function makePawnObject(params = {}) {
   decorateGroup(group, color);
 
   return group;
-  }
+}
 
 function makeKnightObject(params = {}) {
   // console.log("view : pieces.js - makeKnightObject(params)", params);
 
   const { color, side } = params;
-  let [tileHeight, tileWidth] = tiles.tileSize();   // Canonical size fills tile.
 
-  const group = makeKnightMeshGroup(tileWidth, knight, side);
-  decorateGroup(group, color);
+  let [, tileWidth] = tiles.tileSize();
+
+  const chirality = (side === "K")?  1 : -1;
+
+  const group = makeKnightMeshGroup(tileWidth, knight, chirality, color);
 
   return group;
 }
@@ -545,57 +547,39 @@ function addPawnLatitudes(mesh, radius) {
   });
 }
 
-function makeKnightMeshGroup(tileWidth, knight, side) {
-  const cubeSize = 40;
+function makeKnightMeshGroup(tileWidth, knight, chirality = 1, color = 0xffffff) {
+  const { breadth } = knight;
 
-  const geometry = new THREE.BoxGeometry(
-    cubeSize,
-    cubeSize,
-    cubeSize
-  );
+  const cubeSize = tileWidth * breadth;
 
-  // Chirality:
-  //   K = right-handed
-  //   Q = left-handed
-  const lateral = (side === "K") ? 1 : -1;
-
-  // Canonical knight move polycube.
   const positions = [
-    [0, 0, 0],                           // origin
-    [cubeSize, 0, 0],                   // 1 out
-    [2*cubeSize, 0, 0],                 // 2 out
-    [2*cubeSize, cubeSize, 0],          // 1 up
-    [2*cubeSize, cubeSize, lateral*cubeSize] // side cube
+    [-cubeSize, cubeSize/2, 0],            // Tail.
+
+    [0, cubeSize/2, 0],                    // Column.
+    [0, 3*cubeSize/2, 0],
+    [0, 5*cubeSize/2, 0],
+
+    [0, 5*cubeSize/2, chirality*cubeSize]  // Head.
   ];
 
-  const knightGeo = new THREE.Group();
+  const group = new THREE.Group();
 
-  for(const [x,y,z] of positions) {
+  positions.forEach(([x,y,z]) => {
+    const cube = makeBeveledCubeMesh(cubeSize, color);
+    cube.position.set(x, y, z);
+    group.add(cube);
+  });
 
-    const cube = new THREE.Mesh(
-      geometry,
-      new THREE.MeshBasicMaterial()
-    );
+  const box = new THREE.Box3().setFromObject(group);
 
-    cube.position.set(x,y,z);
+  // Center-bottom origin invariant.
+  group.position.set(0, -box.min.y, 0);
 
-    knightGeo.add(cube);
-  }
+  // Players sit on vertical board edges.
+  // Tail points toward owner.
+  group.rotation.y = -Math.PI / 4;
 
-  // --- Normalize to center-bottom origin invariant ---
-
-  const box = new THREE.Box3().setFromObject(knightGeo);
-
-  const centerX = (box.min.x + box.max.x) / 2;
-  const centerZ = (box.min.z + box.max.z) / 2;
-
-  knightGeo.position.set(
-    -centerX,
-    -box.min.y,
-    -centerZ
-  );
-
-  return knightGeo;
+  return group;
 }
 // Seampoint: no more pieces.
 
@@ -640,6 +624,76 @@ function addCylinderEdges(mesh, radius, height) {
   topRing.position.y = height;
   mesh.add(bottomRing);
   mesh.add(topRing);
+}
+
+function makeBeveledCubeMesh(cubeSize, color) {
+  const mesh =
+    new THREE.Mesh(
+      new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize),
+      new THREE.MeshBasicMaterial({ color })
+    );
+
+  addCubeBevelLines(mesh, cubeSize);
+
+  return mesh;
+}
+
+function addCubeBevelLines(mesh, cubeSize) {
+  const material =
+    new THREE.LineBasicMaterial({
+      color: 0x555555
+    });
+
+  const inset = cubeSize * 0.08;
+
+  const h = cubeSize / 2;
+
+  const faces = [
+    [ [ h, -h+inset, -h+inset ],    // +X
+      [ h,  h-inset, -h+inset ],
+      [ h,  h-inset,  h-inset ],
+      [ h, -h+inset,  h-inset ] ],
+
+    [ [ -h, -h+inset, -h+inset ],    // -X
+      [ -h,  h-inset, -h+inset ],
+      [ -h,  h-inset,  h-inset ],
+      [ -h, -h+inset,  h-inset ] ],
+
+    [ [ -h+inset, h, -h+inset ],    // +Y
+      [  h-inset, h, -h+inset ],
+      [  h-inset, h,  h-inset ],
+      [ -h+inset, h,  h-inset ] ],
+
+    [ [ -h+inset, -h, -h+inset ],    // -Y
+      [  h-inset, -h, -h+inset ],
+      [  h-inset, -h,  h-inset ],
+      [ -h+inset, -h,  h-inset ] ],
+
+    [ [ -h+inset, -h+inset, h ],    // +Z
+      [  h-inset, -h+inset, h ],
+      [  h-inset,  h-inset, h ],
+      [ -h+inset,  h-inset, h ]
+    ],
+
+    [ [ -h+inset, -h+inset, -h ],    // -Z
+      [  h-inset, -h+inset, -h ],
+      [  h-inset,  h-inset, -h ],
+      [ -h+inset,  h-inset, -h ] ]
+  ];
+
+  faces.forEach(face => {
+    const geometry =
+      new THREE.BufferGeometry()
+        .setFromPoints(
+          face.map(
+            p => new THREE.Vector3(...p)
+          )
+        );
+
+    const ring = new THREE.LineLoop(geometry, material);
+
+    mesh.add(ring);
+  });
 }
 // Seampoint: more local functions...
 
