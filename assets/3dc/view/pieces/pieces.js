@@ -10,6 +10,11 @@
 // --- Load JSON ---
 import piecesData from "./pieces.json" assert { type: "json" };
   const piecesModule = piecesData.pieces_module;
+  
+  const materials = piecesModule.materials;
+  const white     = materials.white;
+  const black     = materials.black;
+  
   const rook   = piecesModule.rook;
   const bishop = piecesModule.bishop;
   const duke   = piecesModule.duke;
@@ -54,7 +59,7 @@ export function initPieces() {
     );
 
   view.context.scene.add(currPiecesGroup);
-}
+  }
 
 export function renderPiece(key) {  // "WKR".
   // console.log("view : pieces.js - renderPiece(key)", key);
@@ -87,7 +92,7 @@ export function derenderPiece(piece) {
   console.log("view : pieces.js - derenderPiece(piece)", piece);
   // TODO: write function derenderPiece.
 
-}
+  }
 
 export function setLevelSep(levelSep) {
   console.log("view : pieces.js - setLevelSep(levelSep):", levelSep);
@@ -95,7 +100,7 @@ export function setLevelSep(levelSep) {
   if(!currPiecesGroup) return;
 
   view.reprojectGroup(currPiecesGroup, levelSep);
-}
+  }
 
 export function reprojectTrayPieces(levelSep, trayGap) {
   console.log("view : pieces.js - reprojectTrayPieces(levelSep, trayGap):", levelSep, trayGap);
@@ -117,9 +122,7 @@ export function reprojectTrayPieces(levelSep, trayGap) {
     let gap = trayGap;
 
     const type = key[3];
-
-    if(type === "P") gap += 1;  // TODO: probably wrong for Black.
-    else             gap += 2;
+    gap += 2; // Tray offset from board with zero gap.
 
     const player = key[0];
 
@@ -148,15 +151,13 @@ function renderInTray(player, side, type, tray, pos) {
   // TODO: finish renderInTray().
 
   let gap = cViewer.getTrayGap();
-
-  if(type === "P")  gap += 1; // First tray column.
-  else              gap += 2; // Second tray column.
+  gap += 2; // Tray offset from board with zero gap.
 
   const vts = trayToVts(player, pos, gap);
 
   let group = null;
 
-  const color = (player === "W") ? 0xffffff : 0x111111;
+  const color = (player === "W") ? white : black;
   switch(type) {
     case "R": group = makeRookObject(  {color}); break;
     case "B": group = makeBishopObject({color}); break;
@@ -200,6 +201,10 @@ function trayToVts(player, pos, gap) {
     displacement = [0, -gap, -gap];
     vts = utils.add(vts, displacement);
   }
+  if(player === "B") {
+    displacement = [0, gap, gap];
+    vts = utils.add(vts, displacement);
+  }
 
   return vts;
   }
@@ -211,17 +216,23 @@ function renderOnBoard(player, side, type, pos) {
   // TODO: write function renderOnBoard.
 }
 
-// function make<piece>Object(params = {}) {
-  //   console.log("view : pieces.js - makeObject(params)", params);
+// function make<piece>Object(params = {}) {  // Templates:
+    // console.log("view : pieces.js - makeObject(params)", params);
 
-  //   const { tileWidth, colors } = parseParams(params);
-  //   const geometry = make<piece>Geo(tileWidth, piece);
-  //   const edges = bevel<piece>Edges();
-  //   const material = makeSkin();
-  //   const group = makePiece(geometry, edges, material);
+    // const piece = make<piece>Shape(params = {});
 
-  //   return group;
+    // orient(piece);
+
+    // return piece;
   // }
+
+// function make<piece>Shape(params = {}) {
+    // const { tileWidth, colors } = parseParams(params);
+    // const geometry = make<piece>Geo(tileWidth, piece);
+    // const edges = bevel<piece>Edges();
+    // const material = makeSkin();
+    // const group = makePiece(geometry, edges, material);
+// }
 
 function makeRookObject(params = {}) {
   // console.log("view : pieces.js - makeRookObject(params)", params);
@@ -283,50 +294,6 @@ function makeQueenObject(params = {}) {
   return group;
   }
 
-function makeKingObject(params = {}) {
-  // console.log("view : pieces.js - makeKingObject(params)", params);
-
-  const { color } = params;
-  let [tileHeight, tileWidth] = tiles.tileSize();       // Canonical size fills tile.
-
-  const geometry = makeKingGeo(tileWidth, king);        // Mesh.
-  const mesh     = createMesh(geometry, color, true);
-
-  // --- Recompute canonical dimensions ---
-  const radius = (tileWidth * king.breadth) / 2;        // Edges.
-  const height = tileWidth * king.breadth * king.aspect;
-  addCylinderEdges(mesh, radius, height);
-
-  const group = new THREE.Group();                      // Group.
-  group.add(mesh);
-
-  return group;
-}
-
-function makeStackObject(params = {}) {
-  // console.log("view : pieces.js - makeStackObject(params)", params);
-
-  const { color, side } = params;
-  let [tileHeight, tileWidth] = tiles.tileSize();   // Canonical size fills tile.
-
-  const group = makeStackMeshGroup(tileWidth, stack);
-  decorateGroup(group, color);
-
-  return group;
-}
-
-function makePawnObject(params = {}) {
-  // console.log("view : pieces.js - makePawnObject(params)", params);
-
-  const { color, side } = params;
-  let [tileHeight, tileWidth] = tiles.tileSize();   // Canonical size fills tile.
-
-  const group = makePawnMeshGroup(tileWidth, pawn);
-  decorateGroup(group, color);
-
-  return group;
-}
-
 function makeKnightObject(params = {}) {
   // console.log("view : pieces.js - makeKnightObject(params)", params);
 
@@ -339,9 +306,54 @@ function makeKnightObject(params = {}) {
   const group = makeKnightMeshGroup(tileWidth, knight, chirality, color);
 
   return group;
+  }
+
+function makeStackObject(params = {}) {
+  // console.log("view : pieces.js - makeStackObject(params)", params);
+
+  const { color, side } = params;
+  let [tileHeight, tileWidth] = tiles.tileSize();   // Canonical size fills tile.
+
+  const group = makeStackMeshGroup(tileWidth, stack);
+  decorateGroup(group, color);
+
+  return group;
+  }
+
+function makePawnObject(params = {}) {
+  // console.log("view : pieces.js - makePawnObject(params)", params);
+
+  const { color, side } = params;
+  let [tileHeight, tileWidth] = tiles.tileSize();   // Canonical size fills tile.
+
+  const group = makePawnMeshGroup(tileWidth, pawn, color);
+  decorateGroup(group, color);
+
+  return group;
+  }
+
+function makeKingObject(params = {}) {
+  // console.log("view : pieces.js - makeKingObject(params)", params);
+
+  const { color } = params;
+  let [tileHeight, tileWidth] = tiles.tileSize();       // Canonical size fills tile.
+
+  const geometry = makeKingGeo(tileWidth, king);        // Mesh.
+  const mesh     = createMesh(geometry, color, true);
+
+  // --- Recompute canonical dimensions ---
+  const radius = (tileWidth * king.breadth) / 2;        // Edges.
+  const height = tileWidth * king.breadth * king.aspect;
+  addCylinderEdges(mesh, radius, height, color);
+
+  const group = new THREE.Group();                      // Group.
+  group.add(mesh);
+
+  return group;
 }
 // Seampoint: no more pieces.
 
+// Geometries:
 function makeRookGeo(tileWidth, rook) {
   const { aspect, breadth } = rook;
   const base = tileWidth * breadth;
@@ -379,6 +391,7 @@ function makeQueenGeo(tileWidth, queen) {
 
   return geometry;
   }
+
 function makeKingGeo(tileWidth, king) {
   const { aspect, breadth } = king;
 
@@ -400,14 +413,50 @@ function makeKingGeo(tileWidth, king) {
   return geometry;
 }
 
+// Groups:
+function makeKnightMeshGroup(tileWidth, knight, chirality = 1, color) {
+  const { breadth } = knight;
+
+  const cubeSize = tileWidth * breadth;
+
+  const positions = [
+    [-cubeSize, cubeSize/2, 0],            // Tail.
+
+    [0, cubeSize/2, 0],                    // Column.
+    [0, 3*cubeSize/2, 0],
+    [0, 5*cubeSize/2, 0],
+
+    [0, 5*cubeSize/2, chirality*cubeSize]  // Head.
+  ];
+
+  const group = new THREE.Group();
+
+  positions.forEach(([x,y,z]) => {
+    const cube = makeBeveledCubeMesh(cubeSize, color);
+    cube.position.set(x, y, z);
+    group.add(cube);
+  });
+
+  const box = new THREE.Box3().setFromObject(group);
+
+  // Center-bottom origin invariant.
+  group.position.set(0, -box.min.y, 0);
+
+  // Players sit on vertical board edges.
+  // Tail points toward owner.
+  group.rotation.y = -Math.PI / 4;
+
+  return group;
+  }
+
 function makeStackMeshGroup(tileWidth, stack) {
   let group = null;
   // TODO: define stack group.
 
   return group;
-}
+  }
 
-function makePawnMeshGroup(tileWidth, pawn) {
+function makePawnMeshGroup(tileWidth, pawn, color) {
   const { aspect, breadth } = pawn;
 
   const baseRadius = (tileWidth * breadth) / 2;                               // Dimensions.
@@ -419,19 +468,19 @@ function makePawnMeshGroup(tileWidth, pawn) {
   const washerGeo = new THREE.CylinderGeometry(washerRadius, washerRadius, washerHeight, 32);
   washerGeo.translate(0, washerHeight / 2, 0);
 
-  const sphereMesh = new THREE.Mesh(sphereGeo, new THREE.MeshBasicMaterial());// Meshes.
-  const washerMesh = new THREE.Mesh(washerGeo, new THREE.MeshBasicMaterial());
+  const sphereMesh = new THREE.Mesh(sphereGeo, new THREE.MeshBasicMaterial({ color: color.surfaceColor }));// Meshes.
+  const washerMesh = new THREE.Mesh(washerGeo, new THREE.MeshBasicMaterial({ color: color.surfaceColor }));
 
   sphereMesh.position.y = washerHeight/2 + sphereRadius * 0.85;               // Placement.
 
   const group = new THREE.Group();                                            // Assembly.
 
-  addCylinderEdges(washerMesh, washerRadius, washerHeight);                   // Whasher edges (king convention).
-  addWasherCenterRing(washerMesh, washerRadius, washerHeight);
+  addCylinderEdges(washerMesh, washerRadius, washerHeight, color);            // Washer edges (king convention).
+  addWasherCenterRing(washerMesh, washerRadius, washerHeight, color);
   group.add(washerMesh);
   group.add(sphereMesh);
 
-  addPawnLatitudes(sphereMesh, sphereRadius);                                 // Specular latitudes until skins and lighting.
+  addPawnLatitudes(sphereMesh, sphereRadius, color);                          // Specular latitudes until skins and lighting.
 
   const box = new THREE.Box3().setFromObject(group);                          // Normalize origin.
   const centerX = (box.min.x + box.max.x) / 2;
@@ -441,7 +490,7 @@ function makePawnMeshGroup(tileWidth, pawn) {
   return group;
   }
 
-function addWasherCenterRing(mesh, radius, height) {
+function addWasherCenterRing(mesh, radius, height, color) {
 
   const holeRadius = radius * 0.65;
 
@@ -471,7 +520,7 @@ function addWasherCenterRing(mesh, radius, height) {
 
   const material =
     new THREE.LineBasicMaterial({
-      color: 0x111111
+      color: color.lineColor
     });
 
   const ring =
@@ -486,11 +535,11 @@ function addWasherCenterRing(mesh, radius, height) {
   mesh.add(ring);
   }
 
-function addPawnLatitudes(mesh, radius) {
+function addPawnLatitudes(mesh, radius, color) {
 
   const material =
     new THREE.LineBasicMaterial({
-      color: 0x111111
+      color: color.lineColor
     });
 
   // Upper, middle, lower bands.
@@ -547,49 +596,14 @@ function addPawnLatitudes(mesh, radius) {
   });
 }
 
-function makeKnightMeshGroup(tileWidth, knight, chirality = 1, color = 0xffffff) {
-  const { breadth } = knight;
-
-  const cubeSize = tileWidth * breadth;
-
-  const positions = [
-    [-cubeSize, cubeSize/2, 0],            // Tail.
-
-    [0, cubeSize/2, 0],                    // Column.
-    [0, 3*cubeSize/2, 0],
-    [0, 5*cubeSize/2, 0],
-
-    [0, 5*cubeSize/2, chirality*cubeSize]  // Head.
-  ];
-
-  const group = new THREE.Group();
-
-  positions.forEach(([x,y,z]) => {
-    const cube = makeBeveledCubeMesh(cubeSize, color);
-    cube.position.set(x, y, z);
-    group.add(cube);
-  });
-
-  const box = new THREE.Box3().setFromObject(group);
-
-  // Center-bottom origin invariant.
-  group.position.set(0, -box.min.y, 0);
-
-  // Players sit on vertical board edges.
-  // Tail points toward owner.
-  group.rotation.y = -Math.PI / 4;
-
-  return group;
-}
-// Seampoint: no more pieces.
-
+// Helpers:
 function createMesh(geometry, color, suppress=false) {
-  const material = new THREE.MeshBasicMaterial({ color });
+  const material = new THREE.MeshBasicMaterial({ color: color.surfaceColor });
   const mesh = new THREE.Mesh(geometry, material);
 
   if(!suppress) {
     const edges = new THREE.EdgesGeometry(mesh.geometry);
-    const lines = new THREE.LineSegments( edges, new THREE.LineBasicMaterial({ color: 0x101010 }));
+    const lines = new THREE.LineSegments( edges, new THREE.LineBasicMaterial({ color: color.lineColor }));
     mesh.add(lines);
   }
 
@@ -603,7 +617,7 @@ function decorateGroup(group, color) {
   // TODO: Write decorateGroup().
   }
 
-function addCylinderEdges(mesh, radius, height) {
+function addCylinderEdges(mesh, radius, height, color) {
   const curve = new THREE.EllipseCurve(
     0, 0, radius, radius, 0, 2 * Math.PI, false, 0
   );
@@ -613,7 +627,7 @@ function addCylinderEdges(mesh, radius, height) {
     points.map(p => new THREE.Vector3(p.x, 0, p.y))
   );
 
-  const material = new THREE.LineBasicMaterial({ color: 0x111111 });
+  const material = new THREE.LineBasicMaterial({ color: color.lineColor });
 
   // --- Bottom ring ---
   const bottomRing = new THREE.LineLoop(geometry, material);
@@ -624,24 +638,24 @@ function addCylinderEdges(mesh, radius, height) {
   topRing.position.y = height;
   mesh.add(bottomRing);
   mesh.add(topRing);
-}
+  }
 
 function makeBeveledCubeMesh(cubeSize, color) {
   const mesh =
     new THREE.Mesh(
       new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize),
-      new THREE.MeshBasicMaterial({ color })
+      new THREE.MeshBasicMaterial({ color: color.surfaceColor })
     );
 
-  addCubeBevelLines(mesh, cubeSize);
+  addCubeBevelLines(mesh, cubeSize, color);
 
   return mesh;
-}
+  }
 
-function addCubeBevelLines(mesh, cubeSize) {
+function addCubeBevelLines(mesh, cubeSize, color) {
   const material =
     new THREE.LineBasicMaterial({
-      color: 0x555555
+      color: color.lineColor
     });
 
   const inset = cubeSize * 0.08;

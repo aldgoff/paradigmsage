@@ -73,12 +73,30 @@ function stdInitialPos(entry) {
   }
 
   const whitePawns = ["WQRP", "WQNP", "WQBP", "WQQP", "WKKP", "WKBP", "WKNP", "WKRP"];
-  positions = ["QR1,1", "QN1,1", "QB1,1", "Q1,1", "K1,1", "KB1,1", "KN1,1", "KR1,1"];
+  positions = ["QR2,2", "QN2,2", "QB2,2", "Q2,2", "K2,2", "KB2,2", "KN2,2", "KR2,2"];
   for(let k=1; k<=8; k++) {
     const piece = whitePawns[k-1];
     const pos = positions[k-1];
     pieceList[piece] = { loc: "~", pos, coords: [k,1,1] }; // Place demo pieces in the white tray.
     whiteTray[k][1][1] = piece;
+  }
+
+  const blackPieces = ["BQRR", "BQNN", "BQBB", "BQQQ", "BKKK", "BKBB", "BKNN", "BKRR"];
+  positions = ["QR8,8", "QN8,8", "QB8,8", "Q8,8", "K8,8", "KB8,8", "KN8,8", "KR8,8"];
+  for(let k=1; k<=8; k++) {
+    const piece = blackPieces[k-1];
+    const pos = positions[k-1];
+    pieceList[piece] = { loc: "~", pos, coords: [k,0,0] }; // Place demo pieces in the black tray.
+    blackTray[k][0][0] = piece;
+  }
+
+  const blackPawns = ["BQRP", "BQNP", "BQBP", "BQQP", "BKKP", "BKBP", "BKNP", "BKRP"];
+  positions = ["QR7,7", "QN7,7", "QB7,7", "Q7,7", "K7,7", "KB7,7", "KN7,7", "KR7,7"];
+  for(let k=1; k<=8; k++) {
+    const piece = blackPawns[k-1];
+    const pos = positions[k-1];
+    pieceList[piece] = { loc: "~", pos, coords: [k,1,1] }; // Place demo pieces in the black tray.
+    blackTray[k][1][1] = piece;
   }
 
   vPieces.initPieces();
