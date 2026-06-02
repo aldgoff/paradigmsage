@@ -403,87 +403,147 @@ function makeStackMeshGroup(tileWidth, stack) {
   // TODO: define stack group.
 
   return group;
-  }
+}
+
 function makePawnMeshGroup(tileWidth, pawn) {
   const { aspect, breadth } = pawn;
 
-  // --- Canonical dimensions ---
+  const baseRadius = (tileWidth * breadth) / 2;                               // Dimensions.
+  const washerRadius = baseRadius * 0.85;
+  const washerHeight = baseRadius * 0.30;
+  const sphereRadius = baseRadius * 0.62;
 
-  const baseRadius = (tileWidth * breadth) / 2;
+  const sphereGeo = new THREE.SphereGeometry(sphereRadius, 32, 24);           // Geometries.
+  const washerGeo = new THREE.CylinderGeometry(washerRadius, washerRadius, washerHeight, 32);
+  washerGeo.translate(0, washerHeight / 2, 0);
 
-  // Sphere sits visually inside torus ring.
-  const sphereRadius = baseRadius * 0.72;
+  const sphereMesh = new THREE.Mesh(sphereGeo, new THREE.MeshBasicMaterial());// Meshes.
+  const washerMesh = new THREE.Mesh(washerGeo, new THREE.MeshBasicMaterial());
 
-  // Torus:
-  //   major radius = centerline radius
-  //   tube radius  = torus thickness
-  const torusRadius = baseRadius * 0.78;
+  sphereMesh.position.y = washerHeight/2 + sphereRadius * 0.85;               // Placement.
 
-  // Aspect controls torus thickness.
-  const tubeRadius = torusRadius * 0.22 * aspect;
+  const group = new THREE.Group();                                            // Assembly.
 
-  // --- Primitive geometries ---
-
-  const sphereGeo = new THREE.SphereGeometry(
-    sphereRadius,
-    32,
-    24
-  );
-
-  const torusGeo = new THREE.TorusGeometry(
-    torusRadius,
-    tubeRadius,
-    16,
-    48
-  );
-
-  // --- Primitive meshes ---
-
-  const sphereMesh = new THREE.Mesh(
-    sphereGeo,
-    new THREE.MeshBasicMaterial()
-  );
-
-  const torusMesh = new THREE.Mesh(
-    torusGeo,
-    new THREE.MeshBasicMaterial()
-  );
-  torusMesh.rotation.x = Math.PI / 2;
-
-  // --- Placement ---
-
-  // Raise sphere so it visually nests into torus.
-  sphereMesh.position.y =
-    sphereRadius + tubeRadius * 0.35;
-
-  // --- Group assembly ---
-
-  const group = new THREE.Group();
-
-  group.add(torusMesh);
+  addCylinderEdges(washerMesh, washerRadius, washerHeight);                   // Whasher edges (king convention).
+  addWasherCenterRing(washerMesh, washerRadius, washerHeight);
+  group.add(washerMesh);
   group.add(sphereMesh);
 
-  // --- Center-bottom origin invariant ---
+  addPawnLatitudes(sphereMesh, sphereRadius);                                 // Specular latitudes until skins and lighting.
 
-  const box = new THREE.Box3().setFromObject(group);
-
+  const box = new THREE.Box3().setFromObject(group);                          // Normalize origin.
   const centerX = (box.min.x + box.max.x) / 2;
   const centerZ = (box.min.z + box.max.z) / 2;
-
-  group.position.set(
-    -centerX,
-    -box.min.y,
-    -centerZ
-  );
-
-  return group;
-}
-function makePawnMeshGroup1(tileWidth, pawn) {
-  let group = null;
-  // TODO: define pawn group.
+  group.position.set(-centerX, -box.min.y, -centerZ);
 
   return group;
   }
+
+function addWasherCenterRing(mesh, radius, height) {
+
+  const holeRadius = radius * 0.65;
+
+  const curve = new THREE.EllipseCurve(
+    0,
+    0,
+    holeRadius,
+    holeRadius,
+    0,
+    2 * Math.PI,
+    false,
+    0
+  );
+
+  const points = curve.getPoints(64);
+
+  const geometry =
+    new THREE.BufferGeometry().setFromPoints(
+      points.map(
+        p => new THREE.Vector3(
+          p.x,
+          0,
+          p.y
+        )
+      )
+    );
+
+  const material =
+    new THREE.LineBasicMaterial({
+      color: 0x111111
+    });
+
+  const ring =
+    new THREE.LineLoop(
+      geometry,
+      material
+    );
+
+  // Slightly above top face to avoid z-fighting.
+  ring.position.y = height + 0.1;
+
+  mesh.add(ring);
+  }
+
+function addPawnLatitudes(mesh, radius) {
+
+  const material =
+    new THREE.LineBasicMaterial({
+      color: 0x111111
+    });
+
+  // Upper, middle, lower bands.
+  const bands = [
+    0.55,
+    0.20,
+   -0.15
+  ];
+
+  const scale = 1.03;  // Slightly outside sphere.
+
+  bands.forEach(yFrac => {
+
+    const yPos = radius * yFrac;
+
+    // Radius of sphere cross-section at this latitude.
+    const ringRadius =
+      Math.sqrt(
+        radius * radius -
+        yPos * yPos
+      ) * scale;
+
+    const curve = new THREE.EllipseCurve(
+      0,
+      0,
+      ringRadius,
+      ringRadius,
+      0,
+      2 * Math.PI,
+      false,
+      0
+    );
+
+    const points = curve.getPoints(64);
+
+    const geometry =
+      new THREE.BufferGeometry().setFromPoints(
+        points.map(
+          p => new THREE.Vector3(
+            p.x,
+            yPos,
+            p.y
+          )
+        )
+      );
+
+    const line =
+      new THREE.LineLoop(
+        geometry,
+        material
+      );
+
+    mesh.add(line);
+  });
+}
 
 function makeKnightMeshGroup(tileWidth, knight, side) {
   const cubeSize = 40;
@@ -613,3 +673,4 @@ function addCylinderEdges(mesh, radius, height) {
     20. Mesh registries / lookup helpers.
     21. Remove remaining model→view tension.
 */
+

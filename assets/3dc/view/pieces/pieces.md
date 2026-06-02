@@ -27,3 +27,9 @@
   The rook will probably be about 1.6, the queen 3, the king 3.5.
   TBD visually, in part to ensure when they line up one does not completely hide another.
 
+## 4. Rendering Convention
+  Piece dimensions are controlled exclusively through the JSON aspect/breadth parameters. 
+  Geometry code must derive scale from those values rather than introducing independent size constants. 
+  The JSON file is the authoritative calibration layer used to balance 
+  visibility, aesthetics, and piece differentiation across the full set.
+
