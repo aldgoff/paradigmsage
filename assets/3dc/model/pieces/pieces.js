@@ -81,7 +81,7 @@ function stdInitialPos(entry) {
     whiteTray[k][1][1] = piece;
   }
 
-  const blackPieces = ["BQRR", "BQNN", "BQBD", "BQQQ", "BKKK", "BKBS", "BKNN", "BKRR"];
+  const blackPieces = ["BQRR", "BQNN", "BQBS", "BQQQ", "BKKK", "BKBS", "BKNN", "BKRR"];
   positions = ["QR8,8", "QN8,8", "QB8,8", "Q8,8", "K8,8", "KB8,8", "KN8,8", "KR8,8"];
   for(let k=1; k<=8; k++) {
     const piece = blackPieces[k-1];

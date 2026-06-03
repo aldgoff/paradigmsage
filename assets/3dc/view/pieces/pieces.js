@@ -152,26 +152,14 @@ function renderInTray(player, side, type, tray, pos) {
 
   const color = (player === "W") ? white : black;
   switch(type) {
-    case "R": group = makeRookObject(  {color}); break;
-    case "B": group = makeBishopObject({color}); 
-      (player === "W") 
-      ? group.rotation.y = -0.25*Math.PI/3   // White bishop orientation: edge points toward opponent.
-      : group.rotation.y = 1.0*Math.PI/3; // Black bishop orientation: edge points toward opponent.
-      break;
-    case "D": group = makeDukeObject(  {color}); 
-      (player === "W") 
-      ? group.rotation.y = -0.0*Math.PI/4   // White duke orientation: high edge points toward opponent.
-      : group.rotation.y = 1.0*Math.PI/4; // Black duke orientation: high edge points toward opponent.
-      break;
-    // case "Q": group = makeQueenObject( {color}); break;
-    case "N": group = makeKnightObject({color, side}); 
-      (player === "W") 
-      ? group.rotation.y = -Math.PI/4   // White knight orientation: tail points toward player.
-      : group.rotation.y = 3*Math.PI/4; // Black knight orientation: tail points toward player.
-      break;
-    // case "S": group = makeStackObject({color}); break;
-    case "P": group = makePawnObject(  {color}); break;
-    case "K": group = makeKingObject(  {color}); break;
+    case "R": group = makeRookObject(  {color});                break;
+    case "B": group = makeBishopObject({color, player});        break;
+    case "D": group = makeDukeObject(  {color, player});        break;
+    case "Q": group = makeQueenObject( {color}); break;
+    case "N": group = makeKnightObject({color, player, side});  break;
+    case "S": group = makeStackObject( {color, player});        break;
+    case "P": group = makePawnObject(  {color});                break;
+    case "K": group = makeKingObject(  {color});                break;
     // Seampoint: no more pieces.
     default:
       console.log(`view : pieces.js - Unknown piece type ${type}`); return; 
@@ -232,7 +220,7 @@ function makeRookObject(params = {}) {
 function makeBishopObject(params = {}) {
   // console.log("view : pieces.js - makeBishopObject(params)", params);
 
-  const { color } = params;
+  const { color, player } = params;
   let [tileHeight, tileWidth] = tiles.tileSize();       // Canonical size fills tile.
 
   const geometry = makeBishopGeo(tileWidth, bishop);    // Mesh.
@@ -241,11 +229,15 @@ function makeBishopObject(params = {}) {
   const group = new THREE.Group();                      // Group.
   group.add(mesh);
 
+  (player === "W") 
+  ? group.rotation.y = bishop.orientation*Math.PI/3         // White bishop orientation: edge points toward opponent.
+  : group.rotation.y = (bishop.orientation-1.0)*Math.PI/3;  // Black bishop orientation: edge points toward opponent.
+
   return group;
-}
+  }
 
 function makeDukeObject(params = {}) {
-  const { color } = params;
+  const { color, player } = params;
 
   let [, tileWidth] = tiles.tileSize();
 
@@ -264,32 +256,17 @@ function makeDukeObject(params = {}) {
   poseGroup.position.set(
     -centerX,
     -box.min.y + duke.height,
-    // -box.min.y + 0.2*tileWidth,
     -centerZ
   );  
 
   const orientationGroup = new THREE.Group();
   orientationGroup.add(poseGroup);
 
+  (player === "W") 
+  ? orientationGroup.rotation.y = (duke.orientation-1.0)*Math.PI/3  // White duke orientation: high edge points toward opponent.
+  : orientationGroup.rotation.y = duke.orientation*Math.PI/3;       // Black duke orientation: high edge points toward opponent.
+
   return orientationGroup;
-}
-
-function makeDukeObject1(params = {}) {
-  console.log("view : pieces.js - makeDukeObject(params)", params);
-
-  const { color } = params;
-  let [tileHeight, tileWidth] = tiles.tileSize();       // Canonical size fills tile.
-
-  const geometry = makeDukeGeo(tileWidth, duke);        // Mesh.
-  const mesh     = createMesh(geometry, color);
-
-  const group = new THREE.Group();                      // Group.
-
-  group.rotation.y = Math.PI/4;                         // Rotate onto tip.
-  group.rotation.x = Math.atan(Math.sqrt(2));
-  group.add(mesh);
-
-  return group;
   }
 
 function makeQueenObject(params = {}) {
@@ -305,16 +282,20 @@ function makeQueenObject(params = {}) {
   group.add(mesh);
 
   return group;
-  }
+}
 
 function makeKnightObject(params = {}) {
   console.log("view : pieces.js - makeKnightObject(params)", params);
 
-  const { color, side } = params;
+  const { color, player, side } = params;
   let [, tileWidth] = tiles.tileSize();
 
   const chirality = (side === "K")?  1 : -1;
   const group = makeKnightMeshGroup(tileWidth, knight, chirality, color);
+
+  (player === "W") 
+  ? group.rotation.y = (knight.orientation-1.00)*Math.PI   // White knight orientation: tail points toward player.
+  : group.rotation.y = knight.orientation*Math.PI; // Black knight orientation: tail points toward player.
 
   return group;
   }
@@ -322,13 +303,15 @@ function makeKnightObject(params = {}) {
 function makeStackObject(params = {}) {
   // console.log("view : pieces.js - makeStackObject(params)", params);
 
-  const { color, side } = params;
-  let [tileHeight, tileWidth] = tiles.tileSize();   // Canonical size fills tile.
+  const bishop = makeBishopObject(params);
+  const duke   = makeDukeObject(params);
+  duke.position.y += stack.height;
 
-  const group = makeStackMeshGroup(tileWidth, stack);
-  decorateGroup(group, color);
+  const stackGroup = new THREE.Group();
+  stackGroup.add(bishop);
+  stackGroup.add(duke);
 
-  return group;
+  return stackGroup;
   }
 
 function makePawnObject(params = {}) {
@@ -338,7 +321,6 @@ function makePawnObject(params = {}) {
   let [tileHeight, tileWidth] = tiles.tileSize();   // Canonical size fills tile.
 
   const group = makePawnMeshGroup(tileWidth, pawn, color);
-  decorateGroup(group, color);
 
   return group;
   }
@@ -401,8 +383,40 @@ function makeDukeGeo(tileWidth, duke) {
   }
 
 function makeQueenGeo(tileWidth, queen) {
-  let geometry = null;
-  // TODO: define queen geometry.
+  const { aspect, breadth } = queen;
+
+  const radius = tileWidth * breadth;
+  const height = radius * aspect;
+
+  const shape = new THREE.Shape();
+
+  const pts = [];
+
+  for(let i=0; i<6; i++) {
+    const outerAngle = (i * Math.PI)/3;
+    const innerAngle = outerAngle + Math.PI/6;
+
+    pts.push( new THREE.Vector2(
+        radius * Math.cos(outerAngle),
+        radius * Math.sin(outerAngle))
+    );
+    pts.push( new THREE.Vector2(
+        (radius * queen.starRatio) * Math.cos(innerAngle),
+        (radius * queen.starRatio) * Math.sin(innerAngle))
+    );
+  }
+
+  shape.moveTo(pts[0].x, pts[0].y);
+  pts.slice(1).forEach(p => shape.lineTo(p.x, p.y));
+  shape.closePath();
+
+  const geometry = new THREE.ExtrudeGeometry(shape, { depth: height, bevelEnabled: false });
+
+  geometry.rotateX(Math.PI/2);
+  geometry.computeBoundingBox();
+
+  const box = geometry.boundingBox;
+  geometry.translate(0, -box.min.y, 0);
 
   return geometry;
   }
@@ -462,7 +476,7 @@ function makeStackMeshGroup(tileWidth, stack) {
   // TODO: define stack group.
 
   return group;
-}
+  }
 
 function makePawnMeshGroup(tileWidth, pawn, color) {
   const { aspect, breadth } = pawn;
@@ -575,10 +589,6 @@ function createMesh(geometry, color, suppress=false) {
   mesh.receiveShadow = false;
 
   return mesh;
-  }
-
-function decorateGroup(group, color) {
-  // TODO: Write decorateGroup().
   }
 
 function addCylinderEdges(mesh, radius, height, color) {

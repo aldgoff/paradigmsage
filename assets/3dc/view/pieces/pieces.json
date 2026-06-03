@@ -25,33 +25,34 @@
     "bishop": {
       "aspect": 1.5,
       "breadth": 0.30,
-      "orientation": 0,
+      "orientation": 0.75,
       "bevel": 0.00
     },
     "duke": {
       "aspect": 1.0,
-      "breadth": 0.40,
-      "height": -10,
-      "orientation": 0,
+      "breadth": 0.30,
+      "height": -5.0,
+      "orientation": 0.75,
       "bevel": 0.00
     },
     "stack": {
       "aspect": 1.0,
       "breadth": 1.00,
-      "height": 20,
+      "height": 25,
       "orientation": 0,
       "bevel": 0.00
     },
     "queen": {
-      "aspect": 2.0,
-      "breadth": 0.20,
+      "aspect": 5.0,
+      "breadth": 0.15,
+      "starRatio": 0.45,
       "orientation": 0,
       "bevel": 0.00
     },
     "knight": {
       "aspect": 1.0,
       "breadth": 0.20,
-      "orientation": 0,
+      "orientation": 0.75,
       "bevel": 0.00
     },
     "pawn": {
