@@ -32,7 +32,7 @@ import traysData from "./trays.json" assert { type: "json" };
   let lastTrayGap    = 0;
   let lastLevelSep   = 1.0;
 
-  let traysVisible = false;
+  let traysVisible = true;
 // Seampoint: more globals.
 
 // --- UI ---

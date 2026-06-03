@@ -40,6 +40,9 @@ export function init(entry) {
   const { action, boardSize, trayType, initialPos } = entry;  // Informative.
 
   clearTrays();
+  const panel = document.getElementById("viewer-window");
+  const trayGap = Number(panel.querySelector('[name="viewer-trayGap"]')?.value);
+  vTrays.makeTrays(trayGap);
 }
 
 export function getWhiteTray() {
@@ -49,12 +52,6 @@ export function getWhiteTray() {
 export function getBlackTray() {
   return blackTray;
 }
-
-export function getTrayGap() {
-  const gap = 0;  // TODO: get gap from panel.
-
-  return gap;
-}
 // Seampoint: more global functions...
 
 // --- Helpers ---
@@ -63,8 +60,7 @@ function clearTrays() {
 
   let tally = 0;
 
-  // --- White Tray ---
-  for(let z = 0; z < whiteTray.length; z++) {
+  for(let z = 0; z < whiteTray.length; z++) { // White tray.
     for(let i = 0; i < whiteTray[z].length; i++) {
       for(let j = 0; j < whiteTray[z][i].length; j++) {
 
@@ -77,8 +73,7 @@ function clearTrays() {
     }
   }
 
-  // --- Black Tray ---
-  for(let z = 0; z < blackTray.length; z++) {
+  for(let z = 0; z < blackTray.length; z++) { // Black tray.
     for(let i = 0; i < blackTray[z].length; i++) {
       for(let j = 0; j < blackTray[z][i].length; j++) {
 

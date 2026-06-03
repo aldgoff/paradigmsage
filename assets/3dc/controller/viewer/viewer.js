@@ -138,13 +138,13 @@ function handleViewerParams(payload) {
 
   const { trayGap, levelSep, range, speed } = payload;
 
-  cameras.setJitter(range, speed);  // Board jitter.
+  cameras.setJitter(range, speed);    // Board jitter.
 
-  if(trayGap !== lastTrayGap) {      // Tray Gap
+  if(trayGap !== lastTrayGap) {       // Tray Gap
     vTrays.setTrayGap(trayGap);
     lastTrayGap = trayGap;
   }
-  if(levelSep !== lastLevelSep) {    // Level sep: trays, boards, advsqs, gambits, pieces.
+  if(levelSep !== lastLevelSep) {     // Level sep: trays, boards, advsqs, gambits, pieces.
     vTrays.setLevelSep(levelSep);
     vBoards.setLevelSep(levelSep);
     vAdvsqs.setLevelSep(levelSep);
