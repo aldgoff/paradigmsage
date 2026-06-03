@@ -8,6 +8,11 @@
       "black": {
         "surfaceColor": "#202020",
         "lineColor": "#cccccc"
+      },
+      "ghost": {
+        "surfaceColor": "#999999",
+        "lineColor": "#999999",
+        "transparency": 0.80
       }
     },
 
@@ -25,13 +30,15 @@
     },
     "duke": {
       "aspect": 1.0,
-      "breadth": 0.80,
+      "breadth": 0.40,
+      "height": -10,
       "orientation": 0,
       "bevel": 0.00
     },
     "stack": {
       "aspect": 1.0,
       "breadth": 1.00,
+      "height": 20,
       "orientation": 0,
       "bevel": 0.00
     },

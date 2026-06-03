@@ -326,6 +326,7 @@ layout: "play"
     <label> <input type="radio" name="camera-pov" value="neutral"  data-action="SetPOV" checked> Neutral </label>
     <label> <input type="radio" name="camera-pov" value="black"    data-action="SetPOV"> Black </label>
     <label> <input type="radio" name="camera-pov" value="negative" data-action="SetPOV"> Negative </label>
+    <label> <input type="radio" name="camera-pov" value="top"      data-action="SetPOV"> Top </label>
   </div>
   </div>
 

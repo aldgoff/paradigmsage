@@ -13,7 +13,7 @@ import cameraData from "./camera.json" assert { type: "json" };
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
-  import * as cameras from "../../view/render/cameras.js";
+  import * as vCameras from "../../view/render/cameras.js";
   import * as vGambits from "../../view/gambits/gambits.js";
 // Seampoint: more imports.
 
@@ -52,26 +52,26 @@ export function buildPayload(panel, action) {
 function handleZoomIn() {             // Camera handlers. Not subject to undo.
   console.log("Camera Zoom-In:");
   const delta = 0.1;
-  cameras.zoomIn(delta);
+  vCameras.zoomIn(delta);
   }
 
 function handleZoomOut() {
   const delta = -0.1;
-  cameras.zoomIn(delta);
+  vCameras.zoomIn(delta);
   }
 
 function handleAscend() {
   const tilt = 10;
-  cameras.shiftVertical(tilt);
+  vCameras.shiftVertical(tilt);
   }
 
 function handleDescend() {
   const tilt = -10;
-  cameras.shiftVertical(tilt);
+  vCameras.shiftVertical(tilt);
 }
 
 function handlePOV(pov) {
-  cameras.selectPOV(pov, [0, 0, 0]);
+  vCameras.selectPOV(pov, [0, 0, 0]);
 }
 // Seampoint: more handlers...
 
