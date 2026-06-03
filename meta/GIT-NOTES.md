@@ -86,7 +86,7 @@
   git merge --no-ff 3dc3
   git push origin main
 
-  git switch 3dc2
+  git switch 3dc3
   ```
 
  ### Git Tags

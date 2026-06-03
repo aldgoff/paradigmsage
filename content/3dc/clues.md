@@ -5,10 +5,12 @@ title: "Clues"
 **(Occasional Posts)**
 
   To achieve play that **feels like chess** requires:
-  - a formal line of development, with geometrical and logical rigor, that respects the game
-  - the penetration of **two paradigm barriers**
+  - a formal line of development
+  - with geometrical and logical rigor
+  - that respects the game
+  - and requires the penetration of **two paradigm barriers**
 
-## Clues
+### Clues
   - 4/08/26 - If the 2D board is a *square of squares* (8x8), then the 3D board should be a...?
   - 4/09/26 - A *cube of cubes* (8x8x8).
   - 4/11/26 - A square has *8 neighbors*; 4 connected by sides, 4 connected by corners.
@@ -38,7 +40,7 @@ title: "Clues"
   - 5/10/26 - A *one pawn advantage* can secure the game.
   - 5/11/26 - The goal was a rule set that yields play which *feels like chess*.
   - 5/12/26 - So, a piece advances *along one ray*, then along the other.
-  - 5/13/26 - Or, does it advance *along the other*, then along the one.
+  - 5/13/26 - Or, does it advance *along the other*, then along the one?
   - 5/14/26 - Oops, now every attack has *two paths*, blocking is busted.
   - 5/15/26 - Planar moves preserved the endgames, but *busted the midgame*.
   - 5/16/26 - What kind of a rule would allow a single piece to *block an attack along two paths*?
@@ -52,5 +54,15 @@ title: "Clues"
   - 5/24/26 - In 3D, a piece advances *one perimeter* at a time.
   - 5/25/26 - *Blocking restored*, *gambits restored*, the goal remains, a rule set yielding play which *feels like chess*.
   - 5/26/26 - Only...what was the *path* the piece took to move from the soure tile to some specific destination tile on the perimeter?
+  - 5/27/26 - No path, no trajectory - those are *classical abstractions*.
+  - 5/28/26 - The piece started here, ended up there, and was never, ever, *anywhere in between*.
+  - 5/29/26 - This is also true of 2D chess, we just *never noticed*.
+  - 5/30/26 - The piece started here, ended up there, and was never, *ever, anywhere in between*.
+  - 5/31/26 - It's just that the straight line connecting here to there, and the physical act of moving a piece, tricked us into thinking there was a path.
+  - 6/01/26 - In between here and there, a piece just kind of *spreads out* (the advancement square).
+  - 6/02/26 - A little like a wave function, just no oscillation - but definitely *nonlocal*.
+  - 6/03/26 - An electron changing state in an atom, starts here, ends up there, and is *never, ever anywhere in between*.
+  - 6/04/26 - This connection with quantum physics is the biggest surprise of these rules.
+  - 6/05/26 - And this is just the tip of the iceberg.
 
 
