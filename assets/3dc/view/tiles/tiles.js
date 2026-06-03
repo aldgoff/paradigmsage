@@ -77,6 +77,7 @@ export function getTileMesh(tileMap, pos) {
 
 export function initTileUserData(meshTile, tile, pos, tileMap) {
   meshTile.userData.isTile = true;
+  meshTile.userData.vts = pos;
   meshTile.userData.coords = pos;
   meshTile.userData.decorated = false;
   meshTile.userData.overlays = [];

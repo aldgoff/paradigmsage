@@ -63,25 +63,55 @@ function stdInitialPos(entry) {
 
   // For now, assume 8x8x8, later confirm entry compabibility.
 
-  const whitePieces = ["WQRR", "WQNN", "WQBB", "WQQQ", "WKKK", "WKBB", "WKNN", "WKRR"];
+  const whitePieces = ["WQRR", "WQNN", "WQBS", "WQQQ", "WKKK", "WKBS", "WKNN", "WKRR"];
   let positions = ["QR1,1", "QN1,1", "QB1,1", "Q1,1", "K1,1", "KB1,1", "KN1,1", "KR1,1"];
   for(let k=1; k<=8; k++) {
     const piece = whitePieces[k-1];
     const pos = positions[k-1];
     pieceList[piece] = { loc: "~", pos, coords: [k,0,0] }; // Place demo pieces in the white tray.
     whiteTray[k][0][0] = piece;
-    vPieces.renderPiece(piece);
   }
 
   const whitePawns = ["WQRP", "WQNP", "WQBP", "WQQP", "WKKP", "WKBP", "WKNP", "WKRP"];
-  positions = ["QR1,1", "QN1,1", "QB1,1", "Q1,1", "K1,1", "KB1,1", "KN1,1", "KR1,1"];
+  positions = ["QR2,2", "QN2,2", "QB2,2", "Q2,2", "K2,2", "KB2,2", "KN2,2", "KR2,2"];
   for(let k=1; k<=8; k++) {
     const piece = whitePawns[k-1];
     const pos = positions[k-1];
     pieceList[piece] = { loc: "~", pos, coords: [k,1,1] }; // Place demo pieces in the white tray.
     whiteTray[k][1][1] = piece;
-    vPieces.renderPiece(piece);
   }
+
+  const blackPieces = ["BQRR", "BQNN", "BQBS", "BQQQ", "BKKK", "BKBS", "BKNN", "BKRR"];
+  positions = ["QR8,8", "QN8,8", "QB8,8", "Q8,8", "K8,8", "KB8,8", "KN8,8", "KR8,8"];
+  for(let k=1; k<=8; k++) {
+    const piece = blackPieces[k-1];
+    const pos = positions[k-1];
+    pieceList[piece] = { loc: "~", pos, coords: [k,0,0] }; // Place demo pieces in the black tray.
+    blackTray[k][0][0] = piece;
+  }
+
+  const blackPawns = ["BQRP", "BQNP", "BQBP", "BQQP", "BKKP", "BKBP", "BKNP", "BKRP"];
+  positions = ["QR7,7", "QN7,7", "QB7,7", "Q7,7", "K7,7", "KB7,7", "KN7,7", "KR7,7"];
+  for(let k=1; k<=8; k++) {
+    const piece = blackPawns[k-1];
+    const pos = positions[k-1];
+    pieceList[piece] = { loc: "~", pos, coords: [k,1,1] }; // Place demo pieces in the black tray.
+    blackTray[k][1][1] = piece;
+  }
+
+  // Test stack subpieces for White.
+  pieceList["WKBB"] = { loc: "~", pos: "KB2,1", coords: [,0,0] };
+  pieceList["WKBD"] = { loc: "~", pos: "KB1,2", coords: [,0,0] };
+  pieceList["WQBB"] = { loc: "~", pos: "QB2,1", coords: [,0,0] };
+  pieceList["WQBD"] = { loc: "~", pos: "QB1,2", coords: [,0,0] };
+
+  // Test stack subpieces for Black.
+  pieceList["BKBB"] = { loc: "~", pos: "KB7,8", coords: [,0,0] };
+  pieceList["BKBD"] = { loc: "~", pos: "KB8,7", coords: [,0,0] };
+  pieceList["BQBB"] = { loc: "~", pos: "QB7,8", coords: [,0,0] };
+  pieceList["BQBD"] = { loc: "~", pos: "QB8,7", coords: [,0,0] };
+
+  vPieces.initPieces();
 
   // Seampoint - fill up the trays.
 }

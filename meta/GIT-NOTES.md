@@ -76,17 +76,17 @@
   
  ### New Merge Process
   ```
-  git switch 3dc2
+  git switch 3dc3
   # code
   git add .
   git commit
   git push origin 3dc2   # optional but wise
 
   git switch main
-  git merge --no-ff 3dc2
+  git merge --no-ff 3dc3
   git push origin main
 
-  git switch 3dc2
+  git switch 3dc3
   ```
 
  ### Git Tags

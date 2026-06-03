@@ -461,6 +461,35 @@
 │   ├── Screenshot 2026-05-21 at 8.05.14 AM.png
 │   ├── Screenshot 2026-05-21 at 8.32.37 AM.png
 │   ├── Screenshot 2026-05-21 at 8.37.24 AM.png
+│   ├── Screenshot 2026-05-22 at 11.20.10 AM.png
+│   ├── Screenshot 2026-06-02 at 2.15.18 PM.png
+│   ├── Screenshot 2026-06-02 at 2.24.32 PM.png
+│   ├── Screenshot 2026-06-02 at 2.48.50 PM.png
+│   ├── Screenshot 2026-06-02 at 2.55.59 PM.png
+│   ├── Screenshot 2026-06-02 at 3.09.59 PM.png
+│   ├── Screenshot 2026-06-02 at 5.42.05 PM.png
+│   ├── Screenshot 2026-06-02 at 5.55.57 PM.png
+│   ├── Screenshot 2026-06-02 at 6.31.38 PM.png
+│   ├── Screenshot 2026-06-02 at 9.25.23 AM.png
+│   ├── Screenshot 2026-06-02 at 9.30.24 AM.png
+│   ├── Screenshot 2026-06-03 at 10.14.02 AM.png
+│   ├── Screenshot 2026-06-03 at 10.21.33 AM.png
+│   ├── Screenshot 2026-06-03 at 10.38.52 AM.png
+│   ├── Screenshot 2026-06-03 at 11.53.50 AM.png
+│   ├── Screenshot 2026-06-03 at 12.02.38 PM.png
+│   ├── Screenshot 2026-06-03 at 12.09.00 PM.png
+│   ├── Screenshot 2026-06-03 at 12.15.43 PM.png
+│   ├── Screenshot 2026-06-03 at 12.19.21 PM.png
+│   ├── Screenshot 2026-06-03 at 12.32.29 PM.png
+│   ├── Screenshot 2026-06-03 at 12.32.59 PM.png
+│   ├── Screenshot 2026-06-03 at 12.57.47 PM.png
+│   ├── Screenshot 2026-06-03 at 12.57.52 PM.png
+│   ├── Screenshot 2026-06-03 at 3.35.15 PM.png
+│   ├── Screenshot 2026-06-03 at 4.04.49 PM.png
+│   ├── Screenshot 2026-06-03 at 4.09.22 PM.png
+│   ├── Screenshot 2026-06-03 at 4.14.06 PM.png
+│   ├── Screenshot 2026-06-03 at 4.27.06 PM.png
+│   ├── Screenshot 2026-06-03 at 9.57.10 AM.png
 │   ├── Turn 1.png
 │   ├── Turn 2.png
 │   ├── Turn 3.png
@@ -496,16 +525,26 @@
 │   │   ├── pop
 │   │   │   ├── act1
 │   │   │   │   ├── Ch01-Paradigms_18.pdf
-│   │   │   │   ├── Ch01-Paradigms_19.pdf
+│   │   │   │   ├── Ch01-Paradigms_20.pdf
 │   │   │   │   ├── Ch02-Paradox_14.pdf
+│   │   │   │   ├── Ch02-Paradox_15.pdf
 │   │   │   │   ├── Ch03-Relativity_11.pdf
+│   │   │   │   ├── Ch03-Relativity_12.pdf
 │   │   │   │   ├── Ch04-QM_11.pdf
+│   │   │   │   ├── Ch04-QM_12.pdf
 │   │   │   │   ├── Ch05-Uncertainty_07.pdf
+│   │   │   │   ├── Ch05-Uncertainty_08.pdf
 │   │   │   │   ├── Ch06-Interference_08.pdf
+│   │   │   │   ├── Ch06-Interference_09.pdf
 │   │   │   │   ├── Ch07-Entanglement_08.pdf
+│   │   │   │   ├── Ch07-Entanglement_09.pdf
 │   │   │   │   ├── Ch08-QTP_08.pdf
+│   │   │   │   ├── Ch08-QTP_09.pdf
 │   │   │   │   ├── Ch09-R&D_06.pdf
 │   │   │   │   ├── Ch09-R&D_07.pdf
+│   │   │   │   ├── Obsolete
+│   │   │   │   │   ├── Ch01-Paradigms_19.pdf
+│   │   │   │   │   └── Ch01-Paradigms_19a.pdf
 │   │   │   │   ├── PD01-Boxes_14.pdf
 │   │   │   │   ├── PD02-SelfReference_10.pdf
 │   │   │   │   ├── PD02-SelfReference_11.pdf
@@ -515,26 +554,37 @@
 │   │   │   │   ├── PD06-CrestValley_04.pdf
 │   │   │   │   ├── PD07-SCME_11.pdf
 │   │   │   │   ├── PD08-Zombies_16.pdf
-│   │   │   │   └── PD09-Quest_08.pdf
+│   │   │   │   ├── PD09-Quest_08.pdf
+│   │   │   │   └── StructureOfBook.pdf
 │   │   │   ├── act2
 │   │   │   │   ├── Ch10-Objections_05.pdf
 │   │   │   │   ├── Ch10-Objections_06.pdf
 │   │   │   │   ├── Ch11-QT3_09.pdf
 │   │   │   │   ├── Ch11-QT3_10.pdf
 │   │   │   │   ├── Ch12-By-Contradiction_05.pdf
+│   │   │   │   ├── Ch12-By-Contradiction_06.pdf
 │   │   │   │   ├── Ch13-12-Light-Seconds_10.pdf
+│   │   │   │   ├── Ch13-Light-Seconds_11.pdf
+│   │   │   │   ├── Ch14-World-Ribbons_05.pdf
 │   │   │   │   ├── Ch14-WorldRibbons_04.pdf
 │   │   │   │   ├── Ch15-SSI_12.pdf
+│   │   │   │   ├── Ch15-SSI_13.pdf
 │   │   │   │   ├── Ch16-Bowtie_03.pdf
 │   │   │   │   ├── Ch16-Bowtie_04.pdf
 │   │   │   │   ├── Ch17-Teleportation_02.pdf
+│   │   │   │   ├── Ch17-Teleportation_03.pdf
 │   │   │   │   ├── Ch18-Indistinguishable_02.pdf
+│   │   │   │   ├── Ch18-Indistinguishable_03.pdf
 │   │   │   │   ├── Ch19-Quantum-Optics_03.pdf
+│   │   │   │   ├── Ch19-Quantum-Optics_04.pdf
 │   │   │   │   ├── Ch20-FTL_04.pdf
 │   │   │   │   ├── Ch20-FTLbyIndistinguishability_04.pdf
+│   │   │   │   ├── Ch20-FTLbyIndistinguishability_05.pdf
 │   │   │   │   ├── Ch21-Now-and-Then_04.pdf
+│   │   │   │   ├── Ch21-NowAndThen_05.pdf
 │   │   │   │   ├── Ch22-QTI_13.pdf
 │   │   │   │   ├── Ch23-Critique_07.pdf
+│   │   │   │   ├── Ch23-Critique_08.pdf
 │   │   │   │   ├── PD10-Journal_04.pdf
 │   │   │   │   ├── PD11-Out-Smarted_09.pdf
 │   │   │   │   ├── PD12-Paired-Correlations_03.pdf
@@ -551,15 +601,21 @@
 │   │   │   │   └── PD23-Friends_12.pdf
 │   │   │   ├── act3
 │   │   │   │   ├── Ch24-Frame_03.pdf
+│   │   │   │   ├── Ch24-Frame_04.pdf
+│   │   │   │   ├── Ch24-Frame_05.pdf
 │   │   │   │   ├── Ch25-LOF_04.pdf
+│   │   │   │   ├── Ch25-LOF_05.pdf
+│   │   │   │   ├── Ch25-LOF_06.pdf
 │   │   │   │   ├── Ch26-Engineering_08.pdf
 │   │   │   │   ├── Ch26-Engineering_08a.pdf
 │   │   │   │   ├── Ch26-Engineering_08b.pdf
 │   │   │   │   ├── Ch27-Infinity_03.pdf
+│   │   │   │   ├── Ch27-Infinity_04.pdf
 │   │   │   │   ├── PD24-Search-Party_05.pdf
 │   │   │   │   ├── PD25-InTheBeginning_03.pdf
 │   │   │   │   ├── PD26-CircleOfTruth_05.pdf
 │   │   │   │   └── PD27-TitleWithoutEnd_01.pdf
+│   │   │   ├── CastBible
 │   │   │   └── tbd
 │   │   │       ├── Ch81-ACP_01.pdf
 │   │   │       ├── ChatGPT Image Jan 23, 2026, 10_15_35 AM.png
@@ -575,4 +631,4 @@
 │           └── poc.js
 └── themes
 
-115 directories, 460 files
+117 directories, 514 files

@@ -36,12 +36,11 @@ import advsqsData from "./advsqs.json" assert { type: "json" };
   import * as decorators from "../decorators/decorators.js";
   import * as cameras    from "../render/cameras.js";
   import * as renders    from "../render/renders.js";
-  import * as coordsMaps from "../render/coordsMaps.js"
 // Seampoint: more imports...
 
 // --- Globals ---
-let advsqPanelInitialParams = null;
-let currAdvsqGroup = null;
+  let advsqPanelInitialParams = null;
+  let currAdvsqGroup = null;
 
 // --- UI ---
 export function removeFromScene() {
@@ -173,6 +172,14 @@ export function setAdvsqPanelParams(params) {
   panel.querySelector('[name="advsq-perimeter"]').value    = params.perimeter;
   panel.querySelector('[name="advsq-stride"]').value       = params.stride;
   panel.querySelector('[name="advsq-opacity"]').value      = params.opacity;
+  }
+
+export function setLevelSep(levelSep) {
+  console.log("view : advsqs.js - setLevelSep(levelSep):", levelSep);
+
+  if(!currAdvsqGroup) return;
+
+  view.reprojectGroup(currAdvsqGroup, levelSep);
 }
 // Seampoint: more global functions...
 
@@ -279,7 +286,7 @@ function strideDerived(q, k, s) {
   else                                                  piece = basePiece;
 
   return { strideType, moveType, overlap, piece };
-}
+  }
 
 function makeAdvsq(specs) {
   console.log("view : advsqs.js - makeAdvsq(specs):", specs);
@@ -290,7 +297,7 @@ function makeAdvsq(specs) {
 
   view.context.scene.add(group);
   currAdvsqGroup = group;
-}
+  }
 
 function getAdvsqPanelParams() {
   console.log("view : advsqs.js - getAdvsqPanelParams():");
@@ -307,7 +314,7 @@ function getAdvsqPanelParams() {
   };
 
   return params;
-}
+  }
 
 function specsToPanelParams(specs) {
   console.log("view : advsqs.js - specsToPanelParams(specs):", specs);

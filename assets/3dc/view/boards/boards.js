@@ -94,12 +94,12 @@ export function clearBoard() {
   view.context.tileMap.clear();
   }
 
-export function setBoardSep(levelSep) {
-  console.log("view : boards.js - setBoardSep(levelSep):", levelSep);
+export function setLevelSep(levelSep) {
+  console.log("view : boards.js - setLevelSep(levelSep):", levelSep);
 
-  /* TODO: Board level separaion control flow
-   * 1.
-   */
+  if(!currentBoard) return;
+
+  view.reprojectGroup(currentBoard, levelSep);
 }
 // Seampoint: more global functions...
 

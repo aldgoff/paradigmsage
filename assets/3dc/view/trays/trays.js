@@ -21,6 +21,7 @@ import traysData from "./trays.json" assert { type: "json" };
   import * as view       from "../view.js";
   import * as tiles      from "../tiles/tiles.js";
   import * as coordsMaps from "../../view/render/coordsMaps.js";
+  import * as vPieces    from "../../view/pieces/pieces.js";
 // Seampoint: more imports...
 
 // --- Globals ---
@@ -28,8 +29,10 @@ import traysData from "./trays.json" assert { type: "json" };
 
   let whiteTrayGroup = null;
   let blackTrayGroup = null;
+  let lastTrayGap    = 0;
+  let lastLevelSep   = 1.0;
 
-  let traysVisible = false;
+  let traysVisible = true;
 // Seampoint: more globals.
 
 // --- UI ---
@@ -59,25 +62,35 @@ export function destroyTrays() {
   }
   }
 
-export function setTrayGap(payload) {
-  console.log("view : viewer.js - setTrayGap(payload)", payload);
+export function setLevelSep(levelSep) {
+  console.log("view : trays.js - setLevelSep(levelSep)", levelSep);
 
-  const { trayGap, levelSep, range, speed } = payload;
+  lastLevelSep = levelSep;
 
-  const gap = Math.max(traySpecs.minGap, Math.min(traySpecs.maxGap, trayGap));
+  if(!traysVisible) return;
 
-  if (!traysVisible) return;
-
-  reprojectTray(whiteTrayGroup, levelSep, -gap);
-  reprojectTray(blackTrayGroup, levelSep,  gap);
+  reprojectTray(whiteTrayGroup, levelSep, -lastTrayGap);
+  reprojectTray(blackTrayGroup, levelSep,  lastTrayGap);
   }
 
-export function reprojectTray(group, levelSep, trayGap) {
+export function setTrayGap(trayGap) {
+  console.log("view : viewer.js - setTrayGap(trayGap)", trayGap);
+
+  lastTrayGap = trayGap;
+
+  if(!traysVisible) return;
+
+  reprojectTray(whiteTrayGroup, lastLevelSep, -trayGap);
+  reprojectTray(blackTrayGroup, lastLevelSep,  trayGap);
+
+  vPieces.reprojectTrayPieces(lastLevelSep, lastTrayGap);
+  }
+
+function reprojectTray(group, levelSep, trayGap) {
   console.log("view : trays.js - reprojectTray(group, levelSep, trayGap))", group, levelSep, trayGap);
 
   group.traverse(tile => {
     if(tile.userData?.isTrayTile) {
-      console.log("view : trays.js - tile.userData", tile.userData);
       reprojectMesh(tile, levelSep, trayGap);
     }
   });  
@@ -146,7 +159,7 @@ function makeTrayTile(logicalPos, renderPos) {
   }
 
 function reprojectMesh(tile, levelSep, trayGap) {
-  console.log("view : trays.js - reprojectMesh(tile, levelSep, trayGap))", tile.userData, levelSep, trayGap);
+  // console.log("view : trays.js - reprojectMesh(tile, levelSep, trayGap))", tile.userData, levelSep, trayGap);
 
   const [z,x,y] = tile.userData.vts;
 
@@ -157,7 +170,6 @@ function reprojectMesh(tile, levelSep, trayGap) {
   ];
 
   const pixels = coordsMaps.vts2pixels(shifted, levelSep);
-  console.log("view : trays.js - shifted, levelSep, pixels", shifted, levelSep, pixels);
 
   tile.position.set(...pixels);
 }

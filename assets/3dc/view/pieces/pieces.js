@@ -10,6 +10,11 @@
 // --- Load JSON ---
 import piecesData from "./pieces.json" assert { type: "json" };
   const piecesModule = piecesData.pieces_module;
+  
+  const materials = piecesModule.materials;
+  const white     = materials.white;
+  const black     = materials.black;
+  
   const rook   = piecesModule.rook;
   const bishop = piecesModule.bishop;
   const duke   = piecesModule.duke;
@@ -37,9 +42,25 @@ import piecesData from "./pieces.json" assert { type: "json" };
 
 // --- Globals ---
   const THREE = window.THREE;
+  let currPiecesGroup = null;
 // Seampoint: more globals...
 
 // --- UI ---
+export function initPieces() {
+  console.log("view : pieces.js - initPieces()");
+
+  const pieces = mPieces.getPieceList();
+
+  currPiecesGroup = new THREE.Group();
+
+  Object.entries(pieces)
+    .forEach(([key, piece]) =>
+      renderPiece(key)
+    );
+
+  view.context.scene.add(currPiecesGroup);
+  }
+
 export function renderPiece(key) {  // "WKR".
   // console.log("view : pieces.js - renderPiece(key)", key);
 
@@ -55,7 +76,9 @@ export function renderPiece(key) {  // "WKR".
     const tray = (player === "W") 
       ? mTrays.getWhiteTray() 
       : mTrays.getBlackTray();
-      renderInTray(player, side, type, tray, pos);
+      const group = renderInTray(player, side, type, tray, pos);
+      if(group)
+        group.userData.key = key;
     }
   else if(loc === "@") {                                  // Render on board.
       renderOnBoard(player, side, type, pos);
@@ -69,6 +92,49 @@ export function derenderPiece(piece) {
   console.log("view : pieces.js - derenderPiece(piece)", piece);
   // TODO: write function derenderPiece.
 
+  }
+
+export function setLevelSep(levelSep) {
+  console.log("view : pieces.js - setLevelSep(levelSep):", levelSep);
+
+  if(!currPiecesGroup) return;
+
+  view.reprojectGroup(currPiecesGroup, levelSep);
+  }
+
+export function reprojectTrayPieces(levelSep, trayGap) {
+  console.log("view : pieces.js - reprojectTrayPieces(levelSep, trayGap):", levelSep, trayGap);
+
+  if(!currPiecesGroup) return;
+
+  const pieces = mPieces.getPieceList();
+
+  currPiecesGroup.traverse(obj => {
+    if(!obj.userData?.isPiece) return;
+
+    const key = obj.userData.key;
+    const piece = pieces[key];
+
+    if(!piece) return;
+    if(piece.loc !== "~") return;
+
+    // Recompute canonical tray VTS.
+    const player = key[0];
+    const vts = trayToVts(player, piece.pos, trayGap + 2); // Tray base offset from board.
+    const pixels = coordsMaps.vts2pixels(vts, levelSep);
+
+    const tileHeight = 5;
+    const zOffset = tileHeight / 2;
+    const decoratorGap = 2;
+
+    obj.position.set(
+      pixels[0],
+      pixels[1] + zOffset + decoratorGap,
+      pixels[2]
+    );
+
+    obj.userData.vts = vts;
+  });
 }
 // Seampoint: more global functions...
 
@@ -78,24 +144,22 @@ function renderInTray(player, side, type, tray, pos) {
   // TODO: finish renderInTray().
 
   let gap = cViewer.getTrayGap();
-
-  if(type === "P")  gap += 1; // First tray column.
-  else              gap += 2; // Second tray column.
+  gap += 2; // Tray offset from board with zero gap.
 
   const vts = trayToVts(player, pos, gap);
 
   let group = null;
 
-  const color = (player === "W") ? 0xffffff : 0x111111;
+  const color = (player === "W") ? white : black;
   switch(type) {
-    case "R": group = makeRookObject(  {color}); break;
-    case "B": group = makeBishopObject({color}); break;
-    case "D": group = makeDukeObject(  {color}); break;
-    // case "Q": group = makeQueenObject( {color}); break;
-    case "K": group = makeKingObject(  {color}); break;
-    // case "S": group = makeStackObject({color}); break;
-    case "P": group = makePawnObject({color}); break;
-    // case "N": group = makeKnightObject({color, side}); break;
+    case "R": group = makeRookObject(  {color});                break;
+    case "B": group = makeBishopObject({color, player});        break;
+    case "D": group = makeDukeObject(  {color, player});        break;
+    case "Q": group = makeQueenObject( {color}); break;
+    case "N": group = makeKnightObject({color, player, side});  break;
+    case "S": group = makeStackObject( {color, player});        break;
+    case "P": group = makePawnObject(  {color});                break;
+    case "K": group = makeKingObject(  {color});                break;
     // Seampoint: no more pieces.
     default:
       console.log(`view : pieces.js - Unknown piece type ${type}`); return; 
@@ -110,7 +174,12 @@ function renderInTray(player, side, type, tray, pos) {
   const decoratorGap = 2;
   group.position.set(grid2[0], grid2[1]+zOffset+decoratorGap, grid2[2]);
 
-  view.context.scene.add(group);
+  group.userData.isPiece = true;
+  group.userData.vts = vts;
+
+  currPiecesGroup.add(group);
+
+  return group;
   }
 
 function trayToVts(player, pos, gap) {
@@ -119,12 +188,9 @@ function trayToVts(player, pos, gap) {
 
   const specOrName = "8x8x8"; // TODO: get board size from setup.
   let vts = coords.normalizeTileToVts(pos, specOrName); // [4,-3,-3]=>[4,-4,-4] and [-3,-3,-3]=>[-3,-4,-4]
-  let displacement = [0, 0, 0];
+  const displacement = (player === "W") ? [0, -gap, -gap]: [0, gap, gap];
 
-  if(player === "W") {
-    displacement = [0, -gap, -gap];
-    vts = utils.add(vts, displacement);
-  }
+  vts = utils.add(vts, displacement);
 
   return vts;
   }
@@ -135,18 +201,6 @@ function renderOnBoard(player, side, type, pos) {
   const coords = coords.boardToVts(pos);  // TODO: may need to add this function to coords.
   // TODO: write function renderOnBoard.
 }
-
-// function make<piece>Object(params = {}) {
-  //   console.log("view : pieces.js - makeObject(params)", params);
-
-  //   const { tileWidth, colors } = parseParams(params);
-  //   const geometry = make<piece>Geo(tileWidth, piece);
-  //   const edges = bevel<piece>Edges();
-  //   const material = makeSkin();
-  //   const group = makePiece(geometry, edges, material);
-
-  //   return group;
-  // }
 
 function makeRookObject(params = {}) {
   // console.log("view : pieces.js - makeRookObject(params)", params);
@@ -166,7 +220,7 @@ function makeRookObject(params = {}) {
 function makeBishopObject(params = {}) {
   // console.log("view : pieces.js - makeBishopObject(params)", params);
 
-  const { color } = params;
+  const { color, player } = params;
   let [tileHeight, tileWidth] = tiles.tileSize();       // Canonical size fills tile.
 
   const geometry = makeBishopGeo(tileWidth, bishop);    // Mesh.
@@ -175,22 +229,44 @@ function makeBishopObject(params = {}) {
   const group = new THREE.Group();                      // Group.
   group.add(mesh);
 
+  (player === "W") 
+  ? group.rotation.y = bishop.orientation*Math.PI/3         // White bishop orientation: edge points toward opponent.
+  : group.rotation.y = (bishop.orientation-1.0)*Math.PI/3;  // Black bishop orientation: edge points toward opponent.
+
   return group;
   }
 
 function makeDukeObject(params = {}) {
-  // console.log("view : pieces.js - makeDukeObject(params)", params);
+  const { color, player } = params;
 
-  const { color } = params;
-  let [tileHeight, tileWidth] = tiles.tileSize();       // Canonical size fills tile.
+  let [, tileWidth] = tiles.tileSize();
 
-  const geometry = makeDukeGeo(tileWidth, duke);        // Mesh.
-  const mesh     = createMesh(geometry, color);
+  const geometry = makeDukeGeo(tileWidth, duke);
+  const mesh = createMesh(geometry, color);
 
-  const group = new THREE.Group();                      // Group.
-  group.add(mesh);
+  const poseGroup = new THREE.Group();
+  poseGroup.rotation.y = Math.PI/4;
+  poseGroup.rotation.x = Math.atan(Math.sqrt(2));
+  poseGroup.add(mesh);
 
-  return group;
+  const box = new THREE.Box3().setFromObject(poseGroup);
+  const centerX = (box.min.x + box.max.x)/2;
+  const centerZ = (box.min.z + box.max.z)/2;
+
+  poseGroup.position.set(
+    -centerX,
+    -box.min.y + duke.height,
+    -centerZ
+  );  
+
+  const orientationGroup = new THREE.Group();
+  orientationGroup.add(poseGroup);
+
+  (player === "W") 
+  ? orientationGroup.rotation.y = (duke.orientation-1.0)*Math.PI/3  // White duke orientation: high edge points toward opponent.
+  : orientationGroup.rotation.y = duke.orientation*Math.PI/3;       // Black duke orientation: high edge points toward opponent.
+
+  return orientationGroup;
   }
 
 function makeQueenObject(params = {}) {
@@ -206,6 +282,47 @@ function makeQueenObject(params = {}) {
   group.add(mesh);
 
   return group;
+}
+
+function makeKnightObject(params = {}) {
+  console.log("view : pieces.js - makeKnightObject(params)", params);
+
+  const { color, player, side } = params;
+  let [, tileWidth] = tiles.tileSize();
+
+  const chirality = (side === "K")?  1 : -1;
+  const group = makeKnightMeshGroup(tileWidth, knight, chirality, color);
+
+  (player === "W") 
+  ? group.rotation.y = (knight.orientation-1.00)*Math.PI   // White knight orientation: tail points toward player.
+  : group.rotation.y = knight.orientation*Math.PI; // Black knight orientation: tail points toward player.
+
+  return group;
+  }
+
+function makeStackObject(params = {}) {
+  // console.log("view : pieces.js - makeStackObject(params)", params);
+
+  const bishop = makeBishopObject(params);
+  const duke   = makeDukeObject(params);
+  duke.position.y += stack.height;
+
+  const stackGroup = new THREE.Group();
+  stackGroup.add(bishop);
+  stackGroup.add(duke);
+
+  return stackGroup;
+  }
+
+function makePawnObject(params = {}) {
+  // console.log("view : pieces.js - makePawnObject(params)", params);
+
+  const { color, side } = params;
+  let [tileHeight, tileWidth] = tiles.tileSize();   // Canonical size fills tile.
+
+  const group = makePawnMeshGroup(tileWidth, pawn, color);
+
+  return group;
   }
 
 function makeKingObject(params = {}) {
@@ -217,54 +334,18 @@ function makeKingObject(params = {}) {
   const geometry = makeKingGeo(tileWidth, king);        // Mesh.
   const mesh     = createMesh(geometry, color, true);
 
-  // --- Recompute canonical dimensions ---
   const radius = (tileWidth * king.breadth) / 2;        // Edges.
   const height = tileWidth * king.breadth * king.aspect;
-  addCylinderEdges(mesh, radius, height);
+  addCylinderEdges(mesh, radius, height, color);
 
   const group = new THREE.Group();                      // Group.
   group.add(mesh);
 
   return group;
 }
-
-function makeStackObject(params = {}) {
-  // console.log("view : pieces.js - makeStackObject(params)", params);
-
-  const { color, side } = params;
-  let [tileHeight, tileWidth] = tiles.tileSize();   // Canonical size fills tile.
-
-  const group = makeStackMeshGroup(tileWidth, stack);
-  decorateGroup(group, color);
-
-  return group;
-  }
-
-function makePawnObject(params = {}) {
-  // console.log("view : pieces.js - makePawnObject(params)", params);
-
-  const { color, side } = params;
-  let [tileHeight, tileWidth] = tiles.tileSize();   // Canonical size fills tile.
-
-  const group = makePawnMeshGroup(tileWidth, pawn);
-  decorateGroup(group, color);
-
-  return group;
-  }
-
-function makeKnightObject(params = {}) {
-  // console.log("view : pieces.js - makeKnightObject(params)", params);
-
-  const { color, side } = params;
-  let [tileHeight, tileWidth] = tiles.tileSize();   // Canonical size fills tile.
-
-  const group = makeKnightMeshGroup(tileWidth, knight, side);
-  decorateGroup(group, color);
-
-  return group;
-}
 // Seampoint: no more pieces.
 
+// Geometries:
 function makeRookGeo(tileWidth, rook) {
   const { aspect, breadth } = rook;
   const base = tileWidth * breadth;
@@ -290,18 +371,56 @@ function makeBishopGeo(tileWidth, bishop) {
   }
 
 function makeDukeGeo(tileWidth, duke) {
-  let geometry = null;
-  // TODO: define duke geometry.
+  console.log("view : pieces.js - makeDukeGeo(tileWidth, duke)", tileWidth, duke);
+  const { aspect, breadth } = duke;
+  const base = tileWidth * breadth;
+  const height = base * aspect;
+  const geometry = new THREE.BoxGeometry(base, height, base);       // Cannonical cube.
+  
+  geometry.translate(0, (height/2), 0);
 
   return geometry;
   }
 
 function makeQueenGeo(tileWidth, queen) {
-  let geometry = null;
-  // TODO: define queen geometry.
+  const { aspect, breadth } = queen;
+
+  const radius = tileWidth * breadth;
+  const height = radius * aspect;
+
+  const shape = new THREE.Shape();
+
+  const pts = [];
+
+  for(let i=0; i<6; i++) {
+    const outerAngle = (i * Math.PI)/3;
+    const innerAngle = outerAngle + Math.PI/6;
+
+    pts.push( new THREE.Vector2(
+        radius * Math.cos(outerAngle),
+        radius * Math.sin(outerAngle))
+    );
+    pts.push( new THREE.Vector2(
+        (radius * queen.starRatio) * Math.cos(innerAngle),
+        (radius * queen.starRatio) * Math.sin(innerAngle))
+    );
+  }
+
+  shape.moveTo(pts[0].x, pts[0].y);
+  pts.slice(1).forEach(p => shape.lineTo(p.x, p.y));
+  shape.closePath();
+
+  const geometry = new THREE.ExtrudeGeometry(shape, { depth: height, bevelEnabled: false });
+
+  geometry.rotateX(Math.PI/2);
+  geometry.computeBoundingBox();
+
+  const box = geometry.boundingBox;
+  geometry.translate(0, -box.min.y, 0);
 
   return geometry;
   }
+
 function makeKingGeo(tileWidth, king) {
   const { aspect, breadth } = king;
 
@@ -323,154 +442,146 @@ function makeKingGeo(tileWidth, king) {
   return geometry;
 }
 
+// Groups:
+function makeKnightMeshGroup(tileWidth, knight, chirality = 1, color) {
+  const { breadth } = knight;
+
+  const cubeSize = tileWidth * breadth;
+
+  const positions = [
+    [-cubeSize, cubeSize/2, 0],            // Tail.
+    [0, cubeSize/2, 0],                    // Column.
+    [0, 3*cubeSize/2, 0],
+    [0, 5*cubeSize/2, 0],
+    [0, 5*cubeSize/2, chirality*cubeSize]  // Head.
+  ];
+
+  const group = new THREE.Group();
+
+  positions.forEach(([x,y,z]) => {
+    const cube = makeBeveledCubeMesh(cubeSize, color);
+    cube.position.set(x, y, z);
+    group.add(cube);
+  });
+
+  const box = new THREE.Box3().setFromObject(group);
+
+  group.position.set(0, -box.min.y, 0);  // Center-bottom origin invariant.
+
+  return group;
+  }
+
 function makeStackMeshGroup(tileWidth, stack) {
   let group = null;
   // TODO: define stack group.
 
   return group;
   }
-function makePawnMeshGroup(tileWidth, pawn) {
+
+function makePawnMeshGroup(tileWidth, pawn, color) {
   const { aspect, breadth } = pawn;
 
-  // --- Canonical dimensions ---
+  const baseRadius = (tileWidth * breadth) / 2;                               // Dimensions.
+  const washerRadius = baseRadius * 0.85;
+  const washerHeight = baseRadius * 0.30;
+  const sphereRadius = baseRadius * 0.62;
 
-  const baseRadius = (tileWidth * breadth) / 2;
+  const sphereGeo = new THREE.SphereGeometry(sphereRadius, 32, 24);           // Geometries.
+  const washerGeo = new THREE.CylinderGeometry(washerRadius, washerRadius, washerHeight, 32);
+  washerGeo.translate(0, washerHeight / 2, 0);
 
-  // Sphere sits visually inside torus ring.
-  const sphereRadius = baseRadius * 0.72;
+  const sphereMesh = new THREE.Mesh(sphereGeo, new THREE.MeshBasicMaterial({ color: color.surfaceColor }));// Meshes.
+  const washerMesh = new THREE.Mesh(washerGeo, new THREE.MeshBasicMaterial({ color: color.surfaceColor }));
 
-  // Torus:
-  //   major radius = centerline radius
-  //   tube radius  = torus thickness
-  const torusRadius = baseRadius * 0.78;
+  sphereMesh.position.y = washerHeight/2 + sphereRadius * 0.85;               // Placement.
 
-  // Aspect controls torus thickness.
-  const tubeRadius = torusRadius * 0.22 * aspect;
+  const group = new THREE.Group();                                            // Assembly.
 
-  // --- Primitive geometries ---
-
-  const sphereGeo = new THREE.SphereGeometry(
-    sphereRadius,
-    32,
-    24
-  );
-
-  const torusGeo = new THREE.TorusGeometry(
-    torusRadius,
-    tubeRadius,
-    16,
-    48
-  );
-
-  // --- Primitive meshes ---
-
-  const sphereMesh = new THREE.Mesh(
-    sphereGeo,
-    new THREE.MeshBasicMaterial()
-  );
-
-  const torusMesh = new THREE.Mesh(
-    torusGeo,
-    new THREE.MeshBasicMaterial()
-  );
-  torusMesh.rotation.x = Math.PI / 2;
-
-  // --- Placement ---
-
-  // Raise sphere so it visually nests into torus.
-  sphereMesh.position.y =
-    sphereRadius + tubeRadius * 0.35;
-
-  // --- Group assembly ---
-
-  const group = new THREE.Group();
-
-  group.add(torusMesh);
+  addCylinderEdges(washerMesh, washerRadius, washerHeight, color);            // Washer edges (king convention).
+  addWasherCenterRing(washerMesh, washerRadius, washerHeight, color);
+  group.add(washerMesh);
   group.add(sphereMesh);
 
-  // --- Center-bottom origin invariant ---
+  addPawnLatitudes(sphereMesh, sphereRadius, color);                          // Specular latitudes until skins and lighting.
 
-  const box = new THREE.Box3().setFromObject(group);
-
+  const box = new THREE.Box3().setFromObject(group);                          // Normalize origin.
   const centerX = (box.min.x + box.max.x) / 2;
   const centerZ = (box.min.z + box.max.z) / 2;
-
-  group.position.set(
-    -centerX,
-    -box.min.y,
-    -centerZ
-  );
-
-  return group;
-}
-function makePawnMeshGroup1(tileWidth, pawn) {
-  let group = null;
-  // TODO: define pawn group.
+  group.position.set(-centerX, -box.min.y, -centerZ);
 
   return group;
   }
 
-function makeKnightMeshGroup(tileWidth, knight, side) {
-  const cubeSize = 40;
+function addWasherCenterRing(mesh, radius, height, color) {
+  const holeRadius = radius * 0.65;
 
-  const geometry = new THREE.BoxGeometry(
-    cubeSize,
-    cubeSize,
-    cubeSize
+  const curve = new THREE.EllipseCurve(
+    0, 0, holeRadius, holeRadius, 0, 2 * Math.PI, false, 0
   );
 
-  // Chirality:
-  //   K = right-handed
-  //   Q = left-handed
-  const lateral = (side === "K") ? 1 : -1;
+  const points = curve.getPoints(64);
 
-  // Canonical knight move polycube.
-  const positions = [
-    [0, 0, 0],                           // origin
-    [cubeSize, 0, 0],                   // 1 out
-    [2*cubeSize, 0, 0],                 // 2 out
-    [2*cubeSize, cubeSize, 0],          // 1 up
-    [2*cubeSize, cubeSize, lateral*cubeSize] // side cube
-  ];
-
-  const knightGeo = new THREE.Group();
-
-  for(const [x,y,z] of positions) {
-
-    const cube = new THREE.Mesh(
-      geometry,
-      new THREE.MeshBasicMaterial()
+  const geometry =
+    new THREE.BufferGeometry().setFromPoints(
+      points.map(
+        p => new THREE.Vector3(p.x, 0, p.y)
+      )
     );
 
-    cube.position.set(x,y,z);
+  const material =
+    new THREE.LineBasicMaterial({ color: color.lineColor });
 
-    knightGeo.add(cube);
+  const ring =
+    new THREE.LineLoop(geometry, material);
+
+  // Slightly above top face to avoid z-fighting.
+  ring.position.y = height + 0.1;
+
+  mesh.add(ring);
   }
 
-  // --- Normalize to center-bottom origin invariant ---
+function addPawnLatitudes(mesh, radius, color) {
+  const material =
+    new THREE.LineBasicMaterial({ color: color.lineColor });
 
-  const box = new THREE.Box3().setFromObject(knightGeo);
+  // Upper, middle, lower bands.
+  const bands = [0.55, 0.20, -0.15];
 
-  const centerX = (box.min.x + box.max.x) / 2;
-  const centerZ = (box.min.z + box.max.z) / 2;
+  const scale = 1.03;  // Slightly outside sphere.
 
-  knightGeo.position.set(
-    -centerX,
-    -box.min.y,
-    -centerZ
-  );
+  bands.forEach(yFrac => {
+    const yPos = radius * yFrac;
 
-  return knightGeo;
+    // Radius of sphere cross-section at this latitude.
+    const ringRadius = Math.sqrt(radius * radius - yPos * yPos) * scale;
+
+    const curve = new THREE.EllipseCurve(
+      0, 0, ringRadius, ringRadius, 0, 2 * Math.PI, false, 0
+    );
+
+    const points = curve.getPoints(64);
+
+    const geometry =
+      new THREE.BufferGeometry().setFromPoints(
+        points.map(
+          p => new THREE.Vector3(p.x, yPos, p.y)
+        )
+      );
+
+    const line = new THREE.LineLoop(geometry, material);
+
+    mesh.add(line);
+  });
 }
-// Seampoint: no more pieces.
 
+// Helpers:
 function createMesh(geometry, color, suppress=false) {
-  const material = new THREE.MeshBasicMaterial({ color });
+  const material = new THREE.MeshBasicMaterial({ color: color.surfaceColor });
   const mesh = new THREE.Mesh(geometry, material);
 
   if(!suppress) {
     const edges = new THREE.EdgesGeometry(mesh.geometry);
-    const lines = new THREE.LineSegments( edges, new THREE.LineBasicMaterial({ color: 0x101010 }));
+    const lines = new THREE.LineSegments( edges, new THREE.LineBasicMaterial({ color: color.lineColor }));
     mesh.add(lines);
   }
 
@@ -480,11 +591,7 @@ function createMesh(geometry, color, suppress=false) {
   return mesh;
   }
 
-function decorateGroup(group, color) {
-  // TODO: Write decorateGroup().
-  }
-
-function addCylinderEdges(mesh, radius, height) {
+function addCylinderEdges(mesh, radius, height, color) {
   const curve = new THREE.EllipseCurve(
     0, 0, radius, radius, 0, 2 * Math.PI, false, 0
   );
@@ -494,7 +601,7 @@ function addCylinderEdges(mesh, radius, height) {
     points.map(p => new THREE.Vector3(p.x, 0, p.y))
   );
 
-  const material = new THREE.LineBasicMaterial({ color: 0x111111 });
+  const material = new THREE.LineBasicMaterial({ color: color.lineColor });
 
   // --- Bottom ring ---
   const bottomRing = new THREE.LineLoop(geometry, material);
@@ -505,6 +612,75 @@ function addCylinderEdges(mesh, radius, height) {
   topRing.position.y = height;
   mesh.add(bottomRing);
   mesh.add(topRing);
+  }
+
+function makeBeveledCubeMesh(cubeSize, color) {
+  const mesh =
+    new THREE.Mesh(
+      new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize),
+      new THREE.MeshBasicMaterial({ color: color.surfaceColor })
+    );
+
+  addCubeBevelLines(mesh, cubeSize, color);
+
+  return mesh;
+  }
+
+function addCubeBevelLines(mesh, cubeSize, color) {
+  const material =
+    new THREE.LineBasicMaterial({
+      color: color.lineColor
+    });
+
+  const inset = cubeSize * 0.08;
+  const h = cubeSize / 2;
+
+  const faces = [
+    [ [ h, -h+inset, -h+inset ],    // +X
+      [ h,  h-inset, -h+inset ],
+      [ h,  h-inset,  h-inset ],
+      [ h, -h+inset,  h-inset ] ],
+
+    [ [ -h, -h+inset, -h+inset ],    // -X
+      [ -h,  h-inset, -h+inset ],
+      [ -h,  h-inset,  h-inset ],
+      [ -h, -h+inset,  h-inset ] ],
+
+    [ [ -h+inset, h, -h+inset ],    // +Y
+      [  h-inset, h, -h+inset ],
+      [  h-inset, h,  h-inset ],
+      [ -h+inset, h,  h-inset ] ],
+
+    [ [ -h+inset, -h, -h+inset ],    // -Y
+      [  h-inset, -h, -h+inset ],
+      [  h-inset, -h,  h-inset ],
+      [ -h+inset, -h,  h-inset ] ],
+
+    [ [ -h+inset, -h+inset, h ],    // +Z
+      [  h-inset, -h+inset, h ],
+      [  h-inset,  h-inset, h ],
+      [ -h+inset,  h-inset, h ]
+    ],
+
+    [ [ -h+inset, -h+inset, -h ],    // -Z
+      [  h-inset, -h+inset, -h ],
+      [  h-inset,  h-inset, -h ],
+      [ -h+inset,  h-inset, -h ] ]
+  ];
+
+  faces.forEach(face => {
+    const geometry =
+      new THREE.BufferGeometry()
+        .setFromPoints(
+          face.map(
+            p => new THREE.Vector3(...p)
+          )
+        );
+
+    const ring = new THREE.LineLoop(geometry, material);
+
+    mesh.add(ring);
+  });
 }
 // Seampoint: more local functions...
 
@@ -538,3 +714,4 @@ function addCylinderEdges(mesh, radius, height) {
     20. Mesh registries / lookup helpers.
     21. Remove remaining model→view tension.
 */
+

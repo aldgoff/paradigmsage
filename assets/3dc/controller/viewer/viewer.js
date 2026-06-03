@@ -18,12 +18,16 @@ import viewerData from "./viewer.json" assert { type: "json" };
   import * as vViewer  from "../../view/viewer/viewer.js";
   import * as vTrays   from "../../view/trays/trays.js";
   import * as vBoards  from "../../view/boards/boards.js";
+  import * as vAdvsqs  from "../../view/advsqs/advsqs.js";
+  import * as vPieces  from "../../view/pieces/pieces.js";
 // Seampoint: more imports...
 
 // --- Globals ---
   let lastClickTime = 0;
   let clickTimer = null;
   const DOUBLE_CLICK_MS = 200;  // TODO: Belongs in a json file.
+  let lastTrayGap  = 0;
+  let lastLevelSep = 1.0;
 // Seampoint: more globals.
 
 // --- UI ---
@@ -134,11 +138,21 @@ function handleViewerParams(payload) {
 
   const { trayGap, levelSep, range, speed } = payload;
 
-  cameras.setJitter(range, speed);
+  cameras.setJitter(range, speed);    // Board jitter.
 
-  // Board and trays, levels and gaps.
-  vTrays.setTrayGap(payload);
-  vBoards.setBoardSep(levelSep);
+  if(trayGap !== lastTrayGap) {       // Tray Gap
+    vTrays.setTrayGap(trayGap);
+    lastTrayGap = trayGap;
+  }
+  if(levelSep !== lastLevelSep) {     // Level sep: trays, boards, advsqs, gambits, pieces.
+    vTrays.setLevelSep(levelSep);
+    vBoards.setLevelSep(levelSep);
+    vAdvsqs.setLevelSep(levelSep);
+    vGambits.setLevelSep(levelSep);
+    vPieces.setLevelSep(levelSep);
+
+    lastLevelSep = levelSep;
+  }
 }
 // Seampoint: more handlers...
 

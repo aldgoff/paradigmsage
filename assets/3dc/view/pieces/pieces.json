@@ -1,36 +1,71 @@
 {
   "pieces_module": {
+    "materials": {
+      "white": {
+        "surfaceColor": "#f8f8f8",
+        "lineColor": "#555555"
+      },
+      "black": {
+        "surfaceColor": "#202020",
+        "lineColor": "#cccccc"
+      },
+      "ghost": {
+        "surfaceColor": "#999999",
+        "lineColor": "#999999",
+        "transparency": 0.80
+      }
+    },
+
     "rook": {
       "aspect": 1.6,
-      "breadth": 0.35
+      "breadth": 0.35,
+      "orientation": 0,
+      "bevel": 0.00
     },
     "bishop": {
       "aspect": 1.5,
-      "breadth": 0.30
+      "breadth": 0.30,
+      "orientation": 0.75,
+      "bevel": 0.00
     },
     "duke": {
       "aspect": 1.0,
-      "breadth": 0.80
+      "breadth": 0.30,
+      "height": -5.0,
+      "orientation": 0.75,
+      "bevel": 0.00
     },
     "stack": {
       "aspect": 1.0,
-      "breadth": 1.00
+      "breadth": 1.00,
+      "height": 25,
+      "orientation": 0,
+      "bevel": 0.00
     },
     "queen": {
-      "aspect": 2.0,
-      "breadth": 0.20
+      "aspect": 5.0,
+      "breadth": 0.15,
+      "starRatio": 0.45,
+      "orientation": 0,
+      "bevel": 0.00
     },
     "knight": {
       "aspect": 1.0,
-      "breadth": 0.40
+      "breadth": 0.20,
+      "orientation": 0.75,
+      "bevel": 0.00
     },
     "pawn": {
       "aspect": 0.6,
-      "breadth": 0.60
+      "breadth": 0.60,
+      "orientation": 0,
+      "bevel": 0.00
     },
     "king": {
       "aspect": 3.0,
-      "breadth": 0.30
+      "breadth": 0.30,
+      "orientation": 0,
+      "bevel": 0.00
     }
   }
 }

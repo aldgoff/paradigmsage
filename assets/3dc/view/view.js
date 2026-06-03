@@ -171,6 +171,16 @@ export function buildDuplexGroup(entry) { // Params: srcTile, quad, perimeter, s
 
   return group;
 }
+
+export function reprojectGroup(group, levelSep) {
+  group.traverse(obj => {
+    if (!obj.userData?.vts) return;
+
+    const pixels = coordsMaps.vts2pixels(obj.userData.vts, levelSep);
+
+    obj.position.set(...pixels);
+  });
+}
 // Seampoint: more global functions...
 
 // --- Helpers ---
@@ -258,7 +268,7 @@ function decorateTile(coords, piece, decorator, group, opacity, zOffset = 0.00) 
     });
 
     // Tile identity.
-    meshTile.userData = { isTile: true, coords: pos, faceColor: tile.faceColor, isOffboard: true, entry: group.userData.entry }; // Ownership tag.
+    meshTile.userData = { isTile: true, vts: pos, coords: pos, faceColor: tile.faceColor, isOffboard: true, entry: group.userData.entry }; // Ownership tag.
 
     group.add(meshTile);  // Attach to group (ownership root).
   }

@@ -38,7 +38,7 @@ import gambitsData from "./gambits.json" assert { type: "json" };
 */
 
 // --- Globals ---
-let activeAnimation = null;
+  let activeAnimation = null;
 
 // --- UI ---
 export function makeQuadGroup(entry) {
@@ -139,7 +139,7 @@ export function planeRotation(entry, rotation) {
       opacity
     );
   });
-  }
+}
 
 function applyOverlayOpacity(overlays, opacity) {
   overlays.forEach(o => {
@@ -295,6 +295,18 @@ export function cancelAnimation() {
     activeAnimation.cancelled = true;
     activeAnimation = null;
   }
+}
+
+export function setLevelSep(levelSep) {
+  console.log("view : gambits.js - setLevelSep(levelSep):", levelSep);
+
+  const scene = view.context.scene;
+
+  scene.children
+    .filter(g => g.userData?.entry)
+    .forEach(g => {
+      view.reprojectGroup(g, levelSep);
+    });
 }
 // Seampoint: more global functions...
 
