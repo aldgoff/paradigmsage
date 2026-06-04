@@ -31,7 +31,8 @@
   import * as decorators from "./decorators/decorators.js";
   import * as quads      from "../geometry/quads/quads.js";
 
-  import * as cameras    from "../view/render/cameras.js";
+  import * as vSelections from "./selections/selections.js";
+  import * as cameras     from "../view/render/cameras.js";
 // Seampoint: more imports...
 
 // --- Globals ---
@@ -44,6 +45,8 @@ export function init(playBoard) {
   context = renders.init(playBoard);
   context.tileMap = new Map();
   context.tileGeometry = new THREE.BoxGeometry(...coordsMaps.vts2xyz(tiles.tileSize()));
+
+  vSelections.init();
 
   game.showUndoStatus();
   const {range, speed} = viewer.getJitterValues();

@@ -22,7 +22,6 @@ import boardsData from "./boards.json" assert { type: "json" };
 
 // --- Globals ---
   let currentBoard = null;
-  let clickHandler = null;
 // Seampoint: more globals.
 
 // --- UI ---
@@ -75,8 +74,6 @@ export function makeBoard(dimensions) {
   }
   view.context.scene.add(boardGroup);              // Add board to scene.
   currentBoard = boardGroup;
-
-  addEventListener(view.context.scene, view.context.renderer, view.context.camera, view.context.tileMap);
   }
 
 export function clearBoard() {
@@ -100,6 +97,29 @@ export function setLevelSep(levelSep) {
   if(!currentBoard) return;
 
   view.reprojectGroup(currentBoard, levelSep);
+  }
+
+export function toggleDecorator(meshTile) {
+  if (meshTile.userData.decorated) {      // --- REMOVE overlays ---
+    meshTile.userData.overlays.forEach(o => meshTile.remove(o));
+    meshTile.userData.overlays = [];
+    meshTile.userData.decorated = false;
+  } else {                                // --- ADD overlays ---
+    const face = meshTile.userData.faceColor;
+    const layers = decorators.applyBaseZones({
+      base: face,
+      zones: ["#111111", "#111111", face, face ]
+    });
+
+    const overlays = layers.map(layer => {
+      const circle = decorators.drawInsetCircle(meshTile, layer.scale, layer.color);
+      meshTile.add(circle);
+      return circle;
+    });
+
+    meshTile.userData.overlays = overlays;
+    meshTile.userData.decorated = true;
+  }
 }
 // Seampoint: more global functions...
 
@@ -135,82 +155,6 @@ function makePrimaryPlaneMarker() {
   const marker = new THREE.Mesh( geometry, material);
 
   return marker;
-  }
-
-function addEventListener(scene, renderer, camera, tileMap) {
-  if (clickHandler) {
-    renderer.domElement.removeEventListener("click", clickHandler);
-  }
-
-  clickHandler = (event) => {
-    const coords = getTileFromClick(event, camera, scene, renderer);
-    if (!coords) {
-      console.log("Ray casting: click off board.");
-      return;
-    }
-
-    const meshTile = tiles.getTileMesh(tileMap, coords);
-    if (meshTile) {
-      toggleDecorator(meshTile);
-    }
-  };
-
-  renderer.domElement.addEventListener("click", clickHandler);
-  }
-
-function getTileFromClick(event, camera, scene, renderer) {
-  const THREE = window.THREE;
-
-  // --- Mouse → normalized device coords (-1 to +1) ---
-  const rect = renderer.domElement.getBoundingClientRect();
-
-  const mouse = new THREE.Vector2(
-    ((event.clientX - rect.left) / rect.width) * 2 - 1,
-    -((event.clientY - rect.top) / rect.height) * 2 + 1
-  );
-
-  // --- Raycast ---
-  const raycaster = new THREE.Raycaster();
-  raycaster.setFromCamera(mouse, camera);
-
-  const intersects = raycaster.intersectObjects(scene.children, true);
-
-  if (intersects.length === 0) return null;
-
-  // --- Get first hit ---
-  let obj = intersects[0].object;
-
-  // Walk up to tile mesh (in case we hit overlay/edges)
-  while (obj && !obj.userData?.isTile) {
-    obj = obj.parent;
-  }
-
-  if (!obj) return null;
-
-  return obj.userData.coords;  // ← your VTS coords
-  }
-
-function toggleDecorator(meshTile) {
-  if (meshTile.userData.decorated) {      // --- REMOVE overlays ---
-    meshTile.userData.overlays.forEach(o => meshTile.remove(o));
-    meshTile.userData.overlays = [];
-    meshTile.userData.decorated = false;
-  } else {                                // --- ADD overlays ---
-    const face = meshTile.userData.faceColor;
-    const layers = decorators.applyBaseZones({
-      base: face,
-      zones: ["#111111", "#111111", face, face ]
-    });
-
-    const overlays = layers.map(layer => {
-      const circle = decorators.drawInsetCircle(meshTile, layer.scale, layer.color);
-      meshTile.add(circle);
-      return circle;
-    });
-
-    meshTile.userData.overlays = overlays;
-    meshTile.userData.decorated = true;
-  }
 }
 // Seampoint: more local functions...
 

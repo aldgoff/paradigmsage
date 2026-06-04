@@ -1,16 +1,15 @@
-/* File: modules.js
-  Path: ./3dc/layer/modules/modules.js
-  Purpose: template for code files.
+/* File: selections.js
+  Path: ./3dc/model/selections/selections.js
+  Purpose: Manage raycasting clicks for tiles, pieces, advsqs, gambits, etc.
   Author: Allan Goff
-  Date: 5/03/26
-  Recommended access: import * as modules from "../../layer/modules/modules.js";
+  Date: 6/04/26
+  Recommended access: import * as mSelections from "../../model/selections/selections.js";
   UI: the export functions.
 */
 
 // --- Load JSON ---
-import modulesData from "./modules.json" assert { type: "json" };
-  const modulesModule = modulesData.modules_module;
-  const category  = modulesModule.category;
+import selectionsData from "./selections.json" assert { type: "json" };
+  const selectionsModule = selectionsData.selections_module;
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
@@ -23,9 +22,9 @@ import modulesData from "./modules.json" assert { type: "json" };
 
 // --- UI ---
 export function UI() {
-  // console.log("layer: modules.js - UI()");
+  console.log("model: selections.js - UI()");
   
-  return "whatever";
+  return;
   }
 // Seampoint: more global functions...
 
