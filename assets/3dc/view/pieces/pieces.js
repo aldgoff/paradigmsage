@@ -14,6 +14,7 @@ import piecesData from "./pieces.json" assert { type: "json" };
   const materials = piecesModule.materials;
   const white     = materials.white;
   const black     = materials.black;
+  const clickSize = piecesModule.clickSize;
   
   const rook   = piecesModule.rook;
   const bishop = piecesModule.bishop;
@@ -136,6 +137,59 @@ export function reprojectTrayPieces(levelSep, trayGap) {
     obj.userData.vts = vts;
   });
 }
+
+export function highlight(key) {
+  console.log("view : pieces.js - highlight(key)", key);  // "WKRP" etc.
+
+  let found = null;
+
+  currPiecesGroup.traverse(obj => {
+    if(obj.userData?.key === key)
+      found = obj;
+  });
+  if(!found) return;
+
+  // Highlight the piece.
+  found.scale.set(clickSize, clickSize, clickSize);
+  const player = key[0];
+  found.traverse(obj => {
+    if(obj.type === "LineSegments" ||
+       obj.type === "LineLoop" ||
+       obj.type === "Line") {
+
+      (player === 'W')
+      ? obj.material.color.set(white.highlight)
+      : obj.material.color.set(black.highlight);
+    }
+  });
+}
+
+export function deHighlight(key) {
+  console.log("view : pieces.js - deHighlight(key)", key);
+
+  let found = null;
+
+  currPiecesGroup.traverse(obj => {
+    if(obj.userData?.key === key)
+      found = obj;
+  });
+  if(!found) return;
+
+  // Dehighlight the piece.
+  found.scale.set(1.0, 1.0, 1.0);
+  const player = key[0];
+  found.traverse(obj => {
+    if(obj.type === "LineSegments" ||
+       obj.type === "LineLoop" ||
+       obj.type === "Line") {
+
+      (player === 'W')
+      ? obj.material.color.set(white.lineColor)
+      : obj.material.color.set(black.lineColor);
+    }
+  });
+}
+
 // Seampoint: more global functions...
 
 // --- Helpers ---

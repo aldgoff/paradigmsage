@@ -3,11 +3,13 @@
     "materials": {
       "white": {
         "surfaceColor": "#f8f8f8",
-        "lineColor": "#555555"
+        "lineColor": "#555555",
+        "highlight": "#008800"
       },
       "black": {
         "surfaceColor": "#202020",
-        "lineColor": "#cccccc"
+        "lineColor": "#cccccc",
+        "highlight": "#ffff00"
       },
       "ghost": {
         "surfaceColor": "#999999",
@@ -15,6 +17,7 @@
         "transparency": 0.80
       }
     },
+    "clickSize": 1.1,
 
     "rook": {
       "aspect": 1.6,

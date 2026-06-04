@@ -16,9 +16,11 @@ import selectionsData from "./selections.json" assert { type: "json" };
   import * as view    from "../../view/view.js";
   import * as vBoards from "../../view/boards/boards.js";
   import * as tiles   from "../../view/tiles/tiles.js";
+  import * as vPieces from "../../view/pieces/pieces.js";
 // Seampoint: more imports...
 
 // --- Globals ---
+  const selections = new Set();
 // Seampoint: more globals...
 
 // --- UI ---
@@ -41,17 +43,24 @@ export function handleTileClick(coords) { // TODO: make this a state machine.
   }
 
 export function handlePieceClick(obj) { // TODO: make this a state machine.
-  console.log("cntrl: selections.js - handlePieceClick(obj.userData)", obj.userData);
+  console.log("cntrl: selections.js - handlePieceClick(...)");
   
   if(!obj) {
     console.log("Ray casting: click off piece.");
     return;
   }
 
-  // const meshTile = tiles.getTileMesh(view.context.tileMap, coords);
-  // if(!meshTile) throw new Error("This should be impossible?");
+  console.log("cntrl: selections.js - handlePieceClick(...)", obj.userData);
+  const key = obj.userData.key;
+  if(selections.has(key)) {
+    vPieces.deHighlight(key);
+    selections.delete(key);
+  }
+  else {
+    vPieces.highlight(key);
+    selections.add(key);
+  }
 
-  // vBoards.toggleDecorator(meshTile);  // TODO: POC, not final logic.
 
   // TODO: cntrl: selections.js - handleTileClick(coords).
 
