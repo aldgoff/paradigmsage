@@ -141,7 +141,6 @@ export function reprojectTrayPieces(levelSep, trayGap) {
 // --- Helpers ---
 function renderInTray(player, side, type, tray, pos) {
   // console.log("view : pieces.js - renderInTray(player, type, tray, pos)", player, type, tray, pos);
-  // TODO: finish renderInTray().
 
   let gap = cViewer.getTrayGap();
   gap += 2; // Tray offset from board with zero gap.
@@ -155,7 +154,7 @@ function renderInTray(player, side, type, tray, pos) {
     case "R": group = makeRookObject(  {color});                break;
     case "B": group = makeBishopObject({color, player});        break;
     case "D": group = makeDukeObject(  {color, player});        break;
-    case "Q": group = makeQueenObject( {color}); break;
+    case "Q": group = makeQueenObject( {color});                break;
     case "N": group = makeKnightObject({color, player, side});  break;
     case "S": group = makeStackObject( {color, player});        break;
     case "P": group = makePawnObject(  {color});                break;
@@ -169,7 +168,9 @@ function renderInTray(player, side, type, tray, pos) {
   if(!group) return;
 
   const grid2 = coordsMaps.vts2pixels(vts)
-  const tileHeight = 5;       // TODO: get from some json file.
+  const tileSize = tiles.tileSize();
+  const tileHeight = tileSize[0];  // Z.
+
   const zOffset = tileHeight/2;
   const decoratorGap = 2;
   group.position.set(grid2[0], grid2[1]+zOffset+decoratorGap, grid2[2]);
@@ -184,9 +185,10 @@ function renderInTray(player, side, type, tray, pos) {
 
 function trayToVts(player, pos, gap) {
   // console.log("view : pieces.js - trayToVts(player, pos, gap)", player, pos, gap);
-  // TODO: finish trayToVts().
 
-  const specOrName = "8x8x8"; // TODO: get board size from setup.
+  // TODO: trayToVts() only works for 8x8x8 boards.
+  const specOrName = "8x8x8";
+
   let vts = coords.normalizeTileToVts(pos, specOrName); // [4,-3,-3]=>[4,-4,-4] and [-3,-3,-3]=>[-3,-4,-4]
   const displacement = (player === "W") ? [0, -gap, -gap]: [0, gap, gap];
 
@@ -198,7 +200,7 @@ function trayToVts(player, pos, gap) {
 function renderOnBoard(player, side, type, pos) {
   console.log("view : pieces.js - renderOnBoard(player, type, pos)", player, type, pos);
 
-  const coords = coords.boardToVts(pos);  // TODO: may need to add this function to coords.
+  const coords = coords.boardToVts(pos);
   // TODO: write function renderOnBoard.
 }
 
@@ -471,12 +473,6 @@ function makeKnightMeshGroup(tileWidth, knight, chirality = 1, color) {
   return group;
   }
 
-function makeStackMeshGroup(tileWidth, stack) {
-  let group = null;
-  // TODO: define stack group.
-
-  return group;
-  }
 
 function makePawnMeshGroup(tileWidth, pawn, color) {
   const { aspect, breadth } = pawn;
@@ -684,14 +680,14 @@ function addCubeBevelLines(mesh, cubeSize, color) {
 }
 // Seampoint: more local functions...
 
-/* TODO: piece meshes & interaction
+/* TODO: QC checklist
   === Phase 1: Mesh Semantics ===
     1. Piece/ghost distinction.
     2. Common mesh helpers.
     3. White/Black materials.
-    4. Confirm black tray placement.
+    4. ✅ Confirm black tray placement.
     5. Ghost visibility + occupancy inversion.
-    6. Piece edge conventions.
+    6. ✅ Piece edge conventions.
 
   === Phase 2: Interaction Semantics ===
     7. Raycast ghost interaction.
@@ -703,8 +699,8 @@ function addCubeBevelLines(mesh, cubeSize, color) {
     13. Pieces/ghosts move with tray as gap changes.
 
   === Phase 3: Piece System Expansion ===
-    14. Meshes for remaining pieces.
-    15. Canonical piece scaling/aspect language.
+    14. ✅ Meshes for remaining pieces.
+    15. ✅ Canonical piece scaling/aspect language.
     16. Piece silhouette QC against movement semantics.
 
   === Phase 4: Render Architecture Cleanup ===

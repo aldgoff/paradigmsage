@@ -66,21 +66,6 @@ export function initThree(container) {
 
   demoCamera();
 
-  // // Add event listener.
-  //   renderer.domElement.addEventListener("click", (event) => {
-  //   const coords = getTileFromClick(event, camera, scene, renderer);
-
-  //   if (!coords) return;
-
-  //   console.log("Clicked tile:", coords);
-
-  //   // → here you trigger decorator logic
-  //   const meshTile = tiles.getTileMesh(tileMap, coords);
-  //   if (meshTile) {
-  //     toggleDecorator(meshTile);  // Hard coded for now as src or dst.
-  //   }
-  //   });
-
   return { scene, camera, renderer, tileMap, tileGeometry }; // Context.
 }
 // Seampoint: more global functions...
