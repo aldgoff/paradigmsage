@@ -39,6 +39,24 @@ export function handleTileClick(coords) { // TODO: make this a state machine.
 
   return;
   }
+
+export function handlePieceClick(obj) { // TODO: make this a state machine.
+  console.log("cntrl: selections.js - handlePieceClick(obj.userData)", obj.userData);
+  
+  if(!obj) {
+    console.log("Ray casting: click off piece.");
+    return;
+  }
+
+  // const meshTile = tiles.getTileMesh(view.context.tileMap, coords);
+  // if(!meshTile) throw new Error("This should be impossible?");
+
+  // vBoards.toggleDecorator(meshTile);  // TODO: POC, not final logic.
+
+  // TODO: cntrl: selections.js - handleTileClick(coords).
+
+  return;
+  }
 // Seampoint: more global functions...
 
 // --- Helpers ---

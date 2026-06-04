@@ -682,35 +682,6 @@ function addCubeBevelLines(mesh, cubeSize, color) {
     mesh.add(ring);
   });
 }
-
-function getPieceFromClick(event, camera, scene, renderer) {
-  const THREE = window.THREE;
-
-  const rect = renderer.domElement.getBoundingClientRect();
-
-  const mouse = new THREE.Vector2(
-    ((event.clientX - rect.left) / rect.width) * 2 - 1,
-    -((event.clientY - rect.top) / rect.height) * 2 + 1
-  );
-
-  const raycaster = new THREE.Raycaster();
-  raycaster.setFromCamera(mouse, camera);
-
-  const intersects = raycaster.intersectObjects(scene.children, true);
-
-  for(const hit of intersects) {
-    let obj = hit.object;
-
-    while(obj) {
-      if(obj.userData?.isPiece)
-        return obj;
-
-      obj = obj.parent;
-    }
-  }
-
-  return null;
-}
 // Seampoint: more local functions...
 
 /* TODO: piece meshes & interaction

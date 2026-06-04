@@ -37,15 +37,23 @@ export function init() {
   return;
 }
 
-function addPieceEventListener() {
-}
-
 function addTileEventListener() {
   let clickHandler = (event) => {
     const { scene, renderer, camera, tileMap } = view.context;
     const coords = getTileFromClick(event, camera, scene, renderer);
 
     cSelections.handleTileClick(coords);
+  };
+
+  view.context.renderer.domElement.addEventListener("click", clickHandler);
+  }
+
+function addPieceEventListener() {
+  let clickHandler = (event) => {
+    const { scene, renderer, camera, tileMap } = view.context;
+    const obj = getPieceFromClick(event, camera, scene, renderer);
+
+    cSelections.handlePieceClick(obj);
   };
 
   view.context.renderer.domElement.addEventListener("click", clickHandler);
@@ -75,6 +83,35 @@ function getTileFromClick(event, camera, scene, renderer) {
 
   return obj.userData.coords;                   // VTS coords.
   // return obj.userData.vts;                   // VTS coords <- preferred.
+  }
+
+function getPieceFromClick(event, camera, scene, renderer) {
+  const THREE = window.THREE;
+
+  const rect = renderer.domElement.getBoundingClientRect();
+
+  const mouse = new THREE.Vector2(
+    ((event.clientX - rect.left) / rect.width) * 2 - 1,
+    -((event.clientY - rect.top) / rect.height) * 2 + 1
+  );
+
+  const raycaster = new THREE.Raycaster();
+  raycaster.setFromCamera(mouse, camera);
+
+  const intersects = raycaster.intersectObjects(scene.children, true);
+
+  for(const hit of intersects) {
+    let obj = hit.object;
+
+    while(obj) {
+      if(obj.userData?.isPiece)
+        return obj;
+
+      obj = obj.parent;
+    }
+  }
+
+  return null;
 }
 // Seampoint: more global functions...
 
