@@ -16,6 +16,7 @@ import piecesData from "./pieces.json" assert { type: "json" };
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
+  import * as cSetup  from "../../controller/setup/setup.js";
   import * as utils   from "../../../utils/utils.js";
   import * as mState  from "../state/state.js";
   import * as mTrays  from "../trays/trays.js";
@@ -162,7 +163,8 @@ export function movePieceFromTrayToBoard(key, dstStr) {  // "WQQP", "Q1,1" // TO
   if(!setup) {
     throw new Error("No active setup state.");
   }
-  const spec = coords.getBoardSpec(setup.boardSize);  
+  const spec = cSetup.boardSpec;  
+  // const spec = coords.getBoardSpec(setup.);  
 
   const piece = pieceList[key];                               // Ensure valid args - should never fail.
   if(!piece) {
@@ -201,8 +203,6 @@ export function movePieceFromTrayToBoard(key, dstStr) {  // "WQQP", "Q1,1" // TO
   const [z, x, y] = indices;
   const k = piece.coords[0];
 
-  console.log("*** *** ***", k, i, j);
-
   if(tray[k][i][j] != key) {                                  // Update occupancy arrays.
     throw new Error(`${key} not in tray ${tray[k][i][j]} at ${k},${i},${j}.`);
     }
@@ -217,8 +217,6 @@ export function movePieceFromTrayToBoard(key, dstStr) {  // "WQQP", "Q1,1" // TO
   piece.loc = "@";                                            // Update pieceList.
   piece.pos = dstStr; 
   piece.coords = dstTile;
-
-  console.log("*** *** ***");
 
   vPieces.placePiece(key);                                 // Relocate the piece mesh (group).
 

@@ -46,7 +46,7 @@ layout: "play"
     }
   #compass-window {
     width: 160px;
-    height: 280px;
+    height: 220px;
     }
   #gambit-window {
     width: 280px;
@@ -93,7 +93,7 @@ layout: "play"
   #move-window    { top: 1180px; left:   20px; }
   #gambit-window  { top:  880px; left:   20px; }
   #advsq-window   { top:  260px; left:  210px; }
-  #compass-window { top:  580px; left:   20px; }
+  #compass-window { top:  640px; left:   20px; }
 
   #game-window    { top:  260px; left:  390px; }
 
@@ -112,13 +112,15 @@ layout: "play"
     <button data-action="makeBoard">Make Board</button>
   </div>
   <div class="section">
+    <label>Board Size</lable>
+  </div>
+  <div class="section">
     <label> <input type="radio" name="board-size" value="8x8x8" checked> 8×8×8 </label><br>
     <label> <input type="radio" name="board-size" value="10x8x8"> 10×8×8 </label><br>
     <label> <input type="radio" name="board-size" value="10x10x10"> 10×10×10 </label>
   </div>  
   <div class="section">
     <label>Tray Type</lable>
-    <!-- <button data-action="addTrays">Add Trays</button> -->
   </div>
   <div class="section">
     <!-- <label> <input type="radio" name="tray-type" value="none"> None </label><br> -->
@@ -126,35 +128,31 @@ layout: "play"
     <label> <input type="radio" name="tray-type" value="factory"> Factory </label><br>
   </div>  
   <div class="section">
-    <button data-action="freeze">Freeze</button>
-    <button data-action="play">Play</button>
+    <button data-action="placePiece" disabled>Place Piece</button>
+    <button data-action="freeze" disabled>Freeze</button>
   </div>
   <div class="section">
-    <button data-action="starting-pos">Starting Position</button>
+    <button data-action="startingPos" disabled>Starting Position</button>
   </div>
-  <!-- <div class="section">
-    <label>Initial Position</lable>
-  </div>  
   <div class="section">
-    <label> <input type="radio" name="initial-pos" value="standard" checked> Standard </label><br>
-    <label> <input type="radio" name="initial-pos" value="manual"> Manual </label><br>
-  </div>   -->
+    <button data-action="play" disabled>Play</button>
+  </div>
   <div class="section scroll-box" id="setup-list"></div>
   </div>
 
 <div class="panel panel-stateful" id="move-window">
   <div class="panel-title">Move Panel</div>
   <div class="section">
-    <button data-action="move">Move</button>
-    <button data-action="capture">Capture</button>
-    <button data-action="enpassant">En Passant</button>
-    <button data-action="castle">Castle</button>
-    <button data-action="promote">Promote</button>
+    <button data-action="move"      disabled>Move</button>
+    <button data-action="capture"   disabled>Capture</button>
+    <button data-action="enpassant" disabled>En Passant</button>
+    <button data-action="castle"    disabled>Castle</button>
+    <button data-action="promote"   disabled>Promote</button>
   </div>
   <div class="section">
-    <button data-action="duke-decay">Duke Decay</button>
-    <button data-action="bishop-decay">Bishop Decay</button>
-    <button data-action="fission">Fission</button>
+    <button data-action="duke-decay"   disabled>Duke Decay</button>
+    <button data-action="bishop-decay" disabled>Bishop Decay</button>
+    <button data-action="fission"      disabled>Fission</button>
     <label> <input type="radio" name="move-player" value="White" checked> W </label>
     <label> <input type="radio" name="move-player" value="Black"> B </label>
   </div>

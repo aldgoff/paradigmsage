@@ -3,7 +3,7 @@
   Purpose: Arch discipline, reduce touch points to add/delete a panel.
   Author: Allan Goff
   Date: 5/09/26
-  Recommended access: import * as panels from "../panels/panels.js";
+  Recommended access: import * as panels from "../../panels/panels.js";
   UI: the export functions.
 */
 
@@ -76,6 +76,13 @@ export function init() {
 
   return;
   }
+
+export function enableButton(action, enabled=true) {
+  const button = document.querySelector(`[data-action="${action}"]`);
+
+  if(button)
+    button.disabled = !enabled;
+}
 // Seampoint: more global functions...
 
 // --- Helpers ---

@@ -3,7 +3,7 @@
   Purpose: Controller code to setup board and trays.
   Author: Allan Goff
   Date: 4/22/26
-  Recommended access: import * as cSetup from "../../control/setup/setup.js";
+  Recommended access: import * as cSetup from "../../controller/setup/setup.js";
   UI: the export functions.
   Philosophy: Dlete a module by deleting its directory - not so much.
     controller/ model/ view/
@@ -20,6 +20,8 @@ import setupData from "./setup.json" assert { type: "json" };
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
+  import * as panels   from "../../panels/panels.js";
+
   import * as game     from "../../controller/game/game.js";
   import * as cBoards  from "../../controller/boards/boards.js";
   import * as cTrays   from "../../controller/trays/trays.js";
@@ -38,10 +40,7 @@ import setupData from "./setup.json" assert { type: "json" };
 // Seampoint: more imports...
 
 // --- Globals ---
-  const pieceList = {
-    "white": { "ref": "abs", "pieces": [], "pawns": [] }, 
-    "black": { "ref": "rel", "pieces": [], "pawns": [] }
-  };
+  export let boardSpec = null;
 // Seampoint: more globals...
 
 // --- UI ---
@@ -50,15 +49,15 @@ export function panelDispatch(payload) {    // Dispatch payload from panel to ha
 
   vGambits.cancelAnimation();
 
-  const { action, 
-    boardSize,  // 8x8x8|10x8x8|10x10x10.
-    trayType,   // Real|factory.
-    initialPos, // std|manual.
-    pieceList,
-  } = payload;
+  const { action, boardSize, trayType } = payload;
 
   switch (action) {
     case "makeBoard":   handleMakeBoard(payload); break;
+    case "placePiece":  handlePlacePiece(payload); break;
+    case "freeze":      handleFreeze(payload); break;
+    case "startingPos": handleStartingPos(payload); break;
+    case "play":        handlePlay(payload); break;
+
     case "lock":        handleLock(payload); break;
     case "updateParam": break;
 
@@ -70,16 +69,10 @@ export function panelDispatch(payload) {    // Dispatch payload from panel to ha
 
 export function buildPayload(panel, action) {
   console.log("     ---------- cntrl: setup.js");
-
-  const initialPos = panel.querySelector('input[name="initial-pos"]:checked')?.value;
-  const pos = (initialPos === "standard") ? "std" : "list";
-
   return {  // payload
     action,
     boardSize:  panel.querySelector('input[name="board-size"]:checked')?.value,
     trayType:   panel.querySelector('input[name="tray-type"]:checked')?.value,
-    initialPos: pos,
-    pieceList,
   };
 }
 // Seampoint: more global functions...
@@ -89,6 +82,7 @@ function handleMakeBoard(payload) { // Setup handler.
   console.log("cntrl: setup.js - handleMakeBoard(payload):", payload);
 
   const { action, boardSize, trayType } = payload;  // Informative.
+  boardSpec = boardSize;
 
   const entry = mSetup.makeEntry(payload);    // Transform panel payload into state entry.
   applyEntry(entry);
@@ -96,12 +90,83 @@ function handleMakeBoard(payload) { // Setup handler.
   cTrays.init(entry);   // New Game (games.js) moves them from tray to board, play may begin.
   cBoards.init(entry);  // Initial occupancy depends on board size and tray type.
   cPieces.init(entry);  // Every piece is in a tray, none are on the board.
+
+  panels.enableButton("makeBoard",   false);
+  panels.enableButton("placePiece",  true);
+  panels.enableButton("freeze",      false);
+  panels.enableButton("startingPos", true);
+  panels.enableButton("play",        false);
   }
 
-function handleLock(payload) {  // Locks initial pos after pieces manually moved from tray to board.
+function handlePlacePiece(payload) {
+  console.log("cntrl: game.js - handlePlacePiece(payload):", payload);
+
+  const { action, boardSize, trayType } = payload;  // Informative.
+
+  const entry = { action, place: "WP@KR2,2" };  // TODO: query selections for actual placement.
+
+  state.pushNewSetup(entry);          // Log state change in undo buffer.
+  vSetup.pushPanelLine(entry);        // Add line to panel.
+  vSetup.refreshPanel(entry);         // Only needed by panels with derived fields.
+
+  panels.enableButton("freeze",      true);
+  panels.enableButton("startingPos", false);
+  }
+
+function handleFreeze(payload) {
+  console.log("cntrl: game.js - handleFreeze(payload):", payload);
+
+  const { action, boardSize, trayType } = payload;  // Informative.
+
+  const entry = { action, count: 3 };
+
+  state.pushNewSetup(entry);          // Log state change in undo buffer.
+  vSetup.pushPanelLine(entry);        // Add line to panel.
+  vSetup.refreshPanel(entry);         // Only needed by panels with derived fields.
+
+  panels.enableButton("placePiece",  false);
+  panels.enableButton("freeze",      false);
+  panels.enableButton("startingPos", false);
+  panels.enableButton("play",        true);
+  }
+
+function handleStartingPos(payload) {
+  console.log("cntrl: game.js - handleStartingPos(payload):", payload);
+
+  const { action, boardSize, trayType } = payload;  // Informative.
+
+  const entry = { action, startingPos: "Standard starting pos" };
+
+  state.pushNewSetup(entry);          // Log state change in undo buffer.
+  vSetup.pushPanelLine(entry);        // Add line to panel.
+  vSetup.refreshPanel(entry);         // Only needed by panels with derived fields.
+
+  panels.enableButton("placePiece",  false);
+  panels.enableButton("freeze",      false);
+  panels.enableButton("startingPos", false);
+  panels.enableButton("play",        true);
+  }
+
+function handlePlay(payload) {
+  console.log("cntrl: game.js - handlePlay(payload):", payload);
+
+  const { action, boardSize, trayType } = payload;  // Informative.
+
+  const entry = { action, play: "Begin play" };
+
+  state.pushNewSetup(entry);          // Log state change in undo buffer.
+  vSetup.pushPanelLine(entry);        // Add line to panel.
+  vSetup.refreshPanel(entry);         // Only needed by panels with derived fields.
+
+  panels.enableButton("play",        false);
+
+  panels.enableButton("move", true);
+}
+
+function handleLock(payload) {  // DEPRECATED: Locks initial pos after pieces manually moved from tray to board.
   console.log("cntrl: game.js - handleLock(payload):", payload);
 
-  const { action, boardSize, trayType, initialPos, pieceList } = payload;  // Informative.
+  const { action, boardSize, trayType } = payload;  // Informative.
 
   const entry = mSetup.makeEntry(payload);    // Transform panel payload into state entry.
 

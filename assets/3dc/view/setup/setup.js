@@ -100,7 +100,7 @@ export function clearSetupPanelParams(params) {
 function assembleLine(entry) {
   const { action } = entry;
 
-  if(action === "makeBoard") {
+  if(     action === "makeBoard") {
     const { action, boardSize, trayType } = entry;
   
     const sizeCol = `${boardSize}`.padEnd(8);
@@ -108,9 +108,29 @@ function assembleLine(entry) {
     const line    = `${sizeCol} ${typeCol}`;
 
     return line;
-  }
-  else if(action === "lock") {
-    const { action, boardSize, trayType, initialPos, pieceList } = entry;
+    }
+  else if(action === "placePiece") {
+    const { action, place } = entry;
+    const line = `${place}`;
+    return line;
+    }
+  else if(action === "freeze") {
+    const { action, count } = entry;
+    const line = `${action} ${count}`;
+    return line;
+    }  
+  else if(action === "startingPos") {
+    const { action, startingPos } = entry;
+    const line = `${startingPos}`;
+    return line;
+    }
+  else if(action === "play") {
+    const { action, play } = entry;
+    const line = `${play}`;
+    return line;
+    }
+  else if(action === "lock") {  // Deprecated.
+    const { action, boardSize, trayType } = entry;
 
     const White = pieceList.white;
     const Black = pieceList.black;
@@ -121,11 +141,10 @@ function assembleLine(entry) {
     const line = `W:[${wPieceCol}],[${wPawnCol}] - B[${bPieceCol}],[${bPawnCol}]`;
 
     return line;
-  }
+    }
   else {
     throw new Error(`Unknown setup action: ${action}.`);
   }
 }
-
 // Seampoint: more local functions...
 
