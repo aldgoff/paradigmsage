@@ -27,32 +27,33 @@ import panelsData from "./panels.json" assert { type: "json" };
 // Seampoint: more imports...
 
 // --- Globals ---
-const dispatchers = {
-  setup,
-  move:    moves,
-  gambit:  gambits,
-  advsq:   advsqs,
-  compass: compasses,
-  game,
-  camera,
-  viewer
-};
+  const dispatchers = {
+    setup,
+    move:    moves,
+    gambit:  gambits,
+    advsq:   advsqs,
+    compass: compasses,
+    game,
+    camera,
+    viewer
+  };
 
-let activeDrag = null;
-let topZ = 100;
+  let activeDrag = null;
+  let topZ = 100;
 
-window.addEventListener("pointermove", (e) => {
-  if (!activeDrag) return;
+  window.addEventListener("pointermove", (e) => {
+    if (!activeDrag) return;
 
-  const { element, offsetX, offsetY } = activeDrag;
+    const { element, offsetX, offsetY } = activeDrag;
 
-  element.style.left = `${e.pageX - offsetX}px`;
-  element.style.top  = `${e.pageY - offsetY}px`;
+    element.style.left = `${e.pageX - offsetX}px`;
+    element.style.top  = `${e.pageY - offsetY}px`;
+    });
+
+  window.addEventListener("pointerup", () => {
+    activeDrag = null;
   });
-
-window.addEventListener("pointerup", () => {
-  activeDrag = null;
-});
+// Seampoint: more globals...
 
 // --- UI ---
 export function init() {
@@ -69,7 +70,7 @@ export function init() {
       wirePanel(panelEl, module, panel);
     }
   }
-  console.log(dispatchers); // Keep for now, future me needs to see control flow.
+  // console.log(dispatchers); // Keep for now, future me needs to see control flow.
 
   window.addEventListener("keydown", handleAdvsqKeys);
 
@@ -186,6 +187,5 @@ function handleAdvsqKeys(e) {
     delta
   });
 }
-
 // Seampoint: more local functions...
 

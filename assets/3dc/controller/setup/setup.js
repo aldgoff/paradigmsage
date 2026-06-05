@@ -42,7 +42,7 @@ import setupData from "./setup.json" assert { type: "json" };
     "white": { "ref": "abs", "pieces": [], "pawns": [] }, 
     "black": { "ref": "rel", "pieces": [], "pawns": [] }
   };
-// Seampoint: more globals.
+// Seampoint: more globals...
 
 // --- UI ---
 export function panelDispatch(payload) {    // Dispatch payload from panel to handle event functions.
@@ -88,7 +88,7 @@ export function buildPayload(panel, action) {
 function handleMakeBoard(payload) { // Setup handler.
   console.log("cntrl: setup.js - handleMakeBoard(payload):", payload);
 
-  const { action, boardSize, trayType, initialPos } = payload;  // Informative.
+  const { action, boardSize, trayType } = payload;  // Informative.
 
   const entry = mSetup.makeEntry(payload);    // Transform panel payload into state entry.
   applyEntry(entry);

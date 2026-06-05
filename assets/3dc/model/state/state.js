@@ -358,19 +358,19 @@ export function pushNewState(buffer, values) {  // Uses current index, will bran
 /* ----- ----- ----- ----- */
 
 // export function collapseKeyIndex() {
-//   const order = ["AdvSqs", "Gambits", "Moves", "Setup"];
+  //   const order = ["AdvSqs", "Gambits", "Moves", "Setup"];
 
-//   for (const key of order) {
-//     const i = indexes[key];
+  //   for (const key of order) {
+  //     const i = indexes[key];
 
-//     if (i > 1) {
-//       indexes[key] = 1;
-//       return { arrayKey: key, index: 0 };
-//     }
-//   }
+  //     if (i > 1) {
+  //       indexes[key] = 1;
+  //       return { arrayKey: key, index: 0 };
+  //     }
+  //   }
 
-//   return null; // Bottom Sentry
-// }
+  //   return null; // Bottom Sentry
+  // }
 // Seampoint: more global functions...
 
 // --- Helpers ---

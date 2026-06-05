@@ -33,6 +33,7 @@
 
   import * as vSelections from "./selections/selections.js";
   import * as cameras     from "../view/render/cameras.js";
+  import * as vAdvsqs     from "../view/advsqs/advsqs.js";
 // Seampoint: more imports...
 
 // --- Globals ---
@@ -40,11 +41,13 @@ export let context;   // Contains things like: scene, renderer, camera, tileMap.
 
 // --- UI ---
 export function init(playBoard) {
-  console.log("view : view.js - init(playBoard).", playBoard);
+  console.log("view : view.js - init(playBoard)");
 
   context = renders.init(playBoard);
   context.tileMap = new Map();
   context.tileGeometry = new THREE.BoxGeometry(...coordsMaps.vts2xyz(tiles.tileSize()));
+
+  vAdvsqs.setAdvsqPanelInitialParams();
 
   vSelections.init();
 

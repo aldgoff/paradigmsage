@@ -101,12 +101,11 @@ function assembleLine(entry) {
   const { action } = entry;
 
   if(action === "makeBoard") {
-    const { action, boardSize, trayType, initialPos } = entry;
+    const { action, boardSize, trayType } = entry;
   
     const sizeCol = `${boardSize}`.padEnd(8);
     const typeCol = `${trayType}`.padEnd(7);
-    const posCol = `${initialPos}`.padEnd(4);
-    const line = `${sizeCol} ${typeCol} ${posCol}`;
+    const line    = `${sizeCol} ${typeCol}`;
 
     return line;
   }

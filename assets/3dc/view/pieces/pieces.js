@@ -67,7 +67,7 @@ export function initPieces() {
   view.context.scene.add(currPiecesGroup);
 }
 function createPiece(key) {      // "WKRR", ...
-  console.log("view : pieces.js - createPiece(key)", key);
+  // console.log("view : pieces.js - createPiece(key)", key);
 
   let group = null;                                       // Return object.
 
@@ -100,7 +100,7 @@ function createPiece(key) {      // "WKRR", ...
   return group;
 }
 export function placePiece(key) {      // "WKRR", ...
-  console.log("view : pieces.js - placePiece(key)", key);
+  // console.log("view : pieces.js - placePiece(key)", key);
 
   const piece = mPieces.getPieceList()[key];              // Arg validation.
   if(!piece) throw Error(`No such piece ${key}.`);
@@ -128,7 +128,7 @@ export function placePiece(key) {      // "WKRR", ...
   const decoratorGap = 2;
   const grid2 = coordsMaps.vts2pixels(group.userData.vts)
 
-  console.log("*** position: ", grid2[0], grid2[1]+zOffset+decoratorGap, grid2[2]);                         // Debug instrumention.
+  // console.log("*** position: ", grid2[0], grid2[1]+zOffset+decoratorGap, grid2[2]); // Debug instrumention.
 
   group.position.set(grid2[0], grid2[1]+zOffset+decoratorGap, grid2[2]);
 }
@@ -411,7 +411,7 @@ function makeQueenObject(params = {}) {
 }
 
 function makeKnightObject(params = {}) {
-  console.log("view : pieces.js - makeKnightObject(params)", params);
+  // console.log("view : pieces.js - makeKnightObject(params)", params);
 
   const { color, player, side } = params;
   let [, tileWidth] = tiles.tileSize();
@@ -497,7 +497,7 @@ function makeBishopGeo(tileWidth, bishop) {
   }
 
 function makeDukeGeo(tileWidth, duke) {
-  console.log("view : pieces.js - makeDukeGeo(tileWidth, duke)", tileWidth, duke);
+  // console.log("view : pieces.js - makeDukeGeo(tileWidth, duke)", tileWidth, duke);
   const { aspect, breadth } = duke;
   const base = tileWidth * breadth;
   const height = base * aspect;

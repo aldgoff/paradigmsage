@@ -48,11 +48,8 @@ import controllerData from "./controller.json" assert { type: "json" };
 
 // --- Build upon previous layers ---
   import * as panels   from "../panels/panels.js";
-
   import * as model    from "../model/model.js";
-
   import * as view     from "../view/view.js";
-  import * as vAdvsqs  from "../view/advsqs/advsqs.js";
 // Seampoint: more imports...
 
 // --- UI ---
@@ -62,8 +59,6 @@ export function init(playBoard) {
   panels.init();
   model.init(playBoard);
   view.init(playBoard);
-
-  vAdvsqs.setAdvsqPanelInitialParams(); // TODO: why is this here instead of in the view layer?
 }
 // Seampoint: more global functions...
 

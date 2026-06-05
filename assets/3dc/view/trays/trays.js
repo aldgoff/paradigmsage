@@ -37,7 +37,7 @@ import traysData from "./trays.json" assert { type: "json" };
 
 // --- UI ---
 export function makeTrays(gap) {
-  console.log("view : viewer.js - makeTrays(gap)", gap);
+  console.log("view : trays.js - makeTrays(gap)", gap);
 
   destroyTrays();
 
@@ -63,7 +63,7 @@ export function destroyTrays() {
   }
 
 export function setLevelSep(levelSep) {
-  console.log("view : trays.js - setLevelSep(levelSep)", levelSep);
+  // console.log("view : trays.js - setLevelSep(levelSep)", levelSep);
 
   lastLevelSep = levelSep;
 
@@ -74,7 +74,7 @@ export function setLevelSep(levelSep) {
   }
 
 export function setTrayGap(trayGap) {
-  console.log("view : viewer.js - setTrayGap(trayGap)", trayGap);
+  // console.log("view : trays.js - setTrayGap(trayGap)", trayGap);
 
   lastTrayGap = trayGap;
 
@@ -100,7 +100,7 @@ function reprojectTray(group, levelSep, trayGap) {
 // --- Helpers ---
 
 function makeTrayGroup(side, gap) {
-  console.log("view : viewer.js - makeTrayGroup(side)", side);
+  console.log("view : trays.js - makeTrayGroup(side)", side);
 
   const trayGroup = new THREE.Group();
 
@@ -108,7 +108,6 @@ function makeTrayGroup(side, gap) {
   if(!setup) return trayGroup;
 
   const { boardSize } = setup;
-  console.log("view : viewer.js - boardSize", boardSize);
 
   const trayData = traysModule[boardSize][side];
 
@@ -119,7 +118,7 @@ function makeTrayGroup(side, gap) {
   }
 
 function buildTrayColumn(trayGroup, columnData, side, gap) {
-  console.log("view : viewer.js - buildTrayColumn(...)", trayGroup, columnData, side);
+  console.log("view : trays.js - buildTrayColumn(...)", columnData, side, gap);
 
   Object.entries(columnData)
     .forEach(([key, pos]) => {
