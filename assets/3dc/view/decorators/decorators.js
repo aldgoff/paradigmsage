@@ -221,7 +221,7 @@ export function drawInsetTriDiamonds(mesh, scale, def) {
   }
 
 export function drawInsetCircle(mesh, scale, color, zOffset=0) { // For src & dst tiles, toggled by mouse clicks.
-  console.log("view : decorators.js - drawInsetCircle(mesh, scale, color, zOffset=0)", mesh, scale, color, zOffset=0);
+  // console.log("view : decorators.js - drawInsetCircle(mesh, scale, color, zOffset=0)", mesh, scale, color, zOffset=0);
   const THREE = window.THREE;
   const geom = new THREE.CircleGeometry(0.5, 32);
   const mat = new THREE.MeshBasicMaterial({

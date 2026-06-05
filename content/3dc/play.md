@@ -97,7 +97,7 @@ layout: "play"
 
   #game-window    { top:  260px; left:  390px; }
 
-  #camera-window { top:   510px; left:  390px; }
+  #camera-window { top:   500px; left:  390px; }
   #viewer-window { top:   660px; left:  390px; }
   /* Seampont - more DOM control panels... */
 </style>
@@ -110,7 +110,6 @@ layout: "play"
   <div class="panel-title">Setup Panel</div>
   <div class="section">
     <button data-action="makeBoard">Make Board</button>
-    <button data-action="lock">Lock</button>
   </div>
   <div class="section">
     <label> <input type="radio" name="board-size" value="8x8x8" checked> 8×8×8 </label><br>
@@ -122,17 +121,24 @@ layout: "play"
     <!-- <button data-action="addTrays">Add Trays</button> -->
   </div>
   <div class="section">
-    <label> <input type="radio" name="tray-type" value="none"> None </label><br>
+    <!-- <label> <input type="radio" name="tray-type" value="none"> None </label><br> -->
     <label> <input type="radio" name="tray-type" value="real" checked> Real </label><br>
     <label> <input type="radio" name="tray-type" value="factory"> Factory </label><br>
   </div>  
   <div class="section">
+    <button data-action="freeze">Freeze</button>
+    <button data-action="play">Play</button>
+  </div>
+  <div class="section">
+    <button data-action="starting-pos">Starting Position</button>
+  </div>
+  <!-- <div class="section">
     <label>Initial Position</lable>
   </div>  
   <div class="section">
     <label> <input type="radio" name="initial-pos" value="standard" checked> Standard </label><br>
     <label> <input type="radio" name="initial-pos" value="manual"> Manual </label><br>
-  </div>  
+  </div>   -->
   <div class="section scroll-box" id="setup-list"></div>
   </div>
 
@@ -293,9 +299,9 @@ layout: "play"
 
 <div class="panel panel-temporal" id="game-window">
   <div class="panel-title">Game Panel</div>
-  <div class="section">
+  <!-- <div class="section">
     <button data-action="newGame">New Game</button>
-  </div>
+  </div> -->
   <div class="section">
     <button data-action="undo">Undo</button>
     <button data-action="redo">Redo</button>

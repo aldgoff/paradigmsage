@@ -16,6 +16,7 @@ import piecesData from "./pieces.json" assert { type: "json" };
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
+  import * as utils   from "../../../utils/utils.js";
   import * as mState  from "../state/state.js";
   import * as mTrays  from "../trays/trays.js";
   import * as mBoards from "../boards/boards.js";
@@ -36,10 +37,10 @@ import piecesData from "./pieces.json" assert { type: "json" };
 
 // --- Globals ---
   const pieceList = {};
+  const origin = [4,4,4]; // Q4,4.
 
   // All sized for 10x10x10 board, thus:
   // 8x8x8 is 1 offset, 10x10x10 is 0 offset, and 10x8x8 is mixed.
-  const origin = [4,4,4]; // Q4,4.
   // Seampoint: more globals.
 
 // --- UI ---
@@ -100,16 +101,19 @@ function stdInitialPos(entry) {
   }
 
   // Test stack subpieces for White.
-  pieceList["WKBB"] = { loc: "~", pos: "KB2,1", coords: [,0,0] };
-  pieceList["WKBD"] = { loc: "~", pos: "KB1,2", coords: [,0,0] };
-  pieceList["WQBB"] = { loc: "~", pos: "QB2,1", coords: [,0,0] };
-  pieceList["WQBD"] = { loc: "~", pos: "QB1,2", coords: [,0,0] };
+  pieceList["WKBB"] = { loc: "~", pos: "KB2,1", coords: [6,0,0] };  whiteTray[6][1][0] = "WKBB";
+  pieceList["WKBD"] = { loc: "~", pos: "KB1,2", coords: [6,0,0] };  whiteTray[6][0][1] = "WKBD";
+  pieceList["WQBB"] = { loc: "~", pos: "QB2,1", coords: [3,0,0] };  whiteTray[3][1][0] = "WQBB";
+  pieceList["WQBD"] = { loc: "~", pos: "QB1,2", coords: [3,0,0] };  whiteTray[3][0][1] = "WQBD";
 
   // Test stack subpieces for Black.
-  pieceList["BKBB"] = { loc: "~", pos: "KB7,8", coords: [,0,0] };
-  pieceList["BKBD"] = { loc: "~", pos: "KB8,7", coords: [,0,0] };
-  pieceList["BQBB"] = { loc: "~", pos: "QB7,8", coords: [,0,0] };
-  pieceList["BQBD"] = { loc: "~", pos: "QB8,7", coords: [,0,0] };
+  pieceList["BKBB"] = { loc: "~", pos: "KB7,8", coords: [6,0,0] };  blackTray[6][1][0] = "BKBB";
+  pieceList["BKBD"] = { loc: "~", pos: "KB8,7", coords: [6,0,0] };  blackTray[6][0][1] = "BKBD";
+  pieceList["BQBB"] = { loc: "~", pos: "QB7,8", coords: [3,0,0] };  blackTray[3][1][0] = "BQBB";
+  pieceList["BQBD"] = { loc: "~", pos: "QB8,7", coords: [3,0,0] };  blackTray[3][0][1] = "BQBD";
+
+  console.log("model: pieces.js - stdInitialPos(...): whiteTray", whiteTray);
+  console.log("model: pieces.js - stdInitialPos(...): blackTray", blackTray);
 
   vPieces.initPieces();
 
@@ -148,11 +152,11 @@ export function exampleCode() {
   combineStackinTray("WQS");
 
   return;
-  }
+}
 
-export function movePieceFromTrayToBoard(piece, dstStr) {  // "WQP", "Q1,1" // TODO: assumes 8x8x8 board.
-  console.log("model: pieces.js - movePieceFromTrayToBoard(piece)", piece);
-  // pieceList["WQP"] = { loc: "~|@", pos: "Q2,2", coords: [0,-2,-2] }; // Document the data structure.
+export function movePieceFromTrayToBoard(key, dstStr) {  // "WQQP", "Q1,1" // TODO: assumes 8x8x8 board.
+  console.log("model: pieces.js - movePieceFromTrayToBoard(key)", key);
+  // pieceList[key: "WQQP"] => piece = { loc: "~|@", pos: "Q2,2", coords: [0,-2,-2] }; // Document the data structure.
 
   const setup = mState.fetchCurrentSetup();                   // Make code work for all three board sizes.
   if(!setup) {
@@ -160,17 +164,18 @@ export function movePieceFromTrayToBoard(piece, dstStr) {  // "WQP", "Q1,1" // T
   }
   const spec = coords.getBoardSpec(setup.boardSize);  
 
-  const place = pieceList[piece];                             // Ensure valid args - should never fail.
-  if(!place) {
-    throw new Error(`Piece ${piece} not found.`);
+  const piece = pieceList[key];                               // Ensure valid args - should never fail.
+  if(!piece) {
+    throw new Error(`Piece ${key} not found.`);
     }
   if(!coords.onBoardRcs(coords.boardToRcs(dstStr, setup.boardSize), setup.boardSize)) {
     throw new Error(`Destination ${dstStr} not on board.`);
   }
 
-  const player = piece[0];  // W|B.
-  const side   = piece[1];  // K|Q.
-  const type   = piece[2];  // R|B|D|S|Q|N|P|U|K.
+  const player = key[0];  // W|B.                             // Parse the key key.
+  const side   = key[1];  // K|Q.
+  const level  = key[2];  // R|N|B|K|Q.
+  const type   = key[3];  // R|B|D|S|Q|N|P|U|K.
 
   let i;                                                      // Determine tray and array indices.
   let j;
@@ -185,49 +190,59 @@ export function movePieceFromTrayToBoard(piece, dstStr) {  // "WQP", "Q1,1" // T
     else                  { i = 0; j = 0; }
   }
 
-  const whiteTray = mTrays.getWhiteTray();
+  const whiteTray = mTrays.getWhiteTray();                    // Trays and boards.
   const blackTray = mTrays.getBlackTray();
+  const tray = (player === "W")? whiteTray : blackTray;
   const occupancy = mBoards.getBoardOccupancy();
+  const size = setup.boardSize;
 
-  const tray = (player ==="W")? whiteTray : blackTray;
-
-  const dstTile = coords.normalizeTileToVts(dstStr, setup.boardSize);    // Determine occupancy indices,
+  const dstTile = coords.normalizeTileToVts(dstStr, size);    // Determine occupancy indices,
   const indices = utils.add(origin, dstTile);
   const [z, x, y] = indices;
+  const k = piece.coords[0];
 
-  if(tray[z][i][j] != piece) {                                // Update occupancy arrays.
-    throw new Error(`${piece} not in tray ${tray[z][i][j]}.`);
+  console.log("*** *** ***", k, i, j);
+
+  if(tray[k][i][j] != key) {                                  // Update occupancy arrays.
+    throw new Error(`${key} not in tray ${tray[k][i][j]} at ${k},${i},${j}.`);
     }
   if(occupancy[z][x][y]) {
     throw new Error(`Cannot move to an occupied ${occupancy[z][x][y]} tile ${dstStr}.`);
   }
-  tray[z][i][j] = null;
-  occupancy[z][x][y] = piece;
+  console.log("*** *** ***", k, i, j);
+  tray[k][i][j] = null;
+  occupancy[z][x][y] = key;
+  console.log("*** *** ***", z, x, y);
 
-  place.loc = "@";                                            // Update pieceList.
-  place.pos = dstStr; 
-  place.coords = dstTile;
+  piece.loc = "@";                                            // Update pieceList.
+  piece.pos = dstStr; 
+  piece.coords = dstTile;
 
-  console.log("*** ", tray[z]);                               // Debug instrumention.
-  console.log("*** ", indices);
-  console.log("*** ", occupancy[z][x][y]);
-  console.log("*** ", dstTile);
-  console.log("*** ", place);
-  console.log("*** ", pieceList[piece]);
-  console.log("*** ", spec);
+  console.log("*** *** ***");
+
+  vPieces.placePiece(key);                                 // Relocate the piece mesh (group).
+
+  console.log("*** tray: ", tray[z]);                         // Debug instrumention.
+  console.log("*** rcs:  ", indices);
+  console.log("*** key:  ", occupancy[z][x][y]);
+  console.log("*** dst:  ", dstTile);
+  console.log("*** key:  ", pieceList[key]);
+  console.log("*** spec: ", spec);
 }
 
-export function movePieceFromTileToTile(piece) {
-  console.log("model: pieces.js - movePieceFromTileToTile(piece)", piece);
+export function movePieceFromTileToTile(key, dstStr) {
+  console.log("model: pieces.js - movePieceFromTileToTile(key, dstStr)", key, dstStr);
 
   // TODO: code movePieceFromTileToTile.
 
-  const place = pieceList[piece];
-  if(!place) {
-    throw new Error(`Piece ${piece} not to be found.`);
+  const piece = pieceList[key];
+  if(!piece) {
+    throw new Error(`Piece ${key} noT found.`);
   }
 
-  const src = utils.add(origin, place.coords);
+  console.log("*** MORE TO COME.");
+
+  // const src = utils.add(origin, place.coords);
   }
 
 export function movePieceFromBoardToTray(piece) {

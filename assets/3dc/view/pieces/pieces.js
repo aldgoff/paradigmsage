@@ -44,30 +44,102 @@ import piecesData from "./pieces.json" assert { type: "json" };
 // --- Globals ---
   const THREE = window.THREE;
   let currPiecesGroup = null;
+  const pieceGroups = {};
 // Seampoint: more globals...
 
 // --- UI ---
 export function initPieces() {
   console.log("view : pieces.js - initPieces()");
 
-  const pieces = mPieces.getPieceList();
-
   currPiecesGroup = new THREE.Group();
 
-  Object.entries(pieces)
-    .forEach(([key, piece]) =>
-      renderPiece(key)
-    );
+  const pieces = mPieces.getPieceList();  // { loc: "~", pos: "QR1,1", coords: [k,1,1] };
+
+  for(const key in pieces) {      // "WKRR", ...
+    const group = createPiece(key);
+    pieceGroups[key] = group;
+    placePiece(key);    // Pieces start in the trays.
+    currPiecesGroup.add(group);
+    // renderPiece(key);
+  }  
+  console.log("view : pieces.js - initPieces(): currPiecesGroup", currPiecesGroup);
 
   view.context.scene.add(currPiecesGroup);
+}
+function createPiece(key) {      // "WKRR", ...
+  console.log("view : pieces.js - createPiece(key)", key);
+
+  let group = null;                                       // Return object.
+
+  const player = key[0];  // W|B.                         // Parse arg.
+  const side   = key[1];  // K|Q.
+  const level  = key[2];  // R|N|B|Q|K.
+  const type   = key[3];  // R|B|D|S|Q|N|P|U|K.
+
+  const color = (player === "W") ? white : black;
+  switch(type) {
+    case "R": group = makeRookObject(  {color});                break;
+    case "B": group = makeBishopObject({color, player});        break;
+    case "D": group = makeDukeObject(  {color, player});        break;
+    case "Q": group = makeQueenObject( {color});                break;
+    case "N": group = makeKnightObject({color, player, side});  break;
+    case "S": group = makeStackObject( {color, player});        break;
+    case "P": group = makePawnObject(  {color});                break;
+    case "K": group = makeKingObject(  {color});                break;
+    // Seampoint: no more pieces.
+    default:
+      console.log(`view : pieces.js - Unknown piece type ${type}`); return; 
+      break;
   }
 
-export function renderPiece(key) {  // "WKR".
+  if(!group) return;
+
+  group.userData.isPiece = true;
+  group.userData.key = key;
+
+  return group;
+}
+export function placePiece(key) {      // "WKRR", ...
+  console.log("view : pieces.js - placePiece(key)", key);
+
+  const piece = mPieces.getPieceList()[key];              // Arg validation.
+  if(!piece) throw Error(`No such piece ${key}.`);
+
+  const { loc, pos, coords } = piece;                     // Parse location.
+  const player = key[0];  // W|B.                         // Parse arg.
+
+  const group = pieceGroups[key];                         // Fetch the mesh (group).
+
+  if(     loc === "~") {                                  // Place in tray.
+    let gap = cViewer.getTrayGap() + 2; // Tray offset from board with zero gap.
+    group.userData.vts = tileToVts(player, pos, gap);
+    }
+  else if(loc === "@") {                                  // Place on board.
+    // renderOnBoard(player, side, type, pos);
+    group.userData.vts = tileToVts(player, pos, 0);
+    }
+  else {
+    throw new Error(`Piece ${key} was neither on board, nor in a tray.`);
+  }
+
+  const tileSize = tiles.tileSize();                      // Place just above tile.
+  const tileHeight = tileSize[0];  // Z.
+  const zOffset = tileHeight/2;
+  const decoratorGap = 2;
+  const grid2 = coordsMaps.vts2pixels(group.userData.vts)
+
+  console.log("*** position: ", grid2[0], grid2[1]+zOffset+decoratorGap, grid2[2]);                         // Debug instrumention.
+
+  group.position.set(grid2[0], grid2[1]+zOffset+decoratorGap, grid2[2]);
+}
+
+export function renderPiece(key) {  // "WKRR".  // Deprecated.
   // console.log("view : pieces.js - renderPiece(key)", key);
 
-  const piece = mPieces.getPieceList()[key];              // Parse args.
+  const piece = mPieces.getPieceList()[key];              // Arg validation.
   if(!piece) throw Error(`No such piece ${key}.`);
-  const { loc, pos, coords } = piece;
+
+  const { loc, pos, coords } = piece;                     // Parse args.
   const player = key[0];  // W|B.
   const side   = key[1];  // K|Q.
   const level  = key[2];  // R|N|B|Q|K.
@@ -121,7 +193,7 @@ export function reprojectTrayPieces(levelSep, trayGap) {
 
     // Recompute canonical tray VTS.
     const player = key[0];
-    const vts = trayToVts(player, piece.pos, trayGap + 2); // Tray base offset from board.
+    const vts = tileToVts(player, piece.pos, trayGap + 2); // Tray base offset from board.
     const pixels = coordsMaps.vts2pixels(vts, levelSep);
 
     const tileHeight = 5;
@@ -136,7 +208,7 @@ export function reprojectTrayPieces(levelSep, trayGap) {
 
     obj.userData.vts = vts;
   });
-}
+  }
 
 export function highlight(key) {
   console.log("view : pieces.js - highlight(key)", key);  // "WKRP" etc.
@@ -162,7 +234,7 @@ export function highlight(key) {
       : obj.material.color.set(black.highlight);
     }
   });
-}
+  }
 
 export function deHighlight(key) {
   console.log("view : pieces.js - deHighlight(key)", key);
@@ -189,17 +261,11 @@ export function deHighlight(key) {
     }
   });
 }
-
 // Seampoint: more global functions...
 
 // --- Helpers ---
 function renderInTray(player, side, type, tray, pos) {
   // console.log("view : pieces.js - renderInTray(player, type, tray, pos)", player, type, tray, pos);
-
-  let gap = cViewer.getTrayGap();
-  gap += 2; // Tray offset from board with zero gap.
-
-  const vts = trayToVts(player, pos, gap);
 
   let group = null;
 
@@ -221,15 +287,19 @@ function renderInTray(player, side, type, tray, pos) {
 
   if(!group) return;
 
-  const grid2 = coordsMaps.vts2pixels(vts)
+  group.userData.isPiece = true;
+
+  
   const tileSize = tiles.tileSize();
   const tileHeight = tileSize[0];  // Z.
-
   const zOffset = tileHeight/2;
   const decoratorGap = 2;
-  group.position.set(grid2[0], grid2[1]+zOffset+decoratorGap, grid2[2]);
 
-  group.userData.isPiece = true;
+  let gap = cViewer.getTrayGap() + 2; // Tray offset from board with zero gap.
+  const vts = tileToVts(player, pos, gap);
+  const grid2 = coordsMaps.vts2pixels(vts)
+
+  group.position.set(grid2[0], grid2[1]+zOffset+decoratorGap, grid2[2]);
   group.userData.vts = vts;
 
   currPiecesGroup.add(group);
@@ -237,10 +307,10 @@ function renderInTray(player, side, type, tray, pos) {
   return group;
   }
 
-function trayToVts(player, pos, gap) {
-  // console.log("view : pieces.js - trayToVts(player, pos, gap)", player, pos, gap);
+function tileToVts(player, pos, gap) {
+  // console.log("view : pieces.js - tileToVts(player, pos, gap)", player, pos, gap);
 
-  // TODO: trayToVts() only works for 8x8x8 boards.
+  // TODO: tileToVts() only works for 8x8x8 boards.
   const specOrName = "8x8x8";
 
   let vts = coords.normalizeTileToVts(pos, specOrName); // [4,-3,-3]=>[4,-4,-4] and [-3,-3,-3]=>[-3,-4,-4]

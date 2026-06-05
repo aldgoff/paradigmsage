@@ -13,6 +13,9 @@ import selectionsData from "./selections.json" assert { type: "json" };
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
+  import * as coords  from "../../foundation/coords/coords.js";
+  import * as mTrays  from "../../model/trays/trays.js";
+  import * as mPieces from "../../model/pieces/pieces.js";
   import * as view    from "../../view/view.js";
   import * as vBoards from "../../view/boards/boards.js";
   import * as tiles   from "../../view/tiles/tiles.js";
@@ -24,20 +27,41 @@ import selectionsData from "./selections.json" assert { type: "json" };
 // Seampoint: more globals...
 
 // --- UI ---
-export function handleTileClick(coords) { // TODO: make this a state machine.
-  console.log("cntrl: selections.js - handleTileClick(coords)", coords);
+export function handleTileClick(vts) { // TODO: make this a state machine.
+  console.log("cntrl: selections.js - handleTileClick(coords)", vts);
   
-  if(!coords) {
+  if(!vts) {
     console.log("Ray casting: click off board.");
     return;
   }
 
-  const meshTile = tiles.getTileMesh(view.context.tileMap, coords);
+  const meshTile = tiles.getTileMesh(view.context.tileMap, vts);
   if(!meshTile) throw new Error("This should be impossible?");
 
   vBoards.toggleDecorator(meshTile);  // TODO: POC, not final logic.
 
-  // TODO: cntrl: selections.js - handleTileClick(coords).
+  if(selections.size != 1) return;
+
+  console.log(`*** ${selections.size} possible pieces.`, selections);
+  const iterator = selections.values();
+  const key = iterator.next().value;
+  const piece = mPieces.getPieceList()[key];
+  const { loc, pos, coord } = piece;
+  const dstStr = coords.vtsToBoard(vts);
+
+  console.log(`*** move ${key} from ${loc} ${pos} to ${vts} ala ${dstStr}`);
+  if(loc ==='~')
+    mPieces.movePieceFromTrayToBoard(key, dstStr);
+  else
+    mPieces.movePieceFromTileToTile(key, dstStr);
+
+  vPieces.deHighlight(key);
+  selections.delete(key);
+  vBoards.toggleDecorator(meshTile);  // TODO: POC, not final logic.
+
+  console.log("*** mPieces.getPieceList()", mPieces.getPieceList());
+  console.log("*** mTrays.getWhiteTray()", mTrays.getWhiteTray());
+  console.log("*** mTrays.getBlackTray()", mTrays.getBlackTray());
 
   return;
   }
