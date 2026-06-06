@@ -62,7 +62,7 @@ export function initPieces() {
     currPiecesGroup.add(group);
     // renderPiece(key);
   }  
-  console.log("view : pieces.js - initPieces(): currPiecesGroup", currPiecesGroup);
+  // console.log("view : pieces.js - initPieces(): currPiecesGroup", currPiecesGroup);
 
   view.context.scene.add(currPiecesGroup);
 }

@@ -98,9 +98,8 @@ function reprojectTray(group, levelSep, trayGap) {
 // Seampoint: more global functions...
 
 // --- Helpers ---
-
 function makeTrayGroup(side, gap) {
-  console.log("view : trays.js - makeTrayGroup(side)", side);
+  // console.log("view : trays.js - makeTrayGroup(side)", side);
 
   const trayGroup = new THREE.Group();
 
@@ -118,7 +117,7 @@ function makeTrayGroup(side, gap) {
   }
 
 function buildTrayColumn(trayGroup, columnData, side, gap) {
-  console.log("view : trays.js - buildTrayColumn(...)", columnData, side, gap);
+  // console.log("view : trays.js - buildTrayColumn(...)", columnData, side, gap);
 
   Object.entries(columnData)
     .forEach(([key, pos]) => {

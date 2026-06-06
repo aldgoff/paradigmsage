@@ -24,13 +24,19 @@ import selectionsData from "./selections.json" assert { type: "json" };
 
 // --- Globals ---
   // const selections = new Set(); // Deprecated.
-  const pieceSelections = new Set();
-  const tileSelections = new Set();
+  const pieceSelections = new Set();  // Holds piece key - "WKRP".
+  const tileSelections = new Set();   // Holds tile vts - [z,x,y].
 // Seampoint: more globals...
 
 // --- UI ---
 export function getSelections() {
   return { pieceSelections, tileSelections };
+  }
+export function clearPieceSelections() {
+  pieceSelections.clear();
+  }
+export function clearTileSelections() {
+  tileSelections.clear();
   }
 
 export function handleTileClick(vts) { // TODO: make this a state machine.
@@ -41,8 +47,10 @@ export function handleTileClick(vts) { // TODO: make this a state machine.
     return;
   }
 
+  tileSelections.add(vts);
+
   // TODO: Refactor for use by cSetup.
-  
+
   const meshTile = tiles.getTileMesh(view.context.tileMap, vts);
   if(!meshTile) throw new Error("This should be impossible?");
 

@@ -149,3 +149,13 @@
 
 48. **Ensemble Growth as Structural Projection**
     The classical ensemble is not brute-force enumerated but grown incrementally via spooky-branch duplication (1×2 → … → 16×32 = 512). Legality constraints carve a sparse, structured subset of valid classical games from this exponentially expanding branch lattice. Move-by-move growth visualization is a research instrument for observing decoherence-like structural pruning.
+
+49. **Code-as-Map Readability Principle**
+    Code may be intentionally structured as a visual map rather than prose. Alignment, columns, short symbolic states, schema decomposition, and foldable regions are architectural tools for reducing cognitive load. Reviews and refactors must preserve spatial organization when it encodes semantic structure.
+
+    Corollaries:
+    - Knowledge in the world is preferred over knowledge in the head.
+    - Explicit schema declarations may be retained even when individual fields are temporarily unused.
+    - Column alignment and compact state names may be preferred over verbose identifiers when they improve scanability.
+    - Code should be evaluated both as text and as a visual artifact.
+

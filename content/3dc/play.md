@@ -129,6 +129,7 @@ layout: "play"
   </div>  
   <div class="section">
     <button data-action="placePiece" disabled>Place Piece</button>
+    <button data-action="return" disabled>Return</button>
     <button data-action="freeze" disabled>Freeze</button>
   </div>
   <div class="section">
@@ -143,7 +144,7 @@ layout: "play"
 <div class="panel panel-stateful" id="move-window">
   <div class="panel-title">Move Panel</div>
   <div class="section">
-    <button data-action="move"      disabled>Move</button>
+    <button data-action="move"      >Move</button>
     <button data-action="capture"   disabled>Capture</button>
     <button data-action="enpassant" disabled>En Passant</button>
     <button data-action="castle"    disabled>Castle</button>
@@ -296,7 +297,7 @@ layout: "play"
   </div>
 
 <div class="panel panel-temporal" id="game-window">
-  <div class="panel-title">Game Panel</div>
+  <div class="panel-title">Undo Panel</div>
   <!-- <div class="section">
     <button data-action="newGame">New Game</button>
   </div> -->

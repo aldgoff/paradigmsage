@@ -114,6 +114,11 @@ function assembleLine(entry) {
     const line = `${place}`;
     return line;
     }
+  else if(action === "return") {
+    const { action, trayTile } = entry;
+    const line = `${trayTile}`;
+    return line;
+    }
   else if(action === "freeze") {
     const { action, count } = entry;
     const line = `${action} ${count}`;

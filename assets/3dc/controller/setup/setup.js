@@ -28,6 +28,7 @@ import setupData from "./setup.json" assert { type: "json" };
   import * as cPieces     from "../../controller/pieces/pieces.js";
   import * as cSelections from "../../controller/selections/selections.js";
 
+  import * as coords   from "../../foundation/coords/coords.js";
   import * as state    from "../../model/state/state.js";
   import * as mSetup   from "../../model/setup/setup.js";
   import * as mPieces  from "../../model/pieces/pieces.js";
@@ -55,6 +56,7 @@ export function panelDispatch(payload) {    // Dispatch payload from panel to ha
   switch (action) {
     case "makeBoard":   handleMakeBoard(payload); break;
     case "placePiece":  handlePlacePiece(payload); break;
+    case "return":      handleReturnPieceToTray(payload); break;
     case "freeze":      handleFreeze(payload); break;
     case "startingPos": handleStartingPos(payload); break;
     case "play":        handlePlay(payload); break;
@@ -94,6 +96,7 @@ function handleMakeBoard(payload) { // Setup handler.
 
   panels.enableButton("makeBoard",   false);
   panels.enableButton("placePiece",  true);
+  panels.enableButton("return",      false);
   panels.enableButton("freeze",      false);
   panels.enableButton("startingPos", true);
   panels.enableButton("play",        false);
@@ -101,6 +104,61 @@ function handleMakeBoard(payload) { // Setup handler.
 
 function handlePlacePiece(payload) {
   console.log("cntrl: game.js - handlePlacePiece(payload):", payload);
+
+  const { action, boardSize, trayType } = payload;  // Informative, only action is used.
+  const { pieceSelections, tileSelections } = cSelections.getSelections();
+
+  // --- Intent ---
+  let task = "nada";      // What to do.
+  let key = null;         // "WQQP".
+  let piece = {};         // { loc: "~|@", pos: "Q5,5", coords: [0,1,1] }.
+  let src = null;         // "QR1,1 - Location of piece already on board, in board coords.
+  let dstTile = null;     // [-3,-3,-3] - destination coords on board, in vts coords.
+  
+  if(     pieceSelections.size === 0)   { task = "noPiece";}  // Determine task implied by the selections.
+  else if(pieceSelections.size  >  1)   { task = "pieces"; }
+  else if(tileSelections.size  === 0)   { task = "noTile"; }
+  else if(tileSelections.size   >  1)   { task = "tiles";  }
+  else {                               // task = "place|shift".
+    key = pieceSelections.values().next().value;
+    dstTile = tileSelections.values().next().value;
+    piece = mPieces.getPieceList()[key];
+    if(piece.loc === '~')               { task = "place"; }
+    else { src = piece.pos;               task = "shift"; }
+  }
+
+  // --- Do ---
+  switch (task) {
+  case "noPiece": console.log("cntrl: game.js - handlePlacePiece(...):", "No piece selected.");         return;
+  case "pieces":  console.log("cntrl: game.js - handlePlacePiece(...):", "Too many pieces selected.");  return;
+  case "noTile":  console.log("cntrl: game.js - handlePlacePiece(...):", "No tile selected.");          return;
+  case "tiles":   console.log("cntrl: game.js - handlePlacePiece(...):", "Too many tiles selected.");   return;
+  case "nada":    console.log("cntrl: game.js - handlePlacePiece(...):", "Unknown action.");            return;
+  case "place":   movePieceToBoard(key, dstTile);          break;
+  case "shift":   movePieceAroundBoard(key, src, dstTile); break;
+  }
+
+  // --- Log ---
+  let player = key[0];  // Parse key, only player & type used.
+  let side   = key[1];
+  let level  = key[2];
+  let type   = key[3];
+  let place  = (src) 
+  ? `${player}${type}-${src}`                           // "WP-K4,4".
+  : `${player}${type}@${coords.vtsToBoard(dstTile)}`;   // "WP@KR2,2".
+  const entry = { action, place };
+
+  state.pushNewSetup(entry);          // Log state change in undo buffer.
+  vSetup.pushPanelLine(entry);        // Add line to panel.
+  vSetup.refreshPanel(entry);         // Only needed by panels with derived fields.
+
+  panels.enableButton("return",      true);
+  panels.enableButton("freeze",      true);
+  panels.enableButton("startingPos", false);
+  }
+
+function handleReturnPieceToTray(payload) {
+  console.log("cntrl: game.js - handleReturnPieceToTray(payload):", payload);
 
   const { action, boardSize, trayType } = payload;  // Informative.
 
@@ -117,7 +175,7 @@ function handlePlacePiece(payload) {
     
 
 
-  const entry = { action, place: "WP@KR2,2" };  // TODO: query selections for actual placement.
+  const entry = { action, trayTile: "WKRR~KR0,0" };  // TODO: query selections for actual placement.
 
   state.pushNewSetup(entry);          // Log state change in undo buffer.
   vSetup.pushPanelLine(entry);        // Add line to panel.
@@ -139,6 +197,7 @@ function handleFreeze(payload) {
   vSetup.refreshPanel(entry);         // Only needed by panels with derived fields.
 
   panels.enableButton("placePiece",  false);
+  panels.enableButton("return",      false);
   panels.enableButton("freeze",      false);
   panels.enableButton("startingPos", false);
   panels.enableButton("play",        true);
@@ -156,6 +215,7 @@ function handleStartingPos(payload) {
   vSetup.refreshPanel(entry);         // Only needed by panels with derived fields.
 
   panels.enableButton("placePiece",  false);
+  panels.enableButton("return",      false);
   panels.enableButton("freeze",      false);
   panels.enableButton("startingPos", false);
   panels.enableButton("play",        true);
@@ -175,7 +235,7 @@ function handlePlay(payload) {
   panels.enableButton("play",        false);
 
   panels.enableButton("move", true);
-}
+  }
 
 function handleLock(payload) {  // DEPRECATED: Locks initial pos after pieces manually moved from tray to board.
   console.log("cntrl: game.js - handleLock(payload):", payload);
@@ -213,6 +273,17 @@ function applyEntry(entry) {
 
   // TODO: remove all entries in the downstream buffers; 
   // a new board invalidates moves, gambits, and advsqs.
+}
+
+function movePieceToBoard(key, dstTile) {
+  console.log("cntrl: game.js - moveOnePieceToBoard(key, dstTile):", key, dstTile);
+
+  }
+function movePieceToTray() {
+
+  }
+function movePieceAroundBoard() {
+
 }
 // Seampoint: more local functions...
 
