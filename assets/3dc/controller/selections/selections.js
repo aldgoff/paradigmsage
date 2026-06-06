@@ -23,10 +23,16 @@ import selectionsData from "./selections.json" assert { type: "json" };
 // Seampoint: more imports...
 
 // --- Globals ---
-  const selections = new Set();
+  // const selections = new Set(); // Deprecated.
+  const pieceSelections = new Set();
+  const tileSelections = new Set();
 // Seampoint: more globals...
 
 // --- UI ---
+export function getSelections() {
+  return { pieceSelections, tileSelections };
+  }
+
 export function handleTileClick(vts) { // TODO: make this a state machine.
   console.log("cntrl: selections.js - handleTileClick(coords)", vts);
   
@@ -35,15 +41,17 @@ export function handleTileClick(vts) { // TODO: make this a state machine.
     return;
   }
 
+  // TODO: Refactor for use by cSetup.
+  
   const meshTile = tiles.getTileMesh(view.context.tileMap, vts);
   if(!meshTile) throw new Error("This should be impossible?");
 
   vBoards.toggleDecorator(meshTile);  // TODO: POC, not final logic.
 
-  if(selections.size != 1) return;
+  if(pieceSelections.size != 1) return;
 
-  console.log(`*** ${selections.size} possible pieces.`, selections);
-  const iterator = selections.values();
+  console.log(`*** ${pieceSelections.size} possible pieces.`, pieceSelections);
+  const iterator = pieceSelections.values();
   const key = iterator.next().value;
   const piece = mPieces.getPieceList()[key];
   const { loc, pos, coord } = piece;
@@ -56,7 +64,7 @@ export function handleTileClick(vts) { // TODO: make this a state machine.
     mPieces.movePieceFromTileToTile(key, dstStr);
 
   vPieces.deHighlight(key);
-  selections.delete(key);
+  pieceSelections.delete(key);
   vBoards.toggleDecorator(meshTile);  // TODO: POC, not final logic.
 
   console.log("*** mPieces.getPieceList()", mPieces.getPieceList());
@@ -76,13 +84,13 @@ export function handlePieceClick(obj) { // TODO: make this a state machine.
 
   console.log("cntrl: selections.js - handlePieceClick(...)", obj.userData);
   const key = obj.userData.key;
-  if(selections.has(key)) {
+  if(pieceSelections.has(key)) {
     vPieces.deHighlight(key);
-    selections.delete(key);
+    pieceSelections.delete(key);
   }
   else {
     vPieces.highlight(key);
-    selections.add(key);
+    pieceSelections.add(key);
   }
 
 

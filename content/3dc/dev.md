@@ -123,7 +123,7 @@ title: "Dev"
   - 6/02/26 - Finish White pawns. Finish White knights with bevels and chirality. Add Black trays. Add material colors via json.
   - 6/03/26 - Tray default state is visible. POC on duke/bishop/stack centering and orientation. Finish pieces. Update clues and quick start.
   - 6/04/26 - Create selections module, migrate tile listener. Piece clicks! TODO reduction in view. Highlight/dehighlight pieces.
-  - 6/05/26 - Move pieces from tray to board. QC setup. Manage panel buttons.
+  - 6/05/26 - Move pieces from tray to board. QC setup. Manage panel buttons. Setup uses selections, pass 1.
 
 
 ## Some Saved States to Worry About...

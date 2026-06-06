@@ -22,10 +22,11 @@ import setupData from "./setup.json" assert { type: "json" };
 // --- Build upon previous layers ---
   import * as panels   from "../../panels/panels.js";
 
-  import * as game     from "../../controller/game/game.js";
-  import * as cBoards  from "../../controller/boards/boards.js";
-  import * as cTrays   from "../../controller/trays/trays.js";
-  import * as cPieces  from "../../controller/pieces/pieces.js";
+  import * as game        from "../../controller/game/game.js";
+  import * as cBoards     from "../../controller/boards/boards.js";
+  import * as cTrays      from "../../controller/trays/trays.js";
+  import * as cPieces     from "../../controller/pieces/pieces.js";
+  import * as cSelections from "../../controller/selections/selections.js";
 
   import * as state    from "../../model/state/state.js";
   import * as mSetup   from "../../model/setup/setup.js";
@@ -102,6 +103,19 @@ function handlePlacePiece(payload) {
   console.log("cntrl: game.js - handlePlacePiece(payload):", payload);
 
   const { action, boardSize, trayType } = payload;  // Informative.
+
+  const { pieceSelections, tileSelections } = cSelections.getSelections();
+
+  if((pieceSelections.size === 1) 
+  && (tileSelections.size  === 1)) {
+    console.log("cntrl: game.js - handlePlacePiece(...):", "One piece selected, one tile selected.");
+  } 
+  else {
+    console.log("cntrl: game.js - handlePlacePiece(...):", "Not one piece selected and/or not one tile selected.");
+    return;
+  }
+    
+
 
   const entry = { action, place: "WP@KR2,2" };  // TODO: query selections for actual placement.
 
