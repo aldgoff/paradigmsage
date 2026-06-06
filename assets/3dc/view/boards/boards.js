@@ -99,28 +99,29 @@ export function setLevelSep(levelSep) {
   view.reprojectGroup(currentBoard, levelSep);
   }
 
-export function toggleDecorator(meshTile) {
-  if (meshTile.userData.decorated) {      // --- REMOVE overlays ---
-    meshTile.userData.overlays.forEach(o => meshTile.remove(o));
-    meshTile.userData.overlays = [];
-    meshTile.userData.decorated = false;
-  } else {                                // --- ADD overlays ---
-    const face = meshTile.userData.faceColor;
-    const layers = decorators.applyBaseZones({
-      base: face,
-      zones: ["#111111", "#111111", face, face ]
-    });
+export function decorateTile(meshTile) {
+  const face = meshTile.userData.faceColor;
+  const layers = decorators.applyBaseZones({
+    base: face,
+    zones: ["#111111", "#111111", face, face ]
+  });
 
-    const overlays = layers.map(layer => {
-      const circle = decorators.drawInsetCircle(meshTile, layer.scale, layer.color);
-      meshTile.add(circle);
-      return circle;
-    });
+  const overlays = layers.map(layer => {
+    const circle = decorators.drawInsetCircle(meshTile, layer.scale, layer.color);
+    meshTile.add(circle);
+    return circle;
+  });
 
-    meshTile.userData.overlays = overlays;
-    meshTile.userData.decorated = true;
+  meshTile.userData.overlays = overlays;
+  meshTile.userData.decorated = true;
   }
+
+export function undecorateTile(meshTile) {
+  meshTile.userData.overlays.forEach(o => meshTile.remove(o));
+  meshTile.userData.overlays = [];
+  meshTile.userData.decorated = false;
 }
+
 // Seampoint: more global functions...
 
 // --- Helpers ---

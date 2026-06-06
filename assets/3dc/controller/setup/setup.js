@@ -33,12 +33,10 @@ import setupData from "./setup.json" assert { type: "json" };
   import * as mSetup   from "../../model/setup/setup.js";
   import * as mPieces  from "../../model/pieces/pieces.js";
   import * as mTrays   from "../../model/trays/trays.js";
-  import * as mBoards  from "../../model/boards/boards.js";
 
-  import * as boards   from "../../view/boards/boards.js";
   import * as vSetup   from "../../view/setup/setup.js";
   import * as vGambits from "../../view/gambits/gambits.js";
-  import * as vViewer  from "../../view/viewer/viewer.js";
+  import * as vPieces  from "../../view/pieces/pieces.js";
 // Seampoint: more imports...
 
 // --- Globals ---
@@ -103,7 +101,7 @@ function handleMakeBoard(payload) { // Setup handler.
   }
 
 function handlePlacePiece(payload) {
-  console.log("cntrl: game.js - handlePlacePiece(payload):", payload);
+  console.log("cntrl: setup.js - handlePlacePiece(payload):", payload);
 
   const { action, boardSize, trayType } = payload;  // Informative, only action is used.
   const { pieceSelections, tileSelections } = cSelections.getSelections();
@@ -126,14 +124,15 @@ function handlePlacePiece(payload) {
     if(piece.loc === '~')               { task = "place"; }
     else { src = piece.pos;               task = "shift"; }
   }
+  console.log("*** ", pieceSelections, tileSelections, task);
 
   // --- Do ---
   switch (task) {
-  case "noPiece": console.log("cntrl: game.js - handlePlacePiece(...):", "No piece selected.");         return;
-  case "pieces":  console.log("cntrl: game.js - handlePlacePiece(...):", "Too many pieces selected.");  return;
-  case "noTile":  console.log("cntrl: game.js - handlePlacePiece(...):", "No tile selected.");          return;
-  case "tiles":   console.log("cntrl: game.js - handlePlacePiece(...):", "Too many tiles selected.");   return;
-  case "nada":    console.log("cntrl: game.js - handlePlacePiece(...):", "Unknown action.");            return;
+  case "noPiece": console.log("cntrl: setup.js - handlePlacePiece(...):", "No piece selected.");         return;
+  case "pieces":  console.log("cntrl: setup.js - handlePlacePiece(...):", "Too many pieces selected.");  return;
+  case "noTile":  console.log("cntrl: setup.js - handlePlacePiece(...):", "No tile selected.");          return;
+  case "tiles":   console.log("cntrl: setup.js - handlePlacePiece(...):", "Too many tiles selected.");   return;
+  case "nada":    console.log("cntrl: setup.js - handlePlacePiece(...):", "Unknown action.");            return;
   case "place":   movePieceToBoard(key, dstTile);          break;
   case "shift":   movePieceAroundBoard(key, src, dstTile); break;
   }
@@ -158,7 +157,7 @@ function handlePlacePiece(payload) {
   }
 
 function handleReturnPieceToTray(payload) {
-  console.log("cntrl: game.js - handleReturnPieceToTray(payload):", payload);
+  console.log("cntrl: setup.js - handleReturnPieceToTray(payload):", payload);
 
   const { action, boardSize, trayType } = payload;  // Informative.
 
@@ -166,10 +165,10 @@ function handleReturnPieceToTray(payload) {
 
   if((pieceSelections.size === 1) 
   && (tileSelections.size  === 1)) {
-    console.log("cntrl: game.js - handlePlacePiece(...):", "One piece selected, one tile selected.");
+    console.log("cntrl: setup.js - handlePlacePiece(...):", "One piece selected, one tile selected.");
   } 
   else {
-    console.log("cntrl: game.js - handlePlacePiece(...):", "Not one piece selected and/or not one tile selected.");
+    console.log("cntrl: setup.js - handlePlacePiece(...):", "Not one piece selected and/or not one tile selected.");
     return;
   }
     
@@ -186,7 +185,7 @@ function handleReturnPieceToTray(payload) {
   }
 
 function handleFreeze(payload) {
-  console.log("cntrl: game.js - handleFreeze(payload):", payload);
+  console.log("cntrl: setup.js - handleFreeze(payload):", payload);
 
   const { action, boardSize, trayType } = payload;  // Informative.
 
@@ -204,7 +203,7 @@ function handleFreeze(payload) {
   }
 
 function handleStartingPos(payload) {
-  console.log("cntrl: game.js - handleStartingPos(payload):", payload);
+  console.log("cntrl: setup.js - handleStartingPos(payload):", payload);
 
   const { action, boardSize, trayType } = payload;  // Informative.
 
@@ -222,7 +221,7 @@ function handleStartingPos(payload) {
   }
 
 function handlePlay(payload) {
-  console.log("cntrl: game.js - handlePlay(payload):", payload);
+  console.log("cntrl: setup.js - handlePlay(payload):", payload);
 
   const { action, boardSize, trayType } = payload;  // Informative.
 
@@ -238,7 +237,7 @@ function handlePlay(payload) {
   }
 
 function handleLock(payload) {  // DEPRECATED: Locks initial pos after pieces manually moved from tray to board.
-  console.log("cntrl: game.js - handleLock(payload):", payload);
+  console.log("cntrl: setup.js - handleLock(payload):", payload);
 
   const { action, boardSize, trayType } = payload;  // Informative.
 
@@ -276,10 +275,24 @@ function applyEntry(entry) {
 }
 
 function movePieceToBoard(key, dstTile) {
-  console.log("cntrl: game.js - moveOnePieceToBoard(key, dstTile):", key, dstTile);
+  console.log("cntrl: setup.js - moveOnePieceToBoard(key, dstTile):", key, dstTile);
 
+  const piece = mPieces.getPieceList()[key];
+  const { loc, pos, coord } = piece;
+  const dstStr = coords.vtsToBoard(dstTile);
+
+  // console.log(`*** move ${key} from ${loc} ${pos} to ${dstStr}`);
+  mPieces.movePieceFromTrayToBoard(key, dstStr);
+
+  vPieces.deHighlight(key);
+  cSelections.clearPieceSelections(key);
+  cSelections.deselectTile(dstTile);
   }
-function movePieceToTray() {
+
+function movePieceToTray(key) {
+  console.log("cntrl: setup.js - movePieceToTray(key):", key);
+
+  // mPieces.movePieceFromTileToTile(key, dstStr);
 
   }
 function movePieceAroundBoard() {

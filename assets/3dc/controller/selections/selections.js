@@ -13,9 +13,11 @@ import selectionsData from "./selections.json" assert { type: "json" };
 // Seampoint: more objects...
 
 // --- Build upon previous layers ---
+  import * as utils   from "../../../utils/utils.js";
   import * as coords  from "../../foundation/coords/coords.js";
   import * as mTrays  from "../../model/trays/trays.js";
   import * as mPieces from "../../model/pieces/pieces.js";
+  
   import * as view    from "../../view/view.js";
   import * as vBoards from "../../view/boards/boards.js";
   import * as tiles   from "../../view/tiles/tiles.js";
@@ -23,21 +25,49 @@ import selectionsData from "./selections.json" assert { type: "json" };
 // Seampoint: more imports...
 
 // --- Globals ---
-  // const selections = new Set(); // Deprecated.
   const pieceSelections = new Set();  // Holds piece key - "WKRP".
-  const tileSelections = new Set();   // Holds tile vts - [z,x,y].
+  const tileSelections  = new Set();  // Holds tile vts - [z,x,y].
 // Seampoint: more globals...
 
 // --- UI ---
 export function getSelections() {
   return { pieceSelections, tileSelections };
   }
+
 export function clearPieceSelections() {
   pieceSelections.clear();
   }
+
+export function selectTile(vts) {
+  tileSelections.add(vts);
+
+  const meshTile =
+    tiles.getTileMesh(view.context.tileMap, vts);
+
+  vBoards.decorateTile(meshTile);
+  }
+
+export function deselectTile(vts) {
+  clearTileSelection(vts);
+
+  const meshTile =
+    tiles.getTileMesh(view.context.tileMap, vts);
+
+  vBoards.undecorateTile(meshTile);
+  }
+
 export function clearTileSelections() {
   tileSelections.clear();
   }
+
+export function clearTileSelection(vts) {
+  for(const sel of tileSelections) {
+    if(utils.isSame(sel, vts)) {
+      tileSelections.delete(sel);
+      return;
+    }
+  }
+}
 
 export function handleTileClick(vts) { // TODO: make this a state machine.
   console.log("cntrl: selections.js - handleTileClick(coords)", vts);
@@ -47,37 +77,17 @@ export function handleTileClick(vts) { // TODO: make this a state machine.
     return;
   }
 
-  tileSelections.add(vts);
-
-  // TODO: Refactor for use by cSetup.
-
-  const meshTile = tiles.getTileMesh(view.context.tileMap, vts);
-  if(!meshTile) throw new Error("This should be impossible?");
-
-  vBoards.toggleDecorator(meshTile);  // TODO: POC, not final logic.
-
-  if(pieceSelections.size != 1) return;
-
-  console.log(`*** ${pieceSelections.size} possible pieces.`, pieceSelections);
-  const iterator = pieceSelections.values();
-  const key = iterator.next().value;
-  const piece = mPieces.getPieceList()[key];
-  const { loc, pos, coord } = piece;
-  const dstStr = coords.vtsToBoard(vts);
-
-  console.log(`*** move ${key} from ${loc} ${pos} to ${vts} ala ${dstStr}`);
-  if(loc ==='~')
-    mPieces.movePieceFromTrayToBoard(key, dstStr);
+  let alreadySelected = false;
+  for(const sel of tileSelections) {
+    if(utils.isSame(sel, vts)) {
+      alreadySelected = true;
+      break;
+    }
+  }
+  if(alreadySelected)
+    deselectTile(vts);
   else
-    mPieces.movePieceFromTileToTile(key, dstStr);
-
-  vPieces.deHighlight(key);
-  pieceSelections.delete(key);
-  vBoards.toggleDecorator(meshTile);  // TODO: POC, not final logic.
-
-  console.log("*** mPieces.getPieceList()", mPieces.getPieceList());
-  console.log("*** mTrays.getWhiteTray()", mTrays.getWhiteTray());
-  console.log("*** mTrays.getBlackTray()", mTrays.getBlackTray());
+    selectTile(vts);
 
   return;
   }
@@ -109,27 +119,5 @@ export function handlePieceClick(obj) { // TODO: make this a state machine.
 // Seampoint: more global functions...
 
 // --- Helpers ---
-function toggleDecorator(meshTile) {
-  if (meshTile.userData.decorated) {      // --- REMOVE overlays ---
-    meshTile.userData.overlays.forEach(o => meshTile.remove(o));
-    meshTile.userData.overlays = [];
-    meshTile.userData.decorated = false;
-  } else {                                // --- ADD overlays ---
-    const face = meshTile.userData.faceColor;
-    const layers = decorators.applyBaseZones({
-      base: face,
-      zones: ["#111111", "#111111", face, face ]
-    });
-
-    const overlays = layers.map(layer => {
-      const circle = decorators.drawInsetCircle(meshTile, layer.scale, layer.color);
-      meshTile.add(circle);
-      return circle;
-    });
-
-    meshTile.userData.overlays = overlays;
-    meshTile.userData.decorated = true;
-  }
-}
 // Seampoint: more local functions...
 

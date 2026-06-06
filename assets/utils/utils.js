@@ -3,7 +3,7 @@
   Purpose: Useful tools for dealing with JavaScript.
   Author: Allan Goff
   Date: 4/29/26
-  Recommended access: import * as utils.
+  Recommended access: import * as utils from "../../../utils/utils.js";
   UI: the export functions.
 */
 
