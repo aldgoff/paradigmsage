@@ -216,7 +216,7 @@ function handleShiftPiece(payload) {
   // --- Log ---
     let prev   = `${src}`;
     let next   = `${coords.vtsToBoard(dstTile, boardSpec)}`;
-    let places = `${key}:${prev}-${next}`
+    let places = `${key}:${prev}>${next}`
     const entry = { action, places };
 
     recordSetupAction(entry);
@@ -414,7 +414,7 @@ function placePieceOnBoard(key, dstTile) {
 function shiftPieceToTile(key, dstTile) {
   console.log("cntrl: setup.js - shiftPieceToTile(key, dst):", key, dstTile);
 
-  const dstStr = coords.vtsToBoard(dstTile);
+  const dstStr = coords.vtsToBoard(dstTile, boardSpec);
 
   const { ok, err } = mPieces.movePieceTileToTile(key, dstStr);
   if(!ok) return { ok, err };

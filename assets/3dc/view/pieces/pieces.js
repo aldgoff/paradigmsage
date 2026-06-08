@@ -45,6 +45,7 @@ import piecesData from "./pieces.json" assert { type: "json" };
   const THREE = window.THREE;
   let currPiecesGroup = null;
   const pieceGroups = {};
+  let lastTrayGap = 0;
 // Seampoint: more globals...
 
 // --- UI ---
@@ -66,7 +67,7 @@ export function initPieces(pieceList) {
 
   view.context.scene.add(currPiecesGroup);
   }
-  
+
 export function placePieceInTray(key) {      // "WKRR", ...
   // console.log("view : pieces.js - placePieceInTray(key)", key);
   // placePiece(key);
@@ -86,9 +87,7 @@ export function placePieceInTray(key) {      // "WKRR", ...
   const zOffset = tileHeight/2;
   const decoratorGap = 2;
   const grid2 = coordsMaps.vts2pixels(group.userData.vts)
-
   // console.log("*** position: ", grid2[0], grid2[1]+zOffset+decoratorGap, grid2[2]); // Debug instrumention.
-
   group.position.set(grid2[0], grid2[1]+zOffset+decoratorGap, grid2[2]);
   }
 
@@ -124,7 +123,7 @@ export function placePiece(key) {      // "WKRR", ...
 
   group.position.set(grid2[0], grid2[1]+zOffset+decoratorGap, grid2[2]);
   console.log("*** Piece moved to", loc, pos, "coords:", coords, "vts:", group.userData.vts);
-}
+  }
 
 export function renderPiece(key) {  // "WKRR".  // Deprecated.
   // console.log("view : pieces.js - renderPiece(key)", key);
@@ -184,23 +183,24 @@ export function reprojectTrayPieces(levelSep, trayGap) {
     if(!piece) return;
     if(piece.loc !== "~") return;
 
-    // Recompute canonical tray VTS.
-    const player = key[0];
-    const vts = tileToVts(player, piece.pos, trayGap + 2); // Tray base offset from board.
-    const pixels = coordsMaps.vts2pixels(vts, levelSep);
+    const player = key[0];                                // Tray gap.
+    const change = trayGap - lastTrayGap;
+    const displacement = (player === "W") ? [0, -change, -change]: [0, change, change];
+    const vts = utils.add(piece.vts, displacement);
+    
+    const pixels = coordsMaps.vts2pixels(vts, levelSep);  // Level sep.
 
-    const tileHeight = 5;
+    const tileSize = tiles.tileSize();                    // Place just above tile.
+    const tileHeight = tileSize[0];  // Z.
     const zOffset = tileHeight / 2;
     const decoratorGap = 2;
-
-    obj.position.set(
-      pixels[0],
-      pixels[1] + zOffset + decoratorGap,
-      pixels[2]
-    );
+    obj.position.set(pixels[0], pixels[1] + zOffset + decoratorGap, pixels[2]);
 
     obj.userData.vts = vts;
+    piece.vts = vts;
   });
+  
+  lastTrayGap = trayGap;
   }
 
 export function highlight(key) {
