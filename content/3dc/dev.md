@@ -116,8 +116,6 @@ title: "Dev"
   - 5/28/26 - 
   - 5/29/26 - 
   - 5/30/26 - 
-
- ### Week 12:
   - 5/31/26 - Fix Dale typos.
   - 6/01/26 - Replace rest of Act 2 comics. Replace Act 3 comics. Level sep for trays, board, advsqs & gambits. Cleanup. Piece level sep. Tray piece gap.
   - 6/02/26 - Finish White pawns. Finish White knights with bevels and chirality. Add Black trays. Add material colors via json.
@@ -125,7 +123,10 @@ title: "Dev"
   - 6/04/26 - Create selections module, migrate tile listener. Piece clicks! TODO reduction in view. Highlight/dehighlight pieces.
   - 6/05/26 - Move pieces from tray to board. QC setup. Manage panel buttons. Setup uses selections, pass 1.
   - 6/06/26 - Setup uses selections pass 2. Setup uses selections pass 3.
+
+ ### Week 13:
   - 6/07/26 - Improved initial placement of pieces in the trays, all three boards.
+  - 6/08/26 - QC pieces.
 
 
 ## Some Saved States to Worry About...
@@ -134,93 +135,7 @@ title: "Dev"
     {
       "action": "makeBoard",
       "boardSize": "8x8x8",
-      "trayType": "real",
-      "initialPos": "std",
-      "pieceList": {
-        "white": {
-          "ref": "abs",
-          "pieces": [],
-          "pawns": []
-        },
-        "black": {
-          "ref": "rel",
-          "pieces": [],
-          "pawns": []
-        }
-      }
-    }
-  ],
-  "Moves": [],
-  "Gambits": [],
-  "AdvSqs": []
-}
-
-{
-  "Setup": [
-    {
-      "action": "makeBoard",
-      "boardSize": "8x8x8",
-      "trayType": "real",
-      "initialPos": "list",
-      "pieceList": {
-        "white": {
-          "ref": "abs",
-          "pieces": [],
-          "pawns": []
-        },
-        "black": {
-          "ref": "rel",
-          "pieces": [],
-          "pawns": []
-        }
-      }
-    }
-  ],
-  "Moves": [],
-  "Gambits": [],
-  "AdvSqs": []
-}
-
-{
-  "Setup": [
-    {
-      "action": "makeBoard",
-      "boardSize": "8x8x8",
       "trayType": "real"
-    }
-  ],
-  "Moves": [],
-  "Gambits": [],
-  "AdvSqs": []
-}
-
-{
-  "Setup": [
-    {
-      "action": "makeBoard",
-      "boardSize": "8x8x8",
-      "trayType": "real",
-      "initialPos": "list",
-      "pieceList": {
-        "white": {
-          "ref": "abs",
-          "pieces": [],
-          "pawns": []
-        },
-        "black": {
-          "ref": "rel",
-          "pieces": [],
-          "pawns": []
-        }
-      }
-    },
-    {
-      "action": "placePiece",
-      "place": "WP@KR2,2"
-    },
-    {
-      "action": "placePiece",
-      "place": "WP@KR2,2"
     }
   ],
   "Moves": [],
@@ -237,23 +152,22 @@ title: "Dev"
     },
     {
       "action": "placePiece",
-      "place": "WP@KR2,2"
+      "place": "BR@KR6,6"
     },
     {
       "action": "placePiece",
-      "place": "WP@KR2,2"
+      "place": "BB@Q6,4"
+    },
+    {
+      "action": "placePiece",
+      "place": "WS@KR2,2"
+    },
+    {
+      "action": "return",
+      "trayTile": "BKRR~KR0,0"
     }
   ],
   "Moves": [],
   "Gambits": [],
   "AdvSqs": []
 }
-{"Setup":[
-  {"action":"makeBoard","boardSize":"8x8x8","trayType":"real"},
-  {"action":"placePiece","place":"WP@KR2,2"},
-  {"action":"placePiece","place":"WP@KR2,2"}
-],
-"Moves":[],
-"Gambits":[],
-"AdvSqs":[]}
-

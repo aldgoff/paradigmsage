@@ -1,53 +1,10 @@
 {
   "pieces_module": {
-    "eights": {
-      "size": "8x8x8",
-      "initialPos": {
-        "White": {
-          "ref": "relative",
-          "pieces": ["R@KR1,1", "N@KN1,1", "S@KB1,1", "K@K1,1", "Q@Q1,1", "S@QB1,1", "N@QN1,1", "R@QR1,1"],
-          "pawns":  ["P@KR2,2", "P@KN2,2", "P@KB2,2", "P@K2,2", "P@Q2,2", "P@QB2,2", "P@QN2,2", "P@QR2,2"]
-        },
-        "Black": {
-          "ref": "relative",
-          "pieces": ["R@KR1,1", "N@KN1,1", "S@KB1,1", "K@K1,1", "Q@Q1,1", "S@QB1,1", "N@QN1,1", "R@QR1,1"],
-          "pawns":  ["P@KR2,2", "P@KN2,2", "P@KB2,2", "P@K2,2", "P@Q2,2", "P@QB2,2", "P@QN2,2", "P@QR2,2"]
-        },
-        "Black2": {
-          "ref": "absolute",
-          "pieces": ["R@KR8,8", "N@KN8,8", "S@KB8,8", "K@K8,8", "Q@Q8,8", "S@QB8,8", "N@QN8,8", "R@QR8,8"],
-          "pawns":  ["P@KR7,7", "P@KN7,7", "P@KB7,7", "P@K7,7", "P@Q7,7", "P@QB7,7", "P@QN7,7", "P@QR7,7"]
-        }
-      },
-      "trays": {
-        "White": {
-          "ref": "relative",
-          "pieces": ["R~KR1,1", "N~KN1,1", "S~KB1,1", "K~K1,1", "Q~Q1,1", "S~QB1,1", "N~QN1,1", "R~QR1,1"],
-          "pawns":  ["P~KR2,2", "P~KN2,2", "P~KB2,2", "P~K2,2", "P~Q2,2", "P~QB2,2", "P~QN2,2", "P~QR2,2"]
-        },
-        "Black": {
-          "ref": "relative",
-          "pieces": ["R~KR1,1", "N~KN1,1", "B~KB1,1", "K~K1,1", "Q~Q1,1", "D~QB1,2", "N~QN1,1", "R~QR1,1"],
-          "pawns":  ["P~KR2,2", "P~KN2,2", "P~KB2,2", "P~K2,2", "P~Q2,2", "P~QB2,2", "P~QN2,2", "P~QR2,2"]
-        }
-      },
-      "puzzle": {
-        "name": "Endgame: King-rook versus lone king.",
-        "goal": "White to mate in 8 moves.",
-        "White": {
-          "pieces": ["K@K1,1", "R@QR1,1"],
-          "pawns":  []
-        },
-        "Black": {
-          "pieces": ["K@K8,8"],
-          "pawns":  []
-        }
-      }
-    },
     "eight": {
       "size": "8x8x8",
       "trays": {
         "size": "10x2x2",
+        "offset": 0,
         "White": [
           [[null  , null],
            [null  , null]],
@@ -98,6 +55,7 @@
       "size": "10x8x8",
       "trays": {
         "size": "10x2x2",
+        "offset": 0,
         "White": [
           [["WQRR", null],
            [null, "WQRP"]],
@@ -148,6 +106,7 @@
       "size": "10x10x10",
       "trays": {
         "size": "10x2x2",
+        "offset": 1,
         "White": [
           [["WQRR", null],
            [null, "WQRP"]],
