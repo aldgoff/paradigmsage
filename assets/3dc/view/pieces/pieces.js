@@ -48,17 +48,17 @@ import piecesData from "./pieces.json" assert { type: "json" };
 // Seampoint: more globals...
 
 // --- UI ---
-export function initPieces() {
+export function initPieces(pieceList) {
   console.log("view : pieces.js - initPieces()");
 
   currPiecesGroup = new THREE.Group();
 
-  const pieces = mPieces.getPieceList();  // { loc: "~", pos: "QR1,1", coords: [k,1,1] };
+  // const pieces = mPieces.getPieceList();  // { loc: "~", pos: "QR1,1", coords: [k,1,1] };
 
-  for(const key in pieces) {      // "WKRR", ...
+  for(const key in pieceList) {      // "WKRR", ...
     const group = createPiece(key);
     pieceGroups[key] = group;
-    placePiece(key);    // Pieces start in the trays.
+    placePieceInTray(key);    // Pieces start in the trays.
     currPiecesGroup.add(group);
     // renderPiece(key);
   }  
@@ -99,6 +99,31 @@ function createPiece(key) {      // "WKRR", ...
 
   return group;
 }
+export function placePieceInTray(key) {      // "WKRR", ...
+  // console.log("view : pieces.js - placePieceInTray(key)", key);
+  // placePiece(key);
+  // return;
+
+  const piece = mPieces.getPieceList()[key];              // Arg validation.
+  if(!piece) throw Error(`No such piece ${key}.`);
+
+  const { loc, pos, coords, vts } = piece;                     // Parse location.
+  const player = key[0];  // W|B.                         // Parse arg.
+
+  const group = pieceGroups[key];                         // Fetch the mesh (group).
+  group.userData.vts = vts;
+
+  const tileSize = tiles.tileSize();                      // Place just above tile.
+  const tileHeight = tileSize[0];  // Z.
+  const zOffset = tileHeight/2;
+  const decoratorGap = 2;
+  const grid2 = coordsMaps.vts2pixels(group.userData.vts)
+
+  // console.log("*** position: ", grid2[0], grid2[1]+zOffset+decoratorGap, grid2[2]); // Debug instrumention.
+
+  group.position.set(grid2[0], grid2[1]+zOffset+decoratorGap, grid2[2]);
+}
+
 export function placePiece(key) {      // "WKRR", ...
   // console.log("view : pieces.js - placePiece(key)", key);
 

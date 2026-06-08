@@ -44,8 +44,156 @@
         }
       }
     },
-    "ten": {"status": "tbd"},
-    "tens": {"status": "tbd"}
+    "eight": {
+      "size": "8x8x8",
+      "trays": {
+        "size": "10x2x2",
+        "White": [
+          [[null  , null],
+           [null  , null]],
+          [["WQRR", null],
+           [null  , "WQRP"]],
+          [["WQNN", null],
+           [null  , "WQNP"]],
+          [["WQBS", "WQBD"],
+           ["WQBB", "WQBP"]],
+          [["WQQQ", null],
+           [null  , "WQQP"]],
+          [["WKKK", null],
+           [null  , "WKKP"]],
+          [["WKBS", "WKBD"],
+           ["WKBB", "WKBP"]],
+          [["WKNN", null],
+           [null  , "WKNP"]],
+          [["WKRR", null],
+           [null  , "WKRP"]],
+          [[null  , null],
+           [null  , null]]
+        ],
+        "Black": [
+          [[null  , null],
+           [null  , null]],
+          [["BQRR", null],
+           [null  , "BQRP"]],
+          [["BQNN", null],
+           [null  , "BQNP"]],
+          [["BQBS", "BQBD"],
+           ["BQBB", "BQBP"]],
+          [["BQQQ", null],
+           [null  , "BQQP"]],
+          [["BKKK", null],
+           [null  , "BKKP"]],
+          [["BKBS", "BKBD"],
+           ["BKBB", "BKBP"]],
+          [["BKNN", null],
+           [null  , "BKNP"]],
+          [["BKRR", null],
+           [null  , "BKRP"]],
+          [[null  , null],
+           [null  , null]]
+        ]
+      }
+    },
+    "ten": {
+      "size": "10x8x8",
+      "trays": {
+        "size": "10x2x2",
+        "White": [
+          [["WQRR", null],
+           [null, "WQRP"]],
+          [["WQNN", null],
+           [null, "WQNP"]],
+          [["WQBB", null],
+           [null, "WQBP"]],
+          [["WQDD", null],
+           [null, "WQDP"]],
+          [["WQQQ", null],
+           [null, "WQQP"]],
+          [["WKKK", null],
+           [null, "WKKP"]],
+          [["WKDD", null],
+           [null, "WKDP"]],
+          [["WKBB", null],
+           [null, "WKBP"]],
+          [["WKNN", null],
+           [null, "WKNP"]],
+          [["WKRR", null],
+           [null, "WKRP"]]
+        ],
+        "Black": [
+          [["BQRR", null],
+           [null, "BQRP"]],
+          [["BQNN", null],
+           [null, "BQNP"]],
+          [["BQBB", null],
+           [null, "BQBP"]],
+          [["BQDD", null],
+           [null, "BQDP"]],
+          [["BQQQ", null],
+           [null, "BQQP"]],
+          [["BKKK", null],
+           [null, "BKKP"]],
+          [["BKDD", null],
+           [null, "BKDP"]],
+          [["BKBB", null],
+           [null, "BKBP"]],
+          [["BKNN", null],
+           [null, "BKNP"]],
+          [["BKRR", null],
+           [null, "BKRP"]]
+        ]
+      }
+    },
+    "tens": {
+      "size": "10x10x10",
+      "trays": {
+        "size": "10x2x2",
+        "White": [
+          [["WQRR", null],
+           [null, "WQRP"]],
+          [["WQNN", null],
+           [null, "WQNP"]],
+          [["WQBB", null],
+           [null, "WQBP"]],
+          [["WQDD", null],
+           [null, "WQDP"]],
+          [["WQQQ", null],
+           [null, "WQQP"]],
+          [["WKKK", null],
+           [null, "WKKP"]],
+          [["WKDD", null],
+           [null, "WKDP"]],
+          [["WKBB", null],
+           [null, "WKBP"]],
+          [["WKNN", null],
+           [null, "WKNP"]],
+          [["WKRR", null],
+           [null, "WKRP"]]
+        ],
+        "Black": [
+          [["BQRR", null],
+           [null, "BQRP"]],
+          [["BQNN", null],
+           [null, "BQNP"]],
+          [["BQBB", null],
+           [null, "BQBP"]],
+          [["BQDD", null],
+           [null, "BQDP"]],
+          [["BQQQ", null],
+           [null, "BQQP"]],
+          [["BKKK", null],
+           [null, "BKKP"]],
+          [["BKDD", null],
+           [null, "BKDP"]],
+          [["BKBB", null],
+           [null, "BKBP"]],
+          [["BKNN", null],
+           [null, "BKNP"]],
+          [["BKRR", null],
+           [null, "BKRP"]]
+        ]
+      }
+    }
   }
 }
 

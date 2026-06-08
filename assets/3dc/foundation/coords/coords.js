@@ -143,6 +143,10 @@ export function vtsToBoard(vts, specOrName = "8x8x8") {
 }
 
 // -- Onboard tests --
+export function onBoardStr(dstStr, spec) {
+  return onBoardRcs(boardToRcs(dstStr, spec), spec);
+  }
+
 export function onBoardRcs(rcs, specName = "8x8x8") { // True/False.
   let spec = specName;
 
