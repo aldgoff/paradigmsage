@@ -128,9 +128,10 @@ layout: "play"
     <label> <input type="radio" name="tray-type" value="factory"> Factory </label><br>
   </div>  
   <div class="section">
-    <button data-action="placePiece" disabled>Place Piece</button>
-    <button data-action="return" disabled>Return</button>
-    <button data-action="freeze" disabled>Freeze</button>
+    <button data-action="placePiece"   disabled>Place Piece</button>
+    <button data-action="shiftPiece"   disabled>Shift Piece</button>
+    <button data-action="returnPiece"  disabled>Return Piece</button>
+    <button data-action="freezePuzzle" disabled>Freeze Puzzle</button>
   </div>
   <div class="section">
     <button data-action="startingPos" disabled>Starting Position</button>
@@ -144,7 +145,7 @@ layout: "play"
 <div class="panel panel-stateful" id="move-window">
   <div class="panel-title">Move Panel</div>
   <div class="section">
-    <button data-action="move"      >Move</button>
+    <button data-action="move"      disabled>Move</button>
     <button data-action="capture"   disabled>Capture</button>
     <button data-action="enpassant" disabled>En Passant</button>
     <button data-action="castle"    disabled>Castle</button>

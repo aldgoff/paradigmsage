@@ -114,12 +114,17 @@ function assembleLine(entry) {
     const line = `${place}`;
     return line;
     }
-  else if(action === "return") {
+  else if(action === "shiftPiece") {
+    const { action, places } = entry;
+    const line = `${places}`;
+    return line;
+    }
+  else if(action === "returnPiece") {
     const { action, trayTile } = entry;
     const line = `${trayTile}`;
     return line;
     }
-  else if(action === "freeze") {
+  else if(action === "freezePuzzle") {
     const { action, count } = entry;
     const line = `${action} ${count}`;
     return line;

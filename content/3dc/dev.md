@@ -116,17 +116,21 @@ title: "Dev"
   - 5/28/26 - 
   - 5/29/26 - 
   - 5/30/26 - 
+
+ ### Week 12:
   - 5/31/26 - Fix Dale typos.
   - 6/01/26 - Replace rest of Act 2 comics. Replace Act 3 comics. Level sep for trays, board, advsqs & gambits. Cleanup. Piece level sep. Tray piece gap.
   - 6/02/26 - Finish White pawns. Finish White knights with bevels and chirality. Add Black trays. Add material colors via json.
   - 6/03/26 - Tray default state is visible. POC on duke/bishop/stack centering and orientation. Finish pieces. Update clues and quick start.
   - 6/04/26 - Create selections module, migrate tile listener. Piece clicks! TODO reduction in view. Highlight/dehighlight pieces.
   - 6/05/26 - Move pieces from tray to board. QC setup. Manage panel buttons. Setup uses selections, pass 1.
-  - 6/06/26 - Setup uses selections pass 2. Setup uses selections pass 3. Misc. QC. Dependencies.
+  - 6/06/26 - Setup uses selections pass 2. Setup uses selections pass 3.
 
  ### Week 13:
   - 6/07/26 - Improved initial placement of pieces in the trays, all three boards.
-  - 6/08/26 - QC pieces. Complete board to tray.
+  - 6/08/26 - QC pieces. Complete board to tray. Misc. QC. Dependencies. Setup flow established.
+
+
 
 Global Command to Label Dependencies
 find ./assets/3dc -type f -name "*.js" \

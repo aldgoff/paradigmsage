@@ -116,16 +116,46 @@ export function movePieceFromTrayToBoard(key, dstStr) {  // "WQQP", "Q1,1". // T
 export function movePieceTileToTile(key, dstStr) {
   console.log("model: pieces.js - movePieceTileToTile(key, dstStr)", key, dstStr);
 
-  // TODO: finish movePieceTileToTile.
+  // --- Parse ---
+    const spec = cSetup.boardSpec;                                  // Support all three board sizes.
 
-  const piece = pieceList[key];
-  if(!piece) {
-    throw new Error(`Piece ${key} noT found.`);
-  }
+    const piece = pieceList[key];                                   // Ensure valid args - should never fail.
+    if(!piece) throw new Error(`Piece ${key} not found.`);
+    if(!coords.onBoardStr(dstStr, spec)) throw new Error(`Destination ${dstStr} not on board.`);
+    console.log("*** Parse", piece);
 
-  console.log("*** MORE TO COME.");
+  // --- Update board occupancy ---
+    const dstTile = coords.normalizeTileToVts(dstStr, spec);        // Determine occupancy indices.
+    const indices = utils.add(origin, dstTile);
+    const [z, x, y] = indices;  // New.
+    const occupancy = mBoards.getBoardOccupancy();
+    if(occupancy[z][x][y]) {
+      const err = `Cannot move to an occupied ${occupancy[z][x][y]} tile ${dstStr}.`;
+      return { ok: false, err };
+    }
+    const [Z,X,Y] = utils.add(origin, piece.coords); // Previous.
+    occupancy[Z][X][Y] = null;
+    occupancy[z][x][y] = key;
+    console.log("*** ZXY", Z,X,Y);
+    console.log("*** zxy", z,x,y);
+    console.log("*** Update board occupancy", piece.coords);
 
-  // const src = utils.add(origin, place.coords);
+  // --- Update piece ---
+    piece.loc    = "@";                                             // Update pieceList.
+    piece.pos    = dstStr; 
+    piece.coords = dstTile;
+    piece.vts    = dstTile;
+
+    vPieces.placePiece(key);                                        // Relocate the piece mesh (group).
+
+  // Debug instrumention.
+    console.log("*** occ:  ", structuredClone(occupancy[z][x][y]));
+    console.log("*** rcs:  ", structuredClone(indices));
+    console.log("*** dst:  ", structuredClone(dstTile));
+    console.log("*** piece:", structuredClone(piece));
+    console.log("*** spec: ", structuredClone(spec));
+
+    console.log("*** pieceList", structuredClone(pieceList));                // Diagnositcs.
   
   return { ok: true, err: null };
   }
@@ -150,7 +180,6 @@ export function movePieceFromBoardToTray(key) {
     const [k, i, j] = piece.home.trayCoords;
     console.log("*** Parse", k, i, j);
 
-  // return { ok: true, err: null };
   
   // --- Update board occupancy ---
     const indices = utils.add(origin, coords);
