@@ -16,7 +16,7 @@ import decoratorsData from "./decorators.json" assert { type: "json" };
   const decorators = decoratorsModule.decorators;
 // Seampoint: more objects...
 
-// --- Build upon previous layers ---
+// --- Dependencies ---
 // Seampoint: more imports...
 
 // --- UI ---

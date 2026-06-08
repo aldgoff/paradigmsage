@@ -12,7 +12,7 @@ import modelData from "./model.json" assert { type: "json" };
   const modelModule = modelData.model_module;
 // Seampoint: more objects...
 
-// --- Build upon previous layers ---
+// --- Dependencies ---
   import * as control from "../controller/controller.js";
   import * as view    from "../view/view.js";
   import * as state   from "./state/state.js";  // All the undoable state code.

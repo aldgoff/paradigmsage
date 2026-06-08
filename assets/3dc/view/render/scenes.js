@@ -16,7 +16,7 @@ import scenesData from "./scenes.json" assert { type: "json" };
   const background  = scenesModule.background;
 // Seampoint: more objects...
 
-// --- Build upon previous layers ---
+// --- Dependencies ---
 // Seampoint: more imports...
 
 // --- UI ---

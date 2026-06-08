@@ -20,7 +20,7 @@ import movesData from "./moves.json" assert { type: "json" };
   const move  = movesModule.Move;
 // Seampoint: more objects...
 
-// --- Build upon previous layers ---
+// --- Dependencies ---
   import * as state  from "../../model/state/state.js";
 // Seampoint: more imports...
 

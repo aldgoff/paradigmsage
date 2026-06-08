@@ -18,7 +18,7 @@ import lightsData from "./lights.json" assert { type: "json" };
   const ambient = lightsModule.ambient;
 // Seampoint: more objects...
 
-// --- Build upon previous layers ---
+// --- Dependencies ---
 // Seampoint: more imports...
 
 // --- UI ---

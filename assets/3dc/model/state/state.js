@@ -13,7 +13,7 @@ import stateData from "./state.json" assert { type: "json" };
   const seed = stateData.state_module;  // Not used, kept for syntax reference only.
 // Seampoint: more objects...
 
-// --- Build upon previous layers ---
+// --- Dependencies ---
 // Seampoint: more imports...
 
 // --- Globals ---

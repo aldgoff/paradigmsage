@@ -12,7 +12,7 @@ import gameData from "./game.json" assert { type: "json" };
   const gameModule = gameData.game_module;
 // Seampoint: more objects...
 
-// --- Build upon previous layers ---
+// --- Dependencies ---
   import * as cGambits from "../../controller/gambits/gambits.js";
 
   import * as state    from "../../model/state/state.js";

@@ -12,7 +12,7 @@ import boardsData from "./boards.json" assert { type: "json" };
   const boardsModule = boardsData.boards_module;
 // Seampoint: more objects...
 
-// --- Build upon previous layers ---
+// --- Dependencies ---
   import * as mBoards from "../../model/boards/boards.js";
 // Seampoint: more imports...
 

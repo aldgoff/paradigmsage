@@ -12,7 +12,7 @@ const THREE = window.THREE;
 // --- Load JSON ---
 // Seampoint: more objects...
 
-// --- Build upon previous layers ---
+// --- Dependencies ---
 import {vts2xyz,
         xyz2vts,
         vts2pixels,

@@ -13,7 +13,7 @@ import modulesData from "./modules.json" assert { type: "json" };
   const category  = modulesModule.category;
 // Seampoint: more objects...
 
-// --- Build upon previous layers ---
+// --- Dependencies ---
   import * as planes from "../geometry/planes/planes.js";
   import * as quads  from "../geometry/quads/quads.js";
 // Seampoint: more imports...

@@ -46,7 +46,7 @@ import controllerData from "./controller.json" assert { type: "json" };
   const controllerModule = controllerData.controller_module;
 // Seampoint: more objects...
 
-// --- Build upon previous layers ---
+// --- Dependencies ---
   import * as panels   from "../panels/panels.js";
   import * as model    from "../model/model.js";
   import * as view     from "../view/view.js";

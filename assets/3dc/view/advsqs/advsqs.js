@@ -20,7 +20,7 @@ import advsqsData from "./advsqs.json" assert { type: "json" };
   const category  = advsqsModule.category;
 // Seampoint: more objects...
 
-// --- Build upon previous layers ---
+// --- Dependencies ---
   import * as utils  from "../../../utils/debug.js";
   import * as state    from "../../model/state/state.js";
   import * as coords   from "../../foundation/coords/coords.js";

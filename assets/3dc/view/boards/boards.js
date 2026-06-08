@@ -13,7 +13,7 @@ import boardsData from "./boards.json" assert { type: "json" };
   const boardsModule = boardsData.boards_module;
 // Seampoint: more objects...
 
-// --- Build upon previous layers ---
+// --- Dependencies ---
   import * as foundation from "../../foundation/colors/colors.js";
   import * as view       from "../view.js";
   import * as tiles      from "../tiles/tiles.js";

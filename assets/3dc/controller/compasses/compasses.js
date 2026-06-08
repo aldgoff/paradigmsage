@@ -12,7 +12,7 @@ import compassesData from "./compasses.json" assert { type: "json" };
   const compassesModule = compassesData.compasses_module;
 // Seampoint: more objects...
 
-// --- Build upon previous layers ---
+// --- Dependencies ---
   import * as game     from "../../controller/game/game.js";
   import * as vGambits from "../../view/gambits/gambits.js";
 // Seampoint: more imports...

@@ -16,7 +16,7 @@ import traysData from "./trays.json" assert { type: "json" };
   const tens      = traysModule["10x10x10"];
 // Seampoint: more objects...
 
-// --- Build upon previous layers ---
+// --- Dependencies ---
   import * as state      from "../../model/state/state.js";
   import * as view       from "../view.js";
   import * as tiles      from "../tiles/tiles.js";

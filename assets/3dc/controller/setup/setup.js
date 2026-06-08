@@ -19,7 +19,7 @@ import setupData from "./setup.json" assert { type: "json" };
   const setupModule = setupData.setup_module;
 // Seampoint: more objects...
 
-// --- Build upon previous layers ---
+// --- Dependencies ---
   import * as panels   from "../../panels/panels.js";
 
   import * as game        from "../../controller/game/game.js";

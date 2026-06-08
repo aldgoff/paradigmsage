@@ -12,7 +12,7 @@ import piecesData from "./pieces.json" assert { type: "json" };
   const piecesModule = piecesData.pieces_module;
 // Seampoint: more objects...
 
-// --- Build upon previous layers ---
+// --- Dependencies ---
   import * as mPieces from "../../model/pieces/pieces.js";
 // Seampoint: more imports...
 

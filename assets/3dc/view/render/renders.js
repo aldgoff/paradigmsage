@@ -13,7 +13,7 @@ const THREE = window.THREE;
 // --- Load JSON ---
 // Seampoint: more objects...
 
-// --- Build upon previous layers ---
+// --- Dependencies ---
   import * as cameras from "./cameras.js";
   import * as scenes  from "./scenes.js";
   import * as lights  from "./lights.js";

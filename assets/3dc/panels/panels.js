@@ -13,7 +13,7 @@ import panelsData from "./panels.json" assert { type: "json" };
   const panels = panelsModule.panels;
 // Seampoint: more objects...
 
-// --- Build upon previous layers ---
+// --- Dependencies ---
   import * as setup     from "../controller/setup/setup.js";
   import * as moves     from "../controller/moves/moves.js";
   import * as gambits   from "../controller/gambits/gambits.js";

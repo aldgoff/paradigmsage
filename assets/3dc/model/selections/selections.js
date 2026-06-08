@@ -12,7 +12,7 @@ import selectionsData from "./selections.json" assert { type: "json" };
   const selectionsModule = selectionsData.selections_module;
 // Seampoint: more objects...
 
-// --- Build upon previous layers ---
+// --- Dependencies ---
   import * as planes from "../geometry/planes/planes.js";
   import * as quads  from "../geometry/quads/quads.js";
 // Seampoint: more imports...

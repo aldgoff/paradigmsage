@@ -19,7 +19,7 @@ import advsqsData from "./advsqs.json" assert { type: "json" };
   const advsqsModule = advsqsData.advsqs_module;
 // Seampoint: more objects...
 
-// --- Build upon previous layers ---
+// --- Dependencies ---
   import * as game     from "../../controller/game/game.js";
 
   import * as state    from "../../model/state/state.js";

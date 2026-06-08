@@ -20,7 +20,7 @@ import setupData from "./setup.json" assert { type: "json" };
   const category  = setupModule.category;
 // Seampoint: more objects...
 
-// --- Build upon previous layers ---
+// --- Dependencies ---
 // Seampoint: more imports...
 
 // --- UI ---

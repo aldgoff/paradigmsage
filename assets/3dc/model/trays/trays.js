@@ -29,7 +29,7 @@ import traysData from "./trays.json" assert { type: "json" };
     );
 // Seampoint: more globals...
 
-// --- Build upon previous layers ---
+// --- Dependencies ---
   import * as vTrays from "../../view/trays/trays.js";
 // Seampoint: more imports...
 

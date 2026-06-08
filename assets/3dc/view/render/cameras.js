@@ -17,7 +17,7 @@ import camerasData from "./cameras.json" assert { type: "json" };
   const jit = camerasModule.jitter;
 // Seampoint: more objects...
 
-// --- Build upon previous layers ---
+// --- Dependencies ---
 // Seampoint: more imports...
 
 let camera = null;

@@ -16,7 +16,7 @@ import coordsData from "./coords.json" assert { type: "json" };
   const boardSpecs = coordsModule.board_specs;
 // Seampoint: more imports...
 
-// --- Build upon previous layers ---
+// --- Dependencies ---
 // Seampoint: more imports...
 
 // --- UI ---

@@ -20,7 +20,7 @@ import gambitsData from "./gambits.json" assert { type: "json" };
   const category  = gambitsModule.category;
 // Seampoint: more objects...
 
-// --- Build upon previous layers ---
+// --- Dependencies ---
   import * as cGambits from "../../controller/gambits/gambits.js";
 
   import * as state  from "../../model/state/state.js";

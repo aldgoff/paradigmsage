@@ -22,7 +22,7 @@ import raysData from "./rays.json" assert { type: "json" };
   const KNIGHT = raysModule.knight;
 // Seampoint: more imports...
 
-// --- Build upon previous layers ---
+// --- Dependencies ---
 // Seampoint: more imports...
 
 // --- UI ---

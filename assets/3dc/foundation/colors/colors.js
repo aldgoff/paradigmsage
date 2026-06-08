@@ -14,7 +14,7 @@ import colorsData from "./colors.json" assert { type: "json" };
   const DUKE   = colorsModule.duke_color;
 // Seampoint: more imports...
 
-// --- Build upon previous layers ---
+// --- Dependencies ---
   import * as coords from "../coords/coords.js";
 // Seampoint: more imports...
 

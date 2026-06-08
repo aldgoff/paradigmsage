@@ -17,7 +17,7 @@
 // --- Load JSON ---
 // Seampoint: more objects...
 
-// --- Build upon previous layers ---
+// --- Dependencies ---
   import * as renders    from "./render/renders.js";
   import * as coordsMaps from "./render/coordsMaps.js";
   import * as tiles      from "./tiles/tiles.js";

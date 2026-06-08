@@ -12,7 +12,7 @@ import viewerData from "./viewer.json" assert { type: "json" };
   const viewerModule = viewerData.viewer_module;
 // Seampoint: more objects...
 
-// --- Build upon previous layers ---
+// --- Dependencies ---
   import * as state      from "../../model/state/state.js";
   import * as view       from "../view.js";
 // Seampoint: more imports...

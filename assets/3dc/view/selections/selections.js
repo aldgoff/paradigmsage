@@ -12,7 +12,7 @@ import selectionsData from "./selections.json" assert { type: "json" };
   const selectionsModule = selectionsData.selections_module;
 // Seampoint: more objects...
 
-// --- Build upon previous layers ---
+// --- Dependencies ---
   import * as cSelections from "../../controller/selections/selections.js";
   import * as view        from "../view.js";
   import * as tiles       from "../tiles/tiles.js";

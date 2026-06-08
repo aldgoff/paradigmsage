@@ -26,7 +26,7 @@ import piecesData from "./pieces.json" assert { type: "json" };
   const king   = piecesModule.king;
 // Seampoint: more objects...
 
-// --- Build upon previous layers ---
+// --- Dependencies ---
   import * as utils   from "../../../utils/utils.js";
 
   import * as planes  from "../../geometry/planes/planes.js";

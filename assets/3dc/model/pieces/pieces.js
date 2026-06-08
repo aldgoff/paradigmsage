@@ -15,7 +15,7 @@ import piecesData from "./pieces.json" assert { type: "json" };
   const tens   = piecesModule.tens;
 // Seampoint: more objects...
 
-// --- Build upon previous layers ---
+// --- Dependencies ---
   import * as utils   from "../../../utils/utils.js";
   import * as cSetup  from "../../controller/setup/setup.js";
 

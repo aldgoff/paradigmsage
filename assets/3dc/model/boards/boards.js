@@ -13,7 +13,7 @@ import boardsData from "./boards.json" assert { type: "json" };
   const category  = boardsModule.category;
 // Seampoint: more objects...
 
-// --- Build upon previous layers ---
+// --- Dependencies ---
   import * as vBoards from "../../view/boards/boards.js";
 // Seampoint: more imports...
 

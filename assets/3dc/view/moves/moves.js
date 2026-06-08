@@ -20,7 +20,7 @@ import movesData from "./moves.json" assert { type: "json" };
   const category  = movesModule.category;
 // Seampoint: more objects...
 
-// --- Build upon previous layers ---
+// --- Dependencies ---
   import * as state   from "../../model/state/state.js";
   import * as quads  from "../../geometry/quads/quads.js";
 // Seampoint: more imports...
