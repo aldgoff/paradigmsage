@@ -107,11 +107,11 @@ export function placePieceInTray(key) {      // "WKRR", ...
   const piece = mPieces.getPieceList()[key];              // Arg validation.
   if(!piece) throw Error(`No such piece ${key}.`);
 
-  const { loc, pos, coords, vts } = piece;                     // Parse location.
+  const { loc, pos, coords, vts, home } = piece;                     // Parse location.
   const player = key[0];  // W|B.                         // Parse arg.
 
   const group = pieceGroups[key];                         // Fetch the mesh (group).
-  group.userData.vts = vts;
+  group.userData.vts = home.trayVts;
 
   const tileSize = tiles.tileSize();                      // Place just above tile.
   const tileHeight = tileSize[0];  // Z.
@@ -140,7 +140,6 @@ export function placePiece(key) {      // "WKRR", ...
     group.userData.vts = tileToVts(player, pos, gap);
     }
   else if(loc === "@") {                                  // Place on board.
-    // renderOnBoard(player, side, type, pos);
     group.userData.vts = tileToVts(player, pos, 0);
     }
   else {
@@ -156,6 +155,7 @@ export function placePiece(key) {      // "WKRR", ...
   // console.log("*** position: ", grid2[0], grid2[1]+zOffset+decoratorGap, grid2[2]); // Debug instrumention.
 
   group.position.set(grid2[0], grid2[1]+zOffset+decoratorGap, grid2[2]);
+  console.log("*** Piece moved to", loc, pos, "coords:", coords, "vts:", group.userData.vts);
 }
 
 export function renderPiece(key) {  // "WKRR".  // Deprecated.

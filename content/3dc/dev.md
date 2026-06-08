@@ -126,7 +126,7 @@ title: "Dev"
 
  ### Week 13:
   - 6/07/26 - Improved initial placement of pieces in the trays, all three boards.
-  - 6/08/26 - QC pieces.
+  - 6/08/26 - QC pieces. Complete board to tray.
 
 
 ## Some Saved States to Worry About...

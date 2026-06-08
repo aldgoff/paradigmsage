@@ -106,6 +106,7 @@ function handlePlacePiece(payload) {
 
     const { action, boardSize, trayType } = payload;  // Informative, only action is used.
     const { pieceSelections, tileSelections } = cSelections.getSelections();
+    console.log("*** Parse");
 
   // --- Intent ---
     let task = "nada";      // What to do.
@@ -125,7 +126,7 @@ function handlePlacePiece(payload) {
       if(piece.loc === '~')               { task = "place"; }
       else { src = piece.pos;               task = "shift"; }
     }
-    // console.log("*** ", pieceSelections, tileSelections, task);  // Diagnostic.
+    console.log("*** ", pieceSelections, tileSelections, task);  // Diagnostic.
 
   // --- Do ---
     let result = {};
@@ -140,6 +141,7 @@ function handlePlacePiece(payload) {
     }
     const { ok, err } = result
     if(!ok) { throw new Error(`${err} - don't log.`); return; }
+    console.log("*** Do");
 
   // --- Log ---
     let player = key[0];  // Parse key, only player & type used.
@@ -147,18 +149,20 @@ function handlePlacePiece(payload) {
     let level  = key[2];
     let type   = key[3];
     let place  = (src) 
-    ? `${player}${type}-${src}`                           // "WP-K4,4".
-    : `${player}${type}@${coords.vtsToBoard(dstTile)}`;   // "WP@KR2,2".
+    ? `${player}${type}-${src}`                                     // "WP-K4,4".
+    : `${player}${type}@${coords.vtsToBoard(dstTile, boardSpec)}`;  // "WP@KR2,2".
     const entry = { action, place };
 
     state.pushNewSetup(entry);          // Log state change in undo buffer.
     vSetup.pushPanelLine(entry);        // Add line to panel.
     vSetup.refreshPanel(entry);         // Only needed by panels with derived fields.
+    console.log("*** Log");
 
   // --- Buttons ---
     panels.enableButton("return",      true);
     panels.enableButton("freeze",      true);
     panels.enableButton("startingPos", false);
+    console.log("*** Buttons");
   }
 
 function handleReturnPieceToTray(payload) {
@@ -301,7 +305,7 @@ function placePieceOnBoard(key, dstTile) {
 
   const piece = mPieces.getPieceList()[key];
   const { loc, pos, coord } = piece;
-  const dstStr = coords.vtsToBoard(dstTile);
+  const dstStr = coords.vtsToBoard(dstTile, boardSpec);
 
   const { ok, err } = mPieces.movePieceFromTrayToBoard(key, dstStr);
   if(!ok) return { ok, err };
