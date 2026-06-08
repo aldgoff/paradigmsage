@@ -122,12 +122,16 @@ title: "Dev"
   - 6/03/26 - Tray default state is visible. POC on duke/bishop/stack centering and orientation. Finish pieces. Update clues and quick start.
   - 6/04/26 - Create selections module, migrate tile listener. Piece clicks! TODO reduction in view. Highlight/dehighlight pieces.
   - 6/05/26 - Move pieces from tray to board. QC setup. Manage panel buttons. Setup uses selections, pass 1.
-  - 6/06/26 - Setup uses selections pass 2. Setup uses selections pass 3.
+  - 6/06/26 - Setup uses selections pass 2. Setup uses selections pass 3. Misc. QC.
 
  ### Week 13:
   - 6/07/26 - Improved initial placement of pieces in the trays, all three boards.
   - 6/08/26 - QC pieces. Complete board to tray.
 
+Global Command to Label Dependencies
+find ./assets/3dc -type f -name "*.js" \
+  -exec sed -i '' \
+  's/--- Build upon previous layers ---/--- Dependencies ---/g' {} +
 
 ## Some Saved States to Worry About...
 {

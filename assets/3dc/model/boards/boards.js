@@ -35,19 +35,18 @@ export function init(entry) {
   clearBoard();
 
   vBoards.render(entry);
-}
+  }
 
 export function getBoardSpecs() {
   const specs = "8x8x8";
   // TODO: finish getBoardSpecs().
 
   return specs;
-}
+  }
 
 export function getBoardOccupancy() {
   return occupancy;
 }
-
 // Seampoint: more global functions...
 
 // --- Helpers ---
@@ -71,6 +70,5 @@ function clearBoard() {
 
   // console.log(`model: boards.js - cleared ${tally} board slots.`);
 }
-
 // Seampoint: more local functions...
 

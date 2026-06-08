@@ -16,19 +16,21 @@ import stateData from "./state.json" assert { type: "json" };
 // --- Build upon previous layers ---
 // Seampoint: more imports...
 
-let state = { // This is the state history of the game: setup-moves-gambits-advsqs.
-  Setup:   [],
-  Moves:   [],
-  Gambits: [],
-  AdvSqs:  []
-  };
+// --- Globals ---
+  let state = { // This is the state history of the game: setup-moves-gambits-advsqs.
+    Setup:   [],
+    Moves:   [],
+    Gambits: [],
+    AdvSqs:  []
+    };
 
-let indexes = { // Current element in each buffer, a key-value object.
-  Setup:   0,
-  Moves:   0,
-  Gambits: 0,
-  AdvSqs:  0
-}
+  let indexes = { // Current element in each buffer, a key-value object.
+    Setup:   0,
+    Moves:   0,
+    Gambits: 0,
+    AdvSqs:  0
+  }
+// Seampoint: more globals...
 
 // --- UI ---
 export function getStateKeys() {    // ["Setup","Moves","Gambits","AdvSqs"] (in state order).
