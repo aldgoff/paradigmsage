@@ -38,7 +38,6 @@ export function clear(setup) {
   clearBoard();
 }
 
-// --- UI ---
 export function makeBoard(dimensions) {
   console.log("view : boards.js - makeBoard(dimensions):", dimensions);
 
@@ -121,7 +120,6 @@ export function undecorateTile(meshTile) {
   meshTile.userData.overlays = [];
   meshTile.userData.decorated = false;
 }
-
 // Seampoint: more global functions...
 
 // --- Helpers ---

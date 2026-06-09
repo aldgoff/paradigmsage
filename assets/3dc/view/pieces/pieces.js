@@ -1,6 +1,6 @@
 /* File: pieces.js
   Path: ./3dc/view/pieces/pieces.js
-  Purpose: desc
+  Purpose: code for building piece meshes, positioning and highlighting them.
   Author: Allan Goff
   Date: 5/03/26
   Recommended access: import * as vPieces from "../../view/pieces/pieces.js";

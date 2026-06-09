@@ -38,6 +38,7 @@
 
 // --- Globals ---
 export let context;   // Contains things like: scene, renderer, camera, tileMap...
+// Seampoint: more globals...
 
 // --- UI ---
 export function init(playBoard) {

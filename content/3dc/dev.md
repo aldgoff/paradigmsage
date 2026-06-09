@@ -129,7 +129,7 @@ title: "Dev"
  ### Week 13:
   - 6/07/26 - Improved initial placement of pieces in the trays, all three boards.
   - 6/08/26 - QC pieces. Complete board to tray. Misc. QC. Dependencies. Setup flow established. Fix tray gap/pieces. Prep for new setup undo.
-  - 6/09/26 - Screenshots. Selections canonized. Setup undo.
+  - 6/09/26 - Screenshots. Selections canonized. Canonize code as map. Setup undo.
 
 
 ## Save Setup States

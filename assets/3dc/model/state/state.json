@@ -3,7 +3,7 @@
     "_example": "A sequence of 4 invertible undo/redo arrays.",
     "_cannonicalSchema": "Each model layer module file is responsible for complying to this standard.",
     "Setup": [
-      { "action": "makeboard",    "boardSize": "8x8x8", "trayType": "real" },
+      { "action": "makeBoard",    "boardSize": "8x8x8", "trayType": "real" },
       { "action": "placePiece",   "data": "BKRP@KR7,7" },
       { "action": "shiftPiece",   "data": "BKRP:KR7,7>KR6,6" },
       { "action": "placePiece",   "data": "BKRR@KR8,8" },
