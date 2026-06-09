@@ -64,7 +64,7 @@ export function movePieceFromTrayToBoard(key, dstStr) {  // "WQQP", "Q1,1". // T
     const type   = key[3];  // R|B|D|S|Q|N|P|U|K.
 
     const { i, j } = mTrays.trayIndices(type, spec);                // Determine tray array indices.
-    console.log("*** Parse");
+    // console.log("*** Parse");
 
   // --- Update tray occupancy ---
     const whiteTray = mTrays.getWhiteTray();                        // Trays and boards.
@@ -77,7 +77,7 @@ export function movePieceFromTrayToBoard(key, dstStr) {  // "WQQP", "Q1,1". // T
       return { ok: false, err };
     }
     tray[k][i][j] = null;
-    console.log("*** Update tray occupancy");
+    // console.log("*** Update tray occupancy");
 
   // --- Update board occupancy ---
     const indices = utils.add(origin, dstTile);
@@ -88,7 +88,7 @@ export function movePieceFromTrayToBoard(key, dstStr) {  // "WQQP", "Q1,1". // T
       return { ok: false, err };
     }
     occupancy[z][x][y] = key;
-    console.log("*** Update board occupancy");
+    // console.log("*** Update board occupancy");
 
   // --- Update piece ---
     piece.loc    = "@";                                             // Update pieceList.
@@ -99,12 +99,12 @@ export function movePieceFromTrayToBoard(key, dstStr) {  // "WQQP", "Q1,1". // T
     vPieces.placePiece(key);                                        // Relocate the piece mesh (group).
 
   // Debug instrumention.
-    console.log("*** tray: ", structuredClone(tray[z]));
-    console.log("*** occ:  ", structuredClone(occupancy[z][x][y]));
-    console.log("*** rcs:  ", structuredClone(indices));
-    console.log("*** dst:  ", structuredClone(dstTile));
-    console.log("*** piece:", structuredClone(pieceList[key]));
-    console.log("*** spec: ", structuredClone(spec));
+    // console.log("*** tray: ", structuredClone(tray[z]));
+    // console.log("*** occ:  ", structuredClone(occupancy[z][x][y]));
+    // console.log("*** rcs:  ", structuredClone(indices));
+    // console.log("*** dst:  ", structuredClone(dstTile));
+    // console.log("*** piece:", structuredClone(pieceList[key]));
+    // console.log("*** spec: ", structuredClone(spec));
 
     console.log("*** pieceList", structuredClone(pieceList));                // Diagnositcs.
     console.log("*** whiteTray", structuredClone(mTrays.getWhiteTray()));

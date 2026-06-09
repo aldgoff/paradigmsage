@@ -117,7 +117,7 @@ export function placePiece(key) {      // "WKRR", ...
   // console.log("*** position: ", grid2[0], grid2[1]+zOffset+decoratorGap, grid2[2]); // Debug instrumention.
 
   group.position.set(grid2[0], grid2[1]+zOffset+decoratorGap, grid2[2]);
-  console.log("*** Piece moved to", loc, pos, "coords:", coords, "vts:", group.userData.vts);
+  // console.log("*** Piece moved to", loc, pos, "coords:", coords, "vts:", group.userData.vts);
   }
 
 export function renderPiece(key) {  // "WKRR".  // Deprecated.

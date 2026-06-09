@@ -13,25 +13,25 @@ import traysData from "./trays.json" assert { type: "json" };
   const category  = traysModule.category;
 // Seampoint: more objects...
 
+// --- Dependencies ---
+  import * as vTrays from "../../view/trays/trays.js";
+// Seampoint: more imports...
+
 // --- Globals ---
   const whiteTray =
     Array.from({ length: 10 }, () =>
       Array.from({ length: 2 }, () =>
-        Array(2).fill(null)
+        Array(2).fill(null)  // Piece key = null|"WQRP".
       )
     );
 
   const blackTray =
     Array.from({ length: 10 }, () =>
       Array.from({ length: 2 }, () =>
-        Array(2).fill(null)
+        Array(2).fill(null)  // Piece key = null|"WQRP".
       )
     );
 // Seampoint: more globals...
-
-// --- Dependencies ---
-  import * as vTrays from "../../view/trays/trays.js";
-// Seampoint: more imports...
 
 // --- UI ---
 export function init(entry) {
