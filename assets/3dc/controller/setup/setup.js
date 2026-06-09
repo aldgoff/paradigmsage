@@ -72,6 +72,31 @@ export function buildPayload(panel, action) {
     trayType:   panel.querySelector('input[name="tray-type"]:checked')?.value,
   };
 }
+
+export function getSetupEntries() {
+  return state.getState().Setup;
+}
+
+export function rebuildToIndex(idx) {
+  console.log("cntrl: setup.js - rebuildToIndex(idx):", idx);
+
+  // ----- Hard clear -----
+  // const curr = state.fetchCurrentState("Setup");
+  // if(curr) vSetup.clear(curr);
+
+  cSelections.clearAllSelections?.();
+
+  // ----- Replay -----
+  const entries = state.getState().Setup;
+  console.log("*** entries", entries);
+
+  for(let i=1; i<idx; i++) {
+    replayEntry(entries[i]);
+    vSetup.refreshPanel(entries[i]);
+  }
+
+  // Rebuild panel text.
+}
 // Seampoint: more global functions...
 
 // --- Handle Functions ---
@@ -115,7 +140,7 @@ function handlePlacePiece(payload) {
 
     const { action, boardSize, trayType } = payload;  // Informative, only action is used.
     const { pieceSelections, tileSelections } = cSelections.getSelections();
-    console.log("*** Parse");
+    // console.log("*** Parse");
 
   // --- Intent ---
     let task = "nada";      // What to do.
@@ -149,14 +174,14 @@ function handlePlacePiece(payload) {
     }
     const { ok, err } = result
     if(!ok) { throw new Error(`${err} - don't log.`); return; }
-    console.log("*** Do");
+    // console.log("*** Do");
 
   // --- Log ---
     let place  = `${key}@${coords.vtsToBoard(dstTile, boardSpec)}`;  // "BKRR@BR6,6".
     const entry = { action, data: place };
 
     recordSetupAction(entry);
-    console.log("*** Log");
+    // console.log("*** Log");
 
   // --- Buttons ---
     panels.enableButton("placePiece",   true);
@@ -176,7 +201,7 @@ function handleShiftPiece(payload) {
 
     const { action, boardSize, trayType } = payload;  // Informative, only action is used.
     const { pieceSelections, tileSelections } = cSelections.getSelections();
-    console.log("*** Parse");
+    // console.log("*** Parse");
 
   // --- Intent ---
     let task = "nada";      // What to do.
@@ -211,7 +236,7 @@ function handleShiftPiece(payload) {
     }
     const { ok, err } = result
     if(!ok) { throw new Error(`${err} - don't log.`); return; }
-    console.log("*** Do");
+    // console.log("*** Do");
 
   // --- Log ---
     let prev   = `${src}`;
@@ -277,7 +302,7 @@ function handleReturnPiece(payload) {
     const entry = { action, data: trayTile };
 
     recordSetupAction(entry);
-    console.log("*** Log");
+    // console.log("*** Log");
 
   // --- Buttons ---
     const pieceCount = mBoards.getBoardOccupancy()
@@ -445,6 +470,41 @@ function recordSetupAction(entry) {
   state.pushNewSetup(entry);          // Log state change in undo buffer.
   vSetup.pushPanelLine(entry);        // Add line to panel.
   vSetup.refreshPanel(entry);         // Only needed by panels with derived fields.
+}
+
+function replayEntry(entry) {
+  console.log("cntrl: setup.js - replayEntry(entry):", entry);
+
+  const { action, data } = entry;
+
+  switch(action) {
+    case "makeBoard":
+      cBoards.init(entry);
+      cTrays.init(entry);
+      cPieces.init(entry);
+      break;
+
+    case "placePiece":
+      // parse BKRR@KR8,8
+      break;
+
+    case "shiftPiece":
+      // parse BKRP:KR7,7>KR6,6
+      break;
+
+    case "returnPiece":
+      // parse BKRR~KR1,1
+      break;
+
+    case "freezePuzzle":
+      break;
+
+    case "play":
+      break;
+
+    default:
+      throw new Error(`Unknown setup action: ${action}`);
+  }
 }
 // Seampoint: more local functions...
 

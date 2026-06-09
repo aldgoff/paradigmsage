@@ -21,7 +21,7 @@ import boardsData from "./boards.json" assert { type: "json" };
   const occupancy =
     Array.from({ length: 10 }, () =>
       Array.from({ length: 10 }, () =>
-        Array(10).fill(null)
+        Array(10).fill(null)  // Piece key = null|"WQRP".
       )
     );
 // Seampoint: more globals...
@@ -47,6 +47,21 @@ export function getBoardSpecs() {
 export function getBoardOccupancy() {
   return occupancy;
 }
+
+export function clearPieceFromBoardOccupancy(key) { // occupancy[z][x][y] = null - O(3).
+  const occ = occupancy;
+
+  for(let z = 0; z < occ.length; z++) {
+    for(let x = 0; x < occ[z].length; x++) {
+      for(let y = 0; y < occ[z][x].length; y++) {
+        if(occ[z][x][y] === key) {
+          occ[z][x][y] = null;      // Clear.
+        }
+      }
+    }
+  }
+}
+
 // Seampoint: more global functions...
 
 // --- Helpers ---
@@ -69,6 +84,22 @@ function clearBoard() {
   }
 
   // console.log(`model: boards.js - cleared ${tally} board slots.`);
+}
+
+function pieceLocOnBoard(key) { // [z, x, y]|null.
+  const occ = occupancy;
+
+  for(let z = 0; z < occ.length; z++) {
+    for(let x = 0; x < occ[z].length; x++) {
+      for(let y = 0; y < occ[z][x].length; y++) {
+        if(occ[z][x][y] === key) {
+          return [z, x, y];
+        }
+      }
+    }
+  }
+
+  return null;
 }
 // Seampoint: more local functions...
 

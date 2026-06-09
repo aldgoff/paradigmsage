@@ -19,20 +19,17 @@ import traysData from "./trays.json" assert { type: "json" };
 // --- Dependencies ---
   import * as state      from "../../model/state/state.js";
   import * as view       from "../view.js";
-  import * as tiles      from "../tiles/tiles.js";
-  import * as coordsMaps from "../../view/render/coordsMaps.js";
+  import * as vTiles     from "../tiles/tiles.js";
   import * as vPieces    from "../../view/pieces/pieces.js";
+  import * as coordsMaps from "../../view/render/coordsMaps.js";
 // Seampoint: more imports...
 
 // --- Globals ---
-  const THREE = window.THREE;
-
   let whiteTrayGroup = null;
   let blackTrayGroup = null;
   let lastTrayGap    = 0;
   let lastLevelSep   = 1.0;
-
-  let traysVisible = true;
+  let traysVisible   = true;
 // Seampoint: more globals.
 
 // --- UI ---
@@ -51,6 +48,7 @@ export function makeTrays(gap) {
   }
 
 export function destroyTrays() {
+  console.log("view : trays.js - destroyTrays()");
   if(whiteTrayGroup) {
     view.context.scene.remove(whiteTrayGroup);
     whiteTrayGroup = null;
@@ -84,16 +82,6 @@ export function setTrayGap(trayGap) {
   reprojectTray(blackTrayGroup, lastLevelSep,  trayGap);
 
   vPieces.reprojectTrayPieces(lastLevelSep, lastTrayGap);
-  }
-
-function reprojectTray(group, levelSep, trayGap) {
-  console.log("view : trays.js - reprojectTray(group, levelSep, trayGap))", group, levelSep, trayGap);
-
-  group.traverse(tile => {
-    if(tile.userData?.isTrayTile) {
-      reprojectMesh(tile, levelSep, trayGap);
-    }
-  });  
 }
 // Seampoint: more global functions...
 
@@ -101,7 +89,7 @@ function reprojectTray(group, levelSep, trayGap) {
 function makeTrayGroup(side, gap) {
   // console.log("view : trays.js - makeTrayGroup(side)", side);
 
-  const trayGroup = new THREE.Group();
+  const trayGroup = new window.THREE.Group();
 
   const setup = state.fetchCurrentState("Setup");
   if(!setup) return trayGroup;
@@ -144,8 +132,8 @@ function applyGap(pos, side, gap) {
 
 function makeTrayTile(logicalPos, renderPos) {
   const geometry = view.context.tileGeometry;
-  const tile = tiles.getTileAttributes(logicalPos);  // Bishop/duke colors derive from logical coords (vts).
-  const meshTile = tiles.createMeshTile(tile, geometry, renderPos); // Create mesh in the render position.
+  const tile = vTiles.getTileAttributes(logicalPos);  // Bishop/duke colors derive from logical coords (vts).
+  const meshTile = vTiles.createMeshTile(tile, geometry, renderPos); // Create mesh in the render position.
 
   meshTile.material.forEach((mat, idx) => {
     if(idx === 2 || idx === 3) {    // Tint face surfaces only.
@@ -170,6 +158,16 @@ function reprojectMesh(tile, levelSep, trayGap) {
   const pixels = coordsMaps.vts2pixels(shifted, levelSep);
 
   tile.position.set(...pixels);
+  }
+
+function reprojectTray(group, levelSep, trayGap) {
+  console.log("view : trays.js - reprojectTray(group, levelSep, trayGap))", group, levelSep, trayGap);
+
+  group.traverse(tile => {
+    if(tile.userData?.isTrayTile) {
+      reprojectMesh(tile, levelSep, trayGap);
+    }
+  });  
 }
 // Seampoint: more local functions...
 

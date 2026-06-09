@@ -13,15 +13,21 @@ import gameData from "./game.json" assert { type: "json" };
 // Seampoint: more objects...
 
 // --- Dependencies ---
-  import * as cGambits from "../../controller/gambits/gambits.js";
+  import * as cSetup      from "../../controller/setup/setup.js";
+  import * as cGambits    from "../../controller/gambits/gambits.js";
+  import * as cSelections from "../../controller/selections/selections.js";
 
   import * as state    from "../../model/state/state.js";
+  import * as mPieces  from "../../model/pieces/pieces.js";
+  import * as mTrays   from "../../model/trays/trays.js";
+  import * as mBoards  from "../../model/boards/boards.js";
 
-  import * as boards   from "../../view/boards/boards.js";
+  import * as vBoards  from "../../view/boards/boards.js";
   import * as vAdvsqs  from "../../view/advsqs/advsqs.js";
   import * as vGambits from "../../view/gambits/gambits.js";
   import * as vMoves   from "../../view/moves/moves.js";
   import * as vSetup   from "../../view/setup/setup.js";
+  import * as vPieces  from "../../view/pieces/pieces.js";
 // Seampoint: more imports...
 
 // --- UI ---
@@ -32,7 +38,6 @@ export function panelDispatch(payload) {
 
   const { action } = payload;
   switch (action) {
-    case "newGame": handleNewGame(); break;
     case "undo":    handleUndo(); break;
     case "redo":    handleRedo(); break;
     case "rewind":  handleRewind(); break;
@@ -70,13 +75,6 @@ export function showUndoStatus() {  // Show undo buffers in Game panel.
 // Seampoint: more global functions...
 
 // --- Handle Functions ---
-function handleNewGame() {
-  console.log("cntrl: game.js - handleNewGame()");
-  // TODO: game.js - handleNewGame().
-
-  console.log(state.getStateKeys());
-}
-
 function handleUndo() {
   const reverseKeys = [...state.getStateKeys()].reverse();
   let bottom = true;
@@ -292,10 +290,21 @@ function canCrossUp(idx, len)     { return idx === len; }
 /* ----- ----- ----- ----- */
 
 function rewindCurrentBuffer(buffer) {
+  console.log("cntrl: game.js - rewindCurrentBuffer(buffer):", buffer);
+
   const idx = state.getCurrentIndex(buffer);
 
-  // --- Setup / AdvSqs (snapshot buffers) ---
   if(     buffer === "Setup") {
+    // Occupancies
+    // Selections
+    // Meshes
+    clearAllTileSelections();
+    clearAllPieceSelections()
+    returnAllPiecesToHomeTray();
+
+    state.setBufferIndex("Setup", 1);
+    }
+  else if(buffer === "Setup1") {
     const curr = state.fetchCurrentState("Setup");
     const first = state.getState().Setup[0];
 
@@ -305,7 +314,7 @@ function rewindCurrentBuffer(buffer) {
 
     state.setBufferIndex("Setup", 1);
     }
-  else if(buffer === "AdvSqs") {
+  else if(buffer === "AdvSqs") {  // Snapshot buffer.
     const curr = state.fetchCurrentState("AdvSqs");
     const first = state.getState().AdvSqs[0];
 
@@ -315,7 +324,6 @@ function rewindCurrentBuffer(buffer) {
 
     state.setBufferIndex("AdvSqs", 1);
     }
-  // --- Moves / Gambits (replay backwards) ---
   else if(buffer === "Moves") {
     while (state.getCurrentIndex("Moves") > 1) {
       const idx = state.getCurrentIndex("Moves");
@@ -336,11 +344,17 @@ function rewindCurrentBuffer(buffer) {
   }
 
 function fastForwardCurrentBuffer(buffer) {
+  console.log("cntrl: game.js - fastForwardCurrentBuffer(buffer):", buffer);
+
   const idx = state.getCurrentIndex(buffer);
   const len = state.getBufferLength(buffer);
 
-  // --- Setup / AdvSqs (snapshot buffers) ---
   if(     buffer === "Setup") {
+    // TODO:
+
+    state.setBufferIndex("Setup", len);
+    }
+  else if(buffer === "Setup1") {
     const curr = state.fetchCurrentState("Setup");
     const last = state.getState().Setup[len - 1];
 
@@ -350,7 +364,7 @@ function fastForwardCurrentBuffer(buffer) {
 
     state.setBufferIndex("Setup", len);
     }
-  else if(buffer === "AdvSqs") {
+  else if(buffer === "AdvSqs") {  // Snapshot buffer.
     const curr = state.fetchCurrentState("AdvSqs");
     const last = state.getState().AdvSqs[len - 1];
 
@@ -361,7 +375,6 @@ function fastForwardCurrentBuffer(buffer) {
     state.setBufferIndex("AdvSqs", len);
     }
 
-  // --- Moves / Gambits (replay buffers) ---
   else if(buffer === "Moves") {
     while (state.getCurrentIndex("Moves") < len) {
       const idx = state.getCurrentIndex("Moves");
@@ -388,6 +401,8 @@ function fastForwardCurrentBuffer(buffer) {
   }
 
 function processUndoBuffer(key, idx) {
+  console.log("cntrl: game.js - processUndoBuffer(key, idx):", key, idx);
+
   if(     key === "AdvSqs") {
     const prev = state.fetchPrevState("AdvSqs");
     const curr = state.fetchCurrentState("AdvSqs");
@@ -434,6 +449,17 @@ function processUndoBuffer(key, idx) {
     }
     }
   else if(key === "Setup") {
+    state.setBufferIndex("Setup", idx - 1);
+    
+    clearAllTileSelections();
+    clearAllPieceSelections()
+    returnAllPiecesToHomeTray();
+
+    cSetup.rebuildToIndex(state.getCurrentIndex("Setup"));
+
+    return true;
+    }
+  else if(key === "Setup1") {
     const prev = state.fetchPrevState("Setup");
     const curr = state.fetchCurrentState("Setup");
 
@@ -461,6 +487,8 @@ function processUndoBuffer(key, idx) {
   }
 
 function processRedoBuffer(key, idx) {
+  console.log("cntrl: game.js - processRedoBuffer(key, idx):", key, idx);
+
   if(     key === "AdvSqs") {
     const curr = state.fetchCurrentState("AdvSqs");
     const next = state.fetchNextState("AdvSqs");
@@ -504,6 +532,15 @@ function processRedoBuffer(key, idx) {
     }
     }
   else if(key === "Setup") {
+    state.setBufferIndex("Setup", idx + 1);
+
+    cSetup.rebuildToIndex(
+      state.getCurrentIndex("Setup")
+    );
+
+    return true;
+    }
+  else if(key === "Setup1") {
     const curr = state.fetchCurrentState("Setup");
     const next = state.fetchNextState("Setup");
 
@@ -566,7 +603,7 @@ function hardReset() {
   vAdvsqs.removeFromScene();
   vGambits.clearGambits();
   vMoves.clearMoves?.();
-  boards.clearBoard();
+  vBoards.clearBoard();
 
   // --- Derived / caches ---
   cGambits.reset?.();
@@ -582,6 +619,85 @@ function hardReset() {
   for (const key of state.getStateKeys()) {
     state.setBufferIndex(key, 0);
   }
+}
+
+function restorePieceToTray(key) {
+  vPieces.placePieceInTray(key);  // Throws if no piece, make first line.
+  const piece = mPieces.getPieceList()[key];
+  piece.loc    = '~';
+  piece.pos    = piece.home.trayPos;
+  piece.coords = piece.home.trayCoords;
+  piece.vts    = piece.home.trayVts;
+
+  const player = key[0];
+  const tray = (player === 'W') 
+    ? getWhiteTray()
+    : getBlackTray();
+  // TODO: update tray.
+
+  clearPieceFromBoardOccupancy(key);
+}
+function findPieceInTray(key, tray) {
+  for(let row = 0; row < tray.length; row++) {
+    for(let col = 0; col < tray[row].length; col++) {
+      for(let slot = 0; slot < tray[row][col].length; slot++) {
+
+        if(tray[row][col][slot] === key) {
+          return { row, col, slot };
+        }
+
+      }
+    }
+  }
+
+  return null;
+}
+function restoreStateToInitialBoard() {
+  // For each piece on the board...
+    // Model: update piece list.
+    // Model: update tray lists.
+    // Model: update board occupancy.
+    // View: reposition piece meshes back to their trays.
+
+  // Model: update piece selections.
+  // Model: dehighlight all pieces.
+
+  // Model: update tile selections.
+  // Model: deselect all tiles.
+}
+
+function returnAllPiecesToHomeTray() {
+  console.log("cntrl: game.js - returnAllPiecesToHomeTray()");
+
+  for(const key in mPieces.getPieceList()) {    // "WKRR", ...
+    vPieces.placePieceInTray(key);
+  }  
+  console.log("***", mPieces.getPieceList());
+  console.log("***", mTrays.getWhiteTray());
+  console.log("***", mTrays.getBlackTray());
+  console.log("***", mBoards.getBoardOccupancy());
+  }
+
+function clearAllTileSelections() {
+  console.log("cntrl: game.js - clearAllTileSelections()");
+
+  const { pieceSelections, tileSelections } = cSelections.getSelections();
+  for(const vts of tileSelections) {            // vts, ...
+    cSelections.deselectTile(vts);
+    console.log("***", vts);
+  }
+  cSelections.clearTileSelections();            // Set of tile locations, indexed by vts.
+  }
+
+function clearAllPieceSelections() {
+  console.log("cntrl: game.js - clearAllPieceSelections()");
+
+  const { pieceSelections, tileSelections } = cSelections.getSelections();
+  for(const key of pieceSelections) {           // "WKRR", ...
+    vPieces.deHighlight(key);
+    console.log("***", key);
+  }
+  cSelections.clearPieceSelections();           // Set of pieces highlighted, indexed by key.
 }
 // Seampoint: more local functions...
 
