@@ -23,6 +23,9 @@ import tilesData from "./tiles.json" assert { type: "json" };
   import * as coordsMaps from "../render/coordsMaps.js"
 // Seampoint: more imports...
 
+// --- Globals ---
+// Seampoint: more globals...
+
 // --- UI ---
 export function tileSize() {
   let z = tile.size.height;

@@ -93,7 +93,7 @@ layout: "play"
   #move-window    { top: 1180px; left:   20px; }
   #gambit-window  { top:  880px; left:   20px; }
   #advsq-window   { top:  260px; left:  210px; }
-  #compass-window { top:  640px; left:   20px; }
+  #compass-window { top:  260px; left:  560px; }
 
   #game-window    { top:  260px; left:  390px; }
 

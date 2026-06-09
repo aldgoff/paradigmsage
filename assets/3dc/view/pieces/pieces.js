@@ -54,14 +54,11 @@ export function initPieces(pieceList) {
 
   currPiecesGroup = new THREE.Group();
 
-  // const pieces = mPieces.getPieceList();  // { loc: "~", pos: "QR1,1", coords: [k,1,1] };
-
   for(const key in pieceList) {      // "WKRR", ...
     const group = createPiece(key);
     pieceGroups[key] = group;
     placePieceInTray(key);    // Pieces start in the trays.
     currPiecesGroup.add(group);
-    // renderPiece(key);
   }  
   // console.log("view : pieces.js - initPieces(): currPiecesGroup", currPiecesGroup);
 
@@ -70,13 +67,11 @@ export function initPieces(pieceList) {
 
 export function placePieceInTray(key) {      // "WKRR", ...
   // console.log("view : pieces.js - placePieceInTray(key)", key);
-  // placePiece(key);
-  // return;
 
   const piece = mPieces.getPieceList()[key];              // Arg validation.
   if(!piece) throw Error(`No such piece ${key}.`);
 
-  const { loc, pos, coords, vts, home } = piece;                     // Parse location.
+  const { loc, pos, coords, vts, home } = piece;          // Parse location.
   const player = key[0];  // W|B.                         // Parse arg.
 
   const group = pieceGroups[key];                         // Fetch the mesh (group).
