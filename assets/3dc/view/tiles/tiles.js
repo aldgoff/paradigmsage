@@ -1,9 +1,9 @@
 /* File: tiles.js
   Path: ./3dc/tiles/tiles.js
-  Purpose: Code for building the tiles.
+  Purpose: tile meshes, positioning, and selection.
   Author: Allan Goff
   Date: 4/03/26
-  Recommended access: import * as tiles from "../../view/tiles/tiles.js";
+  import * as vTiles from "../../view/tiles/tiles.js";
   UI: the export functions.
 */
 

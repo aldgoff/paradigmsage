@@ -1,14 +1,17 @@
-# Tiles Spec
-  The view version of tiles
+# Tiles Spec (view)
+  Board and tray tiles
 
 ## 1. Purpose
   Define the roles and responsibilities of view tiles.
 
-## 2. Roles
+## 2. State Space
+  Visualization
+
+## 3. Roles
   Communicate bishop and duke colors.
   Be thin enough look good (duke colors, etc.).
 
-## 3. Responsibilities.
+## 4. Responsibilities.
   Determine those colors based on the tile's coordinates.
   Leverage json file for data SPOT.
   Report coords when clicked.
