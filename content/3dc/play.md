@@ -298,7 +298,7 @@ layout: "play"
   </div>
 
 <div class="panel panel-temporal" id="game-window">
-  <div class="panel-title">Undo Panel</div>
+  <div class="panel-title">Game Panel</div>
   <!-- <div class="section">
     <button data-action="newGame">New Game</button>
   </div> -->

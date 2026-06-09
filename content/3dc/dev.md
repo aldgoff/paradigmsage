@@ -128,54 +128,60 @@ title: "Dev"
 
  ### Week 13:
   - 6/07/26 - Improved initial placement of pieces in the trays, all three boards.
-  - 6/08/26 - QC pieces. Complete board to tray. Misc. QC. Dependencies. Setup flow established. Fix tray gap/pieces.
+  - 6/08/26 - QC pieces. Complete board to tray. Misc. QC. Dependencies. Setup flow established. Fix tray gap/pieces. Prep for new setup undo.
 
 
+## Save Setup States
+  {
+    "Setup": [
+      {
+        "action": "makeBoard",
+        "boardSize": "8x8x8",
+        "trayType": "real"
+      },
+      {
+        "action": "placePiece",
+        "data": "BKRP@KR7,7"
+      },
+      {
+        "action": "shiftPiece",
+        "data": "BKRP:KR7,7>KR6,6"
+      },
+      {
+        "action": "placePiece",
+        "data": "BKRR@KR8,8"
+      },
+      {
+        "action": "placePiece",
+        "data": "BKBS@KB5,5"
+      },
+      {
+        "action": "returnPiece",
+        "data": "BKRR~KR1,1"
+      },
+      {
+        "action": "returnPiece",
+        "data": "BKRP~KR2,2"
+      },
+      {
+        "action": "freezePuzzle",
+        "data": 1
+      },
+      {
+        "action": "play",
+        "data": "game or puzzle"
+      }
+    ],
+    "Moves": [],
+    "Gambits": [],
+    "AdvSqs": []
+  }
 
-Global Command to Label Dependencies
-find ./assets/3dc -type f -name "*.js" \
-  -exec sed -i '' \
-  's/--- Build upon previous layers ---/--- Dependencies ---/g' {} +
+## Useful global search and replace command...
+  ```
+  Global Command to Label Dependencies
+  find ./assets/3dc -type f -name "*.js" \
+    -exec sed -i '' \
+    's/--- Build upon previous layers ---/--- Dependencies ---/g' {} +
+  ```
 
-## Some Saved States to Worry About...
-{
-  "Setup": [
-    {
-      "action": "makeBoard",
-      "boardSize": "8x8x8",
-      "trayType": "real"
-    }
-  ],
-  "Moves": [],
-  "Gambits": [],
-  "AdvSqs": []
-}
-
-{
-  "Setup": [
-    {
-      "action": "makeBoard",
-      "boardSize": "8x8x8",
-      "trayType": "real"
-    },
-    {
-      "action": "placePiece",
-      "place": "BR@KR6,6"
-    },
-    {
-      "action": "placePiece",
-      "place": "BB@Q6,4"
-    },
-    {
-      "action": "placePiece",
-      "place": "WS@KR2,2"
-    },
-    {
-      "action": "return",
-      "trayTile": "BKRR~KR0,0"
-    }
-  ],
-  "Moves": [],
-  "Gambits": [],
-  "AdvSqs": []
-}

@@ -100,60 +100,28 @@ export function clearSetupPanelParams(params) {
 function assembleLine(entry) {
   const { action } = entry;
 
-  if(     action === "makeBoard") {
-    const { action, boardSize, trayType } = entry;
-  
-    const sizeCol = `${boardSize}`.padEnd(8);
-    const typeCol = `${trayType}`.padEnd(7);
-    const line    = `${sizeCol} ${typeCol}`;
-
-    return line;
-    }
-  else if(action === "placePiece") {
-    const { action, place } = entry;
-    const line = `${place}`;
-    return line;
-    }
-  else if(action === "shiftPiece") {
-    const { action, places } = entry;
-    const line = `${places}`;
-    return line;
-    }
-  else if(action === "returnPiece") {
-    const { action, trayTile } = entry;
-    const line = `${trayTile}`;
-    return line;
-    }
-  else if(action === "freezePuzzle") {
-    const { action, count } = entry;
-    const line = `${action} ${count}`;
-    return line;
-    }  
-  else if(action === "startingPos") {
-    const { action, startingPos } = entry;
-    const line = `${startingPos}`;
-    return line;
-    }
-  else if(action === "play") {
-    const { action, play } = entry;
-    const line = `${play}`;
-    return line;
-    }
-  else if(action === "lock") {  // Deprecated.
-    const { action, boardSize, trayType } = entry;
-
-    const White = pieceList.white;
-    const Black = pieceList.black;
-    const wPieceCol = pieceList.white.pieces.length;
-    const wPawnCol  = pieceList.white.pawns.length;
-    const bPieceCol = pieceList.black.pieces.length;
-    const bPawnCol  = pieceList.black.pawns.length;
-    const line = `W:[${wPieceCol}],[${wPawnCol}] - B[${bPieceCol}],[${bPawnCol}]`;
-
-    return line;
-    }
-  else {
-    throw new Error(`Unknown setup action: ${action}.`);
+  switch (action) {
+    case "makeBoard": {
+      const { boardSize, trayType } = entry;
+      const sizeCol = `${boardSize}`.padEnd(8);
+      const typeCol = `${trayType}`.padEnd(7);
+      const line    = `${sizeCol} ${typeCol}`;
+      return line; }
+    case "placePiece": 
+    case "shiftPiece": 
+    case "returnPiece": {
+      const { data } = entry;
+      const line = `${data}`;
+      return line; }
+    case "freezePuzzle": 
+    case "startingPos": 
+    case "play": {
+      const { data } = entry;
+      const line = `${action} ${data}`;
+      return line; }
+    default:
+      throw new Error(`Unknown setup action: ${action}.`);
+    break;
   }
 }
 // Seampoint: more local functions...

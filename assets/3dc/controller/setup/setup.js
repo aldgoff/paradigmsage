@@ -153,7 +153,7 @@ function handlePlacePiece(payload) {
 
   // --- Log ---
     let place  = `${key}@${coords.vtsToBoard(dstTile, boardSpec)}`;  // "BKRR@BR6,6".
-    const entry = { action, place };
+    const entry = { action, data: place };
 
     recordSetupAction(entry);
     console.log("*** Log");
@@ -217,7 +217,7 @@ function handleShiftPiece(payload) {
     let prev   = `${src}`;
     let next   = `${coords.vtsToBoard(dstTile, boardSpec)}`;
     let places = `${key}:${prev}>${next}`
-    const entry = { action, places };
+    const entry = { action, data: places };
 
     recordSetupAction(entry);
     console.log("*** Log");
@@ -273,13 +273,8 @@ function handleReturnPiece(payload) {
     if(!ok) { throw new Error(`${err} - don't log.`); return; }
 
   // --- Log ---
-    let side   = key[1];  // Parse key.
-    let level  = key[2];
-    let type   = key[3];
-    const { i, j } = mTrays.trayIndices(type, spec);
-    let tile     = `${side}${level}${i},${j}`;
-    let trayTile = `${key}~${tile}`;   // "BKRR~KR1,1".
-    const entry = { action, trayTile };
+    let trayTile = `${key}~${piece.home.trayPos}`;   // "BKRR~KR1,1".
+    const entry = { action, data: trayTile };
 
     recordSetupAction(entry);
     console.log("*** Log");
@@ -320,8 +315,11 @@ function handleFreeze(payload) {
   console.log("cntrl: setup.js - handleFreeze(payload):", payload);
 
   const { action, boardSize, trayType } = payload;  // Informative.
-
-  const entry = { action, count: 3 };
+  const boardPieces =
+    Object.values(mPieces.getPieceList())
+      .filter(piece => piece.loc === "@")
+      .length;
+  const entry = { action, data: boardPieces };
 
   recordSetupAction(entry);
 
@@ -340,7 +338,12 @@ function handleStartingPos(payload) {
 
   const { action, boardSize, trayType } = payload;  // Informative.
 
-  const entry = { action, startingPos: "Standard starting pos" };
+  // TODO: Load all the pieces.
+  const boardPieces =
+    Object.values(mPieces.getPieceList())
+      .filter(piece => piece.loc === "@")
+      .length;
+  const entry = { action, data: boardPieces };
 
   recordSetupAction(entry);
 
@@ -359,7 +362,7 @@ function handlePlay(payload) {
 
   const { action, boardSize, trayType } = payload;  // Informative.
 
-  const entry = { action, play: "Begin play" };
+  const entry = { action, data: "game or puzzle" };
 
   recordSetupAction(entry);
 
@@ -436,7 +439,7 @@ function returnPieceToTray(key) {
   cSelections.clearPieceSelections(key);
 
   return { ok, err: null };
-}
+  }
 
 function recordSetupAction(entry) {
   state.pushNewSetup(entry);          // Log state change in undo buffer.
