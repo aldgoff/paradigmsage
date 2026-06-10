@@ -1,6 +1,6 @@
 /* File: game.js
   Path: ./3dc/game/game.js
-  Purpose: Game control, including undo.
+  Purpose: Game control: undo/redo, rewind/FF, load/save.
   Author: Allan Goff
   Date: 4/22/26
   Recommended access: import * as cGame from "../../controller/game/game.js";
@@ -18,16 +18,12 @@ import gameData from "./game.json" assert { type: "json" };
   import * as cSelections from "../../controller/selections/selections.js";
 
   import * as state    from "../../model/state/state.js";
-  import * as mPieces  from "../../model/pieces/pieces.js";
-  import * as mTrays   from "../../model/trays/trays.js";
-  import * as mBoards  from "../../model/boards/boards.js";
 
-  import * as vBoards  from "../../view/boards/boards.js";
   import * as vAdvsqs  from "../../view/advsqs/advsqs.js";
   import * as vGambits from "../../view/gambits/gambits.js";
   import * as vMoves   from "../../view/moves/moves.js";
   import * as vSetup   from "../../view/setup/setup.js";
-  import * as vPieces  from "../../view/pieces/pieces.js";
+  import * as vBoards  from "../../view/boards/boards.js";
 // Seampoint: more imports...
 
 // --- UI ---
@@ -44,7 +40,7 @@ export function panelDispatch(payload) {
     case "forward": handleFastForward(); break;
     case "load":    handleLoad(); break;
     case "save":    handleSave(); break;
-    default: throw new Error(`Unknown game ***action ${action}.`);  break;
+    default: throw new Error(`Unknown game action ${action}.`);  break;
   }
   }
 
@@ -56,8 +52,8 @@ export function buildPayload(panel, action) {
 export function showUndoStatus() {  // Show undo buffers in Game panel.
   console.log("cntrl: game.js - showUndoStatus():");
 
-  const el = document.getElementById("undo-state");
-  if (!el) return;
+  const panel = document.getElementById("undo-state");
+  if (!panel) return;
 
   const keys = state.getStateKeys();
   const undo = state.getIndices();
@@ -70,7 +66,7 @@ export function showUndoStatus() {  // Show undo buffers in Game panel.
     })
     .join("\n");
 
-  el.textContent = text;
+  panel.textContent = text;
 }
 // Seampoint: more global functions...
 
@@ -81,12 +77,10 @@ function handleUndo() {
 
   for(const key of reverseKeys) {
     const idx = state.getCurrentIndex(key);
-    const len = state.getBufferLength(key);
     if(idx === 0) continue;
     bottom = false;
 
     if(processUndoBuffer(key, idx)) {
-      // cGambits.rebindOverlaysToBoard();
       break;
     }
   }
@@ -109,12 +103,10 @@ function handleRedo() {
 
   if (idx < len) {
     processRedoBuffer(buffer, idx);
-    // cGambits.rebindOverlaysToBoard();
   } else {
     buffer = state.getNextBuffer();
     if (!buffer) return console.log("Top Sentry");
     processRedoBuffer(buffer, 0);
-    // cGambits.rebindOverlaysToBoard();
   }
 
   showUndoStatus();
@@ -138,7 +130,6 @@ function handleRewind() {
       if(!buffer) return console.log("Bottom Sentry");
       const N = state.getBufferLength(buffer);
       processUndoBuffer(buffer, N);
-      // cGambits.rebindOverlaysToBoard();
       break;
       }
     else if(canCollapseDown(idx)) {   // collapseDown;
@@ -147,7 +138,6 @@ function handleRewind() {
       }
     else if(canStepDown(idx)) {       // stepDown;
       processUndoBuffer(buffer, idx);
-      // cGambits.rebindOverlaysToBoard();
       break;
       }
     else if(canCrossDown(idx)) {      // crossDown;
@@ -155,7 +145,6 @@ function handleRewind() {
       if(!buffer) return console.log("Bottom Sentry");
       const N = state.getBufferLength(buffer);
       processUndoBuffer(buffer, N);
-      // cGambits.rebindOverlaysToBoard();
       break;
       }
     else {
@@ -184,12 +173,10 @@ function handleFastForward() {
       buffer = state.getNextBuffer();
       if (!buffer) return console.log("Top Sentry");
       processRedoBuffer(buffer, 0);
-      // cGambits.rebindOverlaysToBoard();
       break;
       }
     else if(canStepUp(idx, len)) {      // stepUp;
       processRedoBuffer(buffer, idx);
-      // cGambits.rebindOverlaysToBoard();
       break;
       }
     else if(canCollapseUp(idx, len)) {  // collapseUp;
@@ -200,7 +187,6 @@ function handleFastForward() {
       buffer = state.getNextBuffer();
       if (!buffer) return console.log("Top Sentry");
       processRedoBuffer(buffer, 0);
-      // cGambits.rebindOverlaysToBoard();
       break;
       }
     else {
@@ -210,7 +196,7 @@ function handleFastForward() {
 
   showUndoStatus();
   assertStateConsistency();
-}
+  }
 
 async function handleLoad() {
   console.log("cntrl: game.js - handleLoad()");
@@ -295,16 +281,15 @@ function rewindCurrentBuffer(buffer) {
   const idx = state.getCurrentIndex(buffer);
 
   if(     buffer === "Setup") {
-    clearAllTileSelections();
-    clearAllPieceSelections()
-    returnAllPiecesToHomeTray();
+    cSetup.clearAllTileSelections();
+    cSetup.clearAllPieceSelections();
+    cSetup.returnAllPiecesToHomeTray();
 
     state.setBufferIndex("Setup", 1);
     const entries = state.getState().Setup;
     vSetup.refreshPanel(entries[0]);
     }
   else if(buffer === "AdvSqs") {  // Snapshot buffer.
-    const curr = state.fetchCurrentState("AdvSqs");
     const first = state.getState().AdvSqs[0];
 
     vAdvsqs.removeFromScene();
@@ -317,25 +302,22 @@ function rewindCurrentBuffer(buffer) {
     while (state.getCurrentIndex("Moves") > 1) {
       const idx = state.getCurrentIndex("Moves");
       if (!processUndoBuffer("Moves", idx)) break;
-      // cGambits.rebindOverlaysToBoard();
     }
     }
   else if(buffer === "Gambits") {
     while (state.getCurrentIndex("Gambits") > 1) {
       const idx = state.getCurrentIndex("Gambits");
       if (!processUndoBuffer("Gambits", idx)) break;
-      // cGambits.rebindOverlaysToBoard();
     }
     }
   else {
-    throw new Error("Unknown buffer:", buffer);
+    throw new Error(`Unknown buffer ${buffer}.`);
   }
   }
 
 function fastForwardCurrentBuffer(buffer) {
   console.log("cntrl: game.js - fastForwardCurrentBuffer(buffer):", buffer);
 
-  const idx = state.getCurrentIndex(buffer);
   const len = state.getBufferLength(buffer);
 
   if(     buffer === "Setup") {
@@ -349,18 +331,7 @@ function fastForwardCurrentBuffer(buffer) {
     const entries = state.getState().Setup;
     vSetup.refreshPanel(entries[len-1]);
     }
-  else if(buffer === "Setup1") {
-    const curr = state.fetchCurrentState("Setup");
-    const last = state.getState().Setup[len - 1];
-
-    if (curr) vSetup.clear(curr);
-    vSetup.render(last);
-    vSetup.refreshPanel(last);
-
-    state.setBufferIndex("Setup", len);
-    }
   else if(buffer === "AdvSqs") {  // Snapshot buffer.
-    const curr = state.fetchCurrentState("AdvSqs");
     const last = state.getState().AdvSqs[len - 1];
 
     vAdvsqs.removeFromScene();
@@ -374,24 +345,22 @@ function fastForwardCurrentBuffer(buffer) {
     while (state.getCurrentIndex("Moves") < len) {
       const idx = state.getCurrentIndex("Moves");
       if (!processRedoBuffer("Moves", idx)) break;
-      // cGambits.rebindOverlaysToBoard();
     }
 
-    state.setBufferIndex("Moves", len);
     vMoves.refreshPanel();
+    state.setBufferIndex("Moves", len);
     }
   else if(buffer === "Gambits") {
     while (state.getCurrentIndex("Gambits") < len) {
       const idx = state.getCurrentIndex("Gambits");
       if (!processRedoBuffer("Gambits", idx)) break;
-      // cGambits.rebindOverlaysToBoard();
     }    
 
     vGambits.refreshPanel();
     state.setBufferIndex("Gambits", len);
     }
   else {
-    throw new Error("Unknown buffer:", buffer);
+    throw new Error(`Unknown buffer ${buffer}`);
   }
   }
 
@@ -446,38 +415,15 @@ function processUndoBuffer(key, idx) {
   else if(key === "Setup") {
     state.setBufferIndex("Setup", idx - 1);
 
-    clearAllTileSelections();
-    clearAllPieceSelections()
-    returnAllPiecesToHomeTray();
-
+    cSetup.clearAllTileSelections();
+    cSetup.clearAllPieceSelections();
+    cSetup.returnAllPiecesToHomeTray();
     cSetup.rebuildToIndex(state.getCurrentIndex("Setup"));
 
     return true;
     }
-  else if(key === "Setup1") {
-    const prev = state.fetchPrevState("Setup");
-    const curr = state.fetchCurrentState("Setup");
-
-    if(     prev === null && curr === null) {
-      }
-    else if(prev === null && curr !=  null) {
-      vSetup.clear(curr);       // Clear current setup (board and trays), if any.
-      const params = {boardSize: "10x10x10", trayType: "factory", initialPos: "manual"};
-      vSetup.clearSetupPanelParams(params)
-      state.setBufferIndex("Setup", idx-1);
-      }
-    else if(prev !=  null && curr === null) {
-      vSetup.refreshPanel(prev);
-      }
-    else if(prev !=  null && curr !=  null) {
-      vSetup.clear(curr);       // Clear current setup (board and trays).
-      vSetup.render(prev);      // Render previous setup (board and trays), if any.
-      vSetup.refreshPanel(prev);
-      state.setBufferIndex("Setup", idx-1);
-    }
-    }
   else {  // Unreachable.
-    throw new Error("Unknown or missing key in undo", key);
+    throw new Error(`Unknown or missing key in undo ${key}`);
   }
   }
 
@@ -533,33 +479,14 @@ function processRedoBuffer(key, idx) {
 
     return true;
     }
-  else if(key === "Setup1") {
-    const curr = state.fetchCurrentState("Setup");
-    const next = state.fetchNextState("Setup");
-
-    if(     curr === null && next === null) {
-      }
-    else if(curr === null && next != null) {
-      vSetup.render(next);       // First setup.
-      vSetup.refreshPanel(next);
-      state.setBufferIndex("Setup", idx + 1);
-      }
-    else if(curr != null && next === null) {
-      vSetup.refreshPanel(curr); // At top.
-      }
-    else if(curr != null && next != null) {
-      vSetup.clear(curr);        // Clear current setup.
-      vSetup.render(next);       // Render next setup.
-      vSetup.refreshPanel(next);
-      state.setBufferIndex("Setup", idx + 1);
-    }
-    }
   else {
-    throw new Error("Unknown or missing key in redo", key);
+    throw new Error(`Unknown or missing key in redo ${key}`);
   }
 }
 
 function diagnostic(enabled=false) {
+  // console.log("cntrl: game.js - diagnostic(enabled=false):", enabled);
+
   if(!enabled) return;
 
   const bufferList = [ "Setup", "Moves", "Gambits", "AdvSqs"];
@@ -576,6 +503,8 @@ function diagnostic(enabled=false) {
   }
 
 function assertStateConsistency() {
+  // console.log("cntrl: game.js - assertStateConsistency():");
+
   for (const key of state.getStateKeys()) {
     const i = state.getCurrentIndex(key);
     const len = state.getBufferLength(key);
@@ -592,6 +521,8 @@ function assertStateConsistency() {
 }
 
 function hardReset() {
+  // console.log("cntrl: game.js - hardReset():");
+
   // --- View ---
   vAdvsqs.removeFromScene();
   vGambits.clearGambits();
@@ -613,95 +544,11 @@ function hardReset() {
     state.setBufferIndex(key, 0);
   }
 }
-
-function restorePieceToTray(key) {
-  vPieces.placePieceInTray(key);  // Throws if no piece, make first line.
-  const piece = mPieces.getPieceList()[key];
-  piece.loc    = '~';
-  piece.pos    = piece.home.trayPos;
-  piece.coords = piece.home.trayCoords;
-  piece.vts    = piece.home.trayVts;
-
-  const player = key[0];
-  const tray = (player === 'W') 
-    ? getWhiteTray()
-    : getBlackTray();
-  // TODO: update tray.
-
-  clearPieceFromBoardOccupancy(key);
-}
-function findPieceInTray(key, tray) {
-  for(let row = 0; row < tray.length; row++) {
-    for(let col = 0; col < tray[row].length; col++) {
-      for(let slot = 0; slot < tray[row][col].length; slot++) {
-
-        if(tray[row][col][slot] === key) {
-          return { row, col, slot };
-        }
-
-      }
-    }
-  }
-
-  return null;
-}
-function restoreStateToInitialBoard() {
-  // For each piece on the board...
-    // Model: update piece list.
-    // Model: update tray lists.
-    // Model: update board occupancy.
-    // View: reposition piece meshes back to their trays.
-
-  // Model: update piece selections.
-  // Model: dehighlight all pieces.
-
-  // Model: update tile selections.
-  // Model: deselect all tiles.
-}
-
-function returnAllPiecesToHomeTray() {
-  console.log("cntrl: game.js - returnAllPiecesToHomeTray()");
-
-  for(const key in mPieces.getPieceList()) {    // "WKRR", ...
-    const piece = mPieces.getPieceList()[key];
-    const { loc, pos, coords, vts, home } = piece;              // Parse the piece fields.
-    if(loc === '@')
-      mPieces.movePieceFromBoardToTray(key);
-  }
-  const entries = state.getState().Setup;
-  vSetup.refreshPanel(entries[0]);
-
-  console.log("***", mPieces.getPieceList());
-  console.log("***", mTrays.getWhiteTray());
-  console.log("***", mTrays.getBlackTray());
-  console.log("***", mBoards.getBoardOccupancy());
-  }
-
-function clearAllTileSelections() {
-  console.log("cntrl: game.js - clearAllTileSelections()");
-
-  const { pieceSelections, tileSelections } = cSelections.getSelections();
-  for(const vts of tileSelections) {            // vts, ...
-    cSelections.deselectTile(vts);
-    console.log("***", vts);
-  }
-  cSelections.clearTileSelections();            // Set of tile locations, indexed by vts.
-  }
-
-function clearAllPieceSelections() {
-  console.log("cntrl: game.js - clearAllPieceSelections()");
-
-  const { pieceSelections, tileSelections } = cSelections.getSelections();
-  for(const key of pieceSelections) {           // "WKRR", ...
-    vPieces.deHighlight(key);
-    console.log("***", key);
-  }
-  cSelections.clearPieceSelections();           // Set of pieces highlighted, indexed by key.
-}
 // Seampoint: more local functions...
 
-/* TODO: Game improvements:
- * 1. Split out roles.
- * 2. Refactor duplicate structures/logic.
-*/
+/* TODO: QC checklist✅ 
+    1. Load/Save fails to make board.
+    2. Still have gambit issues.
+    3. Undo from play throws an error.
+ */
 
