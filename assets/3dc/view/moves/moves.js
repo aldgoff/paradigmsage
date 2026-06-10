@@ -21,7 +21,7 @@ import movesData from "./moves.json" assert { type: "json" };
 // Seampoint: more objects...
 
 // --- Dependencies ---
-  import * as state   from "../../model/state/state.js";
+  import * as state  from "../../model/state/state.js";
   import * as quads  from "../../geometry/quads/quads.js";
 // Seampoint: more imports...
 
@@ -69,6 +69,7 @@ export function popPanelLine() {
 
 export function refreshPanel() {
   // console.log("view : moves.js - refreshPanel()");
+  
   const el = document.getElementById("move-list");
   if (!el) return;
 

@@ -84,15 +84,15 @@ export function rebuildToIndex(idx) {
   // const curr = state.fetchCurrentState("Setup");
   // if(curr) vSetup.clear(curr);
 
-  cSelections.clearAllSelections?.();
+  // cSelections.clearAllSelections?.();
 
   // ----- Replay -----
   const entries = state.getState().Setup;
   console.log("*** entries", entries);
 
   for(let i=1; i<idx; i++) {
-    replayEntry(entries[i]);
     vSetup.refreshPanel(entries[i]);
+    replayEntry(entries[i]);
   }
 
   // Rebuild panel text.
@@ -170,7 +170,6 @@ function handlePlacePiece(payload) {
       case "tiles":   console.log("cntrl: setup.js - handlePlacePiece(...):", "Too many tiles selected.");   return;
       case "nada":    console.log("cntrl: setup.js - handlePlacePiece(...):", "Unknown action.");            return;
       case "place":   result = placePieceOnBoard(key, dstTile);      break;
-      // case "shift":   result = shiftPieceToTile(key, dstTile);  break;
     }
     const { ok, err } = result
     if(!ok) { throw new Error(`${err} - don't log.`); return; }
@@ -231,7 +230,6 @@ function handleShiftPiece(payload) {
       case "noTile":  console.log("cntrl: setup.js - handlePlacePiece(...):", "No tile selected.");          return;
       case "tiles":   console.log("cntrl: setup.js - handlePlacePiece(...):", "Too many tiles selected.");   return;
       case "nada":    console.log("cntrl: setup.js - handlePlacePiece(...):", "Unknown action.");            return;
-      // case "place":   result = placePieceOnBoard(key, dstTile);      break;
       case "shift":   result = shiftPieceToTile(key, dstTile);  break;
     }
     const { ok, err } = result
@@ -430,7 +428,10 @@ function placePieceOnBoard(key, dstTile) {
   const dstStr = coords.vtsToBoard(dstTile, boardSpec);
 
   const { ok, err } = mPieces.movePieceFromTrayToBoard(key, dstStr);
-  if(!ok) return { ok, err };
+  if(!ok) {
+    console.log("*** err:", err);
+    return { ok, err };
+  }
 
   vPieces.deHighlight(key);
   cSelections.clearPieceSelections(key);
@@ -477,33 +478,49 @@ function replayEntry(entry) {
 
   const { action, data } = entry;
 
-  switch(action) {
-    case "makeBoard":
-      cBoards.init(entry);
-      cTrays.init(entry);
-      cPieces.init(entry);
-      break;
+  if(     action === "makeBoard") {
+    cBoards.init(entry);
+    cTrays.init(entry);
+    cPieces.init(entry);
+    }
+  else if(action === "placePiece") {    // BKRR@KR8,8
+    const [key, dstStr] = data.split("@");
+    const dstTile = coords.normalizeTileToVts(dstStr, boardSpec);
+    placePieceOnBoard(key, dstTile);
+    }
+  else if(action === "shiftPiece") {    // BKRP:KR7,7>KR6,6
+    const [key, residue]   = data.split(":");
+    const [srcStr, dstStr] = residue.split(">");
+    const dstTile = coords.normalizeTileToVts(dstStr, boardSpec);
+    shiftPieceToTile(key, dstTile);
+    }
+  else if(action === "returnPiece") {   // BKRR~KR1,1
+    const [key] = data.split("~");
+    returnPieceToTray(key);
+    }
+  else if(action === "freezePuzzle") {
+    panels.enableButton("placePiece",   false);
+    panels.enableButton("returnPiece",  false);
+    panels.enableButton("shiftPiece",   false);
+    panels.enableButton("freezePuzzle", false);
+    panels.enableButton("startingPos",  false);
+    panels.enableButton("play",         true);
+    }
+  else if(action === "startingPos") {
+    throw new Error("Setup piece starting position not implemented.");
+    }
+  else if(action === "play") {
+    panels.enableButton("placePiece",   false);
+    panels.enableButton("returnPiece",  false);
+    panels.enableButton("shiftPiece",   false);
+    panels.enableButton("freezePuzzle", false);
+    panels.enableButton("startingPos",  false);
+    panels.enableButton("play",         false);
 
-    case "placePiece":
-      // parse BKRR@KR8,8
-      break;
-
-    case "shiftPiece":
-      // parse BKRP:KR7,7>KR6,6
-      break;
-
-    case "returnPiece":
-      // parse BKRR~KR1,1
-      break;
-
-    case "freezePuzzle":
-      break;
-
-    case "play":
-      break;
-
-    default:
-      throw new Error(`Unknown setup action: ${action}`);
+    panels.enableButton("move", true);
+    }
+  else {
+    throw new Error(`Unknown setup action: ${action}`);
   }
 }
 // Seampoint: more local functions...

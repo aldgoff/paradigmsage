@@ -11,8 +11,9 @@
  ### 3.1 List
   - Make Board
   - Place Piece
-  - Return
-  - Freeze
+  - Shift Piece
+  - Return Piece
+  - Freeze Pieces
   - Starting Position
   - Play
  ### 3.2 Ergonomics

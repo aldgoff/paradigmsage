@@ -33,19 +33,13 @@ export function getSelectedTiles() {
   return selectedTiles;
   }
 
-export function getOccpiedTiles() {
-  return occupiedTiles;
-  }
-
 export function getOffsetTiles() {
   return offsetTiles;
-}
-
-export function UI() {
-  console.log("model: tiles.js - UI()");
-  
-  return "whatever";
   }
+
+export function getConfluenceTiles() {
+  return confluenceTiles;
+}
 // Seampoint: more global functions...
 
 // --- Helpers ---

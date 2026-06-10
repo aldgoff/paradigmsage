@@ -47,8 +47,8 @@
 ## 2. Setup (UR array 1)
   - The setup phase is stored, to be replayed at will via the undo/redo system.
     - Explore board and tray options and the gap between them.
-    - Select play mode for rule enforcement (game, puzzle, or off).
-    - Specify a starting lineup or use the standard one for that board.
+      - Currently restricted to one only, refresh page to try another.
+    - Specify a starting position or use the standard lineup for that board.
   - A *branch* zeroes all later *setup choices*.
 
 ## 3. Moves (UR array 2)

@@ -130,9 +130,41 @@ title: "Dev"
   - 6/07/26 - Improved initial placement of pieces in the trays, all three boards.
   - 6/08/26 - QC pieces. Complete board to tray. Misc. QC. Dependencies. Setup flow established. Fix tray gap/pieces. Prep for new setup undo.
   - 6/09/26 - Screenshots. Selections canonized. Canonize code as map. Tiles superstructure. Comment QC. Setup undo phase 1.
+  - 6/10/26 - Setup undo/redo/rewind/FF.
 
 
 ## Save Setup States
+  {"Setup":[{"action":"makeBoard","boardSize":"8x8x8","trayType":"real"},
+  {"action":"placePiece","data":"BKRR@KR8,8"},
+  {"action":"placePiece","data":"BKNN@KN7,7"},
+  {"action":"placePiece","data":"BKBS@KB6,6"},
+  {"action":"placePiece","data":"BKKP@K7,7"},
+  {"action":"shiftPiece","data":"BKKP:K7,7>K6,6"},
+  {"action":"shiftPiece","data":"BKKP:K6,6>K5,5"},
+  {"action":"shiftPiece","data":"BKKP:K5,5>K4,4"},
+  {"action":"returnPiece","data":"BKNN~KN1,1"},
+  {"action":"freezePuzzle","data":3}],
+  "Moves":[],"Gambits":[],"AdvSqs":[]}
+
+
+
+  {"Setup":[{"action":"makeBoard","boardSize":"8x8x8","trayType":"real"},
+  {"action":"placePiece","data":"BKRR@KR8,8"},
+  {"action":"placePiece","data":"BKNN@KN7,7"},
+  {"action":"placePiece","data":"BKBS@KB6,6"},
+  {"action":"placePiece","data":"BKKK@K5,5"},
+  {"action":"placePiece","data":"BQQQ@Q4,4"}],
+  "Moves":[],"Gambits":[],"AdvSqs":[]}
+
+
+  {"Setup":[{"action":"makeBoard","boardSize":"8x8x8","trayType":"real"},
+  {"action":"placePiece","data":"BKRR@KR7,7"},
+  {"action":"placePiece","data":"BKNN@KN7,7"},
+  {"action":"placePiece","data":"BKBS@KB7,7"},
+  {"action":"placePiece","data":"BKKK@K7,7"},
+  {"action":"placePiece","data":"BQQQ@Q7,7"}],
+  "Moves":[],"Gambits":[],"AdvSqs":[]}
+
   {
     "Setup": [
       {

@@ -21,12 +21,14 @@ import setupData from "./setup.json" assert { type: "json" };
 // Seampoint: more objects...
 
 // --- Dependencies ---
-  import * as planes from "../../geometry/planes/planes.js";
-  import * as quads  from "../../geometry/quads/quads.js";
+  import * as cGambits from "../../controller/gambits/gambits.js"
+
+  import * as state    from "../../model/state/state.js";
+  import * as planes   from "../../geometry/planes/planes.js";
+  import * as quads    from "../../geometry/quads/quads.js";
 
   import * as vBoards  from "../../view/boards/boards.js"
   import * as vTrays   from "../../view/trays/trays.js"
-  import * as cGambits from "../../controller/gambits/gambits.js"
 // Seampoint: more imports...
 
 // --- UI ---
@@ -48,18 +50,26 @@ export function render(entry) {
 export function refreshPanel(entry) {
   console.log("view : setup.js - refreshPanel(entry):", entry);
 
-  const panel = document.getElementById("setup-window");
+  const panel = document.getElementById("setup-list");
   if(!panel) return;
 
-  const { action, boardSize, trayType, initialPos } = entry;
+  const count = state.getIndices().Setup;
+  const children = panel.children;
+  for(let i = 0; i < children.length; i++) {
+    if(i < count) {
+      children[i].style.opacity = "1.0";   // active
+    } else {
+      children[i].style.opacity = "0.3";   // future
+    }
+  }
+
+  const { action, boardSize, trayType } = entry;
 
   const sizeRadio     = panel.querySelector( `input[name="board-size"][value="${boardSize}"]`);
   const trayTypeRadio = panel.querySelector( `input[name="tray-type"][value="${trayType}"]`);
-  const initPosRadio  = panel.querySelector( `input[name="initial-pos"][value="${initialPos}"]`);
 
   if(sizeRadio) sizeRadio.checked = true;
   if(trayTypeRadio) trayTypeRadio.checked = true;
-  if(initPosRadio) initPosRadio.checked = true;
 }
 
 export function pushPanelLine(entry) {

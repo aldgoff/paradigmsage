@@ -295,24 +295,13 @@ function rewindCurrentBuffer(buffer) {
   const idx = state.getCurrentIndex(buffer);
 
   if(     buffer === "Setup") {
-    // Occupancies
-    // Selections
-    // Meshes
     clearAllTileSelections();
     clearAllPieceSelections()
     returnAllPiecesToHomeTray();
 
     state.setBufferIndex("Setup", 1);
-    }
-  else if(buffer === "Setup1") {
-    const curr = state.fetchCurrentState("Setup");
-    const first = state.getState().Setup[0];
-
-    if (curr) vSetup.clear(curr);
-    vSetup.render(first);
-    vSetup.refreshPanel(first);
-
-    state.setBufferIndex("Setup", 1);
+    const entries = state.getState().Setup;
+    vSetup.refreshPanel(entries[0]);
     }
   else if(buffer === "AdvSqs") {  // Snapshot buffer.
     const curr = state.fetchCurrentState("AdvSqs");
@@ -350,9 +339,15 @@ function fastForwardCurrentBuffer(buffer) {
   const len = state.getBufferLength(buffer);
 
   if(     buffer === "Setup") {
-    // TODO:
+    while(state.getCurrentIndex("Setup") < len) {
+      const idx = state.getCurrentIndex("Setup");
+      if(!processRedoBuffer("Setup", idx)) 
+        break;
+    }
 
     state.setBufferIndex("Setup", len);
+    const entries = state.getState().Setup;
+    vSetup.refreshPanel(entries[len-1]);
     }
   else if(buffer === "Setup1") {
     const curr = state.fetchCurrentState("Setup");
@@ -382,8 +377,8 @@ function fastForwardCurrentBuffer(buffer) {
       // cGambits.rebindOverlaysToBoard();
     }
 
-    vMoves.refreshPanel();
     state.setBufferIndex("Moves", len);
+    vMoves.refreshPanel();
     }
   else if(buffer === "Gambits") {
     while (state.getCurrentIndex("Gambits") < len) {
@@ -450,7 +445,7 @@ function processUndoBuffer(key, idx) {
     }
   else if(key === "Setup") {
     state.setBufferIndex("Setup", idx - 1);
-    
+
     clearAllTileSelections();
     clearAllPieceSelections()
     returnAllPiecesToHomeTray();
@@ -534,9 +529,7 @@ function processRedoBuffer(key, idx) {
   else if(key === "Setup") {
     state.setBufferIndex("Setup", idx + 1);
 
-    cSetup.rebuildToIndex(
-      state.getCurrentIndex("Setup")
-    );
+    cSetup.rebuildToIndex(state.getCurrentIndex("Setup"));
 
     return true;
     }
@@ -670,8 +663,14 @@ function returnAllPiecesToHomeTray() {
   console.log("cntrl: game.js - returnAllPiecesToHomeTray()");
 
   for(const key in mPieces.getPieceList()) {    // "WKRR", ...
-    vPieces.placePieceInTray(key);
-  }  
+    const piece = mPieces.getPieceList()[key];
+    const { loc, pos, coords, vts, home } = piece;              // Parse the piece fields.
+    if(loc === '@')
+      mPieces.movePieceFromBoardToTray(key);
+  }
+  const entries = state.getState().Setup;
+  vSetup.refreshPanel(entries[0]);
+
   console.log("***", mPieces.getPieceList());
   console.log("***", mTrays.getWhiteTray());
   console.log("***", mTrays.getBlackTray());
