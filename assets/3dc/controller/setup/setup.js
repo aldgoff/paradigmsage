@@ -71,11 +71,7 @@ export function buildPayload(panel, action) {
     boardSize:  panel.querySelector('input[name="board-size"]:checked')?.value,
     trayType:   panel.querySelector('input[name="tray-type"]:checked')?.value,
   };
-}
-
-export function getSetupEntries() {
-  return state.getState().Setup;
-}
+  }
 
 export function rebuildToIndex(idx) {
   console.log("cntrl: setup.js - rebuildToIndex(idx):", idx);
@@ -96,6 +92,46 @@ export function rebuildToIndex(idx) {
   }
 
   // Rebuild panel text.
+}
+
+export function returnAllPiecesToHomeTray() {
+  console.log("cntrl: game.js - returnAllPiecesToHomeTray()");
+
+  for(const key in mPieces.getPieceList()) {    // "WKRR", ...
+    const piece = mPieces.getPieceList()[key];
+    const { loc, pos, coords, vts, home } = piece;              // Parse the piece fields.
+    if(loc === '@')
+      mPieces.movePieceFromBoardToTray(key);
+  }
+  const entries = state.getState().Setup;
+  vSetup.refreshPanel(entries[0]);
+
+  console.log("***", mPieces.getPieceList());
+  console.log("***", mTrays.getWhiteTray());
+  console.log("***", mTrays.getBlackTray());
+  console.log("***", mBoards.getBoardOccupancy());
+  }
+
+export function clearAllTileSelections() {
+  console.log("cntrl: game.js - clearAllTileSelections()");
+
+  const { pieceSelections, tileSelections } = cSelections.getSelections();
+  for(const vts of tileSelections) {            // vts, ...
+    cSelections.deselectTile(vts);
+    console.log("***", vts);
+  }
+  cSelections.clearTileSelections();            // Set of tile locations, indexed by vts.
+  }
+
+export function clearAllPieceSelections() {
+  console.log("cntrl: game.js - clearAllPieceSelections()");
+
+  const { pieceSelections, tileSelections } = cSelections.getSelections();
+  for(const key of pieceSelections) {           // "WKRR", ...
+    vPieces.deHighlight(key);
+    console.log("***", key);
+  }
+  cSelections.clearPieceSelections();           // Set of pieces highlighted, indexed by key.
 }
 // Seampoint: more global functions...
 
@@ -122,14 +158,7 @@ function handleMakeBoard(payload) { // Setup handler.
     cTrays.init(entry);   // Trays bracket the board.
     cPieces.init(entry);  // Every piece is in a tray, none are on the board.
 
-  // --- Buttons ---
-    panels.enableButton("makeBoard",   false);
-    panels.enableButton("placePiece",  true);
-    panels.enableButton("shiftPiece",  false);
-    panels.enableButton("returnPiece", false);
-    panels.enableButton("freezePuzzle",false);
-    panels.enableButton("startingPos", true);
-    panels.enableButton("play",        false);
+  setButtonState("boardDone");
   }
 
 function handlePlacePiece(payload) {
@@ -153,7 +182,7 @@ function handlePlacePiece(payload) {
     else if(pieceSelections.size  >  1)   { task = "pieces"; }
     else if(tileSelections.size  === 0)   { task = "noTile"; }
     else if(tileSelections.size   >  1)   { task = "tiles";  }
-    else {                               // task = "place|shift".
+    else {
       key     = pieceSelections.values().next().value;
       dstTile = tileSelections.values().next().value;
       piece   = mPieces.getPieceList()[key];
@@ -183,13 +212,14 @@ function handlePlacePiece(payload) {
     // console.log("*** Log");
 
   // --- Buttons ---
-    panels.enableButton("placePiece",   true);
-    panels.enableButton("shiftPiece",   true);
-    panels.enableButton("returnPiece",  true);
-    panels.enableButton("freezePuzzle", true);
-    panels.enableButton("startingPos",  false);
-    panels.enableButton("play",         false);
-    console.log("*** Buttons");
+    const pieceCount = mBoards.getBoardOccupancy()
+      .flat(2)
+      .filter(cell => cell !== null)
+      .length;
+    const max = 40; // TODO: magic number
+    (pieceCount === max)
+      ? setButtonState("emptyTrays")
+      : setButtonState("pieces");
   }
 
 function handleShiftPiece(payload) {
@@ -213,7 +243,7 @@ function handleShiftPiece(payload) {
     else if(pieceSelections.size  >  1)   { task = "pieces"; }
     else if(tileSelections.size  === 0)   { task = "noTile"; }
     else if(tileSelections.size   >  1)   { task = "tiles";  }
-    else {                               // task = "place|shift".
+    else {
       key     = pieceSelections.values().next().value;
       dstTile = tileSelections.values().next().value;
       piece   = mPieces.getPieceList()[key];
@@ -244,15 +274,6 @@ function handleShiftPiece(payload) {
 
     recordSetupAction(entry);
     console.log("*** Log");
-
-  // --- Buttons ---
-    panels.enableButton("placePiece",   true);
-    panels.enableButton("returnPiece",  true);
-    panels.enableButton("shiftPiece",   true);
-    panels.enableButton("freezePuzzle", true);
-    panels.enableButton("startingPos",  false);
-    panels.enableButton("play",         false);
-    console.log("*** Buttons");
   }
 
 function handleReturnPiece(payload) {
@@ -315,22 +336,9 @@ function handleReturnPiece(payload) {
 
     invariants.invariant(pieceCount === boardPieces, "Number of pieces listed on the board must equal the number actually on the board.");
 
-    if(pieceCount === 0) {
-      panels.enableButton("placePiece",   true);
-      panels.enableButton("returnPiece",  false);
-      panels.enableButton("shiftPiece",   false);
-      panels.enableButton("freezePuzzle", false);
-      panels.enableButton("startingPos",  true);
-      panels.enableButton("play",         false);
-    } 
-    else {
-      panels.enableButton("placePiece",   true);
-      panels.enableButton("returnPiece",  true);
-      panels.enableButton("shiftPiece",   true);
-      panels.enableButton("freezePuzzle", true);
-      panels.enableButton("startingPos",  false);
-      panels.enableButton("play",         false);
-    }
+    (pieceCount === 0)
+      ? setButtonState("boardDone")
+      : setButtonState("pieces");
     console.log("*** Buttons");
   }
 
@@ -346,22 +354,14 @@ function handleFreeze(payload) {
 
   recordSetupAction(entry);
 
-  // --- Buttons ---
-    panels.enableButton("placePiece",   false);
-    panels.enableButton("returnPiece",  false);
-    panels.enableButton("shiftPiece",   false);
-    panels.enableButton("freezePuzzle", false);
-    panels.enableButton("startingPos",  false);
-    panels.enableButton("play",         true);
-    console.log("*** Buttons");
+  setButtonState("loaded");
   }
 
-function handleStartingPos(payload) {
+function handleStartingPos(payload) {  // TODO: Load all the pieces.
   console.log("cntrl: setup.js - handleStartingPos(payload):", payload);
 
   const { action, boardSize, trayType } = payload;  // Informative.
 
-  // TODO: Load all the pieces.
   const boardPieces =
     Object.values(mPieces.getPieceList())
       .filter(piece => piece.loc === "@")
@@ -369,15 +369,7 @@ function handleStartingPos(payload) {
   const entry = { action, data: boardPieces };
 
   recordSetupAction(entry);
-
-  // --- Buttons ---
-    panels.enableButton("placePiece",   false);
-    panels.enableButton("returnPiece",  false);
-    panels.enableButton("shiftPiece",   false);
-    panels.enableButton("freezePuzzle", false);
-    panels.enableButton("startingPos",  false);
-    panels.enableButton("play",         true);
-    console.log("*** Buttons");
+  setButtonState("loaded");
   }
 
 function handlePlay(payload) {
@@ -389,16 +381,7 @@ function handlePlay(payload) {
 
   recordSetupAction(entry);
 
-  // --- Buttons ---
-    panels.enableButton("placePiece",   false);
-    panels.enableButton("returnPiece",  false);
-    panels.enableButton("shiftPiece",   false);
-    panels.enableButton("freezePuzzle", false);
-    panels.enableButton("startingPos",  false);
-    panels.enableButton("play",         false);
-    console.log("*** Buttons");
-
-  panels.enableButton("move", true);
+  setButtonState("play");
 }
 // Seampoint: more handlers...
 
@@ -420,6 +403,68 @@ function applyEntry(entry) {
 
   // TODO: remove all entries in the downstream buffers; 
   // a new board invalidates moves, gambits, and advsqs.
+}
+
+function setButtonState(command) {
+  switch (command) {
+    case "makeBoard":
+      panels.enableButton("makeBoard",   true);
+
+      panels.enableButton("placePiece",  false);
+      panels.enableButton("shiftPiece",  false);
+      panels.enableButton("returnPiece", false);
+      panels.enableButton("freezePuzzle",false);
+      panels.enableButton("startingPos", false);
+      panels.enableButton("play",        false);
+      break;
+    case "boardDone":
+      panels.enableButton("makeBoard",   false);
+
+      panels.enableButton("placePiece",  true);
+      panels.enableButton("shiftPiece",  false);
+      panels.enableButton("returnPiece", false);
+      panels.enableButton("freezePuzzle",false);
+      panels.enableButton("startingPos", true);
+      panels.enableButton("play",        false);
+      break;
+    case "pieces":
+      panels.enableButton("placePiece",   true);
+      panels.enableButton("shiftPiece",   true);
+      panels.enableButton("returnPiece",  true);
+      panels.enableButton("freezePuzzle", true);
+      panels.enableButton("startingPos",  false);
+      panels.enableButton("play",         false);
+      break;
+    case "emptyTrays":
+      panels.enableButton("placePiece",   false);
+      panels.enableButton("returnPiece",  true);
+      panels.enableButton("shiftPiece",   true);
+      panels.enableButton("freezePuzzle", true);
+      panels.enableButton("startingPos",  false);
+      panels.enableButton("play",         false);
+      break;
+    case "loaded":
+      panels.enableButton("placePiece",   false);
+      panels.enableButton("returnPiece",  false);
+      panels.enableButton("shiftPiece",   false);
+      panels.enableButton("freezePuzzle", false);
+      panels.enableButton("startingPos",  false);
+      panels.enableButton("play",         true);
+      break;
+    case "play":
+      panels.enableButton("placePiece",   false);
+      panels.enableButton("returnPiece",  false);
+      panels.enableButton("shiftPiece",   false);
+      panels.enableButton("freezePuzzle", false);
+      panels.enableButton("startingPos",  false);
+      panels.enableButton("play",         false);
+
+      panels.enableButton("move", true);
+      break;
+    default:
+      throw new Error(`Unknown button state command ${command}.`);
+      break;
+  }
 }
 
 function placePieceOnBoard(key, dstTile) {
@@ -468,10 +513,12 @@ function returnPieceToTray(key) {
   }
 
 function recordSetupAction(entry) {
+  console.log("cntrl: setup.js - recordSetupAction(entry):", entry);
+
   state.pushNewSetup(entry);          // Log state change in undo buffer.
   vSetup.pushPanelLine(entry);        // Add line to panel.
   vSetup.refreshPanel(entry);         // Only needed by panels with derived fields.
-}
+  }
 
 function replayEntry(entry) {
   console.log("cntrl: setup.js - replayEntry(entry):", entry);
@@ -524,4 +571,14 @@ function replayEntry(entry) {
   }
 }
 // Seampoint: more local functions...
+
+/* TODO: QC checklist✅ 
+    1. Load/Save fails to make board.
+    2. Corruption if attempt to place a piece on an occupied tile.
+    3. Support factory trays.
+    4. Make code work for all three board sizes.
+    5. Implement startup position.
+    6. Implement undo branching.
+    7. Undo does not restore buttons.
+ */
 
