@@ -49,10 +49,12 @@ export function destroy(entry) {
   const { action, boardSize, trayType, trayGap } = entry;
 
   clearTrays();
-  // vTrays.makeTrays(entry);
+  vTrays.destroyTrays(entry);
   }
 
 export function trayIndices(type, spec="8x8x8") {
+  console.log("model: trays.js - trayIndices(type, spec)", type, spec);
+
   let i;
   let j;
 
@@ -91,6 +93,19 @@ function clearTrays() {
       }
     }
   }
+  diagnostic();
+}
+
+function diagnostic() {
+  const whiteCount = whiteTray.flat(2).filter(cell => cell !== null).length;
+  const blackCount = blackTray.flat(2).filter(cell => cell !== null).length;
+
+  const trayCount = whiteCount + blackCount;
+
+  const panel = document.getElementById("diags-window");
+
+  panel.querySelector('[name="diags-whiteTray"]').textContent = whiteCount;
+  panel.querySelector('[name="diags-blackTray"]').textContent = blackCount;
 }
 // Seampoint: more local functions...
 

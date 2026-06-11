@@ -131,7 +131,7 @@ title: "Dev"
   - 6/08/26 - QC pieces. Complete board to tray. Misc. QC. Dependencies. Setup flow established. Fix tray gap/pieces. Prep for new setup undo.
   - 6/09/26 - Screenshots. Selections canonized. Canonize code as map. Tiles superstructure. Comment QC. Setup undo phase 1.
   - 6/10/26 - Setup undo/redo/rewind/FF. Game and cSetup QC. Button management. Undo makeBoard...
-  - 6/11/26 - Add status panel.
+  - 6/11/26 - Add status panel. Change to diagnostic panel.
 
 
 ## Save Setup States

@@ -64,6 +64,8 @@ export function initPieces(pieceList) {
   console.log("*** pieceGroups", pieceGroups);
 
   view.context.scene.add(currPiecesGroup);
+
+  diagnostic();
   }
 
 export function destroyPieces(pieceList) {
@@ -75,12 +77,14 @@ export function destroyPieces(pieceList) {
   } 
   pieceGroups = {};
   currPiecesGroup = null;
-  
+
   console.log("*** currPiecesGroup", currPiecesGroup);
   console.log("*** pieceGroups", pieceGroups);
 
   view.context.scene.remove(currPiecesGroup);
-  }
+
+  diagnostic();
+}
 
 export function placePieceInTray(key) {      // "WKRR", ...
   // console.log("view : pieces.js - placePieceInTray(key)", key);
@@ -342,6 +346,8 @@ function renderInTray(player, side, type, tray, pos) {
   group.userData.vts = vts;
 
   currPiecesGroup.add(group);
+
+  diagnostic();
 
   return group;
   }
@@ -840,6 +846,15 @@ function addCubeBevelLines(mesh, cubeSize, color) {
 
     mesh.add(ring);
   });
+}
+
+function diagnostic() {
+  const panel = document.getElementById("diags-window");
+
+  panel.querySelector('[name="diags-trayMap"]').textContent         = 99;
+
+  panel.querySelector('[name="diags-currPiecesGroup"]').textContent = currPiecesGroup?.children.length ?? 0;
+  panel.querySelector('[name="diags-pieceGroups"]').textContent     = Object.keys(pieceGroups).length;
 }
 // Seampoint: more local functions...
 

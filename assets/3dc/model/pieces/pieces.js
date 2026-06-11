@@ -53,6 +53,7 @@ export function destroy(entry) {
   for(const key in pieceList) {
     delete pieceList[key];
   }
+  diagnostic();
   }
 
 export function getPieceList() {
@@ -120,6 +121,7 @@ export function movePieceFromTrayToBoard(key, dstStr) {  // "WQQP", "Q1,1". // T
     console.log("*** pieceList", structuredClone(pieceList));                // Diagnositcs.
     console.log("*** whiteTray", structuredClone(mTrays.getWhiteTray()));
     console.log("*** blackTray", structuredClone(mTrays.getBlackTray()));
+  diagnostic();
 
   return { ok: true, err: null };
   }
@@ -167,7 +169,8 @@ export function movePieceTileToTile(key, dstStr) {
     // console.log("*** spec: ", structuredClone(spec));
 
     console.log("*** pieceList", structuredClone(pieceList));                // Diagnositcs.
-  
+    diagnostic();
+
   return { ok: true, err: null };
   }
 
@@ -232,6 +235,7 @@ export function movePieceFromBoardToTray(key) {
     console.log("*** pieceList", structuredClone(pieceList));                // Diagnositcs.
     console.log("*** whiteTray", structuredClone(mTrays.getWhiteTray()));
     console.log("*** blackTray", structuredClone(mTrays.getBlackTray()));
+  diagnostic();
 
   return { ok: true, err: null };
 }
@@ -288,6 +292,7 @@ function destroyPieces(entry) {
   for(const key in pieceList) {
     delete pieceList[key];
   }
+  diagnostic();
   }
 
 function clearPieceState() {
@@ -296,6 +301,7 @@ function clearPieceState() {
   for(const key in pieceList) {
     delete pieceList[key];
   }
+  diagnostic();
   }
 
 function createPiecesForEightBoard(trayGap) {
@@ -363,6 +369,7 @@ function createPiecesForTray(tray, trayDef, offset=0) {
       }
     }
   }
+  diagnostic();
   }
 
 function createPiece(key, pos, coords, trayOffset=0) {
@@ -384,6 +391,30 @@ function createPiece(key, pos, coords, trayOffset=0) {
     vts, 
     home: { trayPos: pos, trayCoords: [...coords], trayVts: [...vts] }
   };
+}
+
+function diagnostic() {
+  const pieceCount = Object.keys(pieceList).length;
+
+  const trayCount  = Object.values(pieceList).filter(piece => piece.loc === "~").length;
+  const boardCount = Object.values(pieceList).filter(piece => piece.loc === "@").length;
+
+  const whiteCount = mTrays.getWhiteTray().flat(2).filter(cell => cell !== null).length;
+  const blackCount = mTrays.getBlackTray().flat(2).filter(cell => cell !== null).length;
+  const trayInvariant = whiteCount + blackCount;
+
+  const boardOcc = mBoards.getBoardOccupancy().flat(2).filter(cell => cell !== null).length;
+
+  const panel = document.getElementById("diags-window");
+
+  panel.querySelector('[name="diags-pieceCount"]').textContent = pieceCount;
+  panel.querySelector('[name="diags-trayCount"]').textContent  = trayCount;
+
+  panel.querySelector('[name="diags-whiteTray"]').textContent  = whiteCount;
+  panel.querySelector('[name="diags-blackTray"]').textContent  = blackCount;
+
+  panel.querySelector('[name="diags-boardCount"]').textContent = boardCount;
+  panel.querySelector('[name="diags-boardOcc"]').textContent   = boardOcc;
 }
 // Seampoint: more local functions...
 

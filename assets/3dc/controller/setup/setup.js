@@ -423,6 +423,9 @@ function applyEntry(entry) {
 }
 
 function setButtonState(command) {
+  const panel = document.getElementById("diags-window");
+  panel.querySelector('[name="diags-buttons"]').textContent = command;
+
   switch (command) {
     case "makeBoard":
       panels.enableButton("makeBoard",   true);

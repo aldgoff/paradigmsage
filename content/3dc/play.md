@@ -94,7 +94,7 @@ layout: "play"
   #gambit-window  { top:  880px; left:   20px; }
   #advsq-window   { top:  260px; left:  210px; }
   #compass-window { top:  260px; left:  560px; }
-  #status-window { top:  260px; left:  960px; }
+  #diags-window   { top:  260px; left:  960px; }
 
   #game-window    { top:  260px; left:  390px; }
 
@@ -272,23 +272,25 @@ layout: "play"
   </div>
   </div>
 
-<div class="panel panel-supportive" id="status-window">
-  <div class="panel-title">Status Panel</div>
+<div class="panel panel-supportive" id="diags-window">
+  <div class="panel-title">Diagnositcs Panel</div>
   <div class="section"> <label>Occupancies -----</lable> </div>
-  <div class="section"> <label> Piece List:       <output name="status-pieceList" style="font-style:italic;"></output> </label> </div>
-  <div class="section"> <label> White Tray:       <output name="status-whiteTray" style="font-style:italic;"></output> </label> </div>
-  <div class="section"> <label> Black Tray:       <output name="status-blackTray" style="font-style:italic;"></output> </label> </div>
-  <div class="section"> <label> Board:            <output name="status-board"     style="font-style:italic;"></output> </label> </div>
+  <div class="section"> <label> Piece Count:      <output name="diags-pieceCount" style="font-style:italic;">0</output> </label> </div>
+  <div class="section"> <label> Tray Count:       <output name="diags-trayCount"  style="font-style:italic;">0</output> </label> </div>
+  <div class="section"> <label> White Tray:       <output name="diags-whiteTray"  style="font-style:italic;">0</output> </label> </div>
+  <div class="section"> <label> Black Tray:       <output name="diags-blackTray"  style="font-style:italic;">0</output> </label> </div>
+  <div class="section"> <label> Board Count:      <output name="diags-boardCount" style="font-style:italic;">0</output> </label> </div>
+  <div class="section"> <label> Board Occupancy:  <output name="diags-boardOcc"   style="font-style:italic;">0</output> </label> </div>
   <div class="section"> <label>Selections ----- </lable> </div>
-  <div class="section"> <label> Piece Selections:  <output name="status-pieceSels" style="font-style:italic;"></output> </label> </div>
-  <div class="section"> <label> Tile Selections:   <output name="status-tileSels"  style="font-style:italic;"></output> </label> </div>
-  <div class="section"> <label> Buttons:           <output name="status-buttons"   style="font-style:italic;"></output> </label> </div>
+  <div class="section"> <label> Piece Selections:  <output name="diags-pieceSels" style="font-style:italic;">0</output> </label> </div>
+  <div class="section"> <label> Tile Selections:   <output name="diags-tileSels"  style="font-style:italic;">0</output> </label> </div>
+  <div class="section"> <label> Buttons:           <output name="diags-buttons"   style="font-style:italic;">0</output> </label> </div>
   <div class="section"> <label>Mesh Groups ----- </lable> </div>
-  <div class="section"> <label> Tray Map:          <output name="status-trayMap"        style="font-style:italic;"></output> </label> </div>
-  <div class="section"> <label> Curr Pieces Group: <output name="status-currPiecesGroup"style="font-style:italic;"></output> </label> </div>
-  <div class="section"> <label> Piece Group:       <output name="status-piece Group"    style="font-style:italic;"></output> </label> </div>
-  <div class="section"> <label> White Tray Group:  <output name="status-whiteTrayGroup" style="font-style:italic;"></output> </label> </div>
-  <div class="section"> <label> Black Tray Group:  <output name="status-blackTrayGroup" style="font-style:italic;"></output> </label> </div>
+  <div class="section"> <label> Tray Map:          <output name="diags-trayMap"        style="font-style:italic;">0</output> </label> </div>
+  <div class="section"> <label> Curr Pieces Group: <output name="diags-currPiecesGroup"style="font-style:italic;">0</output> </label> </div>
+  <div class="section"> <label> Piece Groups:      <output name="diags-pieceGroups"    style="font-style:italic;">0</output> </label> </div>
+  <div class="section"> <label> White Tray Group:  <output name="diags-whiteTrayGroup" style="font-style:italic;">0</output> </label> </div>
+  <div class="section"> <label> Black Tray Group:  <output name="diags-blackTrayGroup" style="font-style:italic;">0</output> </label> </div>
   </div>
 
 <div class="panel panel-temporal" id="game-window">
