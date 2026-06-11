@@ -33,13 +33,15 @@ import traysData from "./trays.json" assert { type: "json" };
 // Seampoint: more globals.
 
 // --- UI ---
-export function makeTrays(gap) {
-  console.log("view : trays.js - makeTrays(gap)", gap);
+export function makeTrays(entry) {
+  console.log("view : trays.js - makeTrays(entry)", entry);
+
+  const { action, boardSize, trayType, trayGap } = entry;
 
   destroyTrays();
 
-  whiteTrayGroup = makeTrayGroup("White", gap);
-  blackTrayGroup = makeTrayGroup("Black", gap);
+  whiteTrayGroup = makeTrayGroup("White", entry);
+  blackTrayGroup = makeTrayGroup("Black", entry);
 
   view.context.scene.add(whiteTrayGroup);
   view.context.scene.add(blackTrayGroup);
@@ -49,6 +51,7 @@ export function makeTrays(gap) {
 
 export function destroyTrays() {
   console.log("view : trays.js - destroyTrays()");
+
   if(whiteTrayGroup) {
     view.context.scene.remove(whiteTrayGroup);
     whiteTrayGroup = null;
@@ -86,26 +89,23 @@ export function setTrayGap(trayGap) {
 // Seampoint: more global functions...
 
 // --- Helpers ---
-function makeTrayGroup(side, gap) {
-  // console.log("view : trays.js - makeTrayGroup(side)", side);
+function makeTrayGroup(side, entry) {
+  console.log("view : trays.js - makeTrayGroup(side, entry)", side, entry);
+
+  const { action, boardSize, trayType, trayGap } = entry;
 
   const trayGroup = new window.THREE.Group();
 
-  const setup = state.fetchCurrentState("Setup");
-  if(!setup) return trayGroup;
-
-  const { boardSize } = setup;
-
   const trayData = traysModule[boardSize][side];
 
-  buildTrayColumn(trayGroup, trayData.pieces, side, gap);
-  buildTrayColumn(trayGroup, trayData.pawns,  side, gap);
+  buildTrayColumn(trayGroup, trayData.pieces, side, trayGap);
+  buildTrayColumn(trayGroup, trayData.pawns,  side, trayGap);
 
   return trayGroup;
   }
 
 function buildTrayColumn(trayGroup, columnData, side, gap) {
-  // console.log("view : trays.js - buildTrayColumn(...)", columnData, side, gap);
+  console.log("view : trays.js - buildTrayColumn(...)", columnData, side, gap);
 
   Object.entries(columnData)
     .forEach(([key, pos]) => {

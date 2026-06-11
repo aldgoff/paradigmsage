@@ -110,6 +110,7 @@ layout: "play"
   <div class="panel-title">Setup Panel</div>
   <div class="section">
     <button data-action="makeBoard">Make Board</button>
+    <button data-action="destroyBoard">Destroy Board</button>
   </div>
   <div class="section">
     <label>Board Size</lable>

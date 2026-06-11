@@ -49,6 +49,7 @@ export function panelDispatch(payload) {    // Dispatch payload from panel to ha
 
   switch (action) {
     case "makeBoard":    handleMakeBoard(payload); break;
+    case "destroyBoard": handleDestroyBoard(payload); break;
     case "placePiece":   handlePlacePiece(payload); break;
     case "shiftPiece":   handleShiftPiece(payload); break;
     case "returnPiece":  handleReturnPiece(payload); break;
@@ -66,10 +67,13 @@ export function panelDispatch(payload) {    // Dispatch payload from panel to ha
 export function buildPayload(panel, action) {
   console.log("     ---------- cntrl: setup.js");
 
+  const viewerPanel = document.getElementById("viewer-window");
+
   return {  // payload
     action,
     boardSize:  panel.querySelector('input[name="board-size"]:checked')?.value,
     trayType:   panel.querySelector('input[name="tray-type"]:checked')?.value,
+    trayGap:    Number(viewerPanel.querySelector('[name="viewer-trayGap"]')?.value)
   };
   }
 
@@ -86,7 +90,7 @@ export function rebuildToIndex(idx) {
   const entries = state.getState().Setup;
   console.log("*** entries", entries);
 
-  for(let i=1; i<idx; i++) {
+  for(let i=0; i<idx; i++) {
     vSetup.refreshPanel(entries[i]);
     replayEntry(entries[i]);
   }
@@ -143,22 +147,35 @@ export function clearAllPieceSelections() {
 function handleMakeBoard(payload) { // Setup handler.
   console.log("cntrl: setup.js - handleMakeBoard(payload):", payload);
 
-  // --- Parse ---
-    const { action, boardSize, trayType } = payload;  // Informative.
-    boardSpec = boardSize;
+  const { action, boardSize, trayType, trayGap } = payload;
+  boardSpec = boardSize;
 
-  // --- Intent ---
-    const entry = mSetup.makeEntry(payload);    // Transform panel payload into state entry.
-  
-  // --- Log ---
-    applyEntry(entry);  // TODO: Must occur prior to init boards, trays, & pieces, but is a bug that should be fixed.
+  const entry = mSetup.makeEntry(payload);    // Transform panel payload into state entry.
 
-  // --- Do ---
-    cBoards.init(entry);  // Initial occupancy depends on board size and tray type. TODO: support factory trays.
-    cTrays.init(entry);   // Trays bracket the board.
-    cPieces.init(entry);  // Every piece is in a tray, none are on the board.
+  applyEntry(entry);  // TODO: Must occur prior to init boards, trays, & pieces, but is a bug that should be fixed.
+
+  cBoards.init(entry);  // Initial occupancy depends on board size and tray type. TODO: support factory trays.
+  cTrays.init(entry);   // Trays bracket the board.
+  cPieces.init(entry);  // Every piece is in a tray, none are on the board.
 
   setButtonState("boardDone");
+  }
+
+function handleDestroyBoard(payload) {
+  console.log("cntrl: setup.js - handleDestroyBoard(payload):", payload);
+
+  const { action, boardSize, trayType, trayGap } = payload;
+  boardSpec = boardSize;
+
+  const entry = mSetup.makeEntry(payload);    // Transform panel payload into state entry.
+
+  applyEntry(entry);  // TODO: Must occur prior to init boards, trays, & pieces, but is a bug that should be fixed.
+
+  cBoards.destroy(entry);  // Initial occupancy depends on board size and tray type. TODO: support factory trays.
+  cTrays.destroy(entry);   // Trays bracket the board.
+  cPieces.destroy(entry);  // Every piece is in a tray, none are on the board.
+
+  // setButtonState("boardDone");
   }
 
 function handlePlacePiece(payload) {
@@ -418,7 +435,7 @@ function setButtonState(command) {
       panels.enableButton("play",        false);
       break;
     case "boardDone":
-      panels.enableButton("makeBoard",   false);
+      panels.enableButton("makeBoard",   true);
 
       panels.enableButton("placePiece",  true);
       panels.enableButton("shiftPiece",  false);
@@ -526,9 +543,15 @@ function replayEntry(entry) {
   const { action, data } = entry;
 
   if(     action === "makeBoard") {
-    cBoards.init(entry);
-    cTrays.init(entry);
-    cPieces.init(entry);
+    cBoards.init(entry);  // Initial occupancy depends on board size and tray type. TODO: support factory trays.
+    cTrays.init(entry);   // Trays bracket the board.
+    cPieces.init(entry);  // Every piece is in a tray, none are on the board.
+    setButtonState("boardDone");
+    }
+  else if(action === "destroyBoard") { 
+    cBoards.destroy(entry);  // 
+    cTrays.destroy(entry);   // Trays bracket the board.
+    cPieces.destroy(entry);  // Every piece is in a tray, none are on the board.
     }
   else if(action === "placePiece") {    // BKRR@KR8,8
     const [key, dstStr] = data.split("@");
@@ -546,25 +569,13 @@ function replayEntry(entry) {
     returnPieceToTray(key);
     }
   else if(action === "freezePuzzle") {
-    panels.enableButton("placePiece",   false);
-    panels.enableButton("returnPiece",  false);
-    panels.enableButton("shiftPiece",   false);
-    panels.enableButton("freezePuzzle", false);
-    panels.enableButton("startingPos",  false);
-    panels.enableButton("play",         true);
+    setButtonState(loaded);
     }
   else if(action === "startingPos") {
-    throw new Error("Setup piece starting position not implemented.");
+    throw new Error("Setup piece starting position not implemented.");  // TODO:
     }
   else if(action === "play") {
-    panels.enableButton("placePiece",   false);
-    panels.enableButton("returnPiece",  false);
-    panels.enableButton("shiftPiece",   false);
-    panels.enableButton("freezePuzzle", false);
-    panels.enableButton("startingPos",  false);
-    panels.enableButton("play",         false);
-
-    panels.enableButton("move", true);
+    setButtonState(play);
     }
   else {
     throw new Error(`Unknown setup action: ${action}`);

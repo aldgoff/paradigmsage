@@ -25,10 +25,12 @@ import boardsData from "./boards.json" assert { type: "json" };
 // Seampoint: more globals.
 
 // --- UI ---
-export function render(setup) {
-  console.log("view : boards.js - render(setup)", setup);
+export function render(entry) {
+  console.log("view : boards.js - render(setup)", entry);
 
-  const dims = setup.boardSize.split("x").map(Number);
+  const { action, boardSize, trayType } = entry;
+
+  const dims = boardSize.split("x").map(Number);
   makeBoard(dims);
   }
 
@@ -77,13 +79,9 @@ export function makeBoard(dimensions) {
 
 export function clearBoard() {
   console.log("view : boards.js - clearBoard()...view.context:", view.context);
-  if (currentBoard) {
+
+  if(currentBoard) {
     view.context.scene.remove(currentBoard);
-    console.log(
-      "Scene children:",
-      view.context.scene.children.map(c => c.type)
-    );
-    // console.log("scene.children.length", view.context.scene.children.length);
     currentBoard = null;
   }
 

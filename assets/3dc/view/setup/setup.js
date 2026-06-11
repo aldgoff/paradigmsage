@@ -35,7 +35,7 @@ import setupData from "./setup.json" assert { type: "json" };
 export function clear(entry) {
   console.log("view : setup.js - clear(entry)", entry);
 
-  const { action, boardSize, trayType, initialPos } = entry;  // Informative.
+  const { action, boardSize, trayType, trayGap } = entry;
 
   vBoards.clear(entry);
   vTrays.destroyTrays();
@@ -44,7 +44,7 @@ export function clear(entry) {
 export function render(entry) {
   console.log("view : setup.js - render(entry)", entry);
 
-  const { action, boardSize, trayType, initialPos } = entry;  // Informative.
+  const { action, boardSize, trayType, trayGap } = entry;  // Informative.
   }
   
 export function refreshPanel(entry) {
@@ -112,6 +112,12 @@ function assembleLine(entry) {
 
   switch (action) {
     case "makeBoard": {
+      const { boardSize, trayType } = entry;
+      const sizeCol = `${boardSize}`.padEnd(8);
+      const typeCol = `${trayType}`.padEnd(7);
+      const line    = `${sizeCol} ${typeCol}`;
+      return line; }
+    case "destroyBoard": {
       const { boardSize, trayType } = entry;
       const sizeCol = `${boardSize}`.padEnd(8);
       const typeCol = `${trayType}`.padEnd(7);

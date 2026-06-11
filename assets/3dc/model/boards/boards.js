@@ -30,11 +30,18 @@ import boardsData from "./boards.json" assert { type: "json" };
 export function init(entry) {
   console.log("model: boards.js - init(entry)", entry);
 
-  const { action, boardSize, trayType, initialPos } = entry;  // Informative.
+  const { action, boardSize, trayType, trayGap } = entry;
 
   clearBoard();
-
   vBoards.render(entry);
+  }
+
+export function destroy(entry) {
+  console.log("model: boards.js - destroy(entry)", entry);
+
+  const { action, boardSize, trayType, trayGap } = entry;
+
+  clearBoard();
   }
 
 export function getBoardSpecs() {
@@ -66,24 +73,15 @@ export function clearPieceFromBoardOccupancy(key) { // occupancy[z][x][y] = null
 
 // --- Helpers ---
 function clearBoard() {
-  // console.log("model: boards.js - clearBoard()");
-
-  let tally = 0;
+  console.log("model: boards.js - clearBoard()");
 
   for(let z = 0; z < occupancy.length; z++) {
     for(let x = 0; x < occupancy[z].length; x++) {
       for(let y = 0; y < occupancy[z][x].length; y++) {
-
-        if(occupancy[z][x][y] !== null) {
-          tally++;
-        }
-
         occupancy[z][x][y] = null;
       }
     }
   }
-
-  // console.log(`model: boards.js - cleared ${tally} board slots.`);
 }
 
 function pieceLocOnBoard(key) { // [z, x, y]|null.

@@ -413,7 +413,7 @@ function processUndoBuffer(key, idx) {
     }
     }
   else if(key === "Setup") {
-    state.setBufferIndex("Setup", idx - 1);
+    state.setBufferIndex("Setup", idx-1);
 
     cSetup.clearAllTileSelections();
     cSetup.clearAllPieceSelections();

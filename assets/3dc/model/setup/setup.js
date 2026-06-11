@@ -27,7 +27,7 @@ import setupData from "./setup.json" assert { type: "json" };
 export function makeEntry(payload) {
   console.log(`model: setup.js - makeEntry(payload):`, payload);
 
-  const { action, boardSize, trayType } = payload;  // Informative.
+  const { action, boardSize, trayType, trayGap } = payload;
 
   const entry = payload;
 

@@ -44,13 +44,13 @@ import piecesData from "./pieces.json" assert { type: "json" };
 // --- Globals ---
   const THREE = window.THREE;
   let currPiecesGroup = null;
-  const pieceGroups = {};
+  let pieceGroups = {};
   let lastTrayGap = 0;
 // Seampoint: more globals...
 
 // --- UI ---
 export function initPieces(pieceList) {
-  console.log("view : pieces.js - initPieces()");
+  console.log("view : pieces.js - initPieces(pieceList)", pieceList);
 
   currPiecesGroup = new THREE.Group();
 
@@ -60,9 +60,25 @@ export function initPieces(pieceList) {
     placePieceInTray(key);    // Pieces start in the trays.
     currPiecesGroup.add(group);
   }  
-  // console.log("view : pieces.js - initPieces(): currPiecesGroup", currPiecesGroup);
+  console.log("*** currPiecesGroup", currPiecesGroup);
+  console.log("*** pieceGroups", pieceGroups);
 
   view.context.scene.add(currPiecesGroup);
+  }
+
+export function destroyPieces(pieceList) {
+  console.log("view : pieces.js - destroyPieces(pieceList)", pieceList);
+
+  for(const key in pieceList) {      // "WKRR", ...
+    const group = pieceGroups[key];
+    currPiecesGroup.remove(group);
+  } 
+  pieceGroups = {};
+
+  console.log("*** currPiecesGroup", currPiecesGroup);
+  console.log("*** pieceGroups", pieceGroups);
+
+  view.context.scene.remove(currPiecesGroup);
   }
 
 export function placePieceInTray(key) {      // "WKRR", ...

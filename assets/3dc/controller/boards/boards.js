@@ -24,6 +24,14 @@ export function init(entry) {
 
   return;
   }
+
+export function destroy(entry) {
+  console.log("cntrl: boards.js - destroy(entry)", entry);
+  
+  mBoards.destroy(entry);  // Initial occupancy depends on board size and tray type.
+
+  return;
+  }
 // Seampoint: more global functions...
 
 // --- Helpers ---
