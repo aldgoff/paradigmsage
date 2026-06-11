@@ -111,7 +111,7 @@ layout: "play"
   <div class="panel-title">Setup Panel</div>
   <div class="section">
     <button data-action="makeBoard">Make Board</button>
-    <button data-action="destroyBoard">Destroy Board</button>
+    <button data-action="destroyBoard" disabled>Destroy Board</button>
   </div>
   <div class="section">
     <label>Board Size</lable>
@@ -286,11 +286,12 @@ layout: "play"
   <div class="section"> <label> Tile Selections:   <output name="diags-tileSels"  style="font-style:italic;">0</output> </label> </div>
   <div class="section"> <label> Buttons:           <output name="diags-buttons"   style="font-style:italic;">0</output> </label> </div>
   <div class="section"> <label>Mesh Groups ----- </lable> </div>
-  <div class="section"> <label> Tray Map:          <output name="diags-trayMap"        style="font-style:italic;">0</output> </label> </div>
+  <div class="section"> <label> Tile Map:          <output name="diags-tileMap"        style="font-style:italic;">0</output> </label> </div>
   <div class="section"> <label> Curr Pieces Group: <output name="diags-currPiecesGroup"style="font-style:italic;">0</output> </label> </div>
   <div class="section"> <label> Piece Groups:      <output name="diags-pieceGroups"    style="font-style:italic;">0</output> </label> </div>
   <div class="section"> <label> White Tray Group:  <output name="diags-whiteTrayGroup" style="font-style:italic;">0</output> </label> </div>
   <div class="section"> <label> Black Tray Group:  <output name="diags-blackTrayGroup" style="font-style:italic;">0</output> </label> </div>
+  <div class="section"> <label> Scene Children:    <output name="diags-sceneChildren"  style="font-style:italic;">0</output> </label> </div>
   </div>
 
 <div class="panel panel-temporal" id="game-window">

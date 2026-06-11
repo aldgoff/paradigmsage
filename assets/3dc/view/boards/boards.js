@@ -54,6 +54,7 @@ export function makeBoard(dimensions) {
   // console.log("dims:", Sz, Sx, Sy, Z, X, Y);
 
   const boardGroup = new THREE.Group();
+  boardGroup.name = "Board";
 
   let count = 0;
   for(let z=Sz; z<=Z; z++) {  // Create the board.
@@ -61,8 +62,8 @@ export function makeBoard(dimensions) {
       for(let y=Sy; y<=Y; y++) {
         let pos = [z, x, y];
         let tile = tiles.getTileAttributes(pos);
-        let meshTile = tiles.createMeshTile(tile, view.context.tileGeometry, pos);
-        tiles.initTileUserData(meshTile, tile, pos, view.context.tileMap);
+        let meshTile = tiles.createMeshTile(tile, view.getContext().tileGeometry, pos);
+        tiles.initTileUserData(meshTile, tile, pos, view.getContext().tileMap);
 
         if(isPrimaryPlaneMarker(tile, pos)) {        // Primary plane markers.
           const marker = makePrimaryPlaneMarker();
@@ -73,19 +74,19 @@ export function makeBoard(dimensions) {
       }
     }
   }
-  view.context.scene.add(boardGroup);              // Add board to scene.
+  view.getContext().scene.add(boardGroup);              // Add board to scene.
   currentBoard = boardGroup;
   }
 
 export function clearBoard() {
-  console.log("view : boards.js - clearBoard()...view.context:", view.context);
+  console.log("view : boards.js - clearBoard()...view.getContext():", view.getContext());
 
   if(currentBoard) {
-    view.context.scene.remove(currentBoard);
+    view.getContext().scene.remove(currentBoard);
     currentBoard = null;
   }
 
-  view.context.tileMap.clear();
+  view.getContext().tileMap.clear();
   }
 
 export function setLevelSep(levelSep) {

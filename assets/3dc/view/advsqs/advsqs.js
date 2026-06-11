@@ -54,7 +54,7 @@ export function removeFromScene() {
     });
   }
 
-  view.context.scene.remove(currAdvsqGroup);  // Remove offboard tiles (group children).
+  view.getContext().scene.remove(currAdvsqGroup);  // Remove offboard tiles (group children).
 
   currAdvsqGroup = null;
 }
@@ -233,7 +233,6 @@ function perimDerived(q, k, s) {
   const area = (k+1)*(k+1);
   let onboard = area; // Area of an advsq should be between 1 and area.
 
-
   const panel = document.getElementById("advsq-window");
   const srcTile = panel.querySelector('[name="advsq-src"]')?.value;
   const source = coords.normalizeTileToVts(srcTile);
@@ -295,7 +294,7 @@ function makeAdvsq(specs) {
 
   const group = view.buildAdvSqGroup(specs);
 
-  view.context.scene.add(group);
+  view.getContext().scene.add(group);
   currAdvsqGroup = group;
   }
 

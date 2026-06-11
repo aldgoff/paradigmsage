@@ -15,7 +15,7 @@ import selectionsData from "./selections.json" assert { type: "json" };
 // --- Dependencies ---
   import * as utils   from "../../../utils/utils.js";       // isSame(a,b).
   
-  import * as view    from "../../view/view.js";            // view.context.
+  import * as view    from "../../view/view.js";            // view.getContext().
   import * as vBoards from "../../view/boards/boards.js";   // decorate tile meshes.
   import * as vPieces from "../../view/pieces/pieces.js";   // highlight a piece.
   import * as vTiles  from "../../view/tiles/tiles.js";     // tile meshes.
@@ -89,7 +89,7 @@ export function selectTile(vts) {               // O(3).
   const panel = document.getElementById("diags-window");
   panel.querySelector('[name="diags-tileSels"]').textContent = tileSelections.size;
 
-  const mesh = vTiles.getTileMesh(view.context.tileMap, vts);
+  const mesh = vTiles.getTileMesh(view.getContext().tileMap, vts);
   vBoards.decorateTile(mesh);
   }
 
@@ -100,7 +100,7 @@ export function deselectTile(vts) {             // O(3).
   const panel = document.getElementById("diags-window");
   panel.querySelector('[name="diags-tileSels"]').textContent = tileSelections.size;
 
-  const mesh = vTiles.getTileMesh(view.context.tileMap, vts);
+  const mesh = vTiles.getTileMesh(view.getContext().tileMap, vts);
   vBoards.undecorateTile(mesh);
   }
 

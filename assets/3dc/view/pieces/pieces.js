@@ -53,6 +53,7 @@ export function initPieces(pieceList) {
   console.log("view : pieces.js - initPieces(pieceList)", pieceList);
 
   currPiecesGroup = new THREE.Group();
+  currPiecesGroup.name = "Pieces";
 
   for(const key in pieceList) {      // "WKRR", ...
     const group = createPiece(key);
@@ -63,7 +64,7 @@ export function initPieces(pieceList) {
   console.log("*** currPiecesGroup", currPiecesGroup);
   console.log("*** pieceGroups", pieceGroups);
 
-  view.context.scene.add(currPiecesGroup);
+  view.getContext().scene.add(currPiecesGroup);
 
   diagnostic();
   }
@@ -75,13 +76,12 @@ export function destroyPieces(pieceList) {
     const group = pieceGroups[key];
     currPiecesGroup.remove(group);
   } 
-  pieceGroups = {};
+  view.getContext().scene.remove(currPiecesGroup);
   currPiecesGroup = null;
+  pieceGroups = {};
 
   console.log("*** currPiecesGroup", currPiecesGroup);
   console.log("*** pieceGroups", pieceGroups);
-
-  view.context.scene.remove(currPiecesGroup);
 
   diagnostic();
 }
@@ -851,7 +851,7 @@ function addCubeBevelLines(mesh, cubeSize, color) {
 function diagnostic() {
   const panel = document.getElementById("diags-window");
 
-  panel.querySelector('[name="diags-trayMap"]').textContent         = 99;
+  panel.querySelector('[name="diags-tileMap"]').textContent         = "--";
 
   panel.querySelector('[name="diags-currPiecesGroup"]').textContent = currPiecesGroup?.children.length ?? 0;
   panel.querySelector('[name="diags-pieceGroups"]').textContent     = Object.keys(pieceGroups).length;

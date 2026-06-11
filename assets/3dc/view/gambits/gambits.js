@@ -83,7 +83,7 @@ export function makeDuplexGroup(entry) {
 export function planeRotation(entry, rotation) {
   console.log("view : gambits.js - planeRotation(rotation, entry).", rotation, entry);
 
-  const scene = view.context.scene;
+  const scene = view.getContext().scene;
   if (!scene) { return; }
 
   const group = scene.children.find(g => {
@@ -163,7 +163,7 @@ function applyMaterialOpacity(obj, opacity) {
 }
 /* ----- ----- ----- ----- */
 export function undo(gambit) {
-  const scene = view.context.scene;
+  const scene = view.getContext().scene;
 
   const group = scene.children.find(
     g => g.userData?.entry === gambit
@@ -231,7 +231,7 @@ export function refreshPanel() {
 export function clearGambits() {  // Still in use.
   console.log("view : gambits.js - clearGambits()");
 
-  const scene = view.context.scene;
+  const scene = view.getContext().scene;
 
   // --- 1. Remove ALL groups (offboard + containers) ---
   scene.children
@@ -241,7 +241,7 @@ export function clearGambits() {  // Still in use.
     });
 
   // --- 2. Remove ANY stray overlays still attached to tiles ---
-  const tileMap = view.context.tileMap;
+  const tileMap = view.getContext().tileMap;
   if (!tileMap) return;
 
   for (const tile of tileMap.values()) {
@@ -258,7 +258,7 @@ export function clearGambits() {  // Still in use.
 export function render(group, { animate = false } = {}) {
   console.log("view : gambits.js - render( not shown)");
 
-  view.context.scene.add(group);
+  view.getContext().scene.add(group);
 
   // --- helper ---
   function attachOverlays(overlays) {
@@ -300,7 +300,7 @@ export function cancelAnimation() {
 export function setLevelSep(levelSep) {
   console.log("view : gambits.js - setLevelSep(levelSep):", levelSep);
 
-  const scene = view.context.scene;
+  const scene = view.getContext().scene;
 
   scene.children
     .filter(g => g.userData?.entry)
@@ -380,7 +380,7 @@ function derenderGambit(group) {
   }
 
   // --- Remove any missed overlays by entry ---
-  const tileMap = view.context.tileMap;
+  const tileMap = view.getContext().tileMap;
 
   for (const tile of tileMap.values()) {
     if (!tile.children) continue;
@@ -394,7 +394,7 @@ function derenderGambit(group) {
   if (group.parent) {
     group.parent.remove(group);
   } else {
-    view.context.scene.remove(group);
+    view.getContext().scene.remove(group);
   }
   }
 

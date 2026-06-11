@@ -23,6 +23,7 @@ import piecesData from "./pieces.json" assert { type: "json" };
   import * as mBoards from "../boards/boards.js";
   import * as coords  from "../../foundation/coords/coords.js";
 
+  import * as view    from "../../view/view.js";
   import * as vPieces from "../../view/pieces/pieces.js";
   import * as vTrays  from "../../view/trays/trays.js";
   import * as vBoard  from "../../view/boards/boards.js";
@@ -415,6 +416,8 @@ function diagnostic() {
 
   panel.querySelector('[name="diags-boardCount"]').textContent = boardCount;
   panel.querySelector('[name="diags-boardOcc"]').textContent   = boardOcc;
+
+  panel.querySelector('[name="diags-sceneChildren"]').textContent = view.getContext().scene.children.length;
 }
 // Seampoint: more local functions...
 

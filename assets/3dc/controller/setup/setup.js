@@ -28,6 +28,7 @@ import setupData from "./setup.json" assert { type: "json" };
   import * as mTrays   from "../../model/trays/trays.js";
   import * as mPieces  from "../../model/pieces/pieces.js";
 
+  import * as view     from "../../view/view.js";
   import * as vSetup   from "../../view/setup/setup.js";
   import * as vGambits from "../../view/gambits/gambits.js";  // Cancel animation.
   import * as vPieces  from "../../view/pieces/pieces.js";    // Dehighlight selected pieces.
@@ -158,6 +159,8 @@ function handleMakeBoard(payload) { // Setup handler.
   cTrays.init(entry);   // Trays bracket the board.
   cPieces.init(entry);  // Every piece is in a tray, none are on the board.
 
+  console.log("*** scene:", view.getContext().scene.children.map(o => ({ type: o.type, name: o.name, children: o.children?.length })));
+
   setButtonState("boardDone");
   }
 
@@ -175,7 +178,9 @@ function handleDestroyBoard(payload) {
   cTrays.destroy(entry);   // Trays bracket the board.
   cPieces.destroy(entry);  // Every piece is in a tray, none are on the board.
 
-  // setButtonState("boardDone");
+  console.log("*** scene:", view.getContext().scene.children.map(o => ({ type: o.type, name: o.name, children: o.children?.length })));
+
+  setButtonState("makeBoard");
   }
 
 function handlePlacePiece(payload) {
@@ -429,6 +434,7 @@ function setButtonState(command) {
   switch (command) {
     case "makeBoard":
       panels.enableButton("makeBoard",   true);
+      panels.enableButton("destroyBoard",false);
 
       panels.enableButton("placePiece",  false);
       panels.enableButton("shiftPiece",  false);
@@ -438,7 +444,8 @@ function setButtonState(command) {
       panels.enableButton("play",        false);
       break;
     case "boardDone":
-      panels.enableButton("makeBoard",   true);
+      panels.enableButton("makeBoard",   false);
+      panels.enableButton("destroyBoard",true);
 
       panels.enableButton("placePiece",  true);
       panels.enableButton("shiftPiece",  false);
@@ -487,12 +494,12 @@ function setButtonState(command) {
   }
 
   // TODO: Hack so buttons are on during undo/redo
-  panels.enableButton("placePiece",   true);
-  panels.enableButton("shiftPiece",   true);
-  panels.enableButton("returnPiece",  true);
-  panels.enableButton("freezePuzzle", true);
-  panels.enableButton("startingPos",  true);
-  panels.enableButton("play",         true);
+  // panels.enableButton("placePiece",   true);
+  // panels.enableButton("shiftPiece",   true);
+  // panels.enableButton("returnPiece",  true);
+  // panels.enableButton("freezePuzzle", true);
+  // panels.enableButton("startingPos",  true);
+  // panels.enableButton("play",         true);
 }
 
 function placePieceOnBoard(key, dstTile) {

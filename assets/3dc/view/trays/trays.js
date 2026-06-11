@@ -43,8 +43,8 @@ export function makeTrays(entry) {
   whiteTrayGroup = makeTrayGroup("White", entry);
   blackTrayGroup = makeTrayGroup("Black", entry);
 
-  view.context.scene.add(whiteTrayGroup);
-  view.context.scene.add(blackTrayGroup);
+  view.getContext().scene.add(whiteTrayGroup);
+  view.getContext().scene.add(blackTrayGroup);
 
   traysVisible = true;
 
@@ -55,12 +55,12 @@ export function destroyTrays() {
   console.log("view : trays.js - destroyTrays()");
 
   if(whiteTrayGroup) {
-    view.context.scene.remove(whiteTrayGroup);
+    view.getContext().scene.remove(whiteTrayGroup);
     whiteTrayGroup = null;
   }
 
   if(blackTrayGroup) {
-    view.context.scene.remove(blackTrayGroup);
+    view.getContext().scene.remove(blackTrayGroup);
     blackTrayGroup = null;
   }
 
@@ -99,6 +99,7 @@ function makeTrayGroup(side, entry) {
   const { action, boardSize, trayType, trayGap } = entry;
 
   const trayGroup = new window.THREE.Group();
+  trayGroup.name = `${side}Tray`;
 
   const trayData = traysModule[boardSize][side];
 
@@ -135,7 +136,7 @@ function applyGap(pos, side, gap) {
   }
 
 function makeTrayTile(logicalPos, renderPos) {
-  const geometry = view.context.tileGeometry;
+  const geometry = view.getContext().tileGeometry;
   const tile = vTiles.getTileAttributes(logicalPos);  // Bishop/duke colors derive from logical coords (vts).
   const meshTile = vTiles.createMeshTile(tile, geometry, renderPos); // Create mesh in the render position.
 

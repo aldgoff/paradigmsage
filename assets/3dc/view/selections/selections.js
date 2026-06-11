@@ -30,7 +30,7 @@ export function init() {
   inited = true;
 
   // Create the listeners once, at program start.
-  addTileEventListener();   // Uses view.context.
+  addTileEventListener();   // Uses view.getContext().
   addPieceEventListener();
   // Seampoint: more listeners...
 
@@ -39,24 +39,24 @@ export function init() {
 
 function addTileEventListener() {
   let clickHandler = (event) => {
-    const { scene, renderer, camera, tileMap } = view.context;
+    const { scene, renderer, camera, tileMap } = view.getContext();
     const coords = getTileFromClick(event, camera, scene, renderer);
 
     cSelections.handleTileClick(coords);
   };
 
-  view.context.renderer.domElement.addEventListener("click", clickHandler);
+  view.getContext().renderer.domElement.addEventListener("click", clickHandler);
   }
 
 function addPieceEventListener() {
   let clickHandler = (event) => {
-    const { scene, renderer, camera, tileMap } = view.context;
+    const { scene, renderer, camera, tileMap } = view.getContext();
     const obj = getPieceFromClick(event, camera, scene, renderer);
 
     cSelections.handlePieceClick(obj);
   };
 
-  view.context.renderer.domElement.addEventListener("click", clickHandler);
+  view.getContext().renderer.domElement.addEventListener("click", clickHandler);
 }
 
 function getTileFromClick(event, camera, scene, renderer) {

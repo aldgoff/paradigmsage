@@ -37,8 +37,13 @@
 // Seampoint: more imports...
 
 // --- Globals ---
-export let context;   // Contains things like: scene, renderer, camera, tileMap...
+  let context = null;   // Contains: scene, renderer, camera, tileMap...
 // Seampoint: more globals...
+
+// --- Accessors ---
+  export function getContext() {
+    return context;
+  }
 
 // --- UI ---
 export function init(playBoard) {
