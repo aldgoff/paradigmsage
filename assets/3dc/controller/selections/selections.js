@@ -46,19 +46,28 @@ export function isSelectedPiece(key) {          // O(1).
 export function selectPiece(key) {              // O(1).
   console.log("cntrl: selections.js - selectPiece(key)", key);
 
-  pieceSelections.add(key);
+  const panel = document.getElementById("status-window");
+
   vPieces.highlight(key);
+  pieceSelections.add(key);
+  panel.querySelector('[name="status-pieceSels"]').textContent = pieceSelections.size;
   }
 
 export function deselectPiece(key) {            // O(1).
   console.log("cntrl: selections.js - deselectPiece(key)", key);
 
-  pieceSelections.delete(key);
+  const panel = document.getElementById("status-window");
+
   vPieces.deHighlight(key);
+  pieceSelections.delete(key);
+  panel.querySelector('[name="status-pieceSels"]').textContent = pieceSelections.size;
   }
 
 export function clearPieceSelections() {        // O(1).
   pieceSelections.clear();
+
+  const panel = document.getElementById("status-window");
+  panel.querySelector('[name="status-pieceSels"]').textContent = pieceSelections.size;
 }
 
 export function isSelectedTile(vts) {           // O(n).
@@ -77,6 +86,8 @@ export function selectTile(vts) {               // O(3).
   console.log("cntrl: selections.js - selectTile(vts)", vts);
 
   tileSelections.add(vts);
+  const panel = document.getElementById("status-window");
+  panel.querySelector('[name="status-tileSels"]').textContent = tileSelections.size;
 
   const mesh = vTiles.getTileMesh(view.context.tileMap, vts);
   vBoards.decorateTile(mesh);
@@ -86,6 +97,8 @@ export function deselectTile(vts) {             // O(3).
   console.log("cntrl: selections.js - deselectTile(vts)", vts);
 
   tileSelections.delete(vts);
+  const panel = document.getElementById("status-window");
+  panel.querySelector('[name="status-tileSels"]').textContent = tileSelections.size;
 
   const mesh = vTiles.getTileMesh(view.context.tileMap, vts);
   vBoards.undecorateTile(mesh);
@@ -93,6 +106,9 @@ export function deselectTile(vts) {             // O(3).
 
 export function clearTileSelections() {         // O(1).
   tileSelections.clear();
+
+  const panel = document.getElementById("status-window");
+  panel.querySelector('[name="status-tileSels"]').textContent = pieceSelections.size;
 }
 
 export function handlePieceClick(group) {       // O(1).
@@ -105,14 +121,9 @@ export function handlePieceClick(group) {       // O(1).
 
   // console.log("cntrl: selections.js - handlePieceClick(...)", group.userData);
   const key = group.userData.key;
-  if(pieceSelections.has(key)) {
-    vPieces.deHighlight(key);
-    pieceSelections.delete(key);
-  }
-  else {
-    vPieces.highlight(key);
-    pieceSelections.add(key);
-  }
+  (pieceSelections.has(key))
+    ? deselectPiece(key)
+    : selectPiece(key);
 
   return;
   }

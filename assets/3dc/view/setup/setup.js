@@ -31,6 +31,9 @@ import setupData from "./setup.json" assert { type: "json" };
   import * as vTrays   from "../../view/trays/trays.js"
 // Seampoint: more imports...
 
+// --- Globals ---
+// Seampoint: more globals...
+
 // --- UI ---
 export function clear(entry) {
   console.log("view : setup.js - clear(entry)", entry);

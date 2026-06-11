@@ -17,11 +17,13 @@
 // --- Load JSON ---
 import setupData from "./setup.json" assert { type: "json" };
   const setupModule = setupData.setup_module;
-  const category  = setupModule.category;
 // Seampoint: more objects...
 
 // --- Dependencies ---
 // Seampoint: more imports...
+
+// --- Globals ---
+// Seampoint: more globals...
 
 // --- UI ---
 export function makeEntry(payload) {

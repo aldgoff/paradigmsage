@@ -349,13 +349,13 @@ function handleReturnPiece(payload) {
       Object.values(mPieces.getPieceList())
         .filter(piece => piece.loc === "@")
         .length;
-    console.log("*** occupancy", mBoards.getBoardOccupancy());
-
-    invariants.invariant(pieceCount === boardPieces, "Number of pieces listed on the board must equal the number actually on the board.");
-
     (pieceCount === 0)
       ? setButtonState("boardDone")
       : setButtonState("pieces");
+
+    console.log("*** occupancy", mBoards.getBoardOccupancy());
+    invariants.invariant(pieceCount === boardPieces, "Number of pieces listed on the board must equal the number actually on the board.");
+
     console.log("*** Buttons");
   }
 
@@ -482,6 +482,14 @@ function setButtonState(command) {
       throw new Error(`Unknown button state command ${command}.`);
       break;
   }
+
+  // TODO: Hack so buttons are on during undo/redo
+  panels.enableButton("placePiece",   true);
+  panels.enableButton("shiftPiece",   true);
+  panels.enableButton("returnPiece",  true);
+  panels.enableButton("freezePuzzle", true);
+  panels.enableButton("startingPos",  true);
+  panels.enableButton("play",         true);
 }
 
 function placePieceOnBoard(key, dstTile) {
@@ -543,10 +551,13 @@ function replayEntry(entry) {
   const { action, data } = entry;
 
   if(     action === "makeBoard") {
+    cBoards.destroy(entry);  // 
+    cTrays.destroy(entry);   // Trays bracket the board.
+    cPieces.destroy(entry);  // Every piece is in a tray, none are on the board.
     cBoards.init(entry);  // Initial occupancy depends on board size and tray type. TODO: support factory trays.
     cTrays.init(entry);   // Trays bracket the board.
     cPieces.init(entry);  // Every piece is in a tray, none are on the board.
-    setButtonState("boardDone");
+    // setButtonState("boardDone");
     }
   else if(action === "destroyBoard") { 
     cBoards.destroy(entry);  // 

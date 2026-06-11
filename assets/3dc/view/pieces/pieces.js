@@ -74,7 +74,8 @@ export function destroyPieces(pieceList) {
     currPiecesGroup.remove(group);
   } 
   pieceGroups = {};
-
+  currPiecesGroup = null;
+  
   console.log("*** currPiecesGroup", currPiecesGroup);
   console.log("*** pieceGroups", pieceGroups);
 

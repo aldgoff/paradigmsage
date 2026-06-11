@@ -94,11 +94,12 @@ layout: "play"
   #gambit-window  { top:  880px; left:   20px; }
   #advsq-window   { top:  260px; left:  210px; }
   #compass-window { top:  260px; left:  560px; }
+  #status-window { top:  260px; left:  960px; }
 
   #game-window    { top:  260px; left:  390px; }
 
   #camera-window { top:   500px; left:  390px; }
-  #viewer-window { top:   660px; left:  390px; }
+  #viewer-window { top:   260px; left:  760px; }
   /* Seampont - more DOM control panels... */
 </style>
 
@@ -234,48 +235,21 @@ layout: "play"
     <label> BP:          <output name="advsq-pieceQuad" style="opacity:0.7; font-style:italic;"></output> </label>
     <label> P:           <output name="advsq-planeQuad" style="opacity:0.7; font-style:italic;"></output> </label>
   </div>
-  <div class="section">
-    <label> Nickname:    <output name="advsq-nickname"  style="opacity:0.7; font-style:italic;"></output> </label>
-  </div>
-  <div class="section">
-    <label> Plane:       <output name="advsq-plane"     style="opacity:0.7; font-style:italic;"></output> </label>
-  </div>
-  <div class="section">
-    <label> Quad Type:   <output name="advsq-quadType"  style="opacity:0.7; font-style:italic;"></output> </label>
-  </div>
-  <div class="section">
-    <label> Perimeters   <input  name="advsq-perimeter" type="number" min="0" step="1" value="0" max="22"> </label>
-  </div>
-  <div class="section">
-    <label> Length:      <output name="advsq-length"    style="opacity:0.7; font-style:italic;"></output> </label>
-  </div>
-  <div class="section">
-    <label> Area:        <output name="advsq-area"      style="opacity:0.7; font-style:italic;"></output> </label>
-  </div>
-  <div class="section">
-    <label> Onboard:     <output name="advsq-onboard"   style="opacity:0.7; font-style:italic;"></output> </label>
-  </div>
-  <div class="section">
-    <label> Stride       <input  name="advsq-stride"    type="number" min="0" step="1" value="0" max="45"> </label>
-  </div>
-  <div class="section">
-    <label> Stride Type: <output name="advsq-strideType"style="opacity:0.7; font-style:italic;"></output> </label>
-  </div>
-  <div class="section">
-    <label> Move Type:   <output name="advsq-moveType"  style="opacity:0.7; font-style:italic;"> Q|L|D|O </output> </label>
-  </div>
-  <div class="section">
-    <label> Overlap:     <output name="advsq-overlap"   style="opacity:0.7; font-style:italic;"> B|Q|H|F </output> </label>
-  </div>
-  <div class="section">
-    <label> Pieces:      <output name="advsq-piece"     style="opacity:0.7; font-style:italic;"> R|B|D|Q|N|S|P|K </output> </label>
-  </div>
+  <div class="section"> <label> Nickname:    <output name="advsq-nickname"  style="opacity:0.7; font-style:italic;"></output> </label> </div>
+  <div class="section"> <label> Plane:       <output name="advsq-plane"     style="opacity:0.7; font-style:italic;"></output> </label> </div>
+  <div class="section"> <label> Quad Type:   <output name="advsq-quadType"  style="opacity:0.7; font-style:italic;"></output> </label> </div>
+  <div class="section"> <label> Perimeters   <input  name="advsq-perimeter" type="number" min="0" step="1" value="0" max="22"> </label> </div>
+  <div class="section"> <label> Length:      <output name="advsq-length"    style="opacity:0.7; font-style:italic;"></output> </label></div>
+  <div class="section"> <label> Area:        <output name="advsq-area"      style="opacity:0.7; font-style:italic;"></output> </label></div>
+  <div class="section"> <label> Onboard:     <output name="advsq-onboard"   style="opacity:0.7; font-style:italic;"></output> </label> </div>
+  <div class="section"> <label> Stride       <input  name="advsq-stride"    type="number" min="0" step="1" value="0" max="45"> </label> </div>
+  <div class="section"> <label> Stride Type: <output name="advsq-strideType"style="opacity:0.7; font-style:italic;"></output> </label> </div>
+  <div class="section"> <label> Move Type:   <output name="advsq-moveType"  style="opacity:0.7; font-style:italic;"> Q|L|D|O </output> </label> </div>
+  <div class="section"> <label> Overlap:     <output name="advsq-overlap"   style="opacity:0.7; font-style:italic;"> B|Q|H|F </output> </label> </div>
+  <div class="section"> <label> Pieces:      <output name="advsq-piece"     style="opacity:0.7; font-style:italic;"> R|B|D|Q|N|S|P|K </output> </label> </div>
   <!-- Key hints (visual only) -->
   <div class="section" style="font-size: 13px; font-weight: bold; color: #666;">
-    Slip & Slide +: k i j
-  </div>
-  <div class="section" style="font-size: 13px; font-weight: bold; color: #666;">
-    Slip & Slide -: K I J
+    Slip&Slide +: kij -: KIJ
   </div>
   <div class="section">
     <button data-action="nextQuad">Next Quad</button>
@@ -296,6 +270,25 @@ layout: "play"
   <div class="section">
     <button data-action="Apexes" disabled>Apexes</button>
   </div>
+  </div>
+
+<div class="panel panel-supportive" id="status-window">
+  <div class="panel-title">Status Panel</div>
+  <div class="section"> <label>Occupancies -----</lable> </div>
+  <div class="section"> <label> Piece List:       <output name="status-pieceList" style="font-style:italic;"></output> </label> </div>
+  <div class="section"> <label> White Tray:       <output name="status-whiteTray" style="font-style:italic;"></output> </label> </div>
+  <div class="section"> <label> Black Tray:       <output name="status-blackTray" style="font-style:italic;"></output> </label> </div>
+  <div class="section"> <label> Board:            <output name="status-board"     style="font-style:italic;"></output> </label> </div>
+  <div class="section"> <label>Selections ----- </lable> </div>
+  <div class="section"> <label> Piece Selections:  <output name="status-pieceSels" style="font-style:italic;"></output> </label> </div>
+  <div class="section"> <label> Tile Selections:   <output name="status-tileSels"  style="font-style:italic;"></output> </label> </div>
+  <div class="section"> <label> Buttons:           <output name="status-buttons"   style="font-style:italic;"></output> </label> </div>
+  <div class="section"> <label>Mesh Groups ----- </lable> </div>
+  <div class="section"> <label> Tray Map:          <output name="status-trayMap"        style="font-style:italic;"></output> </label> </div>
+  <div class="section"> <label> Curr Pieces Group: <output name="status-currPiecesGroup"style="font-style:italic;"></output> </label> </div>
+  <div class="section"> <label> Piece Group:       <output name="status-piece Group"    style="font-style:italic;"></output> </label> </div>
+  <div class="section"> <label> White Tray Group:  <output name="status-whiteTrayGroup" style="font-style:italic;"></output> </label> </div>
+  <div class="section"> <label> Black Tray Group:  <output name="status-blackTrayGroup" style="font-style:italic;"></output> </label> </div>
   </div>
 
 <div class="panel panel-temporal" id="game-window">
