@@ -32,6 +32,8 @@ import traysData from "./trays.json" assert { type: "json" };
   let traysVisible   = true;
 // Seampoint: more globals.
 
+export function getWhiteTrayGroup() { return whiteTrayGroup; }
+export function getBlackTrayGroup() { return blackTrayGroup; }
 // --- UI ---
 export function makeTrays(entry) {
   console.log("view : trays.js - makeTrays(entry)", entry);
@@ -47,8 +49,6 @@ export function makeTrays(entry) {
   view.getContext().scene.add(blackTrayGroup);
 
   traysVisible = true;
-
-  diagnostic();
   }
 
 export function destroyTrays() {
@@ -63,8 +63,6 @@ export function destroyTrays() {
     view.getContext().scene.remove(blackTrayGroup);
     blackTrayGroup = null;
   }
-
-  diagnostic();
   }
 
 export function setLevelSep(levelSep) {
@@ -173,23 +171,6 @@ function reprojectTray(group, levelSep, trayGap) {
       reprojectMesh(tile, levelSep, trayGap);
     }
   });  
-
-  diagnostic();
-}
-
-function diagnostic() {  
-  const whiteCount = whiteTrayGroup
-    ? whiteTrayGroup.children.length
-    : "null";
-
-  const blackCount = blackTrayGroup
-    ? blackTrayGroup.children.length
-    : "null";
-
-  const panel = document.getElementById("diags-window");
-
-  panel.querySelector('[name="diags-whiteTrayGroup"]').textContent  = whiteCount;
-  panel.querySelector('[name="diags-blackTrayGroup"]').textContent  = blackCount;
 }
 // Seampoint: more local functions...
 

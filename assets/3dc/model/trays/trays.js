@@ -33,6 +33,8 @@ import traysData from "./trays.json" assert { type: "json" };
     );
 // Seampoint: more globals...
 
+export function getWhiteTray() { return whiteTray; }
+export function getBlackTray() { return blackTray; }
 // --- UI ---
 export function init(entry) {
   console.log("model: trays.js - init(entry)", entry);
@@ -71,14 +73,6 @@ export function trayIndices(type, spec="8x8x8") {
 
   return { i, j };
 }
-
-export function getWhiteTray() {
-  return whiteTray;
-  }
-
-export function getBlackTray() {
-  return blackTray;
-}
 // Seampoint: more global functions...
 
 // --- Helpers ---
@@ -93,19 +87,6 @@ function clearTrays() {
       }
     }
   }
-  diagnostic();
-}
-
-function diagnostic() {
-  const whiteCount = whiteTray.flat(2).filter(cell => cell !== null).length;
-  const blackCount = blackTray.flat(2).filter(cell => cell !== null).length;
-
-  const trayCount = whiteCount + blackCount;
-
-  const panel = document.getElementById("diags-window");
-
-  panel.querySelector('[name="diags-whiteTray"]').textContent = whiteCount;
-  panel.querySelector('[name="diags-blackTray"]').textContent = blackCount;
 }
 // Seampoint: more local functions...
 

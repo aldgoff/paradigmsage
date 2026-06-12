@@ -32,6 +32,7 @@ import setupData from "./setup.json" assert { type: "json" };
   import * as vSetup   from "../../view/setup/setup.js";
   import * as vGambits from "../../view/gambits/gambits.js";  // Cancel animation.
   import * as vPieces  from "../../view/pieces/pieces.js";    // Dehighlight selected pieces.
+  import * as vTrays   from "../../view/trays/trays.js";
 
   import * as invariants from "../../tests/core/invariants.js";
 // Seampoint: more imports...
@@ -62,6 +63,7 @@ export function panelDispatch(payload) {    // Dispatch payload from panel to ha
     default: throw new Error(`Unknown setup action ${action}.`);
   }
 
+  diagnostic();
   game.showUndoStatus();                          // Update game panel (undo).
   }
 
@@ -492,14 +494,6 @@ function setButtonState(command) {
       throw new Error(`Unknown button state command ${command}.`);
       break;
   }
-
-  // TODO: Hack so buttons are on during undo/redo
-  // panels.enableButton("placePiece",   true);
-  // panels.enableButton("shiftPiece",   true);
-  // panels.enableButton("returnPiece",  true);
-  // panels.enableButton("freezePuzzle", true);
-  // panels.enableButton("startingPos",  true);
-  // panels.enableButton("play",         true);
 }
 
 function placePieceOnBoard(key, dstTile) {
@@ -567,7 +561,6 @@ function replayEntry(entry) {
     cBoards.init(entry);  // Initial occupancy depends on board size and tray type. TODO: support factory trays.
     cTrays.init(entry);   // Trays bracket the board.
     cPieces.init(entry);  // Every piece is in a tray, none are on the board.
-    // setButtonState("boardDone");
     }
   else if(action === "destroyBoard") { 
     cBoards.destroy(entry);  // 
@@ -590,18 +583,61 @@ function replayEntry(entry) {
     returnPieceToTray(key);
     }
   else if(action === "freezePuzzle") {
-    setButtonState(loaded);
     }
   else if(action === "startingPos") {
     throw new Error("Setup piece starting position not implemented.");  // TODO:
     }
   else if(action === "play") {
-    setButtonState(play);
     }
   else {
     throw new Error(`Unknown setup action: ${action}`);
   }
 }
+
+function diagnostic() {
+  console.log("cntrl : setup.js - diagnostic()");
+
+  const pieceCount = Object.keys(mPieces.getPieceList()).length;
+
+  const trayCount  = Object.values(mPieces.getPieceList()).filter(piece => piece.loc === "~").length;
+  const boardCount = Object.values(mPieces.getPieceList()).filter(piece => piece.loc === "@").length;
+
+  const whiteCount = mTrays.getWhiteTray().flat(2).filter(cell => cell !== null).length;
+  const blackCount = mTrays.getBlackTray().flat(2).filter(cell => cell !== null).length;
+  const trayInvariant = whiteCount + blackCount;
+
+  const boardOcc = mBoards.getBoardOccupancy().flat(2).filter(cell => cell !== null).length;
+
+  const whiteGroupCount = vTrays.getWhiteTrayGroup()
+    ? vTrays.getWhiteTrayGroup().children.length
+    : "null";
+
+  const blackGroupCount = vTrays.getBlackTrayGroup()
+    ? vTrays.getBlackTrayGroup().children.length
+    : "null";
+
+  const panel = document.getElementById("diags-window");
+
+  panel.querySelector('[name="diags-pieceCount"]').textContent = pieceCount;
+  panel.querySelector('[name="diags-trayCount"]').textContent  = trayCount;
+
+  panel.querySelector('[name="diags-whiteTray"]').textContent  = whiteCount;
+  panel.querySelector('[name="diags-blackTray"]').textContent  = blackCount;
+
+  panel.querySelector('[name="diags-boardCount"]').textContent = boardCount;
+  panel.querySelector('[name="diags-boardOcc"]').textContent   = boardOcc;
+
+  panel.querySelector('[name="diags-tileMap"]').textContent = view.getContext().tileMap?.size ?? 0;
+
+  panel.querySelector('[name="diags-currPiecesGroup"]').textContent = vPieces.getCurrPiecesGroup()?.children.length ?? 0;
+  panel.querySelector('[name="diags-pieceGroups"]').textContent     = Object.keys(vPieces.getPieceGroups()).length;
+
+  panel.querySelector('[name="diags-whiteTrayGroup"]').textContent  = whiteGroupCount;
+  panel.querySelector('[name="diags-blackTrayGroup"]').textContent  = blackGroupCount;
+
+  panel.querySelector('[name="diags-sceneChildren"]').textContent = view.getContext().scene.children.length;
+}
+
 // Seampoint: more local functions...
 
 /* TODO: QC checklist✅ 
