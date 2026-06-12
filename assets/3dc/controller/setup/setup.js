@@ -38,7 +38,7 @@ import setupData from "./setup.json" assert { type: "json" };
 // Seampoint: more imports...
 
 // --- Globals ---
-  export let boardSpec = null;
+  export let boardSpec = "0x0x0";
 // Seampoint: more globals...
 
 // --- UI ---
@@ -151,9 +151,15 @@ function handleMakeBoard(payload) { // Setup handler.
   console.log("cntrl: setup.js - handleMakeBoard(payload):", payload);
 
   const { action, boardSize, trayType, trayGap } = payload;
-  boardSpec = boardSize;
+  const entry = mSetup.makeEntry(boardSpec, payload);    // Transform panel payload into state entry.
 
-  const entry = mSetup.makeEntry(payload);    // Transform panel payload into state entry.
+  if(boardSpec != "0x0x0") {
+    cBoards.destroy(entry);
+    cTrays.destroy(entry); 
+    cPieces.destroy(entry);
+  }
+
+  boardSpec = boardSize;
 
   applyEntry(entry);  // TODO: Must occur prior to init boards, trays, & pieces, but is a bug that should be fixed.
 
@@ -161,7 +167,8 @@ function handleMakeBoard(payload) { // Setup handler.
   cTrays.init(entry);   // Trays bracket the board.
   cPieces.init(entry);  // Every piece is in a tray, none are on the board.
 
-  console.log("*** scene:", view.getContext().scene.children.map(o => ({ type: o.type, name: o.name, children: o.children?.length })));
+  console.log("*** scene:", view.getContext().scene.children.map(o => 
+    ({ type: o.type, name: o.name, children: o.children?.length })));
 
   setButtonState("boardDone");
   }
@@ -170,17 +177,18 @@ function handleDestroyBoard(payload) {
   console.log("cntrl: setup.js - handleDestroyBoard(payload):", payload);
 
   const { action, boardSize, trayType, trayGap } = payload;
-  boardSpec = boardSize;
-
-  const entry = mSetup.makeEntry(payload);    // Transform panel payload into state entry.
-
-  applyEntry(entry);  // TODO: Must occur prior to init boards, trays, & pieces, but is a bug that should be fixed.
+  const entry = mSetup.makeEntry(boardSpec, payload);    // Transform panel payload into state entry.
 
   cBoards.destroy(entry);  // Initial occupancy depends on board size and tray type. TODO: support factory trays.
   cTrays.destroy(entry);   // Trays bracket the board.
   cPieces.destroy(entry);  // Every piece is in a tray, none are on the board.
 
-  console.log("*** scene:", view.getContext().scene.children.map(o => ({ type: o.type, name: o.name, children: o.children?.length })));
+  boardSpec = boardSize;
+
+  applyEntry(entry);
+
+  console.log("*** scene:", view.getContext().scene.children.map(o => 
+    ({ type: o.type, name: o.name, children: o.children?.length })));
 
   setButtonState("makeBoard");
   }
@@ -415,7 +423,7 @@ function applyEntry(entry) {
 
   const currEntry = state.fetchCurrentState("Setup"); // Clear previous board.
   if(currEntry != null) {
-    vSetup.clear(currEntry);
+    // vSetup.clear(currEntry);
     if(!state.isAtEnd("Setup")) {     // Branches the undo history, discards original branch.
       // TODO: clear all later setup entries.
       // const idx = state.getCurrentIndex("Setup"); // Not quite working...
@@ -446,7 +454,7 @@ function setButtonState(command) {
       panels.enableButton("play",        false);
       break;
     case "boardDone":
-      panels.enableButton("makeBoard",   false);
+      panels.enableButton("makeBoard",   true);
       panels.enableButton("destroyBoard",true);
 
       panels.enableButton("placePiece",  true);
@@ -637,7 +645,6 @@ function diagnostic() {
 
   panel.querySelector('[name="diags-sceneChildren"]').textContent = view.getContext().scene.children.length;
 }
-
 // Seampoint: more local functions...
 
 /* TODO: QC checklist✅ 

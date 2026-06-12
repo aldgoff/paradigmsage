@@ -40,11 +40,7 @@
   let context = null;   // Contains: scene, renderer, camera, tileMap...
 // Seampoint: more globals...
 
-// --- Accessors ---
-  export function getContext() {
-    return context;
-  }
-
+export function getContext() { return context; }
 // --- UI ---
 export function init(playBoard) {
   console.log("view : view.js - init(playBoard)");

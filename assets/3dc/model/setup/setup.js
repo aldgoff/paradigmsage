@@ -26,12 +26,12 @@ import setupData from "./setup.json" assert { type: "json" };
 // Seampoint: more globals...
 
 // --- UI ---
-export function makeEntry(payload) {
+export function makeEntry(boardSpec, payload) {
   console.log(`model: setup.js - makeEntry(payload):`, payload);
 
   const { action, boardSize, trayType, trayGap } = payload;
 
-  const entry = payload;
+  const entry = { action, boardSize, trayType, trayGap, boardSpec };
 
   return entry;
 }

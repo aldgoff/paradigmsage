@@ -34,11 +34,12 @@ import piecesData from "./pieces.json" assert { type: "json" };
   const origin = [4,4,4]; // Q4,4 - for the board occupancy 3D array.
 // Seampoint: more globals...
 
+export function getPieceList() { return pieceList; }
 // --- UI ---
 export function init(entry) {
   console.log("model: pieces.js - init(entry)", entry);
-
-  const { action, boardSize, trayType, trayGap } = entry;
+  
+  const { action, boardSize, trayType, trayGap, boardSpec } = entry;
 
   clearPieceState();
   createPiecesInTrays(entry);
@@ -46,8 +47,8 @@ export function init(entry) {
 
 export function destroy(entry) {
   console.log("model: pieces.js - destroy(entry)", entry);
-
-  const { action, boardSize, trayType, trayGap } = entry;
+  
+  const { action, boardSize, trayType, trayGap, boardSpec } = entry;
 
   vPieces.destroyPieces(pieceList);
 
@@ -55,10 +56,6 @@ export function destroy(entry) {
     delete pieceList[key];
   }
   }
-
-export function getPieceList() {
-  return pieceList;
-}
 
 export function movePieceFromTrayToBoard(key, dstStr) {  // "WQQP", "Q1,1". // TODO: assumes 8x8x8 board.
   console.log("model: pieces.js - movePieceFromTrayToBoard(key, dstStr)", key, dstStr);
@@ -264,8 +261,8 @@ export function combineStackinTray(piece) {
 // --- Helpers ---
 function createPiecesInTrays(entry) {
   console.log("model: pieces.js - createPiecesInTrays(entry)", entry);
-
-  const { action, boardSize, trayType, trayGap } = entry;
+  
+  const { action, boardSize, trayType, trayGap, boardSpec } = entry;
   
   if(     boardSize === "8x8x8")    { createPiecesForEightBoard(trayGap); } 
   else if(boardSize === "10x8x8")   { createPiecesForTenBoards(trayGap);  }
@@ -283,6 +280,8 @@ function createPiecesInTrays(entry) {
 
 function destroyPieces(entry) {
   console.log("model: pieces.js - destroyPieces(entry)", entry);
+  
+  const { action, boardSize, trayType, trayGap, boardSpec } = entry;
 
   vPieces.destroyPieces(pieceList);
 

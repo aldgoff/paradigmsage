@@ -111,14 +111,15 @@ export function clearSetupPanelParams(params) {
 
 // --- Helpers ---
 function assembleLine(entry) {
-  const { action } = entry;
+  const { action, boardSpec } = entry;
 
   switch (action) {
     case "makeBoard": {
       const { boardSize, trayType } = entry;
-      const sizeCol = `${boardSize}`.padEnd(8);
-      const typeCol = `${trayType}`.padEnd(7);
-      const line    = `${sizeCol} ${typeCol}`;
+      const prevCol = `${boardSpec}`.padEnd(8);
+      const currCol = `${boardSize}`.padEnd(8);
+      const typeCol = `${trayType}`.padEnd(4);
+      const line    = `${prevCol}↔${currCol} ${typeCol}`;
       return line; }
     case "destroyBoard": {
       const { boardSize, trayType } = entry;

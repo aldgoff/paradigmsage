@@ -16,9 +16,14 @@ import piecesData from "./pieces.json" assert { type: "json" };
   import * as mPieces from "../../model/pieces/pieces.js";
 // Seampoint: more imports...
 
+// --- Globals ---
+// Seampoint: more globals...
+
 // --- UI ---
 export function init(entry) {
   console.log("cntrl: pieces.js - init(entry)", entry);
+  
+  const { action, boardSize, trayType, trayGap, boardSpec } = entry;
 
   mPieces.init(entry);  // Initial occupancy depends on board size and tray type.
 
@@ -27,6 +32,8 @@ export function init(entry) {
 
 export function destroy(entry) {
   console.log("cntrl: pieces.js - destroy(entry)", entry);
+  
+  const { action, boardSize, trayType, trayGap, boardSpec } = entry;
 
   mPieces.destroy(entry);  // Initial occupancy depends on board size and tray type.
 

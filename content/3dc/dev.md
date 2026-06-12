@@ -132,7 +132,7 @@ title: "Dev"
   - 6/09/26 - Screenshots. Selections canonized. Canonize code as map. Tiles superstructure. Comment QC. Setup undo phase 1.
   - 6/10/26 - Setup undo/redo/rewind/FF. Game and cSetup QC. Button management. Undo makeBoard...
   - 6/11/26 - Add status panel. Change to diagnostic panel. Accessor view.getContext().
-  - 6/12/26 - Centralize diagnostics. 
+  - 6/12/26 - Centralize diagnostics. Setup entry.
 
 
 ## Save Setup States

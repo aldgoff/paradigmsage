@@ -28,14 +28,14 @@ import boardsData from "./boards.json" assert { type: "json" };
 export function render(entry) {
   console.log("view : boards.js - render(setup)", entry);
 
-  const { action, boardSize, trayType } = entry;
+  const { action, boardSize, trayType, trayGap, boardSpec } = entry;
 
   const dims = boardSize.split("x").map(Number);
   makeBoard(dims);
   }
 
-export function clear(setup) {
-  console.log("view : boards.js - clear(setup)", setup);
+export function clear(entry) {
+  console.log("view : boards.js - clear(entry)", entry);
 
   clearBoard();
 }

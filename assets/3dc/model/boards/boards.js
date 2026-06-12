@@ -26,22 +26,24 @@ import boardsData from "./boards.json" assert { type: "json" };
     );
 // Seampoint: more globals...
 
+export function getBoardOccupancy() { return occupancy; }
 // --- UI ---
 export function init(entry) {
   console.log("model: boards.js - init(entry)", entry);
 
-  const { action, boardSize, trayType, trayGap } = entry;
+  const { action, boardSize, trayType, trayGap, boardSpec } = entry;
 
-  clearBoard();
+  clearOccupancy();
   vBoards.render(entry);
   }
 
 export function destroy(entry) {
   console.log("model: boards.js - destroy(entry)", entry);
+  
+  const { action, boardSize, trayType, trayGap, boardSpec } = entry;
 
-  const { action, boardSize, trayType, trayGap } = entry;
-
-  clearBoard();
+  clearOccupancy();
+  vBoards.clear(entry);
   }
 
 export function getBoardSpecs() {
@@ -51,9 +53,6 @@ export function getBoardSpecs() {
   return specs;
   }
 
-export function getBoardOccupancy() {
-  return occupancy;
-}
 
 export function clearPieceFromBoardOccupancy(key) { // occupancy[z][x][y] = null - O(3).
   const occ = occupancy;
@@ -68,12 +67,11 @@ export function clearPieceFromBoardOccupancy(key) { // occupancy[z][x][y] = null
     }
   }
 }
-
 // Seampoint: more global functions...
 
 // --- Helpers ---
-function clearBoard() {
-  console.log("model: boards.js - clearBoard()");
+function clearOccupancy() {
+  console.log("model: boards.js - clearOccupancy()");
 
   for(let z = 0; z < occupancy.length; z++) {
     for(let x = 0; x < occupancy[z].length; x++) {

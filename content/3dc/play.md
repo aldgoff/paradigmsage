@@ -42,7 +42,7 @@ layout: "play"
   }
 
   #setup-window {
-    width: 160px;
+    width: 163px;
     }
   #compass-window {
     width: 160px;
@@ -82,7 +82,7 @@ layout: "play"
   .scroll-box {
     overflow-y: auto;
     border: 1px solid #ccc;
-    padding: 4px;
+    padding: 2px;
   }
   button {
     background: rgb(238,220,220);
@@ -126,8 +126,8 @@ layout: "play"
   </div>
   <div class="section">
     <!-- <label> <input type="radio" name="tray-type" value="none"> None </label><br> -->
-    <label> <input type="radio" name="tray-type" value="real" checked> Real </label><br>
-    <label> <input type="radio" name="tray-type" value="factory"> Factory </label><br>
+    <label> <input type="radio" name="tray-type" value="Real" checked> Real </label><br>
+    <label> <input type="radio" name="tray-type" value="Fact"> Factory </label><br>
   </div>  
   <div class="section">
     <button data-action="placePiece"   disabled>Place Piece</button>
