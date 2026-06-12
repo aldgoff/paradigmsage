@@ -371,23 +371,23 @@ function processUndoBuffer(key, idx) {
     const prev = state.fetchPrevState("AdvSqs");
     const curr = state.fetchCurrentState("AdvSqs");
 
-    if(     prev === null && curr === null) {
+    if(     prev === null && curr === null) {   // Nothing to do.
       }
-    else if(prev === null && curr !=  null) {
-      vAdvsqs.removeFromScene();       // Clear current advsq.
+    else if(prev === null && curr !=  null) {   // Clear first advsq.
+      vAdvsqs.removeFromScene();
       vAdvsqs.clearAdvsqPanelParams("Q4,4");
       state.setBufferIndex("AdvSqs", idx-1);
       return true;
       }
-    else if(prev !=  null && curr === null) {
-      vAdvsqs.render(prev);      // Render previous advsq.
+    else if(prev !=  null && curr === null) {   // Render previous advsq.
+      vAdvsqs.render(prev);
       vAdvsqs.refreshPanel(prev);
       state.setBufferIndex("AdvSqs", idx-1);
       return true;
       }
-    else if(prev !=  null && curr !=  null) {
-      vAdvsqs.removeFromScene();       // Clear current advsq.
-      vAdvsqs.render(prev);      // Render previous advsq.
+    else if(prev !=  null && curr !=  null) {   // Clear current, render previous.
+      vAdvsqs.removeFromScene(); 
+      vAdvsqs.render(prev);
       vAdvsqs.refreshPanel(prev);
       state.setBufferIndex("AdvSqs", idx-1);
       return true;
@@ -417,6 +417,7 @@ function processUndoBuffer(key, idx) {
 
     cSetup.clearAllTileSelections();
     cSetup.clearAllPieceSelections();
+
     cSetup.returnAllPiecesToHomeTray();
     cSetup.rebuildToIndex(state.getCurrentIndex("Setup"));
 
@@ -434,20 +435,20 @@ function processRedoBuffer(key, idx) {
     const curr = state.fetchCurrentState("AdvSqs");
     const next = state.fetchNextState("AdvSqs");
 
-    if(     curr === null && next === null) {
+    if(     curr === null && next === null) {   // Nothing to do.
       }
-    else if(curr === null && next != null) {
-      vAdvsqs.render(next);      // Render first advsq.
+    else if(curr === null && next !=  null) {   // Render first advsq.
+      vAdvsqs.render(next);
       vAdvsqs.refreshPanel(next);
       state.setBufferIndex("AdvSqs", idx + 1);
       return true;
       }
-    else if(curr != null && next === null) {
-      vAdvsqs.refreshPanel(curr); // At top, nothing new to render.
+    else if(curr !=  null && next === null) {   // At top, nothing new to render.
+      vAdvsqs.refreshPanel(curr);
       }
-    else if(curr != null && next != null) {
-      vAdvsqs.removeFromScene();       // Clear current advsq.
-      vAdvsqs.render(next);      // Render next advsq.
+    else if(curr !=  null && next !=  null) {   // Clear current, render next.
+      vAdvsqs.removeFromScene();
+      vAdvsqs.render(next);
       vAdvsqs.refreshPanel(next);
       state.setBufferIndex("AdvSqs", idx + 1);
       return true;
@@ -479,7 +480,7 @@ function processRedoBuffer(key, idx) {
 
     return true;
     }
-  else {
+  else {  // Unreachable.
     throw new Error(`Unknown or missing key in redo ${key}`);
   }
 }

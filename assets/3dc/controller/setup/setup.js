@@ -39,15 +39,16 @@ import setupData from "./setup.json" assert { type: "json" };
 
 // --- Globals ---
   export let boardSpec = "0x0x0";
+  let prevBoard = { boardSize: "0x0x0", trayType: "None", trayGap: 0 };
 // Seampoint: more globals...
 
 // --- UI ---
 export function panelDispatch(payload) {    // Dispatch payload from panel to handle event functions.
-  // console.log("cntrl: setup.js - panelDispatch(payload):", payload);
+  console.log("cntrl: setup.js - panelDispatch(payload):", payload);
 
   vGambits.cancelAnimation();
 
-  const { action, boardSize, trayType } = payload;
+  const { action, prevBoard, nextBoard, boardSize,trayType,trayGap } = payload;
 
   switch (action) {
     case "makeBoard":    handleMakeBoard(payload); break;
@@ -72,12 +73,16 @@ export function buildPayload(panel, action) {
 
   const viewerPanel = document.getElementById("viewer-window");
 
-  return {  // payload
-    action,
+  const boardSize = panel.querySelector('input[name="board-size"]:checked')?.value;
+  const trayType  = panel.querySelector('input[name="tray-type"]:checked')?.value;
+  const trayGap   = Number(viewerPanel.querySelector('[name="viewer-trayGap"]')?.value);
+  const nextBoard = { boardSize, trayType, trayGap };
+
+  return { action, prevBoard, nextBoard,
     boardSize:  panel.querySelector('input[name="board-size"]:checked')?.value,
     trayType:   panel.querySelector('input[name="tray-type"]:checked')?.value,
     trayGap:    Number(viewerPanel.querySelector('[name="viewer-trayGap"]')?.value)
-  };
+  };  // payload
   }
 
 export function rebuildToIndex(idx) {
@@ -150,27 +155,30 @@ export function clearAllPieceSelections() {
 function handleMakeBoard(payload) { // Setup handler.
   console.log("cntrl: setup.js - handleMakeBoard(payload):", payload);
 
-  const { action, boardSize, trayType, trayGap } = payload;
-  const entry = mSetup.makeEntry(boardSpec, payload);    // Transform panel payload into state entry.
+  const { action, prevBoard, nextBoard, boardSize,trayType,trayGap } = payload;
+  const entry = payload;
 
-  if(boardSpec != "0x0x0") {
+  if(prevBoard.boardSize != "0x0x0") {
     cBoards.destroy(entry);
     cTrays.destroy(entry); 
     cPieces.destroy(entry);
   }
 
-  boardSpec = boardSize;
-
-  applyEntry(entry);  // TODO: Must occur prior to init boards, trays, & pieces, but is a bug that should be fixed.
+  boardSpec = nextBoard.boardSize;
 
   cBoards.init(entry);  // Initial occupancy depends on board size and tray type. TODO: support factory trays.
   cTrays.init(entry);   // Trays bracket the board.
   cPieces.init(entry);  // Every piece is in a tray, none are on the board.
 
-  console.log("*** scene:", view.getContext().scene.children.map(o => 
-    ({ type: o.type, name: o.name, children: o.children?.length })));
+  state.pushNewSetup(entry);          // Log state change in undo buffer.
+  vSetup.pushPanelLine(entry);        // Add line to panel.
+  vSetup.refreshPanel(entry);         // Upate panel fields.
+  // applyEntry(entry);
 
   setButtonState("boardDone");
+
+  console.log("*** scene:", view.getContext().scene.children.map(o => 
+    ({ type: o.type, name: o.name, children: o.children?.length })));
   }
 
 function handleDestroyBoard(payload) {
@@ -191,15 +199,15 @@ function handleDestroyBoard(payload) {
     ({ type: o.type, name: o.name, children: o.children?.length })));
 
   setButtonState("makeBoard");
-  }
+}
 
 function handlePlacePiece(payload) {
   console.log("cntrl: setup.js - handlePlacePiece(payload):", payload);
 
   // --- Parse ---
-    const spec = boardSpec;                     // TODO: Make code work for all three board sizes.
+    const spec = boardSpec;
 
-    const { action, boardSize, trayType } = payload;  // Informative, only action is used.
+    const { action, prevBoard, nextBoard, boardSize,trayType,trayGap } = payload;
     const { pieceSelections, tileSelections } = cSelections.getSelections();
     // console.log("*** Parse");
 
@@ -225,11 +233,11 @@ function handlePlacePiece(payload) {
   // --- Do ---
     let result = {};
     switch (task) {
-      case "noPiece": console.log("cntrl: setup.js - handlePlacePiece(...):", "No piece selected.");         return;
-      case "pieces":  console.log("cntrl: setup.js - handlePlacePiece(...):", "Too many pieces selected.");  return;
-      case "noTile":  console.log("cntrl: setup.js - handlePlacePiece(...):", "No tile selected.");          return;
-      case "tiles":   console.log("cntrl: setup.js - handlePlacePiece(...):", "Too many tiles selected.");   return;
-      case "nada":    console.log("cntrl: setup.js - handlePlacePiece(...):", "Unknown action.");            return;
+      case "noPiece": console.log("***", "No piece selected.");         return;
+      case "pieces":  console.log("***", "Too many pieces selected.");  return;
+      case "noTile":  console.log("***", "No tile selected.");          return;
+      case "tiles":   console.log("***", "Too many tiles selected.");   return;
+      case "nada":    console.log("***", "Unknown action.");            return;
       case "place":   result = placePieceOnBoard(key, dstTile);      break;
     }
     const { ok, err } = result
@@ -287,11 +295,11 @@ function handleShiftPiece(payload) {
   // --- Do ---
     let result = {};
     switch (task) {
-      case "noPiece": console.log("cntrl: setup.js - handlePlacePiece(...):", "No piece selected.");         return;
-      case "pieces":  console.log("cntrl: setup.js - handlePlacePiece(...):", "Too many pieces selected.");  return;
-      case "noTile":  console.log("cntrl: setup.js - handlePlacePiece(...):", "No tile selected.");          return;
-      case "tiles":   console.log("cntrl: setup.js - handlePlacePiece(...):", "Too many tiles selected.");   return;
-      case "nada":    console.log("cntrl: setup.js - handlePlacePiece(...):", "Unknown action.");            return;
+      case "noPiece": console.log("***", "No piece selected.");         return;
+      case "pieces":  console.log("***", "Too many pieces selected.");  return;
+      case "noTile":  console.log("***", "No tile selected.");          return;
+      case "tiles":   console.log("***", "Too many tiles selected.");   return;
+      case "nada":    console.log("***", "Unknown action.");            return;
       case "shift":   result = shiftPieceToTile(key, dstTile);  break;
     }
     const { ok, err } = result
@@ -338,11 +346,11 @@ function handleReturnPiece(payload) {
   // --- Do ---
     let result = {};
     switch (task) {
-      case "noPiece": console.log("cntrl: setup.js - handlePlacePiece(...):", "No piece selected.");         return;
-      case "pieces":  console.log("cntrl: setup.js - handlePlacePiece(...):", "Too many pieces selected.");  return;
-      case "tiles":   console.log("cntrl: setup.js - handlePlacePiece(...):", "Too many tiles selected.");   return;
-      case "inTray":  console.log("cntrl: setup.js - handlePlacePiece(...):", "Piece already in tray.");     return;
-      case "nada":    console.log("cntrl: setup.js - handlePlacePiece(...):", "Unknown action.");            return;
+      case "noPiece": console.log("***", "No piece selected.");         return;
+      case "pieces":  console.log("***", "Too many pieces selected.");  return;
+      case "tiles":   console.log("***", "Too many tiles selected.");   return;
+      case "inTray":  console.log("***", "Piece already in tray.");     return;
+      case "nada":    console.log("***", "Unknown action.");            return;
       case "return":  result = returnPieceToTray(key); break;
     }
     const { ok, err } = result
@@ -372,7 +380,7 @@ function handleReturnPiece(payload) {
     invariants.invariant(pieceCount === boardPieces, "Number of pieces listed on the board must equal the number actually on the board.");
 
     console.log("*** Buttons");
-  }
+}
 
 function handleFreeze(payload) {
   console.log("cntrl: setup.js - handleFreeze(payload):", payload);

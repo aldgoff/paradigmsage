@@ -53,26 +53,32 @@ export function render(entry) {
 export function refreshPanel(entry) {
   console.log("view : setup.js - refreshPanel(entry):", entry);
 
-  const panel = document.getElementById("setup-list");
+  const { action, prevBoard, nextBoard, boardSize,trayType,trayGap } = entry;
+
+  let panel = document.getElementById("setup-list");      // Scroll list.
   if(!panel) return;
 
   const count = state.getIndices().Setup;
   const children = panel.children;
   for(let i = 0; i < children.length; i++) {
-    if(i < count) {
-      children[i].style.opacity = "1.0";   // active
-    } else {
-      children[i].style.opacity = "0.3";   // future
-    }
+    const opacity = (i < count)
+      ? "1.0"     // active
+      : "0.3";    // future
+    children[i].style.opacity = opacity;
   }
 
-  const { action, boardSize, trayType } = entry;
+  panel = document.getElementById("setup-window");        // Radio buttons.
+  if(!panel) return;
 
   const sizeRadio     = panel.querySelector( `input[name="board-size"][value="${boardSize}"]`);
   const trayTypeRadio = panel.querySelector( `input[name="tray-type"][value="${trayType}"]`);
 
   if(sizeRadio) sizeRadio.checked = true;
   if(trayTypeRadio) trayTypeRadio.checked = true;
+
+  // console.log("*** nextBoard", nextBoard);                // Diagnostics.
+  // console.log("*** sizeRadio", sizeRadio);
+  // console.log("*** trayTypeRadio", trayTypeRadio);
 }
 
 export function pushPanelLine(entry) {
@@ -111,14 +117,17 @@ export function clearSetupPanelParams(params) {
 
 // --- Helpers ---
 function assembleLine(entry) {
+  console.log("view : setup.js - assembleLine(entry)", entry);
+
   const { action, boardSpec } = entry;
 
   switch (action) {
     case "makeBoard": {
-      const { boardSize, trayType } = entry;
-      const prevCol = `${boardSpec}`.padEnd(8);
-      const currCol = `${boardSize}`.padEnd(8);
-      const typeCol = `${trayType}`.padEnd(4);
+      // const { boardSize, trayType } = entry;
+      const { action, prevBoard, nextBoard, boardSize,trayType,trayGap } = entry;
+      const prevCol = `${prevBoard.boardSize}`.padEnd(8);
+      const currCol = `${nextBoard.boardSize}`.padEnd(8);
+      const typeCol = `${nextBoard.trayType}`.padEnd(4);
       const line    = `${prevCol}↔${currCol} ${typeCol}`;
       return line; }
     case "destroyBoard": {
