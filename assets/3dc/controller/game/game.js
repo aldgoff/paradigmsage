@@ -430,48 +430,15 @@ function processUndoBuffer(key, idx) {
       return true;
     }
     }
-  else if(key === "Setup") {
-    state.setBufferIndex("Setup", idx-1);
-
+  else if(key === "Setup") { // 6/13/26 - panel works.
     const entry = state.fetchCurrentState("Setup");
-    if(!entry) {
-      console.log("*** No previous board.");
-      cSetup.setButtonState("makeBoard");
-      vSetup.refreshPanel(null);         
-      return false;
+    if(entry) {
+      state.setBufferIndex("Setup", idx-1);
+      cSetup.buildBackward(entry);
+
+      cSetup.clearAllTileSelections();
+      cSetup.clearAllPieceSelections();
     }
-    cSetup.buildBackward(entry);
-
-    vSetup.refreshPanel(entry.nextBoard);         
-
-    return true;
-    }
-  else if(key === "Setup2") {
-    state.setBufferIndex("Setup", idx-1);
-
-    cSetup.clearAllTileSelections();
-    cSetup.clearAllPieceSelections();
-
-    const entry = state.fetchPrevState("Setup");
-    const prevBoard = entry.prevBoard;
-    const currBoard = entry.nextBoard;
-
-    cSetup.clearBoard(currBoard);
-    cSetup.buildBoard(prevBoard);
-
-    vSetup.refreshPanel(entry);         
-    setButtonState("boardDone");
-
-    return true;
-    }
-  else if(key === "Setup1") {
-    state.setBufferIndex("Setup", idx-1);
-
-    cSetup.clearAllTileSelections();
-    cSetup.clearAllPieceSelections();
-
-    cSetup.returnAllPiecesToHomeTray();
-    cSetup.rebuildToIndex(state.getCurrentIndex("Setup"));
 
     return true;
     }
@@ -525,7 +492,7 @@ function processRedoBuffer(key, idx) {
       return true;
     }
     }
-  else if(key === "Setup") {
+  else if(key === "Setup") { // 6/13/26 - panel works.
     state.setBufferIndex("Setup", idx + 1);
 
     const entry = state.fetchCurrentState("Setup");
@@ -535,15 +502,8 @@ function processRedoBuffer(key, idx) {
     }
     cSetup.buildForward(entry);
 
-    cSetup.setButtonState("boardDone");
-    vSetup.refreshPanel(entry.nextBoard);         
-
-    return true;
-    }
-  else if(key === "Setup1") {
-    state.setBufferIndex("Setup", idx + 1);
-
-    cSetup.rebuildToIndex(state.getCurrentIndex("Setup"));
+    cSetup.clearAllTileSelections();
+    cSetup.clearAllPieceSelections();
 
     return true;
     }

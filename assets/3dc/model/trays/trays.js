@@ -77,7 +77,7 @@ export function trayIndices(type, spec="8x8x8") {
 
 // --- Helpers ---
 function clearTrays() {
-  // console.log("model: trays.js - clearTrays()");
+  console.log("model: trays.js - clearTrays()");
 
   for(let z = 0; z < whiteTray.length; z++) { // White tray.
     for(let i = 0; i < whiteTray[z].length; i++) {

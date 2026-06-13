@@ -84,16 +84,6 @@ export function makeBoard(dimensions) {
 export function clearBoard(board) {
   console.log("view : boards.js - clearBoard(board):", board);
 
-  if(board) {
-    view.getContext().scene.remove(board);
-    currentBoardGroup = null;
-  }
-
-  view.getContext().tileMap.clear();
-  }
-export function clearBoard1() {
-  console.log("view : boards.js - clearBoard()...view.getContext():", view.getContext());
-
   if(currentBoardGroup) {
     view.getContext().scene.remove(currentBoardGroup);
     currentBoardGroup = null;

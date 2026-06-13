@@ -300,7 +300,7 @@ function clearPieceState() {
 
 function createPiecesForEightBoard(trayGap) {
   console.log("model: pieces.js - createPiecesForEightBoard()", );
-  console.log("*** ", eight);
+  console.log("***", eight);
   
   for(const player of ["White","Black"]) {
     const tray = (player === "White") 

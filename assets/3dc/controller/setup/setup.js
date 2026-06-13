@@ -16,6 +16,7 @@
   import * as panels   from "../../panels/panels.js";
 
   import * as game        from "../../controller/game/game.js";
+  import * as cSetup      from "../../controller/setup/setup.js";
   import * as cBoards     from "../../controller/boards/boards.js";
   import * as cTrays      from "../../controller/trays/trays.js";
   import * as cPieces     from "../../controller/pieces/pieces.js";
@@ -108,16 +109,53 @@ export function rebuildToIndex(idx) {
 }
 
 export function buildSetup(entry) {       // Handle.
-  console.log("cntrl: game.js - buildSetup(entry)", entry);
+  console.log("cntrl: setup.js - buildSetup(entry)", entry);
+
+  const { action, prevBoard, nextBoard } = entry;
+
+  clearBoard(entry.prevBoard);
+  buildBoard(entry.nextBoard);
 
   }
+
 export function buildForward(entry) {     // Redo.
-  console.log("cntrl: game.js - buildForward(entry)", entry);
+  console.log("cntrl: setup.js - buildForward(entry)", entry);
 
+  const { action, prevBoard, nextBoard } = entry;
+  if(     action === "makeBoard") {
+    clearBoard(entry.prevBoard);
+    buildBoard(entry.nextBoard);
+    currBoard = structuredClone(entry.nextBoard);
+
+    cSetup.setButtonState("boardDone");
+    vSetup.refreshPanel(entry.nextBoard);         
+    }
+  else if(action === "placePiece") {
+    }
+  else {
   }
-export function buildBackward(entry) {    // Undo.
-  console.log("cntrl: game.js - buildBackwards(entry)", entry);
+  diagnostic();
+  }
 
+export function buildBackward(entry) {    // Undo.
+  console.log("cntrl: setup.js - buildBackwards(entry)", entry);
+
+  const { action, prevBoard, nextBoard } = entry;
+  if(     action === "makeBoard") {
+    clearBoard(nextBoard);
+    buildBoard(prevBoard);
+    currBoard = structuredClone(prevBoard);
+
+    (prevBoard.boardSize === "0x0x0")
+      ? cSetup.setButtonState("makeBoard")
+      : cSetup.setButtonState("boardDone");
+    vSetup.refreshPanel(entry.prevBoard);         
+    }
+  else if(action === "placePiece") {
+    }
+  else {
+  }
+  diagnostic();
 }
 
 export function returnAllPiecesToHomeTray() {
@@ -165,9 +203,11 @@ export function buildBoard(board) {
 
   const { boardSize, trayType, trayGap } = board;
 
-  cBoards.init(board);
-  cTrays.init(board);
-  cPieces.init(board); 
+  if(boardSize != "0x0x0") {
+    cBoards.init(board);
+    cTrays.init(board);
+    cPieces.init(board); 
+  }
   }
 
 export function clearBoard(board) {
@@ -265,52 +305,16 @@ function handleMakeBoard(payload) { // Setup handler.
 
   state.pushNewSetup(entry);                    // Log state change in undo buffer.
 
-  buildSetup(entry);
+  clearBoard(entry.prevBoard);
+  buildBoard(entry.nextBoard);
+
+  boardSpec = nextBoard.boardSize;
 
   vSetup.pushPanelLine(entry);                  // Upate panels.
   vSetup.refreshPanel(nextBoard);         
   setButtonState("boardDone");
 
   currBoard = structuredClone(nextBoard);       // Capture current board.
-  }
-
-function handleMakeBoard1(payload) { // Setup handler.
-  console.log("cntrl: setup.js - handleMakeBoard(payload):", payload);
-
-  const { action, prevBoard, nextBoard, boardSize,trayType,trayGap } = payload;
-  const entry = payload;
-
-  clearBoard(entry.prevBoard);
-  buildBoard(entry.nextBoard);
-
-  currBoard = structuredClone(nextBoard);
-
-  // buildBoard(entry);
-
-  // state.pushNewSetup(entry);                    // Log state change in undo buffer.
-  // vSetup.pushPanelLine(entry);
-  // vSetup.refreshPanel(entry);
-
-  // if(currBoard.boardSize != "0x0x0") {          // Destroy current board.
-  //   cBoards.destroy(entry);
-  //   cTrays.destroy(entry);
-  //   cPieces.destroy(entry);
-  // }
-
-  // cBoards.init(entry);                          // Create nextBoard.
-  // cTrays.init(entry);   // TODO: (nextBoard).
-  // cPieces.init(entry); 
-    
-  boardSpec = nextBoard.boardSize;
-
-  state.pushNewSetup(entry);                    // Log state change in undo buffer.
-
-  vSetup.pushPanelLine(entry);                  // Upate panels.
-  vSetup.refreshPanel(nextBoard);         
-  setButtonState("boardDone");
-
-  // console.log("*** scene:", view.getContext().scene.children.map(o => 
-  //   ({ type: o.type, name: o.name, children: o.children?.length })));
   }
 
 function handleDestroyBoard(payload) {
@@ -695,7 +699,6 @@ function diagnostic() {
 
   const whiteCount = mTrays.getWhiteTray().flat(2).filter(cell => cell !== null).length;
   const blackCount = mTrays.getBlackTray().flat(2).filter(cell => cell !== null).length;
-  const trayInvariant = whiteCount + blackCount;
 
   const boardOcc = mBoards.getBoardOccupancy().flat(2).filter(cell => cell !== null).length;
 

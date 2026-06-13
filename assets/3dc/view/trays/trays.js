@@ -40,7 +40,7 @@ export function makeTrays(entry) {
 
   const { action, boardSize, trayType, trayGap } = entry;
 
-  destroyTrays();
+  // destroyTrays();
 
   whiteTrayGroup = makeTrayGroup("White", entry);
   blackTrayGroup = makeTrayGroup("Black", entry);
