@@ -38,10 +38,11 @@ import setupData from "./setup.json" assert { type: "json" };
 // Seampoint: more imports...
 
 // --- Globals ---
-  export let boardSpec = "0x0x0";
-  let prevBoard = { boardSize: "0x0x0", trayType: "None", trayGap: 0 };
+  export let boardSpec = "0x0x0"; // Deprecate.
+  let currBoard = { boardSize: "0x0x0", trayType: "None", trayGap: 0 };
 // Seampoint: more globals...
 
+export function getCurrBoard() { return currBoard; }
 // --- UI ---
 export function panelDispatch(payload) {    // Dispatch payload from panel to handle event functions.
   console.log("cntrl: setup.js - panelDispatch(payload):", payload);
@@ -78,7 +79,7 @@ export function buildPayload(panel, action) {
   const trayGap   = Number(viewerPanel.querySelector('[name="viewer-trayGap"]')?.value);
   const nextBoard = { boardSize, trayType, trayGap };
 
-  return { action, prevBoard, nextBoard,
+  return { action, prevBoard: currBoard, nextBoard,
     boardSize:  panel.querySelector('input[name="board-size"]:checked')?.value,
     trayType:   panel.querySelector('input[name="tray-type"]:checked')?.value,
     trayGap:    Number(viewerPanel.querySelector('[name="viewer-trayGap"]')?.value)
@@ -145,6 +146,29 @@ export function clearAllPieceSelections() {
   }
   cSelections.clearPieceSelections();           // Set of pieces highlighted, indexed by key.
 }
+
+export function buildBoard(board) {
+  console.log("cntrl: setup.js - buildBoard(board):", board);
+
+  const { boardSize, trayType, trayGap } = board;
+
+  cBoards.init(board);
+  cTrays.init(board);
+  cPieces.init(board); 
+}
+
+export function clearBoard(board) {
+  console.log("cntrl: setup.js - clearBoard(board):", board);
+
+  const { boardSize, trayType, trayGap } = board;
+
+  if(boardSize != "0x0x0") {
+    cBoards.destroy(board);
+    cTrays.destroy(board);
+    cPieces.destroy(board);
+  }
+}
+
 // Seampoint: more global functions...
 
 // --- Handle Functions ---
@@ -158,34 +182,72 @@ function handleMakeBoard(payload) { // Setup handler.
   const { action, prevBoard, nextBoard, boardSize,trayType,trayGap } = payload;
   const entry = payload;
 
-  if(prevBoard.boardSize != "0x0x0") {
-    cBoards.destroy(entry);
-    cTrays.destroy(entry); 
-    cPieces.destroy(entry);
-  }
+  state.pushNewSetup(entry);                    // Log state change in undo buffer.
 
-  boardSpec = nextBoard.boardSize;
-
-  cBoards.init(entry);  // Initial occupancy depends on board size and tray type. TODO: support factory trays.
-  cTrays.init(entry);   // Trays bracket the board.
-  cPieces.init(entry);  // Every piece is in a tray, none are on the board.
-
-  state.pushNewSetup(entry);          // Log state change in undo buffer.
-  vSetup.pushPanelLine(entry);        // Add line to panel.
-  vSetup.refreshPanel(entry);         // Upate panel fields.
-  // applyEntry(entry);
-
+  vSetup.pushPanelLine(entry);                  // Upate panels.
+  vSetup.refreshPanel(nextBoard);         
   setButtonState("boardDone");
 
-  console.log("*** scene:", view.getContext().scene.children.map(o => 
-    ({ type: o.type, name: o.name, children: o.children?.length })));
+  currBoard = structuredClone(nextBoard);       // Capture current board.
+}
+
+function handleMakeBoard1(payload) { // Setup handler.
+  console.log("cntrl: setup.js - handleMakeBoard(payload):", payload);
+
+  const { action, prevBoard, nextBoard, boardSize,trayType,trayGap } = payload;
+  const entry = payload;
+
+  clearBoard(entry.prevBoard);
+  buildBoard(entry.nextBoard);
+
+  currBoard = structuredClone(nextBoard);
+
+  // buildBoard(entry);
+
+  // state.pushNewSetup(entry);                    // Log state change in undo buffer.
+  // vSetup.pushPanelLine(entry);
+  // vSetup.refreshPanel(entry);
+
+  // if(currBoard.boardSize != "0x0x0") {          // Destroy current board.
+  //   cBoards.destroy(entry);
+  //   cTrays.destroy(entry);
+  //   cPieces.destroy(entry);
+  // }
+
+  // cBoards.init(entry);                          // Create nextBoard.
+  // cTrays.init(entry);   // TODO: (nextBoard).
+  // cPieces.init(entry); 
+    
+  boardSpec = nextBoard.boardSize;
+
+  state.pushNewSetup(entry);                    // Log state change in undo buffer.
+
+  vSetup.pushPanelLine(entry);                  // Upate panels.
+  vSetup.refreshPanel(nextBoard);         
+  setButtonState("boardDone");
+
+  // console.log("*** scene:", view.getContext().scene.children.map(o => 
+  //   ({ type: o.type, name: o.name, children: o.children?.length })));
   }
 
 function handleDestroyBoard(payload) {
   console.log("cntrl: setup.js - handleDestroyBoard(payload):", payload);
 
-  const { action, boardSize, trayType, trayGap } = payload;
-  const entry = mSetup.makeEntry(boardSpec, payload);    // Transform panel payload into state entry.
+  const { action, prevBoard, nextBoard, boardSize,trayType,trayGap } = payload;
+  const entry = payload;
+  clearBoard(currBoard);
+
+  boardSpec = prevBoard.boardSize;
+
+  vSetup.refreshPanel(prevBoard);         
+  setButtonState("makeBoard");
+}
+
+function handleDestroyBoard1(payload) {
+  console.log("cntrl: setup.js - handleDestroyBoard(payload):", payload);
+
+  const { action, prevBoard, nextBoard, boardSize,trayType,trayGap } = payload;
+  const entry = payload;
 
   cBoards.destroy(entry);  // Initial occupancy depends on board size and tray type. TODO: support factory trays.
   cTrays.destroy(entry);   // Trays bracket the board.
@@ -194,9 +256,6 @@ function handleDestroyBoard(payload) {
   boardSpec = boardSize;
 
   applyEntry(entry);
-
-  console.log("*** scene:", view.getContext().scene.children.map(o => 
-    ({ type: o.type, name: o.name, children: o.children?.length })));
 
   setButtonState("makeBoard");
 }
@@ -426,6 +485,7 @@ function handlePlay(payload) {
 // Seampoint: more handlers...
 
 // --- Helpers ---
+
 function applyEntry(entry) {
   console.log("cntrl: setup.js - applyEntry(entry)", entry);
 
@@ -445,7 +505,9 @@ function applyEntry(entry) {
   // a new board invalidates moves, gambits, and advsqs.
 }
 
-function setButtonState(command) {
+export function setButtonState(command) {
+  console.log("cntrl: setup.js - setButtonState(command)", command);
+
   const panel = document.getElementById("diags-window");
   panel.querySelector('[name="diags-buttons"]').textContent = command;
 

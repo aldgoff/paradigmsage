@@ -28,22 +28,24 @@ import boardsData from "./boards.json" assert { type: "json" };
 
 export function getBoardOccupancy() { return occupancy; }
 // --- UI ---
-export function init(entry) {
-  console.log("model: boards.js - init(entry)", entry);
+export function init(board) {
+  console.log("model: boards.js - init(board)", board);
 
-  const { action, boardSize, trayType, trayGap, boardSpec } = entry;
+  // const { action, boardSize, trayType, trayGap, boardSpec } = entry;
+  const { boardSize, trayType, trayGap } = board;
 
   clearOccupancy();
-  vBoards.render(entry);
+  vBoards.render(board);
   }
 
-export function destroy(entry) {
-  console.log("model: boards.js - destroy(entry)", entry);
+export function destroy(board) {
+  console.log("model: boards.js - destroy(board)", board);
   
-  const { action, boardSize, trayType, trayGap, boardSpec } = entry;
+  // const { action, boardSize, trayType, trayGap, boardSpec } = entry;
+  const { boardSize, trayType, trayGap } = board;
 
   clearOccupancy();
-  vBoards.clear(entry);
+  vBoards.clear(board);
   }
 
 export function getBoardSpecs() {

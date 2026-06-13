@@ -132,7 +132,44 @@ title: "Dev"
   - 6/09/26 - Screenshots. Selections canonized. Canonize code as map. Tiles superstructure. Comment QC. Setup undo phase 1.
   - 6/10/26 - Setup undo/redo/rewind/FF. Game and cSetup QC. Button management. Undo makeBoard...
   - 6/11/26 - Add status panel. Change to diagnostic panel. Accessor view.getContext().
-  - 6/12/26 - Centralize diagnostics. Setup entry. Setup panel refresh bug.
+  - 6/12/26 - Centralize diagnostics. Setup entry. Setup panel refresh bug. Panel logic for setup makeBoard; tiles, trays, pieces still to do.
+
+
+## Save Setup States (6/12/26)
+ ### Make Boards - pass: buttons click/radio, list/highlighting, undo/redo, rewind/FF, load/save.
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0},"boardSize":"8x8x8","trayType":"Real","trayGap":0},{"action":"makeBoard","prevBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0},"nextBoard":{"boardSize":"10x8x8","trayType":"Real","trayGap":0},"boardSize":"10x8x8","trayType":"Real","trayGap":0},{"action":"makeBoard","prevBoard":{"boardSize":"10x8x8","trayType":"Real","trayGap":0},"nextBoard":{"boardSize":"10x10x10","trayType":"Fact","trayGap":0},"boardSize":"10x10x10","trayType":"Fact","trayGap":0}],"Moves":[],"Gambits":[],"AdvSqs":[]}
+
+  {"Setup":
+    [{"action":"makeBoard",
+      "prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},
+      "nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0},"boardSize":"8x8x8","trayType":"Real","trayGap":0},
+    {"action":"makeBoard",
+      "prevBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0},
+      "nextBoard":{"boardSize":"10x8x8","trayType":"Fact","trayGap":0},"boardSize":"10x8x8","trayType":"Fact","trayGap":0},
+    {"action":"makeBoard",
+      "prevBoard":{"boardSize":"10x8x8","trayType":"Fact","trayGap":0},
+      "nextBoard":{"boardSize":"10x10x10","trayType":"Fact","trayGap":0},"boardSize":"10x10x10","trayType":"Fact","trayGap":0}],
+  "Moves":[],"Gambits":[],"AdvSqs":[]}
+
+
+  {"Setup":[
+  {"action":"makeBoard",
+    "prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},
+    "nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0},
+    "boardSize":"8x8x8","trayType":"Real","trayGap":0},
+  {"action":"makeBoard",
+    "prevBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0},
+    "nextBoard":{"boardSize":"10x8x8","trayType":"Real","trayGap":0},
+    "boardSize":"10x8x8","trayType":"Real","trayGap":0},
+  {"action":"makeBoard",
+    "prevBoard":{"boardSize":"10x8x8","trayType":"Real","trayGap":0},
+    "nextBoard":{"boardSize":"10x10x10","trayType":"Fact","trayGap":0},
+    "boardSize":"10x10x10","trayType":"Fact","trayGap":0},
+  {"action":"makeBoard",
+    "prevBoard":{"boardSize":"10x10x10","trayType":"Fact","trayGap":0},
+    "nextBoard":{"boardSize":"10x8x8","trayType":"Fact","trayGap":0},
+    "boardSize":"10x8x8","trayType":"Fact","trayGap":0}],
+"Moves":[],"Gambits":[],"AdvSqs":[]}
 
 
 ## Save Setup States

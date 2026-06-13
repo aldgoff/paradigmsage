@@ -50,10 +50,44 @@ export function render(entry) {
   const { action, boardSize, trayType, trayGap } = entry;  // Informative.
   }
   
-export function refreshPanel(entry) {
-  console.log("view : setup.js - refreshPanel(entry):", entry);
+export function refreshPanel(board) {
+  console.log("view : setup.js - refreshPanel(board):", board);
 
-  const { action, prevBoard, nextBoard, boardSize,trayType,trayGap } = entry;
+  let panel = document.getElementById("setup-list");      // Scroll list.
+  if(!panel) return;
+
+  const count = state.getIndices().Setup;
+  const children = panel.children;
+  for(let i = 0; i < children.length; i++) {
+    const opacity = (i < count)
+      ? "1.0"     // active
+      : "0.3";    // future
+    children[i].style.opacity = opacity;
+  }
+  refreshRadioButtons(board);
+}
+
+function refreshRadioButtons(board) {
+  console.log("view : setup.js - refreshRadioButtons(board):", board);
+
+  const panel = document.getElementById("setup-window");
+  if(!panel) return;
+
+  const sizeRadio     = (board) 
+    ? panel.querySelector( `input[name="board-size"][value="${board.boardSize}"]`)
+    : panel.querySelector( `input[name="board-size"][value="8x8x8"]`);
+  const trayTypeRadio = (board) 
+    ? panel.querySelector( `input[name="tray-type"][value="${board.trayType}"]`)
+    : panel.querySelector( `input[name="tray-type"][value="Real"]`);
+
+  if(sizeRadio) sizeRadio.checked = true;
+  if(trayTypeRadio) trayTypeRadio.checked = true;  
+}
+export function refreshPanel1(board) {
+  console.log("view : setup.js - refreshPanel(board):", board);
+
+  // const { action, prevBoard, nextBoard, boardSize,trayType,trayGap } = entry;
+  const { boardSize, trayType, trayGap } = board;
 
   let panel = document.getElementById("setup-list");      // Scroll list.
   if(!panel) return;
@@ -107,11 +141,11 @@ export function clearSetupPanelParams(params) {
 
   const sizeRadio     = panel.querySelector( `input[name="board-size"][value="${boardSize}"]`);
   const trayTypeRadio = panel.querySelector( `input[name="tray-type"][value="${trayType}"]`);
-  const initPosRadio  = panel.querySelector( `input[name="initial-pos"][value="${initialPos}"]`);
+  // const initPosRadio  = panel.querySelector( `input[name="initial-pos"][value="${initialPos}"]`);
 
   if(sizeRadio) sizeRadio.checked = true;
   if(trayTypeRadio) trayTypeRadio.checked = true;
-  if(initPosRadio) initPosRadio.checked = true;
+  // if(initPosRadio) initPosRadio.checked = true;
 }
 // Seampoint: more global functions...
 
@@ -128,7 +162,7 @@ function assembleLine(entry) {
       const prevCol = `${prevBoard.boardSize}`.padEnd(8);
       const currCol = `${nextBoard.boardSize}`.padEnd(8);
       const typeCol = `${nextBoard.trayType}`.padEnd(4);
-      const line    = `${prevCol}↔${currCol} ${typeCol}`;
+      const line    = `${prevCol} ${currCol} ${typeCol}`;
       return line; }
     case "destroyBoard": {
       const { boardSize, trayType } = entry;

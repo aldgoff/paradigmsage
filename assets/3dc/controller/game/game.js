@@ -210,18 +210,24 @@ async function handleLoad() {
     state.setNull();      // Reset state completely.
 
     // --- Clear panels before repopulating ---
+    const setupEl = document.getElementById("setup-list");
+    if(setupEl) setupEl.innerHTML = "";
+
     const moveEl = document.getElementById("move-list");
-    if (moveEl) moveEl.innerHTML = "";
+    if(moveEl) moveEl.innerHTML = "";
 
     const gambitEl = document.getElementById("gambit-list");
-    if (gambitEl) gambitEl.innerHTML = "";
+    if(gambitEl) gambitEl.innerHTML = "";
 
     for(const key of state.getStateKeys()) {   // Load all buffers (no rendering).
       const entries = newState[key] || [];
 
       for(const entry of entries) {
         state.pushNewState(key, entry);
-        if(key === "Moves") {
+        if(key === "Setup") {
+          vSetup.pushPanelLine(entry);
+        }
+        else if(key === "Moves") {
           vMoves.pushPanelLine(entry);
         }
         else if(key === "Gambits") {
@@ -232,7 +238,7 @@ async function handleLoad() {
       state.setBufferIndex(key, 0); // Reset all indexes to 0.
     }
 
-    // vSetup.refreshPanel(setup);
+    vSetup.refreshPanel(null);
     vMoves.refreshPanel();
     vGambits.refreshPanel();
     vAdvsqs.clearAdvsqPanelParams("KR4,4");
@@ -415,6 +421,39 @@ function processUndoBuffer(key, idx) {
   else if(key === "Setup") {
     state.setBufferIndex("Setup", idx-1);
 
+    const entry = state.fetchCurrentState("Setup");
+    if(!entry) {
+      console.log("*** No previous board.");
+      cSetup.setButtonState("makeBoard");
+      vSetup.refreshPanel(null);         
+      return false;
+    }
+
+    vSetup.refreshPanel(entry.nextBoard);         
+
+    return true;
+    }
+  else if(key === "Setup2") {
+    state.setBufferIndex("Setup", idx-1);
+
+    cSetup.clearAllTileSelections();
+    cSetup.clearAllPieceSelections();
+
+    const entry = state.fetchPrevState("Setup");
+    const prevBoard = entry.prevBoard;
+    const currBoard = entry.nextBoard;
+
+    cSetup.clearBoard(currBoard);
+    cSetup.buildBoard(prevBoard);
+
+    vSetup.refreshPanel(entry);         
+    setButtonState("boardDone");
+
+    return true;
+    }
+  else if(key === "Setup1") {
+    state.setBufferIndex("Setup", idx-1);
+
     cSetup.clearAllTileSelections();
     cSetup.clearAllPieceSelections();
 
@@ -474,6 +513,20 @@ function processRedoBuffer(key, idx) {
     }
     }
   else if(key === "Setup") {
+    state.setBufferIndex("Setup", idx + 1);
+
+    const entry = state.fetchCurrentState("Setup");
+    if(!entry) {
+      console.log("*** No next board.");
+      return false;
+    }
+    cSetup.setButtonState("boardDone");
+
+    vSetup.refreshPanel(entry.nextBoard);         
+
+    return true;
+    }
+  else if(key === "Setup1") {
     state.setBufferIndex("Setup", idx + 1);
 
     cSetup.rebuildToIndex(state.getCurrentIndex("Setup"));

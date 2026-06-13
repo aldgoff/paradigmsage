@@ -21,29 +21,32 @@ import boardsData from "./boards.json" assert { type: "json" };
 // Seampoint: more imports...
 
 // --- Globals ---
-  let currentBoard = null;
+  let currentBoardGroup = null;
 // Seampoint: more globals.
 
 // --- UI ---
-export function render(entry) {
-  console.log("view : boards.js - render(setup)", entry);
+export function render(board) {
+  console.log("view : boards.js - render(board)", board);
 
-  const { action, boardSize, trayType, trayGap, boardSpec } = entry;
+  // const { action, boardSize, trayType, trayGap, boardSpec } = entry;
+  const { boardSize, trayType, trayGap } = board;
 
   const dims = boardSize.split("x").map(Number);
   makeBoard(dims);
   }
 
-export function clear(entry) {
-  console.log("view : boards.js - clear(entry)", entry);
+export function clear(board) {
+  console.log("view : boards.js - clear(entry)", board);
 
-  clearBoard();
+  const { boardSize, trayType, trayGap } = board;
+
+  clearBoard(board);
 }
 
 export function makeBoard(dimensions) {
   console.log("view : boards.js - makeBoard(dimensions):", dimensions);
 
-  if(currentBoard) { clearBoard(); }
+  if(currentBoardGroup) { clearBoard(); }
 
   const Z = dimensions[0]/2;  // 8.
   const X = dimensions[1]/2;  // 8.
@@ -75,15 +78,25 @@ export function makeBoard(dimensions) {
     }
   }
   view.getContext().scene.add(boardGroup);              // Add board to scene.
-  currentBoard = boardGroup;
+  currentBoardGroup = boardGroup;
   }
 
-export function clearBoard() {
+export function clearBoard(board) {
+  console.log("view : boards.js - clearBoard(board):", board);
+
+  if(board) {
+    view.getContext().scene.remove(board);
+    currentBoardGroup = null;
+  }
+
+  view.getContext().tileMap.clear();
+  }
+export function clearBoard1() {
   console.log("view : boards.js - clearBoard()...view.getContext():", view.getContext());
 
-  if(currentBoard) {
-    view.getContext().scene.remove(currentBoard);
-    currentBoard = null;
+  if(currentBoardGroup) {
+    view.getContext().scene.remove(currentBoardGroup);
+    currentBoardGroup = null;
   }
 
   view.getContext().tileMap.clear();
@@ -92,9 +105,9 @@ export function clearBoard() {
 export function setLevelSep(levelSep) {
   console.log("view : boards.js - setLevelSep(levelSep):", levelSep);
 
-  if(!currentBoard) return;
+  if(!currentBoardGroup) return;
 
-  view.reprojectGroup(currentBoard, levelSep);
+  view.reprojectGroup(currentBoardGroup, levelSep);
   }
 
 export function decorateTile(meshTile) {
@@ -159,7 +172,7 @@ function makePrimaryPlaneMarker() {
 /* TODO: QC checklist
   1) Move addEventListener out of makeBoard into one-time init
   2) ✅ Remove implicit teardown inside makeBoard; enforce clearBoard as sole inverse
-  3) Restrict raycasting to currentBoard instead of scene.children
+  3) Restrict raycasting to currentBoardGroup instead of scene.children
   4) ✅ Eliminate dual use of tileMap (global vs parameter); choose one model
   5) Replace window.THREE with explicit module import
   6) ✅ Ensure tileMap.clear() is always called before new board construction
@@ -167,10 +180,10 @@ function makePrimaryPlaneMarker() {
   8) ✅ Add temporary diagnostics for missed clicks (coords === null)
   9) ✅ Remove unused imports (cameras, renders)
   10) ✅ Ensure event listener is singular (maintain invariant)
-  11) Validate no stray scene nodes remain beyond currentBoard
+  11) Validate no stray scene nodes remain beyond currentBoardGroup
   12) Verify tiles.initTileUserData does not retain cross-board references
   13) Confirm getTileMesh never returns stale mesh after tileMap.clear()
-  14) Ensure currentBoard is the only authoritative board reference
+  14) Ensure currentBoardGroup is the only authoritative board reference
   15) Add sanity checks for board dimension consistency during rebuild
 */
 
