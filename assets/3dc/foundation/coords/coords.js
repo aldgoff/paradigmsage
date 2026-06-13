@@ -11,7 +11,7 @@
 */
 
 // --- Load module ---
-import coordsData from "./coords.json" assert { type: "json" };
+  import coordsData from "./coords.json" assert { type: "json" };
   const coordsModule = coordsData.coords_module;
   const boardSpecs = coordsModule.board_specs;
 // Seampoint: more imports...

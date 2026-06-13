@@ -8,7 +8,7 @@
 */
 
 // --- Load JSON ---
-import traysData from "./trays.json" assert { type: "json" };
+  import traysData from "./trays.json" assert { type: "json" };
   const traysModule = traysData.trays_module;
   const traySpecs = traysModule.tray_specs;
   const eight     = traysModule["8x8x8"];

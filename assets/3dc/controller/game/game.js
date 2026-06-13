@@ -8,7 +8,7 @@
 */
 
 // --- Load JSON ---
-import gameData from "./game.json" assert { type: "json" };
+  import gameData from "./game.json" assert { type: "json" };
   const gameModule = gameData.game_module;
 // Seampoint: more objects...
 
@@ -25,6 +25,9 @@ import gameData from "./game.json" assert { type: "json" };
   import * as vSetup   from "../../view/setup/setup.js";
   import * as vBoards  from "../../view/boards/boards.js";
 // Seampoint: more imports...
+
+// --- Globals ---
+// Seampoint: more globals...
 
 // --- UI ---
 export function panelDispatch(payload) {
@@ -269,18 +272,16 @@ function handleSave() {
 // Seampoint: more handle functions...
 
 // --- Helpers ---
-function isEmpty(len) { return len === 0; }
+  function isEmpty(len) { return len === 0; }
 
-function canCollapseDown(idx)     { return idx > 1; }
-function canStepDown(idx)         { return idx === 1; }
-function canCrossDown(idx)        { return idx === 0; }
+  function canCollapseDown(idx)     { return idx > 1; }
+  function canStepDown(idx)         { return idx === 1; }
+  function canCrossDown(idx)        { return idx === 0; }
 
-function canCollapseUp(idx, len)  { return 0 < idx && idx < len; }
-function canStepUp(idx, len)      { return idx === 0 && len > 0; }
-function canCrossUp(idx, len)     { return idx === len; }
-
+  function canCollapseUp(idx, len)  { return 0 < idx && idx < len; }
+  function canStepUp(idx, len)      { return idx === 0 && len > 0; }
+  function canCrossUp(idx, len)     { return idx === len; }
 /* ----- ----- ----- ----- */
-
 function rewindCurrentBuffer(buffer) {
   console.log("cntrl: game.js - rewindCurrentBuffer(buffer):", buffer);
 
@@ -538,6 +539,31 @@ function processRedoBuffer(key, idx) {
   }
 }
 
+function hardReset() {
+  console.log("cntrl: game.js - hardReset():");
+
+  // --- View ---
+  vAdvsqs.removeFromScene();
+  vGambits.clearGambits();
+  vMoves.clearMoves?.();
+  vBoards.clearBoard();
+
+  // --- Derived / caches ---
+  cGambits.reset?.();
+
+  // --- Model ---
+  state.setState({
+    Setup: [],
+    Moves: [],
+    Gambits: [],
+    AdvSqs: []
+  });
+
+  for (const key of state.getStateKeys()) {
+    state.setBufferIndex(key, 0);
+  }
+}
+
 function diagnostic(enabled=false) {
   // console.log("cntrl: game.js - diagnostic(enabled=false):", enabled);
 
@@ -571,31 +597,6 @@ function assertStateConsistency() {
     if (i < 0 || i > len) {
       console.error("Index out of bounds", key, i, len);
     }
-  }
-}
-
-function hardReset() {
-  // console.log("cntrl: game.js - hardReset():");
-
-  // --- View ---
-  vAdvsqs.removeFromScene();
-  vGambits.clearGambits();
-  vMoves.clearMoves?.();
-  vBoards.clearBoard();
-
-  // --- Derived / caches ---
-  cGambits.reset?.();
-
-  // --- Model ---
-  state.setState({
-    Setup: [],
-    Moves: [],
-    Gambits: [],
-    AdvSqs: []
-  });
-
-  for (const key of state.getStateKeys()) {
-    state.setBufferIndex(key, 0);
   }
 }
 // Seampoint: more local functions...

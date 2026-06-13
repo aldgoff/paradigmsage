@@ -15,7 +15,7 @@
 */
 
 // --- Load JSON ---
-import setupData from "./setup.json" assert { type: "json" };
+  import setupData from "./setup.json" assert { type: "json" };
   const setupModule = setupData.setup_module;
 // Seampoint: more objects...
 

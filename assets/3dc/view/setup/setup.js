@@ -15,9 +15,8 @@
 */
 
 // --- Load JSON ---
-import setupData from "./setup.json" assert { type: "json" };
+  import setupData from "./setup.json" assert { type: "json" };
   const setupModule = setupData.setup_module;
-  // const category  = setupModule.category;
 // Seampoint: more objects...
 
 // --- Dependencies ---
@@ -65,23 +64,6 @@ export function refreshPanel(board) {
     children[i].style.opacity = opacity;
   }
   refreshRadioButtons(board);
-}
-
-function refreshRadioButtons(board) {
-  console.log("view : setup.js - refreshRadioButtons(board):", board);
-
-  const panel = document.getElementById("setup-window");
-  if(!panel) return;
-
-  const sizeRadio     = (board) 
-    ? panel.querySelector( `input[name="board-size"][value="${board.boardSize}"]`)
-    : panel.querySelector( `input[name="board-size"][value="8x8x8"]`);
-  const trayTypeRadio = (board) 
-    ? panel.querySelector( `input[name="tray-type"][value="${board.trayType}"]`)
-    : panel.querySelector( `input[name="tray-type"][value="Real"]`);
-
-  if(sizeRadio) sizeRadio.checked = true;
-  if(trayTypeRadio) trayTypeRadio.checked = true;  
 }
 export function refreshPanel1(board) {
   console.log("view : setup.js - refreshPanel(board):", board);
@@ -187,5 +169,23 @@ function assembleLine(entry) {
     break;
   }
 }
+
+function refreshRadioButtons(board) {
+  console.log("view : setup.js - refreshRadioButtons(board):", board);
+
+  const panel = document.getElementById("setup-window");
+  if(!panel) return;
+
+  const sizeRadio     = (board) 
+    ? panel.querySelector( `input[name="board-size"][value="${board.boardSize}"]`)
+    : panel.querySelector( `input[name="board-size"][value="8x8x8"]`);
+  const trayTypeRadio = (board) 
+    ? panel.querySelector( `input[name="tray-type"][value="${board.trayType}"]`)
+    : panel.querySelector( `input[name="tray-type"][value="Real"]`);
+
+  if(sizeRadio) sizeRadio.checked = true;
+  if(trayTypeRadio) trayTypeRadio.checked = true;  
+}
+
 // Seampoint: more local functions...
 

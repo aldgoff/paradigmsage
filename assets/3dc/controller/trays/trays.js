@@ -8,7 +8,7 @@
 */
 
 // --- Load JSON ---
-import traysData from "./trays.json" assert { type: "json" };
+  import traysData from "./trays.json" assert { type: "json" };
   const traysModule = traysData.trays_module;
 // Seampoint: more objects...
 

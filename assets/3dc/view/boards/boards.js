@@ -9,7 +9,7 @@
 */
 
 // --- Load JSON ---
-import boardsData from "./boards.json" assert { type: "json" };
+  import boardsData from "./boards.json" assert { type: "json" };
   const boardsModule = boardsData.boards_module;
 // Seampoint: more objects...
 

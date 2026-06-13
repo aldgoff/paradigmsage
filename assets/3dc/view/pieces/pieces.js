@@ -8,7 +8,7 @@
 */
 
 // --- Load JSON ---
-import piecesData from "./pieces.json" assert { type: "json" };
+  import piecesData from "./pieces.json" assert { type: "json" };
   const piecesModule = piecesData.pieces_module;
   
   const materials = piecesModule.materials;

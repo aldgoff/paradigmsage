@@ -8,7 +8,7 @@
 */
 
 // --- Load JSON ---
-import piecesData from "./pieces.json" assert { type: "json" };
+  import piecesData from "./pieces.json" assert { type: "json" };
   const piecesModule = piecesData.pieces_module;
   const eight  = piecesModule.eight;
   const ten    = piecesModule.ten;
@@ -385,7 +385,6 @@ function createPiece(key, pos, coords, trayOffset=0) {
     home: { trayPos: pos, trayCoords: [...coords], trayVts: [...vts] }
   };
 }
-
 // Seampoint: more local functions...
 
 /* piece = {  // Field documentation.

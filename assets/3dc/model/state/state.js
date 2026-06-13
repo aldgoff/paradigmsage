@@ -6,10 +6,9 @@
   Recommended access: import * as mState from "../../model/state/state.js";
   UI: the export functions.
 */
-/* const obj = JSON.parse(JSON.stringify(setup)); */
 
 // --- Load JSON ---
-import stateData from "./state.json" assert { type: "json" };
+  import stateData from "./state.json" assert { type: "json" };
   const seed = stateData.state_module;  // Not used, kept for syntax reference only.
 // Seampoint: more objects...
 
