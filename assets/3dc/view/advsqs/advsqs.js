@@ -15,7 +15,7 @@
 */
 
 // --- Load JSON ---
-import advsqsData from "./advsqs.json" assert { type: "json" };
+  import advsqsData from "./advsqs.json" assert { type: "json" };
   const advsqsModule = advsqsData.advsqs_module;
   const category  = advsqsModule.category;
 // Seampoint: more objects...
@@ -41,8 +41,26 @@ import advsqsData from "./advsqs.json" assert { type: "json" };
 // --- Globals ---
   let advsqPanelInitialParams = null;
   let currAdvsqGroup = null;
+// Seampoint: more globals...
 
 // --- UI ---
+export function clearAdvsqs() {
+  console.log("view : advsqs.js - clearAdvsqs()");
+
+  setAdvsqPanelInitialParams();
+
+  if(!currAdvsqGroup) return;
+
+  if(currAdvsqGroup.userData?.overlays) {  // Remove overlays from ALL tiles (board + offboard).
+    currAdvsqGroup.userData.overlays.forEach(o => {
+      if (o.parent) o.parent.remove(o);
+    });
+  }
+  view.getContext().scene.remove(currAdvsqGroup);  // Remove offboard tiles (group children).
+
+  currAdvsqGroup = null;
+}
+
 export function removeFromScene() {
   console.log("view : advsqs.js - removeFromScene():");
 
@@ -299,7 +317,7 @@ function makeAdvsq(specs) {
   }
 
 function getAdvsqPanelParams() {
-  console.log("view : advsqs.js - getAdvsqPanelParams():");
+  // console.log("view : advsqs.js - getAdvsqPanelParams():");
 
   const panel = document.getElementById("advsq-window");
   if (!panel) return;

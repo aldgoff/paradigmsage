@@ -15,7 +15,7 @@
 */
 
 // --- Load JSON ---
-import gambitsData from "./gambits.json" assert { type: "json" };
+  import gambitsData from "./gambits.json" assert { type: "json" };
   const gambitsModule = gambitsData.gambits_module;
 // Seampoint: more objects...
 
@@ -29,10 +29,20 @@ import gambitsData from "./gambits.json" assert { type: "json" };
   import * as quads   from "../../geometry/quads/quads.js";
   import * as gAdvsqs from "../../geometry/advsqs/advsqs.js";
 
-  import * as view    from "../../view/view.js";
+  import * as view     from "../../view/view.js";
+  import * as vGambits from "../../view/gambits/gambits.js";
 // Seampoint: more imports..
 
+// --- Globals ---
+// Seampoint: more globals...
+
 // --- UI ---
+export function reset() {
+  console.log("model: gambits.js - reset()");
+
+  vGambits.clearGambits();
+  }
+
 export function makeQuadrantEntry(advsq) {
   console.log(`model: gambits.js - makeQuadrantEntry(advsq):`, advsq);
 

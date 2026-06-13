@@ -115,7 +115,7 @@ export function buildForward(entry) {     // Redo.
   console.log("cntrl: game.js - buildForward(entry)", entry);
 
   }
-export function buildBackwards(entry) {   // Undo.
+export function buildBackward(entry) {    // Undo.
   console.log("cntrl: game.js - buildBackwards(entry)", entry);
 
 }
@@ -264,6 +264,8 @@ function handleMakeBoard(payload) { // Setup handler.
   const entry = payload;
 
   state.pushNewSetup(entry);                    // Log state change in undo buffer.
+
+  buildSetup(entry);
 
   vSetup.pushPanelLine(entry);                  // Upate panels.
   vSetup.refreshPanel(nextBoard);         

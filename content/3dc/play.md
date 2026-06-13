@@ -89,17 +89,17 @@ layout: "play"
     border: 1px solid #888;
   }
   
-  #setup-window   { top:  260px; left:   20px; }  /* DOM Control Panels */
-  #move-window    { top: 1180px; left:   20px; }
-  #gambit-window  { top:  880px; left:   20px; }
-  #advsq-window   { top:  260px; left:  210px; }
-  #compass-window { top:  260px; left:  560px; }
-  #diags-window   { top:  260px; left:  960px; }
+  #setup-window   { top:  160px; left:   20px; }  /* DOM Control Panels */
+  #move-window    { top: 1000px; left:   20px; }
+  #gambit-window  { top:  745px; left:   20px; }
+  #advsq-window   { top:  160px; left:  210px; }
+  #compass-window { top:  160px; left:  560px; }
+  #diags-window   { top:  160px; left:  960px; }
 
-  #game-window    { top:  260px; left:  390px; }
+  #game-window    { top:  160px; left:  390px; }
 
-  #camera-window { top:   500px; left:  390px; }
-  #viewer-window { top:   260px; left:  760px; }
+  #camera-window { top:   400px; left:  390px; }
+  #viewer-window { top:   160px; left:  760px; }
   /* Seampont - more DOM control panels... */
 </style>
 

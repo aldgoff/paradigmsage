@@ -20,12 +20,19 @@
 // Seampoint: more objects...
 
 // --- Dependencies ---
+  import * as vSetup   from "../../view/setup/setup.js";
 // Seampoint: more imports...
 
 // --- Globals ---
 // Seampoint: more globals...
 
 // --- UI ---
+export function reset() {
+  console.log("model: setup.js - reset()");
+
+  vSetup.clearSetup();
+  }
+
 export function makeEntry(payload) {
   console.log(`model: setup.js - makeEntry(payload):`, payload);
 

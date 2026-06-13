@@ -15,7 +15,7 @@
 */
 
 // --- Load JSON ---
-import gambitsData from "./gambits.json" assert { type: "json" };
+  import gambitsData from "./gambits.json" assert { type: "json" };
   const gambitsModule = gambitsData.gambits_module;
   const category  = gambitsModule.category;
 // Seampoint: more objects...
@@ -29,18 +29,38 @@ import gambitsData from "./gambits.json" assert { type: "json" };
   import * as view   from "../../view/view.js";
 // Seampoint: more imports...
 
-/* TODO: Gambit additions:
- * 1. Review rendering code.
- * 2. Upgrade rows format to new standard.
- * 3. Write updateDerived data function.
- * 4. Expose button enable functions.
- * 5. Code to extract quads from the gambit.
-*/
-
 // --- Globals ---
   let activeAnimation = null;
+// Seampoint: more globals...
 
 // --- UI ---
+export function clearGambits() {  // Still in use.
+  console.log("view : gambits.js - clearGambits()");
+
+  const scene = view.getContext().scene;
+
+  // --- 1. Remove ALL groups (offboard + containers) ---
+  scene.children
+    .filter(obj => obj.userData?.overlays)
+    .forEach(group => {
+      derenderGambit(group);
+    });
+
+  // --- 2. Remove ANY stray overlays still attached to tiles ---
+  const tileMap = view.getContext().tileMap;
+  if (!tileMap) return;
+
+  for (const tile of tileMap.values()) {
+    if (!tile.children) continue;
+
+    tile.children
+      .filter(child => child.userData?.isOverlay)
+      .forEach(overlay => {
+        tile.remove(overlay);
+      });
+  }
+  }
+
 export function makeQuadGroup(entry) {
   console.log("view : gambits.js - makeQuadGroup(entry).", entry);
 
@@ -227,33 +247,6 @@ export function refreshPanel() {
     }
   }
 }
-
-export function clearGambits() {  // Still in use.
-  console.log("view : gambits.js - clearGambits()");
-
-  const scene = view.getContext().scene;
-
-  // --- 1. Remove ALL groups (offboard + containers) ---
-  scene.children
-    .filter(obj => obj.userData?.overlays)
-    .forEach(group => {
-      derenderGambit(group);
-    });
-
-  // --- 2. Remove ANY stray overlays still attached to tiles ---
-  const tileMap = view.getContext().tileMap;
-  if (!tileMap) return;
-
-  for (const tile of tileMap.values()) {
-    if (!tile.children) continue;
-
-    tile.children
-      .filter(child => child.userData?.isOverlay)
-      .forEach(overlay => {
-        tile.remove(overlay);
-      });
-  }
-  }
 
 export function render(group, { animate = false } = {}) {
   console.log("view : gambits.js - render( not shown)");

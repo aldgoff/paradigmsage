@@ -34,6 +34,11 @@
 // Seampoint: more globals...
 
 // --- UI ---
+export function clearSetup() {
+  console.log("view : setup.js - clearSetup()");
+
+}
+
 export function clear(entry) {
   console.log("view : setup.js - clear(entry)", entry);
 

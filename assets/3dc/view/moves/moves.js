@@ -15,7 +15,7 @@
 */
 
 // --- Load JSON ---
-import movesData from "./moves.json" assert { type: "json" };
+  import movesData from "./moves.json" assert { type: "json" };
   const movesModule = movesData.moves_module;
   const category  = movesModule.category;
 // Seampoint: more objects...
@@ -26,9 +26,15 @@ import movesData from "./moves.json" assert { type: "json" };
 // Seampoint: more imports...
 
 // --- Globals ---
-let activeAnimation = null;
+  let activeAnimation = null;
+// Seampoint: more globals...
 
 // --- UI ---
+export function clearMoves() {
+  console.log("view : moves.js - clearMoves()");
+
+}
+
 export function undo(move) {
   console.log("view : moves.js - undo(move)", move);
   // TODO: write undo().

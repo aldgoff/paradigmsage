@@ -19,6 +19,11 @@
 
   import * as state    from "../../model/state/state.js";
 
+  import * as mAdvsqs  from "../../model/advsqs/advsqs.js";
+  import * as mGambits from "../../model/gambits/gambits.js";
+  import * as mMoves   from "../../model/moves/moves.js";
+  import * as mSetup   from "../../model/setup/setup.js";
+
   import * as vAdvsqs  from "../../view/advsqs/advsqs.js";
   import * as vGambits from "../../view/gambits/gambits.js";
   import * as vMoves   from "../../view/moves/moves.js";
@@ -227,14 +232,20 @@ async function handleLoad() {
 
       for(const entry of entries) {
         state.pushNewState(key, entry);
-        if(key === "Setup") {
+        if(     key === "Setup") {
           vSetup.pushPanelLine(entry);
-        }
+          }
         else if(key === "Moves") {
           vMoves.pushPanelLine(entry);
-        }
+          }
         else if(key === "Gambits") {
           vGambits.pushPanelLine(entry);
+          }
+        else if(key === "Advsqs") {
+          // The advsq panel does not have a scroll list.;
+          }
+        else  {
+          throw new Error(`Unknown entry key $[key}.`);
         }
       }
 
@@ -429,6 +440,7 @@ function processUndoBuffer(key, idx) {
       vSetup.refreshPanel(null);         
       return false;
     }
+    cSetup.buildBackward(entry);
 
     vSetup.refreshPanel(entry.nextBoard);         
 
@@ -518,11 +530,12 @@ function processRedoBuffer(key, idx) {
 
     const entry = state.fetchCurrentState("Setup");
     if(!entry) {
-      console.log("*** No next board.");
+      console.log("*** No next setup.");
       return false;
     }
-    cSetup.setButtonState("boardDone");
+    cSetup.buildForward(entry);
 
+    cSetup.setButtonState("boardDone");
     vSetup.refreshPanel(entry.nextBoard);         
 
     return true;
@@ -542,16 +555,19 @@ function processRedoBuffer(key, idx) {
 function hardReset() {
   console.log("cntrl: game.js - hardReset():");
 
+  // --- Model Layer ---
+  mAdvsqs.reset();
+  mGambits.reset();
+  mMoves.reset();
+  mSetup.reset();
+
   // --- View ---
-  vAdvsqs.removeFromScene();
-  vGambits.clearGambits();
-  vMoves.clearMoves?.();
-  vBoards.clearBoard();
+  // vBoards.clearBoard();
 
   // --- Derived / caches ---
   cGambits.reset?.();
 
-  // --- Model ---
+  // --- State ---
   state.setState({
     Setup: [],
     Moves: [],

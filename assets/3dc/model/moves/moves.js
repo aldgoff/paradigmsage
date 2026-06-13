@@ -15,16 +15,26 @@
 */
 
 // --- Load JSON ---
-import movesData from "./moves.json" assert { type: "json" };
+  import movesData from "./moves.json" assert { type: "json" };
   const movesModule = movesData.moves_module;
   const move  = movesModule.Move;
 // Seampoint: more objects...
 
 // --- Dependencies ---
   import * as state  from "../../model/state/state.js";
+  import * as vMoves from "../../view/moves/moves.js";
 // Seampoint: more imports...
 
+// --- Globals ---
+// Seampoint: more globals...
+
 // --- UI ---
+export function reset() {
+  console.log("model: moves.js - reset()");
+
+  vMoves.clearMoves();
+  }
+
 export function makeEntry(payload) {
   console.log(`model: moves.js - makeEntry(payload):`, payload);
 
