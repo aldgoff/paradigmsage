@@ -94,7 +94,7 @@ export function buildPayload(panel, action) {
       const prev = `~${piece.pos}`;
       const post = `@${dstStr}`;
       return { action, key, prev, post };
-    }
+      }
     else {
       console.log(`Piece not in tray, cannot place on board.`);
       return { action, key, prev: "miss", post: dstStr };
@@ -107,38 +107,41 @@ export function buildPayload(panel, action) {
     const dstTile = tileSelections.values().next().value;
     const dstStr = coords.vtsToBoard(dstTile, boardSpec);
 
-    const piece   = mPieces.getPieceList()[key];
-    console.log("***", piece);
-    // if(piece.loc === '@') {
-      const prev = `@${piece.pos}`;
-      const post = `@${dstStr}`;
-      return { action, key, prev, post };
-    // }
-    // else {
-    //   console.log(`Piece not on board, cannot shift its position.`);
-    //   return { action, key, prev: "miss", post: dstStr };
-    // }
+    const piece = mPieces.getPieceList()[key];
+    const prev  = `@${piece.pos}`;
+    const post  = `@${dstStr}`;
+    return { action, key, prev, post };
     }
   else if(action === "returnPiece") {
     const { pieceSelections, tileSelections } = cSelections.getSelections();
 
-    const key     = pieceSelections.values().next().value;
-    const piece   = mPieces.getPieceList()[key];
-    console.log("***", piece);  // loc, pos, coords, vts, home: trayPos, trayCoords, trayVts.
-    // if(piece.loc === '@') { 
-      const prev = `@${piece.pos}`;
-      const post = `~${piece.home.trayPos}`;
-      return { action, key, prev, post };
-    // }
-    // else {
-    //   console.log(`Piece not on board, cannot return to tray.`);
-    //   return { action, key, prev: "miss", post: dstStr };
-    // }
+    const key   = pieceSelections.values().next().value;
+    const piece = mPieces.getPieceList()[key];  // loc, pos, coords, vts, home: trayPos, trayCoords, trayVts.
+    const prev  = `@${piece.pos}`;
+    const post  = `~${piece.home.trayPos}`;
+    return { action, key, prev, post };
+    }
+  else if(action === "freezePuzzle") {
+    clearAllPieceSelections();
+    clearAllTileSelections();
+
+    return { action };
+    }
+  else if(action === "startingPos") {
+    clearAllPieceSelections();
+    clearAllTileSelections();
+
+    return { action };
+    }
+  else if(action === "play") {
+    clearAllPieceSelections();
+    clearAllTileSelections();
+
+    return { action };
     }
   else { throw new Error(`Unknown setup action ${action}`);
   }
   }
-
 
 export function buildSetup(entry) {       // Handle.
   console.log("cntrl: setup.js - buildSetup(entry)", entry);
@@ -166,7 +169,7 @@ export function buildForward(entry) {     // Redo.
     }
   else if(action === "placePiece") {
     const { action, key, prev, post } = entry;
-    placePieceOnnBoard(key, prev, post);
+    placePieceOnBoard(key, prev, post);
     setButtonState("pieces");
     vSetup.refreshPanel(currBoard);         
     }
@@ -178,8 +181,23 @@ export function buildForward(entry) {     // Redo.
     }
   else if(action === "returnPiece") {
     const { action, key, prev, post } = entry;
-    returnPieceTooTray(key, prev, post);
+    returnPieceToTray(key, prev, post);
     setButtonState("pieces");
+    vSetup.refreshPanel(currBoard);         
+    }
+  else if(action === "freezePuzzle") {
+    const { action } = entry;
+    setButtonState("loaded");
+    vSetup.refreshPanel(currBoard);         
+    }
+  else if(action === "startingPos") {
+    const { action } = entry;
+    setButtonState("loaded");
+    vSetup.refreshPanel(currBoard);         
+    }
+  else if(action === "play") {
+    const { action } = entry;
+    setButtonState("play");
     vSetup.refreshPanel(currBoard);         
     }
   else {
@@ -205,7 +223,7 @@ export function buildBackward(entry) {    // Undo.
     }
   else if(action === "placePiece") {
     const { action, key, prev, post } = entry;
-    returnPieceTooTray(key, post, prev);
+    returnPieceToTray(key, post, prev);
     setButtonState("pieces");
     vSetup.refreshPanel(currBoard);         
     }
@@ -217,8 +235,23 @@ export function buildBackward(entry) {    // Undo.
     }
   else if(action === "returnPiece") {
     const { action, key, prev, post } = entry;
-    placePieceOnnBoard(key, post, prev);
+    placePieceOnBoard(key, post, prev);
     setButtonState("pieces");
+    vSetup.refreshPanel(currBoard);         
+    }
+  else if(action === "freezePuzzle") {
+    const { action } = entry;
+    setButtonState("pieces");
+    vSetup.refreshPanel(currBoard);         
+    }
+  else if(action === "startingPos") {
+    const { action } = entry;
+    setButtonState("pieces");
+    vSetup.refreshPanel(currBoard);         
+    }
+  else if(action === "play") {
+    const { action } = entry;
+    setButtonState("loaded");
     vSetup.refreshPanel(currBoard);         
     }
   else {
@@ -264,97 +297,6 @@ export function clearAllPieceSelections() {
     console.log("***", key);
   }
   cSelections.clearPieceSelections();           // Set of pieces highlighted, indexed by key.
-}
-
-function buildBoard(board) {
-  console.log("cntrl: setup.js - buildBoard(board):", board);
-
-  const { boardSize, trayType, trayGap } = board;
-
-  if(boardSize != "0x0x0") {
-    cBoards.init(board);
-    cTrays.init(board);
-    cPieces.init(board); 
-  }
-  }
-
-function clearBoard(board) {
-  console.log("cntrl: setup.js - clearBoard(board):", board);
-
-  const { boardSize, trayType, trayGap } = board;
-
-  if(boardSize != "0x0x0") {
-    cBoards.destroy(board);
-    cTrays.destroy(board);
-    cPieces.destroy(board);
-  }
-  }
-
-function setButtonState(command) {
-  console.log("cntrl: setup.js - setButtonState(command)", command);
-
-  const panel = document.getElementById("diags-window");
-  panel.querySelector('[name="diags-buttons"]').textContent = command;
-
-  switch (command) {
-    case "makeBoard":
-      panels.enableButton("makeBoard",   true);
-
-      panels.enableButton("placePiece",  false);
-      panels.enableButton("shiftPiece",  false);
-      panels.enableButton("returnPiece", false);
-      panels.enableButton("freezePuzzle",false);
-      panels.enableButton("startingPos", false);
-      panels.enableButton("play",        false);
-      break;
-    case "boardDone":
-      panels.enableButton("makeBoard",   true);
-
-      panels.enableButton("placePiece",  true);
-      panels.enableButton("shiftPiece",  false);
-      panels.enableButton("returnPiece", false);
-      panels.enableButton("freezePuzzle",false);
-      panels.enableButton("startingPos", true);
-      panels.enableButton("play",        false);
-      break;
-    case "pieces":
-      panels.enableButton("placePiece",   true);
-      panels.enableButton("shiftPiece",   true);
-      panels.enableButton("returnPiece",  true);
-      panels.enableButton("freezePuzzle", true);
-      panels.enableButton("startingPos",  false);
-      panels.enableButton("play",         false);
-      break;
-    case "emptyTrays":
-      panels.enableButton("placePiece",   false);
-      panels.enableButton("returnPiece",  true);
-      panels.enableButton("shiftPiece",   true);
-      panels.enableButton("freezePuzzle", true);
-      panels.enableButton("startingPos",  false);
-      panels.enableButton("play",         false);
-      break;
-    case "loaded":
-      panels.enableButton("placePiece",   false);
-      panels.enableButton("returnPiece",  false);
-      panels.enableButton("shiftPiece",   false);
-      panels.enableButton("freezePuzzle", false);
-      panels.enableButton("startingPos",  false);
-      panels.enableButton("play",         true);
-      break;
-    case "play":
-      panels.enableButton("placePiece",   false);
-      panels.enableButton("returnPiece",  false);
-      panels.enableButton("shiftPiece",   false);
-      panels.enableButton("freezePuzzle", false);
-      panels.enableButton("startingPos",  false);
-      panels.enableButton("play",         false);
-
-      panels.enableButton("move", true);
-      break;
-    default:
-      throw new Error(`Unknown button state command ${command}.`);
-      break;
-  }
 }
 // Seampoint: more global functions...
 
@@ -493,23 +435,95 @@ function handlePlay(payload) {
 // Seampoint: more handlers...
 
 // --- Helpers ---
-function applyEntry(entry) {
-  console.log("cntrl: setup.js - applyEntry(entry)", entry);
+function buildBoard(board) {
+  console.log("cntrl: setup.js - buildBoard(board):", board);
 
-  const currEntry = state.fetchCurrentState("Setup"); // Clear previous board.
-  if(currEntry != null) {
-    // vSetup.clear(currEntry);
-    if(!state.isAtEnd("Setup")) {     // Branches the undo history, discards original branch.
-      // TODO: clear all later setup entries.
-      // const idx = state.getCurrentIndex("Setup"); // Not quite working...
-      // state.truncateState("Setup", idx);
-    }
+  const { boardSize, trayType, trayGap } = board;
+
+  if(boardSize != "0x0x0") {
+    cBoards.init(board);
+    cTrays.init(board);
+    cPieces.init(board); 
+  }
   }
 
-  recordSetupAction(entry);
+function clearBoard(board) {
+  console.log("cntrl: setup.js - clearBoard(board):", board);
 
-  // TODO: remove all entries in the downstream buffers; 
-  // a new board invalidates moves, gambits, and advsqs.
+  const { boardSize, trayType, trayGap } = board;
+
+  if(boardSize != "0x0x0") {
+    cBoards.destroy(board);
+    cTrays.destroy(board);
+    cPieces.destroy(board);
+  }
+  }
+
+function setButtonState(command) {
+  console.log("cntrl: setup.js - setButtonState(command)", command);
+
+  const panel = document.getElementById("diags-window");
+  panel.querySelector('[name="diags-buttons"]').textContent = command;
+
+  switch (command) {
+    case "makeBoard":
+      panels.enableButton("makeBoard",   true);
+
+      panels.enableButton("placePiece",  false);
+      panels.enableButton("shiftPiece",  false);
+      panels.enableButton("returnPiece", false);
+      panels.enableButton("freezePuzzle",false);
+      panels.enableButton("startingPos", false);
+      panels.enableButton("play",        false);
+      break;
+    case "boardDone":
+      panels.enableButton("makeBoard",   true);
+
+      panels.enableButton("placePiece",  true);
+      panels.enableButton("shiftPiece",  false);
+      panels.enableButton("returnPiece", false);
+      panels.enableButton("freezePuzzle",false);
+      panels.enableButton("startingPos", true);
+      panels.enableButton("play",        false);
+      break;
+    case "pieces":
+      panels.enableButton("placePiece",   true);
+      panels.enableButton("shiftPiece",   true);
+      panels.enableButton("returnPiece",  true);
+      panels.enableButton("freezePuzzle", true);
+      panels.enableButton("startingPos",  false);
+      panels.enableButton("play",         false);
+      break;
+    case "emptyTrays":
+      panels.enableButton("placePiece",   false);
+      panels.enableButton("returnPiece",  true);
+      panels.enableButton("shiftPiece",   true);
+      panels.enableButton("freezePuzzle", true);
+      panels.enableButton("startingPos",  false);
+      panels.enableButton("play",         false);
+      break;
+    case "loaded":
+      panels.enableButton("placePiece",   false);
+      panels.enableButton("returnPiece",  false);
+      panels.enableButton("shiftPiece",   false);
+      panels.enableButton("freezePuzzle", false);
+      panels.enableButton("startingPos",  false);
+      panels.enableButton("play",         true);
+      break;
+    case "play":
+      panels.enableButton("placePiece",   false);
+      panels.enableButton("returnPiece",  false);
+      panels.enableButton("shiftPiece",   false);
+      panels.enableButton("freezePuzzle", false);
+      panels.enableButton("startingPos",  false);
+      panels.enableButton("play",         false);
+
+      panels.enableButton("move", true);
+      break;
+    default:
+      throw new Error(`Unknown button state command ${command}.`);
+      break;
+  }
 }
 
 function createPieceEntry(payload) {
@@ -522,8 +536,8 @@ function createPieceEntry(payload) {
   return { entry, err };
   }
 
-function placePieceOnnBoard(key, prev, post) {
-  console.log("cntrl: setup.js - placePieceOnnBoard(key, prev, post):", key, prev, post);
+function placePieceOnBoard(key, prev, post) {
+  console.log("cntrl: setup.js - placePieceOnBoard(key, prev, post):", key, prev, post);
 
   const [, dstStr] = post.split("@");
   const dstTile = coords.normalizeTileToVts(dstStr, boardSpec);
@@ -557,8 +571,8 @@ function shiftPieceAroundBoard(key, prev, post) {
   return { ok, err: null };
   }
 
-function returnPieceTooTray(key, prev, post) {
-  console.log("cntrl: setup.js - returnPieceTooTray(key, prev, post):", key, prev, post);
+function returnPieceToTray(key, prev, post) {
+  console.log("cntrl: setup.js - returnPieceToTray(key, prev, post):", key, prev, post);
 
   const { ok, err } = mPieces.movePieceFromBoardToTray(key);
   if(!ok) return { ok, err };
