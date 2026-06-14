@@ -133,7 +133,10 @@ title: "Dev"
   - 6/10/26 - Setup undo/redo/rewind/FF. Game and cSetup QC. Button management. Undo makeBoard...
   - 6/11/26 - Add status panel. Change to diagnostic panel. Accessor view.getContext().
   - 6/12/26 - Centralize diagnostics. Setup entry. Setup panel refresh bug. Panel logic for setup makeBoard; tiles, trays, pieces still to do.
-  - 6/13/26 - Json code uniformity. Load uniformity. Makeboards working: panel, undo/redo, rewind/FF, load/save, trays/pieces.
+  - 6/13/26 - Json code uniformity. Load uniformity. Makeboards working: panel, undo/redo, rewind/FF, load/save, trays/pieces. Setup pieces working.
+
+## Save Place Piece States (6/12/126) - MakeBoard, place/shift/return BKRR.
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"placePiece","key":"BKRR","prev":"~KR1,1","post":"@KR6,6"},{"action":"shiftPiece","key":"BKRR","prev":"@KR6,6","post":"@KR5,5"},{"action":"returnPiece","key":"BKRR","prev":"@KR5,5","post":"~KR1,1"}],"Moves":[],"Gambits":[],"AdvSqs":[]}
 
 
 ## Save Setup States (6/12/26)

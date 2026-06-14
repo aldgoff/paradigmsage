@@ -140,14 +140,12 @@ export function movePieceTileToTile(key, dstStr) {
     const occupancy = mBoards.getBoardOccupancy();
     if(occupancy[z][x][y]) {
       const err = `Cannot move to an occupied ${occupancy[z][x][y]} tile ${dstStr}.`;
+      // console.log("***", err);
       return { ok: false, err };
     }
     const [Z,X,Y] = utils.add(origin, piece.coords); // Previous.
     occupancy[Z][X][Y] = null;
     occupancy[z][x][y] = key;
-    console.log("*** ZXY", Z,X,Y);
-    console.log("*** zxy", z,x,y);
-    console.log("*** Update board occupancy", piece.coords);
 
   // --- Update piece ---
     piece.loc    = "@";                                             // Update pieceList.

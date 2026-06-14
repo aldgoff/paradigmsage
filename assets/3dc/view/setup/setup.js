@@ -160,8 +160,8 @@ function assembleLine(entry) {
     case "placePiece": 
     case "shiftPiece": 
     case "returnPiece": {
-      const { data } = entry;
-      const line = `${data}`;
+      const { key, prev, post } = entry;
+      const line = `${key} ${prev} ${post}`;
       return line; }
     case "freezePuzzle": 
     case "startingPos": 
@@ -191,6 +191,5 @@ function refreshRadioButtons(board) {
   if(sizeRadio) sizeRadio.checked = true;
   if(trayTypeRadio) trayTypeRadio.checked = true;  
 }
-
 // Seampoint: more local functions...
 
