@@ -13,7 +13,7 @@ import quadsData from "./quads.json" assert { type: "json" };
   export const planeQuadTable  = quadsModule.planeQuadTable;
 // Seampoint: more objects...
 
-// --- Build upon previous layers ---
+// --- Dependencies ---
   import * as rays from "../../foundation/rays/rays.js";
 // Seampoint: more imports..
 

@@ -12,7 +12,7 @@ import viewerData from "./viewer.json" assert { type: "json" };
   const viewerModule = viewerData.viewer_module;
 // Seampoint: more objects...
 
-// --- Build upon previous layers ---
+// --- Dependencies ---
   import * as cameras  from "../../view/render/cameras.js";
   import * as vGambits from "../../view/gambits/gambits.js";
   import * as vViewer  from "../../view/viewer/viewer.js";

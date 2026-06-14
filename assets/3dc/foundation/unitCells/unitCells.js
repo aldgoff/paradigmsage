@@ -13,7 +13,7 @@ import unitCellsData from "./unitCells.json" assert { type: "json" };
   const unitCells = unitCellsModule;
 // Seampoint: more objects...
 
-// --- Build upon previous layers ---
+// --- Dependencies ---
 // Seampoint: more imports...
 
 // --- UI ---

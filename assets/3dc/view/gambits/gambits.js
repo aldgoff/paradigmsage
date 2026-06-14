@@ -15,12 +15,12 @@
 */
 
 // --- Load JSON ---
-import gambitsData from "./gambits.json" assert { type: "json" };
+  import gambitsData from "./gambits.json" assert { type: "json" };
   const gambitsModule = gambitsData.gambits_module;
   const category  = gambitsModule.category;
 // Seampoint: more objects...
 
-// --- Build upon previous layers ---
+// --- Dependencies ---
   import * as cGambits from "../../controller/gambits/gambits.js";
 
   import * as state  from "../../model/state/state.js";
@@ -29,18 +29,38 @@ import gambitsData from "./gambits.json" assert { type: "json" };
   import * as view   from "../../view/view.js";
 // Seampoint: more imports...
 
-/* TODO: Gambit additions:
- * 1. Review rendering code.
- * 2. Upgrade rows format to new standard.
- * 3. Write updateDerived data function.
- * 4. Expose button enable functions.
- * 5. Code to extract quads from the gambit.
-*/
-
 // --- Globals ---
   let activeAnimation = null;
+// Seampoint: more globals...
 
 // --- UI ---
+export function clearGambits() {  // Still in use.
+  console.log("view : gambits.js - clearGambits()");
+
+  const scene = view.getContext().scene;
+
+  // --- 1. Remove ALL groups (offboard + containers) ---
+  scene.children
+    .filter(obj => obj.userData?.overlays)
+    .forEach(group => {
+      derenderGambit(group);
+    });
+
+  // --- 2. Remove ANY stray overlays still attached to tiles ---
+  const tileMap = view.getContext().tileMap;
+  if (!tileMap) return;
+
+  for (const tile of tileMap.values()) {
+    if (!tile.children) continue;
+
+    tile.children
+      .filter(child => child.userData?.isOverlay)
+      .forEach(overlay => {
+        tile.remove(overlay);
+      });
+  }
+  }
+
 export function makeQuadGroup(entry) {
   console.log("view : gambits.js - makeQuadGroup(entry).", entry);
 
@@ -83,7 +103,7 @@ export function makeDuplexGroup(entry) {
 export function planeRotation(entry, rotation) {
   console.log("view : gambits.js - planeRotation(rotation, entry).", rotation, entry);
 
-  const scene = view.context.scene;
+  const scene = view.getContext().scene;
   if (!scene) { return; }
 
   const group = scene.children.find(g => {
@@ -163,7 +183,7 @@ function applyMaterialOpacity(obj, opacity) {
 }
 /* ----- ----- ----- ----- */
 export function undo(gambit) {
-  const scene = view.context.scene;
+  const scene = view.getContext().scene;
 
   const group = scene.children.find(
     g => g.userData?.entry === gambit
@@ -185,8 +205,8 @@ export function redo(gambit) {
 export function pushPanelLine(line) {
   console.log("view : gambits.js - pushPanelLine(line)", line);
 
-  const el = document.getElementById("gambit-list");
-  if(!el) return;
+  const scroll = document.getElementById("gambit-list");
+  if(!scroll) return;
 
   const row = assembleLine(line);
 
@@ -194,31 +214,30 @@ export function pushPanelLine(line) {
   div.textContent = row;
 
   // Write to the scroll box.
-  el.appendChild(div);
-  el.scrollTop = el.scrollHeight;
+  scroll.appendChild(div);
+  scroll.scrollTop = scroll.scrollHeight;
   }
 
 export function popPanelLine() {
   console.log("view : gambits.js - popPanelLine()");
 
-  const el = document.getElementById("gambit-list");
-  if(!el) return;
+  const scroll = document.getElementById("gambit-list");
+  if(!scroll) return;
 
-  const last = el.lastElementChild;
+  const last = scroll.lastElementChild;
   if(!last) return;
 
-  el.removeChild(last);
+  scroll.removeChild(last);
   }
 
-export function refreshPanel() {
-  // console.log("view : gambits.js - refreshPanel()");
-  const el = document.getElementById("gambit-list");
-  if (!el) return;
+export function refreshPanel(gambit) {
+  console.log("view : gambits.js - refreshPanel(gambit)", gambit);
 
-  const count = state.getIndices().Gambits;
+  const scroll = document.getElementById("gambit-list");  // Scroll list.
+  if (!scroll) return;
 
-  const children = el.children;
-
+  const count = state.getIndices().Gambits;                // Scroll text box.
+  const children = scroll.children;
   for (let i = 0; i < children.length; i++) {
     if (i < count) {
       children[i].style.opacity = "1.0";   // active
@@ -226,39 +245,12 @@ export function refreshPanel() {
       children[i].style.opacity = "0.3";   // future
     }
   }
-}
-
-export function clearGambits() {  // Still in use.
-  console.log("view : gambits.js - clearGambits()");
-
-  const scene = view.context.scene;
-
-  // --- 1. Remove ALL groups (offboard + containers) ---
-  scene.children
-    .filter(obj => obj.userData?.overlays)
-    .forEach(group => {
-      derenderGambit(group);
-    });
-
-  // --- 2. Remove ANY stray overlays still attached to tiles ---
-  const tileMap = view.context.tileMap;
-  if (!tileMap) return;
-
-  for (const tile of tileMap.values()) {
-    if (!tile.children) continue;
-
-    tile.children
-      .filter(child => child.userData?.isOverlay)
-      .forEach(overlay => {
-        tile.remove(overlay);
-      });
-  }
   }
 
 export function render(group, { animate = false } = {}) {
   console.log("view : gambits.js - render( not shown)");
 
-  view.context.scene.add(group);
+  view.getContext().scene.add(group);
 
   // --- helper ---
   function attachOverlays(overlays) {
@@ -295,12 +287,12 @@ export function cancelAnimation() {
     activeAnimation.cancelled = true;
     activeAnimation = null;
   }
-}
+  }
 
 export function setLevelSep(levelSep) {
   console.log("view : gambits.js - setLevelSep(levelSep):", levelSep);
 
-  const scene = view.context.scene;
+  const scene = view.getContext().scene;
 
   scene.children
     .filter(g => g.userData?.entry)
@@ -380,7 +372,7 @@ function derenderGambit(group) {
   }
 
   // --- Remove any missed overlays by entry ---
-  const tileMap = view.context.tileMap;
+  const tileMap = view.getContext().tileMap;
 
   for (const tile of tileMap.values()) {
     if (!tile.children) continue;
@@ -394,7 +386,7 @@ function derenderGambit(group) {
   if (group.parent) {
     group.parent.remove(group);
   } else {
-    view.context.scene.remove(group);
+    view.getContext().scene.remove(group);
   }
   }
 

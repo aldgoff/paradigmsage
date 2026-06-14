@@ -80,7 +80,7 @@
   # code
   git add .
   git commit
-  git push origin 3dc2   # optional but wise
+  git push origin 3dc3   # optional but wise
 
   git switch main
   git merge --no-ff 3dc3

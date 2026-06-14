@@ -1,12 +1,25 @@
 # Setup Spec
-  Create board and and trays.
+  Create board, trays, and pieces.
 
-## 1. Purpose/Concepts/Example/Canonical/Formats/Parsing/Architecture/Functions/Data/...
-  text
+## 1. Purpose
+  Support both games (std starting position) and puzzles (manually create an initial position).
 
-## 2. Title
-  text
+## 2. Arch
+  Standard panel dispatch with handle functions.
 
- ### 2.1 SubSection
-  text
+## 3. Buttons
+ ### 3.1 List
+  - Make Board
+  - Place Piece
+  - Shift Piece
+  - Return Piece
+  - Freeze Pieces
+  - Starting Position
+  - Play
+ ### 3.2 Ergonomics
+  Buttons enabled only when applicable.
+
+## 4. Options
+  - Three board sizes
+  - Two tray types.
 

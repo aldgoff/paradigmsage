@@ -8,12 +8,12 @@
 */
 
 // --- Load JSON ---
-import boardsData from "./boards.json" assert { type: "json" };
+  import boardsData from "./boards.json" assert { type: "json" };
   const boardsModule = boardsData.boards_module;
   const category  = boardsModule.category;
 // Seampoint: more objects...
 
-// --- Build upon previous layers ---
+// --- Dependencies ---
   import * as vBoards from "../../view/boards/boards.js";
 // Seampoint: more imports...
 
@@ -21,56 +21,83 @@ import boardsData from "./boards.json" assert { type: "json" };
   const occupancy =
     Array.from({ length: 10 }, () =>
       Array.from({ length: 10 }, () =>
-        Array(10).fill(null)
+        Array(10).fill(null)  // Piece key = null|"WQRP".
       )
     );
 // Seampoint: more globals...
 
+export function getBoardOccupancy() { return occupancy; }
 // --- UI ---
-export function init(entry) {
-  console.log("model: boards.js - init(entry)", entry);
+export function init(board) {
+  console.log("model: boards.js - init(board)", board);
 
-  const { action, boardSize, trayType, initialPos } = entry;  // Informative.
+  // const { action, boardSize, trayType, trayGap, boardSpec } = entry;
+  const { boardSize, trayType, trayGap } = board;
 
-  clearBoard();
+  clearOccupancy();
+  vBoards.render(board);
+  }
 
-  vBoards.render(entry);
-}
+export function destroy(board) {
+  console.log("model: boards.js - destroy(board)", board);
+  
+  // const { action, boardSize, trayType, trayGap, boardSpec } = entry;
+  const { boardSize, trayType, trayGap } = board;
+
+  clearOccupancy();
+  vBoards.clear(board);
+  }
 
 export function getBoardSpecs() {
   const specs = "8x8x8";
   // TODO: finish getBoardSpecs().
 
   return specs;
-}
+  }
 
-export function getBoardOccupancy() {
-  return occupancy;
-}
 
+export function clearPieceFromBoardOccupancy(key) { // occupancy[z][x][y] = null - O(3).
+  const occ = occupancy;
+
+  for(let z = 0; z < occ.length; z++) {
+    for(let x = 0; x < occ[z].length; x++) {
+      for(let y = 0; y < occ[z][x].length; y++) {
+        if(occ[z][x][y] === key) {
+          occ[z][x][y] = null;      // Clear.
+        }
+      }
+    }
+  }
+}
 // Seampoint: more global functions...
 
 // --- Helpers ---
-function clearBoard() {
-  // console.log("model: boards.js - clearBoard()");
-
-  let tally = 0;
+function clearOccupancy() {
+  console.log("model: boards.js - clearOccupancy()");
 
   for(let z = 0; z < occupancy.length; z++) {
     for(let x = 0; x < occupancy[z].length; x++) {
       for(let y = 0; y < occupancy[z][x].length; y++) {
-
-        if(occupancy[z][x][y] !== null) {
-          tally++;
-        }
-
         occupancy[z][x][y] = null;
       }
     }
   }
-
-  // console.log(`model: boards.js - cleared ${tally} board slots.`);
 }
 
+function pieceLocOnBoard(key) { // [z, x, y]|null.
+  const occ = occupancy;
+
+  for(let z = 0; z < occ.length; z++) {
+    for(let x = 0; x < occ[z].length; x++) {
+      for(let y = 0; y < occ[z][x].length; y++) {
+        if(occ[z][x][y] === key) {
+          return [z, x, y];
+        }
+      }
+    }
+  }
+
+  return null;
+}
 // Seampoint: more local functions...
 

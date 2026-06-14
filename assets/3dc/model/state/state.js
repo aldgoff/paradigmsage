@@ -6,29 +6,30 @@
   Recommended access: import * as mState from "../../model/state/state.js";
   UI: the export functions.
 */
-/* const obj = JSON.parse(JSON.stringify(setup)); */
 
 // --- Load JSON ---
-import stateData from "./state.json" assert { type: "json" };
+  import stateData from "./state.json" assert { type: "json" };
   const seed = stateData.state_module;  // Not used, kept for syntax reference only.
 // Seampoint: more objects...
 
-// --- Build upon previous layers ---
+// --- Dependencies ---
 // Seampoint: more imports...
 
-let state = { // This is the state history of the game: setup-moves-gambits-advsqs.
-  Setup:   [],
-  Moves:   [],
-  Gambits: [],
-  AdvSqs:  []
-  };
+// --- Globals ---
+  let state = { // This is the state history of the game: setup-moves-gambits-advsqs.
+    Setup:   [],
+    Moves:   [],
+    Gambits: [],
+    AdvSqs:  []
+    };
 
-let indexes = { // Current element in each buffer, a key-value object.
-  Setup:   0,
-  Moves:   0,
-  Gambits: 0,
-  AdvSqs:  0
-}
+  let indexes = { // Current element in each buffer, a key-value object.
+    Setup:   0,
+    Moves:   0,
+    Gambits: 0,
+    AdvSqs:  0
+  }
+// Seampoint: more globals...
 
 // --- UI ---
 export function getStateKeys() {    // ["Setup","Moves","Gambits","AdvSqs"] (in state order).
@@ -358,19 +359,19 @@ export function pushNewState(buffer, values) {  // Uses current index, will bran
 /* ----- ----- ----- ----- */
 
 // export function collapseKeyIndex() {
-//   const order = ["AdvSqs", "Gambits", "Moves", "Setup"];
+  //   const order = ["AdvSqs", "Gambits", "Moves", "Setup"];
 
-//   for (const key of order) {
-//     const i = indexes[key];
+  //   for (const key of order) {
+  //     const i = indexes[key];
 
-//     if (i > 1) {
-//       indexes[key] = 1;
-//       return { arrayKey: key, index: 0 };
-//     }
-//   }
+  //     if (i > 1) {
+  //       indexes[key] = 1;
+  //       return { arrayKey: key, index: 0 };
+  //     }
+  //   }
 
-//   return null; // Bottom Sentry
-// }
+  //   return null; // Bottom Sentry
+  // }
 // Seampoint: more global functions...
 
 // --- Helpers ---

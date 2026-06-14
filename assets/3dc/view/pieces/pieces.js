@@ -1,6 +1,6 @@
 /* File: pieces.js
   Path: ./3dc/view/pieces/pieces.js
-  Purpose: desc
+  Purpose: code for building piece meshes, positioning and highlighting them.
   Author: Allan Goff
   Date: 5/03/26
   Recommended access: import * as vPieces from "../../view/pieces/pieces.js";
@@ -8,12 +8,13 @@
 */
 
 // --- Load JSON ---
-import piecesData from "./pieces.json" assert { type: "json" };
+  import piecesData from "./pieces.json" assert { type: "json" };
   const piecesModule = piecesData.pieces_module;
   
   const materials = piecesModule.materials;
   const white     = materials.white;
   const black     = materials.black;
+  const clickSize = piecesModule.clickSize;
   
   const rook   = piecesModule.rook;
   const bishop = piecesModule.bishop;
@@ -25,8 +26,10 @@ import piecesData from "./pieces.json" assert { type: "json" };
   const king   = piecesModule.king;
 // Seampoint: more objects...
 
-// --- Build upon previous layers ---
+// --- Dependencies ---
   import * as utils   from "../../../utils/utils.js";
+
+  import * as cSetup  from "../../controller/setup/setup.js";
 
   import * as planes  from "../../geometry/planes/planes.js";
   import * as coords  from "../../foundation/coords/coords.js";
@@ -43,30 +46,108 @@ import piecesData from "./pieces.json" assert { type: "json" };
 // --- Globals ---
   const THREE = window.THREE;
   let currPiecesGroup = null;
+  let pieceGroups = {};
+  let lastTrayGap = 0;
 // Seampoint: more globals...
 
+export function getCurrPiecesGroup() { return currPiecesGroup; }
+export function getPieceGroups() { return pieceGroups; }
 // --- UI ---
-export function initPieces() {
-  console.log("view : pieces.js - initPieces()");
-
-  const pieces = mPieces.getPieceList();
+export function initPieces(pieceList) {
+  console.log("view : pieces.js - initPieces(pieceList)", pieceList);
 
   currPiecesGroup = new THREE.Group();
+  currPiecesGroup.name = "Pieces";
 
-  Object.entries(pieces)
-    .forEach(([key, piece]) =>
-      renderPiece(key)
-    );
+  for(const key in pieceList) {      // "WKRR", ...
+    const group = createPiece(key);
+    pieceGroups[key] = group;
+    placePieceInTray(key);    // Pieces start in the trays.
+    currPiecesGroup.add(group);
+  }  
+  console.log("*** currPiecesGroup", currPiecesGroup);
+  console.log("*** pieceGroups", pieceGroups);
 
-  view.context.scene.add(currPiecesGroup);
+  view.getContext().scene.add(currPiecesGroup);
   }
 
-export function renderPiece(key) {  // "WKR".
+export function destroyPieces(pieceList) {
+  console.log("view : pieces.js - destroyPieces(pieceList)", pieceList);
+
+  for(const key in pieceList) {      // "WKRR", ...
+    const group = pieceGroups[key];
+    currPiecesGroup.remove(group);
+  } 
+  view.getContext().scene.remove(currPiecesGroup);
+  currPiecesGroup = null;
+  pieceGroups = {};
+
+  console.log("*** currPiecesGroup", currPiecesGroup);
+  console.log("*** pieceGroups", pieceGroups);
+}
+
+export function placePieceInTray(key) {      // "WKRR", ...
+  // console.log("view : pieces.js - placePieceInTray(key)", key);
+
+  const piece = mPieces.getPieceList()[key];              // Arg validation.
+  if(!piece) throw Error(`No such piece ${key}.`);
+
+  const { loc, pos, coords, vts, home } = piece;          // Parse location.
+  const player = key[0];  // W|B.                         // Parse arg.
+
+  const group = pieceGroups[key];                         // Fetch the mesh (group).
+  group.userData.vts = home.trayVts;
+
+  const tileSize = tiles.tileSize();                      // Place just above tile.
+  const tileHeight = tileSize[0];  // Z.
+  const zOffset = tileHeight/2;
+  const decoratorGap = 2;
+  const grid2 = coordsMaps.vts2pixels(group.userData.vts)
+  // console.log("*** position: ", grid2[0], grid2[1]+zOffset+decoratorGap, grid2[2]); // Debug instrumention.
+  group.position.set(grid2[0], grid2[1]+zOffset+decoratorGap, grid2[2]);
+  }
+
+export function placePiece(key) {      // "WKRR", ...
+  // console.log("view : pieces.js - placePiece(key)", key);
+
+  const piece = mPieces.getPieceList()[key];              // Arg validation.
+  if(!piece) throw Error(`No such piece ${key}.`);
+
+  const { loc, pos, coords } = piece;                     // Parse location.
+  const player = key[0];  // W|B.                         // Parse arg.
+
+  const group = pieceGroups[key];                         // Fetch the mesh (group).
+
+  if(     loc === "~") {                                  // Place in tray.
+    let gap = cViewer.getTrayGap() + 2; // Tray offset from board with zero gap.
+    group.userData.vts = tileToVts(player, pos, gap);
+    }
+  else if(loc === "@") {                                  // Place on board.
+    group.userData.vts = tileToVts(player, pos, 0);
+    }
+  else {
+    throw new Error(`Piece ${key} was neither on board, nor in a tray.`);
+  }
+
+  const tileSize = tiles.tileSize();                      // Place just above tile.
+  const tileHeight = tileSize[0];  // Z.
+  const zOffset = tileHeight/2;
+  const decoratorGap = 2;
+  const grid2 = coordsMaps.vts2pixels(group.userData.vts)
+
+  // console.log("*** position: ", grid2[0], grid2[1]+zOffset+decoratorGap, grid2[2]); // Debug instrumention.
+
+  group.position.set(grid2[0], grid2[1]+zOffset+decoratorGap, grid2[2]);
+  // console.log("*** Piece moved to", loc, pos, "coords:", coords, "vts:", group.userData.vts);
+  }
+
+export function renderPiece(key) {  // "WKRR".  // Deprecated.
   // console.log("view : pieces.js - renderPiece(key)", key);
 
-  const piece = mPieces.getPieceList()[key];              // Parse args.
+  const piece = mPieces.getPieceList()[key];              // Arg validation.
   if(!piece) throw Error(`No such piece ${key}.`);
-  const { loc, pos, coords } = piece;
+
+  const { loc, pos, coords } = piece;                     // Parse args.
   const player = key[0];  // W|B.
   const side   = key[1];  // K|Q.
   const level  = key[2];  // R|N|B|Q|K.
@@ -118,44 +199,96 @@ export function reprojectTrayPieces(levelSep, trayGap) {
     if(!piece) return;
     if(piece.loc !== "~") return;
 
-    // Recompute canonical tray VTS.
-    const player = key[0];
-    const vts = trayToVts(player, piece.pos, trayGap + 2); // Tray base offset from board.
-    const pixels = coordsMaps.vts2pixels(vts, levelSep);
+    const player = key[0];                                // Tray gap.
+    const change = trayGap - lastTrayGap;
+    const displacement = (player === "W") ? [0, -change, -change]: [0, change, change];
+    const vts = utils.add(piece.vts, displacement);
+    
+    const pixels = coordsMaps.vts2pixels(vts, levelSep);  // Level sep.
 
-    const tileHeight = 5;
+    const tileSize = tiles.tileSize();                    // Place just above tile.
+    const tileHeight = tileSize[0];  // Z.
     const zOffset = tileHeight / 2;
     const decoratorGap = 2;
-
-    obj.position.set(
-      pixels[0],
-      pixels[1] + zOffset + decoratorGap,
-      pixels[2]
-    );
+    obj.position.set(pixels[0], pixels[1] + zOffset + decoratorGap, pixels[2]);
 
     obj.userData.vts = vts;
+    piece.vts = vts;
+  });
+  
+  lastTrayGap = trayGap;
+  }
+
+export function highlight(key) {
+  console.log("view : pieces.js - highlight(key)", key);  // "WKRP" etc.
+
+  let found = null;
+
+  currPiecesGroup.traverse(obj => {
+    if(obj.userData?.key === key)
+      found = obj;
+  });
+  if(!found) return;
+
+  // Highlight the piece.
+  found.scale.set(clickSize, clickSize, clickSize);
+  const player = key[0];
+  found.traverse(obj => {
+    if(obj.type === "LineSegments" ||
+       obj.type === "LineLoop" ||
+       obj.type === "Line") {
+
+      (player === 'W')
+      ? obj.material.color.set(white.highlight)
+      : obj.material.color.set(black.highlight);
+    }
+  });
+  }
+
+export function deHighlight(key) {
+  console.log("view : pieces.js - deHighlight(key)", key);
+
+  let found = null;
+
+  currPiecesGroup.traverse(obj => {
+    if(obj.userData?.key === key)
+      found = obj;
+  });
+  if(!found) return;
+
+  // Dehighlight the piece.
+  found.scale.set(1.0, 1.0, 1.0);
+  const player = key[0];
+  found.traverse(obj => {
+    if(obj.type === "LineSegments" ||
+       obj.type === "LineLoop" ||
+       obj.type === "Line") {
+
+      (player === 'W')
+      ? obj.material.color.set(white.lineColor)
+      : obj.material.color.set(black.lineColor);
+    }
   });
 }
 // Seampoint: more global functions...
 
 // --- Helpers ---
-function renderInTray(player, side, type, tray, pos) {
-  // console.log("view : pieces.js - renderInTray(player, type, tray, pos)", player, type, tray, pos);
-  // TODO: finish renderInTray().
+function createPiece(key) {      // "WKRR", ...
+  // console.log("view : pieces.js - createPiece(key)", key);
 
-  let gap = cViewer.getTrayGap();
-  gap += 2; // Tray offset from board with zero gap.
+  let group = null;                                       // Return object.
 
-  const vts = trayToVts(player, pos, gap);
-
-  let group = null;
+  const player = key[0];  // W|B.                         // Parse arg.
+  const side   = key[1];  // K|Q.
+  const level  = key[2];  // R|N|B|Q|K.
+  const type   = key[3];  // R|B|D|S|Q|N|P|U|K.
 
   const color = (player === "W") ? white : black;
   switch(type) {
     case "R": group = makeRookObject(  {color});                break;
     case "B": group = makeBishopObject({color, player});        break;
     case "D": group = makeDukeObject(  {color, player});        break;
-    case "Q": group = makeQueenObject( {color}); break;
+    case "Q": group = makeQueenObject( {color});                break;
     case "N": group = makeKnightObject({color, player, side});  break;
     case "S": group = makeStackObject( {color, player});        break;
     case "P": group = makePawnObject(  {color});                break;
@@ -168,13 +301,48 @@ function renderInTray(player, side, type, tray, pos) {
 
   if(!group) return;
 
-  const grid2 = coordsMaps.vts2pixels(vts)
-  const tileHeight = 5;       // TODO: get from some json file.
-  const zOffset = tileHeight/2;
-  const decoratorGap = 2;
-  group.position.set(grid2[0], grid2[1]+zOffset+decoratorGap, grid2[2]);
+  group.userData.isPiece = true;
+  group.userData.key = key;
+
+  return group;
+  }
+
+function renderInTray(player, side, type, tray, pos) {
+  // console.log("view : pieces.js - renderInTray(player, type, tray, pos)", player, type, tray, pos);
+
+  let group = null;
+
+  const color = (player === "W") ? white : black;
+  switch(type) {
+    case "R": group = makeRookObject(  {color});                break;
+    case "B": group = makeBishopObject({color, player});        break;
+    case "D": group = makeDukeObject(  {color, player});        break;
+    case "Q": group = makeQueenObject( {color});                break;
+    case "N": group = makeKnightObject({color, player, side});  break;
+    case "S": group = makeStackObject( {color, player});        break;
+    case "P": group = makePawnObject(  {color});                break;
+    case "K": group = makeKingObject(  {color});                break;
+    // Seampoint: no more pieces.
+    default:
+      console.log(`view : pieces.js - Unknown piece type ${type}`); return; 
+      break;
+  }
+
+  if(!group) return;
 
   group.userData.isPiece = true;
+
+  
+  const tileSize = tiles.tileSize();
+  const tileHeight = tileSize[0];  // Z.
+  const zOffset = tileHeight/2;
+  const decoratorGap = 2;
+
+  let gap = cViewer.getTrayGap() + 2; // Tray offset from board with zero gap.
+  const vts = tileToVts(player, pos, gap);
+  const grid2 = coordsMaps.vts2pixels(vts)
+
+  group.position.set(grid2[0], grid2[1]+zOffset+decoratorGap, grid2[2]);
   group.userData.vts = vts;
 
   currPiecesGroup.add(group);
@@ -182,11 +350,11 @@ function renderInTray(player, side, type, tray, pos) {
   return group;
   }
 
-function trayToVts(player, pos, gap) {
-  // console.log("view : pieces.js - trayToVts(player, pos, gap)", player, pos, gap);
-  // TODO: finish trayToVts().
+function tileToVts(player, pos, gap) {
+  // console.log("view : pieces.js - tileToVts(player, pos, gap)", player, pos, gap);
 
-  const specOrName = "8x8x8"; // TODO: get board size from setup.
+  const specOrName  = cSetup.getCurrBoard().boardSize;
+
   let vts = coords.normalizeTileToVts(pos, specOrName); // [4,-3,-3]=>[4,-4,-4] and [-3,-3,-3]=>[-3,-4,-4]
   const displacement = (player === "W") ? [0, -gap, -gap]: [0, gap, gap];
 
@@ -198,7 +366,7 @@ function trayToVts(player, pos, gap) {
 function renderOnBoard(player, side, type, pos) {
   console.log("view : pieces.js - renderOnBoard(player, type, pos)", player, type, pos);
 
-  const coords = coords.boardToVts(pos);  // TODO: may need to add this function to coords.
+  const coords = coords.boardToVts(pos);
   // TODO: write function renderOnBoard.
 }
 
@@ -285,7 +453,7 @@ function makeQueenObject(params = {}) {
 }
 
 function makeKnightObject(params = {}) {
-  console.log("view : pieces.js - makeKnightObject(params)", params);
+  // console.log("view : pieces.js - makeKnightObject(params)", params);
 
   const { color, player, side } = params;
   let [, tileWidth] = tiles.tileSize();
@@ -371,7 +539,7 @@ function makeBishopGeo(tileWidth, bishop) {
   }
 
 function makeDukeGeo(tileWidth, duke) {
-  console.log("view : pieces.js - makeDukeGeo(tileWidth, duke)", tileWidth, duke);
+  // console.log("view : pieces.js - makeDukeGeo(tileWidth, duke)", tileWidth, duke);
   const { aspect, breadth } = duke;
   const base = tileWidth * breadth;
   const height = base * aspect;
@@ -471,12 +639,6 @@ function makeKnightMeshGroup(tileWidth, knight, chirality = 1, color) {
   return group;
   }
 
-function makeStackMeshGroup(tileWidth, stack) {
-  let group = null;
-  // TODO: define stack group.
-
-  return group;
-  }
 
 function makePawnMeshGroup(tileWidth, pawn, color) {
   const { aspect, breadth } = pawn;
@@ -684,14 +846,14 @@ function addCubeBevelLines(mesh, cubeSize, color) {
 }
 // Seampoint: more local functions...
 
-/* TODO: piece meshes & interaction
+/* TODO: QC checklist
   === Phase 1: Mesh Semantics ===
     1. Piece/ghost distinction.
     2. Common mesh helpers.
     3. White/Black materials.
-    4. Confirm black tray placement.
+    4. ✅ Confirm black tray placement.
     5. Ghost visibility + occupancy inversion.
-    6. Piece edge conventions.
+    6. ✅ Piece edge conventions.
 
   === Phase 2: Interaction Semantics ===
     7. Raycast ghost interaction.
@@ -703,8 +865,8 @@ function addCubeBevelLines(mesh, cubeSize, color) {
     13. Pieces/ghosts move with tray as gap changes.
 
   === Phase 3: Piece System Expansion ===
-    14. Meshes for remaining pieces.
-    15. Canonical piece scaling/aspect language.
+    14. ✅ Meshes for remaining pieces.
+    15. ✅ Canonical piece scaling/aspect language.
     16. Piece silhouette QC against movement semantics.
 
   === Phase 4: Render Architecture Cleanup ===

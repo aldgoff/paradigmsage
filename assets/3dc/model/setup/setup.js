@@ -15,19 +15,28 @@
 */
 
 // --- Load JSON ---
-import setupData from "./setup.json" assert { type: "json" };
+  import setupData from "./setup.json" assert { type: "json" };
   const setupModule = setupData.setup_module;
-  const category  = setupModule.category;
 // Seampoint: more objects...
 
-// --- Build upon previous layers ---
+// --- Dependencies ---
+  import * as vSetup   from "../../view/setup/setup.js";
 // Seampoint: more imports...
 
+// --- Globals ---
+// Seampoint: more globals...
+
 // --- UI ---
+export function reset() {
+  console.log("model: setup.js - reset()");
+
+  vSetup.clearSetup();
+  }
+
 export function makeEntry(payload) {
   console.log(`model: setup.js - makeEntry(payload):`, payload);
 
-  const { action, boardSize, trayType, initialPos } = payload;  // Informative.
+  const { action, prevBoard, nextBoard, boardSize,trayType,trayGap } = payload;
 
   const entry = payload;
 

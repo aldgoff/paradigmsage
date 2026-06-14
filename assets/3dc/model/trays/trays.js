@@ -8,85 +8,85 @@
 */
 
 // --- Load JSON ---
-import traysData from "./trays.json" assert { type: "json" };
+  import traysData from "./trays.json" assert { type: "json" };
   const traysModule = traysData.trays_module;
   const category  = traysModule.category;
 // Seampoint: more objects...
+
+// --- Dependencies ---
+  import * as vTrays from "../../view/trays/trays.js";
+// Seampoint: more imports...
 
 // --- Globals ---
   const whiteTray =
     Array.from({ length: 10 }, () =>
       Array.from({ length: 2 }, () =>
-        Array(2).fill(null)
+        Array(2).fill(null)  // Piece key = null|"WQRP".
       )
     );
 
   const blackTray =
     Array.from({ length: 10 }, () =>
       Array.from({ length: 2 }, () =>
-        Array(2).fill(null)
+        Array(2).fill(null)  // Piece key = null|"WQRP".
       )
     );
 // Seampoint: more globals...
 
-// --- Build upon previous layers ---
-  import * as vTrays from "../../view/trays/trays.js";
-// Seampoint: more imports...
-
+export function getWhiteTray() { return whiteTray; }
+export function getBlackTray() { return blackTray; }
 // --- UI ---
 export function init(entry) {
   console.log("model: trays.js - init(entry)", entry);
-
-  const { action, boardSize, trayType, initialPos } = entry;  // Informative.
+  
+  const { action, boardSize, trayType, trayGap, boardSpec } = entry;
 
   clearTrays();
-  const panel = document.getElementById("viewer-window");
-  const trayGap = Number(panel.querySelector('[name="viewer-trayGap"]')?.value);
-  vTrays.makeTrays(trayGap);
-}
-
-export function getWhiteTray() {
-  return whiteTray;
+  vTrays.makeTrays(entry);
   }
 
-export function getBlackTray() {
-  return blackTray;
+export function destroy(entry) {
+  console.log("model: trays.js - destroy(entry)", entry);
+  
+  const { action, boardSize, trayType, trayGap, boardSpec } = entry;
+
+  clearTrays();
+  vTrays.destroyTrays(entry);
+  }
+
+export function trayIndices(type, spec="8x8x8") {
+  console.log("model: trays.js - trayIndices(type, spec)", type, spec);
+
+  let i;
+  let j;
+
+  if(spec === "8x8x8") {
+    if(     type === "P") { i = 1; j = 1; }
+    else if(type === "B") { i = 1; j = 0; }
+    else if(type === "D") { i = 0; j = 1; }
+    else                  { i = 0; j = 0; }
+    }
+  else {
+    if(     type === "P") { i = 1; j = 1; }
+    else                  { i = 0; j = 0; }
+  }
+
+  return { i, j };
 }
 // Seampoint: more global functions...
 
 // --- Helpers ---
 function clearTrays() {
-  // console.log("model: trays.js - clearTrays()");
-
-  let tally = 0;
+  console.log("model: trays.js - clearTrays()");
 
   for(let z = 0; z < whiteTray.length; z++) { // White tray.
     for(let i = 0; i < whiteTray[z].length; i++) {
       for(let j = 0; j < whiteTray[z][i].length; j++) {
-
-        if(whiteTray[z][i][j] !== null) {
-          tally++;
-        }
-
         whiteTray[z][i][j] = null;
-      }
-    }
-  }
-
-  for(let z = 0; z < blackTray.length; z++) { // Black tray.
-    for(let i = 0; i < blackTray[z].length; i++) {
-      for(let j = 0; j < blackTray[z][i].length; j++) {
-
-        if(blackTray[z][i][j] !== null) {
-          tally++;
-        }
-
         blackTray[z][i][j] = null;
       }
     }
   }
-
-  // console.log(`model: trays.js - cleared ${tally} tray slots.`);
 }
 // Seampoint: more local functions...
 

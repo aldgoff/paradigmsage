@@ -15,20 +15,25 @@
 */
 
 // --- Load JSON ---
-import movesData from "./moves.json" assert { type: "json" };
+  import movesData from "./moves.json" assert { type: "json" };
   const movesModule = movesData.moves_module;
   const category  = movesModule.category;
 // Seampoint: more objects...
 
-// --- Build upon previous layers ---
-  import * as state   from "../../model/state/state.js";
+// --- Dependencies ---
+  import * as state  from "../../model/state/state.js";
   import * as quads  from "../../geometry/quads/quads.js";
 // Seampoint: more imports...
 
 // --- Globals ---
-let activeAnimation = null;
+  let activeAnimation = null;
+// Seampoint: more globals...
 
 // --- UI ---
+export function clearMoves() {
+  console.log("view : moves.js - clearMoves()");
+  }
+
 export function undo(move) {
   console.log("view : moves.js - undo(move)", move);
   // TODO: write undo().
@@ -42,8 +47,8 @@ export function redo(move) {
 export function pushPanelLine(move) {
   console.log("view : moves.js - pushPanelLine(move)", move);
 
-  const el = document.getElementById("move-list");
-  if(!el) return;
+  const scroll = document.getElementById("move-list");
+  if(!scroll) return;
 
   const line = assembleLine(move);
 
@@ -51,31 +56,30 @@ export function pushPanelLine(move) {
   div.textContent = line;
 
   // Write to the scroll box.
-  el.appendChild(div);
-  el.scrollTop = el.scrollHeight;
+  scroll.appendChild(div);
+  scroll.scrollTop = scroll.scrollHeight;
   }
 
 export function popPanelLine() {
   console.log("view : moves.js - popPanelLine()");
 
-  const el = document.getElementById("move-list");
-  if(!el) return;
+  const scroll = document.getElementById("move-list");
+  if(!scroll) return;
 
-  const last = el.lastElementChild;
+  const last = scroll.lastElementChild;
   if(!last) return;
 
-  el.removeChild(last);
+  scroll.removeChild(last);
   }
 
-export function refreshPanel() {
-  // console.log("view : moves.js - refreshPanel()");
-  const el = document.getElementById("move-list");
-  if (!el) return;
+export function refreshPanel(move) {
+  console.log("view : moves.js - refreshPanel(move)", move);
+  
+  const scroll = document.getElementById("move-list");    // Scroll list.
+  if (!scroll) return;
 
-  const count = state.getIndices().Moves;
-
-  const children = el.children;
-
+  const count = state.getIndices().Moves;                 // Scroll text box.
+  const children = scroll.children;
   for (let i = 0; i < children.length; i++) {
     if (i < count) {
       children[i].style.opacity = "1.0";   // active
@@ -90,7 +94,7 @@ export function cancelAnimation() {
     activeAnimation.cancelled = true;
     activeAnimation = null;
   }
-}
+  }
 
 export function render(move) {  // Used to render a just created move via panel.
   console.log("view : moves.js - renderMove(move)", move);

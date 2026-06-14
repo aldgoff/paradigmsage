@@ -8,19 +8,34 @@
 */
 
 // --- Load JSON ---
-import boardsData from "./boards.json" assert { type: "json" };
+  import boardsData from "./boards.json" assert { type: "json" };
   const boardsModule = boardsData.boards_module;
 // Seampoint: more objects...
 
-// --- Build upon previous layers ---
+// --- Dependencies ---
   import * as mBoards from "../../model/boards/boards.js";
 // Seampoint: more imports...
+
+// --- Globals ---
+// Seampoint: more globals...
 
 // --- UI ---
 export function init(entry) {
   console.log("cntrl: boards.js - init(entry)", entry);
   
+  const { action, boardSize, trayType, trayGap, boardSpec } = entry;
+  
   mBoards.init(entry);  // Initial occupancy depends on board size and tray type.
+
+  return;
+  }
+
+export function destroy(entry) {
+  console.log("cntrl: boards.js - destroy(entry)", entry);
+  
+  const { action, boardSize, trayType, trayGap, boardSpec } = entry;
+  
+  mBoards.destroy(entry);  // Initial occupancy depends on board size and tray type.
 
   return;
   }

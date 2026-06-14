@@ -8,7 +8,7 @@
 */
 
 // --- Load JSON ---
-import traysData from "./trays.json" assert { type: "json" };
+  import traysData from "./trays.json" assert { type: "json" };
   const traysModule = traysData.trays_module;
   const traySpecs = traysModule.tray_specs;
   const eight     = traysModule["8x8x8"];
@@ -16,54 +16,57 @@ import traysData from "./trays.json" assert { type: "json" };
   const tens      = traysModule["10x10x10"];
 // Seampoint: more objects...
 
-// --- Build upon previous layers ---
+// --- Dependencies ---
   import * as state      from "../../model/state/state.js";
   import * as view       from "../view.js";
-  import * as tiles      from "../tiles/tiles.js";
-  import * as coordsMaps from "../../view/render/coordsMaps.js";
+  import * as vTiles     from "../tiles/tiles.js";
   import * as vPieces    from "../../view/pieces/pieces.js";
+  import * as coordsMaps from "../../view/render/coordsMaps.js";
 // Seampoint: more imports...
 
 // --- Globals ---
-  const THREE = window.THREE;
-
   let whiteTrayGroup = null;
   let blackTrayGroup = null;
   let lastTrayGap    = 0;
   let lastLevelSep   = 1.0;
-
-  let traysVisible = true;
+  let traysVisible   = true;
 // Seampoint: more globals.
 
+export function getWhiteTrayGroup() { return whiteTrayGroup; }
+export function getBlackTrayGroup() { return blackTrayGroup; }
 // --- UI ---
-export function makeTrays(gap) {
-  console.log("view : viewer.js - makeTrays(gap)", gap);
+export function makeTrays(entry) {
+  console.log("view : trays.js - makeTrays(entry)", entry);
 
-  destroyTrays();
+  const { action, boardSize, trayType, trayGap } = entry;
 
-  whiteTrayGroup = makeTrayGroup("White", gap);
-  blackTrayGroup = makeTrayGroup("Black", gap);
+  // destroyTrays();
 
-  view.context.scene.add(whiteTrayGroup);
-  view.context.scene.add(blackTrayGroup);
+  whiteTrayGroup = makeTrayGroup("White", entry);
+  blackTrayGroup = makeTrayGroup("Black", entry);
+
+  view.getContext().scene.add(whiteTrayGroup);
+  view.getContext().scene.add(blackTrayGroup);
 
   traysVisible = true;
   }
 
 export function destroyTrays() {
+  console.log("view : trays.js - destroyTrays()");
+
   if(whiteTrayGroup) {
-    view.context.scene.remove(whiteTrayGroup);
+    view.getContext().scene.remove(whiteTrayGroup);
     whiteTrayGroup = null;
   }
 
   if(blackTrayGroup) {
-    view.context.scene.remove(blackTrayGroup);
+    view.getContext().scene.remove(blackTrayGroup);
     blackTrayGroup = null;
   }
   }
 
 export function setLevelSep(levelSep) {
-  console.log("view : trays.js - setLevelSep(levelSep)", levelSep);
+  // console.log("view : trays.js - setLevelSep(levelSep)", levelSep);
 
   lastLevelSep = levelSep;
 
@@ -74,7 +77,7 @@ export function setLevelSep(levelSep) {
   }
 
 export function setTrayGap(trayGap) {
-  console.log("view : viewer.js - setTrayGap(trayGap)", trayGap);
+  // console.log("view : trays.js - setTrayGap(trayGap)", trayGap);
 
   lastTrayGap = trayGap;
 
@@ -84,42 +87,28 @@ export function setTrayGap(trayGap) {
   reprojectTray(blackTrayGroup, lastLevelSep,  trayGap);
 
   vPieces.reprojectTrayPieces(lastLevelSep, lastTrayGap);
-  }
-
-function reprojectTray(group, levelSep, trayGap) {
-  console.log("view : trays.js - reprojectTray(group, levelSep, trayGap))", group, levelSep, trayGap);
-
-  group.traverse(tile => {
-    if(tile.userData?.isTrayTile) {
-      reprojectMesh(tile, levelSep, trayGap);
-    }
-  });  
 }
 // Seampoint: more global functions...
 
 // --- Helpers ---
+function makeTrayGroup(side, entry) {
+  console.log("view : trays.js - makeTrayGroup(side, entry)", side, entry);
 
-function makeTrayGroup(side, gap) {
-  console.log("view : viewer.js - makeTrayGroup(side)", side);
+  const { action, boardSize, trayType, trayGap } = entry;
 
-  const trayGroup = new THREE.Group();
-
-  const setup = state.fetchCurrentState("Setup");
-  if(!setup) return trayGroup;
-
-  const { boardSize } = setup;
-  console.log("view : viewer.js - boardSize", boardSize);
+  const trayGroup = new window.THREE.Group();
+  trayGroup.name = `${side}Tray`;
 
   const trayData = traysModule[boardSize][side];
 
-  buildTrayColumn(trayGroup, trayData.pieces, side, gap);
-  buildTrayColumn(trayGroup, trayData.pawns,  side, gap);
+  buildTrayColumn(trayGroup, trayData.pieces, side, trayGap);
+  buildTrayColumn(trayGroup, trayData.pawns,  side, trayGap);
 
   return trayGroup;
   }
 
 function buildTrayColumn(trayGroup, columnData, side, gap) {
-  console.log("view : viewer.js - buildTrayColumn(...)", trayGroup, columnData, side);
+  console.log("view : trays.js - buildTrayColumn(...)", columnData, side, gap);
 
   Object.entries(columnData)
     .forEach(([key, pos]) => {
@@ -145,9 +134,9 @@ function applyGap(pos, side, gap) {
   }
 
 function makeTrayTile(logicalPos, renderPos) {
-  const geometry = view.context.tileGeometry;
-  const tile = tiles.getTileAttributes(logicalPos);  // Bishop/duke colors derive from logical coords (vts).
-  const meshTile = tiles.createMeshTile(tile, geometry, renderPos); // Create mesh in the render position.
+  const geometry = view.getContext().tileGeometry;
+  const tile = vTiles.getTileAttributes(logicalPos);  // Bishop/duke colors derive from logical coords (vts).
+  const meshTile = vTiles.createMeshTile(tile, geometry, renderPos); // Create mesh in the render position.
 
   meshTile.material.forEach((mat, idx) => {
     if(idx === 2 || idx === 3) {    // Tint face surfaces only.
@@ -172,6 +161,16 @@ function reprojectMesh(tile, levelSep, trayGap) {
   const pixels = coordsMaps.vts2pixels(shifted, levelSep);
 
   tile.position.set(...pixels);
+  }
+
+function reprojectTray(group, levelSep, trayGap) {
+  console.log("view : trays.js - reprojectTray(group, levelSep, trayGap))", group, levelSep, trayGap);
+
+  group.traverse(tile => {
+    if(tile.userData?.isTrayTile) {
+      reprojectMesh(tile, levelSep, trayGap);
+    }
+  });  
 }
 // Seampoint: more local functions...
 

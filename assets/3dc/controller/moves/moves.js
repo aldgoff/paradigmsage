@@ -15,11 +15,11 @@
 */
 
 // --- Load JSON ---
-import movesData from "./moves.json" assert { type: "json" };
+  import movesData from "./moves.json" assert { type: "json" };
   const movesModule = movesData.moves_module;
 // Seampoint: more objects...
 
-// --- Build upon previous layers ---
+// --- Dependencies ---
   import * as game     from "../../controller/game/game.js";
 
   import * as state    from "../../model/state/state.js";
@@ -30,6 +30,9 @@ import movesData from "./moves.json" assert { type: "json" };
   import * as vMoves   from "../../view/moves/moves.js";
   import * as vGambits from "../../view/gambits/gambits.js";
 // Seampoint: more imports...
+
+// --- Globals ---
+// Seampoint: more globals...
 
 // --- UI ---
 export function panelDispatch(payload) {
@@ -180,6 +183,5 @@ function applyEntry(entry) {
   // TODO: remove all entries in the downstream buffers; 
   // a new move invalidates gambits and advsqs.
 }
-
 // Seampoint: more local functions...
 

@@ -3,19 +3,16 @@
     "_example": "A sequence of 4 invertible undo/redo arrays.",
     "_cannonicalSchema": "Each model layer module file is responsible for complying to this standard.",
     "Setup": [
-      { "action": "makeboard", "boardSize": "8x8x8",  "trayType": "real", "initialPos": "std" },
-      { "Example Line": "8x8x8   real std" },
-      { "action": "lock", "boardSize": "8x8x8",  "trayType": "real", "initialPos": "list", 
-        "list": {
-          "white": {"ref": "abs", "pieces": ["R@KR1,1", "N@KN1,1"], "pawns": []}, 
-          "black": {"ref": "rel", "pieces": [], "pawns": ["P@QN2,2", "P@QR2,2"]}
-        } 
-      },
-      { "Example Line": "W:2,1 - B:1,0" },
-      { "action": "fromTray", "side": "White", "piece": "R", "location": "@", "coords": "KR1,1", "ref": "relative" },
-      { "action": "fromTray", "side": "Black", "piece": "S", "location": "@", "coords": "KB1,1", "ref": "relative" },
-      { "action": "fromTray", "side": "White", "piece": "R", "location": "~", "coords": "QR1,1", "ref": "relative" },
-      { "action": "fromTray", "side": "White", "piece": "P", "location": "@", "coords": "K2,2",  "ref": "relative" }
+      { "action": "makeBoard",    "boardSize": "8x8x8", "trayType": "real" },
+      { "action": "placePiece",   "data": "BKRP@KR7,7" },
+      { "action": "shiftPiece",   "data": "BKRP:KR7,7>KR6,6" },
+      { "action": "placePiece",   "data": "BKRR@KR8,8" },
+      { "action": "placePiece",   "data": "BKBS@KB5,5" },
+      { "action": "returnPiece",  "data": "BKRR~KR1,1" },
+      { "action": "returnPiece",  "data": "BKRP~KR2,2" },
+      { "action": "freezePuzzle", "data": "1" },
+      { "action": "play",         "data": "game or puzzle" },
+      { "action": "_lastLine"  }
     ],
     "Moves": [
       { "turn":  1, "player": "White", "piece": "P", "src": "K2,2", "action": "move", "dst": "K4,4", "captured": "", "sec": "", "annotations": "ch" },

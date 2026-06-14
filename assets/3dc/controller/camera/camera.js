@@ -12,7 +12,7 @@ import cameraData from "./camera.json" assert { type: "json" };
   const cameraModule = cameraData.camera_module;
 // Seampoint: more objects...
 
-// --- Build upon previous layers ---
+// --- Dependencies ---
   import * as vCameras from "../../view/render/cameras.js";
   import * as vGambits from "../../view/gambits/gambits.js";
 // Seampoint: more imports.

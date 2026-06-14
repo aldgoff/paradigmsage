@@ -122,4 +122,80 @@ title: "Dev"
   - 6/01/26 - Replace rest of Act 2 comics. Replace Act 3 comics. Level sep for trays, board, advsqs & gambits. Cleanup. Piece level sep. Tray piece gap.
   - 6/02/26 - Finish White pawns. Finish White knights with bevels and chirality. Add Black trays. Add material colors via json.
   - 6/03/26 - Tray default state is visible. POC on duke/bishop/stack centering and orientation. Finish pieces. Update clues and quick start.
+  - 6/04/26 - Create selections module, migrate tile listener. Piece clicks! TODO reduction in view. Highlight/dehighlight pieces.
+  - 6/05/26 - Move pieces from tray to board. QC setup. Manage panel buttons. Setup uses selections, pass 1.
+  - 6/06/26 - Setup uses selections pass 2. Setup uses selections pass 3.
+
+ ### Week 13:
+  - 6/07/26 - Improved initial placement of pieces in the trays, all three boards.
+  - 6/08/26 - QC pieces. Complete board to tray. Misc. QC. Dependencies. Setup flow established. Fix tray gap/pieces. Prep for new setup undo.
+  - 6/09/26 - Screenshots. Selections canonized. Canonize code as map. Tiles superstructure. Comment QC. Setup undo phase 1.
+  - 6/10/26 - Setup undo/redo/rewind/FF. Game and cSetup QC. Button management. Undo makeBoard...
+  - 6/11/26 - Add status panel. Change to diagnostic panel. Accessor view.getContext().
+  - 6/12/26 - Centralize diagnostics. Setup entry. Setup panel refresh bug. Panel logic for setup makeBoard; tiles, trays, pieces still to do.
+  - 6/13/26 - Json code uniformity. Load uniformity. Makeboards working: panel, undo/redo, rewind/FF, load/save, trays/pieces. Setup pieces working.
+
+ ### Week 14:
+  - 6/14/26 - Game/state QC. QC setup. Debug rewind. Debug place piece on ten boards. Debug setup.
+
+## Place piece test on 10x8x8.
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"10x8x8","trayType":"Real","trayGap":0}},{"action":"placePiece","key":"BKRR","prev":"~KR1,1","post":"@KR5,5"}],"Moves":[],"Gambits":[],"AdvSqs":[]}
+
+## Boards, Pieces, Freeze, Play (6/14/26)
+  **13-0-0-0**
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"makeBoard","prevBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0},"nextBoard":{"boardSize":"10x8x8","trayType":"Real","trayGap":0}},{"action":"makeBoard","prevBoard":{"boardSize":"10x8x8","trayType":"Real","trayGap":0},"nextBoard":{"boardSize":"10x10x10","trayType":"Fact","trayGap":0}},{"action":"makeBoard","prevBoard":{"boardSize":"10x10x10","trayType":"Fact","trayGap":0},"nextBoard":{"boardSize":"10x8x8","trayType":"Fact","trayGap":0}},{"action":"makeBoard","prevBoard":{"boardSize":"10x8x8","trayType":"Fact","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Fact","trayGap":0}},{"action":"placePiece","key":"BKRR","prev":"~KR1,1","post":"@KR8,8"},{"action":"placePiece","key":"BKRP","prev":"~KR2,2","post":"@KR7,7"},{"action":"shiftPiece","key":"BKRP","prev":"@KR7,7","post":"@KR6,6"},{"action":"shiftPiece","key":"BKRP","prev":"@KR6,6","post":"@KR5,5"},{"action":"shiftPiece","key":"BKRP","prev":"@KR5,5","post":"@KR4,4"},{"action":"returnPiece","key":"BKRR","prev":"@KR8,8","post":"~KR1,1"},{"action":"freezePuzzle","data":1},{"action":"play","data":"game or puzzle"}],"Moves":[],"Gambits":[],"AdvSqs":[]}
+
+  **11-0-0-0**
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"makeBoard","prevBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0},"nextBoard":{"boardSize":"10x8x8","trayType":"Real","trayGap":0}},{"action":"makeBoard","prevBoard":{"boardSize":"10x8x8","trayType":"Real","trayGap":0},"nextBoard":{"boardSize":"10x10x10","trayType":"Fact","trayGap":0}},{"action":"makeBoard","prevBoard":{"boardSize":"10x10x10","trayType":"Fact","trayGap":0},"nextBoard":{"boardSize":"10x8x8","trayType":"Fact","trayGap":0}},{"action":"makeBoard","prevBoard":{"boardSize":"10x8x8","trayType":"Fact","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Fact","trayGap":0}},{"action":"placePiece","key":"BKRR","prev":"~KR1,1","post":"@KR8,8"},{"action":"placePiece","key":"BKRP","prev":"~KR2,2","post":"@KR7,7"},{"action":"shiftPiece","key":"BKRP","prev":"@KR7,7","post":"@KR6,6"},{"action":"shiftPiece","key":"BKRP","prev":"@KR6,6","post":"@KR5,5"},{"action":"shiftPiece","key":"BKRP","prev":"@KR5,5","post":"@KR4,4"},{"action":"returnPiece","key":"BKRR","prev":"@KR8,8","post":"~KR1,1"}],"Moves":[],"Gambits":[],"AdvSqs":[]}
+
+## Save Place Piece States (6/12/26) - MakeBoard, place/shift/return BKRR.
+  **4-0-0-0**
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"placePiece","key":"BKRR","prev":"~KR1,1","post":"@KR6,6"},{"action":"shiftPiece","key":"BKRR","prev":"@KR6,6","post":"@KR5,5"},{"action":"returnPiece","key":"BKRR","prev":"@KR5,5","post":"~KR1,1"}],"Moves":[],"Gambits":[],"AdvSqs":[]}
+
+## Save Setup States (6/12/26)
+ ### Make Boards - pass: buttons click/radio, list/highlighting, undo/redo, rewind/FF, load/save.
+  **3-0-0-0**
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0},"boardSize":"8x8x8","trayType":"Real","trayGap":0},{"action":"makeBoard","prevBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0},"nextBoard":{"boardSize":"10x8x8","trayType":"Real","trayGap":0},"boardSize":"10x8x8","trayType":"Real","trayGap":0},{"action":"makeBoard","prevBoard":{"boardSize":"10x8x8","trayType":"Real","trayGap":0},"nextBoard":{"boardSize":"10x10x10","trayType":"Fact","trayGap":0},"boardSize":"10x10x10","trayType":"Fact","trayGap":0}],"Moves":[],"Gambits":[],"AdvSqs":[]}
+
+  **3-0-0-0**
+  {"Setup":
+    [{"action":"makeBoard",
+      "prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},
+      "nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0},"boardSize":"8x8x8","trayType":"Real","trayGap":0},
+    {"action":"makeBoard",
+      "prevBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0},
+      "nextBoard":{"boardSize":"10x8x8","trayType":"Fact","trayGap":0},"boardSize":"10x8x8","trayType":"Fact","trayGap":0},
+    {"action":"makeBoard",
+      "prevBoard":{"boardSize":"10x8x8","trayType":"Fact","trayGap":0},
+      "nextBoard":{"boardSize":"10x10x10","trayType":"Fact","trayGap":0},"boardSize":"10x10x10","trayType":"Fact","trayGap":0}],
+  "Moves":[],"Gambits":[],"AdvSqs":[]}
+
+  **4-0-0-0**
+  {"Setup":[
+  {"action":"makeBoard",
+    "prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},
+    "nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0},
+    "boardSize":"8x8x8","trayType":"Real","trayGap":0},
+  {"action":"makeBoard",
+    "prevBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0},
+    "nextBoard":{"boardSize":"10x8x8","trayType":"Real","trayGap":0},
+    "boardSize":"10x8x8","trayType":"Real","trayGap":0},
+  {"action":"makeBoard",
+    "prevBoard":{"boardSize":"10x8x8","trayType":"Real","trayGap":0},
+    "nextBoard":{"boardSize":"10x10x10","trayType":"Fact","trayGap":0},
+    "boardSize":"10x10x10","trayType":"Fact","trayGap":0},
+  {"action":"makeBoard",
+    "prevBoard":{"boardSize":"10x10x10","trayType":"Fact","trayGap":0},
+    "nextBoard":{"boardSize":"10x8x8","trayType":"Fact","trayGap":0},
+    "boardSize":"10x8x8","trayType":"Fact","trayGap":0}],
+"Moves":[],"Gambits":[],"AdvSqs":[]}
+
+
+## Useful global search and replace command...
+  ```
+  Global Command to Label Dependencies
+  find ./assets/3dc -type f -name "*.js" \
+    -exec sed -i '' \
+    's/--- Build upon previous layers ---/--- Dependencies ---/g' {} +
+  ```
 

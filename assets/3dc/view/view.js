@@ -17,7 +17,7 @@
 // --- Load JSON ---
 // Seampoint: more objects...
 
-// --- Build upon previous layers ---
+// --- Dependencies ---
   import * as renders    from "./render/renders.js";
   import * as coordsMaps from "./render/coordsMaps.js";
   import * as tiles      from "./tiles/tiles.js";
@@ -31,19 +31,27 @@
   import * as decorators from "./decorators/decorators.js";
   import * as quads      from "../geometry/quads/quads.js";
 
-  import * as cameras    from "../view/render/cameras.js";
+  import * as vSelections from "./selections/selections.js";
+  import * as cameras     from "../view/render/cameras.js";
+  import * as vAdvsqs     from "../view/advsqs/advsqs.js";
 // Seampoint: more imports...
 
 // --- Globals ---
-export let context;   // Contains things like: scene, renderer, camera, tileMap...
+  let context = null;   // Contains: scene, renderer, camera, tileMap...
+// Seampoint: more globals...
 
+export function getContext() { return context; }
 // --- UI ---
 export function init(playBoard) {
-  console.log("view : view.js - init(playBoard).", playBoard);
+  console.log("view : view.js - init(playBoard)");
 
   context = renders.init(playBoard);
   context.tileMap = new Map();
   context.tileGeometry = new THREE.BoxGeometry(...coordsMaps.vts2xyz(tiles.tileSize()));
+
+  vAdvsqs.setAdvsqPanelInitialParams();
+
+  vSelections.init();
 
   game.showUndoStatus();
   const {range, speed} = viewer.getJitterValues();

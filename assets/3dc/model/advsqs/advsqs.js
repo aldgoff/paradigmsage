@@ -15,15 +15,25 @@
 */
 
 // --- Load JSON ---
-import advsqsData from "./advsqs.json" assert { type: "json" };
+  import advsqsData from "./advsqs.json" assert { type: "json" };
   const advsqsModule = advsqsData.advsqs_module;
   const category  = advsqsModule.category;
 // Seampoint: more objects...
 
-// --- Build upon previous layers ---
+// --- Dependencies ---
+  import * as vAdvsqs  from "../../view/advsqs/advsqs.js";
 // Seampoint: more imports...
 
+// --- Globals ---
+// Seampoint: more globals...
+
 // --- UI ---
+export function reset() {
+  console.log("model: advsqs.js - reset()");
+
+  vAdvsqs.clearAdvsqs();
+  }
+
 export function makeEntry(payload) {
   console.log(`model: advsqs.js - makeEntry(payload):`, payload);
 

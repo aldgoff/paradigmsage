@@ -3,137 +3,650 @@
   Purpose: Controller code to setup board and trays.
   Author: Allan Goff
   Date: 4/22/26
-  Recommended access: import * as cSetup from "../../control/setup/setup.js";
+  Recommended access: import * as cSetup from "../../controller/setup/setup.js";
   UI: the export functions.
-  Philosophy: Dlete a module by deleting its directory - not so much.
-    controller/ model/ view/
-    play.md - DOM
-    main.js - regressions
-    view.js - wire, build payload
-    game.js - rewind, FF
-    state.js - undo, redo
 */
 
 // --- Load JSON ---
-import setupData from "./setup.json" assert { type: "json" };
+  import setupData from "./setup.json" assert { type: "json" };
   const setupModule = setupData.setup_module;
 // Seampoint: more objects...
 
-// --- Build upon previous layers ---
-  import * as game     from "../../controller/game/game.js";
-  import * as cBoards  from "../../controller/boards/boards.js";
-  import * as cTrays   from "../../controller/trays/trays.js";
-  import * as cPieces  from "../../controller/pieces/pieces.js";
+// --- Dependencies ---
+  import * as panels   from "../../panels/panels.js";
 
+  import * as game        from "../../controller/game/game.js";
+  import * as cBoards     from "../../controller/boards/boards.js";
+  import * as cTrays      from "../../controller/trays/trays.js";
+  import * as cPieces     from "../../controller/pieces/pieces.js";
+  import * as cSelections from "../../controller/selections/selections.js";
+
+  import * as coords   from "../../foundation/coords/coords.js";
   import * as state    from "../../model/state/state.js";
   import * as mSetup   from "../../model/setup/setup.js";
-  import * as mPieces  from "../../model/pieces/pieces.js";
-  import * as mTrays   from "../../model/trays/trays.js";
   import * as mBoards  from "../../model/boards/boards.js";
+  import * as mTrays   from "../../model/trays/trays.js";
+  import * as mPieces  from "../../model/pieces/pieces.js";
 
-  import * as boards   from "../../view/boards/boards.js";
+  import * as view     from "../../view/view.js";
   import * as vSetup   from "../../view/setup/setup.js";
-  import * as vGambits from "../../view/gambits/gambits.js";
-  import * as vViewer  from "../../view/viewer/viewer.js";
+  import * as vGambits from "../../view/gambits/gambits.js";  // Cancel animation.
+  import * as vPieces  from "../../view/pieces/pieces.js";    // Dehighlight selected pieces.
+  import * as vTrays   from "../../view/trays/trays.js";
+
+  import * as invariants from "../../tests/core/invariants.js";
 // Seampoint: more imports...
 
 // --- Globals ---
-  const pieceList = {
-    "white": { "ref": "abs", "pieces": [], "pawns": [] }, 
-    "black": { "ref": "rel", "pieces": [], "pawns": [] }
-  };
-// Seampoint: more globals.
+  export let boardSpec = "0x0x0"; // Deprecate.
+  let currBoard = { boardSize: "0x0x0", trayType: "None", trayGap: 0 };
+// Seampoint: more globals...
 
+export function getCurrBoard() { return currBoard; }
 // --- UI ---
 export function panelDispatch(payload) {    // Dispatch payload from panel to handle event functions.
-  // console.log("cntrl: setup.js - panelDispatch(payload):", payload);
+  console.log("cntrl: setup.js - panelDispatch(payload):", payload);
 
   vGambits.cancelAnimation();
 
-  const { action, 
-    boardSize,  // 8x8x8|10x8x8|10x10x10.
-    trayType,   // Real|factory.
-    initialPos, // std|manual.
-    pieceList,
-  } = payload;
+  const { action, prevBoard, nextBoard } = payload;
 
   switch (action) {
-    case "makeBoard":   handleMakeBoard(payload); break;
-    case "lock":        handleLock(payload); break;
+    case "makeBoard":    handleMakeBoard(payload); break;
+    case "placePiece":   handlePlacePiece(payload); break;
+    case "shiftPiece":   handleShiftPiece(payload); break;
+    case "returnPiece":  handleReturnPiece(payload); break;
+    case "freezePuzzle": handleFreeze(payload); break;
+    case "startingPos":  handleStartingPos(payload); break;
+    case "play":         handlePlay(payload); break;
     case "updateParam": break;
 
     default: throw new Error(`Unknown setup action ${action}.`);
   }
 
+  diagnostic();
   game.showUndoStatus();                          // Update game panel (undo).
   }
 
 export function buildPayload(panel, action) {
   console.log("     ---------- cntrl: setup.js");
 
-  const initialPos = panel.querySelector('input[name="initial-pos"]:checked')?.value;
-  const pos = (initialPos === "standard") ? "std" : "list";
+  if(     action === "makeBoard") {
+    const viewerPanel = document.getElementById("viewer-window");
 
-  return {  // payload
-    action,
-    boardSize:  panel.querySelector('input[name="board-size"]:checked')?.value,
-    trayType:   panel.querySelector('input[name="tray-type"]:checked')?.value,
-    initialPos: pos,
-    pieceList,
-  };
+    const boardSize = panel.querySelector('input[name="board-size"]:checked')?.value;
+    const trayType  = panel.querySelector('input[name="tray-type"]:checked')?.value;
+    const trayGap   = Number(viewerPanel.querySelector('[name="viewer-trayGap"]')?.value);
+    const nextBoard = { boardSize, trayType, trayGap };
+
+    return { action, prevBoard: currBoard, nextBoard };
+    }
+  else if(action === "placePiece") {
+    const { pieceSelections, tileSelections } = cSelections.getSelections();
+
+    const key     = pieceSelections.values().next().value;
+    const dstTile = tileSelections.values().next().value;
+    const dstStr = coords.vtsToBoard(dstTile, boardSpec);
+
+    const piece   = mPieces.getPieceList()[key];
+    console.log("***", piece);  // loc, pos, coords, vts, home: trayPos, trayCoords, trayVts.
+    if(piece.loc === '~') { 
+      const prev = `~${piece.pos}`;
+      const post = `@${dstStr}`;
+      return { action, key, prev, post };
+      }
+    else {
+      console.log(`Piece not in tray, cannot place on board.`);
+      return { action, key, prev: "miss", post: dstStr };
+    }
+    }
+  else if(action === "shiftPiece") {
+    const { pieceSelections, tileSelections } = cSelections.getSelections();
+
+    const key     = pieceSelections.values().next().value;
+    const dstTile = tileSelections.values().next().value;
+    const dstStr = coords.vtsToBoard(dstTile, boardSpec);
+
+    const piece = mPieces.getPieceList()[key];
+    const prev  = `@${piece.pos}`;
+    const post  = `@${dstStr}`;
+    return { action, key, prev, post };
+    }
+  else if(action === "returnPiece") {
+    const { pieceSelections, tileSelections } = cSelections.getSelections();
+
+    const key   = pieceSelections.values().next().value;
+    const piece = mPieces.getPieceList()[key];  // loc, pos, coords, vts, home: trayPos, trayCoords, trayVts.
+    const prev  = `@${piece.pos}`;
+    const post  = `~${piece.home.trayPos}`;
+    return { action, key, prev, post };
+    }
+  else if(action === "freezePuzzle") {
+    clearAllPieceSelections();
+    clearAllTileSelections();
+
+    return { action };
+    }
+  else if(action === "startingPos") {
+    clearAllPieceSelections();
+    clearAllTileSelections();
+
+    return { action };
+    }
+  else if(action === "play") {
+    clearAllPieceSelections();
+    clearAllTileSelections();
+
+    return { action };
+    }
+  else { throw new Error(`Unknown setup action ${action}`);
+  }
+  }
+
+export function buildSetup(entry) {       // Handle.
+  console.log("cntrl: setup.js - buildSetup(entry)", entry);
+
+  const { action, prevBoard, nextBoard } = entry;
+
+  clearBoard(entry.prevBoard);
+  buildBoard(entry.nextBoard);
+
+  }
+
+export function buildForward(entry) {     // Redo.
+  console.log("cntrl: setup.js - buildForward(entry)", entry);
+
+  const { action, prevBoard, nextBoard } = entry;
+  if(     action === "makeBoard") {
+    clearBoard(entry.prevBoard);
+    buildBoard(entry.nextBoard);
+    currBoard = structuredClone(entry.nextBoard);
+
+    boardSpec = currBoard.boardSize;
+
+    setButtonState("boardDone");
+    vSetup.refreshPanel(entry.nextBoard);         
+    }
+  else if(action === "placePiece") {
+    const { action, key, prev, post } = entry;
+    placePieceOnBoard(key, prev, post);
+    setButtonState("pieces");
+    vSetup.refreshPanel(currBoard);         
+    }
+  else if(action === "shiftPiece") {
+    const { action, key, prev, post } = entry;
+    shiftPieceAroundBoard(key, prev, post);
+    setButtonState("pieces");
+    vSetup.refreshPanel(currBoard);         
+    }
+  else if(action === "returnPiece") {
+    const { action, key, prev, post } = entry;
+    returnPieceToTray(key, prev, post);
+    setButtonState("pieces");
+    vSetup.refreshPanel(currBoard);         
+    }
+  else if(action === "freezePuzzle") {
+    const { action } = entry;
+    setButtonState("loaded");
+    vSetup.refreshPanel(currBoard);         
+    }
+  else if(action === "startingPos") {
+    const { action } = entry;
+    setButtonState("loaded");
+    vSetup.refreshPanel(currBoard);         
+    }
+  else if(action === "play") {
+    const { action } = entry;
+    setButtonState("play");
+    vSetup.refreshPanel(currBoard);         
+    }
+  else {
+  }
+  diagnostic();
+  }
+
+export function buildBackward(entry) {    // Undo.
+  console.log("cntrl: setup.js - buildBackwards(entry)", entry);
+
+  const { action, prevBoard, nextBoard } = entry;
+  if(     action === "makeBoard") {
+    clearBoard(nextBoard);
+    buildBoard(prevBoard);
+    currBoard = structuredClone(prevBoard);
+
+    boardSpec = currBoard.boardSize;
+
+    (prevBoard.boardSize === "0x0x0")
+      ? setButtonState("makeBoard")
+      : setButtonState("boardDone");
+    vSetup.refreshPanel(entry.prevBoard);         
+    }
+  else if(action === "placePiece") {
+    const { action, key, prev, post } = entry;
+    returnPieceToTray(key, post, prev);
+    setButtonState("pieces");
+    vSetup.refreshPanel(currBoard);         
+    }
+  else if(action === "shiftPiece") {
+    const { action, key, prev, post } = entry;
+    shiftPieceAroundBoard(key, post, prev);
+    setButtonState("pieces");
+    vSetup.refreshPanel(currBoard);         
+    }
+  else if(action === "returnPiece") {
+    const { action, key, prev, post } = entry;
+    placePieceOnBoard(key, post, prev);
+    setButtonState("pieces");
+    vSetup.refreshPanel(currBoard);         
+    }
+  else if(action === "freezePuzzle") {
+    const { action } = entry;
+    setButtonState("pieces");
+    vSetup.refreshPanel(currBoard);         
+    }
+  else if(action === "startingPos") {
+    const { action } = entry;
+    setButtonState("pieces");
+    vSetup.refreshPanel(currBoard);         
+    }
+  else if(action === "play") {
+    const { action } = entry;
+    setButtonState("loaded");
+    vSetup.refreshPanel(currBoard);         
+    }
+  else {
+  }
+  diagnostic();
+}
+
+export function returnAllPiecesToHomeTray() {
+  console.log("cntrl: game.js - returnAllPiecesToHomeTray()");
+
+  for(const key in mPieces.getPieceList()) {    // "WKRR", ...
+    const piece = mPieces.getPieceList()[key];
+    const { loc, pos, coords, vts, home } = piece;              // Parse the piece fields.
+    if(loc === '@')
+      mPieces.movePieceFromBoardToTray(key);
+  }
+  const entries = state.getState().Setup;
+  vSetup.refreshPanel(entries[0]);
+
+  console.log("***", mPieces.getPieceList());
+  console.log("***", mTrays.getWhiteTray());
+  console.log("***", mTrays.getBlackTray());
+  console.log("***", mBoards.getBoardOccupancy());
+  }
+
+export function clearAllTileSelections() {
+  console.log("cntrl: game.js - clearAllTileSelections()");
+
+  const { pieceSelections, tileSelections } = cSelections.getSelections();
+  for(const vts of tileSelections) {            // vts, ...
+    cSelections.deselectTile(vts);
+    console.log("***", vts);
+  }
+  cSelections.clearTileSelections();            // Set of tile locations, indexed by vts.
+  }
+
+export function clearAllPieceSelections() {
+  console.log("cntrl: game.js - clearAllPieceSelections()");
+
+  const { pieceSelections, tileSelections } = cSelections.getSelections();
+  for(const key of pieceSelections) {           // "WKRR", ...
+    vPieces.deHighlight(key);
+    console.log("***", key);
+  }
+  cSelections.clearPieceSelections();           // Set of pieces highlighted, indexed by key.
 }
 // Seampoint: more global functions...
 
 // --- Handle Functions ---
+  // BKRR@BR6,6       // Place on board from tray.
+  // BKRR:BR6,6>BR4,4 // Shift tiles on board.  
+  // BKRR~KR1,1       // Return to tray from board.
+
 function handleMakeBoard(payload) { // Setup handler.
   console.log("cntrl: setup.js - handleMakeBoard(payload):", payload);
 
-  const { action, boardSize, trayType, initialPos } = payload;  // Informative.
+  const { action, prevBoard, nextBoard, boardSize,trayType,trayGap } = payload;
+  const entry = payload;
 
-  const entry = mSetup.makeEntry(payload);    // Transform panel payload into state entry.
-  applyEntry(entry);
+  state.pushNewSetup(entry);                    // Log state change in undo buffer.
 
-  cTrays.init(entry);   // New Game (games.js) moves them from tray to board, play may begin.
-  cBoards.init(entry);  // Initial occupancy depends on board size and tray type.
-  cPieces.init(entry);  // Every piece is in a tray, none are on the board.
+  clearBoard(entry.prevBoard);
+  buildBoard(entry.nextBoard);
+
+  boardSpec = nextBoard.boardSize;
+
+  vSetup.pushPanelLine(entry);                  // Upate panels.
+  vSetup.refreshPanel(nextBoard);         
+  setButtonState("boardDone");
+
+  currBoard = structuredClone(nextBoard);       // Capture current board.
   }
 
-function handleLock(payload) {  // Locks initial pos after pieces manually moved from tray to board.
-  console.log("cntrl: game.js - handleLock(payload):", payload);
+function handlePlacePiece(payload) {
+  console.log("cntrl: setup.js - handlePlacePiece(payload):", payload);
+   
+  let result = createPieceEntry(payload);
+  const { entry, err } = result;
+  if(!entry) { throw new Error(`${err} - don't log.`); return; }
 
-  const { action, boardSize, trayType, initialPos, pieceList } = payload;  // Informative.
+  buildForward(entry);
 
-  const entry = mSetup.makeEntry(payload);    // Transform panel payload into state entry.
+  recordSetupAction(entry);
 
-  mTrays.disableManualMode(entry);  // Players can no longer move pieces to/from trays, rules do that.
+  // --- Buttons ---
+    const pieceCount = mBoards.getBoardOccupancy().flat(2).filter(cell => cell !== null).length;
+    const max = 40; // TODO: magic number
+    (pieceCount === max)
+      ? setButtonState("emptyTrays")
+      : setButtonState("pieces");
+  
+  clearAllPieceSelections();
+  clearAllTileSelections();
+  }
 
-  state.pushNewSetup(entry);          // Log state change in undo buffer.
-  vSetup.pushPanelLine(entry);        // Add line to panel.
-  vSetup.refreshPanel(entry);         // Only needed by panels with derived fields.
+function handleShiftPiece(payload) {
+  console.log("cntrl: setup.js - handleShiftPiece(payload):", payload);
+
+  let result = createPieceEntry(payload);
+  const { entry, err } = result;
+  if(!entry) { throw new Error(`${err} - don't log.`); return; }
+
+  buildForward(entry);
+
+  recordSetupAction(entry);
+
+  clearAllPieceSelections();
+  clearAllTileSelections();
+  }
+
+function handleReturnPiece(payload) {
+  console.log("cntrl: setup.js - handleReturnPiece(payload):", payload);
+
+  let result = createPieceEntry(payload);
+  const { entry, err } = result;
+  if(!entry) { throw new Error(`${err} - don't log.`); return; }
+
+  buildForward(entry);
+
+  recordSetupAction(entry);
+
+  clearAllPieceSelections();
+  clearAllTileSelections();
+
+  // --- Buttons ---
+    const pieceCount = mBoards.getBoardOccupancy()
+      .flat(2)
+      .filter(cell => cell !== null)
+      .length;
+    const boardPieces =
+      Object.values(mPieces.getPieceList())
+        .filter(piece => piece.loc === "@")
+        .length;
+    (pieceCount === 0)
+      ? setButtonState("boardDone")
+      : setButtonState("pieces");
+  }
+
+function handleFreeze(payload) {
+  console.log("cntrl: setup.js - handleFreeze(payload):", payload);
+
+  const { action, boardSize, trayType } = payload;  // Informative.
+
+  const boardPieces =
+    Object.values(mPieces.getPieceList())
+      .filter(piece => piece.loc === "@")
+      .length;
+  const entry = { action, data: boardPieces };
+
+  recordSetupAction(entry);
+
+  setButtonState("loaded");
+  }
+
+function handleStartingPos(payload) {  // TODO: Load all the pieces.
+  console.log("cntrl: setup.js - handleStartingPos(payload):", payload);
+
+  const { action, boardSize, trayType } = payload;  // Informative.
+
+  const boardPieces =
+    Object.values(mPieces.getPieceList())
+      .filter(piece => piece.loc === "@")
+      .length;
+  const entry = { action, data: boardPieces };
+
+  recordSetupAction(entry);
+  setButtonState("loaded");
+  }
+
+function handlePlay(payload) {
+  console.log("cntrl: setup.js - handlePlay(payload):", payload);
+
+  const { action, boardSize, trayType } = payload;  // Informative.
+
+  const entry = { action, data: "game or puzzle" };
+
+  recordSetupAction(entry);
+
+  setButtonState("play");
 }
 // Seampoint: more handlers...
 
 // --- Helpers ---
-function applyEntry(entry) {
-  console.log("cntrl: setup.js - applyEntry(entry)", entry);
+function buildBoard(board) {
+  console.log("cntrl: setup.js - buildBoard(board):", board);
 
-  const currEntry = state.fetchCurrentState("Setup"); // Clear previous board.
-  if(currEntry != null) {
-    vSetup.clear(currEntry);
-    if(!state.isAtEnd("Setup")) {     // Branches the undo history, discards original branch.
-      // TODO: clear all later setup entries.
-      // const idx = state.getCurrentIndex("Setup"); // Not quite working...
-      // state.truncateState("Setup", idx);
-    }
+  const { boardSize, trayType, trayGap } = board;
+
+  if(boardSize != "0x0x0") {
+    cBoards.init(board);
+    cTrays.init(board);
+    cPieces.init(board); 
+  }
   }
 
+function clearBoard(board) {
+  console.log("cntrl: setup.js - clearBoard(board):", board);
+
+  const { boardSize, trayType, trayGap } = board;
+
+  if(boardSize != "0x0x0") {
+    cBoards.destroy(board);
+    cTrays.destroy(board);
+    cPieces.destroy(board);
+  }
+  }
+
+function setButtonState(command) {
+  console.log("cntrl: setup.js - setButtonState(command)", command);
+
+  const panel = document.getElementById("diags-window");
+  panel.querySelector('[name="diags-buttons"]').textContent = command;
+
+  switch (command) {
+    case "makeBoard":
+      panels.enableButton("makeBoard",   true);
+
+      panels.enableButton("placePiece",  false);
+      panels.enableButton("shiftPiece",  false);
+      panels.enableButton("returnPiece", false);
+      panels.enableButton("freezePuzzle",false);
+      panels.enableButton("startingPos", false);
+      panels.enableButton("play",        false);
+      break;
+    case "boardDone":
+      panels.enableButton("makeBoard",   true);
+
+      panels.enableButton("placePiece",  true);
+      panels.enableButton("shiftPiece",  false);
+      panels.enableButton("returnPiece", false);
+      panels.enableButton("freezePuzzle",false);
+      panels.enableButton("startingPos", true);
+      panels.enableButton("play",        false);
+      break;
+    case "pieces":
+      panels.enableButton("placePiece",   true);
+      panels.enableButton("shiftPiece",   true);
+      panels.enableButton("returnPiece",  true);
+      panels.enableButton("freezePuzzle", true);
+      panels.enableButton("startingPos",  false);
+      panels.enableButton("play",         false);
+      break;
+    case "emptyTrays":
+      panels.enableButton("placePiece",   false);
+      panels.enableButton("returnPiece",  true);
+      panels.enableButton("shiftPiece",   true);
+      panels.enableButton("freezePuzzle", true);
+      panels.enableButton("startingPos",  false);
+      panels.enableButton("play",         false);
+      break;
+    case "loaded":
+      panels.enableButton("placePiece",   false);
+      panels.enableButton("returnPiece",  false);
+      panels.enableButton("shiftPiece",   false);
+      panels.enableButton("freezePuzzle", false);
+      panels.enableButton("startingPos",  false);
+      panels.enableButton("play",         true);
+      break;
+    case "play":
+      panels.enableButton("placePiece",   false);
+      panels.enableButton("returnPiece",  false);
+      panels.enableButton("shiftPiece",   false);
+      panels.enableButton("freezePuzzle", false);
+      panels.enableButton("startingPos",  false);
+      panels.enableButton("play",         false);
+
+      panels.enableButton("move", true);
+      break;
+    default:
+      throw new Error(`Unknown button state command ${command}.`);
+      break;
+  }
+}
+
+function createPieceEntry(payload) {
+  console.log("cntrl: setup.js - createPieceEntry(payload):", payload);
+
+  let { action, key, prev, post } = payload;
+  let entry = { action, key, prev, post };
+  let err = null;
+
+  return { entry, err };
+  }
+
+function placePieceOnBoard(key, prev, post) {
+  console.log("cntrl: setup.js - placePieceOnBoard(key, prev, post):", key, prev, post);
+
+  const [, dstStr] = post.split("@");
+  const dstTile = coords.normalizeTileToVts(dstStr, boardSpec);
+
+  const { ok, err } = mPieces.movePieceFromTrayToBoard(key, dstStr);
+  if(!ok) {
+    console.log("*** err:", err);
+    return { ok, err };
+  }
+
+  vPieces.deHighlight(key);
+  cSelections.clearPieceSelections(key);
+  cSelections.deselectTile(dstTile);
+
+  return { ok, err: null };
+  }
+
+function shiftPieceAroundBoard(key, prev, post) {
+  console.log("cntrl: setup.js - shiftPieceAroundBoard(key, prev, post):", key, prev, post);
+
+  const [, dstStr] = post.split("@");
+  const dstTile = coords.normalizeTileToVts(dstStr, boardSpec);
+
+  const { ok, err } = mPieces.movePieceTileToTile(key, dstStr);
+  if(!ok) return { ok, err };
+
+  vPieces.deHighlight(key);
+  cSelections.clearPieceSelections(key);
+  cSelections.deselectTile(dstTile);
+
+  return { ok, err: null };
+  }
+
+function returnPieceToTray(key, prev, post) {
+  console.log("cntrl: setup.js - returnPieceToTray(key, prev, post):", key, prev, post);
+
+  const { ok, err } = mPieces.movePieceFromBoardToTray(key);
+  if(!ok) return { ok, err };
+
+  vPieces.deHighlight(key);
+  cSelections.clearPieceSelections(key);
+
+  return { ok, err: null };
+}
+
+function recordSetupAction(entry) {
+  console.log("cntrl: setup.js - recordSetupAction(entry):", entry);
+
   state.pushNewSetup(entry);          // Log state change in undo buffer.
-  vSetup.render(entry);               // Render the new board and trays.
   vSetup.pushPanelLine(entry);        // Add line to panel.
   vSetup.refreshPanel(entry);         // Only needed by panels with derived fields.
+  }
 
-  // TODO: remove all entries in the downstream buffers; 
-  // a new board invalidates moves, gambits, and advsqs.
+function diagnostic() {
+  console.log("cntrl : setup.js - diagnostic()");
+
+  const pieceCount = Object.keys(mPieces.getPieceList()).length;
+
+  const trayCount  = Object.values(mPieces.getPieceList()).filter(piece => piece.loc === "~").length;
+  const boardCount = Object.values(mPieces.getPieceList()).filter(piece => piece.loc === "@").length;
+
+  const whiteCount = mTrays.getWhiteTray().flat(2).filter(cell => cell !== null).length;
+  const blackCount = mTrays.getBlackTray().flat(2).filter(cell => cell !== null).length;
+
+  const boardOcc = mBoards.getBoardOccupancy().flat(2).filter(cell => cell !== null).length;
+
+  const { pieceSelections, tileSelections } = cSelections.getSelections();
+
+  const whiteGroupCount = vTrays.getWhiteTrayGroup()
+    ? vTrays.getWhiteTrayGroup().children.length
+    : "null";
+
+  const blackGroupCount = vTrays.getBlackTrayGroup()
+    ? vTrays.getBlackTrayGroup().children.length
+    : "null";
+
+  const panel = document.getElementById("diags-window");
+
+  panel.querySelector('[name="diags-pieceCount"]').textContent = pieceCount;
+  panel.querySelector('[name="diags-trayCount"]').textContent  = trayCount;
+
+  panel.querySelector('[name="diags-whiteTray"]').textContent  = whiteCount;
+  panel.querySelector('[name="diags-blackTray"]').textContent  = blackCount;
+
+  panel.querySelector('[name="diags-boardCount"]').textContent = boardCount;
+  panel.querySelector('[name="diags-boardOcc"]').textContent   = boardOcc;
+
+  panel.querySelector('[name="diags-pieceSels"]').textContent  = tileSelections.size;
+  panel.querySelector('[name="diags-tileSels"]').textContent   = pieceSelections.size;
+
+  panel.querySelector('[name="diags-tileMap"]').textContent = view.getContext().tileMap?.size ?? 0;
+
+  panel.querySelector('[name="diags-currPiecesGroup"]').textContent = vPieces.getCurrPiecesGroup()?.children.length ?? 0;
+  panel.querySelector('[name="diags-pieceGroups"]').textContent     = Object.keys(vPieces.getPieceGroups()).length;
+
+  panel.querySelector('[name="diags-whiteTrayGroup"]').textContent  = whiteGroupCount;
+  panel.querySelector('[name="diags-blackTrayGroup"]').textContent  = blackGroupCount;
+
+  panel.querySelector('[name="diags-sceneChildren"]').textContent = view.getContext().scene.children.length;
 }
 // Seampoint: more local functions...
+
+/* TODO: QC checklist✅ 
+    1. Load/Save fails to make board.
+    2. Corruption if attempt to place a piece on an occupied tile.
+    3. Support factory trays.
+    4. Make code work for all three board sizes.
+    5. Implement startup position.
+    6. Implement undo branching.
+    7. Undo does not restore buttons.
+ */
 

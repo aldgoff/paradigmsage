@@ -15,7 +15,7 @@ import planesData from "./planes.json" assert { type: "json" };
   const planes       = planesModule.planes;
 // Seampoint: more objects...
 
-// --- Build upon previous layers ---
+// --- Dependencies ---
   import * as utils  from "../../../../utils/utils.js";
 
   import * as coords from "../../foundation/coords/coords.js";

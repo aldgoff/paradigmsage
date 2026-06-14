@@ -1,9 +1,9 @@
 /* File: tiles.js
   Path: ./3dc/tiles/tiles.js
-  Purpose: Code for building the tiles.
+  Purpose: tile meshes, positioning, and selection.
   Author: Allan Goff
   Date: 4/03/26
-  Recommended access: import * as tiles from "../../view/tiles/tiles.js";
+  import * as vTiles from "../../view/tiles/tiles.js";
   UI: the export functions.
 */
 
@@ -18,10 +18,13 @@ import tilesData from "./tiles.json" assert { type: "json" };
   const edge = tile.edge.colors;
 // Seampoint: more objects...
 
-// --- Build upon previous layers ---
+// --- Dependencies ---
   import * as foundation from "../../foundation/colors/colors.js";
   import * as coordsMaps from "../render/coordsMaps.js"
 // Seampoint: more imports...
+
+// --- Globals ---
+// Seampoint: more globals...
 
 // --- UI ---
 export function tileSize() {

@@ -11,12 +11,12 @@
 */
 
 // --- Load module ---
-import coordsData from "./coords.json" assert { type: "json" };
+  import coordsData from "./coords.json" assert { type: "json" };
   const coordsModule = coordsData.coords_module;
   const boardSpecs = coordsModule.board_specs;
 // Seampoint: more imports...
 
-// --- Build upon previous layers ---
+// --- Dependencies ---
 // Seampoint: more imports...
 
 // --- UI ---
@@ -143,6 +143,10 @@ export function vtsToBoard(vts, specOrName = "8x8x8") {
 }
 
 // -- Onboard tests --
+export function onBoardStr(dstStr, spec) {
+  return onBoardRcs(boardToRcs(dstStr, spec), spec);
+  }
+
 export function onBoardRcs(rcs, specName = "8x8x8") { // True/False.
   let spec = specName;
 

@@ -13,7 +13,7 @@ import coordsMapsData from "./coordsMaps.json" assert { type: "json" };
   const dims = coordsMapsModule.dims;
 // Seampoint: more objects...
 
-// --- Build upon previous layers ---
+// --- Dependencies ---
   import * as cViewer from "../../controller/viewer/viewer.js";
 // Seampoint: more imports...
 

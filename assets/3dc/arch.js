@@ -5,6 +5,7 @@
   Date: 4/03/26
   UI: none, just documentation in code form
 */
+/* const obj = JSON.parse(JSON.stringify(setup)); */
 
 /* Tree - 4/16/26.
   MacBookPro:paradigmsage adgoff$ tree -L 1 assets/3dc

@@ -8,19 +8,34 @@
 */
 
 // --- Load JSON ---
-import traysData from "./trays.json" assert { type: "json" };
+  import traysData from "./trays.json" assert { type: "json" };
   const traysModule = traysData.trays_module;
 // Seampoint: more objects...
 
-// --- Build upon previous layers ---
+// --- Dependencies ---
   import * as mTrays from "../../model/trays/trays.js";
 // Seampoint: more imports...
+
+// --- Globals ---
+// Seampoint: more globals...
 
 // --- UI ---
 export function init(entry) {
   console.log("cntrl: trays.js - init(entry)", entry);
+  
+  const { action, boardSize, trayType, trayGap, boardSpec } = entry;
 
   mTrays.init(entry);  // Initial occupancy depends on board size and tray type.
+
+  return;
+  }
+
+export function destroy(entry) {
+  console.log("cntrl: trays.js - destroy(entry)", entry);
+  
+  const { action, boardSize, trayType, trayGap, boardSpec } = entry;
+
+  mTrays.destroy(entry);  // Initial occupancy depends on board size and tray type.
 
   return;
   }
