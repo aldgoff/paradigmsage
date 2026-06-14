@@ -13,12 +13,10 @@
 // Seampoint: more objects...
 
 // --- Dependencies ---
-  import * as cSetup      from "../../controller/setup/setup.js";
-  import * as cGambits    from "../../controller/gambits/gambits.js";
-  import * as cSelections from "../../controller/selections/selections.js";
+  import * as cSetup   from "../../controller/setup/setup.js";
+  import * as cGambits from "../../controller/gambits/gambits.js";
 
   import * as state    from "../../model/state/state.js";
-
   import * as mAdvsqs  from "../../model/advsqs/advsqs.js";
   import * as mGambits from "../../model/gambits/gambits.js";
   import * as mMoves   from "../../model/moves/moves.js";
@@ -85,12 +83,11 @@ function handleUndo() {
 
   for(const key of reverseKeys) {
     const idx = state.getCurrentIndex(key);
-    if(idx === 0) continue;
+    const edge = 0;
+    if(idx === edge) continue;
     bottom = false;
 
-    if(processUndoBuffer(key, idx)) {
-      break;
-    }
+    if(processUndoBuffer(key, idx)) break;
   }
   showUndoStatus();
   assertStateConsistency();
@@ -99,26 +96,21 @@ function handleUndo() {
   }
 
 function handleRedo() {
-  let buffer = state.getCurrBuffer();
+  const forwardKeys = state.getStateKeys();
+  let top = true;
 
-  if (buffer === null) {
-    buffer = state.getNextBuffer();
-    if (!buffer) return console.log("Top Sentry");
+  for(const key of forwardKeys) {
+    const idx = state.getCurrentIndex(key);
+    const edge = state.getBufferLength(key);
+    if(idx === edge) continue;
+    top = false;
+
+    if(processRedoBuffer(key, idx)) break;
   }
-
-  const idx = state.getCurrentIndex(buffer);
-  const len = state.getBufferLength(buffer);
-
-  if (idx < len) {
-    processRedoBuffer(buffer, idx);
-  } else {
-    buffer = state.getNextBuffer();
-    if (!buffer) return console.log("Top Sentry");
-    processRedoBuffer(buffer, 0);
-  }
-
   showUndoStatus();
   assertStateConsistency();
+
+  if(top) { console.log("Top Sentry"); }
   }
 
 function handleRewind() {
@@ -136,8 +128,8 @@ function handleRewind() {
     if(     isEmpty(len)) {           // crossDown;
       buffer = state.getPrevBuffer();
       if(!buffer) return console.log("Bottom Sentry");
-      const N = state.getBufferLength(buffer);
-      processUndoBuffer(buffer, N);
+      const edge = state.getBufferLength(buffer);
+      processUndoBuffer(buffer, edge);
       break;
       }
     else if(canCollapseDown(idx)) {   // collapseDown;
@@ -151,8 +143,8 @@ function handleRewind() {
     else if(canCrossDown(idx)) {      // crossDown;
       buffer = state.getPrevBuffer();
       if(!buffer) return console.log("Bottom Sentry");
-      const N = state.getBufferLength(buffer);
-      processUndoBuffer(buffer, N);
+      const edge = state.getBufferLength(buffer);
+      processUndoBuffer(buffer, edge);
       break;
       }
     else {
@@ -177,10 +169,11 @@ function handleFastForward() {
     const idx = state.getCurrentIndex(buffer);
     const len = state.getBufferLength(buffer);
 
-    if(   isEmpty(len)) {               // crossUp;
+    if(     isEmpty(len)) {             // crossUp;
       buffer = state.getNextBuffer();
       if (!buffer) return console.log("Top Sentry");
-      processRedoBuffer(buffer, 0);
+      const edge = 0;
+      processRedoBuffer(buffer, edge);
       break;
       }
     else if(canStepUp(idx, len)) {      // stepUp;
@@ -194,7 +187,8 @@ function handleFastForward() {
     else if(canCrossUp(idx, len)) {     // crossUp;
       buffer = state.getNextBuffer();
       if (!buffer) return console.log("Top Sentry");
-      processRedoBuffer(buffer, 0);
+      const edge = 0;
+      processRedoBuffer(buffer, edge);
       break;
       }
     else {
@@ -293,6 +287,7 @@ function handleSave() {
   function canStepUp(idx, len)      { return idx === 0 && len > 0; }
   function canCrossUp(idx, len)     { return idx === len; }
 /* ----- ----- ----- ----- */
+
 function rewindCurrentBuffer(buffer) {
   console.log("cntrl: game.js - rewindCurrentBuffer(buffer):", buffer);
 
@@ -382,7 +377,7 @@ function fastForwardCurrentBuffer(buffer) {
   }
   }
 
-function processUndoBuffer(key, idx) {
+function processUndoBuffer(key, idx, N=1) {
   console.log("cntrl: game.js - processUndoBuffer(key, idx):", key, idx);
 
   if(     key === "AdvSqs") {
@@ -447,7 +442,7 @@ function processUndoBuffer(key, idx) {
   }
   }
 
-function processRedoBuffer(key, idx) {
+function processRedoBuffer(key, idx, N=1) {
   console.log("cntrl: game.js - processRedoBuffer(key, idx):", key, idx);
 
   if(     key === "AdvSqs") {
@@ -538,7 +533,7 @@ function hardReset() {
   for (const key of state.getStateKeys()) {
     state.setBufferIndex(key, 0);
   }
-}
+  }
 
 function diagnostic(enabled=false) {
   // console.log("cntrl: game.js - diagnostic(enabled=false):", enabled);

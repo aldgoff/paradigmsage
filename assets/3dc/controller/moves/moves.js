@@ -183,6 +183,5 @@ function applyEntry(entry) {
   // TODO: remove all entries in the downstream buffers; 
   // a new move invalidates gambits and advsqs.
 }
-
 // Seampoint: more local functions...
 

@@ -135,14 +135,19 @@ title: "Dev"
   - 6/12/26 - Centralize diagnostics. Setup entry. Setup panel refresh bug. Panel logic for setup makeBoard; tiles, trays, pieces still to do.
   - 6/13/26 - Json code uniformity. Load uniformity. Makeboards working: panel, undo/redo, rewind/FF, load/save, trays/pieces. Setup pieces working.
 
-## Save Place Piece States (6/12/126) - MakeBoard, place/shift/return BKRR.
-  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"placePiece","key":"BKRR","prev":"~KR1,1","post":"@KR6,6"},{"action":"shiftPiece","key":"BKRR","prev":"@KR6,6","post":"@KR5,5"},{"action":"returnPiece","key":"BKRR","prev":"@KR5,5","post":"~KR1,1"}],"Moves":[],"Gambits":[],"AdvSqs":[]}
+ ### Week 14:
+  - 6/14/26 - Game/state QC. QC setup.
 
+## Save Place Piece States (6/12/26) - MakeBoard, place/shift/return BKRR.
+  **4-0-0-0**
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"placePiece","key":"BKRR","prev":"~KR1,1","post":"@KR6,6"},{"action":"shiftPiece","key":"BKRR","prev":"@KR6,6","post":"@KR5,5"},{"action":"returnPiece","key":"BKRR","prev":"@KR5,5","post":"~KR1,1"}],"Moves":[],"Gambits":[],"AdvSqs":[]}
 
 ## Save Setup States (6/12/26)
  ### Make Boards - pass: buttons click/radio, list/highlighting, undo/redo, rewind/FF, load/save.
+  **3-0-0-0**
   {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0},"boardSize":"8x8x8","trayType":"Real","trayGap":0},{"action":"makeBoard","prevBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0},"nextBoard":{"boardSize":"10x8x8","trayType":"Real","trayGap":0},"boardSize":"10x8x8","trayType":"Real","trayGap":0},{"action":"makeBoard","prevBoard":{"boardSize":"10x8x8","trayType":"Real","trayGap":0},"nextBoard":{"boardSize":"10x10x10","trayType":"Fact","trayGap":0},"boardSize":"10x10x10","trayType":"Fact","trayGap":0}],"Moves":[],"Gambits":[],"AdvSqs":[]}
 
+  **3-0-0-0**
   {"Setup":
     [{"action":"makeBoard",
       "prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},
@@ -155,7 +160,7 @@ title: "Dev"
       "nextBoard":{"boardSize":"10x10x10","trayType":"Fact","trayGap":0},"boardSize":"10x10x10","trayType":"Fact","trayGap":0}],
   "Moves":[],"Gambits":[],"AdvSqs":[]}
 
-
+  **4-0-0-0**
   {"Setup":[
   {"action":"makeBoard",
     "prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},
@@ -175,83 +180,6 @@ title: "Dev"
     "boardSize":"10x8x8","trayType":"Fact","trayGap":0}],
 "Moves":[],"Gambits":[],"AdvSqs":[]}
 
-
-## Save Setup States
-  {"Setup":[{"action":"makeBoard","boardSize":"8x8x8","trayType":"real"},
-  {"action":"placePiece","data":"BKRR@KR8,8"},
-  {"action":"placePiece","data":"BKNN@KN7,7"},
-  {"action":"placePiece","data":"BKBS@KB6,6"},
-  {"action":"placePiece","data":"BKKP@K7,7"},
-  {"action":"shiftPiece","data":"BKKP:K7,7>K6,6"},
-  {"action":"shiftPiece","data":"BKKP:K6,6>K5,5"},
-  {"action":"shiftPiece","data":"BKKP:K5,5>K4,4"},
-  {"action":"returnPiece","data":"BKNN~KN1,1"},
-  {"action":"freezePuzzle","data":3}],
-  "Moves":[],"Gambits":[],"AdvSqs":[]}
-
-
-
-  {"Setup":[{"action":"makeBoard","boardSize":"8x8x8","trayType":"real"},
-  {"action":"placePiece","data":"BKRR@KR8,8"},
-  {"action":"placePiece","data":"BKNN@KN7,7"},
-  {"action":"placePiece","data":"BKBS@KB6,6"},
-  {"action":"placePiece","data":"BKKK@K5,5"},
-  {"action":"placePiece","data":"BQQQ@Q4,4"}],
-  "Moves":[],"Gambits":[],"AdvSqs":[]}
-
-
-  {"Setup":[{"action":"makeBoard","boardSize":"8x8x8","trayType":"real"},
-  {"action":"placePiece","data":"BKRR@KR7,7"},
-  {"action":"placePiece","data":"BKNN@KN7,7"},
-  {"action":"placePiece","data":"BKBS@KB7,7"},
-  {"action":"placePiece","data":"BKKK@K7,7"},
-  {"action":"placePiece","data":"BQQQ@Q7,7"}],
-  "Moves":[],"Gambits":[],"AdvSqs":[]}
-
-  {
-    "Setup": [
-      {
-        "action": "makeBoard",
-        "boardSize": "8x8x8",
-        "trayType": "real"
-      },
-      {
-        "action": "placePiece",
-        "data": "BKRP@KR7,7"
-      },
-      {
-        "action": "shiftPiece",
-        "data": "BKRP:KR7,7>KR6,6"
-      },
-      {
-        "action": "placePiece",
-        "data": "BKRR@KR8,8"
-      },
-      {
-        "action": "placePiece",
-        "data": "BKBS@KB5,5"
-      },
-      {
-        "action": "returnPiece",
-        "data": "BKRR~KR1,1"
-      },
-      {
-        "action": "returnPiece",
-        "data": "BKRP~KR2,2"
-      },
-      {
-        "action": "freezePuzzle",
-        "data": 1
-      },
-      {
-        "action": "play",
-        "data": "game or puzzle"
-      }
-    ],
-    "Moves": [],
-    "Gambits": [],
-    "AdvSqs": []
-  }
 
 ## Useful global search and replace command...
   ```

@@ -15,7 +15,7 @@
 */
 
 // --- Load JSON ---
-import gambitsData from "./gambits.json" assert { type: "json" };
+  import gambitsData from "./gambits.json" assert { type: "json" };
   const gambitsModule = gambitsData.gambits_module;
 // Seampoint: more objects...
 

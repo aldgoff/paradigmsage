@@ -8,7 +8,7 @@
 */
 
 // --- Load JSON ---
-import selectionsData from "./selections.json" assert { type: "json" };
+  import selectionsData from "./selections.json" assert { type: "json" };
   const selectionsModule = selectionsData.selections_module;
 // Seampoint: more objects...
 
