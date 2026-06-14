@@ -141,26 +141,6 @@ export function buildPayload(panel, action) {
   }
   }
 
-export function rebuildToIndex(idx) {
-  console.log("cntrl: setup.js - rebuildToIndex(idx):", idx);
-
-  // ----- Hard clear -----
-  // const curr = state.fetchCurrentState("Setup");
-  // if(curr) vSetup.clear(curr);
-
-  // cSelections.clearAllSelections?.();
-
-  // ----- Replay -----
-  const entries = state.getState().Setup;
-  console.log("*** entries", entries);
-
-  for(let i=0; i<idx; i++) {
-    vSetup.refreshPanel(entries[i]);
-    replayEntry(entries[i]);
-  }
-
-  // Rebuild panel text.
-}
 
 export function buildSetup(entry) {       // Handle.
   console.log("cntrl: setup.js - buildSetup(entry)", entry);
@@ -418,7 +398,7 @@ function handleDestroyBoard(payload) {
 
   vSetup.refreshPanel(prevBoard);         
   setButtonState("makeBoard");
-}
+  }
 
 function handlePlacePiece(payload) {
   console.log("cntrl: setup.js - handlePlacePiece(payload):", payload);
@@ -428,11 +408,6 @@ function handlePlacePiece(payload) {
   if(!entry) { throw new Error(`${err} - don't log.`); return; }
 
   buildForward(entry);
-
-  // const [, tile] = entry.post.split("@");
-  // const dstTile = coords.normalizeTileToVts(tile, boardSpec);
-  // result = placePieceOnBoard(entry);
-  // if(!result.ok) { throw new Error(`${result.err} - don't log.`); return; }
 
   recordSetupAction(entry);
 
@@ -445,63 +420,7 @@ function handlePlacePiece(payload) {
   
   clearAllPieceSelections();
   clearAllTileSelections();
-}
-
-function handlePlacePiece1(payload) {
-  console.log("cntrl: setup.js - handlePlacePiece(payload):", payload);
-
-  // --- Parse ---
-    const spec = boardSpec;
-
-    const { action, prevBoard, nextBoard, boardSize,trayType,trayGap } = payload;
-    const { pieceSelections, tileSelections } = cSelections.getSelections();
-    // console.log("*** Parse");
-
-  // --- Intent ---
-    let task = "nada";      // What to do.
-    let key = null;         // "WQQP".
-    let piece = {};         // { loc: "~|@", pos: "Q5,5", coords: [0,1,1] }.
-    let src = null;         // "QR1,1 - Location of piece already on board, in board coords.
-    let dstTile = null;     // [-3,-3,-3] - destination coords on board, in vts coords.
-    
-    if(     pieceSelections.size === 0)   { task = "noPiece";}  // Determine task implied by the selections.
-    else if(pieceSelections.size  >  1)   { task = "pieces"; }
-    else if(tileSelections.size  === 0)   { task = "noTile"; }
-    else if(tileSelections.size   >  1)   { task = "tiles";  }
-    else {
-      key     = pieceSelections.values().next().value;
-      dstTile = tileSelections.values().next().value;
-      piece   = mPieces.getPieceList()[key];
-      if(piece.loc === '~')               { task = "place"; }
-    }
-    // console.log("*** Intent", pieceSelections, tileSelections, task);  // Diagnostic.
-
-  // --- Do ---
-    let result = {};
-    switch (task) {
-      case "noPiece": console.log("***", "No piece selected.");         return;
-      case "pieces":  console.log("***", "Too many pieces selected.");  return;
-      case "noTile":  console.log("***", "No tile selected.");          return;
-      case "tiles":   console.log("***", "Too many tiles selected.");   return;
-      case "nada":    console.log("***", "Unknown action.");            return;
-      case "place":   result = createPlacePieceEntry(payload);      break;
-      // case "place":   result = placePieceOnBoard(key, dstTile);      break;
-    }
-    const { entry, err } = result
-    if(!entry) { throw new Error(`${err} - don't log.`); return; }
-    // console.log("*** Do");
-
-  // --- Log ---
-    recordSetupAction(entry);
-    // console.log("*** Log");
-
-  // --- Buttons ---
-    const pieceCount = mBoards.getBoardOccupancy().flat(2).filter(cell => cell !== null).length;
-    const max = 40; // TODO: magic number
-    (pieceCount === max)
-      ? setButtonState("emptyTrays")
-      : setButtonState("pieces");
-}
+  }
 
 function handleShiftPiece(payload) {
   console.log("cntrl: setup.js - handleShiftPiece(payload):", payload);
@@ -516,63 +435,7 @@ function handleShiftPiece(payload) {
 
   clearAllPieceSelections();
   clearAllTileSelections();
-}
-
-function handleShiftPiece1(payload) {
-  console.log("cntrl: setup.js - handleShiftPiece(payload):", payload);
-
-  // --- Parse ---
-    const spec = boardSpec;                     // TODO: Make code work for all three board sizes.
-
-    const { action, boardSize, trayType } = payload;  // Informative, only action is used.
-    const { pieceSelections, tileSelections } = cSelections.getSelections();
-    // console.log("*** Parse");
-
-  // --- Intent ---
-    let task = "nada";      // What to do.
-    let key = null;         // "WQQP".
-    let piece = {};         // { loc: "~|@", pos: "Q5,5", coords: [0,1,1] }.
-    let src = null;         // "QR1,1 - Location of piece already on board, in board coords.
-    let dstTile = null;     // [-3,-3,-3] - destination coords on board, in vts coords.
-    
-    if(     pieceSelections.size === 0)   { task = "noPiece";}  // Determine task implied by the selections.
-    else if(pieceSelections.size  >  1)   { task = "pieces"; }
-    else if(tileSelections.size  === 0)   { task = "noTile"; }
-    else if(tileSelections.size   >  1)   { task = "tiles";  }
-    else {
-      key     = pieceSelections.values().next().value;
-      dstTile = tileSelections.values().next().value;
-      piece   = mPieces.getPieceList()[key];
-      src     = piece.pos;
-      if(piece.loc === '@')               { task = "shift"; }
-      task = "shift"; // temporary.
-    }
-    // console.log("*** Intent", pieceSelections, tileSelections, task);  // Diagnostic.
-
-  // --- Do ---
-    let result = {};
-    switch (task) {
-      case "noPiece": console.log("***", "No piece selected.");         return;
-      case "pieces":  console.log("***", "Too many pieces selected.");  return;
-      case "noTile":  console.log("***", "No tile selected.");          return;
-      case "tiles":   console.log("***", "Too many tiles selected.");   return;
-      case "nada":    console.log("***", "Unknown action.");            return;
-      case "shift":   result = createShiftPieceEntry(payload);  break;
-      // case "shift":   result = shiftPieceToTile(key, dstTile);  break;
-    }
-    const { entry, err } = result
-    if(!entry) { throw new Error(`${err} - don't log.`); return; }
-    // console.log("*** Do");
-
-  // --- Log ---
-    // let prev   = `${src}`;
-    // let next   = `${coords.vtsToBoard(dstTile, boardSpec)}`;
-    // let places = `${key}:${prev}>${next}`
-    // const entry = { action, data: places };
-
-    recordSetupAction(entry);
-    // console.log("*** Log");
-}
+  }
 
 function handleReturnPiece(payload) {
   console.log("cntrl: setup.js - handleReturnPiece(payload):", payload);
@@ -600,75 +463,7 @@ function handleReturnPiece(payload) {
     (pieceCount === 0)
       ? setButtonState("boardDone")
       : setButtonState("pieces");
-}
-
-function handleReturnPiece1(payload) {
-  console.log("cntrl: setup.js - handleReturnPiece(payload):", payload);
-
-  // --- Parse ---
-    const spec = boardSpec;                     // TODO: Make code work for all three board sizes.
-
-    const { action, boardSize, trayType } = payload;  // Informative, only action is used.
-    const { pieceSelections, tileSelections } = cSelections.getSelections();
-
-  // --- Intent ---
-    let task = "nada";      // What to do.
-    let key = null;         // "WQQP".
-    let piece = {};         // { loc: "~|@", pos: "Q5,5", coords: [0,1,1] }.
-    let src = null;         // "QR1,1 - Location of piece already on board, in board coords.
-    
-    if(     pieceSelections.size === 0)   { task = "noPiece";}  // Determine task implied by the selections.
-    else if(pieceSelections.size  >  1)   { task = "pieces"; }
-    else if(tileSelections.size   >  0)   { task = "tiles";  }
-    else {                               // task = "return|inTray".
-      key   = pieceSelections.values().next().value;
-      piece = mPieces.getPieceList()[key];
-      src   = piece.pos;
-      if(piece.loc === '@')               { task = "return"; }
-      else                                { task = "inTray"; }
-      task = "return"; // temporary.
-    }
-    // console.log("*** ", pieceSelections, tileSelections, task, key);  // Diagnostic.
-
-  // --- Do ---
-    let result = {};
-    switch (task) {
-      case "noPiece": console.log("***", "No piece selected.");         return;
-      case "pieces":  console.log("***", "Too many pieces selected.");  return;
-      case "tiles":   console.log("***", "Too many tiles selected.");   return;
-      case "inTray":  console.log("***", "Piece already in tray.");     return;
-      case "nada":    console.log("***", "Unknown action.");            return;
-      case "return":  result = createReturnPieceEntry(payload);  break;
-      // case "return":  result = returnPieceToTray(key); break;
-    }
-    const { entry, err } = result
-    if(!entry) { throw new Error(`${err} - don't log.`); return; }
-
-  // --- Log ---
-    // let trayTile = `${key}~${piece.home.trayPos}`;   // "BKRR~KR1,1".
-    // const entry = { action, data: trayTile };
-
-    recordSetupAction(entry);
-    // console.log("*** Log");
-
-  // --- Buttons ---
-    const pieceCount = mBoards.getBoardOccupancy()
-      .flat(2)
-      .filter(cell => cell !== null)
-      .length;
-    const boardPieces =
-      Object.values(mPieces.getPieceList())
-        .filter(piece => piece.loc === "@")
-        .length;
-    (pieceCount === 0)
-      ? setButtonState("boardDone")
-      : setButtonState("pieces");
-
-    console.log("*** occupancy", mBoards.getBoardOccupancy());
-    invariants.invariant(pieceCount === boardPieces, "Number of pieces listed on the board must equal the number actually on the board.");
-
-    console.log("*** Buttons");
-}
+  }
 
 function handleFreeze(payload) {
   console.log("cntrl: setup.js - handleFreeze(payload):", payload);
@@ -743,37 +538,6 @@ function createPieceEntry(payload) {
   return { entry, err };
   }
 
-function createPlacePieceEntry(payload) {
-  console.log("cntrl: setup.js - createPlacePieceEntry(payload):", payload);
-
-  let { action, key, prev, post } = payload;
-  let entry = { action, key, prev, post };
-  let err = null;
-
-  return { entry, err };
-  }
-
-function createShiftPieceEntry(payload) {
-  console.log("cntrl: setup.js - createShiftPieceEntry(payload):", payload);
-
-  let { action, key, prev, post } = payload;
-  let entry = { action, key, prev, post };
-  let err = null;
-
-  return { entry, err };
-  }
-
-function createReturnPieceEntry(payload) {
-  console.log("cntrl: setup.js - createReturnPieceEntry(payload):", payload);
-
-  let { action, key, prev, post } = payload;
-  let entry = { action, key, prev, post };
-  let err = null;
-
-  return { entry, err };
-}
-
-
 function placePieceOnnBoard(key, prev, post) {
   console.log("cntrl: setup.js - placePieceOnnBoard(key, prev, post):", key, prev, post);
 
@@ -821,72 +585,6 @@ function returnPieceTooTray(key, prev, post) {
   return { ok, err: null };
 }
 
-
-function placePieceOnBoard(entry) {
-  console.log("cntrl: setup.js - placePieceOnBoard(entry):", entry);
-
-  const key = entry.key;
-  const [, dstStr] = entry.post.split("@");
-  const dstTile = coords.normalizeTileToVts(dstStr, boardSpec);
-
-  const { ok, err } = mPieces.movePieceFromTrayToBoard(key, dstStr);
-  if(!ok) {
-    console.log("*** err:", err);
-    return { ok, err };
-  }
-
-  vPieces.deHighlight(key);
-  cSelections.clearPieceSelections(key);
-  cSelections.deselectTile(dstTile);
-
-  return { ok, err: null };
-  }
-
-function placePieceOnBoard1(key, dstTile) {
-  console.log("cntrl: setup.js - placePieceOnBoard(key, dstTile):", key, dstTile);
-
-  const dstStr = coords.vtsToBoard(dstTile, boardSpec);
-
-  const { ok, err } = mPieces.movePieceFromTrayToBoard(key, dstStr);
-  if(!ok) {
-    console.log("*** err:", err);
-    return { ok, err };
-  }
-
-  vPieces.deHighlight(key);
-  cSelections.clearPieceSelections(key);
-  cSelections.deselectTile(dstTile);
-
-  return { ok, err: null };
-  }
-
-function shiftPieceToTile(key, dstTile) {
-  console.log("cntrl: setup.js - shiftPieceToTile(key, dst):", key, dstTile);
-
-  const dstStr = coords.vtsToBoard(dstTile, boardSpec);
-
-  const { ok, err } = mPieces.movePieceTileToTile(key, dstStr);
-  if(!ok) return { ok, err };
-
-  vPieces.deHighlight(key);
-  cSelections.clearPieceSelections(key);
-  cSelections.deselectTile(dstTile);
-
-  return { ok, err: null };
-  }
-
-function returnPieceToTray(key) {
-  console.log("cntrl: setup.js - returnPieceToTray(key):", key);
-
-  const { ok, err } = mPieces.movePieceFromBoardToTray(key);
-  if(!ok) return { ok, err };
-
-  vPieces.deHighlight(key);
-  cSelections.clearPieceSelections(key);
-
-  return { ok, err: null };
-}
-
 function recordSetupAction(entry) {
   console.log("cntrl: setup.js - recordSetupAction(entry):", entry);
 
@@ -894,51 +592,6 @@ function recordSetupAction(entry) {
   vSetup.pushPanelLine(entry);        // Add line to panel.
   vSetup.refreshPanel(entry);         // Only needed by panels with derived fields.
   }
-
-function replayEntry(entry) {
-  console.log("cntrl: setup.js - replayEntry(entry):", entry);
-
-  const { action, data } = entry;
-
-  if(     action === "makeBoard") {
-    cBoards.destroy(entry);  // 
-    cTrays.destroy(entry);   // Trays bracket the board.
-    cPieces.destroy(entry);  // Every piece is in a tray, none are on the board.
-    cBoards.init(entry);  // Initial occupancy depends on board size and tray type. TODO: support factory trays.
-    cTrays.init(entry);   // Trays bracket the board.
-    cPieces.init(entry);  // Every piece is in a tray, none are on the board.
-    }
-  else if(action === "destroyBoard") { 
-    cBoards.destroy(entry);  // 
-    cTrays.destroy(entry);   // Trays bracket the board.
-    cPieces.destroy(entry);  // Every piece is in a tray, none are on the board.
-    }
-  else if(action === "placePiece") {    // BKRR@KR8,8
-    const [key, dstStr] = data.split("@");
-    const dstTile = coords.normalizeTileToVts(dstStr, boardSpec);
-    placePieceOnBoard(key, dstTile);
-    }
-  else if(action === "shiftPiece") {    // BKRP:KR7,7>KR6,6
-    const [key, residue]   = data.split(":");
-    const [srcStr, dstStr] = residue.split(">");
-    const dstTile = coords.normalizeTileToVts(dstStr, boardSpec);
-    shiftPieceToTile(key, dstTile);
-    }
-  else if(action === "returnPiece") {   // BKRR~KR1,1
-    const [key] = data.split("~");
-    returnPieceToTray(key);
-    }
-  else if(action === "freezePuzzle") {
-    }
-  else if(action === "startingPos") {
-    throw new Error("Setup piece starting position not implemented.");  // TODO:
-    }
-  else if(action === "play") {
-    }
-  else {
-    throw new Error(`Unknown setup action: ${action}`);
-  }
-}
 
 function diagnostic() {
   console.log("cntrl : setup.js - diagnostic()");
