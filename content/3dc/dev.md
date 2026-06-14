@@ -136,7 +136,11 @@ title: "Dev"
   - 6/13/26 - Json code uniformity. Load uniformity. Makeboards working: panel, undo/redo, rewind/FF, load/save, trays/pieces. Setup pieces working.
 
  ### Week 14:
-  - 6/14/26 - Game/state QC. QC setup.
+  - 6/14/26 - Game/state QC. QC setup. Debug rewind.
+
+## Boards and Pieces (6/14/26)
+  **11-0-0-0**
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"makeBoard","prevBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0},"nextBoard":{"boardSize":"10x8x8","trayType":"Real","trayGap":0}},{"action":"makeBoard","prevBoard":{"boardSize":"10x8x8","trayType":"Real","trayGap":0},"nextBoard":{"boardSize":"10x10x10","trayType":"Fact","trayGap":0}},{"action":"makeBoard","prevBoard":{"boardSize":"10x10x10","trayType":"Fact","trayGap":0},"nextBoard":{"boardSize":"10x8x8","trayType":"Fact","trayGap":0}},{"action":"makeBoard","prevBoard":{"boardSize":"10x8x8","trayType":"Fact","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Fact","trayGap":0}},{"action":"placePiece","key":"BKRR","prev":"~KR1,1","post":"@KR8,8"},{"action":"placePiece","key":"BKRP","prev":"~KR2,2","post":"@KR7,7"},{"action":"shiftPiece","key":"BKRP","prev":"@KR7,7","post":"@KR6,6"},{"action":"shiftPiece","key":"BKRP","prev":"@KR6,6","post":"@KR5,5"},{"action":"shiftPiece","key":"BKRP","prev":"@KR5,5","post":"@KR4,4"},{"action":"returnPiece","key":"BKRR","prev":"@KR8,8","post":"~KR1,1"}],"Moves":[],"Gambits":[],"AdvSqs":[]}
 
 ## Save Place Piece States (6/12/26) - MakeBoard, place/shift/return BKRR.
   **4-0-0-0**

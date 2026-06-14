@@ -59,7 +59,7 @@ export function clearAdvsqs() {
   view.getContext().scene.remove(currAdvsqGroup);  // Remove offboard tiles (group children).
 
   currAdvsqGroup = null;
-}
+  }
 
 export function removeFromScene() {
   console.log("view : advsqs.js - removeFromScene():");
@@ -75,7 +75,7 @@ export function removeFromScene() {
   view.getContext().scene.remove(currAdvsqGroup);  // Remove offboard tiles (group children).
 
   currAdvsqGroup = null;
-}
+  }
 
 export function render(advsq) {
   console.log("view : advsqs.js - render(advsq)", advsq);
@@ -83,7 +83,6 @@ export function render(advsq) {
   if(!advsq) return;
 
   makeAdvsq(advsq);
-  // refreshPanel(advsq);
   } 
 
 export function refreshPanel(advsq) {
@@ -94,7 +93,7 @@ export function refreshPanel(advsq) {
 
   const { srcTile, quad, perimeter, stride, opacity } = advsq;
 
-  const derived = computeAdvsqDerived({quad, perimeter, stride});                   // Compute derived fields.
+  const derived = computeAdvsqDerived({quad, perimeter, stride});                     // Compute derived fields.
 
   panel.querySelector('[name="advsq-nickname"]').textContent  = derived.nickname;     // Update quad derived fields.
   panel.querySelector('[name="advsq-pieceQuad"]').textContent = derived.pieceQuad;
@@ -112,7 +111,7 @@ export function refreshPanel(advsq) {
   panel.querySelector('[name="advsq-piece"]').textContent       = derived.piece;
 
   const srcTileStr = coords.vtsToBoard(advsq.srcTile);
-  panel.querySelector('[name="advsq-src"]').value          = srcTileStr;            // Update the primary fields.
+  panel.querySelector('[name="advsq-src"]').value          = srcTileStr;              // Update the primary fields.
   panel.querySelector('[name="advsq-quad"]').value         = quad
   panel.querySelector('[name="advsq-perimeter"]').value    = perimeter;
   panel.querySelector('[name="advsq-stride"]').value       = stride;

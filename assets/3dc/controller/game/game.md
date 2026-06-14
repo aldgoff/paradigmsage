@@ -64,6 +64,26 @@
 
 ## 6. Algorithms
   This structure, while very effective, is complex.
+ ### 6.1 Undo
+  - Reverse travers state buffers until finding a non null one, or the Bottom Sentry.
+    - Process that one undo.
+    - Update the state status list in the panel.
+ ### 6.2 Redo
+  - Foward travers state buffers until finding a non null one, or the Top Sentry.
+    - Process that one redo.
+    - Update the state status list in the panel.
+ ### 6.3 Rewind
+  - Reverse traverse state buffers until finding non null one, or the Bottom Sentry.
+    - If at first element in buffer, process that one undo.
+    - If not, undo until at the first element.
+      - For advsqs, do not recursively undo, just skip to the beginning.
+    - Update the state status list in the panel.
+ ### 6.4 Fast Forward
+  - Forward traverse state buffers until finding non null one, or the Top Sentry.
+    - If at last element in buffer, process that one redo.
+    - If not, redo until at the last element.
+      - For advsqs, do not recursively redo, just skip to the end.
+    - Update the state status list in the panel.
 
 
 ## 2. Validate Load/Save

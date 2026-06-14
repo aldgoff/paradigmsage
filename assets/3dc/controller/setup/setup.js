@@ -16,7 +16,6 @@
   import * as panels   from "../../panels/panels.js";
 
   import * as game        from "../../controller/game/game.js";
-  import * as cSetup      from "../../controller/setup/setup.js";
   import * as cBoards     from "../../controller/boards/boards.js";
   import * as cTrays      from "../../controller/trays/trays.js";
   import * as cPieces     from "../../controller/pieces/pieces.js";
@@ -50,11 +49,10 @@ export function panelDispatch(payload) {    // Dispatch payload from panel to ha
 
   vGambits.cancelAnimation();
 
-  const { action, prevBoard, nextBoard, boardSize,trayType,trayGap } = payload;
+  const { action, prevBoard, nextBoard } = payload;
 
   switch (action) {
     case "makeBoard":    handleMakeBoard(payload); break;
-    case "destroyBoard": handleDestroyBoard(payload); break;
     case "placePiece":   handlePlacePiece(payload); break;
     case "shiftPiece":   handleShiftPiece(payload); break;
     case "returnPiece":  handleReturnPiece(payload); break;
@@ -163,25 +161,25 @@ export function buildForward(entry) {     // Redo.
 
     boardSpec = currBoard.boardSize;
 
-    cSetup.setButtonState("boardDone");
+    setButtonState("boardDone");
     vSetup.refreshPanel(entry.nextBoard);         
     }
   else if(action === "placePiece") {
     const { action, key, prev, post } = entry;
     placePieceOnnBoard(key, prev, post);
-    cSetup.setButtonState("pieces");
+    setButtonState("pieces");
     vSetup.refreshPanel(currBoard);         
     }
   else if(action === "shiftPiece") {
     const { action, key, prev, post } = entry;
     shiftPieceAroundBoard(key, prev, post);
-    cSetup.setButtonState("pieces");
+    setButtonState("pieces");
     vSetup.refreshPanel(currBoard);         
     }
   else if(action === "returnPiece") {
     const { action, key, prev, post } = entry;
     returnPieceTooTray(key, prev, post);
-    cSetup.setButtonState("pieces");
+    setButtonState("pieces");
     vSetup.refreshPanel(currBoard);         
     }
   else {
@@ -201,26 +199,26 @@ export function buildBackward(entry) {    // Undo.
     boardSpec = currBoard.boardSize;
 
     (prevBoard.boardSize === "0x0x0")
-      ? cSetup.setButtonState("makeBoard")
-      : cSetup.setButtonState("boardDone");
+      ? setButtonState("makeBoard")
+      : setButtonState("boardDone");
     vSetup.refreshPanel(entry.prevBoard);         
     }
   else if(action === "placePiece") {
     const { action, key, prev, post } = entry;
     returnPieceTooTray(key, post, prev);
-    cSetup.setButtonState("pieces");
+    setButtonState("pieces");
     vSetup.refreshPanel(currBoard);         
     }
   else if(action === "shiftPiece") {
     const { action, key, prev, post } = entry;
     shiftPieceAroundBoard(key, post, prev);
-    cSetup.setButtonState("pieces");
+    setButtonState("pieces");
     vSetup.refreshPanel(currBoard);         
     }
   else if(action === "returnPiece") {
     const { action, key, prev, post } = entry;
     placePieceOnnBoard(key, post, prev);
-    cSetup.setButtonState("pieces");
+    setButtonState("pieces");
     vSetup.refreshPanel(currBoard);         
     }
   else {
@@ -268,7 +266,7 @@ export function clearAllPieceSelections() {
   cSelections.clearPieceSelections();           // Set of pieces highlighted, indexed by key.
 }
 
-export function buildBoard(board) {
+function buildBoard(board) {
   console.log("cntrl: setup.js - buildBoard(board):", board);
 
   const { boardSize, trayType, trayGap } = board;
@@ -280,7 +278,7 @@ export function buildBoard(board) {
   }
   }
 
-export function clearBoard(board) {
+function clearBoard(board) {
   console.log("cntrl: setup.js - clearBoard(board):", board);
 
   const { boardSize, trayType, trayGap } = board;
@@ -292,7 +290,7 @@ export function clearBoard(board) {
   }
   }
 
-export function setButtonState(command) {
+function setButtonState(command) {
   console.log("cntrl: setup.js - setButtonState(command)", command);
 
   const panel = document.getElementById("diags-window");
@@ -301,7 +299,6 @@ export function setButtonState(command) {
   switch (command) {
     case "makeBoard":
       panels.enableButton("makeBoard",   true);
-      panels.enableButton("destroyBoard",false);
 
       panels.enableButton("placePiece",  false);
       panels.enableButton("shiftPiece",  false);
@@ -312,7 +309,6 @@ export function setButtonState(command) {
       break;
     case "boardDone":
       panels.enableButton("makeBoard",   true);
-      panels.enableButton("destroyBoard",true);
 
       panels.enableButton("placePiece",  true);
       panels.enableButton("shiftPiece",  false);
@@ -387,19 +383,6 @@ function handleMakeBoard(payload) { // Setup handler.
   currBoard = structuredClone(nextBoard);       // Capture current board.
   }
 
-function handleDestroyBoard(payload) {
-  console.log("cntrl: setup.js - handleDestroyBoard(payload):", payload);
-
-  const { action, prevBoard, nextBoard, boardSize,trayType,trayGap } = payload;
-  const entry = payload;
-  clearBoard(currBoard);
-
-  boardSpec = prevBoard.boardSize;
-
-  vSetup.refreshPanel(prevBoard);         
-  setButtonState("makeBoard");
-  }
-
 function handlePlacePiece(payload) {
   console.log("cntrl: setup.js - handlePlacePiece(payload):", payload);
    
@@ -469,6 +452,7 @@ function handleFreeze(payload) {
   console.log("cntrl: setup.js - handleFreeze(payload):", payload);
 
   const { action, boardSize, trayType } = payload;  // Informative.
+
   const boardPieces =
     Object.values(mPieces.getPieceList())
       .filter(piece => piece.loc === "@")

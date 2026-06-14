@@ -247,8 +247,8 @@ async function handleLoad() {
     }
 
     vSetup.refreshPanel(null);
-    vMoves.refreshPanel();
-    vGambits.refreshPanel();
+    vMoves.refreshPanel(null);
+    vGambits.refreshPanel(null);
     vAdvsqs.clearAdvsqPanelParams("KR4,4");
 
     showUndoStatus(); // Good visual indicator of successful load.
@@ -294,34 +294,43 @@ function rewindCurrentBuffer(buffer) {
   const idx = state.getCurrentIndex(buffer);
 
   if(     buffer === "Setup") {
-    cSetup.clearAllTileSelections();
-    cSetup.clearAllPieceSelections();
-    cSetup.returnAllPiecesToHomeTray();
+    const first = state.getState().Setup[0];
+    while(state.getCurrentIndex("Setup") > 1) {
+      const idx = state.getCurrentIndex("Setup");
+      if(!processUndoBuffer("Setup", idx)) 
+        break;
+    }
 
     state.setBufferIndex("Setup", 1);
-    const entries = state.getState().Setup;
-    vSetup.refreshPanel(entries[0]);
-    }
-  else if(buffer === "AdvSqs") {  // Snapshot buffer.
-    const first = state.getState().AdvSqs[0];
-
-    vAdvsqs.removeFromScene();
-    vAdvsqs.render(first);
-    vAdvsqs.refreshPanel(first);
-
-    state.setBufferIndex("AdvSqs", 1);
+    vSetup.refreshPanel(first);
     }
   else if(buffer === "Moves") {
+    const first = state.getState().Moves[0];
     while (state.getCurrentIndex("Moves") > 1) {
       const idx = state.getCurrentIndex("Moves");
       if (!processUndoBuffer("Moves", idx)) break;
     }
+
+    state.setBufferIndex("Moves", 1);
+    vMoves.refreshPanel(first);
     }
   else if(buffer === "Gambits") {
+    const first = state.getState().Gambits[0];
     while (state.getCurrentIndex("Gambits") > 1) {
       const idx = state.getCurrentIndex("Gambits");
       if (!processUndoBuffer("Gambits", idx)) break;
     }
+
+    state.setBufferIndex("Gambits", 1);
+    vGambits.refreshPanel(first);
+    }
+  else if(buffer === "AdvSqs") {  // Snapshot buffer.
+    const first = state.getState().AdvSqs[0];
+    vAdvsqs.removeFromScene();
+    vAdvsqs.render(first);
+
+    state.setBufferIndex("AdvSqs", 1);
+    vAdvsqs.refreshPanel(first);
     }
   else {
     throw new Error(`Unknown buffer ${buffer}.`);
@@ -334,6 +343,7 @@ function fastForwardCurrentBuffer(buffer) {
   const len = state.getBufferLength(buffer);
 
   if(     buffer === "Setup") {
+    const last = state.getState().Setup[len - 1];
     while(state.getCurrentIndex("Setup") < len) {
       const idx = state.getCurrentIndex("Setup");
       if(!processRedoBuffer("Setup", idx)) 
@@ -341,36 +351,35 @@ function fastForwardCurrentBuffer(buffer) {
     }
 
     state.setBufferIndex("Setup", len);
-    const entries = state.getState().Setup;
-    vSetup.refreshPanel(entries[len-1]);
+    vSetup.refreshPanel(last);
     }
-  else if(buffer === "AdvSqs") {  // Snapshot buffer.
-    const last = state.getState().AdvSqs[len - 1];
-
-    vAdvsqs.removeFromScene();
-    vAdvsqs.render(last);
-    vAdvsqs.refreshPanel(last);
-
-    state.setBufferIndex("AdvSqs", len);
-    }
-
   else if(buffer === "Moves") {
+    const last = state.getState().Moves[len - 1];
     while (state.getCurrentIndex("Moves") < len) {
       const idx = state.getCurrentIndex("Moves");
       if (!processRedoBuffer("Moves", idx)) break;
     }
 
-    vMoves.refreshPanel();
     state.setBufferIndex("Moves", len);
+    vMoves.refreshPanel(last);
     }
   else if(buffer === "Gambits") {
+    const last = state.getState().Gambits[len - 1];
     while (state.getCurrentIndex("Gambits") < len) {
       const idx = state.getCurrentIndex("Gambits");
       if (!processRedoBuffer("Gambits", idx)) break;
     }    
 
-    vGambits.refreshPanel();
     state.setBufferIndex("Gambits", len);
+    vGambits.refreshPanel(last);
+    }
+  else if(buffer === "AdvSqs") {  // Snapshot buffer.
+    const last = state.getState().AdvSqs[len - 1];
+    vAdvsqs.removeFromScene();
+    vAdvsqs.render(last);
+
+    state.setBufferIndex("AdvSqs", len);
+    vAdvsqs.refreshPanel(last);
     }
   else {
     throw new Error(`Unknown buffer ${buffer}`);
@@ -412,16 +421,16 @@ function processUndoBuffer(key, idx, N=1) {
       // vGambits.undo(gambit);
       state.setBufferIndex("Gambits", idx - 1); // Update from state.
       cGambits.rerunGambits();                  // Rebuild from state.
-      vGambits.refreshPanel();
+      vGambits.refreshPanel(gambit);
       return true;
     }
-  }
+    }
   else if(key === "Moves") {
     const move = state.fetchCurrentState("Moves");
     if(move != null) {
       vMoves.undo(move);
       state.setBufferIndex("Moves", idx-1);
-      vMoves.refreshPanel();
+      vMoves.refreshPanel(move);
       return true;
     }
     }
@@ -474,16 +483,16 @@ function processRedoBuffer(key, idx, N=1) {
       state.setBufferIndex("Gambits", idx + 1); // Update from state.
       cGambits.rerunGambits();                  // Rebuild from state.
       // vGambits.redo(gambit);
-      vGambits.refreshPanel();
+      vGambits.refreshPanel(gambit);
       return true;
     }
-  }
+    }
   else if(key === "Moves") {
     const move = state.fetchNextState("Moves");
     if(move != null) {
       state.setBufferIndex("Moves", idx + 1);
       vMoves.redo(move);
-      vMoves.refreshPanel();
+      vMoves.refreshPanel(move);
       return true;
     }
     }
@@ -515,9 +524,6 @@ function hardReset() {
   mGambits.reset();
   mMoves.reset();
   mSetup.reset();
-
-  // --- View ---
-  // vBoards.clearBoard();
 
   // --- Derived / caches ---
   cGambits.reset?.();

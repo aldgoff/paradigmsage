@@ -205,8 +205,8 @@ export function redo(gambit) {
 export function pushPanelLine(line) {
   console.log("view : gambits.js - pushPanelLine(line)", line);
 
-  const el = document.getElementById("gambit-list");
-  if(!el) return;
+  const scroll = document.getElementById("gambit-list");
+  if(!scroll) return;
 
   const row = assembleLine(line);
 
@@ -214,31 +214,30 @@ export function pushPanelLine(line) {
   div.textContent = row;
 
   // Write to the scroll box.
-  el.appendChild(div);
-  el.scrollTop = el.scrollHeight;
+  scroll.appendChild(div);
+  scroll.scrollTop = scroll.scrollHeight;
   }
 
 export function popPanelLine() {
   console.log("view : gambits.js - popPanelLine()");
 
-  const el = document.getElementById("gambit-list");
-  if(!el) return;
+  const scroll = document.getElementById("gambit-list");
+  if(!scroll) return;
 
-  const last = el.lastElementChild;
+  const last = scroll.lastElementChild;
   if(!last) return;
 
-  el.removeChild(last);
+  scroll.removeChild(last);
   }
 
-export function refreshPanel() {
-  // console.log("view : gambits.js - refreshPanel()");
-  const el = document.getElementById("gambit-list");
-  if (!el) return;
+export function refreshPanel(gambit) {
+  console.log("view : gambits.js - refreshPanel(gambit)", gambit);
 
-  const count = state.getIndices().Gambits;
+  const scroll = document.getElementById("gambit-list");  // Scroll list.
+  if (!scroll) return;
 
-  const children = el.children;
-
+  const count = state.getIndices().Gambits;                // Scroll text box.
+  const children = scroll.children;
   for (let i = 0; i < children.length; i++) {
     if (i < count) {
       children[i].style.opacity = "1.0";   // active
@@ -246,7 +245,7 @@ export function refreshPanel() {
       children[i].style.opacity = "0.3";   // future
     }
   }
-}
+  }
 
 export function render(group, { animate = false } = {}) {
   console.log("view : gambits.js - render( not shown)");
@@ -288,7 +287,7 @@ export function cancelAnimation() {
     activeAnimation.cancelled = true;
     activeAnimation = null;
   }
-}
+  }
 
 export function setLevelSep(levelSep) {
   console.log("view : gambits.js - setLevelSep(levelSep):", levelSep);

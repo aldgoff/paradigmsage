@@ -37,7 +37,7 @@
 export function clearSetup() {
   console.log("view : setup.js - clearSetup()");
 
-}
+  }
 
 export function clear(entry) {
   console.log("view : setup.js - clear(entry)", entry);
@@ -57,18 +57,32 @@ export function render(entry) {
 export function refreshPanel(board) {
   console.log("view : setup.js - refreshPanel(board):", board);
 
-  let panel = document.getElementById("setup-list");      // Scroll list.
-  if(!panel) return;
+  // const { boardSize, trayType, trayGap } = board;
 
-  const count = state.getIndices().Setup;
-  const children = panel.children;
+  let scroll = document.getElementById("setup-list");     // Scroll list.
+  if(!scroll) return;
+
+  const count = state.getIndices().Setup;                 // Scroll text box.
+  const children = scroll.children;
   for(let i = 0; i < children.length; i++) {
     const opacity = (i < count)
       ? "1.0"     // active
       : "0.3";    // future
     children[i].style.opacity = opacity;
   }
-  refreshRadioButtons(board);
+
+  const panel = document.getElementById("setup-window");   // Ref to panel.
+  if(!panel) return;
+
+  const sizeRadio     = (board)                            // Radio buttons.
+    ? panel.querySelector( `input[name="board-size"][value="${board.boardSize}"]`)
+    : panel.querySelector( `input[name="board-size"][value="8x8x8"]`);
+  const trayTypeRadio = (board) 
+    ? panel.querySelector( `input[name="tray-type"][value="${board.trayType}"]`)
+    : panel.querySelector( `input[name="tray-type"][value="Real"]`);
+
+  if(sizeRadio) sizeRadio.checked = true;
+  if(trayTypeRadio) trayTypeRadio.checked = true;  
 }
 export function refreshPanel1(board) {
   console.log("view : setup.js - refreshPanel(board):", board);
@@ -105,8 +119,8 @@ export function refreshPanel1(board) {
 export function pushPanelLine(entry) {
   console.log("view : setup.js - pushPanelLine(entry)", entry);
 
-  const el = document.getElementById("setup-list");
-  if(!el) return;
+  const scroll = document.getElementById("setup-list");
+  if(!scroll) return;
 
   const line = assembleLine(entry);
 
@@ -114,8 +128,8 @@ export function pushPanelLine(entry) {
   div.textContent = line;
 
   // Write to the scroll box.
-  el.appendChild(div);
-  el.scrollTop = el.scrollHeight;
+  scroll.appendChild(div);
+  scroll.scrollTop = scroll.scrollHeight;
   }
 
 export function clearSetupPanelParams(params) {
@@ -173,23 +187,6 @@ function assembleLine(entry) {
       throw new Error(`Unknown setup action: ${action}.`);
     break;
   }
-}
-
-function refreshRadioButtons(board) {
-  console.log("view : setup.js - refreshRadioButtons(board):", board);
-
-  const panel = document.getElementById("setup-window");
-  if(!panel) return;
-
-  const sizeRadio     = (board) 
-    ? panel.querySelector( `input[name="board-size"][value="${board.boardSize}"]`)
-    : panel.querySelector( `input[name="board-size"][value="8x8x8"]`);
-  const trayTypeRadio = (board) 
-    ? panel.querySelector( `input[name="tray-type"][value="${board.trayType}"]`)
-    : panel.querySelector( `input[name="tray-type"][value="Real"]`);
-
-  if(sizeRadio) sizeRadio.checked = true;
-  if(trayTypeRadio) trayTypeRadio.checked = true;  
-}
+  }
 // Seampoint: more local functions...
 
