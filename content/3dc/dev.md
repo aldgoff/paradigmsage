@@ -136,7 +136,7 @@ title: "Dev"
   - 6/13/26 - Json code uniformity. Load uniformity. Makeboards working: panel, undo/redo, rewind/FF, load/save, trays/pieces. Setup pieces working.
 
  ### Week 14:
-  - 6/14/26 - Game/state QC. QC setup. Debug rewind. Debug place piece on ten boards. Debug setup.
+  - 6/14/26 - Game/state QC. QC setup. Debug rewind. Debug place piece on ten boards. Debug setup. Update clues & dates.
 
 ## Place piece test on 10x8x8.
   {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"10x8x8","trayType":"Real","trayGap":0}},{"action":"placePiece","key":"BKRR","prev":"~KR1,1","post":"@KR5,5"}],"Moves":[],"Gambits":[],"AdvSqs":[]}

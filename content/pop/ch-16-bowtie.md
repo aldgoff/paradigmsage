@@ -2,7 +2,7 @@
 title: "Bowtie"
 nav-entry: "Ch 16"
 order: "16"
-date: "2026-04-20"
+date: "2026-05-04"
 documents:
   discourse:
     title: "Art Show"

@@ -24,6 +24,6 @@ This is a work in progress; return from time to time to see what new territory h
 
 Think of it as a quest. The map is the book *Paradigm of Paradox*, presented as a weekly series.
 
-**Who this is for**: readers who enjoy sustained, careful thought about difficult ideas.
+**Who this is for**: readers who enjoy sustained, careful thought about intricate ideas.
 
-**Who it is not for**: those seeking quick explanations or light diversion.
+**Target Demographic**: those who find epiphanies and paradigms a delight.
