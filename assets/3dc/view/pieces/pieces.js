@@ -29,6 +29,8 @@
 // --- Dependencies ---
   import * as utils   from "../../../utils/utils.js";
 
+  import * as cSetup  from "../../controller/setup/setup.js";
+
   import * as planes  from "../../geometry/planes/planes.js";
   import * as coords  from "../../foundation/coords/coords.js";
   import * as cViewer from "../../controller/viewer/viewer.js";
@@ -351,8 +353,7 @@ function renderInTray(player, side, type, tray, pos) {
 function tileToVts(player, pos, gap) {
   // console.log("view : pieces.js - tileToVts(player, pos, gap)", player, pos, gap);
 
-  // TODO: tileToVts() only works for 8x8x8 boards.
-  const specOrName = "8x8x8";
+  const specOrName  = cSetup.getCurrBoard().boardSize;
 
   let vts = coords.normalizeTileToVts(pos, specOrName); // [4,-3,-3]=>[4,-4,-4] and [-3,-3,-3]=>[-3,-4,-4]
   const displacement = (player === "W") ? [0, -gap, -gap]: [0, gap, gap];

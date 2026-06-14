@@ -73,7 +73,7 @@ export function movePieceFromTrayToBoard(key, dstStr) {  // "WQQP", "Q1,1". // T
     const type   = key[3];  // R|B|D|S|Q|N|P|U|K.
 
     const { i, j } = mTrays.trayIndices(type, spec);                // Determine tray array indices.
-    // console.log("*** Parse");
+    // console.log("*** Parse spec, piece", spec, piece);
 
   // --- Update tray occupancy ---
     const whiteTray = mTrays.getWhiteTray();                        // Trays and boards.
