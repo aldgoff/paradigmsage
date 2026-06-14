@@ -64,5 +64,18 @@ title: "Clues"
   - 6/03/26 - An electron changing state in an atom, starts here, ends up there, and is *never, ever anywhere in between*.
   - 6/04/26 - This connection with quantum physics is the biggest surprise of these rules.
   - 6/05/26 - And this is just the tip of the iceberg.
+  - 6/06/26 - The third dimension has required the addition of a third base piece, the duke.
+  - 6/07/26 - So where do we place it in the starting line up?
+  - 6/08/26 - Should the bishop stay adjacent to the royal pieces?
+  - 6/09/26 - Or should the duke slip into that slot?
+  - 6/10/26 - To make room for both a queen side and a king side duke, now requires 10 tiles.
+  - 6/11/26 - A 10x10x10 board will yield *1,000 tiles*.
+  - 6/12/26 - Uninteresting complexity.
+  - 6/13/26 - This places the pawns too far apart as well.
+  - 6/14/26 - Every game is split strategically, a major piece war, followed by a pawn war.
+  - 6/15/26 - There goes the quest, doesn't feel like chess.
+  - 6/16/26 - Pawn engagement can be solved by selecting a 10x8x8 board, that's only 640 tiles.
+  - 6/17/26 - But the lack of symmetry distorts pawn race endgames (king, knight).
+  - 6/18/26 - Again, we lose the quest.
 
 

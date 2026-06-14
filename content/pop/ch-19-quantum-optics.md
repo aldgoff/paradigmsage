@@ -2,7 +2,7 @@
 title: "Quantum Optics"
 nav-entry: "Ch 19"
 order: "19"
-date: "2026-05-11"
+date: "2026-06-15"
 documents:
   discourse:
     title: "Halfway There"

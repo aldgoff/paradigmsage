@@ -2,7 +2,7 @@
 title: "Symmetric Spacetime Intervals"
 nav-entry: "Ch 15"
 order: "15"
-date: "2026-04-13"
+date: "2026-04-20"
 documents:
   discourse:
     title: "Surf Beach"

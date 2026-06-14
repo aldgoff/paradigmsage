@@ -2,7 +2,7 @@
 title: "Teleportation"
 nav-entry: "Ch 17"
 order: "17"
-date: "2026-04-27"
+date: "2026-05-18"
 documents:
   discourse:
     title: "Cloning"

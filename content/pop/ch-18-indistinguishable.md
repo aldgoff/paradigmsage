@@ -2,7 +2,7 @@
 title: "Indistinguishable"
 nav-entry: "Ch 18"
 order: "18"
-date: "2026-05-04"
+date: "2026-06-01"
 documents:
   discourse:
     title: "Bingo Bos"
