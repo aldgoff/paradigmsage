@@ -44,8 +44,6 @@ export function getTileSelection() {            // O(1).
 }
 
 export function clearSelections() {
-  for(const key of [...pieceSelections]) deselectPiece(key)
-  for(const tile of [...tileSelections]) deselectTile(tile)
   clearPieceSelections();
   clearTileSelections();
   manageMoveButtons();
@@ -78,6 +76,7 @@ export function deselectPiece(key) {            // O(1).
   }
 
 export function clearPieceSelections() {        // O(1).
+  for(const key of [...pieceSelections]) deselectPiece(key)
   pieceSelections.clear();
 
   const panel = document.getElementById("diags-window");
@@ -119,6 +118,7 @@ export function deselectTile(vts) {             // O(3).
   }
 
 export function clearTileSelections() {         // O(1).
+  for(const tile of [...tileSelections]) deselectTile(tile)
   tileSelections.clear();
 
   const panel = document.getElementById("diags-window");
@@ -174,20 +174,23 @@ export function handleTileClick(vts) {          // O(n).
 export function manageMoveButtons() {
   console.log("cntrl: selections.js - manageMoveButtons()");
 
-  const panel = document.getElementById("move-window");
-
-  const pieces = pieceSelections.size;
-  const tiles  = tileSelections.size;
-
-  const [key1, key2] = [...pieceSelections];
-  const tile   = tileSelections.values().next().value;
-  const dstStr = (tile) ? coords.vtsToBoard(tile, cSetup.getCurrBoard().boardSize) : null;
+  const size = cSetup.getCurrBoard().boardSize;           // Parse piece and tile info.
+  const [key1,  key2]  = [...pieceSelections];
+  const [tile1, tile2] = [...tileSelections];
   const piece1 = (key1) ? mPieces.getPieceList()[key1] : null;
   const piece2 = (key2) ? mPieces.getPieceList()[key2] : null;
-  panel.querySelector('[name="move-selPieces"]').textContent = [...pieceSelections];
-  panel.querySelector('[name="move-selTiles"]').textContent  = [...tileSelections];
+  const dstStr1 = (tile1) ? coords.vtsToBoard(tile1, size) : "";
+  const dstStr2 = (tile2) ? coords.vtsToBoard(tile2, size) : "";
+  const { player: player1, side: side1, level: level1, type: type1 } = utils.parsePieceKey(key1);
+  const { player: player2, side: side2, level: level2, type: type2 } = utils.parsePieceKey(key2);
 
-  panels.enableButton("move",        false);
+  const panel = document.getElementById("move-window");   // Update panel fields.
+  panel.querySelector('[name="move-selPieces"]').textContent = [...pieceSelections];
+  panel.querySelector('[name="move-selTiles"]').textContent  = `${dstStr1} ${dstStr2}`;
+
+  if(piece1?.pos === dstStr1)  return;                     // Piece can't be on tile.
+
+  panels.enableButton("move",        false);              // Reset all the panel buttons.
   panels.enableButton("capture",     false);
   panels.enableButton("enpassant",   false);
   panels.enableButton("castle",      false);
@@ -196,23 +199,55 @@ export function manageMoveButtons() {
   panels.enableButton("bishop-decay",false);
   panels.enableButton("fission",     false);
 
-  if(pieces === 1 && tiles === 1) {
-    panels.enableButton("move",        true);
-    panels.enableButton("promote",     true);
-    panels.enableButton("duke-decay",  true);
-    panels.enableButton("bishop-decay",true);
-  }
-  else if(pieces === 2 && tiles === 0) {
-    panels.enableButton("capture",   true);
-  }
-  else if(pieces === 2 && tiles === 1) {
-    panels.enableButton("enpassant",   true);
-  }
-  else if(pieces === 2 && tiles === 2) {
-    panels.enableButton("castle",      true);
-  }
-  else if(pieces === 1 && tiles === 2) {
-    panels.enableButton("fission",     true);
+  const pieces = pieceSelections.size;          // 1st level button restraints.
+  const tiles  = tileSelections.size;
+
+  if(     pieces === 1 && tiles === 1) {        // Move, promote, or decay.
+    const [, prefix, x, y] = dstStr1.match(/^([A-Z]+)(\d+),(\d+)$/);
+    const i = Number(x);
+    const j = Number(y);
+
+    const dims = Number(size.split("x")[2]); // Should be 8 or 10.
+    const first = (dims === 10) ? 0: 1; // TODO: check for standards drift.
+    const last  = (dims === 10) ? 9: 8;
+
+    const lastCol = (i === j)
+                && ( (player1 === "W" && i === last) 
+                  || (player1 === "B" && i === first) );
+    const promotable = (type1 === "P") && lastCol;
+
+    if(type1 === 'S') {  // TODO: figure out how to specify stack subpieces.
+      panels.enableButton("move",        true);
+      panels.enableButton("duke-decay",  true);
+      panels.enableButton("bishop-decay",true);
+    }
+    else if(promotable) {
+      panels.enableButton("promote", true);
+    }
+    else {
+      panels.enableButton("move", true);
+    }
+    }
+  else if(pieces === 2 && tiles === 0) {        // Capture.
+    if(player1 === player2) return;
+      
+    panels.enableButton("capture", true);
+    }
+  else if(pieces === 2 && tiles === 1) {        // En Passant.
+    if(player1 === player2) return;
+    if(type1 != 'P') return;
+    if(type2 != 'P') return;
+    
+    panels.enableButton("enpassant", true);
+    }
+  else if(pieces === 2 && tiles === 2) {        // Castle.
+    if(player1 != player2) return;
+    if((type1 === 'K' && type2 === 'R') || (type1 === 'R' && type2 === 'K'))
+      panels.enableButton("castle", true);
+    }
+  else if(pieces === 1 && tiles === 2) {        // Stack fission.
+    if(type1 != 'S') return;
+    panels.enableButton("fission", true);
   }
 }
 // Seampoint: more local functions...

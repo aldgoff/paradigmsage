@@ -30,7 +30,7 @@
 // Seampoint: more imports...
 
 // --- Globals ---
-  const pieceList = {};  // [key: "WQQP"] => piece = { loc: "~|@", curPos: "Q5,5", curCoords: [0,1,1], vts, ... }
+  const pieceList = {};  // [key: "WQQP"] => piece = { loc: "~|@", pos: "Q5,5", coords: [0,1,1], vts, ... }
   const origin = [4,4,4]; // Q4,4 - for the board occupancy 3D array.
 // Seampoint: more globals...
 
