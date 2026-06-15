@@ -408,7 +408,7 @@ function handleFreeze(payload) {
   setButtonState("loaded");
   }
 
-function handleStartingPos(payload) {  // TODO: Load all the pieces.
+function handleStartingPos(payload) {
   console.log("cntrl: setup.js - handleStartingPos(payload):", payload);
 
   const { action, boardSize, trayType } = payload;  // Informative.
@@ -690,5 +690,6 @@ function diagnostic() {
     5. ✅ Implement startup position.
     6. Implement undo branching.
     7. ✅ Undo does not restore buttons.
+    8. const max = 40;
  */
 

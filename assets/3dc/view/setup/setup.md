@@ -7,6 +7,3 @@
 ## 2. Title
   text
 
- ### 2.1 SubSection
-  text
-
