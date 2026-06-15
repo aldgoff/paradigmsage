@@ -137,9 +137,6 @@ layout: "play"
   <div class="section">
     <button data-action="startingPos" disabled>Starting Position</button>
   </div>
-  <div class="section">
-    <button data-action="play" disabled>Play</button>
-  </div>
   <div class="section scroll-box" id="setup-list"></div>
   </div>
 

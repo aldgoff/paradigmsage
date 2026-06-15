@@ -61,7 +61,6 @@ export function panelDispatch(payload) {    // Dispatch payload from panel to ha
     case "returnPiece":  handleReturnPiece(payload); break;
     case "freezePuzzle": handleFreeze(payload); break;
     case "startingPos":  handleStartingPos(payload); break;
-    case "play":         handlePlay(payload); break;
     case "updateParam": break;
 
     default: throw new Error(`Unknown setup action ${action}.`);
@@ -131,12 +130,6 @@ export function buildPayload(panel, action) {
     return { action };
     }
   else if(action === "startingPos") {
-    clearAllPieceSelections();
-    clearAllTileSelections();
-
-    return { action };
-    }
-  else if(action === "play") {
     clearAllPieceSelections();
     clearAllTileSelections();
 
@@ -447,23 +440,6 @@ function handleStartingPos(payload) {
   setButtonState("loaded");
   }
 
-function handlePlay(payload) {
-  console.log("cntrl: setup.js - handlePlay(payload):", payload);
-
-  const { action, boardSize, trayType } = payload;  // Informative.
-
-  const numBoardPieces =
-    Object.values(mPieces.getPieceList())
-      .filter(piece => piece.loc === "@")
-      .length;  // Count number of pieces on the board?
-  const data = (numBoardPieces > 0)
-    ? `puzzle of ${numBoardPieces} pieces.`
-    : "game." ;
-  const entry = { action, data };
-
-  recordSetupAction(entry);
-  setButtonState("play");
-}
 // Seampoint: more handlers...
 
 // --- Helpers ---
@@ -506,7 +482,6 @@ function setButtonState(command) {
       panels.enableButton("returnPiece", false);
       panels.enableButton("freezePuzzle",false);
       panels.enableButton("startingPos", false);
-      panels.enableButton("play",        false);
 
       panels.enableButton("move", false);
       break;
@@ -518,7 +493,6 @@ function setButtonState(command) {
       panels.enableButton("returnPiece", false);
       panels.enableButton("freezePuzzle",false);
       panels.enableButton("startingPos", true);
-      panels.enableButton("play",        false);
 
       panels.enableButton("move", false);
       break;
@@ -528,7 +502,6 @@ function setButtonState(command) {
       panels.enableButton("returnPiece",  true);
       panels.enableButton("freezePuzzle", true);
       panels.enableButton("startingPos",  false);
-      panels.enableButton("play",         false);
 
       panels.enableButton("move", false);
       break;
@@ -538,7 +511,6 @@ function setButtonState(command) {
       panels.enableButton("shiftPiece",   true);
       panels.enableButton("freezePuzzle", true);
       panels.enableButton("startingPos",  false);
-      panels.enableButton("play",         false);
 
       panels.enableButton("move", false);
       break;
@@ -548,9 +520,8 @@ function setButtonState(command) {
       panels.enableButton("shiftPiece",   false);
       panels.enableButton("freezePuzzle", false);
       panels.enableButton("startingPos",  false);
-      panels.enableButton("play",         true);
 
-      panels.enableButton("move", false);
+      panels.enableButton("move", true);
       break;
     case "play":
       panels.enableButton("placePiece",   false);
@@ -558,7 +529,6 @@ function setButtonState(command) {
       panels.enableButton("shiftPiece",   false);
       panels.enableButton("freezePuzzle", false);
       panels.enableButton("startingPos",  false);
-      panels.enableButton("play",         false);
 
       panels.enableButton("move", true);
       break;
@@ -691,5 +661,6 @@ function diagnostic() {
     6. Implement undo branching.
     7. ✅ Undo does not restore buttons.
     8. const max = 40;
+    9. Stack management.
  */
 
