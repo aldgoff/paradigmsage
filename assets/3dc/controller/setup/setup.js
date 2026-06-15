@@ -10,6 +10,9 @@
 // --- Load JSON ---
   import setupData from "./setup.json" assert { type: "json" };
   const setupModule = setupData.setup_module;
+  const eights = setupModule.eights;
+  const ten    = setupModule.ten;
+  const tens   = setupModule.tens;
 // Seampoint: more objects...
 
 // --- Dependencies ---
@@ -136,6 +139,11 @@ export function buildPayload(panel, action) {
   else if(action === "play") {
     clearAllPieceSelections();
     clearAllTileSelections();
+
+    return { action };
+    }
+  else if(action === "updateParam") {
+    console.log("*** Radio buttons capture state but are not actionable.");
 
     return { action };
     }
@@ -300,11 +308,6 @@ export function clearAllPieceSelections() {
 }
 // Seampoint: more global functions...
 
-// --- Handle Functions ---
-  // BKRR@BR6,6       // Place on board from tray.
-  // BKRR:BR6,6>BR4,4 // Shift tiles on board.  
-  // BKRR~KR1,1       // Return to tray from board.
-
 function handleMakeBoard(payload) { // Setup handler.
   console.log("cntrl: setup.js - handleMakeBoard(payload):", payload);
 
@@ -395,14 +398,13 @@ function handleFreeze(payload) {
 
   const { action, boardSize, trayType } = payload;  // Informative.
 
-  const boardPieces =
+  const numBoardPieces =
     Object.values(mPieces.getPieceList())
       .filter(piece => piece.loc === "@")
-      .length;
-  const entry = { action, data: boardPieces };
+      .length;  // Count number of pieces on the board.
+  const entry = { action, data: numBoardPieces };
 
   recordSetupAction(entry);
-
   setButtonState("loaded");
   }
 
@@ -411,10 +413,34 @@ function handleStartingPos(payload) {  // TODO: Load all the pieces.
 
   const { action, boardSize, trayType } = payload;  // Informative.
 
+  let board = eights;
+  if(currBoard.boardSize === "10x8x8") board = ten;
+  if(currBoard.boardSize === "10x10x10") board = tens;
+
+  for(const player of ["White", "Black"]) {
+    console.log("***", player);
+    for(const key in board[player].pieces) {
+      const dstStr = board[player].pieces[key]
+      const { ok, err } = mPieces.movePieceFromTrayToBoard(key, dstStr);
+      if(!ok) {
+        console.log("*** err:", err);
+        return { ok, err };
+      }
+    }
+    for(const key in board[player].pawns) {
+      const dstStr = board[player].pawns[key]
+      const { ok, err } = mPieces.movePieceFromTrayToBoard(key, dstStr);
+      if(!ok) {
+        console.log("*** err:", err);
+        return { ok, err };
+      }
+    }
+  }
+
   const boardPieces =
     Object.values(mPieces.getPieceList())
       .filter(piece => piece.loc === "@")
-      .length;
+      .length;  // Count number of pieces on the board.
   const entry = { action, data: boardPieces };
 
   recordSetupAction(entry);
@@ -426,10 +452,16 @@ function handlePlay(payload) {
 
   const { action, boardSize, trayType } = payload;  // Informative.
 
-  const entry = { action, data: "game or puzzle" };
+  const numBoardPieces =
+    Object.values(mPieces.getPieceList())
+      .filter(piece => piece.loc === "@")
+      .length;  // Count number of pieces on the board?
+  const data = (numBoardPieces > 0)
+    ? `puzzle of ${numBoardPieces} pieces.`
+    : "game." ;
+  const entry = { action, data };
 
   recordSetupAction(entry);
-
   setButtonState("play");
 }
 // Seampoint: more handlers...
@@ -475,6 +507,8 @@ function setButtonState(command) {
       panels.enableButton("freezePuzzle",false);
       panels.enableButton("startingPos", false);
       panels.enableButton("play",        false);
+
+      panels.enableButton("move", false);
       break;
     case "boardDone":
       panels.enableButton("makeBoard",   true);
@@ -485,6 +519,8 @@ function setButtonState(command) {
       panels.enableButton("freezePuzzle",false);
       panels.enableButton("startingPos", true);
       panels.enableButton("play",        false);
+
+      panels.enableButton("move", false);
       break;
     case "pieces":
       panels.enableButton("placePiece",   true);
@@ -493,6 +529,8 @@ function setButtonState(command) {
       panels.enableButton("freezePuzzle", true);
       panels.enableButton("startingPos",  false);
       panels.enableButton("play",         false);
+
+      panels.enableButton("move", false);
       break;
     case "emptyTrays":
       panels.enableButton("placePiece",   false);
@@ -501,6 +539,8 @@ function setButtonState(command) {
       panels.enableButton("freezePuzzle", true);
       panels.enableButton("startingPos",  false);
       panels.enableButton("play",         false);
+
+      panels.enableButton("move", false);
       break;
     case "loaded":
       panels.enableButton("placePiece",   false);
@@ -509,6 +549,8 @@ function setButtonState(command) {
       panels.enableButton("freezePuzzle", false);
       panels.enableButton("startingPos",  false);
       panels.enableButton("play",         true);
+
+      panels.enableButton("move", false);
       break;
     case "play":
       panels.enableButton("placePiece",   false);
@@ -641,12 +683,12 @@ function diagnostic() {
 // Seampoint: more local functions...
 
 /* TODO: QC checklist✅ 
-    1. Load/Save fails to make board.
+    1. ✅ Load/Save fails to make board.
     2. Corruption if attempt to place a piece on an occupied tile.
     3. Support factory trays.
-    4. Make code work for all three board sizes.
-    5. Implement startup position.
+    4. ✅ Make code work for all three board sizes.
+    5. ✅ Implement startup position.
     6. Implement undo branching.
-    7. Undo does not restore buttons.
+    7. ✅ Undo does not restore buttons.
  */
 
