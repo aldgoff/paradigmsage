@@ -3,7 +3,6 @@ title: "Play"
 layout: "play"
 ---
 
-
 <!-- Load the Three.js Render... -->
 <script type="module">
   import * as THREE from "https://unpkg.com/three@0.160.0/build/three.module.js";
@@ -142,6 +141,10 @@ layout: "play"
 
 <div class="panel panel-stateful" id="move-window">
   <div class="panel-title">Move Panel</div>
+  <div class="section"> 
+    <label> Pieces: <output name="move-selPieces" style="opacity:0.7; font-style:italic;">...</output> </label>
+    <label> Tiles:  <output name="move-selTiles"  style="opacity:0.7; font-style:italic;">...</output> </label> 
+  </div>
   <div class="section">
     <button data-action="move"      disabled>Move</button>
     <button data-action="capture"   disabled>Capture</button>

@@ -20,11 +20,14 @@
 // Seampoint: more objects...
 
 // --- Dependencies ---
-  import * as game     from "../../controller/game/game.js";
+  import * as game        from "../../controller/game/game.js";
+  import * as cSetup      from "../../controller/setup/setup.js";
+  import * as cSelections from "../../controller/selections/selections.js";
 
   import * as state    from "../../model/state/state.js";
   import * as mMoves   from "../../model/moves/moves.js";
-  import * as coords   from "../../foundation/coords/coords.js";  // normalizeTileToVts().
+  import * as mPieces  from "../../model/pieces/pieces.js";
+  import * as coords   from "../../foundation/coords/coords.js";
   import * as quads    from "../../geometry/quads/quads.js";
 
   import * as vMoves   from "../../view/moves/moves.js";
@@ -163,6 +166,46 @@ function handleFission(payload) {
 // Seampoint: more handle functions...
 
 // --- Helpers...
+function performMove(selections, payload) {
+  console.log("cntrl: moves.js - performMove(selections, payload)", selections, payload);
+
+  }
+
+function performBishopDecay(selections, payload) {
+  console.log("cntrl: moves.js - performBishopDecay(selections, payload)", selections, payload);
+
+  }
+
+function performDukeDecay(selections, payload) {
+  console.log("cntrl: moves.js - performDukeDecay(selections, payload)", selections, payload);
+
+  }
+
+function performPromotion(selections, payload) {
+  console.log("cntrl: moves.js - performPromotion(selections, payload)", selections, payload);
+
+  }
+
+function performCapture(selections, payload) {
+  console.log("cntrl: moves.js - performCapture(selections, payload)", selections, payload);
+
+  }
+
+function performEnPassant(selections, payload) {
+  console.log("cntrl: moves.js - performEnPassant(selections, payload)", selections, payload);
+
+  }
+
+function performFission(selections, payload) {
+  console.log("cntrl: moves.js - performFission(selections, payload)", selections, payload);
+
+  }
+
+function performCastle(selections, payload) {
+  console.log("cntrl: moves.js - applyEntry(selections, payload)", selections, payload);
+
+}
+
 function applyEntry(entry) {
   console.log("cntrl: moves.js - applyEntry(entry)", entry);
 
@@ -184,4 +227,10 @@ function applyEntry(entry) {
   // a new move invalidates gambits and advsqs.
 }
 // Seampoint: more local functions...
+
+/* TODO: QC checklist✅ 
+    1. Write handle routines.
+    2. Branch.
+    3. Remove all downstream buffers.
+*/
 
