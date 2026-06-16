@@ -91,7 +91,6 @@ export function buildPayload(panel, action) {
     const dstStr = coords.vtsToBoard(dstTile, boardSpec);
 
     const piece   = mPieces.getPieceList()[key];
-    console.log("***", piece);  // loc, pos, coords, vts, home: trayPos, trayCoords, trayVts.
     if(piece.loc === '~') { 
       const prev = `~${piece.pos}`;
       const post = `@${dstStr}`;
@@ -261,7 +260,7 @@ export function buildBackward(entry) {    // Undo.
 }
 
 export function returnAllPiecesToHomeTray() {
-  console.log("cntrl: game.js - returnAllPiecesToHomeTray()");
+  console.log("cntrl: setup.js - returnAllPiecesToHomeTray()");
 
   for(const key in mPieces.getPieceList()) {    // "WKRR", ...
     const piece = mPieces.getPieceList()[key];
@@ -279,23 +278,21 @@ export function returnAllPiecesToHomeTray() {
   }
 
 export function clearAllTileSelections() {
-  console.log("cntrl: game.js - clearAllTileSelections()");
+  console.log("cntrl: setup.js - clearAllTileSelections()");
 
   const { pieceSelections, tileSelections } = cSelections.getSelections();
   for(const vts of tileSelections) {            // vts, ...
     cSelections.deselectTile(vts);
-    console.log("***", vts);
   }
   cSelections.clearTileSelections();            // Set of tile locations, indexed by vts.
   }
 
 export function clearAllPieceSelections() {
-  console.log("cntrl: game.js - clearAllPieceSelections()");
+  console.log("cntrl: setup.js - clearAllPieceSelections()");
 
   const { pieceSelections, tileSelections } = cSelections.getSelections();
   for(const key of pieceSelections) {           // "WKRR", ...
     vPieces.deHighlight(key);
-    console.log("***", key);
   }
   cSelections.clearPieceSelections();           // Set of pieces highlighted, indexed by key.
 }
@@ -411,7 +408,6 @@ function handleStartingPos(payload) {
   if(currBoard.boardSize === "10x10x10") board = tens;
 
   for(const player of ["White", "Black"]) {
-    console.log("***", player);
     for(const key in board[player].pieces) {
       const dstStr = board[player].pieces[key]
       const { ok, err } = mPieces.movePieceFromTrayToBoard(key, dstStr);

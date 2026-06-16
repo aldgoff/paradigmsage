@@ -21,8 +21,14 @@
 // Seampoint: more objects...
 
 // --- Dependencies ---
-  import * as state  from "../../model/state/state.js";
-  import * as vMoves from "../../view/moves/moves.js";
+  import * as cSetup      from "../../controller/setup/setup.js";
+  import * as cSelections from "../../controller/selections/selections.js";
+
+  import * as state   from "../../model/state/state.js";
+  import * as mPieces from "../../model/pieces/pieces.js";
+  import * as coords  from "../../foundation/coords/coords.js";
+
+  import * as vMoves  from "../../view/moves/moves.js";
 // Seampoint: more imports...
 
 // --- Globals ---
@@ -35,7 +41,7 @@ export function reset() {
   vMoves.clearMoves();
   }
 
-export function makeEntry(payload) {
+export function makeEntry(payload) {  // Deprecate.
   console.log(`model: moves.js - makeEntry(payload):`, payload);
 
   let { action, player, piece, src, dst, sec, capture, opts } = payload;
@@ -44,6 +50,35 @@ export function makeEntry(payload) {
   let turn = Math.floor((index + 1) / 2);
 
   let entry = { turn, player, piece, src, dst, action, sec };
+
+  return entry;
+}
+
+export function makeMoveEntry(selections, payload) {
+  console.log(`model: moves.js - makeMoveEntry(selections, payload):`, selections, payload);
+  const { action, player } = payload;
+  const { pieceSelections, tileSelections } = selections;
+
+  const boardSpec = cSetup.getCurrBoard().boardSize;
+
+  const index = state.getIndices()["Moves"] + 1;
+  let turn = Math.floor((index + 1) / 2);
+
+  const key     = pieceSelections.values().next().value;
+  const dstTile = tileSelections.values().next().value;
+  const dstStr  = coords.vtsToBoard(dstTile, boardSpec);
+
+  const piece = mPieces.getPieceList()[key];
+  const prev  = `@${piece.pos}`;
+  const post  = `@${dstStr}`;  
+
+  let entry = { action, turn, player, key, prev, post };
+  let err = null;
+  console.log("*** entry", entry);
+
+  cSetup.clearAllPieceSelections();
+  cSetup.clearAllTileSelections();
+  cSelections.clearSelections();
 
   return entry;
 }

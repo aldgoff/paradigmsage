@@ -27,6 +27,7 @@
   import * as state    from "../../model/state/state.js";
   import * as mMoves   from "../../model/moves/moves.js";
   import * as mPieces  from "../../model/pieces/pieces.js";
+  import * as mBoards  from "../../model/boards/boards.js";
   import * as coords   from "../../foundation/coords/coords.js";
   import * as quads    from "../../geometry/quads/quads.js";
 
@@ -104,9 +105,13 @@ export function buildPayload(panel, action) {
 function handleMove(payload) {
   console.log("cntrl: moves.js - handleMove(payload)", payload);
 
-  const { player, piece, src, dst, sec, captured, opts } = payload;  // Informative.
+  const { action, player, piece, src, dst, sec, captured, opts } = payload;  // Informative.
+  const selections = cSelections.getSelections();
 
-  const entry = mMoves.makeEntry(payload);  // Create entry.
+  const entry = mMoves.makeMoveEntry(selections, payload);
+
+  performMove(entry);
+
   applyEntry(entry);
   }
 
@@ -184,10 +189,25 @@ function handleUplift(payload) {
 // Seampoint: more handle functions...
 
 // --- Helpers...
-function performMove(selections, payload) {
-  console.log("cntrl: moves.js - performMove(selections, payload)", selections, payload);
+function performMove(entry) {
+  console.log("cntrl: moves.js - performMove(entry)", entry);
 
-  }
+  let { action, turn, player, key, prev, post } = entry;
+
+  const boardSpec = cSetup.getCurrBoard().boardSize;
+
+  console.log("*** pieceList", mPieces.getPieceList());
+  console.log("*** occupancy", mBoards.getBoardOccupancy());
+
+  const [, dstStr] = post.split("@");
+  const dstTile = coords.normalizeTileToVts(dstStr, boardSpec);
+
+  const { ok, err } = mPieces.movePieceTileToTile(key, dstStr);
+  if(!ok) return { ok, err };
+
+  console.log("*** pieceList", mPieces.getPieceList());
+  console.log("*** occupancy", mBoards.getBoardOccupancy());
+}
 
 function performBishopDecay(selections, payload) {
   console.log("cntrl: moves.js - performBishopDecay(selections, payload)", selections, payload);
@@ -248,7 +268,6 @@ function applyEntry(entry) {
   }
 
   state.pushNewMove(entry);           // Change state.
-  vMoves.render(entry);               // Render.
   vMoves.pushPanelLine(entry);        // Add line to panel.
 
   // TODO: remove all entries in the downstream buffers; 

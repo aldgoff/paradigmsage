@@ -42,9 +42,11 @@ export function getPieceSelection() {           // O(1).
  }
 export function getTileSelection() {            // O(1).
   return tileSelections ;
-}
+  }
 
 export function clearSelections() {
+  console.log("cntrl: selections.js - clearSelections()");
+
   clearPieceSelections();
   clearTileSelections();
   manageMoveButtons();
@@ -77,6 +79,8 @@ export function deselectPiece(key) {            // O(1).
   }
 
 export function clearPieceSelections() {        // O(1).
+  console.log("cntrl: selections.js - clearPieceSelections()");
+
   for(const key of [...pieceSelections]) deselectPiece(key)
   pieceSelections.clear();
 
@@ -119,6 +123,8 @@ export function deselectTile(vts) {             // O(3).
   }
 
 export function clearTileSelections() {         // O(1).
+  console.log("cntrl: selections.js - clearTileSelections()");
+
   for(const tile of [...tileSelections]) deselectTile(tile)
   tileSelections.clear();
 

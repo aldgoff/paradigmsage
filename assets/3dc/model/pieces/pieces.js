@@ -161,7 +161,7 @@ export function movePieceTileToTile(key, dstStr) {
     // console.log("*** piece:", structuredClone(piece));
     // console.log("*** spec: ", structuredClone(spec));
 
-    console.log("*** pieceList", structuredClone(pieceList));                // Diagnositcs.
+    // console.log("*** pieceList", structuredClone(pieceList));                // Diagnositcs.
 
   return { ok: true, err: null };
   }

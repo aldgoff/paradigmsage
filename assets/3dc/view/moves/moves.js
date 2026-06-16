@@ -46,6 +46,24 @@ export function redo(move) {
 
 export function pushPanelLine(move) {
   console.log("view : moves.js - pushPanelLine(move)", move);
+  
+  let { action, turn, player, key, prev, post } = move;
+
+  const scroll = document.getElementById("move-list");
+  if(!scroll) return;
+
+  const line = assembleMoveLine(move);
+
+  const div = document.createElement("div");
+  div.textContent = line;
+
+  // Write to the scroll box.
+  scroll.appendChild(div);
+  scroll.scrollTop = scroll.scrollHeight;
+  }
+
+export function pushPanelLine1(move) {
+  console.log("view : moves.js - pushPanelLine(move)", move);
 
   const scroll = document.getElementById("move-list");
   if(!scroll) return;
@@ -129,6 +147,27 @@ function assembleLine(move) {
 
   const whiteCol = (player === "White") ? `${pieceCol}${moveCol}${dstCol}`: "        ";
   const blackCol = (player === "Black") ? `${pieceCol}${moveCol}${dstCol}`: "        ";
+
+  const annotationsCol = ".....    .....";
+
+  const line = `${turnCol} ${whiteCol} ${blackCol} ${annotationsCol}`;
+
+  return line;
+}
+
+function assembleMoveLine(move) {
+  let { action, turn, player, key, prev, post } = move;
+
+  const index = state.getIndices().Moves;
+
+  // --- column widths ---
+  const turnCol  = (String(turn).padStart(3)).padEnd(4);
+  const pieceCol = `${key}`.padEnd(4);
+  const srcCol   = `${prev}`.padEnd(6);
+  const dstCol   = `${post}`.padEnd(6);
+
+  const whiteCol = (player === "White") ? `${pieceCol} ${srcCol} - ${dstCol}`: "        ";
+  const blackCol = (player === "Black") ? `${pieceCol} ${srcCol} - ${dstCol}`: "        ";
 
   const annotationsCol = ".....    .....";
 
