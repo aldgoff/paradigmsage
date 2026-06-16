@@ -8,9 +8,20 @@
 */
 
 // --- Load JSON ---
-import panelsData from "./panels.json" assert { type: "json" };
+  import panelsData from "./panels.json" assert { type: "json" };
   const panelsModule = panelsData.panels_module;
   const panels = panelsModule.panels;
+  const help   = panelsModule.help;
+  const setupText       = help.setupText;
+  const moveText        = help.moveText;
+  const gambitText      = help.gambitText;
+  const advsqText       = help.advsqText;
+  const gameText        = help.gameText;
+  const cameraText      = help.cameraText;
+  const compassText     = help.compassText;
+  const viewerText      = help.viewerText;
+  const diagnosticsText = help.diagnosticsText;
+  // Seampoint - another panel.
 // Seampoint: more objects...
 
 // --- Dependencies ---
@@ -35,7 +46,8 @@ import panelsData from "./panels.json" assert { type: "json" };
     compass: compasses,
     game,
     camera,
-    viewer
+    viewer,
+    // Seampoint - another panel.
   };
 
   let activeDrag = null;
@@ -52,7 +64,39 @@ import panelsData from "./panels.json" assert { type: "json" };
 
   window.addEventListener("pointerup", () => {
     activeDrag = null;
-  });
+    });
+
+  document.addEventListener("click", event => {
+    if(event.target.matches(".help-btn")) {
+      const btn = event.target;
+      const key = btn.dataset.help;
+
+      const popup = document.getElementById("help-popup");
+
+      document.getElementById("help-title").textContent = helpText[key].title;
+      document.getElementById("help-body").textContent = helpText[key].body;
+
+      const rect = btn.getBoundingClientRect();
+
+      popup.style.left = `${rect.right + 10}px`;
+      popup.style.top  = `${rect.top}px`;
+
+      popup.hidden = false;
+    }
+    });    
+
+  const helpText = {
+    setup:   setupText,
+    move:    moveText,
+    gambit:  gambitText,
+    advsq:   advsqText,
+    game:    gameText,
+    camera:  cameraText,
+    compass: compassText,
+    viewer:  viewerText,
+    diagnostics: diagnosticsText,
+    // Seampoint - another panel.
+  };
 // Seampoint: more globals...
 
 // --- UI ---
@@ -65,14 +109,23 @@ export function init() {
 
     const module = dispatchers[panel];
 
-    if (panelEl) {
+    if(panelEl) {
       makeDraggable(panelEl);
-      wirePanel(panelEl, module, panel);
+      if(module)
+        wirePanel(panelEl, module, panel);
     }
   }
   // console.log(dispatchers); // Keep for now, future me needs to see control flow.
 
   window.addEventListener("keydown", handleAdvsqKeys);
+
+  document.getElementById("help-close")
+    .addEventListener("click", () => {
+
+      document.getElementById("help-popup").hidden = true;
+  });
+
+  makeHelpPopupDraggable();
 
   return;
   }
@@ -192,6 +245,33 @@ function handleAdvsqKeys(e) {
     action: "nudgeSrc",
     axis,
     delta
+  });
+  }
+
+function makeHelpPopupDraggable() {
+  const popup  = document.getElementById("help-popup");
+  const header = document.getElementById("help-header");
+
+  let dragging = false;
+  let offsetX = 0;
+  let offsetY = 0;
+
+  header.addEventListener("mousedown", event => {
+    dragging = true;
+
+    offsetX = event.clientX - popup.offsetLeft;
+    offsetY = event.clientY - popup.offsetTop;
+  });
+
+  document.addEventListener("mousemove", event => {
+    if(!dragging) return;
+
+    popup.style.left = `${event.clientX - offsetX}px`;
+    popup.style.top  = `${event.clientY - offsetY}px`;
+  });
+
+  document.addEventListener("mouseup", () => {
+    dragging = false;
   });
 }
 // Seampoint: more local functions...

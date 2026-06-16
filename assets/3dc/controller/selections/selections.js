@@ -58,7 +58,7 @@ export function isSelectedPiece(key) {          // O(1).
 export function selectPiece(key) {              // O(1).
   console.log("cntrl: selections.js - selectPiece(key)", key);
 
-  const panel = document.getElementById("diags-window");
+  const panel = document.getElementById("diagnostics-window");
 
   vPieces.highlight(key);
   pieceSelections.add(key);
@@ -68,7 +68,7 @@ export function selectPiece(key) {              // O(1).
 export function deselectPiece(key) {            // O(1).
   console.log("cntrl: selections.js - deselectPiece(key)", key);
 
-  const panel = document.getElementById("diags-window");
+  const panel = document.getElementById("diagnostics-window");
 
   vPieces.deHighlight(key);
   pieceSelections.delete(key);
@@ -79,7 +79,7 @@ export function clearPieceSelections() {        // O(1).
   for(const key of [...pieceSelections]) deselectPiece(key)
   pieceSelections.clear();
 
-  const panel = document.getElementById("diags-window");
+  const panel = document.getElementById("diagnostics-window");
   panel.querySelector('[name="diags-pieceSels"]').textContent = pieceSelections.size;
 }
 
@@ -99,7 +99,7 @@ export function selectTile(vts) {               // O(3).
   console.log("cntrl: selections.js - selectTile(vts)", vts);
 
   tileSelections.add(vts);
-  const panel = document.getElementById("diags-window");
+  const panel = document.getElementById("diagnostics-window");
   panel.querySelector('[name="diags-tileSels"]').textContent = tileSelections.size;
 
   const mesh = vTiles.getTileMesh(view.getContext().tileMap, vts);
@@ -110,7 +110,7 @@ export function deselectTile(vts) {             // O(3).
   console.log("cntrl: selections.js - deselectTile(vts)", vts);
 
   tileSelections.delete(vts);
-  const panel = document.getElementById("diags-window");
+  const panel = document.getElementById("diagnostics-window");
   panel.querySelector('[name="diags-tileSels"]').textContent = tileSelections.size;
 
   const mesh = vTiles.getTileMesh(view.getContext().tileMap, vts);
@@ -121,7 +121,7 @@ export function clearTileSelections() {         // O(1).
   for(const tile of [...tileSelections]) deselectTile(tile)
   tileSelections.clear();
 
-  const panel = document.getElementById("diags-window");
+  const panel = document.getElementById("diagnostics-window");
   panel.querySelector('[name="diags-tileSels"]').textContent = tileSelections.size;
 }
 

@@ -88,17 +88,48 @@ layout: "play"
     border: 1px solid #888;
   }
   
-  #setup-window   { top:  160px; left:   20px; }  /* DOM Control Panels */
-  #move-window    { top: 1000px; left:   20px; }
-  #gambit-window  { top:  745px; left:   20px; }
-  #advsq-window   { top:  160px; left:  210px; }
-  #compass-window { top:  160px; left:  560px; }
-  #diags-window   { top:  160px; left:  960px; }
+  #setup-window       { top:  160px; left:   20px; }  /* DOM Control Panels */
+  #move-window        { top: 1000px; left:   20px; }
+  #gambit-window      { top:  745px; left:   20px; }
+  #advsq-window       { top:  160px; left:  210px; }
+  #compass-window     { top:  160px; left:  560px; }
+  #diagnostics-window { top:  160px; left:  960px; }
 
-  #game-window    { top:  160px; left:  390px; }
+  #game-window   { top:  160px; left:  390px; }
 
   #camera-window { top:   400px; left:  390px; }
   #viewer-window { top:   160px; left:  760px; }
+
+  .help-popup {
+    position: fixed;
+
+    top: 100px;
+    left: 100px;
+    width: 350px;
+
+    background: #222;
+    color: white;
+
+    border: 1px solid #666;
+    padding: 10px;
+
+    z-index: 1000;
+  }
+  .help-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+
+    cursor: move;
+    user-select: none;
+  }
+  .help-btn {
+    float: right;
+    width: 20px;
+    height: 20px;
+
+    font-size: 12px;
+  }
   /* Seampont - more DOM control panels... */
 </style>
 
@@ -107,12 +138,14 @@ layout: "play"
 
 <!-- The DOM Control Panels -->
 <div class="panel panel-stateful" id="setup-window">
-  <div class="panel-title">Setup Panel</div>
+  <div class="panel-title"><span>Setup Panel</span>
+    <button class="help-btn" data-help="setup">?</button>
+  </div>
   <div class="section">
     <button data-action="makeBoard">Make Board</button>
   </div>
   <div class="section">
-    <label>Board Size</lable>
+    <label>Board Size</label>
   </div>
   <div class="section">
     <label> <input type="radio" name="board-size" value="8x8x8" checked> 8×8×8 </label><br>
@@ -120,7 +153,7 @@ layout: "play"
     <label> <input type="radio" name="board-size" value="10x10x10"> 10×10×10 </label>
   </div>  
   <div class="section">
-    <label>Tray Type</lable>
+    <label>Tray Type</label>
   </div>
   <div class="section">
     <!-- <label> <input type="radio" name="tray-type" value="none"> None </label><br> -->
@@ -140,7 +173,9 @@ layout: "play"
   </div>
 
 <div class="panel panel-stateful" id="move-window">
-  <div class="panel-title">Move Panel</div>
+  <div class="panel-title"><span>Move Panel</span>
+    <button class="help-btn" data-help="move">?</button>
+  </div>
   <div class="section"> 
     <label> Pieces: <output name="move-selPieces" style="opacity:0.7; font-style:italic;">...</output> </label>
     <label> Tiles:  <output name="move-selTiles"  style="opacity:0.7; font-style:italic;">...</output> </label> 
@@ -175,7 +210,9 @@ layout: "play"
   </div>
 
 <div class="panel panel-stateful" id="gambit-window">
-  <div class="panel-title">Gambit Panel (Freeze)</div>
+  <div class="panel-title"><span>Gambit Panel</span>
+    <button class="help-btn" data-help="gambit">?</button>
+  </div>
   <div class="section">
     <button data-action="freezeQ">Quadrant</button>
     <button data-action="freezeL">Linear</button>
@@ -219,7 +256,9 @@ layout: "play"
   </div>
 
 <div class="panel panel-stateful" id="advsq-window">
-  <div class="panel-title">AdvSq Panel</div>
+  <div class="panel-title"><span>AdvSq Panel</span>
+    <button class="help-btn" data-help="advsq">?</button>
+  </div>
   <div class="section">
     <button data-action="place">Place</button>
     <button data-action="remove">Remove</button>
@@ -264,7 +303,9 @@ layout: "play"
   </div>
 
 <div class="panel panel-supportive" id="compass-window">
-  <div class="panel-title">Compass Panel</div>
+  <div class="panel-title"><span>Compass Panel</span>
+    <button class="help-btn" data-help="compass">?</button>
+  </div>
   <div class="section">
     <button data-action="Rays" disabled>Rays</button>
   </div>
@@ -273,20 +314,22 @@ layout: "play"
   </div>
   </div>
 
-<div class="panel panel-supportive" id="diags-window">
-  <div class="panel-title">Diagnositcs Panel</div>
-  <div class="section"> <label>Occupancies -----</lable> </div>
+<div class="panel panel-supportive" id="diagnostics-window">
+  <div class="panel-title"><span>Diagnostics Panel</span>
+    <button class="help-btn" data-help="diagnostics">?</button>
+  </div>
+  <div class="section"> <label>Occupancies -----</label> </div>
   <div class="section"> <label> Piece Count:      <output name="diags-pieceCount" style="font-style:italic;">0</output> </label> </div>
   <div class="section"> <label> Tray Count:       <output name="diags-trayCount"  style="font-style:italic;">0</output> </label> </div>
   <div class="section"> <label> White Tray:       <output name="diags-whiteTray"  style="font-style:italic;">0</output> </label> </div>
   <div class="section"> <label> Black Tray:       <output name="diags-blackTray"  style="font-style:italic;">0</output> </label> </div>
   <div class="section"> <label> Board Count:      <output name="diags-boardCount" style="font-style:italic;">0</output> </label> </div>
   <div class="section"> <label> Board Occupancy:  <output name="diags-boardOcc"   style="font-style:italic;">0</output> </label> </div>
-  <div class="section"> <label>Selections ----- </lable> </div>
+  <div class="section"> <label>Selections ----- </label> </div>
   <div class="section"> <label> Piece Selections:  <output name="diags-pieceSels" style="font-style:italic;">0</output> </label> </div>
   <div class="section"> <label> Tile Selections:   <output name="diags-tileSels"  style="font-style:italic;">0</output> </label> </div>
   <div class="section"> <label> Buttons:           <output name="diags-buttons"   style="font-style:italic;">0</output> </label> </div>
-  <div class="section"> <label>Mesh Groups ----- </lable> </div>
+  <div class="section"> <label>Mesh Groups ----- </label> </div>
   <div class="section"> <label> Tile Map:          <output name="diags-tileMap"        style="font-style:italic;">0</output> </label> </div>
   <div class="section"> <label> Curr Pieces Group: <output name="diags-currPiecesGroup"style="font-style:italic;">0</output> </label> </div>
   <div class="section"> <label> Piece Groups:      <output name="diags-pieceGroups"    style="font-style:italic;">0</output> </label> </div>
@@ -296,10 +339,9 @@ layout: "play"
   </div>
 
 <div class="panel panel-temporal" id="game-window">
-  <div class="panel-title">Game Panel</div>
-  <!-- <div class="section">
-    <button data-action="newGame">New Game</button>
-  </div> -->
+  <div class="panel-title"><span>Game Panel</span>
+    <button class="help-btn" data-help="game">?</button>
+  </div>
   <div class="section">
     <button data-action="undo">Undo</button>
     <button data-action="redo">Redo</button>
@@ -318,7 +360,9 @@ layout: "play"
   </div>
 
 <div class="panel panel-perspective" id="camera-window">
-  <div class="panel-title">Camera Panel</div>
+  <div class="panel-title"><span>Camera Panel</span>
+    <button class="help-btn" data-help="camera">?</button>
+  </div>
   <div class="section">
     <button data-action="ZoomIn"> Zoom In </button>
     <button data-action="ZoomOut">Zoom Out</button>
@@ -335,7 +379,9 @@ layout: "play"
   </div>
 
 <div class="panel panel-perspective" id="viewer-window">
-  <div class="panel-title">Viewer Panel</div>
+  <div class="panel-title"><span>Viewer Panel</span>
+    <button class="help-btn" data-help="viewer">?</button>
+  </div>
   <div class="section">
     <button data-action="ShowTrays"> Show Trays </button>
     <button data-action="HideTrays"> Hide Trays </button>
@@ -354,6 +400,16 @@ layout: "play"
     <label> Jitter Speed <input type="range" name="viewer-speed" min="0" max="1" step="0.01" value="0.2"> </label>
   </div>
 </div>
+<!-- Seampoint - another panel. -->
 
+<!-- Hidden help panel -->
+<div id="help-popup" class="help-popup" hidden>
+  <div class="help-header" id="help-header">
+    <span id="help-title"></span>
+    <button id="help-close">X</button>
+  </div>
+
+  <div id="help-body"></div>
+</div>
 <!-- Seampoint - more DOM control panels... -->
 

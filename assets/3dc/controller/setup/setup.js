@@ -470,7 +470,7 @@ function clearBoard(board) {
 function setButtonState(command) {
   console.log("cntrl: setup.js - setButtonState(command)", command);
 
-  const panel = document.getElementById("diags-window");
+  const panel = document.getElementById("diagnostics-window");
   panel.querySelector('[name="diags-buttons"]').textContent = command;
 
   switch (command) {
@@ -620,7 +620,7 @@ function diagnostic() {
     ? vTrays.getBlackTrayGroup().children.length
     : "null";
 
-  const panel = document.getElementById("diags-window");
+  const panel = document.getElementById("diagnostics-window");
 
   panel.querySelector('[name="diags-pieceCount"]').textContent = pieceCount;
   panel.querySelector('[name="diags-trayCount"]').textContent  = trayCount;

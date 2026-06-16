@@ -8,9 +8,48 @@
       "compass",
       "game",
       "camera",
-      "viewer"
-    ]
-  }
+      "viewer",
+      "diagnostics"
+    ],
+    "help": {
+      "setupText": {
+          "title": "Setup Panel Help",
+          "body": "yada yada yada"
+        },
+      "moveText": {
+          "title": "Move Panel Help",
+          "body": "yada yada yada"
+        },
+      "gambitText": {
+          "title": "Gambit Panel Help",
+          "body": "yada yada yada"
+        },
+      "advsqText": {
+          "title": "Advsq Panel Help",
+          "body": "yada yada yada"
+        },
+      "gameText": {
+          "title": "Game Panel Help",
+          "body": "yada yada yada"
+        },
+      "cameraText": {
+          "title": "Camera Panel Help",
+          "body": "yada yada yada"
+        },
+      "compassText": {
+          "title": "Compass Panel Help",
+          "body": "yada yada yada"
+        },
+      "viewerText": {
+          "title": "Viewer Panel Help",
+          "body": "yada yada yada"
+        },
+      "diagnosticsText": {
+          "title": "Diagnostics Panel Help",
+          "body": "yada yada yada"
+        },
+      "Seampoint": "another help panel."
+    }
+  }  
 }
-
 
