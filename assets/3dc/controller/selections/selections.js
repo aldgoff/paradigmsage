@@ -171,7 +171,7 @@ export function handleTileClick(vts) {          // O(n).
 // Seampoint: more global functions...
 
 // --- Helpers ---
-export function manageMoveButtons() {
+function manageMoveButtons() {
   console.log("cntrl: selections.js - manageMoveButtons()");
 
   const size = cSetup.getCurrBoard().boardSize;           // Parse piece and tile info.
@@ -188,34 +188,24 @@ export function manageMoveButtons() {
   panel.querySelector('[name="move-selPieces"]').textContent = [...pieceSelections];
   panel.querySelector('[name="move-selTiles"]').textContent  = `${dstStr1} ${dstStr2}`;
 
-  if(piece1?.pos === dstStr1)  return;                     // Piece can't be on tile.
+  if(piece1?.pos === dstStr1)  return;                    // Piece can't be on dst tile.
 
-  panels.enableButton("move",        false);              // Reset all the panel buttons.
-  panels.enableButton("capture",     false);
-  panels.enableButton("enpassant",   false);
-  panels.enableButton("castle",      false);
-  panels.enableButton("promote",     false);
-  panels.enableButton("duke-decay",  false);
-  panels.enableButton("bishop-decay",false);
-  panels.enableButton("fission",     false);
+  panels.enableButton("move",         false);             // Reset all the panel buttons.
+  panels.enableButton("capture",      false);
+  panels.enableButton("enpassant",    false);
+  panels.enableButton("castle",       false);
+  panels.enableButton("promote",      false);
+  panels.enableButton("duke-decay",   false);
+  panels.enableButton("bishop-decay", false);
+  panels.enableButton("fission",      false);
+  panels.enableButton("teleportation",false);
+  panels.enableButton("uplift",       false);
 
   const pieces = pieceSelections.size;          // 1st level button restraints.
   const tiles  = tileSelections.size;
 
   if(     pieces === 1 && tiles === 1) {        // Move, promote, or decay.
-    const [, prefix, x, y] = dstStr1.match(/^([A-Z]+)(\d+),(\d+)$/);
-    const i = Number(x);
-    const j = Number(y);
-
-    const dims = Number(size.split("x")[2]); // Should be 8 or 10.
-    const first = (dims === 10) ? 0: 1; // TODO: check for standards drift.
-    const last  = (dims === 10) ? 9: 8;
-
-    const lastCol = (i === j)
-                && ( (player1 === "W" && i === last) 
-                  || (player1 === "B" && i === first) );
-    const promotable = (type1 === "P") && lastCol;
-
+    const promotable = (type1 === "P") && lastCol(dstStr1, size, player1);
     if(type1 === 'S') {  // TODO: figure out how to specify stack subpieces.
       panels.enableButton("move",        true);
       panels.enableButton("duke-decay",  true);
@@ -233,12 +223,24 @@ export function manageMoveButtons() {
       
     panels.enableButton("capture", true);
     }
-  else if(pieces === 2 && tiles === 1) {        // En Passant.
-    if(player1 === player2) return;
-    if(type1 != 'P') return;
-    if(type2 != 'P') return;
-    
-    panels.enableButton("enpassant", true);
+  else if(pieces === 2 && tiles === 1) {        // En Passant, teleportation, uplift.
+    const piece2 = mPieces.getPieceList()[key2];
+    console.log("***", piece2.coords, dstStr1);
+    if(player1 != player2
+    && type1  === 'P'
+    && type2  === 'P')
+      panels.enableButton("enpassant", true);
+    else if(player1 === player2
+    && ( type1  === 'S' && type2  === 'B'
+      || type1  === 'S' && type2  === 'D')
+    && piece2.pos === dstStr1)
+      panels.enableButton("teleportation", true);
+    else if(player1 === player2
+    && ( type1  === 'P' && type2  === 'B'
+      || type1  === 'P' && type2  === 'D')
+    && lastCol(dstStr1, size, player1)
+    && piece2.pos === dstStr1)
+      panels.enableButton("uplift", true);
     }
   else if(pieces === 2 && tiles === 2) {        // Castle.
     if(player1 != player2) return;
@@ -249,6 +251,21 @@ export function manageMoveButtons() {
     if(type1 != 'S') return;
     panels.enableButton("fission", true);
   }
+  }
+
+function lastCol(dstStr1, size, player1) {
+  const [, prefix, x, y] = dstStr1.match(/^([A-Z]+)(\d+),(\d+)$/);
+  const i = Number(x);
+  const j = Number(y);
+
+  const dims = Number(size.split("x")[2]); // Should be 8 or 10.
+  const first = (dims === 10) ? 0: 1; // TODO: check for standards drift.
+  const last  = (dims === 10) ? 9: 8;
+
+  const last_col = (i === j)
+    && ((player1==="W" && i===last)  || (player1==="B" && i===first));
+  
+  return last_col;
 }
 // Seampoint: more local functions...
 

@@ -52,7 +52,7 @@ layout: "play"
     }
   #move-window {
     font-family: monospace;
-    width: 350px;
+    width: 420px;
   }
   #setup-list {
     font-family: monospace;
@@ -151,13 +151,15 @@ layout: "play"
     <button data-action="enpassant" disabled>En Passant</button>
     <button data-action="castle"    disabled>Castle</button>
     <button data-action="promote"   disabled>Promote</button>
-  </div>
-  <div class="section">
-    <button data-action="duke-decay"   disabled>Duke Decay</button>
-    <button data-action="bishop-decay" disabled>Bishop Decay</button>
-    <button data-action="fission"      disabled>Fission</button>
     <label> <input type="radio" name="move-player" value="White" checked> W </label>
     <label> <input type="radio" name="move-player" value="Black"> B </label>
+  </div>
+  <div class="section">
+    <button data-action="duke-decay"    disabled>Duke Decay</button>
+    <button data-action="bishop-decay"  disabled>Bishop Decay</button>
+    <button data-action="fission"       disabled>Fission</button>
+    <button data-action="teleportation" disabled>Teleportation</button>
+    <button data-action="uplift"        disabled>Uplift</button>
   </div>
   <div class="section">
     <label> SrcTile <input name="move-src" type="text" value="K2,2" maxlength="7" style="width: 44px;"> </label>

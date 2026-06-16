@@ -54,14 +54,16 @@ export function panelDispatch(payload) {
   } = payload;
 
   switch (action) {
-    case "move":         handleMove(payload); break;
-    case "capture":      handleCapture(payload); break;
-    case "enpassant":    handleEnpassant(payload); break;
-    case "castle":       handleCastle(payload); break;
-    case "promote":      handlePromote(payload); break;
-    case "duke-decay":   handleDukeDecay(payload); break;
-    case "bishop-decay": handleBishopDecay(payload); break;
-    case "fission":      handleFission(payload); break;
+    case "move":          handleMove(payload); break;
+    case "capture":       handleCapture(payload); break;
+    case "enpassant":     handleEnpassant(payload); break;
+    case "castle":        handleCastle(payload); break;
+    case "promote":       handlePromote(payload); break;
+    case "duke-decay":    handleDukeDecay(payload); break;
+    case "bishop-decay":  handleBishopDecay(payload); break;
+    case "fission":       handleFission(payload); break;
+    case "teleportation": handleTeleportation(payload); break;
+    case "uplift  ":      handleUplift(payload); break;
     case "updateParam":  break;
 
     default: throw new Error(`Unknown moves action ${action}.`);  break;
@@ -162,6 +164,22 @@ function handleFission(payload) {
   const { player, piece, src, dst, sec, captured, opts } = payload;  // Informative.
 
   // TODO: change state - handleFission().
+  }
+
+function handleTeleportation(payload) {
+  console.log("cntrl: moves.js - handleTeleportation(payload)", payload);
+
+  const { player, piece, src, dst, sec, captured, opts } = payload;  // Informative.
+
+  // TODO: change state - handleTeleportation().
+  }
+
+function handleUplift(payload) {
+  console.log("cntrl: moves.js - handleUplift(payload)", payload);
+
+  const { player, piece, src, dst, sec, captured, opts } = payload;  // Informative.
+
+  // TODO: change state - handleUplift().
 }
 // Seampoint: more handle functions...
 
@@ -202,7 +220,17 @@ function performFission(selections, payload) {
   }
 
 function performCastle(selections, payload) {
-  console.log("cntrl: moves.js - applyEntry(selections, payload)", selections, payload);
+  console.log("cntrl: moves.js - performCastle(selections, payload)", selections, payload);
+
+  }
+
+function performTeleportation(selections, payload) {
+  console.log("cntrl: moves.js - performTeleportation(selections, payload)", selections, payload);
+
+  }
+
+function performUplift(selections, payload) {
+  console.log("cntrl: moves.js - performUplift(selections, payload)", selections, payload);
 
 }
 
