@@ -8,7 +8,7 @@
 */
 
 // --- Load JSON ---
-import selectionsData from "./selections.json" assert { type: "json" };
+  import selectionsData from "./selections.json" assert { type: "json" };
   const selectionsModule = selectionsData.selections_module;
 // Seampoint: more objects...
 
@@ -29,34 +29,30 @@ export function init() {
   if(inited) throw new Error("Already inited.");
   inited = true;
 
-  // Create the listeners once, at program start.
-  addTileEventListener();   // Uses view.getContext().
-  addPieceEventListener();
+  // Create one listener, at program start.
+  addSelectionEventListener();   // Uses view.getContext().
   // Seampoint: more listeners...
 
   return;
 }
 
-function addTileEventListener() {
+function addSelectionEventListener() {
   let clickHandler = (event) => {
-    const { scene, renderer, camera, tileMap } = view.getContext();
+    const { scene, renderer, camera } = view.getContext();
+
     const coords = getTileFromClick(event, camera, scene, renderer);
+    const piece  = getPieceFromClick(event, camera, scene, renderer);
 
-    cSelections.handleTileClick(coords);
+    if(!coords && !piece)
+      cSelections.clearSelections();
+    else {
+      cSelections.handleTileClick(coords);
+      cSelections.handlePieceClick(piece);
+    }
   };
 
-  view.getContext().renderer.domElement.addEventListener("click", clickHandler);
-  }
-
-function addPieceEventListener() {
-  let clickHandler = (event) => {
-    const { scene, renderer, camera, tileMap } = view.getContext();
-    const obj = getPieceFromClick(event, camera, scene, renderer);
-
-    cSelections.handlePieceClick(obj);
-  };
-
-  view.getContext().renderer.domElement.addEventListener("click", clickHandler);
+  view.getContext().renderer.domElement
+    .addEventListener("click", clickHandler);
 }
 
 function getTileFromClick(event, camera, scene, renderer) {

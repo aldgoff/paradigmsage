@@ -1,5 +1,159 @@
 {
   "setup_module": {
+    "eights": {
+      "White": {
+        "pieces": {
+          "WKRR": "KR1,1",
+          "WKNN": "KN1,1",
+          "WKBS": "KB1,1",
+          "WKKK": "K1,1",
+          "WQQQ": "Q1,1",
+          "WQBS": "QB1,1",
+          "WQNN": "QN1,1",
+          "WQRR": "QR1,1"
+        },
+        "pawns": {
+          "WKRP": "KR2,2",
+          "WKNP": "KN2,2",
+          "WKBP": "KB2,2",
+          "WKKP": "K2,2",
+          "WQQP": "Q2,2",
+          "WQBP": "QB2,2",
+          "WQNP": "QN2,2",
+          "WQRP": "QR2,2"
+        }
+      },
+      "Black": {
+        "pieces": {
+          "BKRR": "KR8,8",
+          "BKNN": "KN8,8",
+          "BKBS": "KB8,8",
+          "BKKK": "K8,8",
+          "BQQQ": "Q8,8",
+          "BQBS": "QB8,8",
+          "BQNN": "QN8,8",
+          "BQRR": "QR8,8"
+        },
+        "pawns": {
+          "BKRP": "KR7,7",
+          "BKNP": "KN7,7",
+          "BKBP": "KB7,7",
+          "BKKP": "K7,7",
+          "BQQP": "Q7,7",
+          "BQBP": "QB7,7",
+          "BQNP": "QN7,7",
+          "BQRP": "QR7,7"
+        }
+      }
+    },
+    "ten": {
+      "White": {
+        "pieces": {
+          "WKRR": "KR1,1",
+          "WKNN": "KN1,1",
+          "WKBB": "KB1,1",
+          "WKDD": "KD1,1",
+          "WKKK": "K1,1",
+          "WQQQ": "Q1,1",
+          "WQDD": "QD1,1",
+          "WQBB": "QB1,1",
+          "WQNN": "QN1,1",
+          "WQRR": "QR1,1"
+        },
+        "pawns": {
+          "WKRP": "KR2,2",
+          "WKNP": "KN2,2",
+          "WKBP": "KB2,2",
+          "WKDP": "KD2,2",
+          "WKKP": "K2,2",
+          "WQQP": "Q2,2",
+          "WQDP": "QD2,2",
+          "WQBP": "QB2,2",
+          "WQNP": "QN2,2",
+          "WQRP": "QR2,2"
+        }
+      },
+      "Black": {
+        "pieces": {
+          "BKRR": "KR8,8",
+          "BKNN": "KN8,8",
+          "BKBB": "KB8,8",
+          "BKDD": "KD8,8",
+          "BKKK": "K8,8",
+          "BQQQ": "Q8,8",
+          "BQDD": "QD8,8",
+          "BQBB": "QB8,8",
+          "BQNN": "QN8,8",
+          "BQRR": "QR8,8"
+        },
+        "pawns": {
+          "BKRP": "KR7,7",
+          "BKNP": "KN7,7",
+          "BKBP": "KB7,7",
+          "BKDP": "KD7,7",
+          "BKKP": "K7,7",
+          "BQQP": "Q7,7",
+          "BQDP": "QD7,7",
+          "BQBP": "QB7,7",
+          "BQNP": "QN7,7",
+          "BQRP": "QR7,7"
+        }
+      }
+    },
+    "tens": {
+      "White": {
+        "pieces": {
+          "WKRR": "KR1,1",
+          "WKNN": "KN1,1",
+          "WKBB": "KB1,1",
+          "WKDD": "KD1,1",
+          "WKKK": "K1,1",
+          "WQQQ": "Q1,1",
+          "WQDD": "QD1,1",
+          "WQBB": "QB1,1",
+          "WQNN": "QN1,1",
+          "WQRR": "QR1,1"
+        },
+        "pawns": {
+          "WKRP": "KR2,2",
+          "WKNP": "KN2,2",
+          "WKBP": "KB2,2",
+          "WKDP": "KD2,2",
+          "WKKP": "K2,2",
+          "WQQP": "Q2,2",
+          "WQDP": "QD2,2",
+          "WQBP": "QB2,2",
+          "WQNP": "QN2,2",
+          "WQRP": "QR2,2"
+        }
+      },
+      "Black": {
+        "pieces": {
+          "BKRR": "KR10,10",
+          "BKNN": "KN10,10",
+          "BKBB": "KB10,10",
+          "BKDD": "KD10,10",
+          "BKKK": "K10,10",
+          "BQQQ": "Q10,10",
+          "BQDD": "QD10,10",
+          "BQBB": "QB10,10",
+          "BQNN": "QN10,10",
+          "BQRR": "QR10,10"
+        },
+        "pawns": {
+          "BKRP": "KR9,9",
+          "BKNP": "KN9,9",
+          "BKBP": "KB9,9",
+          "BKDP": "KD9,9",
+          "BKKP": "K9,9",
+          "BQQP": "Q9,9",
+          "BQDP": "QD9,9",
+          "BQBP": "QB9,9",
+          "BQNP": "QN9,9",
+          "BQRP": "QR9,9"
+        }
+      }
+    }
   }
 }
 

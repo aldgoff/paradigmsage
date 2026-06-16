@@ -8,7 +8,7 @@
 */
 
 // --- Load JSON ---
-import coordsMapsData from "./coordsMaps.json" assert { type: "json" };
+  import coordsMapsData from "./coordsMaps.json" assert { type: "json" };
   const coordsMapsModule = coordsMapsData.coordsMaps_module;
   const dims = coordsMapsModule.dims;
 // Seampoint: more objects...
@@ -16,6 +16,9 @@ import coordsMapsData from "./coordsMaps.json" assert { type: "json" };
 // --- Dependencies ---
   import * as cViewer from "../../controller/viewer/viewer.js";
 // Seampoint: more imports...
+
+// --- Globals ---
+// Seampoint: more globals...
 
 // --- UI ---
 // TODO: scales are hard coded, need to import from a JSON file.

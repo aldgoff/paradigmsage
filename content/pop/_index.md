@@ -11,7 +11,7 @@ between recurring characters. These discourses are not decorative; they introduc
 conceptual tension of the chapter that follows, without technical machinery.
 
 You may read linearly, or enter at any chapter. 
-The discourse introduces the topic, the chapter dives into the techncial details.
+The discourse introduces the topic, the chapter dives into the technical details.
 
 --------------------
 

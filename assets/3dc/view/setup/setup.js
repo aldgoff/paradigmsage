@@ -84,37 +84,6 @@ export function refreshPanel(board) {
   if(sizeRadio) sizeRadio.checked = true;
   if(trayTypeRadio) trayTypeRadio.checked = true;  
 }
-export function refreshPanel1(board) {
-  console.log("view : setup.js - refreshPanel(board):", board);
-
-  // const { action, prevBoard, nextBoard, boardSize,trayType,trayGap } = entry;
-  const { boardSize, trayType, trayGap } = board;
-
-  let panel = document.getElementById("setup-list");      // Scroll list.
-  if(!panel) return;
-
-  const count = state.getIndices().Setup;
-  const children = panel.children;
-  for(let i = 0; i < children.length; i++) {
-    const opacity = (i < count)
-      ? "1.0"     // active
-      : "0.3";    // future
-    children[i].style.opacity = opacity;
-  }
-
-  panel = document.getElementById("setup-window");        // Radio buttons.
-  if(!panel) return;
-
-  const sizeRadio     = panel.querySelector( `input[name="board-size"][value="${boardSize}"]`);
-  const trayTypeRadio = panel.querySelector( `input[name="tray-type"][value="${trayType}"]`);
-
-  if(sizeRadio) sizeRadio.checked = true;
-  if(trayTypeRadio) trayTypeRadio.checked = true;
-
-  // console.log("*** nextBoard", nextBoard);                // Diagnostics.
-  // console.log("*** sizeRadio", sizeRadio);
-  // console.log("*** trayTypeRadio", trayTypeRadio);
-}
 
 export function pushPanelLine(entry) {
   console.log("view : setup.js - pushPanelLine(entry)", entry);

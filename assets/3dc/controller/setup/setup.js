@@ -10,6 +10,9 @@
 // --- Load JSON ---
   import setupData from "./setup.json" assert { type: "json" };
   const setupModule = setupData.setup_module;
+  const eights = setupModule.eights;
+  const ten    = setupModule.ten;
+  const tens   = setupModule.tens;
 // Seampoint: more objects...
 
 // --- Dependencies ---
@@ -58,7 +61,6 @@ export function panelDispatch(payload) {    // Dispatch payload from panel to ha
     case "returnPiece":  handleReturnPiece(payload); break;
     case "freezePuzzle": handleFreeze(payload); break;
     case "startingPos":  handleStartingPos(payload); break;
-    case "play":         handlePlay(payload); break;
     case "updateParam": break;
 
     default: throw new Error(`Unknown setup action ${action}.`);
@@ -89,7 +91,6 @@ export function buildPayload(panel, action) {
     const dstStr = coords.vtsToBoard(dstTile, boardSpec);
 
     const piece   = mPieces.getPieceList()[key];
-    console.log("***", piece);  // loc, pos, coords, vts, home: trayPos, trayCoords, trayVts.
     if(piece.loc === '~') { 
       const prev = `~${piece.pos}`;
       const post = `@${dstStr}`;
@@ -133,9 +134,8 @@ export function buildPayload(panel, action) {
 
     return { action };
     }
-  else if(action === "play") {
-    clearAllPieceSelections();
-    clearAllTileSelections();
+  else if(action === "updateParam") {
+    console.log("*** Radio buttons capture state but are not actionable.");
 
     return { action };
     }
@@ -260,7 +260,7 @@ export function buildBackward(entry) {    // Undo.
 }
 
 export function returnAllPiecesToHomeTray() {
-  console.log("cntrl: game.js - returnAllPiecesToHomeTray()");
+  console.log("cntrl: setup.js - returnAllPiecesToHomeTray()");
 
   for(const key in mPieces.getPieceList()) {    // "WKRR", ...
     const piece = mPieces.getPieceList()[key];
@@ -278,32 +278,25 @@ export function returnAllPiecesToHomeTray() {
   }
 
 export function clearAllTileSelections() {
-  console.log("cntrl: game.js - clearAllTileSelections()");
+  console.log("cntrl: setup.js - clearAllTileSelections()");
 
   const { pieceSelections, tileSelections } = cSelections.getSelections();
   for(const vts of tileSelections) {            // vts, ...
     cSelections.deselectTile(vts);
-    console.log("***", vts);
   }
   cSelections.clearTileSelections();            // Set of tile locations, indexed by vts.
   }
 
 export function clearAllPieceSelections() {
-  console.log("cntrl: game.js - clearAllPieceSelections()");
+  console.log("cntrl: setup.js - clearAllPieceSelections()");
 
   const { pieceSelections, tileSelections } = cSelections.getSelections();
   for(const key of pieceSelections) {           // "WKRR", ...
     vPieces.deHighlight(key);
-    console.log("***", key);
   }
   cSelections.clearPieceSelections();           // Set of pieces highlighted, indexed by key.
 }
 // Seampoint: more global functions...
-
-// --- Handle Functions ---
-  // BKRR@BR6,6       // Place on board from tray.
-  // BKRR:BR6,6>BR4,4 // Shift tiles on board.  
-  // BKRR~KR1,1       // Return to tray from board.
 
 function handleMakeBoard(payload) { // Setup handler.
   console.log("cntrl: setup.js - handleMakeBoard(payload):", payload);
@@ -395,43 +388,54 @@ function handleFreeze(payload) {
 
   const { action, boardSize, trayType } = payload;  // Informative.
 
-  const boardPieces =
+  const numBoardPieces =
     Object.values(mPieces.getPieceList())
       .filter(piece => piece.loc === "@")
-      .length;
-  const entry = { action, data: boardPieces };
+      .length;  // Count number of pieces on the board.
+  const entry = { action, data: numBoardPieces };
 
   recordSetupAction(entry);
-
   setButtonState("loaded");
   }
 
-function handleStartingPos(payload) {  // TODO: Load all the pieces.
+function handleStartingPos(payload) {
   console.log("cntrl: setup.js - handleStartingPos(payload):", payload);
 
   const { action, boardSize, trayType } = payload;  // Informative.
 
+  let board = eights;
+  if(currBoard.boardSize === "10x8x8") board = ten;
+  if(currBoard.boardSize === "10x10x10") board = tens;
+
+  for(const player of ["White", "Black"]) {
+    for(const key in board[player].pieces) {
+      const dstStr = board[player].pieces[key]
+      const { ok, err } = mPieces.movePieceFromTrayToBoard(key, dstStr);
+      if(!ok) {
+        console.log("*** err:", err);
+        return { ok, err };
+      }
+    }
+    for(const key in board[player].pawns) {
+      const dstStr = board[player].pawns[key]
+      const { ok, err } = mPieces.movePieceFromTrayToBoard(key, dstStr);
+      if(!ok) {
+        console.log("*** err:", err);
+        return { ok, err };
+      }
+    }
+  }
+
   const boardPieces =
     Object.values(mPieces.getPieceList())
       .filter(piece => piece.loc === "@")
-      .length;
+      .length;  // Count number of pieces on the board.
   const entry = { action, data: boardPieces };
 
   recordSetupAction(entry);
   setButtonState("loaded");
   }
 
-function handlePlay(payload) {
-  console.log("cntrl: setup.js - handlePlay(payload):", payload);
-
-  const { action, boardSize, trayType } = payload;  // Informative.
-
-  const entry = { action, data: "game or puzzle" };
-
-  recordSetupAction(entry);
-
-  setButtonState("play");
-}
 // Seampoint: more handlers...
 
 // --- Helpers ---
@@ -462,7 +466,7 @@ function clearBoard(board) {
 function setButtonState(command) {
   console.log("cntrl: setup.js - setButtonState(command)", command);
 
-  const panel = document.getElementById("diags-window");
+  const panel = document.getElementById("diagnostics-window");
   panel.querySelector('[name="diags-buttons"]').textContent = command;
 
   switch (command) {
@@ -474,7 +478,7 @@ function setButtonState(command) {
       panels.enableButton("returnPiece", false);
       panels.enableButton("freezePuzzle",false);
       panels.enableButton("startingPos", false);
-      panels.enableButton("play",        false);
+
       break;
     case "boardDone":
       panels.enableButton("makeBoard",   true);
@@ -484,7 +488,7 @@ function setButtonState(command) {
       panels.enableButton("returnPiece", false);
       panels.enableButton("freezePuzzle",false);
       panels.enableButton("startingPos", true);
-      panels.enableButton("play",        false);
+
       break;
     case "pieces":
       panels.enableButton("placePiece",   true);
@@ -492,7 +496,7 @@ function setButtonState(command) {
       panels.enableButton("returnPiece",  true);
       panels.enableButton("freezePuzzle", true);
       panels.enableButton("startingPos",  false);
-      panels.enableButton("play",         false);
+
       break;
     case "emptyTrays":
       panels.enableButton("placePiece",   false);
@@ -500,7 +504,7 @@ function setButtonState(command) {
       panels.enableButton("shiftPiece",   true);
       panels.enableButton("freezePuzzle", true);
       panels.enableButton("startingPos",  false);
-      panels.enableButton("play",         false);
+
       break;
     case "loaded":
       panels.enableButton("placePiece",   false);
@@ -508,7 +512,7 @@ function setButtonState(command) {
       panels.enableButton("shiftPiece",   false);
       panels.enableButton("freezePuzzle", false);
       panels.enableButton("startingPos",  false);
-      panels.enableButton("play",         true);
+
       break;
     case "play":
       panels.enableButton("placePiece",   false);
@@ -516,9 +520,7 @@ function setButtonState(command) {
       panels.enableButton("shiftPiece",   false);
       panels.enableButton("freezePuzzle", false);
       panels.enableButton("startingPos",  false);
-      panels.enableButton("play",         false);
 
-      panels.enableButton("move", true);
       break;
     default:
       throw new Error(`Unknown button state command ${command}.`);
@@ -614,7 +616,7 @@ function diagnostic() {
     ? vTrays.getBlackTrayGroup().children.length
     : "null";
 
-  const panel = document.getElementById("diags-window");
+  const panel = document.getElementById("diagnostics-window");
 
   panel.querySelector('[name="diags-pieceCount"]').textContent = pieceCount;
   panel.querySelector('[name="diags-trayCount"]').textContent  = trayCount;
@@ -641,12 +643,14 @@ function diagnostic() {
 // Seampoint: more local functions...
 
 /* TODO: QC checklist✅ 
-    1. Load/Save fails to make board.
+    1. ✅ Load/Save fails to make board.
     2. Corruption if attempt to place a piece on an occupied tile.
     3. Support factory trays.
-    4. Make code work for all three board sizes.
-    5. Implement startup position.
+    4. ✅ Make code work for all three board sizes.
+    5. ✅ Implement startup position.
     6. Implement undo branching.
-    7. Undo does not restore buttons.
+    7. ✅ Undo does not restore buttons.
+    8. const max = 40;
+    9. Stack management.
  */
 

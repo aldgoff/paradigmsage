@@ -20,3 +20,18 @@ export function scale(v, s) {
   return [v[0] * s, v[1] * s, v[2] * s];
 }
 
+export function parsePieceKey(key) {
+  if(key) {
+    const player = key[0];
+    const side   = key[1];
+    const level  = key[2];
+    const type   = key[3];
+
+    return { player, side, level, type };
+  }
+  else {
+    return { player: "", side: "", level: "", type: "" };
+  }
+}
+// Seampoint: more global functions...
+

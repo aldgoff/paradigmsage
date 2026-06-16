@@ -20,11 +20,15 @@
 // Seampoint: more objects...
 
 // --- Dependencies ---
-  import * as game     from "../../controller/game/game.js";
+  import * as game        from "../../controller/game/game.js";
+  import * as cSetup      from "../../controller/setup/setup.js";
+  import * as cSelections from "../../controller/selections/selections.js";
 
   import * as state    from "../../model/state/state.js";
   import * as mMoves   from "../../model/moves/moves.js";
-  import * as coords   from "../../foundation/coords/coords.js";  // normalizeTileToVts().
+  import * as mPieces  from "../../model/pieces/pieces.js";
+  import * as mBoards  from "../../model/boards/boards.js";
+  import * as coords   from "../../foundation/coords/coords.js";
   import * as quads    from "../../geometry/quads/quads.js";
 
   import * as vMoves   from "../../view/moves/moves.js";
@@ -51,14 +55,16 @@ export function panelDispatch(payload) {
   } = payload;
 
   switch (action) {
-    case "move":         handleMove(payload); break;
-    case "capture":      handleCapture(payload); break;
-    case "enpassant":    handleEnpassant(payload); break;
-    case "castle":       handleCastle(payload); break;
-    case "promote":      handlePromote(payload); break;
-    case "duke-decay":   handleDukeDecay(payload); break;
-    case "bishop-decay": handleBishopDecay(payload); break;
-    case "fission":      handleFission(payload); break;
+    case "move":          handleMove(payload); break;
+    case "capture":       handleCapture(payload); break;
+    case "enpassant":     handleEnpassant(payload); break;
+    case "castle":        handleCastle(payload); break;
+    case "promote":       handlePromote(payload); break;
+    case "duke-decay":    handleDukeDecay(payload); break;
+    case "bishop-decay":  handleBishopDecay(payload); break;
+    case "fission":       handleFission(payload); break;
+    case "teleportation": handleTeleportation(payload); break;
+    case "uplift  ":      handleUplift(payload); break;
     case "updateParam":  break;
 
     default: throw new Error(`Unknown moves action ${action}.`);  break;
@@ -99,9 +105,13 @@ export function buildPayload(panel, action) {
 function handleMove(payload) {
   console.log("cntrl: moves.js - handleMove(payload)", payload);
 
-  const { player, piece, src, dst, sec, captured, opts } = payload;  // Informative.
+  const { action, player, piece, src, dst, sec, captured, opts } = payload;  // Informative.
+  const selections = cSelections.getSelections();
 
-  const entry = mMoves.makeEntry(payload);  // Create entry.
+  const entry = mMoves.makeMoveEntry(selections, payload);
+
+  performMove(entry);
+
   applyEntry(entry);
   }
 
@@ -159,10 +169,91 @@ function handleFission(payload) {
   const { player, piece, src, dst, sec, captured, opts } = payload;  // Informative.
 
   // TODO: change state - handleFission().
+  }
+
+function handleTeleportation(payload) {
+  console.log("cntrl: moves.js - handleTeleportation(payload)", payload);
+
+  const { player, piece, src, dst, sec, captured, opts } = payload;  // Informative.
+
+  // TODO: change state - handleTeleportation().
+  }
+
+function handleUplift(payload) {
+  console.log("cntrl: moves.js - handleUplift(payload)", payload);
+
+  const { player, piece, src, dst, sec, captured, opts } = payload;  // Informative.
+
+  // TODO: change state - handleUplift().
 }
 // Seampoint: more handle functions...
 
 // --- Helpers...
+function performMove(entry) {
+  console.log("cntrl: moves.js - performMove(entry)", entry);
+
+  let { action, turn, player, key, prev, post } = entry;
+
+  const boardSpec = cSetup.getCurrBoard().boardSize;
+
+  console.log("*** pieceList", mPieces.getPieceList());
+  console.log("*** occupancy", mBoards.getBoardOccupancy());
+
+  const [, dstStr] = post.split("@");
+  const dstTile = coords.normalizeTileToVts(dstStr, boardSpec);
+
+  const { ok, err } = mPieces.movePieceTileToTile(key, dstStr);
+  if(!ok) return { ok, err };
+
+  console.log("*** pieceList", mPieces.getPieceList());
+  console.log("*** occupancy", mBoards.getBoardOccupancy());
+}
+
+function performBishopDecay(selections, payload) {
+  console.log("cntrl: moves.js - performBishopDecay(selections, payload)", selections, payload);
+
+  }
+
+function performDukeDecay(selections, payload) {
+  console.log("cntrl: moves.js - performDukeDecay(selections, payload)", selections, payload);
+
+  }
+
+function performPromotion(selections, payload) {
+  console.log("cntrl: moves.js - performPromotion(selections, payload)", selections, payload);
+
+  }
+
+function performCapture(selections, payload) {
+  console.log("cntrl: moves.js - performCapture(selections, payload)", selections, payload);
+
+  }
+
+function performEnPassant(selections, payload) {
+  console.log("cntrl: moves.js - performEnPassant(selections, payload)", selections, payload);
+
+  }
+
+function performFission(selections, payload) {
+  console.log("cntrl: moves.js - performFission(selections, payload)", selections, payload);
+
+  }
+
+function performCastle(selections, payload) {
+  console.log("cntrl: moves.js - performCastle(selections, payload)", selections, payload);
+
+  }
+
+function performTeleportation(selections, payload) {
+  console.log("cntrl: moves.js - performTeleportation(selections, payload)", selections, payload);
+
+  }
+
+function performUplift(selections, payload) {
+  console.log("cntrl: moves.js - performUplift(selections, payload)", selections, payload);
+
+}
+
 function applyEntry(entry) {
   console.log("cntrl: moves.js - applyEntry(entry)", entry);
 
@@ -177,11 +268,16 @@ function applyEntry(entry) {
   }
 
   state.pushNewMove(entry);           // Change state.
-  vMoves.render(entry);               // Render.
   vMoves.pushPanelLine(entry);        // Add line to panel.
 
   // TODO: remove all entries in the downstream buffers; 
   // a new move invalidates gambits and advsqs.
 }
 // Seampoint: more local functions...
+
+/* TODO: QC checklist✅ 
+    1. Write handle routines.
+    2. Branch.
+    3. Remove all downstream buffers.
+*/
 

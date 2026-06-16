@@ -8,9 +8,70 @@
       "compass",
       "game",
       "camera",
-      "viewer"
-    ]
-  }
+      "viewer",
+      "diagnostics"
+    ],
+    "help": {
+      "setupText": {
+          "title": "Setup Panel Help",
+          "lines": [
+            "yada yada yada"
+          ]
+        },
+      "moveText": {
+          "title": "Move Panel Help",
+          "lines": [
+            "To specify a move, select a piece and a tile.",
+            "Buttons are enabled if the combination of selected piece(s) and tile(s) form an eligible move.",
+            "To be legal, a move must be both eligible and allowed.",
+            "It is disallowed if out of plane, out of range, blocked, etc.",
+            "Some moves may require multiple piece and tile selections (castling, en passant, decay, etc.)."
+          ]
+        },
+      "gambitText": {
+          "title": "Gambit Panel Help",
+          "lines": [
+            "yada yada yada"
+          ]
+        },
+      "advsqText": {
+          "title": "Advsq Panel Help",
+          "lines": [
+            "yada yada yada"
+          ]
+        },
+      "gameText": {
+          "title": "Game Panel Help",
+          "lines": [
+            "yada yada yada"
+          ]
+        },
+      "cameraText": {
+          "title": "Camera Panel Help",
+          "lines": [
+            "yada yada yada"
+          ]
+        },
+      "compassText": {
+          "title": "Compass Panel Help",
+          "lines": [
+            "yada yada yada"
+          ]
+        },
+      "viewerText": {
+          "title": "Viewer Panel Help",
+          "lines": [
+            "yada yada yada"
+          ]
+        },
+      "diagnosticsText": {
+          "title": "Diagnostics Panel Help",
+          "lines": [
+            "yada yada yada"
+          ]
+        },
+      "Seampoint": "another help panel."
+    }
+  }  
 }
-
 

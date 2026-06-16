@@ -137,6 +137,31 @@ title: "Dev"
 
  ### Week 14:
   - 6/14/26 - Game/state QC. QC setup. Debug rewind. Debug place piece on ten boards. Debug setup. Update clues & dates.
+  - 6/15/26 - Starting Lineup. Setup todos. Remove Play button. Selection button management. 1st level move button restraints.
+  - 6/26/26 - Add two stack move buttons. Popup help panels. Detect occupied dst tiles. Multi-line help texts. Move pieces around the board.
+
+## Test Move (6/16/26) Success!
+  {"Setup":[
+    {"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},
+    {"action":"startingPos","data":32}],
+  "Moves":[
+    {"action":"move","turn":1,"player":"White","key":"BKRR","prev":"@KR8,8","post":"@KR6,6"}],
+  "Gambits":[],
+  "AdvSqs":[]}
+
+  {"Setup":[
+    {"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},
+    {"action":"startingPos","data":32}],
+  "Moves":[
+    {"action":"move","turn":1,"player":"White","key":"BKRR","prev":"@KR8,8","post":"@KR4,4"}],
+  "Gambits":[],
+  "AdvSqs":[]}
+
+
+## Test Teleportation and Uplift
+{"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"placePiece","key":"BKBS","prev":"~KB1,1","post":"@KB8,8"},{"action":"placePiece","key":"BKBD","prev":"~KB1,2","post":"@KB6,6"},{"action":"placePiece","key":"BKBB","prev":"~KB2,1","post":"@KB4,4"},{"action":"freezePuzzle","data":3}],"Moves":[],"Gambits":[],"AdvSqs":[]}
+
+{"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"placePiece","key":"BKBP","prev":"~KB2,2","post":"@KB2,2"},{"action":"placePiece","key":"BKKP","prev":"~K2,2","post":"@K2,2"},{"action":"placePiece","key":"BKBB","prev":"~KB2,1","post":"@KB1,1"},{"action":"placePiece","key":"BKBD","prev":"~KB1,2","post":"@K1,1"},{"action":"freezePuzzle","data":4}],"Moves":[],"Gambits":[],"AdvSqs":[]}
 
 ## Place piece test on 10x8x8.
   {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"10x8x8","trayType":"Real","trayGap":0}},{"action":"placePiece","key":"BKRR","prev":"~KR1,1","post":"@KR5,5"}],"Moves":[],"Gambits":[],"AdvSqs":[]}
