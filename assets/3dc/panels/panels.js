@@ -12,16 +12,6 @@
   const panelsModule = panelsData.panels_module;
   const panels = panelsModule.panels;
   const help   = panelsModule.help;
-  const setupText       = help.setupText;
-  const moveText        = help.moveText;
-  const gambitText      = help.gambitText;
-  const advsqText       = help.advsqText;
-  const gameText        = help.gameText;
-  const cameraText      = help.cameraText;
-  const compassText     = help.compassText;
-  const viewerText      = help.viewerText;
-  const diagnosticsText = help.diagnosticsText;
-  // Seampoint - another panel.
 // Seampoint: more objects...
 
 // --- Dependencies ---
@@ -64,7 +54,20 @@
 
   window.addEventListener("pointerup", () => {
     activeDrag = null;
-    });
+  });
+
+  const helpText = {
+    setup:   help.setupText,
+    move:    help.moveText,
+    gambit:  help.gambitText,
+    advsq:   help.advsqText,
+    game:    help.gameText,
+    camera:  help.cameraText,
+    compass: help.compassText,
+    viewer:  help.viewerText,
+    diagnostics: help.diagnosticsText,
+    // Seampoint - another panel.
+  };
 
   document.addEventListener("click", event => {
     if(event.target.matches(".help-btn")) {
@@ -74,7 +77,15 @@
       const popup = document.getElementById("help-popup");
 
       document.getElementById("help-title").textContent = helpText[key].title;
-      document.getElementById("help-body").textContent = helpText[key].body;
+
+      const body = document.getElementById("help-body");
+      body.innerHTML = "";
+
+      for(const line of helpText[key].lines) {
+        const p = document.createElement("p");
+        p.textContent = line;
+        body.appendChild(p);
+      }
 
       const rect = btn.getBoundingClientRect();
 
@@ -83,20 +94,7 @@
 
       popup.hidden = false;
     }
-    });    
-
-  const helpText = {
-    setup:   setupText,
-    move:    moveText,
-    gambit:  gambitText,
-    advsq:   advsqText,
-    game:    gameText,
-    camera:  cameraText,
-    compass: compassText,
-    viewer:  viewerText,
-    diagnostics: diagnosticsText,
-    // Seampoint - another panel.
-  };
+  });
 // Seampoint: more globals...
 
 // --- UI ---

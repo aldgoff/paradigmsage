@@ -138,7 +138,7 @@ title: "Dev"
  ### Week 14:
   - 6/14/26 - Game/state QC. QC setup. Debug rewind. Debug place piece on ten boards. Debug setup. Update clues & dates.
   - 6/15/26 - Starting Lineup. Setup todos. Remove Play button. Selection button management. 1st level move button restraints.
-  - 6/26/26 - Add two stack move buttons. Popup help panels. Detect occupied dst tiles.
+  - 6/26/26 - Add two stack move buttons. Popup help panels. Detect occupied dst tiles. Multi-line help texts.
 
 ## Test Teleportation and Uplift
 {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"placePiece","key":"BKBS","prev":"~KB1,1","post":"@KB8,8"},{"action":"placePiece","key":"BKBD","prev":"~KB1,2","post":"@KB6,6"},{"action":"placePiece","key":"BKBB","prev":"~KB2,1","post":"@KB4,4"},{"action":"freezePuzzle","data":3}],"Moves":[],"Gambits":[],"AdvSqs":[]}
