@@ -19,6 +19,7 @@
   import * as cSetup  from "../../controller/setup/setup.js";
 
   import * as mPieces from "../../model/pieces/pieces.js";
+  import * as mBoards from "../../model/boards/boards.js";
   import * as coords  from "../../foundation/coords/coords.js";
 
   import * as view    from "../../view/view.js";            // view.getContext().
@@ -189,6 +190,7 @@ function manageMoveButtons() {
   panel.querySelector('[name="move-selTiles"]').textContent  = `${dstStr1} ${dstStr2}`;
 
   if(piece1?.pos === dstStr1)  return;                    // Piece can't be on dst tile.
+  const occupied = mBoards.isOccupied(tile1);             // Dst tile might be occupied.
 
   panels.enableButton("move",         false);             // Reset all the panel buttons.
   panels.enableButton("capture",      false);
@@ -206,6 +208,7 @@ function manageMoveButtons() {
 
   if(     pieces === 1 && tiles === 1) {        // Move, promote, or decay.
     const promotable = (type1 === "P") && lastCol(dstStr1, size, player1);
+    if(occupied) return;
     if(type1 === 'S') {  // TODO: figure out how to specify stack subpieces.
       panels.enableButton("move",        true);
       panels.enableButton("duke-decay",  true);

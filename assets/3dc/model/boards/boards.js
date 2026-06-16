@@ -14,6 +14,8 @@
 // Seampoint: more objects...
 
 // --- Dependencies ---
+  import * as utils   from "../../../utils/utils.js";       // isSame(a,b).
+
   import * as vBoards from "../../view/boards/boards.js";
 // Seampoint: more imports...
 
@@ -24,9 +26,11 @@
         Array(10).fill(null)  // Piece key = null|"WQRP".
       )
     );
+  const origin = [4,4,4]; // Q4,4 - for the board occupancy 3D array.
 // Seampoint: more globals...
 
 export function getBoardOccupancy() { return occupancy; }
+export function getOrigin() { return origin; }
 // --- UI ---
 export function init(board) {
   console.log("model: boards.js - init(board)", board);
@@ -68,6 +72,16 @@ export function clearPieceFromBoardOccupancy(key) { // occupancy[z][x][y] = null
       }
     }
   }
+}
+
+export function isOccupied(vts) {
+  let occupied = false;
+  if(vts) {
+    const [z, x, y] = utils.add(vts, origin);
+    occupied = (occupancy[z][x][y]) ? true : false;
+  }
+
+  return occupied;
 }
 // Seampoint: more global functions...
 

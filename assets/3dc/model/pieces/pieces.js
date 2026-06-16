@@ -31,7 +31,6 @@
 
 // --- Globals ---
   const pieceList = {};  // [key: "WQQP"] => piece = { loc: "~|@", pos: "Q5,5", coords: [0,1,1], vts, ... }
-  const origin = [4,4,4]; // Q4,4 - for the board occupancy 3D array.
 // Seampoint: more globals...
 
 export function getPieceList() { return pieceList; }
@@ -89,7 +88,7 @@ export function movePieceFromTrayToBoard(key, dstStr) {  // "WQQP", "Q1,1". // T
     // console.log("*** Update tray occupancy");
 
   // --- Update board occupancy ---
-    const indices = utils.add(origin, dstTile);
+    const indices = utils.add(mBoards.getOrigin(), dstTile);
     const [z, x, y] = indices;
     const occupancy = mBoards.getBoardOccupancy();
     if(occupancy[z][x][y]) {
@@ -135,7 +134,7 @@ export function movePieceTileToTile(key, dstStr) {
 
   // --- Update board occupancy ---
     const dstTile = coords.normalizeTileToVts(dstStr, spec);        // Determine occupancy indices.
-    const indices = utils.add(origin, dstTile);
+    const indices = utils.add(mBoards.getOrigin(), dstTile);
     const [z, x, y] = indices;  // New.
     const occupancy = mBoards.getBoardOccupancy();
     if(occupancy[z][x][y]) {
@@ -143,7 +142,7 @@ export function movePieceTileToTile(key, dstStr) {
       // console.log("***", err);
       return { ok: false, err };
     }
-    const [Z,X,Y] = utils.add(origin, piece.coords); // Previous.
+    const [Z,X,Y] = utils.add(mBoards.getOrigin(), piece.coords); // Previous.
     occupancy[Z][X][Y] = null;
     occupancy[z][x][y] = key;
 
@@ -189,7 +188,7 @@ export function movePieceFromBoardToTray(key) {
 
   
   // --- Update board occupancy ---
-    const indices = utils.add(origin, coords);
+    const indices = utils.add(mBoards.getOrigin(), coords);
     const [z, x, y] = indices;
     const occupancy = mBoards.getBoardOccupancy();
     if(occupancy[z][x][y] != key) {
