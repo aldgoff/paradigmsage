@@ -445,23 +445,19 @@ function setButtonState(command) {
   switch (command) {
     case "makeBoard":
       panels.enableButton("makeBoard",   true);
-
       panels.enableButton("placePiece",  false);
       panels.enableButton("shiftPiece",  false);
       panels.enableButton("returnPiece", false);
       panels.enableButton("freezePuzzle",false);
       panels.enableButton("startingPos", false);
-
       break;
     case "boardDone":
       panels.enableButton("makeBoard",   true);
-
       panels.enableButton("placePiece",  true);
       panels.enableButton("shiftPiece",  false);
       panels.enableButton("returnPiece", false);
       panels.enableButton("freezePuzzle",false);
       panels.enableButton("startingPos", true);
-
       break;
     case "pieces":
       panels.enableButton("placePiece",   true);
@@ -469,7 +465,6 @@ function setButtonState(command) {
       panels.enableButton("returnPiece",  true);
       panels.enableButton("freezePuzzle", true);
       panels.enableButton("startingPos",  false);
-
       break;
     case "emptyTrays":
       panels.enableButton("placePiece",   false);
@@ -477,7 +472,6 @@ function setButtonState(command) {
       panels.enableButton("shiftPiece",   true);
       panels.enableButton("freezePuzzle", true);
       panels.enableButton("startingPos",  false);
-
       break;
     case "loaded":
       panels.enableButton("placePiece",   false);
@@ -485,15 +479,6 @@ function setButtonState(command) {
       panels.enableButton("shiftPiece",   false);
       panels.enableButton("freezePuzzle", false);
       panels.enableButton("startingPos",  false);
-
-      break;
-    case "play":
-      panels.enableButton("placePiece",   false);
-      panels.enableButton("returnPiece",  false);
-      panels.enableButton("shiftPiece",   false);
-      panels.enableButton("freezePuzzle", false);
-      panels.enableButton("startingPos",  false);
-
       break;
     default:
       throw new Error(`Unknown button state command ${command}.`);

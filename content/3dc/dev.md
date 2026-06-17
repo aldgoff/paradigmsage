@@ -139,9 +139,20 @@ title: "Dev"
   - 6/14/26 - Game/state QC. QC setup. Debug rewind. Debug place piece on ten boards. Debug setup. Update clues & dates.
   - 6/15/26 - Starting Lineup. Setup todos. Remove Play button. Selection button management. 1st level move button restraints.
   - 6/16/26 - Add two stack move buttons. Popup help panels. Detect occupied dst tiles. Multi-line help texts. Move pieces around the board.
-  - 6/17/26 - Popup help texts. White/Black move order. Indicate player. Plumbing for undo moves. Undo/Redo/RW/FF/Load/Save pure moves.
+  - 6/17/26 - Popup help texts. White/Black move order. Indicate player. Plumbing for undo moves. Undo/Redo/RW/FF/Load/Save pure moves. QC moves. Undo branching.
+
+## 8x8x8 board with two piece placements, then a pair of moves - debug non offset move lines.
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"placePiece","key":"WKRR","prev":"~KR1,1","post":"@KR2,2"},{"action":"placePiece","key":"BKRR","prev":"~KR1,1","post":"@KR7,7"},{"action":"freezePuzzle","data":2}],"Moves":[{"action":"move","turn":1,"player":"White","key":"WKRR","prev":"@KR2,2","post":"@KR3,3"},{"action":"move","turn":1,"player":"Black","key":"BKRR","prev":"@KR7,7","post":"@KR6,6"}],"Gambits":[],"AdvSqs":[]}
+
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"placePiece","key":"BKRP","prev":"~KR2,2","post":"@KR7,7"},{"action":"placePiece","key":"WKRP","prev":"~KR2,2","post":"@KR2,2"},{"action":"freezePuzzle","data":2}],"Moves":[{"action":"move","turn":1,"player":"White","key":"WKRP","prev":"@KR2,2","post":"@KR3,3"},{"action":"move","turn":1,"player":"White","key":"BKRP","prev":"@KR7,7","post":"@KR6,6"}],"Gambits":[],"AdvSqs":[]}
+
+## Test 3 boards, puzzle, and 2 full moves. (6/17/26) 
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"10x10x10","trayType":"Fact","trayGap":0}},{"action":"makeBoard","prevBoard":{"boardSize":"10x10x10","trayType":"Fact","trayGap":0},"nextBoard":{"boardSize":"10x8x8","trayType":"Real","trayGap":0}},{"action":"makeBoard","prevBoard":{"boardSize":"10x8x8","trayType":"Real","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"placePiece","key":"WKRR","prev":"~KR1,1","post":"@KR2,2"},{"action":"shiftPiece","key":"WKRR","prev":"@KR2,2","post":"@KR3,3"},{"action":"shiftPiece","key":"WKRR","prev":"@KR3,3","post":"@KR4,4"},{"action":"placePiece","key":"BKRR","prev":"~KR1,1","post":"@KR7,7"},{"action":"shiftPiece","key":"BKRR","prev":"@KR7,7","post":"@KR6,6"},{"action":"shiftPiece","key":"BKRR","prev":"@KR6,6","post":"@KR5,5"},{"action":"placePiece","key":"BKNP","prev":"~KN2,2","post":"@KN8,8"},{"action":"returnPiece","key":"BKNP","prev":"@KN8,8","post":"~KN2,2"},{"action":"freezePuzzle","data":2}],"Moves":[{"action":"move","turn":1,"player":"White","key":"WKRR","prev":"@KR4,4","post":"@KR5,3"},{"action":"move","turn":1,"player":"White","key":"BKRR","prev":"@KR5,5","post":"@KR6,4"},{"action":"move","turn":2,"player":"White","key":"WKRR","prev":"@KR5,3","post":"@KR6,2"},{"action":"move","turn":2,"player":"White","key":"BKRR","prev":"@KR6,4","post":"@KR7,3"}],"Gambits":[],"AdvSqs":[]}
+
 
 ## Test Move (6/17/26) Success!
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"startingPos"}],"Moves":[{"action":"move","turn":1,"player":"White","key":"WKRR","prev":"@KR1,1","post":"@KR3,3"},{"action":"move","turn":1,"player":"Black","key":"BKRR","prev":"@KR8,8","post":"@KR6,6"},{"action":"move","turn":2,"player":"White","key":"WKRR","prev":"@KR3,3","post":"@KR4,4"},{"action":"move","turn":2,"player":"Black","key":"BKRR","prev":"@KR6,6","post":"@KR5,5"}],"Gambits":[],"AdvSqs":[]}
+
   {"Setup":[
     {"action":"makeBoard",
       "prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},

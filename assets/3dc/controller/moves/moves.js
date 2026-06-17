@@ -47,12 +47,6 @@ export function panelDispatch(payload) {
 
   const { action, 
     player,   // White|Black
-    piece,    // R|B|D|Q|N|S|P|K
-    src,      // K2,2
-    dst,      // K4,4
-    sec,      // QB5,6
-    captured, // R|B|D|Q|N|S|P|K
-    opts      // TBD?
   } = payload;
 
   switch (action) {
@@ -70,6 +64,10 @@ export function panelDispatch(payload) {
 
     default: throw new Error(`Unknown moves action ${action}.`);  break;
   }
+
+  (player === "White")
+    ? document.querySelector('input[name="move-player"][value="Black"]').checked = true
+    : document.querySelector('input[name="move-player"][value="White"]').checked = true;
 
   game.showUndoStatus();                          // Update game panel (undo).
   }
@@ -105,10 +103,6 @@ export function buildForward(entry) {     // Redo.
   console.log("cntrl: moves.js - buildForward(entry)", entry);
 
   const { action, turn, player, key, prev, next } = entry;
-
-  (player === "White")
-    ? document.querySelector('input[name="move-player"][value="Black"]').checked = true
-    : document.querySelector('input[name="move-player"][value="White"]').checked = true;
 
   if(     action === "move") {
     forewardMove(entry);
@@ -157,10 +151,6 @@ export function buildBackward(entry) {    // Undo.
 
   const { action, turn, player, key, prev, next } = entry;
 
-  (player === "Black")
-    ? document.querySelector('input[name="move-player"][value="Black"]').checked = true
-    : document.querySelector('input[name="move-player"][value="White"]').checked = true;
-
   if(     action === "move") {
     backwardMove(entry);
     }
@@ -208,7 +198,7 @@ export function buildBackward(entry) {    // Undo.
 function handleMove(payload) {
   console.log("cntrl: moves.js - handleMove(payload)", payload);
 
-  const { action, player, piece, src, dst, sec, captured, opts } = payload;  // Informative.
+  const { action, player, piece, src, dst, sec, captured, opts } = payload;
   const selections = cSelections.getSelections();
 
   const entry = mMoves.makeMoveEntry(selections, payload);
@@ -318,51 +308,6 @@ function backwardMove(entry) {
 
   const { ok, err } = mPieces.movePieceTileToTile(key, dstStr);
   if(!ok) return { ok, err };
-}
-
-function performCapture(selections, payload) {
-  console.log("cntrl: moves.js - performCapture(selections, payload)", selections, payload);
-
-  }
-
-function performEnPassant(selections, payload) {
-  console.log("cntrl: moves.js - performEnPassant(selections, payload)", selections, payload);
-
-  }
-
-function performCastle(selections, payload) {
-  console.log("cntrl: moves.js - performCastle(selections, payload)", selections, payload);
-
-  }
-
-function performPromote(selections, payload) {
-  console.log("cntrl: moves.js - performPromote(selections, payload)", selections, payload);
-
-  }
-
-function performDukeDecay(selections, payload) {
-  console.log("cntrl: moves.js - performDukeDecay(selections, payload)", selections, payload);
-
-  }
-
-function performBishopDecay(selections, payload) {
-  console.log("cntrl: moves.js - performBishopDecay(selections, payload)", selections, payload);
-
-  }
-
-function performFission(selections, payload) {
-  console.log("cntrl: moves.js - performFission(selections, payload)", selections, payload);
-
-  }
-
-function performTeleportation(selections, payload) {
-  console.log("cntrl: moves.js - performTeleportation(selections, payload)", selections, payload);
-
-  }
-
-function performUplift(selections, payload) {
-  console.log("cntrl: moves.js - performUplift(selections, payload)", selections, payload);
-
 }
 
 function applyEntry(entry) {

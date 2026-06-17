@@ -17,7 +17,6 @@
 // --- Load JSON ---
   import movesData from "./moves.json" assert { type: "json" };
   const movesModule = movesData.moves_module;
-  const category  = movesModule.category;
 // Seampoint: more objects...
 
 // --- Dependencies ---
@@ -33,16 +32,6 @@
 export function clearMoves() {
   console.log("view : moves.js - clearMoves()");
   }
-
-export function undo(move) {
-  console.log("view : moves.js - undo(move)", move);
-  // TODO: write undo().
-  }
-
-export function redo(move) {
-  console.log("view : moves.js - redo(move)", move);
-  // TODO: write redo().
-}
 
 export function pushPanelLine(move) {
   console.log("view : moves.js - pushPanelLine(move)", move);
@@ -95,34 +84,18 @@ export function cancelAnimation() {
     activeAnimation.cancelled = true;
     activeAnimation = null;
   }
-  }
-
-export function render(move) {  // Used to render a just created move via panel.
-  console.log("view : moves.js - renderMove(move)", move);
-  // TODO: write renderMove().
-  return;
-  }
-
-export function renderMove(move) {  // Used to render a just created move via panel.
-  console.log("view : moves.js - renderMove(move)", move);
-  // TODO: write renderMove().
-  return;
-  }
-
-export function derenderMove(move) {
-  console.log("view : moves.js - derenderMove(move)", move);
-  // TODO: write derenderMove().
-  return;
 }
 // Seampoint: more global functions...
 
 // --- Helpers ---
 function assembleMoveLine(move) {
+  console.log("view : moves.js - assembleMoveLine(move)", move);
+
   let { action, turn, player, key, prev, post } = move;
 
   const index = state.getIndices().Moves;
 
-  // --- column widths ---
+  // --- Column widths ---
   const turnCol  = (String(turn).padStart(3)).padEnd(4);
   const pieceCol = `${key}`.padEnd(4);
   const srcCol   = `${prev}`.padEnd(6);

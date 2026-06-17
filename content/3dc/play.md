@@ -182,16 +182,6 @@ layout: "play"
     <button data-action="teleportation" disabled>Teleportation</button>
     <button data-action="uplift"        disabled>Uplift</button>
   </div>
-  <div class="section">
-    <label> SrcTile <input name="move-src" type="text" value="K2,2" maxlength="7" style="width: 44px;"> </label>
-    <label> DstTile <input name="move-dst" type="text" value="K4,4" maxlength="7" style="width: 44px;"> </label>
-    <label> 2ndTile <input name="move-2nd" type="text" value="" maxlength="7" style="width: 44px;"> </label>
-  </div>
-  <div class="section">
-    <label> Piece    <input name="move-piece"   type="text" value="P" maxlength="3" style="width: 24px;"> </label>
-    <label> Captured <input name="move-capture" type="text" value="Q" maxlength="3" style="width: 24px;"> </label>
-    <label> Opts:    <output name="move-opts" style="opacity:0.7; font-style:italic;"> R|B|D|Q|N|S|P|K</output> </label>
-  </div>
   <div class="section scroll-box" id="move-list"></div>
   </div>
 
