@@ -34,10 +34,20 @@
 // Seampoint: more globals...
 
 // --- UI ---
-export function clearGambits() {  // Still in use.
+export function clearGambits() {  // TODO: clearGambits broken.
   console.log("view : gambits.js - clearGambits()");
 
+
+  let top = state.getBufferLength("Gambits");
+  state.truncateState("Gambits", 0);
+  while(top > 0) {
+    popPanelLine();
+    top--;
+  }
+
   const scene = view.getContext().scene;
+  // return;
+
 
   // --- 1. Remove ALL groups (offboard + containers) ---
   scene.children
@@ -45,7 +55,8 @@ export function clearGambits() {  // Still in use.
     .forEach(group => {
       derenderGambit(group);
     });
-
+    return;
+    
   // --- 2. Remove ANY stray overlays still attached to tiles ---
   const tileMap = view.getContext().tileMap;
   if (!tileMap) return;

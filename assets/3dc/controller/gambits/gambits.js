@@ -298,11 +298,16 @@ function handleRemoveAll() {
 function applyQuadrantEntry({ entry, line }) {   // Group, state, render, panel.
   console.log("cntrl: gambits.js - applyQuadrantEntry(entry)", entry);
 
-  if(!state.isAtEnd("Gambits")) {
+  if(!state.isAtEnd("Gambits")) {               // Undo branch.
+    let top = state.getBufferLength("Gambits");
     const idx = state.getCurrentIndex("Gambits");
     state.truncateState("Gambits", idx);
+    while(top > idx) {
+      vGambits.popPanelLine();
+      top--;
+    }
+    vGambits.refreshPanel(entry);
   }
-  // TODO: if not at end, branch undo buffer. 
 
   state.pushNewGambit(entry);                     // Change state.
   const group = vGambits.makeQuadGroup(entry);    // Recreate from entry.

@@ -253,7 +253,7 @@ function decorateDuplexPerimeter(perim, piece, group, opacity, dst, zOffset=0.00
   }
 
 function decorateTile(coords, piece, decorator, group, opacity, zOffset = 0.00) {
-  console.log("view : view.js - decorateTile(...)", coords, piece, decorator);
+  // console.log("view : view.js - decorateTile(...)", coords, piece, decorator);
 
   let meshTile = tiles.getTileMesh(context.tileMap, coords);
 

@@ -294,26 +294,13 @@ function rewindCurrentBuffer(buffer) {
 
   const idx = state.getCurrentIndex(buffer);
 
-  if(     buffer === "Setup") {
-    const first = state.getState().Setup[0];
-    while(state.getCurrentIndex("Setup") > 1) {
-      const idx = state.getCurrentIndex("Setup");
-      if(!processUndoBuffer("Setup", idx)) 
-        break;
-    }
+  if(     buffer === "AdvSqs") {  // Snapshot buffer.
+    const first = state.getState().AdvSqs[0];
+    vAdvsqs.removeFromScene();
+    vAdvsqs.render(first);
 
-    state.setBufferIndex("Setup", 1);
-    vSetup.refreshPanel(first);
-    }
-  else if(buffer === "Moves") {
-    const first = state.getState().Moves[0];
-    while (state.getCurrentIndex("Moves") > 1) {
-      const idx = state.getCurrentIndex("Moves");
-      if (!processUndoBuffer("Moves", idx)) break;
-    }
-
-    state.setBufferIndex("Moves", 1);
-    vMoves.refreshPanel(first);
+    state.setBufferIndex("AdvSqs", 1);
+    vAdvsqs.refreshPanel(first);
     }
   else if(buffer === "Gambits") {
     const first = state.getState().Gambits[0];
@@ -325,16 +312,29 @@ function rewindCurrentBuffer(buffer) {
     state.setBufferIndex("Gambits", 1);
     vGambits.refreshPanel(first);
     }
-  else if(buffer === "AdvSqs") {  // Snapshot buffer.
-    const first = state.getState().AdvSqs[0];
-    vAdvsqs.removeFromScene();
-    vAdvsqs.render(first);
-
-    state.setBufferIndex("AdvSqs", 1);
-    vAdvsqs.refreshPanel(first);
+  else if(buffer === "Moves") {
+    const first = state.getState().Moves[0];
+    while (state.getCurrentIndex("Moves") > 1) {
+      const idx = state.getCurrentIndex("Moves");
+      if (!processUndoBuffer("Moves", idx)) break;
     }
-  else {
-    throw new Error(`Unknown buffer ${buffer}.`);
+
+    state.setBufferIndex("Moves", 1);
+    vMoves.refreshPanel(first);
+    }
+  else if(buffer === "Setup") {
+    const first = state.getState().Setup[0];
+    while(state.getCurrentIndex("Setup") > 1) {
+      const idx = state.getCurrentIndex("Setup");
+      if(!processUndoBuffer("Setup", idx)) 
+        break;
+    }
+
+    state.setBufferIndex("Setup", 1);
+    vSetup.refreshPanel(first);
+    }
+  else {  // Unreachable.
+    throw new Error(`Unknown or missing buffer ${buffer} in rewind.`);
   }
   }
 
@@ -382,8 +382,8 @@ function fastForwardCurrentBuffer(buffer) {
     state.setBufferIndex("AdvSqs", len);
     vAdvsqs.refreshPanel(last);
     }
-  else {
-    throw new Error(`Unknown buffer ${buffer}`);
+  else {  // Unreachable.
+    throw new Error(`Unknown or missing buffer ${buffer} in FF>>.`);
   }
   }
 
@@ -442,16 +442,7 @@ function processUndoBuffer(key, idx, N=1) {
     
     return true;
     }
-  else if(key === "Moves1") {
-    const move = state.fetchCurrentState("Moves");
-    if(move != null) {
-      vMoves.undo(move);
-      state.setBufferIndex("Moves", idx-1);
-      vMoves.refreshPanel(move);
-      return true;
-    }
-    }
-  else if(key === "Setup") { // 6/13/26 - panel works.
+  else if(key === "Setup") {
     const entry = state.fetchCurrentState("Setup");
     if(entry) {
       state.setBufferIndex("Setup", idx-1);
@@ -464,14 +455,55 @@ function processUndoBuffer(key, idx, N=1) {
     return true;
     }
   else {  // Unreachable.
-    throw new Error(`Unknown or missing key in undo ${key}`);
+    throw new Error(`Unknown or missing key in undo ${key}.`);
   }
   }
 
 function processRedoBuffer(key, idx, N=1) {
   console.log("cntrl: game.js - processRedoBuffer(key, idx):", key, idx);
 
-  if(     key === "AdvSqs") {
+  if(     key === "Setup") {
+    state.setBufferIndex("Setup", idx + 1);
+
+    const entry = state.fetchCurrentState("Setup");
+    if(!entry) {
+      console.log("*** No next setup.");
+      return false;
+    }
+    cSetup.buildForward(entry);
+
+    cSetup.clearAllTileSelections();
+    cSetup.clearAllPieceSelections();
+
+    return true;
+    }
+  else if(key === "Moves") {
+    state.setBufferIndex("Moves", idx + 1);
+
+    const entry = state.fetchCurrentState("Moves");
+    if(!entry) {
+      console.log("*** No next move.");
+      return false;
+    }
+    state.setBufferIndex("Moves", idx + 1);
+    cMoves.buildForward(entry);
+
+    cSetup.clearAllTileSelections();
+    cSetup.clearAllPieceSelections();
+    
+    return true;
+    }
+  else if(key === "Gambits") {
+    const gambit = state.fetchNextState("Gambits");
+    if (gambit != null) {
+      state.setBufferIndex("Gambits", idx + 1); // Update from state.
+      cGambits.rerunGambits();                  // Rebuild from state.
+      // vGambits.redo(gambit);
+      vGambits.refreshPanel(gambit);
+      return true;
+    }
+    }
+  else if(key === "AdvSqs") {
     const curr = state.fetchCurrentState("AdvSqs");
     const next = state.fetchNextState("AdvSqs");
 
@@ -494,58 +526,8 @@ function processRedoBuffer(key, idx, N=1) {
       return true;
     }
     }
-  else if(key === "Gambits") {
-    const gambit = state.fetchNextState("Gambits");
-    if (gambit != null) {
-      state.setBufferIndex("Gambits", idx + 1); // Update from state.
-      cGambits.rerunGambits();                  // Rebuild from state.
-      // vGambits.redo(gambit);
-      vGambits.refreshPanel(gambit);
-      return true;
-    }
-    }
-  else if(key === "Moves") {
-    state.setBufferIndex("Moves", idx + 1);
-
-    const entry = state.fetchCurrentState("Moves");
-    if(!entry) {
-      console.log("*** No next move.");
-      return false;
-    }
-    state.setBufferIndex("Moves", idx + 1);
-    cMoves.buildForward(entry);
-
-    cSetup.clearAllTileSelections();
-    cSetup.clearAllPieceSelections();
-    
-    return true;
-    }
-  else if(key === "Moves1") {
-    const move = state.fetchNextState("Moves");
-    if(move != null) {
-      state.setBufferIndex("Moves", idx + 1);
-      vMoves.redo(move);
-      vMoves.refreshPanel(move);
-      return true;
-    }
-    }
-  else if(key === "Setup") { // 6/13/26 - panel works.
-    state.setBufferIndex("Setup", idx + 1);
-
-    const entry = state.fetchCurrentState("Setup");
-    if(!entry) {
-      console.log("*** No next setup.");
-      return false;
-    }
-    cSetup.buildForward(entry);
-
-    cSetup.clearAllTileSelections();
-    cSetup.clearAllPieceSelections();
-
-    return true;
-    }
   else {  // Unreachable.
-    throw new Error(`Unknown or missing key in redo ${key}`);
+    throw new Error(`Unknown or missing key in redo ${key}.`);
   }
 }
 

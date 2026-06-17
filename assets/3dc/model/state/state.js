@@ -227,6 +227,7 @@ export function getBufferIndex(buffer) { // Not used yet.
 /* ----- ----- ----- ----- */
 export function clearBuffer(buffer) { // Leaves meshes in scene, be sure to call the clear routine.
   console.log("model: state.js - clearBuffer(buffer):", buffer);
+  
   state[buffer].length = 0;
   indexes[buffer] = 0;
 }

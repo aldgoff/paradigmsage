@@ -34,6 +34,7 @@
 
   import * as vMoves   from "../../view/moves/moves.js";
   import * as vGambits from "../../view/gambits/gambits.js";
+  import * as vAdvsqs  from "../../view/advsqs/advsqs.js";
 // Seampoint: more imports...
 
 // --- Globals ---
@@ -90,12 +91,6 @@ export function buildPayload(panel, action) {
   return {
     action,
     player:   panel.querySelector('input[name="move-player"]:checked')?.value,
-    piece:    panel.querySelector('[name="move-piece"]')?.value,
-    src:      panel.querySelector('[name="move-src"]')?.value,
-    dst:      panel.querySelector('[name="move-dst"]')?.value,
-    sec:      panel.querySelector('[name="move-2nd"]')?.value,
-    captured: panel.querySelector('[name="move-capture"]')?.value,
-    opts:     panel.querySelector('[name="move-opts"]')?.value,
   };
 }
 
@@ -313,15 +308,24 @@ function backwardMove(entry) {
 function applyEntry(entry) {
   console.log("cntrl: moves.js - applyEntry(entry)", entry);
 
-  const currEntry = state.fetchCurrentState("Moves"); // Clear previous move.
-  if(currEntry != null) {
-    // vMoves.clear(currEntry);
-    if(!state.isAtEnd("Moves")) {     // Branches the undo history, discards original branch.
-      // TODO: clear all later move entries.
-      // const idx = state.getCurrentIndex("Moves"); // Not quite working...
-      // state.truncateState("Moves", idx);
+  if(!state.isAtEnd("Moves")) {               // Undo branch.
+    let top = state.getBufferLength("Moves");
+    const idx = state.getCurrentIndex("Moves");
+    state.truncateState("Moves", idx);
+    while(top > idx) {
+      vMoves.popPanelLine();
+      top--;
     }
+    vMoves.refreshPanel(entry);
   }
+
+  vGambits.clearGambits();  // Remove all entries in downstream buffers.
+  state.clearBuffer("Gambits");
+
+  vAdvsqs.clearAdvsqs();  // Remove all entries in downstream buffers.
+  state.clearBuffer("AdvSqs");
+
+  game.showUndoStatus();
 
   state.pushNewMove(entry);           // Change state.
   vMoves.pushPanelLine(entry);        // Add line to panel.
