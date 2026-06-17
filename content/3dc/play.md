@@ -40,20 +40,6 @@ layout: "play"
     background: rgba(236,232,222,0.95);
   }
 
-  #setup-window {
-    width: 163px;
-    }
-  #compass-window {
-    width: 160px;
-    height: 220px;
-    }
-  #gambit-window {
-    width: 280px;
-    }
-  #move-window {
-    font-family: monospace;
-    width: 420px;
-  }
   #setup-list {
     font-family: monospace;
     white-space: pre;
@@ -88,12 +74,12 @@ layout: "play"
     border: 1px solid #888;
   }
   
-  #setup-window       { top:  160px; left:   20px; }  /* DOM Control Panels */
-  #move-window        { top: 1000px; left:   20px; }
-  #gambit-window      { top:  745px; left:   20px; }
-  #advsq-window       { top:  160px; left:  210px; }
-  #compass-window     { top:  160px; left:  560px; }
-  #diagnostics-window { top:  160px; left:  960px; }
+  #setup-window       { top:  160px; left:   20px; width: 163px }  /* DOM Control Panels */
+  #move-window        { top: 1000px; left:   20px; width: 400px }
+  #gambit-window      { top:  745px; left:   20px; width: 280px }
+  #advsq-window       { top:  160px; left:  210px; width: 155px }
+  #compass-window     { top:  160px; left:  560px; width: 160px; height: 220px }
+  #diagnostics-window { top:  160px; left:  960px; width: 145px }
 
   #game-window   { top:  160px; left:  390px; }
 
@@ -286,7 +272,7 @@ layout: "play"
   <div class="section"> <label> Stride Type: <output name="advsq-strideType"style="opacity:0.7; font-style:italic;"></output> </label> </div>
   <div class="section"> <label> Move Type:   <output name="advsq-moveType"  style="opacity:0.7; font-style:italic;"> Q|L|D|O </output> </label> </div>
   <div class="section"> <label> Overlap:     <output name="advsq-overlap"   style="opacity:0.7; font-style:italic;"> B|Q|H|F </output> </label> </div>
-  <div class="section"> <label> Pieces:      <output name="advsq-piece"     style="opacity:0.7; font-style:italic;"> R|B|D|Q|N|S|P|K </output> </label> </div>
+  <div class="section"> <label> Pieces:      <output name="advsq-piece"     style="opacity:0.7; font-style:italic;"> R|B|D|Q|N|S|P|U|K </output> </label> </div>
   <!-- Key hints (visual only) -->
   <div class="section" style="font-size: 13px; font-weight: bold; color: #666;">
     Slip&Slide +: kij -: KIJ

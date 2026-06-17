@@ -15,7 +15,13 @@
       "setupText": {
           "title": "Setup Panel Help",
           "lines": [
-            "yada yada yada"
+            "Select board size and tray type, then click on 'Make Board'.",
+            "Either create a puzzle or start a game.",
+            "Puzzle: click on pieces and tiles; place, shift, or return, 'Freeze Puzzle' to accept.",
+            "Game: click on 'Starting Position'.",
+            "Use undo/redo and rewind/FF (Game Panel) to change your mind (note scroll window, currently buggy).",
+            "(Factory trays not yet supported, same as Real trays.)",
+            ""
           ]
         },
       "moveText": {
@@ -31,43 +37,80 @@
       "gambitText": {
           "title": "Gambit Panel Help",
           "lines": [
-            "yada yada yada"
+            "Use gambits to freeze the current advsq.",
+            "Assemble a set to understand a tactical situation.",
+            "Then decide on a move.",
+            "You can freeze quadrants (typical).",
+            "Linear moves (stride must be on an end tile).",
+            "Duplex moves (stride must be on a duplex tile, duke face quads only).",
+            "Overlap moves (queen and stack only).",
+            "Stride must be one of the four overlap tiles (brook, qtile, hotspot, Feynman).",
+            "Currently incomplete, use with caution."
           ]
         },
       "advsqText": {
           "title": "Advsq Panel Help",
           "lines": [
-            "yada yada yada"
+            "Reveals the nonintuitive nature of 3D moves.",
+            "Place a source tile.",
+            "Grow and shrink the advancement square into the quadrant (1-60).",
+            "Or use the perimeter box for direct entry (0-7).",
+            "To keep the NxN structure of advsqs clear, they are allowed to extend off the board.",
+            "You cannot move to these tiles, they have no effect on the game, just on your visualization.",
+            "Use the stride box to 'walk' the perimeter.",
+            "Note the diagnostic fields that reveal the advsq's properties.",
+            "You can move the src tile rectilinear with the keyboard (ijk, IJK).",
+            "Rotate through the quads 'Next Quad'.",
+            "Rotate through the planes 'Next Plane'.",
+            "Rotate through the pieces 'Next Piece'.",
+            "Change the visibility of offboard tiles."
           ]
         },
       "gameText": {
           "title": "Game Panel Help",
           "lines": [
-            "yada yada yada"
+            "3DC uses a logarithmic undo system: 4 sequential buffers.",
+            "Setup - Moves - Gambits - Advsqs.",
+            "Undo/redo traverses within and across them.",
+            "Rewind traverses from first to last, then across them.",
+            "Save captures them to the clipboard.",
+            "Load restarts the game from the clipboard.",
+            "Makes it easy to share games, puzzles, and lessons."
           ]
         },
       "cameraText": {
           "title": "Camera Panel Help",
           "lines": [
-            "yada yada yada"
+            "Zoom in and out.",
+            "Ascend and descend (view angle), tradeoff tile perspective with obscured tiles.",
+            "4 points of views provided, basically all four vertical edges.",
+            "(The top view is basically useless for play, but useful for diagnostics.)",
+            ""
           ]
         },
       "compassText": {
           "title": "Compass Panel Help",
           "lines": [
-            "yada yada yada"
+            "Eventually will allow slip and slide of advsqs along planes and quads.",
+            "yada"
           ]
         },
       "viewerText": {
           "title": "Viewer Panel Help",
           "lines": [
-            "yada yada yada"
+            "Show and hide the trays.",
+            "Change tray gap and level separation, use as needed.",
+            "Put the board into a slow rotation around the z-axis, with variable range and speed.",
+            "Combine with the camera panel to maximize the clarity of the current position.",
+            ""
           ]
         },
       "diagnosticsText": {
           "title": "Diagnostics Panel Help",
           "lines": [
-            "yada yada yada"
+            "Useful for debugging code.",
+            "Limited use for play.",
+            ""
           ]
         },
       "Seampoint": "another help panel."

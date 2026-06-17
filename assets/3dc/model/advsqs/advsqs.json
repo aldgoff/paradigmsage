@@ -22,7 +22,7 @@
       "strideType": ["Source", "E1", "Body", "Apex", "Duplex", "Third", "E2"],
       "moveType": ["Q", "L", "D", "O"],
       "overlapType": ["Brook", "Qtile", "Hotspot", "Feynmann"],
-      "pieces": ["R", "B", "D", "Q", "N", "S", "P", "K" ],
+      "pieces": ["R", "B", "D", "Q", "N", "S", "P", "U", "K" ],
       "_last": "no comma"
     },
     "Examples": {
