@@ -18,6 +18,7 @@
 
   import * as cSetup  from "../../controller/setup/setup.js";
 
+  import * as state   from "../../model/state/state.js";
   import * as mPieces from "../../model/pieces/pieces.js";
   import * as mBoards from "../../model/boards/boards.js";
   import * as coords  from "../../foundation/coords/coords.js";
@@ -190,6 +191,12 @@ function manageMoveButtons() {
   const dstStr2 = (tile2) ? coords.vtsToBoard(tile2, size) : "";
   const { player: player1, side: side1, level: level1, type: type1 } = utils.parsePieceKey(key1);
   const { player: player2, side: side2, level: level2, type: type2 } = utils.parsePieceKey(key2);
+
+  const index = state.getIndices()["Moves"] + 1;          // Players take turns.
+  if((index%2 === 1 && player1 === 'B')
+  || (index%2 === 0 && player1 === 'W')){  
+    return;
+  }
 
   const panel = document.getElementById("move-window");   // Update panel fields.
   panel.querySelector('[name="move-selPieces"]').textContent = [...pieceSelections];
