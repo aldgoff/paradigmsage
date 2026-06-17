@@ -15,16 +15,25 @@
 // Seampoint: more objects...
 
 // --- Dependencies ---
-  import * as setup     from "../controller/setup/setup.js";
-  import * as moves     from "../controller/moves/moves.js";
-  import * as gambits   from "../controller/gambits/gambits.js";
-  import * as advsqs    from "../controller/advsqs/advsqs.js";
-  import * as compasses from "../controller/compasses/compasses.js";
+  import * as setup       from "../controller/setup/setup.js";
+  import * as moves       from "../controller/moves/moves.js";
+  import * as gambits     from "../controller/gambits/gambits.js";
+  import * as advsqs      from "../controller/advsqs/advsqs.js";
+  import * as compasses   from "../controller/compasses/compasses.js";
+  import * as cSelections from "../controller/selections/selections.js";
 
   import * as game      from "../controller/game/game.js";
-
   import * as camera    from "../controller/camera/camera.js";
   import * as viewer    from "../controller/viewer/viewer.js";
+
+  import * as mBoards  from "../model/boards/boards.js";
+  import * as mTrays   from "../model/trays/trays.js";
+  import * as mPieces  from "../model/pieces/pieces.js";
+
+  import * as view     from "../view/view.js";
+  import * as vPieces  from "../view/pieces/pieces.js";    // Dehighlight selected pieces.
+  import * as vTrays   from "../view/trays/trays.js";
+
 // Seampoint: more imports...
 
 // --- Globals ---
@@ -133,6 +142,54 @@ export function enableButton(action, enabled=true) {
 
   if(button)
     button.disabled = !enabled;
+  }
+
+export function diagnostics() {
+  console.log("cntrl : panels.js - diagnostics()");
+
+  const pieceCount = Object.keys(mPieces.getPieceList()).length;
+
+  const trayCount  = Object.values(mPieces.getPieceList()).filter(piece => piece.loc === "~").length;
+  const boardCount = Object.values(mPieces.getPieceList()).filter(piece => piece.loc === "@").length;
+
+  const whiteCount = mTrays.getWhiteTray().flat(2).filter(cell => cell !== null).length;
+  const blackCount = mTrays.getBlackTray().flat(2).filter(cell => cell !== null).length;
+
+  const boardOcc = mBoards.getBoardOccupancy().flat(2).filter(cell => cell !== null).length;
+
+  const { pieceSelections, tileSelections } = cSelections.getSelections();
+
+  const whiteGroupCount = vTrays.getWhiteTrayGroup()
+    ? vTrays.getWhiteTrayGroup().children.length
+    : "null";
+
+  const blackGroupCount = vTrays.getBlackTrayGroup()
+    ? vTrays.getBlackTrayGroup().children.length
+    : "null";
+
+  const panel = document.getElementById("diagnostics-window");
+
+  panel.querySelector('[name="diags-pieceCount"]').textContent = pieceCount;
+  panel.querySelector('[name="diags-trayCount"]').textContent  = trayCount;
+
+  panel.querySelector('[name="diags-whiteTray"]').textContent  = whiteCount;
+  panel.querySelector('[name="diags-blackTray"]').textContent  = blackCount;
+
+  panel.querySelector('[name="diags-boardCount"]').textContent = boardCount;
+  panel.querySelector('[name="diags-boardOcc"]').textContent   = boardOcc;
+
+  panel.querySelector('[name="diags-pieceSels"]').textContent  = tileSelections.size;
+  panel.querySelector('[name="diags-tileSels"]').textContent   = pieceSelections.size;
+
+  panel.querySelector('[name="diags-tileMap"]').textContent = view.getContext().tileMap?.size ?? 0;
+
+  panel.querySelector('[name="diags-currPiecesGroup"]').textContent = vPieces.getCurrPiecesGroup()?.children.length ?? 0;
+  panel.querySelector('[name="diags-pieceGroups"]').textContent     = Object.keys(vPieces.getPieceGroups()).length;
+
+  panel.querySelector('[name="diags-whiteTrayGroup"]').textContent  = whiteGroupCount;
+  panel.querySelector('[name="diags-blackTrayGroup"]').textContent  = blackGroupCount;
+
+  panel.querySelector('[name="diags-sceneChildren"]').textContent = view.getContext().scene.children.length;
 }
 // Seampoint: more global functions...
 

@@ -20,6 +20,7 @@
 // Seampoint: more objects...
 
 // --- Dependencies ---
+  import * as panels      from "../../panels/panels.js";
   import * as game        from "../../controller/game/game.js";
   import * as cSetup      from "../../controller/setup/setup.js";
   import * as cSelections from "../../controller/selections/selections.js";
@@ -110,72 +111,46 @@ export function buildForward(entry) {     // Redo.
     : document.querySelector('input[name="move-player"][value="White"]').checked = true;
 
   if(     action === "move") {
-    // const { action, key, prev, post } = entry;
-    // TODO: ForwardTask()
-    setButtonState("state");
-    vMoves.refreshPanel();   
-    console.log("*** end of forward moves.");      
+    forewardMove(entry);
     }
   else if(action === "capture") {
-    const { action, key, prev, post } = entry;
     // TODO: ForwardTask()
-    setButtonState("state");
-    vMoves.refreshPanel();         
     }
   else if(action === "enpassant") {
-    const { action, key, prev, post } = entry;
     // TODO: ForwardTask()
-    setButtonState("state");
-    vMoves.refreshPanel();         
     }
   else if(action === "castle") {
-    const { action, key, prev, post } = entry;
     // TODO: ForwardTask()
-    setButtonState("state");
-    vMoves.refreshPanel();         
     }
   else if(action === "promote") {
-    const { action, key, prev, post } = entry;
     // TODO: ForwardTask()
-    setButtonState("state");
-    vMoves.refreshPanel();         
     }
   else if(action === "duke-decay") {
-    const { action, key, prev, post } = entry;
     // TODO: ForwardTask()
-    setButtonState("state");
-    vMoves.refreshPanel();         
     }
   else if(action === "bishop-decay") {
-    const { action, key, prev, post } = entry;
     // TODO: ForwardTask()
-    setButtonState("state");
-    vMoves.refreshPanel();         
     }
   else if(action === "fission") {
-    const { action, key, prev, post } = entry;
     // TODO: ForwardTask()
-    setButtonState("state");
-    vMoves.refreshPanel();         
     }
   else if(action === "teleportation") {
-    const { action, key, prev, post } = entry;
     // TODO: ForwardTask()
-    setButtonState("state");
-    vMoves.refreshPanel();         
     }
   else if(action === "uplift") {
-    const { action, key, prev, post } = entry;
     // TODO: ForwardTask()
-    setButtonState("state");
-    vMoves.refreshPanel();         
     }
   else {  // Seampoint: more buttons...
     throw new Error(`Unknown forward action ${action} for moves.`);
   }
 
-  // diagnostic();
-}
+  vMoves.refreshPanel();         
+
+  console.log("*** pieceList", mPieces.getPieceList());
+  console.log("*** occupancy", mBoards.getBoardOccupancy());
+
+  panels.diagnostics();
+  }
 
 export function buildBackward(entry) {    // Undo.
   console.log("cntrl: moves.js - buildForward(entry)", entry);
@@ -187,78 +162,46 @@ export function buildBackward(entry) {    // Undo.
     : document.querySelector('input[name="move-player"][value="White"]').checked = true;
 
   if(     action === "move") {
-    // const { action, key, prev, post } = entry;
-    // TODO: BackwardTask()
-    setButtonState("state");
-    vMoves.refreshPanel();         
+    backwardMove(entry);
     }
   else if(action === "capture") {
-    const { action, key, prev, post } = entry;
     // TODO: BackwardTask()
-    setButtonState("state");
-    vMoves.refreshPanel();         
     }
   else if(action === "enpassant") {
-    const { action, key, prev, post } = entry;
     // TODO: BackwardTask()
-    setButtonState("state");
-    vMoves.refreshPanel();         
     }
   else if(action === "castle") {
-    const { action, key, prev, post } = entry;
     // TODO: BackwardTask()
-    setButtonState("state");
-    vMoves.refreshPanel();         
     }
   else if(action === "promote") {
-    const { action, key, prev, post } = entry;
     // TODO: BackwardTask()
-    setButtonState("state");
-    vMoves.refreshPanel();         
     }
   else if(action === "duke-decay") {
-    const { action, key, prev, post } = entry;
     // TODO: BackwardTask()
-    setButtonState("state");
-    vMoves.refreshPanel();         
     }
   else if(action === "bishop-decay") {
-    const { action, key, prev, post } = entry;
     // TODO: BackwardTask()
-    setButtonState("state");
-    vMoves.refreshPanel();         
     }
   else if(action === "fission") {
-    const { action, key, prev, post } = entry;
     // TODO: BackwardTask()
-    setButtonState("state");
-    vMoves.refreshPanel();         
     }
   else if(action === "teleportation") {
-    const { action, key, prev, post } = entry;
     // TODO: BackwardTask()
-    setButtonState("state");
-    vMoves.refreshPanel();         
     }
   else if(action === "uplift") {
-    const { action, key, prev, post } = entry;
     // TODO: BackwardTask()
-    setButtonState("state");
-    vMoves.refreshPanel();         
     }
   else {  // Seampoint: more buttons...
     throw new Error(`Unknown backward action ${action} for moves.`);
   }
-    vMoves.refreshPanel();         
 
-  // diagnostic();
+  vMoves.refreshPanel();         
+
+  console.log("*** pieceList", mPieces.getPieceList());
+  console.log("*** occupancy", mBoards.getBoardOccupancy());
+
+  panels.diagnostics();
 }
-
-function setButtonState(state) {
-  console.log("cntrl: moves.js - setButtonState(state)", state);
-
-}
-
 // Seampoint: more global functions...
 
 // --- Handle Functions ---
@@ -270,7 +213,7 @@ function handleMove(payload) {
 
   const entry = mMoves.makeMoveEntry(selections, payload);
 
-  performMove(entry);
+  forewardMove(entry);
 
   applyEntry(entry);
   }
@@ -349,8 +292,8 @@ function handleUplift(payload) {
 // Seampoint: more handle functions...
 
 // --- Helpers...
-function performMove(entry) {
-  console.log("cntrl: moves.js - performMove(entry)", entry);
+function forewardMove(entry) {
+  console.log("cntrl: moves.js - forewardMove(entry)", entry);
 
   let { action, turn, player, key, prev, post } = entry;
 
@@ -361,13 +304,20 @@ function performMove(entry) {
 
   const { ok, err } = mPieces.movePieceTileToTile(key, dstStr);
   if(!ok) return { ok, err };
+  }
 
-  (player === "White")
-    ? document.querySelector('input[name="move-player"][value="Black"]').checked = true
-    : document.querySelector('input[name="move-player"][value="White"]').checked = true;
+function backwardMove(entry) {
+  console.log("cntrl: moves.js - backwardMove(entry)", entry);
 
-  console.log("*** pieceList", mPieces.getPieceList());
-  console.log("*** occupancy", mBoards.getBoardOccupancy());
+  let { action, turn, player, key, prev, post } = entry;
+
+  const boardSpec = cSetup.getCurrBoard().boardSize;
+
+  const [, dstStr] = prev.split("@");
+  const dstTile = coords.normalizeTileToVts(dstStr, boardSpec);
+
+  const { ok, err } = mPieces.movePieceTileToTile(key, dstStr);
+  if(!ok) return { ok, err };
 }
 
 function performCapture(selections, payload) {

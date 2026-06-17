@@ -66,7 +66,7 @@ export function panelDispatch(payload) {    // Dispatch payload from panel to ha
     default: throw new Error(`Unknown setup action ${action}.`);
   }
 
-  diagnostic();
+  panels.diagnostics();
   game.showUndoStatus();                          // Update game panel (undo).
   }
 
@@ -198,7 +198,7 @@ export function buildForward(entry) {     // Redo.
     }
   else {
   }
-  diagnostic();
+  panels.diagnostics();
   }
 
 export function buildBackward(entry) {    // Undo.
@@ -248,7 +248,7 @@ export function buildBackward(entry) {    // Undo.
     }
   else {
   }
-  diagnostic();
+  panels.diagnostics();
 }
 
 export function returnAllPiecesToHomeTray() {
@@ -593,54 +593,6 @@ function recordSetupAction(entry) {
   state.pushNewSetup(entry);          // Log state change in undo buffer.
   vSetup.pushPanelLine(entry);        // Add line to panel.
   vSetup.refreshPanel(entry);         // Only needed by panels with derived fields.
-  }
-
-function diagnostic() {
-  console.log("cntrl : setup.js - diagnostic()");
-
-  const pieceCount = Object.keys(mPieces.getPieceList()).length;
-
-  const trayCount  = Object.values(mPieces.getPieceList()).filter(piece => piece.loc === "~").length;
-  const boardCount = Object.values(mPieces.getPieceList()).filter(piece => piece.loc === "@").length;
-
-  const whiteCount = mTrays.getWhiteTray().flat(2).filter(cell => cell !== null).length;
-  const blackCount = mTrays.getBlackTray().flat(2).filter(cell => cell !== null).length;
-
-  const boardOcc = mBoards.getBoardOccupancy().flat(2).filter(cell => cell !== null).length;
-
-  const { pieceSelections, tileSelections } = cSelections.getSelections();
-
-  const whiteGroupCount = vTrays.getWhiteTrayGroup()
-    ? vTrays.getWhiteTrayGroup().children.length
-    : "null";
-
-  const blackGroupCount = vTrays.getBlackTrayGroup()
-    ? vTrays.getBlackTrayGroup().children.length
-    : "null";
-
-  const panel = document.getElementById("diagnostics-window");
-
-  panel.querySelector('[name="diags-pieceCount"]').textContent = pieceCount;
-  panel.querySelector('[name="diags-trayCount"]').textContent  = trayCount;
-
-  panel.querySelector('[name="diags-whiteTray"]').textContent  = whiteCount;
-  panel.querySelector('[name="diags-blackTray"]').textContent  = blackCount;
-
-  panel.querySelector('[name="diags-boardCount"]').textContent = boardCount;
-  panel.querySelector('[name="diags-boardOcc"]').textContent   = boardOcc;
-
-  panel.querySelector('[name="diags-pieceSels"]').textContent  = tileSelections.size;
-  panel.querySelector('[name="diags-tileSels"]').textContent   = pieceSelections.size;
-
-  panel.querySelector('[name="diags-tileMap"]').textContent = view.getContext().tileMap?.size ?? 0;
-
-  panel.querySelector('[name="diags-currPiecesGroup"]').textContent = vPieces.getCurrPiecesGroup()?.children.length ?? 0;
-  panel.querySelector('[name="diags-pieceGroups"]').textContent     = Object.keys(vPieces.getPieceGroups()).length;
-
-  panel.querySelector('[name="diags-whiteTrayGroup"]').textContent  = whiteGroupCount;
-  panel.querySelector('[name="diags-blackTrayGroup"]').textContent  = blackGroupCount;
-
-  panel.querySelector('[name="diags-sceneChildren"]').textContent = view.getContext().scene.children.length;
 }
 // Seampoint: more local functions...
 

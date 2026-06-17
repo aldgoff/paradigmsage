@@ -139,7 +139,7 @@ title: "Dev"
   - 6/14/26 - Game/state QC. QC setup. Debug rewind. Debug place piece on ten boards. Debug setup. Update clues & dates.
   - 6/15/26 - Starting Lineup. Setup todos. Remove Play button. Selection button management. 1st level move button restraints.
   - 6/16/26 - Add two stack move buttons. Popup help panels. Detect occupied dst tiles. Multi-line help texts. Move pieces around the board.
-  - 6/17/26 - Popup help texts. White/Black move order. Indicate player. Plumbing for undo moves.
+  - 6/17/26 - Popup help texts. White/Black move order. Indicate player. Plumbing for undo moves. Undo/Redo/RW/FF/Load/Save pure moves.
 
 ## Test Move (6/17/26) Success!
   {"Setup":[
