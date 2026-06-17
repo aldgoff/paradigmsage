@@ -83,11 +83,10 @@ export function refreshPanel(move) {
   const count = state.getIndices().Moves;                 // Scroll text box.
   const children = scroll.children;
   for (let i = 0; i < children.length; i++) {
-    if (i < count) {
-      children[i].style.opacity = "1.0";   // active
-    } else {
-      children[i].style.opacity = "0.3";   // future
-    }
+    const opacity = (i < count)
+      ? "1.0"     // active
+      : "0.3";    // future
+    children[i].style.opacity = opacity;
   }
 }
 
@@ -129,10 +128,10 @@ function assembleMoveLine(move) {
   const srcCol   = `${prev}`.padEnd(6);
   const dstCol   = `${post}`.padEnd(6);
 
-  const whiteCol = (player === "White") ? `${pieceCol} ${srcCol} - ${dstCol}`: "        ";
-  const blackCol = (player === "Black") ? `${pieceCol} ${srcCol} - ${dstCol}`: "        ";
+  const whiteCol = (player === "White") ? `${pieceCol} ${srcCol} - ${dstCol}`: "                     ";
+  const blackCol = (player === "Black") ? `${pieceCol} ${srcCol} - ${dstCol}`: "                     ";
 
-  const annotationsCol = ".....    .....";
+  const annotationsCol = ".....";
 
   const line = `${turnCol} ${whiteCol} ${blackCol} ${annotationsCol}`;
 

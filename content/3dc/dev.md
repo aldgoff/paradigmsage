@@ -139,7 +139,35 @@ title: "Dev"
   - 6/14/26 - Game/state QC. QC setup. Debug rewind. Debug place piece on ten boards. Debug setup. Update clues & dates.
   - 6/15/26 - Starting Lineup. Setup todos. Remove Play button. Selection button management. 1st level move button restraints.
   - 6/16/26 - Add two stack move buttons. Popup help panels. Detect occupied dst tiles. Multi-line help texts. Move pieces around the board.
-  - 6/17/26 - Popup help texts. White/Black move order. Undo moves...
+  - 6/17/26 - Popup help texts. White/Black move order. Indicate player. Plumbing for undo moves.
+
+## Test Move (6/17/26) Success!
+  {"Setup":[
+    {"action":"makeBoard",
+      "prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},
+      "nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},
+      {"action":"startingPos"}],
+  "Moves":[
+    {"action":"move","turn":1,"player":"White","key":"WKRR","prev":"@KR1,1","post":"@KR3,3"},
+    {"action":"move","turn":1,"player":"Black","key":"BKRR","prev":"@KR8,8","post":"@KR6,6"},
+    {"action":"move","turn":2,"player":"White","key":"WKRR","prev":"@KR3,3","post":"@KR4,4"},
+    {"action":"move","turn":2,"player":"Black","key":"BKRR","prev":"@KR6,6","post":"@KR5,5"}],
+  "Gambits":[],
+  "AdvSqs":[]}
+
+
+  {"Setup":[
+    {"action":"makeBoard",
+      "prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},
+      "nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},
+    {"action":"startingPos","data":32}],
+  "Moves":[
+    {"action":"move","turn":1,"player":"White","key":"WKRR","prev":"@KR1,1","post":"@KR3,3"},
+    {"action":"move","turn":1,"player":"Black","key":"BKRR","prev":"@KR8,8","post":"@KR6,6"},
+    {"action":"move","turn":2,"player":"White","key":"WKRR","prev":"@KR3,3","post":"@KR4,4"},
+    {"action":"move","turn":2,"player":"Black","key":"BKRR","prev":"@KR6,6","post":"@KR5,5"}],
+  "Gambits":[],
+  "AdvSqs":[]}
 
 ## Test Move (6/16/26) Success!
   {"Setup":[

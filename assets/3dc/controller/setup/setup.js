@@ -192,12 +192,8 @@ export function buildForward(entry) {     // Redo.
     }
   else if(action === "startingPos") {
     const { action } = entry;
+    initialLineup(entry);
     setButtonState("loaded");
-    vSetup.refreshPanel(currBoard);         
-    }
-  else if(action === "play") {
-    const { action } = entry;
-    setButtonState("play");
     vSetup.refreshPanel(currBoard);         
     }
   else {
@@ -246,12 +242,8 @@ export function buildBackward(entry) {    // Undo.
     }
   else if(action === "startingPos") {
     const { action } = entry;
+    returnAllPiecesToHomeTray();
     setButtonState("pieces");
-    vSetup.refreshPanel(currBoard);         
-    }
-  else if(action === "play") {
-    const { action } = entry;
-    setButtonState("loaded");
     vSetup.refreshPanel(currBoard);         
     }
   else {
@@ -401,36 +393,17 @@ function handleFreeze(payload) {
 function handleStartingPos(payload) {
   console.log("cntrl: setup.js - handleStartingPos(payload):", payload);
 
-  const { action, boardSize, trayType } = payload;  // Informative.
+  const { action, boardSize, trayType } = payload;
 
-  let board = eights;
-  if(currBoard.boardSize === "10x8x8") board = ten;
-  if(currBoard.boardSize === "10x10x10") board = tens;
+  const entry = payload;
 
-  for(const player of ["White", "Black"]) {
-    for(const key in board[player].pieces) {
-      const dstStr = board[player].pieces[key]
-      const { ok, err } = mPieces.movePieceFromTrayToBoard(key, dstStr);
-      if(!ok) {
-        console.log("*** err:", err);
-        return { ok, err };
-      }
-    }
-    for(const key in board[player].pawns) {
-      const dstStr = board[player].pawns[key]
-      const { ok, err } = mPieces.movePieceFromTrayToBoard(key, dstStr);
-      if(!ok) {
-        console.log("*** err:", err);
-        return { ok, err };
-      }
-    }
-  }
+  initialLineup(entry);
 
-  const boardPieces =
+  const boardPieces = // TODO: Not sure how to include in entry.
     Object.values(mPieces.getPieceList())
       .filter(piece => piece.loc === "@")
       .length;  // Count number of pieces on the board.
-  const entry = { action, data: boardPieces };
+  // const entry = { action, data: boardPieces };
 
   recordSetupAction(entry);
   setButtonState("loaded");
@@ -583,6 +556,35 @@ function returnPieceToTray(key, prev, post) {
   cSelections.clearPieceSelections(key);
 
   return { ok, err: null };
+}
+
+function initialLineup(entry) {
+  console.log("cntrl: setup.js - initialLineup(entry):", entry);
+
+  const { action, boardSize, trayType } = entry;
+
+  let board = eights;
+  if(currBoard.boardSize === "10x8x8") board = ten;
+  if(currBoard.boardSize === "10x10x10") board = tens;
+
+  for(const player of ["White", "Black"]) {
+    for(const key in board[player].pieces) {
+      const dstStr = board[player].pieces[key]
+      const { ok, err } = mPieces.movePieceFromTrayToBoard(key, dstStr);
+      if(!ok) {
+        console.log("*** err:", err);
+        return { ok, err };
+      }
+    }
+    for(const key in board[player].pawns) {
+      const dstStr = board[player].pawns[key]
+      const { ok, err } = mPieces.movePieceFromTrayToBoard(key, dstStr);
+      if(!ok) {
+        console.log("*** err:", err);
+        return { ok, err };
+      }
+    }
+  }
 }
 
 function recordSetupAction(entry) {

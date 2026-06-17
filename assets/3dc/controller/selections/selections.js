@@ -192,18 +192,18 @@ function manageMoveButtons() {
   const { player: player1, side: side1, level: level1, type: type1 } = utils.parsePieceKey(key1);
   const { player: player2, side: side2, level: level2, type: type2 } = utils.parsePieceKey(key2);
 
-  const index = state.getIndices()["Moves"] + 1;          // Players take turns.
-  if((index%2 === 1 && player1 === 'B')
-  || (index%2 === 0 && player1 === 'W')){  
-    return;
-  }
-
   const panel = document.getElementById("move-window");   // Update panel fields.
   panel.querySelector('[name="move-selPieces"]').textContent = [...pieceSelections];
   panel.querySelector('[name="move-selTiles"]').textContent  = `${dstStr1} ${dstStr2}`;
 
   if(piece1?.pos === dstStr1)  return;                    // Piece can't be on dst tile.
   const occupied = mBoards.isOccupied(tile1);             // Dst tile might be occupied.
+
+  const index = state.getIndices()["Moves"] + 1;          // Players take turns.
+  if((index%2 === 1 && player1 === 'B')
+  || (index%2 === 0 && player1 === 'W')){  
+    return;
+  }
 
   panels.enableButton("move",         false);             // Reset all the panel buttons.
   panels.enableButton("capture",      false);

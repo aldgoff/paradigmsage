@@ -99,6 +99,166 @@ export function buildPayload(panel, action) {
     opts:     panel.querySelector('[name="move-opts"]')?.value,
   };
 }
+
+export function buildForward(entry) {     // Redo.
+  console.log("cntrl: moves.js - buildForward(entry)", entry);
+
+  const { action, turn, player, key, prev, next } = entry;
+
+  (player === "White")
+    ? document.querySelector('input[name="move-player"][value="Black"]').checked = true
+    : document.querySelector('input[name="move-player"][value="White"]').checked = true;
+
+  if(     action === "move") {
+    // const { action, key, prev, post } = entry;
+    // TODO: ForwardTask()
+    setButtonState("state");
+    vMoves.refreshPanel();   
+    console.log("*** end of forward moves.");      
+    }
+  else if(action === "capture") {
+    const { action, key, prev, post } = entry;
+    // TODO: ForwardTask()
+    setButtonState("state");
+    vMoves.refreshPanel();         
+    }
+  else if(action === "enpassant") {
+    const { action, key, prev, post } = entry;
+    // TODO: ForwardTask()
+    setButtonState("state");
+    vMoves.refreshPanel();         
+    }
+  else if(action === "castle") {
+    const { action, key, prev, post } = entry;
+    // TODO: ForwardTask()
+    setButtonState("state");
+    vMoves.refreshPanel();         
+    }
+  else if(action === "promote") {
+    const { action, key, prev, post } = entry;
+    // TODO: ForwardTask()
+    setButtonState("state");
+    vMoves.refreshPanel();         
+    }
+  else if(action === "duke-decay") {
+    const { action, key, prev, post } = entry;
+    // TODO: ForwardTask()
+    setButtonState("state");
+    vMoves.refreshPanel();         
+    }
+  else if(action === "bishop-decay") {
+    const { action, key, prev, post } = entry;
+    // TODO: ForwardTask()
+    setButtonState("state");
+    vMoves.refreshPanel();         
+    }
+  else if(action === "fission") {
+    const { action, key, prev, post } = entry;
+    // TODO: ForwardTask()
+    setButtonState("state");
+    vMoves.refreshPanel();         
+    }
+  else if(action === "teleportation") {
+    const { action, key, prev, post } = entry;
+    // TODO: ForwardTask()
+    setButtonState("state");
+    vMoves.refreshPanel();         
+    }
+  else if(action === "uplift") {
+    const { action, key, prev, post } = entry;
+    // TODO: ForwardTask()
+    setButtonState("state");
+    vMoves.refreshPanel();         
+    }
+  else {  // Seampoint: more buttons...
+    throw new Error(`Unknown forward action ${action} for moves.`);
+  }
+
+  // diagnostic();
+}
+
+export function buildBackward(entry) {    // Undo.
+  console.log("cntrl: moves.js - buildForward(entry)", entry);
+
+  const { action, turn, player, key, prev, next } = entry;
+
+  (player === "Black")
+    ? document.querySelector('input[name="move-player"][value="Black"]').checked = true
+    : document.querySelector('input[name="move-player"][value="White"]').checked = true;
+
+  if(     action === "move") {
+    // const { action, key, prev, post } = entry;
+    // TODO: BackwardTask()
+    setButtonState("state");
+    vMoves.refreshPanel();         
+    }
+  else if(action === "capture") {
+    const { action, key, prev, post } = entry;
+    // TODO: BackwardTask()
+    setButtonState("state");
+    vMoves.refreshPanel();         
+    }
+  else if(action === "enpassant") {
+    const { action, key, prev, post } = entry;
+    // TODO: BackwardTask()
+    setButtonState("state");
+    vMoves.refreshPanel();         
+    }
+  else if(action === "castle") {
+    const { action, key, prev, post } = entry;
+    // TODO: BackwardTask()
+    setButtonState("state");
+    vMoves.refreshPanel();         
+    }
+  else if(action === "promote") {
+    const { action, key, prev, post } = entry;
+    // TODO: BackwardTask()
+    setButtonState("state");
+    vMoves.refreshPanel();         
+    }
+  else if(action === "duke-decay") {
+    const { action, key, prev, post } = entry;
+    // TODO: BackwardTask()
+    setButtonState("state");
+    vMoves.refreshPanel();         
+    }
+  else if(action === "bishop-decay") {
+    const { action, key, prev, post } = entry;
+    // TODO: BackwardTask()
+    setButtonState("state");
+    vMoves.refreshPanel();         
+    }
+  else if(action === "fission") {
+    const { action, key, prev, post } = entry;
+    // TODO: BackwardTask()
+    setButtonState("state");
+    vMoves.refreshPanel();         
+    }
+  else if(action === "teleportation") {
+    const { action, key, prev, post } = entry;
+    // TODO: BackwardTask()
+    setButtonState("state");
+    vMoves.refreshPanel();         
+    }
+  else if(action === "uplift") {
+    const { action, key, prev, post } = entry;
+    // TODO: BackwardTask()
+    setButtonState("state");
+    vMoves.refreshPanel();         
+    }
+  else {  // Seampoint: more buttons...
+    throw new Error(`Unknown backward action ${action} for moves.`);
+  }
+    vMoves.refreshPanel();         
+
+  // diagnostic();
+}
+
+function setButtonState(state) {
+  console.log("cntrl: moves.js - setButtonState(state)", state);
+
+}
+
 // Seampoint: more global functions...
 
 // --- Handle Functions ---
@@ -196,33 +356,19 @@ function performMove(entry) {
 
   const boardSpec = cSetup.getCurrBoard().boardSize;
 
-  console.log("*** pieceList", mPieces.getPieceList());
-  console.log("*** occupancy", mBoards.getBoardOccupancy());
-
   const [, dstStr] = post.split("@");
   const dstTile = coords.normalizeTileToVts(dstStr, boardSpec);
 
   const { ok, err } = mPieces.movePieceTileToTile(key, dstStr);
   if(!ok) return { ok, err };
 
+  (player === "White")
+    ? document.querySelector('input[name="move-player"][value="Black"]').checked = true
+    : document.querySelector('input[name="move-player"][value="White"]').checked = true;
+
   console.log("*** pieceList", mPieces.getPieceList());
   console.log("*** occupancy", mBoards.getBoardOccupancy());
 }
-
-function performBishopDecay(selections, payload) {
-  console.log("cntrl: moves.js - performBishopDecay(selections, payload)", selections, payload);
-
-  }
-
-function performDukeDecay(selections, payload) {
-  console.log("cntrl: moves.js - performDukeDecay(selections, payload)", selections, payload);
-
-  }
-
-function performPromotion(selections, payload) {
-  console.log("cntrl: moves.js - performPromotion(selections, payload)", selections, payload);
-
-  }
 
 function performCapture(selections, payload) {
   console.log("cntrl: moves.js - performCapture(selections, payload)", selections, payload);
@@ -234,13 +380,28 @@ function performEnPassant(selections, payload) {
 
   }
 
-function performFission(selections, payload) {
-  console.log("cntrl: moves.js - performFission(selections, payload)", selections, payload);
+function performCastle(selections, payload) {
+  console.log("cntrl: moves.js - performCastle(selections, payload)", selections, payload);
 
   }
 
-function performCastle(selections, payload) {
-  console.log("cntrl: moves.js - performCastle(selections, payload)", selections, payload);
+function performPromote(selections, payload) {
+  console.log("cntrl: moves.js - performPromote(selections, payload)", selections, payload);
+
+  }
+
+function performDukeDecay(selections, payload) {
+  console.log("cntrl: moves.js - performDukeDecay(selections, payload)", selections, payload);
+
+  }
+
+function performBishopDecay(selections, payload) {
+  console.log("cntrl: moves.js - performBishopDecay(selections, payload)", selections, payload);
+
+  }
+
+function performFission(selections, payload) {
+  console.log("cntrl: moves.js - performFission(selections, payload)", selections, payload);
 
   }
 
@@ -279,5 +440,7 @@ function applyEntry(entry) {
     1. Write handle routines.
     2. Branch.
     3. Remove all downstream buffers.
+    4. Write the forward functions.
+    5. Write the backward functions.
 */
 

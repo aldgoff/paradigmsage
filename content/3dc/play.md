@@ -172,8 +172,8 @@ layout: "play"
     <button data-action="enpassant" disabled>En Passant</button>
     <button data-action="castle"    disabled>Castle</button>
     <button data-action="promote"   disabled>Promote</button>
-    <label> <input type="radio" name="move-player" value="White" checked> W </label>
-    <label> <input type="radio" name="move-player" value="Black"> B </label>
+    <label> <input type="radio" name="move-player" value="White" disabled checked> W </label>
+    <label> <input type="radio" name="move-player" value="Black" disabled> B </label>
   </div>
   <div class="section">
     <button data-action="duke-decay"    disabled>Duke Decay</button>

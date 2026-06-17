@@ -51,8 +51,7 @@ function addSelectionEventListener() {
     }
   };
 
-  view.getContext().renderer.domElement
-    .addEventListener("click", clickHandler);
+  view.getContext().renderer.domElement.addEventListener("click", clickHandler);
 }
 
 function getTileFromClick(event, camera, scene, renderer) {

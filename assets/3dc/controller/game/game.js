@@ -14,6 +14,7 @@
 
 // --- Dependencies ---
   import * as cSetup   from "../../controller/setup/setup.js";
+  import * as cMoves   from "../../controller/moves/moves.js";
   import * as cGambits from "../../controller/gambits/gambits.js";
 
   import * as state    from "../../model/state/state.js";
@@ -419,13 +420,29 @@ function processUndoBuffer(key, idx, N=1) {
     const gambit = state.fetchCurrentState("Gambits");
     if (gambit != null) {
       // vGambits.undo(gambit);
-      state.setBufferIndex("Gambits", idx - 1); // Update from state.
+      state.setBufferIndex("Gambits", idx-1); // Update from state.
       cGambits.rerunGambits();                  // Rebuild from state.
       vGambits.refreshPanel(gambit);
       return true;
     }
     }
   else if(key === "Moves") {
+    const entry = state.fetchCurrentState("Moves");
+
+    if(!entry) {
+      console.log("*** No prev move.");
+      return false;
+    }
+    state.setBufferIndex("Moves", idx-1);
+    cMoves.buildBackward(entry);
+    vMoves.refreshPanel(entry);
+
+    cSetup.clearAllTileSelections();
+    cSetup.clearAllPieceSelections();
+    
+    return true;
+    }
+  else if(key === "Moves1") {
     const move = state.fetchCurrentState("Moves");
     if(move != null) {
       vMoves.undo(move);
@@ -488,6 +505,22 @@ function processRedoBuffer(key, idx, N=1) {
     }
     }
   else if(key === "Moves") {
+    state.setBufferIndex("Moves", idx + 1);
+
+    const entry = state.fetchCurrentState("Moves");
+    if(!entry) {
+      console.log("*** No next move.");
+      return false;
+    }
+    state.setBufferIndex("Moves", idx + 1);
+    cMoves.buildForward(entry);
+
+    cSetup.clearAllTileSelections();
+    cSetup.clearAllPieceSelections();
+    
+    return true;
+    }
+  else if(key === "Moves1") {
     const move = state.fetchNextState("Moves");
     if(move != null) {
       state.setBufferIndex("Moves", idx + 1);

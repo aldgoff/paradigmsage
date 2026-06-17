@@ -148,8 +148,9 @@ function assembleLine(entry) {
       return line; }
     case "freezePuzzle": 
     case "startingPos": {
-      const { data } = entry;
-      const line = `${action} ${data} pieces`;
+      const line = `${action}`;
+      // const { data } = entry;
+      // const line = `${action} ${data} pieces`;
       return line; }
     default:
       throw new Error(`Unknown setup action: ${action}.`);
