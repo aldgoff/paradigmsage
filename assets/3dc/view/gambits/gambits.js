@@ -31,13 +31,26 @@
 
 // --- Globals ---
   let activeAnimation = null;
+  const gambitGroups = [];
 // Seampoint: more globals...
 
+export function getGambitGroups() { return gambitGroups; }
 // --- UI ---
-export function clearGambits() {  // Still in use.
+export function clearGambits() {  // TODO: clearGambits broken.
   console.log("view : gambits.js - clearGambits()");
 
+  return;
+
+  let top = state.getBufferLength("Gambits");
+  state.truncateState("Gambits", 0);
+  while(top > 0) {
+    popPanelLine();
+    top--;
+  }
+
   const scene = view.getContext().scene;
+  // return;
+
 
   // --- 1. Remove ALL groups (offboard + containers) ---
   scene.children
@@ -45,6 +58,7 @@ export function clearGambits() {  // Still in use.
     .forEach(group => {
       derenderGambit(group);
     });
+    return;
 
   // --- 2. Remove ANY stray overlays still attached to tiles ---
   const tileMap = view.getContext().tileMap;
@@ -60,6 +74,54 @@ export function clearGambits() {  // Still in use.
       });
   }
   }
+
+export function pushPanelLine(line) {
+  console.log("view : gambits.js - pushPanelLine(line)", line);
+
+  const { symbol, value, piece, src, dst, feedback } = line;
+
+  const scroll = document.getElementById("gambit-list");
+  if(!scroll) return;
+
+  const row = assembleLine(line);
+
+  const div = document.createElement("div");
+  div.textContent = row;
+
+  // Write to the scroll box.
+  scroll.appendChild(div);
+  scroll.scrollTop = scroll.scrollHeight;
+  }
+
+export function popPanelLine() {
+  console.log("view : gambits.js - popPanelLine()");
+
+  const scroll = document.getElementById("gambit-list");
+  if(!scroll) return;
+
+  const last = scroll.lastElementChild;
+  if(!last) return;
+
+  scroll.removeChild(last);
+  }
+
+export function refreshPanel(gambit) {
+  console.log("view : gambits.js - refreshPanel(gambit)", gambit);
+
+  // const { Q, src, dst, area, advsqs } = gambit;  // undefined.
+
+  const scroll = document.getElementById("gambit-list");  // Scroll list.
+  if (!scroll) return;
+
+  const count = state.getIndices().Gambits;               // Scroll text box.
+  const children = scroll.children;
+  for(let i = 0; i < children.length; i++) {
+    const opacity = (i < count)
+      ? "1.0"     // active
+      : "0.5";    // future
+    children[i].style.opacity = opacity;
+  }
+}
 
 export function makeQuadGroup(entry) {
   console.log("view : gambits.js - makeQuadGroup(entry).", entry);
@@ -201,51 +263,6 @@ export function redo(gambit) {
 
   render(group);
 }
-
-export function pushPanelLine(line) {
-  console.log("view : gambits.js - pushPanelLine(line)", line);
-
-  const scroll = document.getElementById("gambit-list");
-  if(!scroll) return;
-
-  const row = assembleLine(line);
-
-  const div = document.createElement("div");
-  div.textContent = row;
-
-  // Write to the scroll box.
-  scroll.appendChild(div);
-  scroll.scrollTop = scroll.scrollHeight;
-  }
-
-export function popPanelLine() {
-  console.log("view : gambits.js - popPanelLine()");
-
-  const scroll = document.getElementById("gambit-list");
-  if(!scroll) return;
-
-  const last = scroll.lastElementChild;
-  if(!last) return;
-
-  scroll.removeChild(last);
-  }
-
-export function refreshPanel(gambit) {
-  console.log("view : gambits.js - refreshPanel(gambit)", gambit);
-
-  const scroll = document.getElementById("gambit-list");  // Scroll list.
-  if (!scroll) return;
-
-  const count = state.getIndices().Gambits;                // Scroll text box.
-  const children = scroll.children;
-  for (let i = 0; i < children.length; i++) {
-    if (i < count) {
-      children[i].style.opacity = "1.0";   // active
-    } else {
-      children[i].style.opacity = "0.3";   // future
-    }
-  }
-  }
 
 export function render(group, { animate = false } = {}) {
   console.log("view : gambits.js - render( not shown)");

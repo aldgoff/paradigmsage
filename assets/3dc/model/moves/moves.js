@@ -41,19 +41,6 @@ export function reset() {
   vMoves.clearMoves();
   }
 
-export function makeEntry(payload) {  // Deprecate.
-  console.log(`model: moves.js - makeEntry(payload):`, payload);
-
-  let { action, player, piece, src, dst, sec, capture, opts } = payload;
-
-  const index = state.getIndices()["Moves"] + 1;
-  let turn = Math.floor((index + 1) / 2);
-
-  let entry = { turn, player, piece, src, dst, action, sec };
-
-  return entry;
-}
-
 export function makeMoveEntry(selections, payload) {
   console.log(`model: moves.js - makeMoveEntry(selections, payload):`, selections, payload);
   const { action, player } = payload;

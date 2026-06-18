@@ -19,6 +19,9 @@
 // --- Dependencies ---
 // Seampoint: more imports...
 
+// --- Globals ---
+// Seampoint: more globals...
+
 // --- UI ---
 // -- Public API (both notations) --
 export function getBoardSpec(specName) {

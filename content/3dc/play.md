@@ -40,20 +40,6 @@ layout: "play"
     background: rgba(236,232,222,0.95);
   }
 
-  #setup-window {
-    width: 163px;
-    }
-  #compass-window {
-    width: 160px;
-    height: 220px;
-    }
-  #gambit-window {
-    width: 280px;
-    }
-  #move-window {
-    font-family: monospace;
-    width: 420px;
-  }
   #setup-list {
     font-family: monospace;
     white-space: pre;
@@ -88,12 +74,12 @@ layout: "play"
     border: 1px solid #888;
   }
   
-  #setup-window       { top:  160px; left:   20px; }  /* DOM Control Panels */
-  #move-window        { top: 1000px; left:   20px; }
-  #gambit-window      { top:  745px; left:   20px; }
-  #advsq-window       { top:  160px; left:  210px; }
-  #compass-window     { top:  160px; left:  560px; }
-  #diagnostics-window { top:  160px; left:  960px; }
+  #setup-window       { top:  160px; left:   20px; width: 163px }  /* DOM Control Panels */
+  #move-window        { top: 1000px; left:   20px; width: 400px }
+  #gambit-window      { top:  745px; left:   20px; width: 280px }
+  #advsq-window       { top:  160px; left:  210px; width: 155px }
+  #compass-window     { top:  160px; left:  560px; width: 160px; height: 220px }
+  #diagnostics-window { top:  160px; left:  960px; width: 145px }
 
   #game-window   { top:  160px; left:  390px; }
 
@@ -186,8 +172,8 @@ layout: "play"
     <button data-action="enpassant" disabled>En Passant</button>
     <button data-action="castle"    disabled>Castle</button>
     <button data-action="promote"   disabled>Promote</button>
-    <label> <input type="radio" name="move-player" value="White" checked> W </label>
-    <label> <input type="radio" name="move-player" value="Black"> B </label>
+    <label> <input type="radio" name="move-player" value="White" disabled checked> W </label>
+    <label> <input type="radio" name="move-player" value="Black" disabled> B </label>
   </div>
   <div class="section">
     <button data-action="duke-decay"    disabled>Duke Decay</button>
@@ -195,16 +181,6 @@ layout: "play"
     <button data-action="fission"       disabled>Fission</button>
     <button data-action="teleportation" disabled>Teleportation</button>
     <button data-action="uplift"        disabled>Uplift</button>
-  </div>
-  <div class="section">
-    <label> SrcTile <input name="move-src" type="text" value="K2,2" maxlength="7" style="width: 44px;"> </label>
-    <label> DstTile <input name="move-dst" type="text" value="K4,4" maxlength="7" style="width: 44px;"> </label>
-    <label> 2ndTile <input name="move-2nd" type="text" value="" maxlength="7" style="width: 44px;"> </label>
-  </div>
-  <div class="section">
-    <label> Piece    <input name="move-piece"   type="text" value="P" maxlength="3" style="width: 24px;"> </label>
-    <label> Captured <input name="move-capture" type="text" value="Q" maxlength="3" style="width: 24px;"> </label>
-    <label> Opts:    <output name="move-opts" style="opacity:0.7; font-style:italic;"> R|B|D|Q|N|S|P|K</output> </label>
   </div>
   <div class="section scroll-box" id="move-list"></div>
   </div>
@@ -286,7 +262,7 @@ layout: "play"
   <div class="section"> <label> Stride Type: <output name="advsq-strideType"style="opacity:0.7; font-style:italic;"></output> </label> </div>
   <div class="section"> <label> Move Type:   <output name="advsq-moveType"  style="opacity:0.7; font-style:italic;"> Q|L|D|O </output> </label> </div>
   <div class="section"> <label> Overlap:     <output name="advsq-overlap"   style="opacity:0.7; font-style:italic;"> B|Q|H|F </output> </label> </div>
-  <div class="section"> <label> Pieces:      <output name="advsq-piece"     style="opacity:0.7; font-style:italic;"> R|B|D|Q|N|S|P|K </output> </label> </div>
+  <div class="section"> <label> Pieces:      <output name="advsq-piece"     style="opacity:0.7; font-style:italic;"> R|B|D|Q|N|S|P|U|K </output> </label> </div>
   <!-- Key hints (visual only) -->
   <div class="section" style="font-size: 13px; font-weight: bold; color: #666;">
     Slip&Slide +: kij -: KIJ

@@ -7,42 +7,8 @@
   UI: the export functions.
 */
 
-/** Roles:
- * Layer: Controller (State Transition Orchestration)
- *
- * Purpose:
- * - Coordinates interaction between model and engine.
- * - Selects and applies legal transitions.
- *
- * Ontology:
- * - Does not "execute moves" in a procedural sense
- * - Resolves valid state transitions
- *
- * Responsibilities:
- * - Request manifold generation from engine
- * - Filter/select valid transitions
- * - Apply atomic state updates
- * - Manage turn sequence
- *
- * Does NOT:
- * - Define rules
- * - Compute manifolds
- * - Render UI
- *
- * Inputs:
- * - Current game state
- * - Player input
- *
- * Outputs:
- * - New canonical state
- * - Transition descriptors
- *
- * Notes:
- * - The controller must not infer legality—it must defer to the engine.
-*/
-
 // --- Load JSON ---
-import controllerData from "./controller.json" assert { type: "json" };
+  import controllerData from "./controller.json" assert { type: "json" };
   const controllerModule = controllerData.controller_module;
 // Seampoint: more objects...
 
@@ -51,6 +17,9 @@ import controllerData from "./controller.json" assert { type: "json" };
   import * as model    from "../model/model.js";
   import * as view     from "../view/view.js";
 // Seampoint: more imports...
+
+// --- Globals ---
+// Seampoint: more globals...
 
 // --- UI ---
 export function init(playBoard) {

@@ -95,9 +95,15 @@
   git tag
   git tag -a v0.1-<desc> -m "Tag label."
   git tag -a v1.0.1 -m "Tag label."
-  git show v0.1-<desc>  (Better)
-  git push --tags
-  git push origin <tag>  (Better)
+  git show v0.5-<desc>  (Better)
+  git show v0.5-3dc3-<desc>  (Best)
+
+  git tag
+  git tag -a 3dc-v0.5-<desc> -m "yada yada"
+  git push origin <tag>  (Preferred)
+  gti show tag
+
+  git push --tags  (Just as good on a solo project.)
   ```
   History (a little muddled - all associated with qt3).
   ```

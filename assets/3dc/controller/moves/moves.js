@@ -20,6 +20,7 @@
 // Seampoint: more objects...
 
 // --- Dependencies ---
+  import * as panels      from "../../panels/panels.js";
   import * as game        from "../../controller/game/game.js";
   import * as cSetup      from "../../controller/setup/setup.js";
   import * as cSelections from "../../controller/selections/selections.js";
@@ -33,6 +34,7 @@
 
   import * as vMoves   from "../../view/moves/moves.js";
   import * as vGambits from "../../view/gambits/gambits.js";
+  import * as vAdvsqs  from "../../view/advsqs/advsqs.js";
 // Seampoint: more imports...
 
 // --- Globals ---
@@ -46,12 +48,6 @@ export function panelDispatch(payload) {
 
   const { action, 
     player,   // White|Black
-    piece,    // R|B|D|Q|N|S|P|K
-    src,      // K2,2
-    dst,      // K4,4
-    sec,      // QB5,6
-    captured, // R|B|D|Q|N|S|P|K
-    opts      // TBD?
   } = payload;
 
   switch (action) {
@@ -69,6 +65,10 @@ export function panelDispatch(payload) {
 
     default: throw new Error(`Unknown moves action ${action}.`);  break;
   }
+
+  (player === "White")
+    ? document.querySelector('input[name="move-player"][value="Black"]').checked = true
+    : document.querySelector('input[name="move-player"][value="White"]').checked = true;
 
   game.showUndoStatus();                          // Update game panel (undo).
   }
@@ -91,13 +91,101 @@ export function buildPayload(panel, action) {
   return {
     action,
     player:   panel.querySelector('input[name="move-player"]:checked')?.value,
-    piece:    panel.querySelector('[name="move-piece"]')?.value,
-    src:      panel.querySelector('[name="move-src"]')?.value,
-    dst:      panel.querySelector('[name="move-dst"]')?.value,
-    sec:      panel.querySelector('[name="move-2nd"]')?.value,
-    captured: panel.querySelector('[name="move-capture"]')?.value,
-    opts:     panel.querySelector('[name="move-opts"]')?.value,
   };
+}
+
+export function buildForward(entry) {     // Redo.
+  console.log("cntrl: moves.js - buildForward(entry)", entry);
+
+  const { action, turn, player, key, prev, next } = entry;
+
+  if(     action === "move") {
+    forewardMove(entry);
+    }
+  else if(action === "capture") {
+    // TODO: ForwardTask()
+    }
+  else if(action === "enpassant") {
+    // TODO: ForwardTask()
+    }
+  else if(action === "castle") {
+    // TODO: ForwardTask()
+    }
+  else if(action === "promote") {
+    // TODO: ForwardTask()
+    }
+  else if(action === "duke-decay") {
+    // TODO: ForwardTask()
+    }
+  else if(action === "bishop-decay") {
+    // TODO: ForwardTask()
+    }
+  else if(action === "fission") {
+    // TODO: ForwardTask()
+    }
+  else if(action === "teleportation") {
+    // TODO: ForwardTask()
+    }
+  else if(action === "uplift") {
+    // TODO: ForwardTask()
+    }
+  else {  // Seampoint: more buttons...
+    throw new Error(`Unknown forward action ${action} for moves.`);
+  }
+
+  vMoves.refreshPanel();         
+
+  console.log("*** pieceList", mPieces.getPieceList());
+  console.log("*** occupancy", mBoards.getBoardOccupancy());
+
+  panels.diagnostics();
+  }
+
+export function buildBackward(entry) {    // Undo.
+  console.log("cntrl: moves.js - buildForward(entry)", entry);
+
+  const { action, turn, player, key, prev, next } = entry;
+
+  if(     action === "move") {
+    backwardMove(entry);
+    }
+  else if(action === "capture") {
+    // TODO: BackwardTask()
+    }
+  else if(action === "enpassant") {
+    // TODO: BackwardTask()
+    }
+  else if(action === "castle") {
+    // TODO: BackwardTask()
+    }
+  else if(action === "promote") {
+    // TODO: BackwardTask()
+    }
+  else if(action === "duke-decay") {
+    // TODO: BackwardTask()
+    }
+  else if(action === "bishop-decay") {
+    // TODO: BackwardTask()
+    }
+  else if(action === "fission") {
+    // TODO: BackwardTask()
+    }
+  else if(action === "teleportation") {
+    // TODO: BackwardTask()
+    }
+  else if(action === "uplift") {
+    // TODO: BackwardTask()
+    }
+  else {  // Seampoint: more buttons...
+    throw new Error(`Unknown backward action ${action} for moves.`);
+  }
+
+  vMoves.refreshPanel();         
+
+  console.log("*** pieceList", mPieces.getPieceList());
+  console.log("*** occupancy", mBoards.getBoardOccupancy());
+
+  panels.diagnostics();
 }
 // Seampoint: more global functions...
 
@@ -105,12 +193,12 @@ export function buildPayload(panel, action) {
 function handleMove(payload) {
   console.log("cntrl: moves.js - handleMove(payload)", payload);
 
-  const { action, player, piece, src, dst, sec, captured, opts } = payload;  // Informative.
+  const { action, player, piece, src, dst, sec, captured, opts } = payload;
   const selections = cSelections.getSelections();
 
   const entry = mMoves.makeMoveEntry(selections, payload);
 
-  performMove(entry);
+  forewardMove(entry);
 
   applyEntry(entry);
   }
@@ -189,83 +277,55 @@ function handleUplift(payload) {
 // Seampoint: more handle functions...
 
 // --- Helpers...
-function performMove(entry) {
-  console.log("cntrl: moves.js - performMove(entry)", entry);
+function forewardMove(entry) {
+  console.log("cntrl: moves.js - forewardMove(entry)", entry);
 
   let { action, turn, player, key, prev, post } = entry;
 
   const boardSpec = cSetup.getCurrBoard().boardSize;
-
-  console.log("*** pieceList", mPieces.getPieceList());
-  console.log("*** occupancy", mBoards.getBoardOccupancy());
 
   const [, dstStr] = post.split("@");
   const dstTile = coords.normalizeTileToVts(dstStr, boardSpec);
 
   const { ok, err } = mPieces.movePieceTileToTile(key, dstStr);
   if(!ok) return { ok, err };
-
-  console.log("*** pieceList", mPieces.getPieceList());
-  console.log("*** occupancy", mBoards.getBoardOccupancy());
-}
-
-function performBishopDecay(selections, payload) {
-  console.log("cntrl: moves.js - performBishopDecay(selections, payload)", selections, payload);
-
   }
 
-function performDukeDecay(selections, payload) {
-  console.log("cntrl: moves.js - performDukeDecay(selections, payload)", selections, payload);
+function backwardMove(entry) {
+  console.log("cntrl: moves.js - backwardMove(entry)", entry);
 
-  }
+  let { action, turn, player, key, prev, post } = entry;
 
-function performPromotion(selections, payload) {
-  console.log("cntrl: moves.js - performPromotion(selections, payload)", selections, payload);
+  const boardSpec = cSetup.getCurrBoard().boardSize;
 
-  }
+  const [, dstStr] = prev.split("@");
+  const dstTile = coords.normalizeTileToVts(dstStr, boardSpec);
 
-function performCapture(selections, payload) {
-  console.log("cntrl: moves.js - performCapture(selections, payload)", selections, payload);
-
-  }
-
-function performEnPassant(selections, payload) {
-  console.log("cntrl: moves.js - performEnPassant(selections, payload)", selections, payload);
-
-  }
-
-function performFission(selections, payload) {
-  console.log("cntrl: moves.js - performFission(selections, payload)", selections, payload);
-
-  }
-
-function performCastle(selections, payload) {
-  console.log("cntrl: moves.js - performCastle(selections, payload)", selections, payload);
-
-  }
-
-function performTeleportation(selections, payload) {
-  console.log("cntrl: moves.js - performTeleportation(selections, payload)", selections, payload);
-
-  }
-
-function performUplift(selections, payload) {
-  console.log("cntrl: moves.js - performUplift(selections, payload)", selections, payload);
-
+  const { ok, err } = mPieces.movePieceTileToTile(key, dstStr);
+  if(!ok) return { ok, err };
 }
 
 function applyEntry(entry) {
   console.log("cntrl: moves.js - applyEntry(entry)", entry);
 
-  const currEntry = state.fetchCurrentState("Moves"); // Clear previous move.
-  if(currEntry != null) {
-    // vMoves.clear(currEntry);
-    if(!state.isAtEnd("Moves")) {     // Branches the undo history, discards original branch.
-      // TODO: clear all later move entries.
-      // const idx = state.getCurrentIndex("Moves"); // Not quite working...
-      // state.truncateState("Moves", idx);
+  if(!state.isAtEnd("Moves")) {               // Undo branch.
+    let top = state.getBufferLength("Moves");
+    const idx = state.getCurrentIndex("Moves");
+    state.truncateState("Moves", idx);
+    while(top > idx) {
+      vMoves.popPanelLine();
+      top--;
     }
+    vMoves.refreshPanel(entry);
   }
+
+  // vGambits.clearGambits();  // Remove all entries in downstream buffers.
+  // state.clearBuffer("Gambits");
+
+  vAdvsqs.clearAdvsqs();  // Remove all entries in downstream buffers.
+  state.clearBuffer("AdvSqs");
+
+  game.showUndoStatus();
 
   state.pushNewMove(entry);           // Change state.
   vMoves.pushPanelLine(entry);        // Add line to panel.
@@ -279,5 +339,7 @@ function applyEntry(entry) {
     1. Write handle routines.
     2. Branch.
     3. Remove all downstream buffers.
+    4. Write the forward functions.
+    5. Write the backward functions.
 */
 

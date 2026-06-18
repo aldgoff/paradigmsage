@@ -66,7 +66,7 @@ export function panelDispatch(payload) {    // Dispatch payload from panel to ha
     default: throw new Error(`Unknown setup action ${action}.`);
   }
 
-  diagnostic();
+  panels.diagnostics();
   game.showUndoStatus();                          // Update game panel (undo).
   }
 
@@ -192,17 +192,13 @@ export function buildForward(entry) {     // Redo.
     }
   else if(action === "startingPos") {
     const { action } = entry;
+    initialLineup(entry);
     setButtonState("loaded");
-    vSetup.refreshPanel(currBoard);         
-    }
-  else if(action === "play") {
-    const { action } = entry;
-    setButtonState("play");
     vSetup.refreshPanel(currBoard);         
     }
   else {
   }
-  diagnostic();
+  panels.diagnostics();
   }
 
 export function buildBackward(entry) {    // Undo.
@@ -246,17 +242,13 @@ export function buildBackward(entry) {    // Undo.
     }
   else if(action === "startingPos") {
     const { action } = entry;
+    returnAllPiecesToHomeTray();
     setButtonState("pieces");
-    vSetup.refreshPanel(currBoard);         
-    }
-  else if(action === "play") {
-    const { action } = entry;
-    setButtonState("loaded");
     vSetup.refreshPanel(currBoard);         
     }
   else {
   }
-  diagnostic();
+  panels.diagnostics();
 }
 
 export function returnAllPiecesToHomeTray() {
@@ -401,36 +393,17 @@ function handleFreeze(payload) {
 function handleStartingPos(payload) {
   console.log("cntrl: setup.js - handleStartingPos(payload):", payload);
 
-  const { action, boardSize, trayType } = payload;  // Informative.
+  const { action, boardSize, trayType } = payload;
 
-  let board = eights;
-  if(currBoard.boardSize === "10x8x8") board = ten;
-  if(currBoard.boardSize === "10x10x10") board = tens;
+  const entry = payload;
 
-  for(const player of ["White", "Black"]) {
-    for(const key in board[player].pieces) {
-      const dstStr = board[player].pieces[key]
-      const { ok, err } = mPieces.movePieceFromTrayToBoard(key, dstStr);
-      if(!ok) {
-        console.log("*** err:", err);
-        return { ok, err };
-      }
-    }
-    for(const key in board[player].pawns) {
-      const dstStr = board[player].pawns[key]
-      const { ok, err } = mPieces.movePieceFromTrayToBoard(key, dstStr);
-      if(!ok) {
-        console.log("*** err:", err);
-        return { ok, err };
-      }
-    }
-  }
+  initialLineup(entry);
 
-  const boardPieces =
+  const boardPieces = // TODO: Not sure how to include in entry.
     Object.values(mPieces.getPieceList())
       .filter(piece => piece.loc === "@")
       .length;  // Count number of pieces on the board.
-  const entry = { action, data: boardPieces };
+  // const entry = { action, data: boardPieces };
 
   recordSetupAction(entry);
   setButtonState("loaded");
@@ -472,23 +445,19 @@ function setButtonState(command) {
   switch (command) {
     case "makeBoard":
       panels.enableButton("makeBoard",   true);
-
       panels.enableButton("placePiece",  false);
       panels.enableButton("shiftPiece",  false);
       panels.enableButton("returnPiece", false);
       panels.enableButton("freezePuzzle",false);
       panels.enableButton("startingPos", false);
-
       break;
     case "boardDone":
       panels.enableButton("makeBoard",   true);
-
       panels.enableButton("placePiece",  true);
       panels.enableButton("shiftPiece",  false);
       panels.enableButton("returnPiece", false);
       panels.enableButton("freezePuzzle",false);
       panels.enableButton("startingPos", true);
-
       break;
     case "pieces":
       panels.enableButton("placePiece",   true);
@@ -496,7 +465,6 @@ function setButtonState(command) {
       panels.enableButton("returnPiece",  true);
       panels.enableButton("freezePuzzle", true);
       panels.enableButton("startingPos",  false);
-
       break;
     case "emptyTrays":
       panels.enableButton("placePiece",   false);
@@ -504,7 +472,6 @@ function setButtonState(command) {
       panels.enableButton("shiftPiece",   true);
       panels.enableButton("freezePuzzle", true);
       panels.enableButton("startingPos",  false);
-
       break;
     case "loaded":
       panels.enableButton("placePiece",   false);
@@ -512,15 +479,6 @@ function setButtonState(command) {
       panels.enableButton("shiftPiece",   false);
       panels.enableButton("freezePuzzle", false);
       panels.enableButton("startingPos",  false);
-
-      break;
-    case "play":
-      panels.enableButton("placePiece",   false);
-      panels.enableButton("returnPiece",  false);
-      panels.enableButton("shiftPiece",   false);
-      panels.enableButton("freezePuzzle", false);
-      panels.enableButton("startingPos",  false);
-
       break;
     default:
       throw new Error(`Unknown button state command ${command}.`);
@@ -585,60 +543,41 @@ function returnPieceToTray(key, prev, post) {
   return { ok, err: null };
 }
 
+function initialLineup(entry) {
+  console.log("cntrl: setup.js - initialLineup(entry):", entry);
+
+  const { action, boardSize, trayType } = entry;
+
+  let board = eights;
+  if(currBoard.boardSize === "10x8x8") board = ten;
+  if(currBoard.boardSize === "10x10x10") board = tens;
+
+  for(const player of ["White", "Black"]) {
+    for(const key in board[player].pieces) {
+      const dstStr = board[player].pieces[key]
+      const { ok, err } = mPieces.movePieceFromTrayToBoard(key, dstStr);
+      if(!ok) {
+        console.log("*** err:", err);
+        return { ok, err };
+      }
+    }
+    for(const key in board[player].pawns) {
+      const dstStr = board[player].pawns[key]
+      const { ok, err } = mPieces.movePieceFromTrayToBoard(key, dstStr);
+      if(!ok) {
+        console.log("*** err:", err);
+        return { ok, err };
+      }
+    }
+  }
+}
+
 function recordSetupAction(entry) {
   console.log("cntrl: setup.js - recordSetupAction(entry):", entry);
 
   state.pushNewSetup(entry);          // Log state change in undo buffer.
   vSetup.pushPanelLine(entry);        // Add line to panel.
   vSetup.refreshPanel(entry);         // Only needed by panels with derived fields.
-  }
-
-function diagnostic() {
-  console.log("cntrl : setup.js - diagnostic()");
-
-  const pieceCount = Object.keys(mPieces.getPieceList()).length;
-
-  const trayCount  = Object.values(mPieces.getPieceList()).filter(piece => piece.loc === "~").length;
-  const boardCount = Object.values(mPieces.getPieceList()).filter(piece => piece.loc === "@").length;
-
-  const whiteCount = mTrays.getWhiteTray().flat(2).filter(cell => cell !== null).length;
-  const blackCount = mTrays.getBlackTray().flat(2).filter(cell => cell !== null).length;
-
-  const boardOcc = mBoards.getBoardOccupancy().flat(2).filter(cell => cell !== null).length;
-
-  const { pieceSelections, tileSelections } = cSelections.getSelections();
-
-  const whiteGroupCount = vTrays.getWhiteTrayGroup()
-    ? vTrays.getWhiteTrayGroup().children.length
-    : "null";
-
-  const blackGroupCount = vTrays.getBlackTrayGroup()
-    ? vTrays.getBlackTrayGroup().children.length
-    : "null";
-
-  const panel = document.getElementById("diagnostics-window");
-
-  panel.querySelector('[name="diags-pieceCount"]').textContent = pieceCount;
-  panel.querySelector('[name="diags-trayCount"]').textContent  = trayCount;
-
-  panel.querySelector('[name="diags-whiteTray"]').textContent  = whiteCount;
-  panel.querySelector('[name="diags-blackTray"]').textContent  = blackCount;
-
-  panel.querySelector('[name="diags-boardCount"]').textContent = boardCount;
-  panel.querySelector('[name="diags-boardOcc"]').textContent   = boardOcc;
-
-  panel.querySelector('[name="diags-pieceSels"]').textContent  = tileSelections.size;
-  panel.querySelector('[name="diags-tileSels"]').textContent   = pieceSelections.size;
-
-  panel.querySelector('[name="diags-tileMap"]').textContent = view.getContext().tileMap?.size ?? 0;
-
-  panel.querySelector('[name="diags-currPiecesGroup"]').textContent = vPieces.getCurrPiecesGroup()?.children.length ?? 0;
-  panel.querySelector('[name="diags-pieceGroups"]').textContent     = Object.keys(vPieces.getPieceGroups()).length;
-
-  panel.querySelector('[name="diags-whiteTrayGroup"]').textContent  = whiteGroupCount;
-  panel.querySelector('[name="diags-blackTrayGroup"]').textContent  = blackGroupCount;
-
-  panel.querySelector('[name="diags-sceneChildren"]').textContent = view.getContext().scene.children.length;
 }
 // Seampoint: more local functions...
 

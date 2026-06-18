@@ -18,6 +18,7 @@
 
   import * as cSetup  from "../../controller/setup/setup.js";
 
+  import * as state   from "../../model/state/state.js";
   import * as mPieces from "../../model/pieces/pieces.js";
   import * as mBoards from "../../model/boards/boards.js";
   import * as coords  from "../../foundation/coords/coords.js";
@@ -197,6 +198,12 @@ function manageMoveButtons() {
 
   if(piece1?.pos === dstStr1)  return;                    // Piece can't be on dst tile.
   const occupied = mBoards.isOccupied(tile1);             // Dst tile might be occupied.
+
+  const index = state.getIndices()["Moves"] + 1;          // Players take turns.
+  if((index%2 === 1 && player1 === 'B')
+  || (index%2 === 0 && player1 === 'W')){  
+    return;
+  }
 
   panels.enableButton("move",         false);             // Reset all the panel buttons.
   panels.enableButton("capture",      false);
