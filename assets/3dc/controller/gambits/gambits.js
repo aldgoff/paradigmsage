@@ -107,11 +107,51 @@ function handleFreezeQuadrant(currAdvsq) {      // N Q1  R KB4,4 → KB7,7    :1
   if(!currAdvsq) return;
 
   const { src, srcTile, quad, perimeter, stride, opacity } = currAdvsq;
-  
-  const entry = mGambits.makeEntry(currAdvsq);
 
-  applyEntry(entry);
+  state.clearBuffer("AdvSqs");                        // Advsq: change state.
+  vAdvsqs.removeFromScene();                          // De-render. // TODO: move to view layer.
+  vAdvsqs.clearAdvsqPanelParams("Q4,4");              // Update panel.
+
+  const gambitId = state.getBufferLength("Gambits");
+  const entry = { gambitId, action: "quad", ...currAdvsq };
+  // vGambits.renderGambit(entry); 
+  state.pushNewGambit(entry);
+
+  // const group = vGambits.makeQuadGroup(entry);    // Recreate from entry.
+  const group = view.buildAdvSqGroup(entry); // {srcTile: Array(3), quad: 1, perimeter: 0, stride: 0, opacity: 0.5}
+  vGambits.getGambitGroups()[gambitId] = group;
+  group.userData.entry = entry;
+  vGambits.render(group, { animate: true });      // Render.
+
+  const scene = view.getContext().scene;
+  const foundGroup = scene.children.find(
+    g => g.userData?.entry?.gambitId === entry.gambitId
+  );
+  if(foundGroup) {
+    console.log("*** group entry in userData.");
   }
+
+
+  const line = convertEntryToLine(entry)
+  vGambits.pushPanelLine(line);
+  }
+export function convertEntryToLine(entry) {
+  console.log(`cntrl: gambits.js - convertEntryToLine(entry):`, entry);
+
+  const { src, srcTile, quad, perimeter, stride, opacity } = entry; // Advsq.
+
+  const dst = planes.resolveDstTile(srcTile, quad, perimeter, stride);
+  const area = (perimeter+1)*(perimeter+1);
+  
+  let piece = "D";                                                  // Symbol.
+  if( 1<= quad && quad <= 12)  piece = "R";
+  if(13<= quad && quad <= 36)  piece = "B";
+  const symbol = `Q`;
+
+  const line = { symbol, value: quad, piece, src, dst, feedback: area };
+
+  return line;
+}
 
 function handleFreezeQuadrant1(currAdvsq) {      // N Q1  R KB4,4 → KB7,7    :16
   console.log("cntrl: gambits.js - handleFreezeQuadrant(currAdvsq).", currAdvsq);
@@ -340,8 +380,7 @@ function applyEntry(entry) {   // Clear curr, branch, state change, render, refr
 
   state.pushNewGambit(entry);          // Log state change in undo buffer.
   vGambits.renderGambit(entry); 
-  vGambits.refreshPanel(entry); 
-  game.showUndoStatus();
+  // vGambits.refreshEntry(entry); 
 }
 
 function applyQuadrantEntry({ entry, line }) {   // Group, state, render, panel.

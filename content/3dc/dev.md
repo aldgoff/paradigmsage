@@ -140,9 +140,33 @@ title: "Dev"
   - 6/15/26 - Starting Lineup. Setup todos. Remove Play button. Selection button management. 1st level move button restraints.
   - 6/16/26 - Add two stack move buttons. Popup help panels. Detect occupied dst tiles. Multi-line help texts. Move pieces around the board.
   - 6/17/26 - Popup help texts. White/Black move order. Indicate player. Plumbing for undo moves. Undo/Redo/RW/FF/Load/Save pure moves. QC moves. Undo branching. Push & Pop panel lines.
-  - 6/18/26 - Normalize gambits. Normalize refreshEntry() & applyEntry().
+  - 6/18/26 - Normalize gambits. Normalize refreshEntry() & applyEntry(). Undo/redo/RW/FF/load/save for quadrant gambits.
   
 ## Gambits Development
+ ### Quads, rook, bishop, duke.
+  **0-0-3-0**
+  {"Setup":[],"Moves":[],"Gambits":[{"gambitId":0,"action":"quad","src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":2,"stride":3,"opacity":0.5},{"gambitId":1,"action":"quad","src":"Q4,4","srcTile":[0,0,0],"quad":13,"perimeter":3,"stride":1,"opacity":0.5},{"gambitId":2,"action":"quad","src":"Q4,4","srcTile":[0,0,0],"quad":37,"perimeter":3,"stride":1,"opacity":0.5}],"AdvSqs":[]}
+
+  { "Setup":[],
+    "Moves":[],
+    "Gambits":[
+      {"gambitId":0,"action":"quad","src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":2,"stride":3,"opacity":0.5},
+      {"gambitId":1,"action":"quad","src":"Q4,4","srcTile":[0,0,0],"quad":13,"perimeter":3,"stride":1,"opacity":0.5},
+      {"gambitId":2,"action":"quad","src":"Q4,4","srcTile":[0,0,0],"quad":37,"perimeter":3,"stride":1,"opacity":0.5}],
+    "AdvSqs":[]}
+
+ ### Quads, rook, rook, bishop.
+  **0-0-3-0**
+  {"Setup":[],"Moves":[],"Gambits":[{"action":"quad","src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":2,"stride":3,"opacity":0.5},{"action":"quad","src":"Q4,4","srcTile":[0,0,0],"quad":1,"perimeter":3,"stride":4,"opacity":0.5},{"action":"quad","src":"Q4,4","srcTile":[0,0,0],"quad":13,"perimeter":3,"stride":1,"opacity":0.5}],"AdvSqs":[]}
+
+  { "Setup":[],
+    "Moves":[],
+    "Gambits":[
+      {"action":"quad","src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":2,"stride":3,"opacity":0.5},
+      {"action":"quad","src":"Q4,4","srcTile":[0,0,0],"quad":1,"perimeter":3,"stride":4,"opacity":0.5},
+      {"action":"quad","src":"Q4,4","srcTile":[0,0,0],"quad":13,"perimeter":3,"stride":1,"opacity":0.5}],
+    "AdvSqs":[]}
+
  ### Quads, rook, bishop, duke.
   **0-0-3-0**
   {"Setup":[],"Moves":[],"Gambits":[{"Q":1,"src":"KR4,4","dst":"KR6,6","area":9,"advsqs":[{"src":"KR4,4","srcTile":[4,0,0],"quad":1,"perimeter":2,"stride":3,"opacity":0.5}]},{"Q":13,"src":"Q4,4","dst":"KN7,4","area":16,"advsqs":[{"src":"Q4,4","srcTile":[0,0,0],"quad":13,"perimeter":3,"stride":1,"opacity":0.5}]},{"Q":37,"src":"Q4,4","dst":"QR7,7","area":16,"advsqs":[{"src":"Q4,4","srcTile":[0,0,0],"quad":37,"perimeter":3,"stride":1,"opacity":0.5}]}],"AdvSqs":[]}

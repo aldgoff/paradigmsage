@@ -72,6 +72,13 @@ export function makeQuadrantEntry(advsq) {
 
   return {entry, line};
   }
+function convertEntryToLine(entry) {
+  console.log(`model: gambits.js - convertEntryToLine(entry):`, entry);
+
+  const line = entry;
+
+  return line;
+  }
 
 export function makeLinearEntry(advsq) {
   console.log(`model: gambits.js - makeLinearEntry(advsq):`, advsq);

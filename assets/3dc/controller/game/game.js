@@ -23,6 +23,7 @@
   import * as mMoves   from "../../model/moves/moves.js";
   import * as mSetup   from "../../model/setup/setup.js";
 
+  import * as view     from "../../view/view.js";
   import * as vAdvsqs  from "../../view/advsqs/advsqs.js";
   import * as vGambits from "../../view/gambits/gambits.js";
   import * as vMoves   from "../../view/moves/moves.js";
@@ -229,7 +230,10 @@ async function handleLoad() {
         state.pushNewState(key, entry);
         if(     key === "Setup")   { vSetup.pushPanelLine(entry); }
         else if(key === "Moves")   { vMoves.pushPanelLine(entry); }
-        else if(key === "Gambits") { vGambits.pushPanelLine(entry); }
+        else if(key === "Gambits") { 
+          const line  = cGambits.convertEntryToLine(entry)
+          vGambits.pushPanelLine(line);
+        }
         else if(key === "AdvSqs")  { /* Has no scroll list. */ }
         else  { throw new Error(`Unknown entry key ${key}.`); }
       }
@@ -414,20 +418,10 @@ function processUndoBuffer(key, idx, N=1) {
       return false;
     }
     state.setBufferIndex("Gambits", idx-1);
-    // cGambits.buildBackward(entry);
+    vGambits.undo(entry);
     vGambits.refreshPanel(entry);
 
     return true;
-    }
-  else if(key === "Gambits1") {
-    const gambit = state.fetchCurrentState("Gambits");
-    if (gambit != null) {
-      // vGambits.undo(gambit);
-      state.setBufferIndex("Gambits", idx-1); // Update from state.
-      cGambits.rerunGambits();                  // Rebuild from state.
-      vGambits.refreshPanel(gambit);
-      return true;
-    }
     }
   else if(key === "Moves") {
     const entry = state.fetchCurrentState("Moves");
@@ -505,20 +499,16 @@ function processRedoBuffer(key, idx, N=1) {
       return false;
     }
     state.setBufferIndex("Gambits", idx + 1);
-    // cGambits.buildForward(entry);
+
+    const group = view.buildAdvSqGroup(entry); // {srcTile: Array(3), quad: 1, perimeter: 0, stride: 0, opacity: 0.5}
+    vGambits.getGambitGroups()[entry.gambitId] = group;
+    console.log("*** gambitGroups.length", vGambits.getGambitGroups().length);
+    group.userData.entry = entry;
+    vGambits.render(group, { animate: false });      // Render.
+
     vGambits.refreshPanel();         
     
     return true;
-    }
-  else if(key === "Gambits1") {
-    const gambit = state.fetchNextState("Gambits");
-    if (gambit != null) {
-      state.setBufferIndex("Gambits", idx + 1); // Update from state.
-      cGambits.rerunGambits();                  // Rebuild from state.
-      // vGambits.redo(gambit);
-      vGambits.refreshPanel(gambit);
-      return true;
-    }
     }
   else if(key === "AdvSqs") {
     const curr = state.fetchCurrentState("AdvSqs");
