@@ -227,21 +227,11 @@ async function handleLoad() {
 
       for(const entry of entries) {
         state.pushNewState(key, entry);
-        if(     key === "Setup") {
-          vSetup.pushPanelLine(entry);
-          }
-        else if(key === "Moves") {
-          vMoves.pushPanelLine(entry);
-          }
-        else if(key === "Gambits") {
-          vGambits.pushPanelLine(entry);
-          }
-        else if(key === "Advsqs") {
-          // The advsq panel does not have a scroll list.;
-          }
-        else  {
-          throw new Error(`Unknown entry key $[key}.`);
-        }
+        if(     key === "Setup")   { vSetup.pushPanelLine(entry); }
+        else if(key === "Moves")   { vMoves.pushPanelLine(entry); }
+        else if(key === "Gambits") { vGambits.pushPanelLine(entry); }
+        else if(key === "AdvSqs")  { /* Has no scroll list. */ }
+        else  { throw new Error(`Unknown entry key ${key}.`); }
       }
 
       state.setBufferIndex(key, 0); // Reset all indexes to 0.

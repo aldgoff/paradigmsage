@@ -319,8 +319,8 @@ function applyEntry(entry) {
     vMoves.refreshPanel(entry);
   }
 
-  vGambits.clearGambits();  // Remove all entries in downstream buffers.
-  state.clearBuffer("Gambits");
+  // vGambits.clearGambits();  // Remove all entries in downstream buffers.
+  // state.clearBuffer("Gambits");
 
   vAdvsqs.clearAdvsqs();  // Remove all entries in downstream buffers.
   state.clearBuffer("AdvSqs");

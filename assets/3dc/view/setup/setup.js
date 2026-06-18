@@ -34,24 +34,38 @@
 // Seampoint: more globals...
 
 // --- UI ---
-export function clearSetup() {
+export function clearSetup() {  // TODO: Empty function.
   console.log("view : setup.js - clearSetup()");
-
   }
 
-export function clear(entry) {
-  console.log("view : setup.js - clear(entry)", entry);
+export function pushPanelLine(entry) {
+  console.log("view : setup.js - pushPanelLine(entry)", entry);
 
-  const { action, boardSize, trayType, trayGap } = entry;
+  const { action, prevBoard, nextBoard } = entry;
 
-  vBoards.clear(entry);
-  vTrays.destroyTrays();
+  const scroll = document.getElementById("setup-list");
+  if(!scroll) return;
+
+  const line = assembleLine(entry);
+
+  const div = document.createElement("div");
+  div.textContent = line;
+
+  // Write to the scroll box.
+  scroll.appendChild(div);
+  scroll.scrollTop = scroll.scrollHeight;
   }
-  
-export function render(entry) {
-  console.log("view : setup.js - render(entry)", entry);
 
-  const { action, boardSize, trayType, trayGap } = entry;  // Informative.
+export function popPanelLine() {
+  console.log("view : setup.js - popPanelLine()");
+
+  const scroll = document.getElementById("setup-list");
+  if(!scroll) return;
+
+  const last = scroll.lastElementChild;
+  if(!last) return;
+
+  scroll.removeChild(last);
   }
   
 export function refreshPanel(board) {
@@ -67,39 +81,36 @@ export function refreshPanel(board) {
   for(let i = 0; i < children.length; i++) {
     const opacity = (i < count)
       ? "1.0"     // active
-      : "0.3";    // future
+      : "0.5";    // future
     children[i].style.opacity = opacity;
   }
 
-  const panel = document.getElementById("setup-window");   // Ref to panel.
+  const panel = document.getElementById("setup-window");   // Radio buttons.
   if(!panel) return;
-
-  const sizeRadio     = (board)                            // Radio buttons.
+  const sizeRadio     = (board)
     ? panel.querySelector( `input[name="board-size"][value="${board.boardSize}"]`)
     : panel.querySelector( `input[name="board-size"][value="8x8x8"]`);
   const trayTypeRadio = (board) 
     ? panel.querySelector( `input[name="tray-type"][value="${board.trayType}"]`)
     : panel.querySelector( `input[name="tray-type"][value="Real"]`);
-
   if(sizeRadio) sizeRadio.checked = true;
   if(trayTypeRadio) trayTypeRadio.checked = true;  
 }
 
-export function pushPanelLine(entry) {
-  console.log("view : setup.js - pushPanelLine(entry)", entry);
+export function clear(entry) {
+  console.log("view : setup.js - clear(entry)", entry);
 
-  const scroll = document.getElementById("setup-list");
-  if(!scroll) return;
+  const { action, boardSize, trayType, trayGap } = entry;
 
-  const line = assembleLine(entry);
-
-  const div = document.createElement("div");
-  div.textContent = line;
-
-  // Write to the scroll box.
-  scroll.appendChild(div);
-  scroll.scrollTop = scroll.scrollHeight;
+  vBoards.clear(entry);
+  vTrays.destroyTrays();
   }
+  
+export function render(entry) {
+  console.log("view : setup.js - render(entry)", entry);
+
+  const { action, boardSize, trayType, trayGap } = entry;  // Informative.
+}
 
 export function clearSetupPanelParams(params) {
   console.log("view : setup.js - clearSetupPanelParams(params):", params);

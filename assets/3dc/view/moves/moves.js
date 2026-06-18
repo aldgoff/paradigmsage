@@ -29,14 +29,14 @@
 // Seampoint: more globals...
 
 // --- UI ---
-export function clearMoves() {
+export function clearMoves() {  // TODO: Empty function.
   console.log("view : moves.js - clearMoves()");
   }
 
 export function pushPanelLine(move) {
   console.log("view : moves.js - pushPanelLine(move)", move);
   
-  let { action, turn, player, key, prev, post } = move;
+  const { action, turn, player, key, prev, post } = move;
 
   const scroll = document.getElementById("move-list");
   if(!scroll) return;
@@ -65,16 +65,18 @@ export function popPanelLine() {
 
 export function refreshPanel(move) {
   console.log("view : moves.js - refreshPanel(move)", move);
+
+  // const { action, turn, player, key, prev, post } = move;
   
   const scroll = document.getElementById("move-list");    // Scroll list.
   if (!scroll) return;
 
   const count = state.getIndices().Moves;                 // Scroll text box.
   const children = scroll.children;
-  for (let i = 0; i < children.length; i++) {
+  for(let i = 0; i < children.length; i++) {
     const opacity = (i < count)
       ? "1.0"     // active
-      : "0.3";    // future
+      : "0.5";    // future
     children[i].style.opacity = opacity;
   }
 }
