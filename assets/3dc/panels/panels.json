@@ -45,7 +45,7 @@
             "Duplex moves (stride must be on a duplex tile, duke face quads only).",
             "Overlap moves (queen and stack only).",
             "Stride must be one of the four overlap tiles (brook, qtile, hotspot, Feynman).",
-            "Currently incomplete, use with caution."
+            "INCOMPLETE, use with caution."
           ]
         },
       "advsqText": {

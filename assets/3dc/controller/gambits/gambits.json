@@ -24,10 +24,11 @@
       "Knight",
       "Stack",
       "Pawn",
+      "Unshackled",
       "King",
       "_last"
     ],
-    "PieceAbrv": ["R", "B", "D", "Q", "N", "S", "P", "K"],
+    "PieceAbrv": ["R", "B", "D", "Q", "N", "S", "P", "U", "K"],
     "_last": "no comma"
   }
 }

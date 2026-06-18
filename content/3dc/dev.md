@@ -140,6 +140,63 @@ title: "Dev"
   - 6/15/26 - Starting Lineup. Setup todos. Remove Play button. Selection button management. 1st level move button restraints.
   - 6/16/26 - Add two stack move buttons. Popup help panels. Detect occupied dst tiles. Multi-line help texts. Move pieces around the board.
   - 6/17/26 - Popup help texts. White/Black move order. Indicate player. Plumbing for undo moves. Undo/Redo/RW/FF/Load/Save pure moves. QC moves. Undo branching. Push & Pop panel lines.
+  - 6/18/26 - Normalize gambits.
+  
+## Gambits Development
+ ### Quads, rook, bishop, duke.
+  **0-0-3-0**
+  {"Setup":[],"Moves":[],"Gambits":[{"Q":1,"src":"KR4,4","dst":"KR6,6","area":9,"advsqs":[{"src":"KR4,4","srcTile":[4,0,0],"quad":1,"perimeter":2,"stride":3,"opacity":0.5}]},{"Q":13,"src":"Q4,4","dst":"KN7,4","area":16,"advsqs":[{"src":"Q4,4","srcTile":[0,0,0],"quad":13,"perimeter":3,"stride":1,"opacity":0.5}]},{"Q":37,"src":"Q4,4","dst":"QR7,7","area":16,"advsqs":[{"src":"Q4,4","srcTile":[0,0,0],"quad":37,"perimeter":3,"stride":1,"opacity":0.5}]}],"AdvSqs":[]}
+
+  { "Setup":[],
+    "Moves":[],
+    "Gambits":[
+      {"Q":1,"src":"KR4,4","dst":"KR6,6","area":9,"advsqs":[{"src":"KR4,4","srcTile":[4,0,0],"quad":1,"perimeter":2,"stride":3,"opacity":0.5}]},
+      {"Q":13,"src":"Q4,4","dst":"KN7,4","area":16,"advsqs":[{"src":"Q4,4","srcTile":[0,0,0],"quad":13,"perimeter":3,"stride":1,"opacity":0.5}]},
+      {"Q":37,"src":"Q4,4","dst":"QR7,7","area":16,"advsqs":[{"src":"Q4,4","srcTile":[0,0,0],"quad":37,"perimeter":3,"stride":1,"opacity":0.5}]}],
+    "AdvSqs":[]}
+
+## Gambits Entry
+ ### Rook Linear
+  **0-0-1-0**
+  {"Setup":[],"Moves":[],"Gambits":[{"move":"linear","piece":"rook","src":"KB4,4","dst":"KB7,4","ray":"left_fore","advsqs":[[{"srcTile":[2,0,0],"quad":4,"perimeter":3,"stride":1,"area":16},{"srcTile":[2,0,0],"quad":1,"perimeter":3,"stride":1,"area":16}],[{"srcTile":[2,0,0],"quad":9,"perimeter":3,"stride":1,"area":16},{"srcTile":[2,0,0],"quad":10,"perimeter":3,"stride":1,"area":16}]],"opacity":0.5}],"AdvSqs":[]}
+
+  {"Setup":[],
+  "Moves":[],
+  "Gambits":[
+    { "move":"linear","piece":"rook","src":"KB4,4","dst":"KB7,4","ray":"left_fore",
+      "advsqs":[
+        [{"srcTile":[2,0,0],"quad":4,"perimeter":3,"stride":1,"area":16}, {"srcTile":[2,0,0],"quad":1,"perimeter":3,"stride":1,"area":16}],
+        [{"srcTile":[2,0,0],"quad":9,"perimeter":3,"stride":1,"area":16}, {"srcTile":[2,0,0],"quad":10,"perimeter":3,"stride":1,"area":16}] ],
+      "opacity":0.5}
+    ],
+  "AdvSqs":[]}
+
+ ### Duke Duplex
+  **0-0-1-0**
+  {"Setup":[],
+  "Moves":[],
+  "Gambits":[
+    { "move":"duplex","piece":"duke","src":"QN4,4","dst":"KR4,4","ray":[1,0,0],
+      "advsqs":[
+        {"src":"QN4,4","srcTile":[-2,0,0],"quad":38,"perimeter":3,"stride":4,"opacity":0.5},
+        {"src":"QN4,4","srcTile":[-2,0,0],"quad":41,"perimeter":3,"stride":4,"opacity":0.5}],
+      "opacity":0.5 }
+    ],
+  "AdvSqs":[]}
+
+ ### Rook Quadrant
+  **0-0-1-0**
+  {"Setup":[],"Moves":[],"Gambits":[{"Q":1,"src":"KB4,4","dst":"KB7,7","area":16,"advsqs":[{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":3,"stride":4,"opacity":0.5}]}],"AdvSqs":[]}
+
+  {"Setup":[],
+  "Moves":[],
+  "Gambits":[
+    { "Q":1,"src":"KB4,4","dst":"KB7,7","area":16,
+      "advsqs":[
+        {"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":3,"stride":4,"opacity":0.5}]
+    }
+    ],
+  "AdvSqs":[]}
 
 ## Gambits are broken, but the rest of the undo system looks ok?
  **2-3-0-6**

@@ -407,6 +407,19 @@ function processUndoBuffer(key, idx, N=1) {
     }
     }
   else if(key === "Gambits") {
+    const entry = state.fetchCurrentState("Gambits");
+
+    if(!entry) {
+      console.log("*** No prev gambit.");
+      return false;
+    }
+    state.setBufferIndex("Gambits", idx-1);
+    // cGambits.buildBackward(entry);
+    vGambits.refreshPanel(entry);
+
+    return true;
+    }
+  else if(key === "Gambits1") {
     const gambit = state.fetchCurrentState("Gambits");
     if (gambit != null) {
       // vGambits.undo(gambit);
@@ -484,6 +497,20 @@ function processRedoBuffer(key, idx, N=1) {
     return true;
     }
   else if(key === "Gambits") {
+    state.setBufferIndex("Gambits", idx + 1);
+
+    const entry = state.fetchCurrentState("Gambits");
+    if(!entry) {
+      console.log("*** No next gambit.");
+      return false;
+    }
+    state.setBufferIndex("Gambits", idx + 1);
+    // cGambits.buildForward(entry);
+    vGambits.refreshPanel();         
+    
+    return true;
+    }
+  else if(key === "Gambits1") {
     const gambit = state.fetchNextState("Gambits");
     if (gambit != null) {
       state.setBufferIndex("Gambits", idx + 1); // Update from state.
@@ -531,7 +558,7 @@ function hardReset() {
   mSetup.reset();
 
   // --- Derived / caches ---
-  cGambits.reset?.();
+  // cGambits.reset?.();
 
   // --- State ---
   state.setState({
@@ -541,7 +568,7 @@ function hardReset() {
     AdvSqs: []
   });
 
-  for (const key of state.getStateKeys()) {
+  for(const key of state.getStateKeys()) {
     state.setBufferIndex(key, 0);
   }
   }

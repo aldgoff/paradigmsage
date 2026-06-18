@@ -31,12 +31,15 @@
 
 // --- Globals ---
   let activeAnimation = null;
+  const gambitGroups = [];
 // Seampoint: more globals...
 
+export function getGambitGroups() { return gambitGroups; }
 // --- UI ---
 export function clearGambits() {  // TODO: clearGambits broken.
   console.log("view : gambits.js - clearGambits()");
 
+  return;
 
   let top = state.getBufferLength("Gambits");
   state.truncateState("Gambits", 0);
