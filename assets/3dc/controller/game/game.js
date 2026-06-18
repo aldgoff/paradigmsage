@@ -237,10 +237,10 @@ async function handleLoad() {
       state.setBufferIndex(key, 0); // Reset all indexes to 0.
     }
 
-    vSetup.refreshPanel(null);
-    vMoves.refreshPanel(null);
-    vGambits.refreshPanel(null);
-    vAdvsqs.clearAdvsqPanelParams("KR4,4");
+    vSetup.refreshEntry(null);
+    vMoves.refreshEntry(null);
+    vGambits.refreshEntry(null);
+    vAdvsqs.refreshEntry(null);
 
     showUndoStatus(); // Good visual indicator of successful load.
   } catch (err) {

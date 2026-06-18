@@ -97,6 +97,13 @@ export function refreshPanel(board) {
   if(trayTypeRadio) trayTypeRadio.checked = true;  
 }
 
+export function refreshEntry(entry) {
+  console.log("view : setup.js - refreshEntry(entry):", entry);
+
+  const board = entry;
+  refreshPanel(board);
+}
+
 export function clear(entry) {
   console.log("view : setup.js - clear(entry)", entry);
 

@@ -325,10 +325,11 @@ function applyEntry(entry) {
   vAdvsqs.clearAdvsqs();  // Remove all entries in downstream buffers.
   state.clearBuffer("AdvSqs");
 
-  game.showUndoStatus();
 
   state.pushNewMove(entry);           // Change state.
   vMoves.pushPanelLine(entry);        // Add line to panel.
+  vMoves.refreshPanel(entry);
+  game.showUndoStatus();
 
   // TODO: remove all entries in the downstream buffers; 
   // a new move invalidates gambits and advsqs.

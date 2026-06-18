@@ -81,6 +81,13 @@ export function refreshPanel(move) {
   }
 }
 
+export function refreshEntry(entry) {
+  console.log("view : moves.js - refreshEntry(entry):", entry);
+
+  const move = entry;
+  refreshPanel(move);
+}
+
 export function cancelAnimation() {
   if (activeAnimation) {
     activeAnimation.cancelled = true;

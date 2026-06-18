@@ -140,7 +140,7 @@ title: "Dev"
   - 6/15/26 - Starting Lineup. Setup todos. Remove Play button. Selection button management. 1st level move button restraints.
   - 6/16/26 - Add two stack move buttons. Popup help panels. Detect occupied dst tiles. Multi-line help texts. Move pieces around the board.
   - 6/17/26 - Popup help texts. White/Black move order. Indicate player. Plumbing for undo moves. Undo/Redo/RW/FF/Load/Save pure moves. QC moves. Undo branching. Push & Pop panel lines.
-  - 6/18/26 - Normalize gambits.
+  - 6/18/26 - Normalize gambits. Normalize refreshEntry() & applyEntry().
   
 ## Gambits Development
  ### Quads, rook, bishop, duke.

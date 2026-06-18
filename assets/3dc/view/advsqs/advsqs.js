@@ -118,6 +118,15 @@ export function refreshPanel(advsq) {
   panel.querySelector('[name="advsq-opacity"]').value      = opacity;
 }
 
+export function refreshEntry(entry) {
+  console.log("view : advsqs.js - refreshEntry(entry):", entry);
+  
+  clearAdvsqPanelParams("KR4,4"); // Just to prove load is working.
+
+  // const advsq = entry; // Same code as in Setup, Moves, & Gambits.
+  // refreshPanel(advsq);
+}
+
 export function setAdvsqPanelInitialParams() {
   advsqPanelInitialParams = getAdvsqPanelParams();
   }

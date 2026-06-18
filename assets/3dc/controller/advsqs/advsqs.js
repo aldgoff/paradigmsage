@@ -30,6 +30,9 @@
   import * as vGambits from "../../view/gambits/gambits.js";
 // Seampoint: more imports...
 
+// --- Globals ---
+// Seampoint: more globals...
+
 // --- UI ---
 export function panelDispatch(payload) {
   // console.log("cntrl: advsqs.js - panelDispatch(payload):", payload);
@@ -80,10 +83,11 @@ export function buildPayload(panel, action) {
 function handlePlace(payload) {
   console.log("cntrl: advsqs.js - handlePlace(payload)", payload);
 
-  let { src, srcTile, quad, perimeter, stride, opacity } = payload;  // Unpack primary fields.
+  const { src, srcTile, quad, perimeter, stride, opacity } = payload;  // Unpack primary fields.
 
-  const nextEntry = mAdvsqs.makeEntry(payload);        // Transform panel payload into state entry.
-  applyEntry(nextEntry);
+  const entry = mAdvsqs.makeEntry(payload);     // Transform panel payload into state entry.
+  
+  applyEntry(entry);
   }
 
 function handleRemove(payload) {
@@ -250,9 +254,11 @@ function applyEntry(entry) {   // Clear curr, branch, state change, render, refr
     state.truncateState("AdvSqs", idx);
   }
 
-  state.pushNewAdvsq(entry);          // Log state change in undo buffer.
   vAdvsqs.render(entry);              // Render the new advsq.
+
+  state.pushNewAdvsq(entry);          // Log state change in undo buffer.
   vAdvsqs.refreshPanel(entry);        // Only needed by panels with derived fields.
+  game.showUndoStatus();
 }
 
 function blank(payload) { // Convert panel strings to numbers, arrays, etc.

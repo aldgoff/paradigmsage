@@ -294,20 +294,20 @@ function handleMakeBoard(payload) { // Setup handler.
   console.log("cntrl: setup.js - handleMakeBoard(payload):", payload);
 
   const { action, prevBoard, nextBoard, boardSize,trayType,trayGap } = payload;
-  const entry = payload;
+  
+  const entry = mSetup.makeEntry(payload);
 
-  state.pushNewSetup(entry);                    // Log state change in undo buffer.
 
   clearBoard(entry.prevBoard);
   buildBoard(entry.nextBoard);
 
   boardSpec = nextBoard.boardSize;
+  currBoard = structuredClone(nextBoard);       // Capture current board.
 
+  state.pushNewSetup(entry);                    // Log state change in undo buffer.
   vSetup.pushPanelLine(entry);                  // Upate panels.
   vSetup.refreshPanel(nextBoard);         
   setButtonState("boardDone");
-
-  currBoard = structuredClone(nextBoard);       // Capture current board.
   }
 
 function handlePlacePiece(payload) {
@@ -319,7 +319,7 @@ function handlePlacePiece(payload) {
 
   buildForward(entry);
 
-  recordSetupAction(entry);
+  applyEntry(entry);
 
   // --- Buttons ---
     const pieceCount = mBoards.getBoardOccupancy().flat(2).filter(cell => cell !== null).length;
@@ -341,7 +341,7 @@ function handleShiftPiece(payload) {
 
   buildForward(entry);
 
-  recordSetupAction(entry);
+  applyEntry(entry);
 
   clearAllPieceSelections();
   clearAllTileSelections();
@@ -356,7 +356,7 @@ function handleReturnPiece(payload) {
 
   buildForward(entry);
 
-  recordSetupAction(entry);
+  applyEntry(entry);
 
   clearAllPieceSelections();
   clearAllTileSelections();
@@ -386,7 +386,7 @@ function handleFreeze(payload) {
       .length;  // Count number of pieces on the board.
   const entry = { action, data: numBoardPieces };
 
-  recordSetupAction(entry);
+  applyEntry(entry);
   setButtonState("loaded");
   }
 
@@ -405,7 +405,7 @@ function handleStartingPos(payload) {
       .length;  // Count number of pieces on the board.
   // const entry = { action, data: boardPieces };
 
-  recordSetupAction(entry);
+  applyEntry(entry);
   setButtonState("loaded");
   }
 
@@ -572,12 +572,13 @@ function initialLineup(entry) {
   }
 }
 
-function recordSetupAction(entry) {
-  console.log("cntrl: setup.js - recordSetupAction(entry):", entry);
+function applyEntry(entry) {
+  console.log("cntrl: setup.js - applyEntry(entry):", entry);
 
   state.pushNewSetup(entry);          // Log state change in undo buffer.
   vSetup.pushPanelLine(entry);        // Add line to panel.
   vSetup.refreshPanel(entry);         // Only needed by panels with derived fields.
+  game.showUndoStatus();
 }
 // Seampoint: more local functions...
 

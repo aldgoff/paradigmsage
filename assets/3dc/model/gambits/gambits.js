@@ -43,6 +43,16 @@ export function reset() {
   vGambits.clearGambits();
   }
 
+export function makeEntry(payload) {
+  console.log(`model: gambits.js - makeEntry(payload):`, payload);
+
+  let { action, src, srcTile, quad, perimeter, stride, opacity } = payload;  // Informative.
+
+  const entry = payload;
+
+  return entry;
+}
+
 export function makeQuadrantEntry(advsq) {
   console.log(`model: gambits.js - makeQuadrantEntry(advsq):`, advsq);
 
