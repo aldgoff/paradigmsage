@@ -3,15 +3,8 @@
   Purpose: Create and morph advancement squares vis srcTile, quad, perimeter, and stride, w/ opacity for offboard tiles.
   Author: Allan Goff
   Date: 4/21/26
-  Recommended access: import * as cAdvsqs from "../../controller/advsqs/advsqa.js";
+  Recommended access: import * as cAdvsqs from "../../controller/advsqs/advsqs.js";
   UI: the export functions.
-  Philosophy: Delete a module by deleting its directory - not so much.
-    controller/ model/ view/
-    play.md - DOM
-    main.js - regressions
-    view.js - wire, build payload
-    game.js - rewind, FF
-    state.js - undo, redo
 */
 
 // --- Load JSON ---
@@ -35,7 +28,7 @@
 
 // --- UI ---
 export function panelDispatch(payload) {
-  // console.log("cntrl: advsqs.js - panelDispatch(payload):", payload);
+  console.log("cntrl: advsqs.js - panelDispatch(payload):", payload);
 
   vGambits.cancelAnimation(); // TODO: view leakage, need a better solution.
 
@@ -85,6 +78,7 @@ function handlePlace(payload) {
 
   const { src, srcTile, quad, perimeter, stride, opacity } = payload;  // Unpack primary fields.
 
+  mAdvsqs.buttonAffordances("src-tile");
   const entry = mAdvsqs.makeEntry(payload);     // Transform panel payload into state entry.
   
   branchHistory(entry);
@@ -96,6 +90,7 @@ function handleRemove(payload) {
   
   let { src, srcTile, quad, perimeter, stride, opacity } = payload;  // Unpack primary fields.
                                                                             // Manipulate fields.
+  mAdvsqs.buttonAffordances("build");
   const newAdvsq = blank(payload);        // Repack normalized fields.
 
   state.clearBuffer("AdvSqs");            // Log state change in undo buffer.
@@ -119,6 +114,7 @@ function handleGrow(payload) {
     stride = 2;
   }
   perimeter++;                                                              // Manipulate fields.
+  if(perimeter > 0) mAdvsqs.buttonAffordances("adv-sq");
 
   const nextEntry = { src, srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
 
@@ -139,6 +135,8 @@ function handleShrink(payload) {
     else if(stride >= 2*perimeter + 1) { stride = 2*perimeter - 1; }  // E2 (or off scale) - stays on end tile.
   }
   if(--perimeter < 0) perimeter = 0.                                        // Manipulate fields.
+  if(perimeter === 0) mAdvsqs.buttonAffordances("src-tile");
+  if(perimeter  >  0) mAdvsqs.buttonAffordances("adv-sq");
 
   const nextEntry = { src, srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
 
@@ -165,6 +163,8 @@ function handleUpdateParam(payload) {
     }
   }
   if(perimeter === 0) stride = 0;
+  if(perimeter === 0) mAdvsqs.buttonAffordances("src-tile");
+  if(perimeter  >  0) mAdvsqs.buttonAffordances("adv-sq");
 
   const nextEntry = { src, srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
 

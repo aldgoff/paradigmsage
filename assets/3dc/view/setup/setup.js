@@ -5,13 +5,6 @@
   Date: 5/03/26
   Recommended access: import * as vSetup from "../../view/setup/setup.js";
   UI: the export functions.
-  Philosophy: Delete a module by deleting its directory - not so much.
-    controller/ model/ view/
-    play.md - DOM
-    main.js - regressions
-    view.js - wire, build payload
-    game.js - rewind, FF
-    state.js - undo, redo
 */
 
 // --- Load JSON ---
@@ -147,11 +140,9 @@ export function clearSetupPanelParams(params) {
 
   const sizeRadio     = panel.querySelector( `input[name="board-size"][value="${boardSize}"]`);
   const trayTypeRadio = panel.querySelector( `input[name="tray-type"][value="${trayType}"]`);
-  // const initPosRadio  = panel.querySelector( `input[name="initial-pos"][value="${initialPos}"]`);
 
   if(sizeRadio) sizeRadio.checked = true;
   if(trayTypeRadio) trayTypeRadio.checked = true;
-  // if(initPosRadio) initPosRadio.checked = true;
 }
 // Seampoint: more global functions...
 

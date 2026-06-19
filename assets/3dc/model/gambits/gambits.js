@@ -5,13 +5,6 @@
   Date: 4/15/26
   Recommended access: import * as mGambits from "../../model/gambits/gambits.js";
   UI: the export functions.
-  Philosophy: Dlete a module by deleting its directory - not so much.
-    controller/ model/ view/
-    play.md - DOM
-    main.js - regressions
-    view.js - wire, build payload
-    game.js - rewind, FF
-    state.js - undo, redo
 */
 
 // --- Load JSON ---
@@ -20,6 +13,7 @@
 // Seampoint: more objects...
 
 // --- Dependencies ---
+  import * as panels  from "../../panels/panels.js";
   import * as utils   from "../../../utils/utils.js";  
 
   import * as state   from "../../model/state/state.js";
@@ -131,6 +125,92 @@ export function makeDuplexEntry(advsq) {
 }
 // Seampoint: more Entry functions...
 
+export function buttonAffordances(situation) {
+  console.log("model: gambits.js - buttonAffordances(situation)", situation);
+
+  switch (situation) {
+    case "on":
+      panels.enableButton("freezeQ",   true);             // Enable all the panel buttons.
+      panels.enableButton("freezeL",   true);
+      panels.enableButton("freezeD",   true);
+      panels.enableButton("freezeO",   true);
+
+      panels.enableButton("freezeN",   true);
+      panels.enableButton("freezeP",   true);
+      panels.enableButton("freezeK",   true);
+      panels.enableButton("asAPlane",  true);
+
+      panels.enableButton("nextPlane", true);
+      panels.enableButton("expand",    true);
+      panels.enableButton("contract",  true);
+      panels.enableButton("delete",    true);
+      panels.enableButton("remove",    true);
+      break;
+
+    case "freezeQ":
+      buttonAffordances("off");
+      panels.enableButton("freezeQ",   true);
+      break;
+    case "freezeL":
+      buttonAffordances("off");
+      panels.enableButton("freezeL",   true);
+      break;
+    case "freezeD":
+      buttonAffordances("off");
+      panels.enableButton("freezeD",   true);
+      break;
+    case "freezeO":
+      buttonAffordances("off");
+      panels.enableButton("freezeO",   true);
+    break;
+
+    case "freezeN":
+      buttonAffordances("off");
+      panels.enableButton("freezeN",   true);
+      break;
+    case "freezeP":
+      buttonAffordances("off");
+      panels.enableButton("freezeP",   true);
+      break;
+    case "freezeK":
+      buttonAffordances("off");
+      panels.enableButton("freezeK",   true);
+      break;
+    case "asAPlane":
+      buttonAffordances("off");
+      panels.enableButton("asAPlane",  true);
+    break;
+
+    case "selected":
+      buttonAffordances("off");
+      panels.enableButton("nextPlane", true);
+      panels.enableButton("expand",    true);
+      panels.enableButton("contract",  true);
+      panels.enableButton("delete",    true);
+      panels.enableButton("remove",    true);
+      break;
+    case "off":
+      panels.enableButton("freezeQ",   false);              // Disable all the panel buttons.
+      panels.enableButton("freezeL",   false);
+      panels.enableButton("freezeD",   false);
+      panels.enableButton("freezeO",   false);
+
+      panels.enableButton("freezeN",   false);
+      panels.enableButton("freezeP",   false);
+      panels.enableButton("freezeK",   false);
+      panels.enableButton("asAPlane",  false);
+      panels.enableButton("next",      false);
+
+      panels.enableButton("expand",    false);
+      panels.enableButton("contract",  false);
+      panels.enableButton("delete",    false);
+      panels.enableButton("removeAll", false);
+      break;
+    default:
+      throw new Error(`Unknown button situation ${situation} for gambits.`);
+      break;
+  }
+}
 // Seampoint: more global functions...
 
 // --- Helpers ---

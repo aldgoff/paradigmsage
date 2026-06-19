@@ -5,13 +5,6 @@
   Date: 5/02/26
   Recommended access: import * as mSetup from "../../model/setup/setup.js";
   UI: the export functions.
-  Philosophy: Delete a module by deleting its directory - not so much.
-    controller/ model/ view/
-    play.md - DOM
-    main.js - regressions
-    view.js - wire, build payload
-    game.js - rewind, FF
-    state.js - undo, redo
 */
 
 // --- Load JSON ---
@@ -20,6 +13,8 @@
 // Seampoint: more objects...
 
 // --- Dependencies ---
+  import * as panels  from "../../panels/panels.js";
+
   import * as vSetup   from "../../view/setup/setup.js";
 // Seampoint: more imports...
 
@@ -41,6 +36,53 @@ export function makeEntry(payload) {
   const entry = payload;
 
   return entry;
+}
+
+export function buttonAffordances(situation) {
+  console.log("model: setup.js - buttonAffordances(situation)", situation);
+
+  switch (situation) {
+    case "makeBoard":
+      panels.enableButton("makeBoard",   true);
+      panels.enableButton("placePiece",  false);
+      panels.enableButton("shiftPiece",  false);
+      panels.enableButton("returnPiece", false);
+      panels.enableButton("freezePuzzle",false);
+      panels.enableButton("startingPos", false);
+      break;
+    case "boardDone":
+      panels.enableButton("makeBoard",   true);
+      panels.enableButton("placePiece",  true);
+      panels.enableButton("shiftPiece",  false);
+      panels.enableButton("returnPiece", false);
+      panels.enableButton("freezePuzzle",false);
+      panels.enableButton("startingPos", true);
+      break;
+    case "pieces":
+      panels.enableButton("placePiece",   true);
+      panels.enableButton("shiftPiece",   true);
+      panels.enableButton("returnPiece",  true);
+      panels.enableButton("freezePuzzle", true);
+      panels.enableButton("startingPos",  false);
+      break;
+    case "emptyTrays":
+      panels.enableButton("placePiece",   false);
+      panels.enableButton("returnPiece",  true);
+      panels.enableButton("shiftPiece",   true);
+      panels.enableButton("freezePuzzle", true);
+      panels.enableButton("startingPos",  false);
+      break;
+    case "loaded":
+      panels.enableButton("placePiece",   false);
+      panels.enableButton("returnPiece",  false);
+      panels.enableButton("shiftPiece",   false);
+      panels.enableButton("freezePuzzle", false);
+      panels.enableButton("startingPos",  false);
+      break;
+    default:
+      throw new Error(`Unknown button situation ${situation} for setup.`);
+      break;
+  }
 }
 // Seampoint: more global functions...
 

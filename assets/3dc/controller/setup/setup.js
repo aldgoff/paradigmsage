@@ -166,36 +166,36 @@ export function buildForward(entry) {     // Redo.
 
     boardSpec = currBoard.boardSize;
 
-    setButtonState("boardDone");
+    mSetup.buttonAffordances("boardDone");
     vSetup.refreshPanel(entry.nextBoard);         
     }
   else if(action === "placePiece") {
     const { action, key, prev, post } = entry;
     placePieceOnBoard(key, prev, post);
-    setButtonState("pieces");
+    mSetup.buttonAffordances("pieces");
     vSetup.refreshPanel(currBoard);         
     }
   else if(action === "shiftPiece") {
     const { action, key, prev, post } = entry;
     shiftPieceAroundBoard(key, prev, post);
-    setButtonState("pieces");
+    mSetup.buttonAffordances("pieces");
     vSetup.refreshPanel(currBoard);         
     }
   else if(action === "returnPiece") {
     const { action, key, prev, post } = entry;
     returnPieceToTray(key, prev, post);
-    setButtonState("pieces");
+    mSetup.buttonAffordances("pieces");
     vSetup.refreshPanel(currBoard);         
     }
   else if(action === "freezePuzzle") {
     const { action } = entry;
-    setButtonState("loaded");
+    mSetup.buttonAffordances("loaded");
     vSetup.refreshPanel(currBoard);         
     }
   else if(action === "startingPos") {
     const { action } = entry;
     initialLineup(entry);
-    setButtonState("loaded");
+    mSetup.buttonAffordances("loaded");
     vSetup.refreshPanel(currBoard);         
     }
   else {
@@ -215,37 +215,37 @@ export function buildBackward(entry) {    // Undo.
     boardSpec = currBoard.boardSize;
 
     (prevBoard.boardSize === "0x0x0")
-      ? setButtonState("makeBoard")
-      : setButtonState("boardDone");
+      ? mSetup.buttonAffordances("makeBoard")
+      : mSetup.buttonAffordances("boardDone");
     vSetup.refreshPanel(entry.prevBoard);         
     }
   else if(action === "placePiece") {
     const { action, key, prev, post } = entry;
     returnPieceToTray(key, post, prev);
-    setButtonState("pieces");
+    mSetup.buttonAffordances("pieces");
     vSetup.refreshPanel(currBoard);         
     }
   else if(action === "shiftPiece") {
     const { action, key, prev, post } = entry;
     shiftPieceAroundBoard(key, post, prev);
-    setButtonState("pieces");
+    mSetup.buttonAffordances("pieces");
     vSetup.refreshPanel(currBoard);         
     }
   else if(action === "returnPiece") {
     const { action, key, prev, post } = entry;
     placePieceOnBoard(key, post, prev);
-    setButtonState("pieces");
+    mSetup.buttonAffordances("pieces");
     vSetup.refreshPanel(currBoard);         
     }
   else if(action === "freezePuzzle") {
     const { action } = entry;
-    setButtonState("pieces");
+    mSetup.buttonAffordances("pieces");
     vSetup.refreshPanel(currBoard);         
     }
   else if(action === "startingPos") {
     const { action } = entry;
     returnAllPiecesToHomeTray();
-    setButtonState("pieces");
+    mSetup.buttonAffordances("pieces");
     vSetup.refreshPanel(currBoard);         
     }
   else {
@@ -309,7 +309,7 @@ function handleMakeBoard(payload) { // Setup handler. TODO: undo branching?
   state.pushNewSetup(entry);                    // Log state change in undo buffer.
   vSetup.pushPanelLine(entry);                  // Upate panels.
   vSetup.refreshPanel(nextBoard);         
-  setButtonState("boardDone");
+  mSetup.buttonAffordances("boardDone");
   }
 
 function handlePlacePiece(payload) {
@@ -328,8 +328,8 @@ function handlePlacePiece(payload) {
     const pieceCount = mBoards.getBoardOccupancy().flat(2).filter(cell => cell !== null).length;
     const max = 40; // TODO: magic number
     (pieceCount === max)
-      ? setButtonState("emptyTrays")
-      : setButtonState("pieces");
+      ? mSetup.buttonAffordances("emptyTrays")
+      : mSetup.buttonAffordances("pieces");
   
   clearAllPieceSelections();
   clearAllTileSelections();
@@ -376,8 +376,8 @@ function handleReturnPiece(payload) {
         .filter(piece => piece.loc === "@")
         .length;
     (pieceCount === 0)
-      ? setButtonState("boardDone")
-      : setButtonState("pieces");
+      ? mSetup.buttonAffordances("boardDone")
+      : mSetup.buttonAffordances("pieces");
   }
 
 function handleFreeze(payload) {
@@ -393,7 +393,7 @@ function handleFreeze(payload) {
 
   branchHistory(entry);
   applyEntry(entry);
-  setButtonState("loaded");
+  mSetup.buttonAffordances("loaded");
   }
 
 function handleStartingPos(payload) {
@@ -413,7 +413,7 @@ function handleStartingPos(payload) {
 
   branchHistory(entry);
   applyEntry(entry);
-  setButtonState("loaded");
+  mSetup.buttonAffordances("loaded");
   }
 
 // Seampoint: more handlers...
@@ -443,55 +443,6 @@ function clearBoard(board) {
   }
   }
 
-function setButtonState(command) {
-  console.log("cntrl: setup.js - setButtonState(command)", command);
-
-  const panel = document.getElementById("diagnostics-window");
-  panel.querySelector('[name="diags-buttons"]').textContent = command;
-
-  switch (command) {
-    case "makeBoard":
-      panels.enableButton("makeBoard",   true);
-      panels.enableButton("placePiece",  false);
-      panels.enableButton("shiftPiece",  false);
-      panels.enableButton("returnPiece", false);
-      panels.enableButton("freezePuzzle",false);
-      panels.enableButton("startingPos", false);
-      break;
-    case "boardDone":
-      panels.enableButton("makeBoard",   true);
-      panels.enableButton("placePiece",  true);
-      panels.enableButton("shiftPiece",  false);
-      panels.enableButton("returnPiece", false);
-      panels.enableButton("freezePuzzle",false);
-      panels.enableButton("startingPos", true);
-      break;
-    case "pieces":
-      panels.enableButton("placePiece",   true);
-      panels.enableButton("shiftPiece",   true);
-      panels.enableButton("returnPiece",  true);
-      panels.enableButton("freezePuzzle", true);
-      panels.enableButton("startingPos",  false);
-      break;
-    case "emptyTrays":
-      panels.enableButton("placePiece",   false);
-      panels.enableButton("returnPiece",  true);
-      panels.enableButton("shiftPiece",   true);
-      panels.enableButton("freezePuzzle", true);
-      panels.enableButton("startingPos",  false);
-      break;
-    case "loaded":
-      panels.enableButton("placePiece",   false);
-      panels.enableButton("returnPiece",  false);
-      panels.enableButton("shiftPiece",   false);
-      panels.enableButton("freezePuzzle", false);
-      panels.enableButton("startingPos",  false);
-      break;
-    default:
-      throw new Error(`Unknown button state command ${command}.`);
-      break;
-  }
-}
 
 function createPieceEntry(payload) {
   console.log("cntrl: setup.js - createPieceEntry(payload):", payload);

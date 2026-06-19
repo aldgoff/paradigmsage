@@ -19,6 +19,7 @@
   import * as cSetup  from "../../controller/setup/setup.js";
 
   import * as state   from "../../model/state/state.js";
+  import * as mMoves  from "../../model/moves/moves.js";
   import * as mPieces from "../../model/pieces/pieces.js";
   import * as mBoards from "../../model/boards/boards.js";
   import * as coords  from "../../foundation/coords/coords.js";
@@ -205,16 +206,7 @@ function manageMoveButtons() {
     return;
   }
 
-  panels.enableButton("move",         false);             // Reset all the panel buttons.
-  panels.enableButton("capture",      false);
-  panels.enableButton("enpassant",    false);
-  panels.enableButton("castle",       false);
-  panels.enableButton("promote",      false);
-  panels.enableButton("duke-decay",   false);
-  panels.enableButton("bishop-decay", false);
-  panels.enableButton("fission",      false);
-  panels.enableButton("teleportation",false);
-  panels.enableButton("uplift",       false);
+  mMoves.buttonAffordances("off");                      // Reset all the panel buttons.
 
   const pieces = pieceSelections.size;          // 1st level button restraints.
   const tiles  = tileSelections.size;
@@ -231,6 +223,7 @@ function manageMoveButtons() {
       panels.enableButton("promote", true);
     }
     else {
+      console.log("*** move");
       panels.enableButton("move", true);
     }
     }

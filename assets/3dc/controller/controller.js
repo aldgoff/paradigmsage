@@ -14,7 +14,13 @@
 
 // --- Dependencies ---
   import * as panels   from "../panels/panels.js";
+
   import * as model    from "../model/model.js";
+  import * as mSetup   from "../model/setup/setup.js";
+  import * as mMoves   from "../model/moves/moves.js";
+  import * as mGambits from "../model/gambits/gambits.js";
+  import * as mAdvsqs  from "../model/advsqs/advsqs.js";
+
   import * as view     from "../view/view.js";
 // Seampoint: more imports...
 
@@ -29,8 +35,12 @@ export function init(playBoard) {
   model.init(playBoard);
   view.init(playBoard);
 
-  panels.diagnostics();
+  // mSetup.buttonAffordances("off");
+  mMoves.buttonAffordances("off");
+  mGambits.buttonAffordances("off");
+  mAdvsqs.buttonAffordances("build");
 
+  panels.diagnostics();
 }
 // Seampoint: more global functions...
 

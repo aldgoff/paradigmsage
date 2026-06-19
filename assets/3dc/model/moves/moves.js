@@ -5,13 +5,6 @@
   Date: 4/30/26
   Recommended access: import * as mMoves from "../../model/moves/moves.js";
   UI: the export functions.
-  Philosophy: Delete a module by deleting its directory - not so much.
-    controller/ model/ view/
-    play.md - DOM
-    main.js - regressions
-    view.js - wire, build payload
-    game.js - rewind, FF
-    state.js - undo, redo
 */
 
 // --- Load JSON ---
@@ -21,6 +14,8 @@
 // Seampoint: more objects...
 
 // --- Dependencies ---
+  import * as panels  from "../../panels/panels.js";
+
   import * as cSetup      from "../../controller/setup/setup.js";
   import * as cSelections from "../../controller/selections/selections.js";
 
@@ -79,6 +74,39 @@ export function makeMoveEntry(selections, payload) {
 
   return entry;
 }
+
+export function buttonAffordances(situation) {
+  console.log("model: moves.js - buttonAffordances(situation)", situation);
+
+  if(situation === "on") {
+    panels.enableButton("move",         true);            // Enable all the panel buttons.
+    panels.enableButton("capture",      true);
+    panels.enableButton("enpassant",    true);
+    panels.enableButton("castle",       true);
+    panels.enableButton("promote",      true);
+    panels.enableButton("duke-decay",   true);
+    panels.enableButton("bishop-decay", true);
+    panels.enableButton("fission",      true);
+    panels.enableButton("teleportation",true);
+    panels.enableButton("uplift",       true);
+    }
+  else if(situation === "off") {
+    panels.enableButton("move",         false);           // Disable all the panel buttons.
+    panels.enableButton("capture",      false);
+    panels.enableButton("enpassant",    false);
+    panels.enableButton("castle",       false);
+    panels.enableButton("promote",      false);
+    panels.enableButton("duke-decay",   false);
+    panels.enableButton("bishop-decay", false);
+    panels.enableButton("fission",      false);
+    panels.enableButton("teleportation",false);
+    panels.enableButton("uplift",       false);
+    }
+  else {
+    throw new Error(`Unknown button situation ${situation} for moves.`);
+  }
+}
+
 // Seampoint: more Entry functions...
 
 // Seampoint: more global functions...
