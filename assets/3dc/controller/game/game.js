@@ -603,6 +603,7 @@ function assertStateConsistency() {
 /* TODO: QC checklist✅ 
     1. Load/Save fails to make board.
     2. Still have gambit issues.
-    3. Undo from play throws an error.
+    3. ✅ Undo from play throws an error, play removed.
+    4. Load does not clear the scene.
  */
 

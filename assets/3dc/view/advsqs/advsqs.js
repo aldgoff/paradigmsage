@@ -361,6 +361,5 @@ function specsToPanelParams(specs) {
     opacity:   specs.opacity
   };
 }
-
 // Seampoint: more local functions...
 

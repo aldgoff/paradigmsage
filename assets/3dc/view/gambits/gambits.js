@@ -311,13 +311,6 @@ export function redo(entry) {
 
   render(group, { animate: false });      // Render.
 }
-export function redo1(gambit) {
-  const group = makeQuadGroup(gambit);
-
-  group.userData.entry = gambit;
-
-  render(group);
-}
 
 export function render(group, { animate = false } = {}) {
   console.log("view : gambits.js - render(group)", group);

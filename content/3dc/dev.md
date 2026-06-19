@@ -140,8 +140,19 @@ title: "Dev"
   - 6/15/26 - Starting Lineup. Setup todos. Remove Play button. Selection button management. 1st level move button restraints.
   - 6/16/26 - Add two stack move buttons. Popup help panels. Detect occupied dst tiles. Multi-line help texts. Move pieces around the board.
   - 6/17/26 - Popup help texts. White/Black move order. Indicate player. Plumbing for undo moves. Undo/Redo/RW/FF/Load/Save pure moves. QC moves. Undo branching. Push & Pop panel lines.
-  - 6/18/26 - Normalize gambits. Normalize refreshEntry() & applyEntry(). Undo/redo/RW/FF/load/save for quadrant gambits.
-  
+  - 6/18/26 - Normalize gambits. Normalize refreshEntry() & applyEntry(). Undo/redo/RW/FF/load/save for quadrant gambits. Deadcode & todo updates.
+  - 6/19/26 - QC quad gambits, all gambits, undo branching, all moves.
+
+## Combined Saved Test
+  **2-3-3-6**
+    {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"startingPos"}],"Moves":[{"action":"move","turn":1,"player":"White","key":"WKRR","prev":"@KR1,1","post":"@KR3,3"},{"action":"move","turn":1,"player":"Black","key":"BKRR","prev":"@KR8,8","post":"@KR6,6"},{"action":"move","turn":2,"player":"White","key":"WKRR","prev":"@KR3,3","post":"@KR4,4"}],"Gambits":[{"gambitId":0,"action":"quad","src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":2,"stride":3,"opacity":0.5},{"gambitId":1,"action":"quad","src":"Q4,4","srcTile":[0,0,0],"quad":13,"perimeter":3,"stride":1,"opacity":0.5},{"gambitId":2,"action":"quad","src":"Q4,4","srcTile":[0,0,0],"quad":37,"perimeter":3,"stride":1,"opacity":0.5}],"AdvSqs":[{"action":"place","src":"KR4,4","srcTile":[4,0,0],"quad":1,"perimeter":0,"stride":0,"opacity":0.5},{"src":"KR4,4","srcTile":[4,0,0],"quad":1,"perimeter":1,"stride":2,"opacity":0.5},{"src":"KR4,4","srcTile":[4,0,0],"quad":1,"perimeter":2,"stride":3,"opacity":0.5},{"src":"KR4,4","srcTile":[4,0,0],"quad":1,"perimeter":3,"stride":4,"opacity":0.5},{"src":"KR4,4","srcTile":[4,0,0],"quad":1,"perimeter":4,"stride":5,"opacity":0.5},{"src":"KR4,4","srcTile":[4,0,0],"quad":1,"perimeter":5,"stride":6,"opacity":0.5}]}
+
+    {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"startingPos"}],
+    "Moves":[{"action":"move","turn":1,"player":"White","key":"WKRR","prev":"@KR1,1","post":"@KR3,3"},{"action":"move","turn":1,"player":"Black","key":"BKRR","prev":"@KR8,8","post":"@KR6,6"},{"action":"move","turn":2,"player":"White","key":"WKRR","prev":"@KR3,3","post":"@KR4,4"}],
+    "Gambits":[{"gambitId":0,"action":"quad","src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":2,"stride":3,"opacity":0.5},{"gambitId":1,"action":"quad","src":"Q4,4","srcTile":[0,0,0],"quad":13,"perimeter":3,"stride":1,"opacity":0.5},{"gambitId":2,"action":"quad","src":"Q4,4","srcTile":[0,0,0],"quad":37,"perimeter":3,"stride":1,"opacity":0.5}],
+    "AdvSqs":[{"action":"place","src":"KR4,4","srcTile":[4,0,0],"quad":1,"perimeter":0,"stride":0,"opacity":0.5},{"src":"KR4,4","srcTile":[4,0,0],"quad":1,"perimeter":1,"stride":2,"opacity":0.5},{"src":"KR4,4","srcTile":[4,0,0],"quad":1,"perimeter":2,"stride":3,"opacity":0.5},{"src":"KR4,4","srcTile":[4,0,0],"quad":1,"perimeter":3,"stride":4,"opacity":0.5},{"src":"KR4,4","srcTile":[4,0,0],"quad":1,"perimeter":4,"stride":5,"opacity":0.5},{"src":"KR4,4","srcTile":[4,0,0],"quad":1,"perimeter":5,"stride":6,"opacity":0.5}]}
+
+
 ## Gambits Development
  ### Quads, rook, bishop, duke.
   **0-0-3-0**

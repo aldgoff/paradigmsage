@@ -77,27 +77,6 @@ export function buildPayload(panel, action) {
 
   return { action };
 }
-// TEMPORARY: rerunGambits is required for undo/redo until incremental undo is implemented
-export function rerunGambits() {
-  console.log("cntrl: gambits.js - rerunGambits()");
-
-  const count = state.getBufferLength("Gambits");
-  const active = state.getCurrentIndex("Gambits");
-
-  // --- Hide ALL gambits ---
-  vGambits.clearGambits();
-
-  // --- Re-render all ---
-  for (let i = 0; i < active; i++) {
-    const entry = mGambits.fetchThisEntry(i);
-    if (!entry) continue;
-
-    const group = vGambits.makeQuadGroup(entry);
-    vGambits.render(group);
-  }
-
-  vGambits.refreshPanel();
-}
 // Seampoint: more global functions...
 
 // --- Handle Functions ---
@@ -153,7 +132,7 @@ export function convertEntryToLine(entry) {
   return line;
 }
 
-function handleFreezeQuadrant1(currAdvsq) {      // N Q1  R KB4,4 → KB7,7    :16
+function handleFreezeQuadrant1(currAdvsq) {     // N Q1  R KB4,4 → KB7,7    :16
   console.log("cntrl: gambits.js - handleFreezeQuadrant(currAdvsq).", currAdvsq);
 
   if(!currAdvsq) return;

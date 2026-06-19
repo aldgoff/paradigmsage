@@ -256,10 +256,9 @@ function buildAdvRects(srcTile, quadPairs, perimeter, stride, opacity) {
  * 2. No single source of registry
  * 3. Entry not canonical
  * 4. Load does not restore indexed state correctly
- * 5. Load does not use rerunGambits()
+ * 5. ✅ Free Load from rerunGambits()
  * 6. Group creation path is unclear
  * 7. Delete by passes state API
  * 8. Hard coded UI reset values
  * 9. Panel + state desync possibility.
 */
-
