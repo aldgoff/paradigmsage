@@ -68,7 +68,7 @@ export function clearTrays() {
   }
 
 export function trayIndices(type, spec="8x8x8") {
-  console.log("model: trays.js - trayIndices(type, spec)", type, spec);
+  // console.log("model: trays.js - trayIndices(type, spec)", type, spec);
 
   let i;
   let j;

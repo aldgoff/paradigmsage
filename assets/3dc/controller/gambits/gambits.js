@@ -93,10 +93,10 @@ function handleFreezeQuadrant(currAdvsq) {      // N Q1  R KB4,4 → KB7,7    :1
 
   const gambitId = state.getBufferLength("Gambits");
   const entry = { gambitId, action: "quad", ...currAdvsq };
-  // vGambits.renderGambit(entry); 
+
+  branchHistory(entry);
   state.pushNewGambit(entry);
 
-  // const group = vGambits.makeQuadGroup(entry);    // Recreate from entry.
   const group = view.buildAdvSqGroup(entry); // {srcTile: Array(3), quad: 1, perimeter: 0, stride: 0, opacity: 0.5}
   vGambits.getGambitGroups()[gambitId] = group;
   group.userData.entry = entry;
@@ -109,7 +109,6 @@ function handleFreezeQuadrant(currAdvsq) {      // N Q1  R KB4,4 → KB7,7    :1
   if(foundGroup) {
     console.log("*** group entry in userData.");
   }
-
 
   const line = convertEntryToLine(entry)
   vGambits.pushPanelLine(line);
@@ -131,21 +130,6 @@ export function convertEntryToLine(entry) {
 
   return line;
 }
-
-function handleFreezeQuadrant1(currAdvsq) {     // N Q1  R KB4,4 → KB7,7    :16
-  console.log("cntrl: gambits.js - handleFreezeQuadrant(currAdvsq).", currAdvsq);
-
-  if(!currAdvsq) return;
-
-  const { src, srcTile, quad, perimeter, stride, opacity } = currAdvsq;
-
-  state.clearBuffer("AdvSqs");                        // Advsq: change state.
-  vAdvsqs.removeFromScene();                          // De-render. // TODO: move to view layer.
-  vAdvsqs.clearAdvsqPanelParams("Q4,4");              // Update panel.
-
-  const { entry, line } = mGambits.makeQuadrantEntry(currAdvsq); // Transform panel payload into state entry and panel line.
-  applyQuadrantEntry({ entry, line });
-  }
 
 function handleFreezeAsLinear(currAdvsq) {      // N L1  R Q4,4  → Q8,4     :left_fore
   console.log("cntrl: gambits.js - handleFreezeAsLinear(currAdvsq)", currAdvsq);
@@ -202,6 +186,7 @@ function handleFreezeWithOverlaps(currAdvsq) {  // TODO: finish.
   const { src, srcTile, quad, perimeter, stride, opacity } = currAdvsq;  // Informative.
 
 
+  branchHistory(entry);
   // applyEntry(entry);  // Eventually.
 }
 
@@ -213,6 +198,7 @@ function handleFreezeAsKnight(currAdvsq) {      // TODO: finish.
   const { src, srcTile, quad, perimeter, stride, opacity } = currAdvsq;  // Informative.
 
   
+  branchHistory(entry);
   // applyEntry(entry);  // Eventually.
  }
 function handleFreezeAsPawn(currAdvsq) {        // TODO: finish.
@@ -223,6 +209,7 @@ function handleFreezeAsPawn(currAdvsq) {        // TODO: finish.
   const { src, srcTile, quad, perimeter, stride, opacity } = currAdvsq;  // Informative.
 
   
+  branchHistory(entry);
   // applyEntry(entry);  // Eventually.
   }
 function handleFreezeAsKing(currAdvsq) {        // TODO: finish.
@@ -233,6 +220,7 @@ function handleFreezeAsKing(currAdvsq) {        // TODO: finish.
   const { src, srcTile, quad, perimeter, stride, opacity } = currAdvsq;  // Informative.
 
   
+  branchHistory(entry);
   // applyEntry(entry);  // Eventually.
   }
 function handleFreezeAsAPlane(currAdvsq) {      // TODO: finish.
@@ -243,6 +231,7 @@ function handleFreezeAsAPlane(currAdvsq) {      // TODO: finish.
   const { src, srcTile, quad, perimeter, stride, opacity } = currAdvsq;  // Informative.
 
   
+  branchHistory(entry);
   // applyEntry(entry);  // Eventually.
 }
 
@@ -349,6 +338,26 @@ function buildAdvRects(srcTile, quadPairs, perimeter, stride, opacity) {
   });
 }
 
+function branchHistory(entry) {
+  console.log("cntrl: gambits.js - branchHistory(entry):", entry);
+
+  console.log("*** top, idx", state.getState()["Gambits"].length, state.getIndices()["Gambits"]);
+  if(!state.isAtEnd("Gambits")) {               // Undo branch.
+    let top = state.getBufferLength("Gambits");
+    const idx = state.getCurrentIndex("Gambits");
+    state.truncateState("Gambits", idx);
+    console.log("*** top, idx", top, idx);
+    while(top > idx) {
+      vGambits.popPanelLine();
+      top--;
+    }
+    vGambits.refreshPanel(entry);
+  }
+
+  vAdvsqs.clearAdvsqs();              // Remove all entries in downstream buffers.
+  state.clearBuffer("AdvSqs");
+  }
+
 function applyEntry(entry) {   // Clear curr, branch, state change, render, refresh panel.
   console.log("cntrl: gambits.js - applyEntry(entry)", entry);
 
@@ -364,17 +373,6 @@ function applyEntry(entry) {   // Clear curr, branch, state change, render, refr
 
 function applyQuadrantEntry({ entry, line }) {   // Group, state, render, panel.
   console.log("cntrl: gambits.js - applyQuadrantEntry(entry)", entry);
-
-  if(!state.isAtEnd("Gambits")) {               // Undo branch.
-    let top = state.getBufferLength("Gambits");
-    const idx = state.getCurrentIndex("Gambits");
-    state.truncateState("Gambits", idx);
-    while(top > idx) {
-      vGambits.popPanelLine();
-      top--;
-    }
-    vGambits.refreshPanel(entry);
-  }
 
   state.pushNewGambit(entry);                     // Change state.
   const group = vGambits.makeQuadGroup(entry);    // Recreate from entry.

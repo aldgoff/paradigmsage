@@ -21,7 +21,8 @@
 
 // --- Dependencies ---
   import * as state  from "../../model/state/state.js";
-  import * as quads  from "../../geometry/quads/quads.js";
+
+  import * as view   from "../../view/view.js";
 // Seampoint: more imports...
 
 // --- Globals ---
@@ -29,8 +30,17 @@
 // Seampoint: more globals...
 
 // --- UI ---
-export function clearMoves() {  // TODO: Empty function.
+export function clearMoves() {
   console.log("view : moves.js - clearMoves()");
+
+  let top = state.getBufferLength("Moves");
+  state.truncateState("Moves", 0);
+  while(top > 0) {
+    popPanelLine();
+    top--;
+  }
+
+  const scene = view.getContext().scene;
   }
 
 export function pushPanelLine(entry) {

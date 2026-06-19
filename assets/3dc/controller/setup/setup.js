@@ -33,7 +33,9 @@
 
   import * as view     from "../../view/view.js";
   import * as vSetup   from "../../view/setup/setup.js";
-  import * as vGambits from "../../view/gambits/gambits.js";  // Cancel animation.
+  import * as vMoves   from "../../view/moves/moves.js";
+  import * as vGambits from "../../view/gambits/gambits.js";
+  import * as vAdvsqs  from "../../view/advsqs/advsqs.js";
   import * as vPieces  from "../../view/pieces/pieces.js";    // Dehighlight selected pieces.
   import * as vTrays   from "../../view/trays/trays.js";
 
@@ -290,7 +292,7 @@ export function clearAllPieceSelections() {
 }
 // Seampoint: more global functions...
 
-function handleMakeBoard(payload) { // Setup handler.
+function handleMakeBoard(payload) { // Setup handler. TODO: undo branching?
   console.log("cntrl: setup.js - handleMakeBoard(payload):", payload);
 
   const { action, prevBoard, nextBoard, boardSize,trayType,trayGap } = payload;
@@ -319,6 +321,7 @@ function handlePlacePiece(payload) {
 
   buildForward(entry);
 
+  branchHistory(entry);
   applyEntry(entry);
 
   // --- Buttons ---
@@ -341,6 +344,7 @@ function handleShiftPiece(payload) {
 
   buildForward(entry);
 
+  branchHistory(entry);
   applyEntry(entry);
 
   clearAllPieceSelections();
@@ -356,6 +360,7 @@ function handleReturnPiece(payload) {
 
   buildForward(entry);
 
+  branchHistory(entry);
   applyEntry(entry);
 
   clearAllPieceSelections();
@@ -386,6 +391,7 @@ function handleFreeze(payload) {
       .length;  // Count number of pieces on the board.
   const entry = { action, data: numBoardPieces };
 
+  branchHistory(entry);
   applyEntry(entry);
   setButtonState("loaded");
   }
@@ -405,6 +411,7 @@ function handleStartingPos(payload) {
       .length;  // Count number of pieces on the board.
   // const entry = { action, data: boardPieces };
 
+  branchHistory(entry);
   applyEntry(entry);
   setButtonState("loaded");
   }
@@ -570,7 +577,31 @@ function initialLineup(entry) {
       }
     }
   }
-}
+  }
+
+function branchHistory(entry) {
+  console.log("cntrl: setup.js - branchHistory(entry):", entry);
+
+  if(!state.isAtEnd("Setup")) {               // Undo branch.
+    let top = state.getBufferLength("Setup");
+    const idx = state.getCurrentIndex("Setup");
+    state.truncateState("Setup", idx);
+    while(top > idx) {
+      vSetup.popPanelLine();
+      top--;
+    }
+    vSetup.refreshPanel(entry);
+  }
+
+  vMoves.clearMoves();                // Remove all entries in downstream buffers.
+  state.clearBuffer("Moves");
+
+  vGambits.clearGambits();
+  state.clearBuffer("Gambits");
+
+  vAdvsqs.clearAdvsqs();
+  state.clearBuffer("AdvSqs");
+  }
 
 function applyEntry(entry) {
   console.log("cntrl: setup.js - applyEntry(entry):", entry);
@@ -588,7 +619,7 @@ function applyEntry(entry) {
     3. Support factory trays.
     4. ✅ Make code work for all three board sizes.
     5. ✅ Implement startup position.
-    6. Implement undo branching.
+    6. ✅ Implement undo branching.
     7. ✅ Undo does not restore buttons.
     8. const max = 40;
     9. Stack management.

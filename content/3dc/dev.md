@@ -141,8 +141,8 @@ title: "Dev"
   - 6/16/26 - Add two stack move buttons. Popup help panels. Detect occupied dst tiles. Multi-line help texts. Move pieces around the board.
   - 6/17/26 - Popup help texts. White/Black move order. Indicate player. Plumbing for undo moves. Undo/Redo/RW/FF/Load/Save pure moves. QC moves. Undo branching. Push & Pop panel lines.
   - 6/18/26 - Normalize gambits. Normalize refreshEntry() & applyEntry(). Undo/redo/RW/FF/load/save for quadrant gambits. Deadcode & todo updates.
-  - 6/19/26 - Load reset. Occupancy reset. Normalize model layer.
-   QC quad gambits, all gambits, undo branching, all moves.
+  - 6/19/26 - Load reset. Occupancy reset. Normalize model layer. Undo branching.
+   QC quad gambits, all gambits, all moves.
 
 ## Combined Saved Test
   **2-3-3-6**

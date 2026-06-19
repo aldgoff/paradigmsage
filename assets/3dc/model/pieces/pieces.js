@@ -65,7 +65,7 @@ export function destroy(entry) {
   }
 
 export function movePieceFromTrayToBoard(key, dstStr) {  // "WQQP", "Q1,1". // TODO: assumes 8x8x8 board.
-  console.log("model: pieces.js - movePieceFromTrayToBoard(key, dstStr)", key, dstStr);
+  // console.log("model: pieces.js - movePieceFromTrayToBoard(key, dstStr)", key, dstStr);
 
   // --- Parse ---
     const spec = cSetup.boardSpec;                                  // Support all three board sizes.

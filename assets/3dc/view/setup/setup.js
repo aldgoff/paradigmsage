@@ -31,6 +31,8 @@
   import * as vBoards  from "../../view/boards/boards.js"
   import * as vTrays   from "../../view/trays/trays.js"
   import * as vPieces  from "../../view/pieces/pieces.js"
+
+  import * as view   from "../../view/view.js";
 // Seampoint: more imports...
 
 // --- Globals ---
@@ -39,6 +41,15 @@
 // --- UI ---
 export function clearSetup() {
   console.log("view : setup.js - clearSetup()");
+
+  let top = state.getBufferLength("Setup");
+  state.truncateState("Setup", 0);
+  while(top > 0) {
+    popPanelLine();
+    top--;
+  }
+
+  const scene = view.getContext().scene;
 
   vPieces.destroyPieces(mPieces.getPieceList());
   vTrays.destroyTrays();

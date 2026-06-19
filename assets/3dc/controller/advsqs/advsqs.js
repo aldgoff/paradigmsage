@@ -87,6 +87,7 @@ function handlePlace(payload) {
 
   const entry = mAdvsqs.makeEntry(payload);     // Transform panel payload into state entry.
   
+  branchHistory(entry);
   applyEntry(entry);
   }
 
@@ -121,6 +122,7 @@ function handleGrow(payload) {
 
   const nextEntry = { src, srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
 
+  branchHistory(nextEntry);
   applyEntry(nextEntry);  // Clear curr, branch, state change, render, refresh panel.
   }
 
@@ -246,13 +248,17 @@ function handleNextPiece(payload) {
 // Seampoint: more handlers...
 
 // --- Helpers ---
-function applyEntry(entry) {   // Clear curr, branch, state change, render, refresh panel.
-  console.log("cntrl: advsqs.js - applyEntry(entry)", entry);
+function branchHistory(entry) {
+  console.log("cntrl: advsqs.js - branchHistory(entry):", entry);
 
   if(!state.isAtEnd("AdvSqs")) {                // Branches undo history, discards original branch.
     const idx = state.getCurrentIndex("AdvSqs");
     state.truncateState("AdvSqs", idx);
   }
+  }
+
+function applyEntry(entry) {   // Clear curr, branch, state change, render, refresh panel.
+  console.log("cntrl: advsqs.js - applyEntry(entry)", entry);
 
   vAdvsqs.render(entry);              // Render the new advsq.
 

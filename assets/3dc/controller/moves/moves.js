@@ -200,6 +200,7 @@ function handleMove(payload) {
 
   forewardMove(entry);
 
+  branchHistory(entry);
   applyEntry(entry);
   }
 
@@ -305,8 +306,8 @@ function backwardMove(entry) {
   if(!ok) return { ok, err };
 }
 
-function applyEntry(entry) {
-  console.log("cntrl: moves.js - applyEntry(entry)", entry);
+function branchHistory(entry) {
+  console.log("cntrl: moves.js - branchHistory(entry):", entry);
 
   if(!state.isAtEnd("Moves")) {               // Undo branch.
     let top = state.getBufferLength("Moves");
@@ -319,26 +320,26 @@ function applyEntry(entry) {
     vMoves.refreshPanel(entry);
   }
 
-  // vGambits.clearGambits();  // Remove all entries in downstream buffers.
-  // state.clearBuffer("Gambits");
+  vGambits.clearGambits();            // Remove all entries in downstream buffers.
+  state.clearBuffer("Gambits");
 
-  vAdvsqs.clearAdvsqs();  // Remove all entries in downstream buffers.
+  vAdvsqs.clearAdvsqs();
   state.clearBuffer("AdvSqs");
+  }
 
+function applyEntry(entry) {
+  console.log("cntrl: moves.js - applyEntry(entry)", entry);
 
   state.pushNewMove(entry);           // Change state.
   vMoves.pushPanelLine(entry);        // Add line to panel.
   vMoves.refreshPanel(entry);
-
-  // TODO: remove all entries in the downstream buffers; 
-  // a new move invalidates gambits and advsqs.
 }
 // Seampoint: more local functions...
 
 /* TODO: QC checklist✅ 
     1. Write handle routines.
-    2. Branch.
-    3. Remove all downstream buffers.
+    2. ✅ Branch.
+    3. ✅ Remove all downstream buffers.
     4. Write the forward functions.
     5. Write the backward functions.
 */
