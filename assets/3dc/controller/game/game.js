@@ -558,9 +558,7 @@ function hardReset() {
     AdvSqs: []
   });
 
-  for(const key of state.getStateKeys()) {
-    state.setBufferIndex(key, 0);
-  }
+  console.log("====================");
   }
 
 function diagnostic(enabled=false) {

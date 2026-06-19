@@ -259,7 +259,7 @@ function applyEntry(entry) {   // Clear curr, branch, state change, render, refr
   state.pushNewAdvsq(entry);          // Log state change in undo buffer.
   vAdvsqs.refreshPanel(entry);        // Only needed by panels with derived fields.
   game.showUndoStatus();
-}
+  }
 
 function blank(payload) { // Convert panel strings to numbers, arrays, etc.
   let { src, srcTile, quad, perimeter, stride, opacity } = payload;  // Unpack primary fields.

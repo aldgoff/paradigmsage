@@ -26,8 +26,11 @@
   import * as planes   from "../../geometry/planes/planes.js";
   import * as quads    from "../../geometry/quads/quads.js";
 
+  import * as mPieces  from "../../model/pieces/pieces.js"
+
   import * as vBoards  from "../../view/boards/boards.js"
   import * as vTrays   from "../../view/trays/trays.js"
+  import * as vPieces  from "../../view/pieces/pieces.js"
 // Seampoint: more imports...
 
 // --- Globals ---
@@ -36,6 +39,10 @@
 // --- UI ---
 export function clearSetup() {  // TODO: Empty function.
   console.log("view : setup.js - clearSetup()");
+
+  vPieces.destroyPieces(mPieces.getPieceList());
+  vTrays.destroyTrays();
+  vBoards.destroyBoards();
   }
 
 export function pushPanelLine(entry) {
