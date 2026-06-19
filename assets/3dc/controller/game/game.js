@@ -265,7 +265,7 @@ async function handleLoad() {
 function handleSave() {
   console.log("cntrl: game.js - handleSave()");
 
-  diagnostic(true);
+  undoBufferDiagnostic(true);
   
   const stateStr = JSON.stringify(state.getState());  // One long single string.
   console.log(stateStr);
@@ -571,8 +571,8 @@ function hardReset() {
   console.log("====================");
   }
 
-function diagnostic(enabled=false) {
-  // console.log("cntrl: game.js - diagnostic(enabled=false):", enabled);
+function undoBufferDiagnostic(enabled=false) {
+  console.log("cntrl: game.js - undoBufferDiagnostic(enabled):", enabled);
 
   if(!enabled) return;
 

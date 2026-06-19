@@ -36,7 +36,7 @@ export function reset() {
 export function makeEntry(payload) {
   console.log(`model: setup.js - makeEntry(payload):`, payload);
 
-  const { action, prevBoard, nextBoard, boardSize,trayType,trayGap } = payload;
+  const { action, prevBoard, nextBoard, boardSize,trayType,trayGap } = payload;  // Informative.
 
   const entry = payload;
 

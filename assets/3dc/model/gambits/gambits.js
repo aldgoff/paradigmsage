@@ -43,15 +43,15 @@ export function reset() {
   vGambits.clearGambits();
   }
 
-export function makeEntry(payload) {
+export function makeEntry(payload) {  // Never called, specialized versions below.
   console.log(`model: gambits.js - makeEntry(payload):`, payload);
 
-  let { action, src, srcTile, quad, perimeter, stride, opacity } = payload;  // Informative.
+  const { action, src, srcTile, quad, perimeter, stride, opacity } = payload;  // Informative.
 
   const entry = payload;
 
   return entry;
-}
+  }
 
 export function makeQuadrantEntry(advsq) {
   console.log(`model: gambits.js - makeQuadrantEntry(advsq):`, advsq);
@@ -71,13 +71,6 @@ export function makeQuadrantEntry(advsq) {
   const line = { symbol, value: quad, piece: p, src, dst, feedback: area };
 
   return {entry, line};
-  }
-function convertEntryToLine(entry) {
-  console.log(`model: gambits.js - convertEntryToLine(entry):`, entry);
-
-  const line = entry;
-
-  return line;
   }
 
 export function makeLinearEntry(advsq) {
@@ -136,21 +129,8 @@ export function makeDuplexEntry(advsq) {
 
   return { entry, line };
 }
+// Seampoint: more Entry functions...
 
-export function fetchThisEntry(idx) {
-  console.log(`model: gambits.js - fetchThisEntry(idx):`, idx);
-
-  const len = state.getBufferLength("Gambits");
-  if (idx < 0 || idx >= len) return null;
-
-  const prev = state.getCurrentIndex("Gambits");
-  state.setBufferIndex("Gambits", idx + 1);
-
-  const entry = state.fetchCurrentState("Gambits");
-  state.setBufferIndex("Gambits", prev);
-
-  return entry;
-}
 // Seampoint: more global functions...
 
 // --- Helpers ---

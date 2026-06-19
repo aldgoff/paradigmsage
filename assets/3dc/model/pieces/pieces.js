@@ -122,9 +122,9 @@ export function movePieceFromTrayToBoard(key, dstStr) {  // "WQQP", "Q1,1". // T
     // console.log("*** piece:", structuredClone(pieceList[key]));
     // console.log("*** spec: ", structuredClone(spec));
 
-    console.log("*** pieceList", structuredClone(pieceList));                // Diagnositcs.
-    console.log("*** whiteTray", structuredClone(mTrays.getWhiteTray()));
-    console.log("*** blackTray", structuredClone(mTrays.getBlackTray()));
+    // console.log("*** pieceList", structuredClone(pieceList));                // Diagnositcs.
+    // console.log("*** whiteTray", structuredClone(mTrays.getWhiteTray()));
+    // console.log("*** blackTray", structuredClone(mTrays.getBlackTray()));
 
   return { ok: true, err: null };
   }
@@ -298,7 +298,7 @@ function destroyPieces(entry) {
 
 function createPiecesForEightBoard(trayGap) {
   console.log("model: pieces.js - createPiecesForEightBoard()", );
-  console.log("***", eight);
+  // console.log("***", eight);
   
   for(const player of ["White","Black"]) {
     const tray = (player === "White") 
@@ -313,7 +313,7 @@ function createPiecesForEightBoard(trayGap) {
 
 function createPiecesForTenBoards(trayGap) {
   console.log("model: pieces.js - createPiecesForTenBoards()", );
-  console.log("*** ", ten);
+  // console.log("*** ", ten);
   
   for(const player of ["White","Black"]) {
     const tray = (player === "White") 
@@ -328,7 +328,7 @@ function createPiecesForTenBoards(trayGap) {
 
 function createPiecesForTensBoards(trayGap) {
   console.log("model: pieces.js - createPiecesForTensBoards()", );
-  console.log("*** ", tens);
+  // console.log("*** ", tens);
   
   for(const player of ["White","Black"]) {
     const tray = (player === "White") 

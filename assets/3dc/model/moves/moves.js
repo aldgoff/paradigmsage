@@ -41,6 +41,16 @@ export function reset() {
   vMoves.clearMoves();
   }
 
+export function makeEntry(payload) {  // Never called, specialized versions below.
+  console.log(`model: gambits.js - makeEntry(payload):`, payload);
+
+  const { action, src, srcTile, quad, perimeter, stride, opacity } = payload;  // Informative.
+
+  const entry = payload;
+
+  return entry;
+  }
+
 export function makeMoveEntry(selections, payload) {
   console.log(`model: moves.js - makeMoveEntry(selections, payload):`, selections, payload);
   const { action, player } = payload;
@@ -69,6 +79,8 @@ export function makeMoveEntry(selections, payload) {
 
   return entry;
 }
+// Seampoint: more Entry functions...
+
 // Seampoint: more global functions...
 
 // --- Helpers ---
