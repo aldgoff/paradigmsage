@@ -33,15 +33,15 @@ export function clearMoves() {  // TODO: Empty function.
   console.log("view : moves.js - clearMoves()");
   }
 
-export function pushPanelLine(move) {
-  console.log("view : moves.js - pushPanelLine(move)", move);
+export function pushPanelLine(entry) {
+  console.log("view : moves.js - pushPanelLine(move)", entry);
   
-  const { action, turn, player, key, prev, post } = move;
+  const { action, turn, player, key, prev, post } = entry;
 
   const scroll = document.getElementById("move-list");
   if(!scroll) return;
 
-  const line = assembleMoveLine(move);
+  const line = assembleMoveLine(entry);
 
   const div = document.createElement("div");
   div.textContent = line;
@@ -49,7 +49,7 @@ export function pushPanelLine(move) {
   // Write to the scroll box.
   scroll.appendChild(div);
   scroll.scrollTop = scroll.scrollHeight;
-  }
+    }
 
 export function popPanelLine() {
   console.log("view : moves.js - popPanelLine()");
@@ -79,14 +79,14 @@ export function refreshPanel(move) {
       : "0.5";    // future
     children[i].style.opacity = opacity;
   }
-}
+  }
 
 export function refreshEntry(entry) {
   console.log("view : moves.js - refreshEntry(entry):", entry);
 
   const move = entry;
   refreshPanel(move);
-}
+  }
 
 export function cancelAnimation() {
   if (activeAnimation) {

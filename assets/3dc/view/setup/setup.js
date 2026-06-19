@@ -37,7 +37,7 @@
 // Seampoint: more globals...
 
 // --- UI ---
-export function clearSetup() {  // TODO: Empty function.
+export function clearSetup() {
   console.log("view : setup.js - clearSetup()");
 
   vPieces.destroyPieces(mPieces.getPieceList());
@@ -102,14 +102,14 @@ export function refreshPanel(board) {
     : panel.querySelector( `input[name="tray-type"][value="Real"]`);
   if(sizeRadio) sizeRadio.checked = true;
   if(trayTypeRadio) trayTypeRadio.checked = true;  
-}
+  }
 
 export function refreshEntry(entry) {
   console.log("view : setup.js - refreshEntry(entry):", entry);
 
   const board = entry;
   refreshPanel(board);
-}
+  }
 
 export function clear(entry) {
   console.log("view : setup.js - clear(entry)", entry);

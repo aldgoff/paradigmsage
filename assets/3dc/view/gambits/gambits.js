@@ -140,14 +140,14 @@ export function refreshPanel(gambit) {
       : "0.5";    // future
     children[i].style.opacity = opacity;
   }
-}
+  }
 
 export function refreshEntry(entry) {
   console.log("view : gambits.js - refreshEntry(entry):", entry);
 
   const gambit = entry;
   refreshPanel(gambit);
-}
+  }
 
 export function renderGambit(entry) {
   console.log("view : gambits.js - renderGambit(entry):", entry);

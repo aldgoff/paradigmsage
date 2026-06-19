@@ -28,6 +28,9 @@ export function init(playBoard) {
   panels.init();
   model.init(playBoard);
   view.init(playBoard);
+
+  panels.diagnostics();
+
 }
 // Seampoint: more global functions...
 

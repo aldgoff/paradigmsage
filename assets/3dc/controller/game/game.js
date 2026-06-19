@@ -13,6 +13,8 @@
 // Seampoint: more objects...
 
 // --- Dependencies ---
+  import * as panels   from "../../panels/panels.js";
+
   import * as cSetup   from "../../controller/setup/setup.js";
   import * as cMoves   from "../../controller/moves/moves.js";
   import * as cGambits from "../../controller/gambits/gambits.js";
@@ -22,6 +24,9 @@
   import * as mGambits from "../../model/gambits/gambits.js";
   import * as mMoves   from "../../model/moves/moves.js";
   import * as mSetup   from "../../model/setup/setup.js";
+  import * as mPieces  from "../../model/pieces/pieces.js";
+  import * as mTrays   from "../../model/trays/trays.js";
+  import * as mBoards  from "../../model/boards/boards.js";
 
   import * as view     from "../../view/view.js";
   import * as vAdvsqs  from "../../view/advsqs/advsqs.js";
@@ -241,12 +246,17 @@ async function handleLoad() {
       state.setBufferIndex(key, 0); // Reset all indexes to 0.
     }
 
-    vSetup.refreshEntry(null);
+    vSetup.refreshEntry(null);        // Reset panels.
     vMoves.refreshEntry(null);
     vGambits.refreshEntry(null);
     vAdvsqs.refreshEntry(null);
 
-    showUndoStatus(); // Good visual indicator of successful load.
+    mPieces.clearPieceState();        // Reset occupancies.
+    mTrays.clearTrays();
+    mBoards.clearOccupancy();
+    panels.diagnostics();
+
+    showUndoStatus();                 // Visual indicator of successful load.
   } catch (err) {
     console.error("Load failed:", err);
   }
@@ -598,10 +608,10 @@ function assertStateConsistency() {
 }
 // Seampoint: more local functions...
 
-/* TODO: QC checklist✅ 
-    1. Load/Save fails to make board.
-    2. Still have gambit issues.
+/* ✅ TODO: QC checklist
+    1. ✅ Load/Save fails to make board.
+    2. ✅ Still have gambit issues.
     3. ✅ Undo from play throws an error, play removed.
-    4. Load does not clear the scene.
+    4. ✅ Load does not clear the scene.
  */
 

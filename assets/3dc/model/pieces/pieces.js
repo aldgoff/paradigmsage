@@ -43,6 +43,14 @@ export function init(entry) {
   clearPieceState();
   createPiecesInTrays(entry);
   }
+  
+export function clearPieceState() {
+  console.log("model: pieces.js - clearPieceState()");
+
+  for(const key in pieceList) {
+    delete pieceList[key];
+  }
+  }
 
 export function destroy(entry) {
   console.log("model: pieces.js - destroy(entry)", entry);
@@ -287,13 +295,6 @@ function destroyPieces(entry) {
   }
   }
 
-function clearPieceState() {
-  console.log("model: pieces.js - clearPieceState()");
-
-  for(const key in pieceList) {
-    delete pieceList[key];
-  }
-  }
 
 function createPiecesForEightBoard(trayGap) {
   console.log("model: pieces.js - createPiecesForEightBoard()", );
