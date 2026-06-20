@@ -165,7 +165,6 @@ function handleUpdateParam(payload) {
     if(perimeter === currPerimeter) { // Panel limited.
       const corrected = { srcTile, quad, perimeter, stride, opacity };
       vAdvsqs.setAdvsqPanelParams(corrected);    // Update the control panel.
-      mGambits.buttonAffordances("freezeQ");
       state.replaceCurrentAdvsq(corrected);     // 🔥 no undo entry, no change in state, no need to render.
       return;
     }
