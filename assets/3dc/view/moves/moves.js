@@ -40,6 +40,7 @@ export function pushPanelLine(entry) {
   console.log("view : moves.js - pushPanelLine(move)", entry);
   
   const { action, turn, player, key, prev, post } = entry;
+  // const {action,turn,player,list:[{key,prev,post}]} = entry;
 
   const scroll = document.getElementById("move-list");
   if(!scroll) return;
@@ -52,7 +53,7 @@ export function pushPanelLine(entry) {
   // Write to the scroll box.
   scroll.appendChild(div);
   scroll.scrollTop = scroll.scrollHeight;
-    }
+  }
 
 export function popPanelLine() {
   console.log("view : moves.js - popPanelLine()");
@@ -70,7 +71,8 @@ export function refreshPanel(move) {
   console.log("view : moves.js - refreshPanel(move)", move);
 
   // const { action, turn, player, key, prev, post } = move;
-  
+  // const {action,turn,player,list:[{key,prev,post}]} = entry/move;
+
   const scroll = document.getElementById("move-list");    // Scroll list.
   if (!scroll) return;
 
@@ -86,6 +88,8 @@ export function refreshPanel(move) {
 
 export function refreshEntry(entry) {
   console.log("view : moves.js - refreshEntry(entry):", entry);
+
+  // const {action,turn,player,list:[{key,prev,post}]} = entry;
 
   const move = entry;
   refreshPanel(move);
@@ -104,6 +108,7 @@ function assembleMoveLine(move) {
   console.log("view : moves.js - assembleMoveLine(move)", move);
 
   let { action, turn, player, key, prev, post } = move;
+  // const {action,turn,player,list:[{key,prev,post}]} = entry;
 
   const index = state.getIndices().Moves;
 

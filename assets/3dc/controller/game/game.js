@@ -442,7 +442,6 @@ function processUndoBuffer(key, idx, N=1) {
     }
     state.setBufferIndex("Moves", idx-1);
     cMoves.buildBackward(entry);
-    vMoves.refreshPanel(entry);
 
     cSetup.clearAllTileSelections();
     cSetup.clearAllPieceSelections();

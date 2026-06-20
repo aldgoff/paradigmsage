@@ -91,8 +91,10 @@ export function buildForward(entry) {     // Redo.
   console.log("cntrl: moves.js - buildForward(entry)", entry);
 
   const { action, turn, player, key, prev, next } = entry;
+  // const { action, turn, player, list } = entry;
 
   if(     action === "move") {
+    // const {action,turn,player,list:[{key,prev,post}]} = entry;
     forewardMove(entry);
     }
   else if(action === "capture") {
@@ -138,8 +140,10 @@ export function buildBackward(entry) {    // Undo.
   console.log("cntrl: moves.js - buildForward(entry)", entry);
 
   const { action, turn, player, key, prev, next } = entry;
+  // const { action, turn, player, list } = entry;
 
   if(     action === "move") {
+    // const {action,turn,player,list:[{key,prev,post}]} = entry;
     backwardMove(entry);
     }
   else if(action === "capture") {
@@ -186,7 +190,7 @@ export function buildBackward(entry) {    // Undo.
 function handleMove(payload) {
   console.log("cntrl: moves.js - handleMove(payload)", payload);
 
-  const { action, player, piece, src, dst, sec, captured, opts } = payload;
+  const { action, player } = payload;
   const selections = cSelections.getSelections();
 
   const entry = mMoves.makeMoveEntry(selections, payload);
@@ -275,6 +279,7 @@ function forewardMove(entry) {
   console.log("cntrl: moves.js - forewardMove(entry)", entry);
 
   let { action, turn, player, key, prev, post } = entry;
+  // const {action,turn,player,list:[{key,prev,post}]} = entry;
 
   const boardSpec = cSetup.getCurrBoard().boardSize;
 
@@ -289,6 +294,7 @@ function backwardMove(entry) {
   console.log("cntrl: moves.js - backwardMove(entry)", entry);
 
   let { action, turn, player, key, prev, post } = entry;
+  // const {action,turn,player,list:[{key,prev,post}]} = entry;
 
   const boardSpec = cSetup.getCurrBoard().boardSize;
 

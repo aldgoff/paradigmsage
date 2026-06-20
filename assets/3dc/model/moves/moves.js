@@ -48,6 +48,7 @@ export function makeEntry(payload) {  // Never called, specialized versions belo
 
 export function makeMoveEntry(selections, payload) {
   console.log(`model: moves.js - makeMoveEntry(selections, payload):`, selections, payload);
+
   const { action, player } = payload;
   const { pieceSelections, tileSelections } = selections;
 
@@ -71,8 +72,8 @@ export function makeMoveEntry(selections, payload) {
   cSetup.clearAllPieceSelections();
   cSetup.clearAllTileSelections();
   cSelections.clearSelections();
-
-  return entry;
+  
+  return entry; // {"action":"move","turn":1,"player":"White","list":[{"key":"WKRR","prev":"@KR1,1","post":"@KR3,3"}]}.
 }
 // Seampoint: more Entry functions...
 

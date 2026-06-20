@@ -142,8 +142,21 @@ title: "Dev"
   - 6/17/26 - Popup help texts. White/Black move order. Indicate player. Plumbing for undo moves. Undo/Redo/RW/FF/Load/Save pure moves. QC moves. Undo branching. Push & Pop panel lines.
   - 6/18/26 - Normalize gambits. Normalize refreshEntry() & applyEntry(). Undo/redo/RW/FF/load/save for quadrant gambits. Deadcode & todo updates.
   - 6/19/26 - Load reset. Occupancy reset. Normalize model layer. Undo branching. Button affordances.
-  - 6/20/26 - Cross panel button affordances. Revise entry standards.
+  - 6/20/26 - Cross panel button affordances. Revise entry standards. Draft move entries.
    QC quad gambits, all gambits, all moves.
+
+## Moves:
+  **2-4-0-0**
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"startingPos"}],"Moves":[{"action":"move","turn":1,"player":"White","key":"WKRR","prev":"@KR1,1","post":"@KR3,3"},{"action":"move","turn":1,"player":"Black","key":"BKRR","prev":"@KR8,8","post":"@KR6,6"},{"action":"move","turn":2,"player":"White","key":"WKRR","prev":"@KR3,3","post":"@KR4,4"},{"action":"move","turn":2,"player":"Black","key":"BKRR","prev":"@KR6,6","post":"@KR5,5"}],"Gambits":[],"AdvSqs":[]}
+
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"startingPos"}],
+  "Moves":[
+    {"action":"move","turn":1,"player":"White","key":"WKRR","prev":"@KR1,1","post":"@KR3,3"},
+    {"action":"move","turn":1,"player":"Black","key":"BKRR","prev":"@KR8,8","post":"@KR6,6"},
+    {"action":"move","turn":2,"player":"White","key":"WKRR","prev":"@KR3,3","post":"@KR4,4"},
+    {"action":"move","turn":2,"player":"Black","key":"BKRR","prev":"@KR6,6","post":"@KR5,5"}],
+  "Gambits":[],
+  "AdvSqs":[]}
 
 ## Debug
   - Three examples, 2 & 3 fail (quad, linear, duplex)
