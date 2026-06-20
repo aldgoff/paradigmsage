@@ -74,6 +74,7 @@ export function makeMoveEntry(selections, payload) {
 
   return entry;
 }
+// Seampoint: more Entry functions...
 
 export function buttonAffordances(situation) {
   console.log("model: moves.js - buttonAffordances(situation)", situation);
@@ -106,9 +107,6 @@ export function buttonAffordances(situation) {
     throw new Error(`Unknown button situation ${situation} for moves.`);
   }
 }
-
-// Seampoint: more Entry functions...
-
 // Seampoint: more global functions...
 
 // --- Helpers ---

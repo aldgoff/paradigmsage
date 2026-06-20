@@ -62,6 +62,7 @@ export function panelDispatch(payload) {
     default: throw new Error(`Unknown gambit action ${action}.`);  break;
   }
 
+  mAdvsqs.buttonAffordances("build");
   game.showUndoStatus();                        // Update game panel (undo).
   }
 

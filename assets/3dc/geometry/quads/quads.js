@@ -8,7 +8,7 @@
 */
 
 // --- Load module ---
-import quadsData from "./quads.json" assert { type: "json" };
+  import quadsData from "./quads.json" assert { type: "json" };
   const quadsModule     = quadsData.quads_module;
   export const planeQuadTable  = quadsModule.planeQuadTable;
 // Seampoint: more objects...
@@ -165,7 +165,6 @@ export function quadToNickname(q) { // 1-60 → nickname.
 }
 
 export function findDuplexFaceQuad(faceQuad) {
-
   const Q = toQ(faceQuad);
 
   const rec = pqrTable(Q);
@@ -196,7 +195,6 @@ export function findDuplexFaceQuad(faceQuad) {
   const dukeQuads = pieceToQuads("duke");
 
   for (const q of dukeQuads) {
-
     if (q === Q) continue;
 
     const qr = pqrTable(q);

@@ -17,7 +17,9 @@
 
   import * as state    from "../../model/state/state.js";
   import * as mAdvsqs  from "../../model/advsqs/advsqs.js";
+  import * as mGambits from "../../model/gambits/gambits.js";
   import * as coords   from "../../foundation/coords/coords.js";  // normalizeTileToVts().
+  import * as quads    from "../../geometry/quads/quads.js";
 
   import * as vAdvsqs  from "../../view/advsqs/advsqs.js";
   import * as vGambits from "../../view/gambits/gambits.js";
@@ -79,6 +81,7 @@ function handlePlace(payload) {
   const { src, srcTile, quad, perimeter, stride, opacity } = payload;  // Unpack primary fields.
 
   mAdvsqs.buttonAffordances("src-tile");
+  updateGambitPanelButtons(quad, perimeter, stride);
   const entry = mAdvsqs.makeEntry(payload);     // Transform panel payload into state entry.
   
   branchHistory(entry);
@@ -91,6 +94,7 @@ function handleRemove(payload) {
   let { src, srcTile, quad, perimeter, stride, opacity } = payload;  // Unpack primary fields.
                                                                             // Manipulate fields.
   mAdvsqs.buttonAffordances("build");
+  mGambits.buttonAffordances("off");
   const newAdvsq = blank(payload);        // Repack normalized fields.
 
   state.clearBuffer("AdvSqs");            // Log state change in undo buffer.
@@ -113,8 +117,10 @@ function handleGrow(payload) {
   else {
     stride = 2;
   }
-  perimeter++;                                                              // Manipulate fields.
-  if(perimeter > 0) mAdvsqs.buttonAffordances("adv-sq");
+  perimeter++;   
+                                                             // Manipulate fields.
+  if(perimeter  >  0) mAdvsqs.buttonAffordances("adv-sq");
+  updateGambitPanelButtons(quad, perimeter, stride);
 
   const nextEntry = { src, srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
 
@@ -137,6 +143,7 @@ function handleShrink(payload) {
   if(--perimeter < 0) perimeter = 0.                                        // Manipulate fields.
   if(perimeter === 0) mAdvsqs.buttonAffordances("src-tile");
   if(perimeter  >  0) mAdvsqs.buttonAffordances("adv-sq");
+  updateGambitPanelButtons(quad, perimeter, stride);
 
   const nextEntry = { src, srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
 
@@ -158,6 +165,7 @@ function handleUpdateParam(payload) {
     if(perimeter === currPerimeter) { // Panel limited.
       const corrected = { srcTile, quad, perimeter, stride, opacity };
       vAdvsqs.setAdvsqPanelParams(corrected);    // Update the control panel.
+      mGambits.buttonAffordances("freezeQ");
       state.replaceCurrentAdvsq(corrected);     // 🔥 no undo entry, no change in state, no need to render.
       return;
     }
@@ -165,6 +173,7 @@ function handleUpdateParam(payload) {
   if(perimeter === 0) stride = 0;
   if(perimeter === 0) mAdvsqs.buttonAffordances("src-tile");
   if(perimeter  >  0) mAdvsqs.buttonAffordances("adv-sq");
+  updateGambitPanelButtons(quad, perimeter, stride);
 
   const nextEntry = { src, srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
 
@@ -204,6 +213,7 @@ function handleNextQuad(payload) {
     throw new Error("Unknown quad number in control: advsqs.js - handleNextQuad() quad", quad);
   }
   stride = 1; // First stride.
+  updateGambitPanelButtons(quad, perimeter, stride);
 
   const nextEntry = { src, srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
 
@@ -222,6 +232,7 @@ function handleNextPlane(payload) {
     throw new Error("Unknown quad number in control: advsqs.js - handleNextPlane() quad", quad);
   }
   stride = 1; // First stride.
+  updateGambitPanelButtons(quad, perimeter, stride);
 
   const nextEntry = { src, srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
 
@@ -240,6 +251,7 @@ function handleNextPiece(payload) {
     throw new Error("Unknown quad number in control: advsqs.js - handleNextPiece() quad", quad);
   }
   stride = 1; // First stride.
+  updateGambitPanelButtons(quad, perimeter, stride);
 
   const nextEntry = { src, srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
 
@@ -248,6 +260,20 @@ function handleNextPiece(payload) {
 // Seampoint: more handlers...
 
 // --- Helpers ---
+function updateGambitPanelButtons(quad, perimeter, stride) {
+  console.log("cntrl: advsqs.js - updateGambitPanelButtons(quad, perimeter, stride)", quad, perimeter, stride);
+
+  mGambits.buttonAffordances("freezeQ");
+  if(perimeter > 0) {
+    if(stride === 1 || stride == 2*perimeter+1) {
+      mGambits.buttonAffordances("linear");
+    }
+    else if(stride === perimeter+1 && quads.pqrTable(quad).quadType === "face") {
+      mGambits.buttonAffordances("duplex");
+    }
+  }
+}
+
 function branchHistory(entry) {
   console.log("cntrl: advsqs.js - branchHistory(entry):", entry);
 

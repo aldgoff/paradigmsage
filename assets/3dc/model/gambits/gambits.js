@@ -164,6 +164,17 @@ export function buttonAffordances(situation) {
       panels.enableButton("freezeO",   true);
     break;
 
+    case "linear":
+      buttonAffordances("off");
+      panels.enableButton("freezeQ",   true);
+      panels.enableButton("freezeL",   true);
+      break;
+    case "duplex":
+      buttonAffordances("off");
+      panels.enableButton("freezeQ",   true);
+      panels.enableButton("freezeD",   true);
+    break;
+
     case "freezeN":
       buttonAffordances("off");
       panels.enableButton("freezeN",   true);
