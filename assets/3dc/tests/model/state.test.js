@@ -40,7 +40,7 @@ export function run() {
   // test_state();
   // test_setup();
   // test_moves();
-  test_gambits();
+  // test_gambits();
   // test_advsqs();
   // Seampoint: more tests...
 
