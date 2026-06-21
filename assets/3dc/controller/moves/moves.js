@@ -128,7 +128,7 @@ export function buildForward(entry) {     // Redo.
     throw new Error(`Unknown forward action ${action} for moves.`);
   }
 
-  vMoves.refreshPanel();         
+  vMoves.refreshPanel(entry);         
 
   console.log("*** pieceList", mPieces.getPieceList());
   console.log("*** occupancy", mBoards.getBoardOccupancy());
@@ -177,7 +177,7 @@ export function buildBackward(entry) {    // Undo.
     throw new Error(`Unknown backward action ${action} for moves.`);
   }
 
-  vMoves.refreshPanel();         
+  vMoves.refreshPanel(entry);         
 
   console.log("*** pieceList", mPieces.getPieceList());
   console.log("*** occupancy", mBoards.getBoardOccupancy());

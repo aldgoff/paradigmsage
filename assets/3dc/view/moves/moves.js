@@ -92,7 +92,8 @@ export function popPanelLine() {
 export function refreshPanel(move) {
   console.log("view : moves.js - refreshPanel(move)", move);
 
-  // const { action, turn, player, key, prev, post } = move;
+  // const { action, turn, player } = move; // Can be null, not even used.
+  // const { action, turn, player, list } = move;
   // const {action,turn,player,list:[{key,prev,post}]} = entry/move;
 
   const scroll = document.getElementById("move-list");    // Scroll list.
@@ -106,6 +107,10 @@ export function refreshPanel(move) {
       : "0.5";    // future
     children[i].style.opacity = opacity;
   }
+  console.log("*** count", count);                        // Player radio buttons.
+  (count%2 === 1)
+    ? document.querySelector('input[name="move-player"][value="Black"]').checked = true
+    : document.querySelector('input[name="move-player"][value="White"]').checked = true;
   }
 
 export function refreshEntry(entry) {

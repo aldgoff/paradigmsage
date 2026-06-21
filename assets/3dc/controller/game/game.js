@@ -571,7 +571,7 @@ function hardReset() {
   }
 
 function undoBufferDiagnostic(enabled=false) {
-  console.log("cntrl: game.js - undoBufferDiagnostic(enabled):", enabled);
+  // console.log("cntrl: game.js - undoBufferDiagnostic(enabled):", enabled);
 
   if(!enabled) return;
 

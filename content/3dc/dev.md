@@ -143,6 +143,9 @@ title: "Dev"
   - 6/18/26 - Normalize gambits. Normalize refreshEntry() & applyEntry(). Undo/redo/RW/FF/load/save for quadrant gambits. Deadcode & todo updates.
   - 6/19/26 - Load reset. Occupancy reset. Normalize model layer. Undo branching. Button affordances.
   - 6/20/26 - Cross panel button affordances. Revise entry standards. Draft move entries. Captures.
+
+ ### Week 15:
+  - 6/21/26 - Fixed White/Black radio buttons in move panel.
    QC quad gambits, all gambits, all moves.
 
 ## Capture Development:
