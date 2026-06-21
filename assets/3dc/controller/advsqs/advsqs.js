@@ -3,15 +3,8 @@
   Purpose: Create and morph advancement squares vis srcTile, quad, perimeter, and stride, w/ opacity for offboard tiles.
   Author: Allan Goff
   Date: 4/21/26
-  Recommended access: import * as cAdvsqs from "../../controller/advsqs/advsqa.js";
+  Recommended access: import * as cAdvsqs from "../../controller/advsqs/advsqs.js";
   UI: the export functions.
-  Philosophy: Delete a module by deleting its directory - not so much.
-    controller/ model/ view/
-    play.md - DOM
-    main.js - regressions
-    view.js - wire, build payload
-    game.js - rewind, FF
-    state.js - undo, redo
 */
 
 // --- Load JSON ---
@@ -24,15 +17,20 @@
 
   import * as state    from "../../model/state/state.js";
   import * as mAdvsqs  from "../../model/advsqs/advsqs.js";
+  import * as mGambits from "../../model/gambits/gambits.js";
   import * as coords   from "../../foundation/coords/coords.js";  // normalizeTileToVts().
+  import * as quads    from "../../geometry/quads/quads.js";
 
   import * as vAdvsqs  from "../../view/advsqs/advsqs.js";
   import * as vGambits from "../../view/gambits/gambits.js";
 // Seampoint: more imports...
 
+// --- Globals ---
+// Seampoint: more globals...
+
 // --- UI ---
 export function panelDispatch(payload) {
-  // console.log("cntrl: advsqs.js - panelDispatch(payload):", payload);
+  console.log("cntrl: advsqs.js - panelDispatch(payload):", payload);
 
   vGambits.cancelAnimation(); // TODO: view leakage, need a better solution.
 
@@ -80,10 +78,14 @@ export function buildPayload(panel, action) {
 function handlePlace(payload) {
   console.log("cntrl: advsqs.js - handlePlace(payload)", payload);
 
-  let { src, srcTile, quad, perimeter, stride, opacity } = payload;  // Unpack primary fields.
+  const { src, srcTile, quad, perimeter, stride, opacity } = payload;  // Unpack primary fields.
 
-  const nextEntry = mAdvsqs.makeEntry(payload);        // Transform panel payload into state entry.
-  applyEntry(nextEntry);
+  mAdvsqs.buttonAffordances("src-tile");
+  updateGambitPanelButtons(quad, perimeter, stride);
+  const entry = mAdvsqs.makeEntry(payload);     // Transform panel payload into state entry.
+  
+  branchHistory(entry);
+  applyEntry(entry);
   }
 
 function handleRemove(payload) {
@@ -91,6 +93,8 @@ function handleRemove(payload) {
   
   let { src, srcTile, quad, perimeter, stride, opacity } = payload;  // Unpack primary fields.
                                                                             // Manipulate fields.
+  mAdvsqs.buttonAffordances("build");
+  mGambits.buttonAffordances("off");
   const newAdvsq = blank(payload);        // Repack normalized fields.
 
   state.clearBuffer("AdvSqs");            // Log state change in undo buffer.
@@ -113,10 +117,14 @@ function handleGrow(payload) {
   else {
     stride = 2;
   }
-  perimeter++;                                                              // Manipulate fields.
+  perimeter++;   
+                                                             // Manipulate fields.
+  if(perimeter  >  0) mAdvsqs.buttonAffordances("adv-sq");
+  updateGambitPanelButtons(quad, perimeter, stride);
 
   const nextEntry = { src, srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
 
+  branchHistory(nextEntry);
   applyEntry(nextEntry);  // Clear curr, branch, state change, render, refresh panel.
   }
 
@@ -133,6 +141,9 @@ function handleShrink(payload) {
     else if(stride >= 2*perimeter + 1) { stride = 2*perimeter - 1; }  // E2 (or off scale) - stays on end tile.
   }
   if(--perimeter < 0) perimeter = 0.                                        // Manipulate fields.
+  if(perimeter === 0) mAdvsqs.buttonAffordances("src-tile");
+  if(perimeter  >  0) mAdvsqs.buttonAffordances("adv-sq");
+  updateGambitPanelButtons(quad, perimeter, stride);
 
   const nextEntry = { src, srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
 
@@ -159,6 +170,9 @@ function handleUpdateParam(payload) {
     }
   }
   if(perimeter === 0) stride = 0;
+  if(perimeter === 0) mAdvsqs.buttonAffordances("src-tile");
+  if(perimeter  >  0) mAdvsqs.buttonAffordances("adv-sq");
+  updateGambitPanelButtons(quad, perimeter, stride);
 
   const nextEntry = { src, srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
 
@@ -198,6 +212,7 @@ function handleNextQuad(payload) {
     throw new Error("Unknown quad number in control: advsqs.js - handleNextQuad() quad", quad);
   }
   stride = 1; // First stride.
+  updateGambitPanelButtons(quad, perimeter, stride);
 
   const nextEntry = { src, srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
 
@@ -216,6 +231,7 @@ function handleNextPlane(payload) {
     throw new Error("Unknown quad number in control: advsqs.js - handleNextPlane() quad", quad);
   }
   stride = 1; // First stride.
+  updateGambitPanelButtons(quad, perimeter, stride);
 
   const nextEntry = { src, srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
 
@@ -234,6 +250,7 @@ function handleNextPiece(payload) {
     throw new Error("Unknown quad number in control: advsqs.js - handleNextPiece() quad", quad);
   }
   stride = 1; // First stride.
+  updateGambitPanelButtons(quad, perimeter, stride);
 
   const nextEntry = { src, srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
 
@@ -242,18 +259,38 @@ function handleNextPiece(payload) {
 // Seampoint: more handlers...
 
 // --- Helpers ---
-function applyEntry(entry) {   // Clear curr, branch, state change, render, refresh panel.
-  console.log("cntrl: advsqs.js - applyEntry(entry)", entry);
+function updateGambitPanelButtons(quad, perimeter, stride) {
+  console.log("cntrl: advsqs.js - updateGambitPanelButtons(quad, perimeter, stride)", quad, perimeter, stride);
+
+  mGambits.buttonAffordances("freezeQ");
+  if(perimeter > 0) {
+    if(stride === 1 || stride == 2*perimeter+1) {
+      mGambits.buttonAffordances("linear");
+    }
+    else if(stride === perimeter+1 && quads.pqrTable(quad).quadType === "face") {
+      mGambits.buttonAffordances("duplex");
+    }
+  }
+}
+
+function branchHistory(entry) {
+  console.log("cntrl: advsqs.js - branchHistory(entry):", entry);
 
   if(!state.isAtEnd("AdvSqs")) {                // Branches undo history, discards original branch.
     const idx = state.getCurrentIndex("AdvSqs");
     state.truncateState("AdvSqs", idx);
   }
+  }
+
+function applyEntry(entry) {   // Clear curr, branch, state change, render, refresh panel.
+  console.log("cntrl: advsqs.js - applyEntry(entry)", entry);
+
+  vAdvsqs.render(entry);              // Render the new advsq.
 
   state.pushNewAdvsq(entry);          // Log state change in undo buffer.
-  vAdvsqs.render(entry);              // Render the new advsq.
   vAdvsqs.refreshPanel(entry);        // Only needed by panels with derived fields.
-}
+  game.showUndoStatus();
+  }
 
 function blank(payload) { // Convert panel strings to numbers, arrays, etc.
   let { src, srcTile, quad, perimeter, stride, opacity } = payload;  // Unpack primary fields.

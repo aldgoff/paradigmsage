@@ -5,13 +5,6 @@
   Date: 4/30/26
   Recommended access: import * as mMoves from "../../model/moves/moves.js";
   UI: the export functions.
-  Philosophy: Delete a module by deleting its directory - not so much.
-    controller/ model/ view/
-    play.md - DOM
-    main.js - regressions
-    view.js - wire, build payload
-    game.js - rewind, FF
-    state.js - undo, redo
 */
 
 // --- Load JSON ---
@@ -21,6 +14,8 @@
 // Seampoint: more objects...
 
 // --- Dependencies ---
+  import * as panels  from "../../panels/panels.js";
+
   import * as cSetup      from "../../controller/setup/setup.js";
   import * as cSelections from "../../controller/selections/selections.js";
 
@@ -41,8 +36,19 @@ export function reset() {
   vMoves.clearMoves();
   }
 
+export function makeEntry(payload) {  // Never called, specialized versions below.
+  console.log(`model: gambits.js - makeEntry(payload):`, payload);
+
+  const { action, src, srcTile, quad, perimeter, stride, opacity } = payload;  // Informative.
+
+  const entry = payload;
+
+  return entry;
+  }
+
 export function makeMoveEntry(selections, payload) {
   console.log(`model: moves.js - makeMoveEntry(selections, payload):`, selections, payload);
+
   const { action, player } = payload;
   const { pieceSelections, tileSelections } = selections;
 
@@ -60,14 +66,79 @@ export function makeMoveEntry(selections, payload) {
   const post  = `@${dstStr}`;  
 
   let entry = { action, turn, player, key, prev, post };
-  let err = null;
   console.log("*** entry", entry);
 
   cSetup.clearAllPieceSelections();
   cSetup.clearAllTileSelections();
   cSelections.clearSelections();
+  
+  return entry; // {"action":"move","turn":1,"player":"White","list":[{"key":"WKRR","prev":"@KR1,1","post":"@KR3,3"}]}.
+}
 
+export function makeCaptureEntry(selections, payload) {
+  console.log(`model: gambits.js - makeCaptureEntry(selections, payload):`, selections, payload);
+
+  const { action, player } = payload;
+  const { pieceSelections, tileSelections } = selections;
+
+  const index = state.getIndices()["Moves"] + 1;
+  let turn = Math.floor((index + 1) / 2);
+
+  const [attacker, captured] = [...pieceSelections];
+  const piece1 = mPieces.getPieceList()[attacker];
+  const piece2 = mPieces.getPieceList()[captured];
+  console.log("*** piece1", piece1);
+  console.log("*** piece2", piece2);
+
+  let prev  = `@${piece1.pos}`;
+  let post  = `@${piece2.pos}`;
+
+  let first  = { key: attacker, prev, post };
+  let second = { key: captured, prev: post, post: `~${piece2.home.trayPos}` };
+  let list = [first, second];
+
+  let entry = { action, turn, player, list };
+
+  cSetup.clearAllPieceSelections();
+  cSetup.clearAllTileSelections();
+  cSelections.clearSelections();
+  
+  console.log("*** entry", entry);
   return entry;
+  }
+
+// Seampoint: more Entry functions...
+
+export function buttonAffordances(situation) {
+  console.log("model: moves.js - buttonAffordances(situation)", situation);
+
+  if(situation === "on") {
+    panels.enableButton("move",         true);            // Enable all the panel buttons.
+    panels.enableButton("capture",      true);
+    panels.enableButton("enpassant",    true);
+    panels.enableButton("castle",       true);
+    panels.enableButton("promote",      true);
+    panels.enableButton("duke-decay",   true);
+    panels.enableButton("bishop-decay", true);
+    panels.enableButton("fission",      true);
+    panels.enableButton("teleportation",true);
+    panels.enableButton("uplift",       true);
+    }
+  else if(situation === "off") {
+    panels.enableButton("move",         false);           // Disable all the panel buttons.
+    panels.enableButton("capture",      false);
+    panels.enableButton("enpassant",    false);
+    panels.enableButton("castle",       false);
+    panels.enableButton("promote",      false);
+    panels.enableButton("duke-decay",   false);
+    panels.enableButton("bishop-decay", false);
+    panels.enableButton("fission",      false);
+    panels.enableButton("teleportation",false);
+    panels.enableButton("uplift",       false);
+    }
+  else {
+    throw new Error(`Unknown button situation ${situation} for moves.`);
+  }
 }
 // Seampoint: more global functions...
 

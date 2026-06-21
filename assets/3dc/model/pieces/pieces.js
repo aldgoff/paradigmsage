@@ -43,6 +43,14 @@ export function init(entry) {
   clearPieceState();
   createPiecesInTrays(entry);
   }
+  
+export function clearPieceState() {
+  console.log("model: pieces.js - clearPieceState()");
+
+  for(const key in pieceList) {
+    delete pieceList[key];
+  }
+  }
 
 export function destroy(entry) {
   console.log("model: pieces.js - destroy(entry)", entry);
@@ -57,7 +65,7 @@ export function destroy(entry) {
   }
 
 export function movePieceFromTrayToBoard(key, dstStr) {  // "WQQP", "Q1,1". // TODO: assumes 8x8x8 board.
-  console.log("model: pieces.js - movePieceFromTrayToBoard(key, dstStr)", key, dstStr);
+  // console.log("model: pieces.js - movePieceFromTrayToBoard(key, dstStr)", key, dstStr);
 
   // --- Parse ---
     const spec = cSetup.boardSpec;                                  // Support all three board sizes.
@@ -114,9 +122,9 @@ export function movePieceFromTrayToBoard(key, dstStr) {  // "WQQP", "Q1,1". // T
     // console.log("*** piece:", structuredClone(pieceList[key]));
     // console.log("*** spec: ", structuredClone(spec));
 
-    console.log("*** pieceList", structuredClone(pieceList));                // Diagnositcs.
-    console.log("*** whiteTray", structuredClone(mTrays.getWhiteTray()));
-    console.log("*** blackTray", structuredClone(mTrays.getBlackTray()));
+    // console.log("*** pieceList", structuredClone(pieceList));                // Diagnositcs.
+    // console.log("*** whiteTray", structuredClone(mTrays.getWhiteTray()));
+    // console.log("*** blackTray", structuredClone(mTrays.getBlackTray()));
 
   return { ok: true, err: null };
   }
@@ -130,7 +138,7 @@ export function movePieceTileToTile(key, dstStr) {
     const piece = pieceList[key];                                   // Ensure valid args - should never fail.
     if(!piece) throw new Error(`Piece ${key} not found.`);
     if(!coords.onBoardStr(dstStr, spec)) throw new Error(`Destination ${dstStr} not on board.`);
-    console.log("*** Parse", piece);
+    // console.log("*** Parse", piece);
 
   // --- Update board occupancy ---
     const dstTile = coords.normalizeTileToVts(dstStr, spec);        // Determine occupancy indices.
@@ -139,7 +147,7 @@ export function movePieceTileToTile(key, dstStr) {
     const occupancy = mBoards.getBoardOccupancy();
     if(occupancy[z][x][y]) {
       const err = `Cannot move to an occupied ${occupancy[z][x][y]} tile ${dstStr}.`;
-      // console.log("***", err);
+      console.log("***", err);
       return { ok: false, err };
     }
     const [Z,X,Y] = utils.add(mBoards.getOrigin(), piece.coords); // Previous.
@@ -287,17 +295,10 @@ function destroyPieces(entry) {
   }
   }
 
-function clearPieceState() {
-  console.log("model: pieces.js - clearPieceState()");
-
-  for(const key in pieceList) {
-    delete pieceList[key];
-  }
-  }
 
 function createPiecesForEightBoard(trayGap) {
   console.log("model: pieces.js - createPiecesForEightBoard()", );
-  console.log("***", eight);
+  // console.log("***", eight);
   
   for(const player of ["White","Black"]) {
     const tray = (player === "White") 
@@ -312,7 +313,7 @@ function createPiecesForEightBoard(trayGap) {
 
 function createPiecesForTenBoards(trayGap) {
   console.log("model: pieces.js - createPiecesForTenBoards()", );
-  console.log("*** ", ten);
+  // console.log("*** ", ten);
   
   for(const player of ["White","Black"]) {
     const tray = (player === "White") 
@@ -327,7 +328,7 @@ function createPiecesForTenBoards(trayGap) {
 
 function createPiecesForTensBoards(trayGap) {
   console.log("model: pieces.js - createPiecesForTensBoards()", );
-  console.log("*** ", tens);
+  // console.log("*** ", tens);
   
   for(const player of ["White","Black"]) {
     const tray = (player === "White") 

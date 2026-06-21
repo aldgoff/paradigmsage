@@ -2,49 +2,135 @@
   "state_module": {
     "_example": "A sequence of 4 invertible undo/redo arrays.",
     "_cannonicalSchema": "Each model layer module file is responsible for complying to this standard.",
-    "Setup": [
-      { "action": "makeBoard",    "boardSize": "8x8x8", "trayType": "real" },
-      { "action": "placePiece",   "data": "BKRP@KR7,7" },
-      { "action": "shiftPiece",   "data": "BKRP:KR7,7>KR6,6" },
-      { "action": "placePiece",   "data": "BKRR@KR8,8" },
-      { "action": "placePiece",   "data": "BKBS@KB5,5" },
-      { "action": "returnPiece",  "data": "BKRR~KR1,1" },
-      { "action": "returnPiece",  "data": "BKRP~KR2,2" },
-      { "action": "freezePuzzle", "data": "1" },
-      { "action": "play",         "data": "game or puzzle" },
-      { "action": "_lastLine"  }
-    ],
-    "Moves": [
-      { "turn":  1, "player": "White", "piece": "P", "src": "K2,2", "action": "move", "dst": "K4,4", "captured": "", "sec": "", "annotations": "ch" },
-      { "turn":  1, "player": "Black", "piece": "R", "src": "K1,1", "action": "capture", "dst": "K4,6", "captured": "B", "sec": "Q5,6", "annotations": "ch" },
-      { "turn": 14, "player": "White", "piece": "S", "src": "K2,2", "action": "fission", "dst": "K4,4", "captured": "RB", "sec": "Q5,6", "annotations": "ch" },
-      { "turn": 14, "player": "White", "action": "fission", "steps": [
-        { "color": "W", "piece": "S", "image": "piece", "src": "KB1,1",  "dst": null },
-        { "color": "W", "piece": "S", "image": "ghost", "src": "TKB1,1", "dst": null },
-        { "color": "W", "piece": "B", "image": "ghost", "src": null,     "dst": "TKB1,2" },
-        { "color": "W", "piece": "D", "image": "ghost", "src": null,     "dst": "TKB2,1" },
+    "entries": {
+      "_templateGambits": [
+        {"gambitId":99, "action":"quad|linear(2)|duplex|overlap(4)", "ray|rayPair":"...|[,]", "AdvSqs":["..."],"opacity":0.5},
+        {"gambitId":0, "action":"quadrant", "rayPair":["LFU","RFU"], "AdvSqs":["..."]},
+        {"gambitId":1, "action":"duplex",   "ray":"LFU", "AdvSqs":["...","..."]},
+        {"gambitId":2, "action":"linear2",  "ray":"LFU", "AdvSqs":[["...","..."],["...","..."]]},
+        {"gambitId":3, "action":"linear3",  "ray":"LFU", "AdvSqs":[["...","..."],["...","..."],["...","..."]]},
+        {"gambitId":4, "action":"overlapB", "ray":"LFU", "AdvSqs":["...",["...","..."]]},
+        {"gambitId":5, "action":"overlapQ", "ray":"LFU", "AdvSqs":["...",["...","..."],"..."]},
+        {"gambitId":6, "action":"overlapH", "ray":"LFU", "AdvSqs":[["...","..."],["...","..."]]},
+        {"gambitId":7, "action":"overlapF", "ray":"LFU", "AdvSqs":["...","..."]}
+      ],
+      "_templateMove": [
 
-        { "color": "W", "piece": "B", "image": "piece", "src": null,   "dst": "QB3,5" },
-        { "color": "B", "piece": "N", "image": "piece", "src": "K6,6", "dst": "TKN1,1" },
-        { "color": "W", "piece": "D", "image": "piece", "src": null,   "dst": "K6,6" }
+      ],
+      "Setup": [
+        { "action":"makeBoard",    
+            "prevBoard":{"boardSize":"0x0x0", "trayType":"None", "trayGap":0}, 
+            "postBoard":{"boardSize":"8x8x8", "trayType":"Real", "trayGap":0} },
+        { "action":"placePiece",  "key":"BKRR", "prev":"~KR1,1", "post":"@KR8,8"},
+        { "action":"shiftPiece",  "key":"BKRR", "prev":"@KR8,8", "post":"@KR7,7"},
+        { "action":"returnPiece", "key":"BKRR", "prev":"@KR7,7", "post":"~KR1,1"},
+        { "action":"placePiece",  "key":"BKRP", "prev":"~KR2,2", "post":"@KR6,6"},
+        { "action":"freezePuzzle", "data":1},
+        { "action": "_lastLine"  }
+      ],
+      "Setup1": [
+        { "action": "makeBoard",    "boardSize": "8x8x8", "trayType": "real" },
+        { "action": "placePiece",   "data": "BKRP@KR7,7" },
+        { "action": "shiftPiece",   "data": "BKRP:KR7,7>KR6,6" },
+        { "action": "placePiece",   "data": "BKRR@KR8,8" },
+        { "action": "placePiece",   "data": "BKBS@KB5,5" },
+        { "action": "returnPiece",  "data": "BKRR~KR1,1" },
+        { "action": "returnPiece",  "data": "BKRP~KR2,2" },
+        { "action": "freezePuzzle", "data": "1" },
+        { "action": "play",         "data": "game or puzzle" },
+        { "action": "_lastLine"  }
+      ],
+      "Moves": [
+        { "action": "move",          "turn":  1, "player": "White", "list": [{"key": "WKRR", "prev": "@KR1,1", "post": "@KR3,3"}] },
+        { "action": "capture",       "turn":  2, "player": "White", "list": [{"key": "WKRR", "prev": "@KR1,1", "post": "@KR3,3"},
+                                                                             {"key": "BKRR", "prev": "@KR3,3", "post": "~KR8,8"}] },
+        { "action": "enPassant",     "turn":  3, "player": "White", "list": [{"key": "WKRP", "prev": "@KR5,5", "post": "@KN6,6"},
+                                                                             {"key": "BKNP", "prev": "@KN5,5", "post": "~KN2,2"}] },
+        { "action": "castle",        "turn":  4, "player": "White", "list": [{"key": "WKKK", "prev": "@K1,1",  "post": "@KN1,1"},
+                                                                             {"key": "WKRR", "prev": "@KR1,1", "post": "@KB1,1"}] },
+        { "action": "double",        "turn":  5, "player": "White", "list": [{"key": "WKKK", "prev": "@K1,1",  "post": "@Q1,1"},
+                                                                             {"key": "WKRR", "prev": "@KR1,1", "post": "@QB1,1"},
+                                                                             {"key": "WQRR", "prev": "@QR1,1", "post": "@K1,1"}] },
+        { "action": "promote",       "turn":  6, "player": "White", "list": [{"key": "WKRP", "prev": "@KR7,7", "post": "-"},
+                                                                             {"key": "WKRQ", "prev": "+",      "post": "@KR8,8"}] },
+        { "action": "dukeDecay",     "turn":  7, "player": "White", "list": [{"key": "WKBS", "prev": "@KB1,1", "post": "-"},
+                                                                             {"key": "WKBB", "prev": "+",      "post": "@KB1,1"},
+                                                                             {"key": "WKBD", "prev": "+",      "post": "@KB3,3"}] },
+        { "action": "bishopDecay",   "turn":  8, "player": "White", "list": [{"key": "WKBS", "prev": "@KB1,1", "post": "-"},
+                                                                             {"key": "WKBB", "prev": "+",      "post": "@KB5,5"},
+                                                                             {"key": "WKBD", "prev": "+",      "post": "@KB1,1"}] },
+        { "action": "fission",       "turn":  9, "player": "White", "list": [{"key": "WKBS", "prev": "@KB1,1", "post": "-"},
+                                                                             {"key": "WKBB", "prev": "+",      "post": "@KB3,3"},
+                                                                             {"key": "WKBD", "prev": "+",      "post": "@KB5,5"}] },
+        { "action": "teleportation", "turn": 10, "player": "White", "list": [{"key": "WKBD", "prev": "@KB1,1", "post": "-"},
+                                                                             {"key": "WKBB", "prev": "@KB7,7", "post": "-"},
+                                                                             {"key": "WKBS", "prev": "+",      "post": "@KB7,7"}] },
+        { "action": "uplift",        "turn": 11, "player": "White", "list": [{"key": "WKNU", "prev": "@KN8,6", "post": "-"},
+                                                                             {"key": "WKBB", "prev": "@KN8,8", "post": "-"},
+                                                                             {"key": "WKBS", "prev": "+",      "post": "KN8,8"}] },
 
-      ], "annotations": "ch" },
-      { "turn": 3, "moves": ["qnP-QN3,4", "..."], "coords": ["...", "..."], "annotations": ["...", "..."] }
-    ],
-    "Gambits": [
-      { "Q":37, "src": "Q3,3", "dst": "KB2,2", "area": 0 }, 
-      { "Q":38, "src": "Q3,3", "dst": "KN3,3", "area": 0 }, 
-      { "Q": 1, "src": "Q3,3", "dst": "Q1,1" , "area": 0 },
-      { "Q": 1, "src": "Q3,3", "dst": [6,3,3], "area": 0 }
-    ],
-    "AdvSqs": [
-      { "src": "Q4,4", "srcTile": [0,0,0], "quad": 1, "perimeter": 2, "stride": 0, "opacity": 0.50 },
-      { "src": "Q4,4", "srcTile": [0,0,0], "quad": 1, "perimeter": 3, "stride": 0, "opacity": 0.50 },
-      { "src": "Q4,4", "srcTile": [0,0,0], "quad": 1, "perimeter": 2, "stride": 1, "opacity": 0.50 },
-      { "src": "Q4,4", "srcTile": [0,0,0], "quad": 1, "perimeter": 2, "stride": 2, "opacity": 0.50 },
-      { "src": "Q4,4", "srcTile": [0,0,0], "quad": 2, "perimeter": 2, "stride": 2, "opacity": 0.50 },
-      { "src": "Q4,4", "srcTile": [0,0,0], "quad":13, "perimeter": 2, "stride": 0, "opacity": 0.50 }
-    ]
+        { "turn": 3, "moves": ["qnP-QN3,4", "..."], "coords": ["...", "..."], "annotations": ["...", "..."] }
+      ],
+      "Moves1": [
+        { "turn":  1, "player": "White", "piece": "P", "src": "K2,2", "action": "move", "dst": "K4,4", "captured": "", "sec": "", "annotations": "ch" },
+        { "turn":  1, "player": "Black", "piece": "R", "src": "K1,1", "action": "capture", "dst": "K4,6", "captured": "B", "sec": "Q5,6", "annotations": "ch" },
+        { "turn": 14, "player": "White", "piece": "S", "src": "K2,2", "action": "fission", "dst": "K4,4", "captured": "RB", "sec": "Q5,6", "annotations": "ch" },
+        { "turn": 14, "player": "White", "action": "fission", "steps": [
+          { "color": "W", "piece": "S", "image": "piece", "src": "KB1,1",  "dst": null },
+          { "color": "W", "piece": "S", "image": "ghost", "src": "TKB1,1", "dst": null },
+          { "color": "W", "piece": "B", "image": "ghost", "src": null,     "dst": "TKB1,2" },
+          { "color": "W", "piece": "D", "image": "ghost", "src": null,     "dst": "TKB2,1" },
+
+          { "color": "W", "piece": "B", "image": "piece", "src": null,   "dst": "QB3,5" },
+          { "color": "B", "piece": "N", "image": "piece", "src": "K6,6", "dst": "TKN1,1" },
+          { "color": "W", "piece": "D", "image": "piece", "src": null,   "dst": "K6,6" }
+
+        ], "annotations": "ch" },
+        { "turn": 3, "moves": ["qnP-QN3,4", "..."], "coords": ["...", "..."], "annotations": ["...", "..."] }
+      ],
+      "Gambits": [
+        { "gambitId":0, "action":"quadrant", "ray":["LFU","RFU"], "dst":"KR4,4", "AdvSqs":[{}],                      "opacity":0.5 },
+        { "gambitId":1, "action":"duplex",   "ray":["LFU"],       "dst":"KR4,4", "AdvSqs":[{},{}],                   "opacity":0.5 },
+        { "gambitId":2, "action":"linear2",  "ray":["LFU"],       "dst":"KR4,4", "AdvSqs":[[{},{}],[{},{}]],         "opacity":0.5 },
+        { "gambitId":3, "action":"linear3",  "ray":["LFU"],       "dst":"KR4,4", "AdvSqs":[[{},{}],[{},{}],[{},{}]], "opacity":0.5 },
+        { "gambitId":4, "action":"overlapB", "ray":["LFU"],       "dst":"KR4,4", "AdvSqs":[{},[{},{}]],              "opacity":0.5 },
+        { "gambitId":5, "action":"overlapQ", "ray":["LFU"],       "dst":"KR4,4", "AdvSqs":[{},[{},{}],{}],           "opacity":0.5 },
+        { "gambitId":6, "action":"overlapH", "ray":["LFU"],       "dst":"KR4,4", "AdvSqs":[[{},{}],[{},{}]],         "opacity":0.5 },
+        { "gambitId":7, "action":"overlapF", "ray":["LFU"],       "dst":"KR4,4", "AdvSqs":[{},{}],                   "opacity":0.5 }
+      ],
+      "Gambits1": [
+        { "Q":37, "src": "Q3,3", "dst": "KB2,2", "area": 0 }, 
+        { "Q":38, "src": "Q3,3", "dst": "KN3,3", "area": 0 }, 
+        { "Q": 1, "src": "Q3,3", "dst": "Q1,1" , "area": 0 },
+        { "Q": 1, "src": "Q3,3", "dst": [6,3,3], "area": 0 }
+      ],
+      "AdvSqs": [
+        { "src": "Q4,4", "quad": 1, "perimeter": 2, "stride": 0, "opacity": 0.50 },
+        { "src": "Q4,4", "quad": 1, "perimeter": 3, "stride": 0, "opacity": 0.50 },
+        { "src": "Q4,4", "quad": 1, "perimeter": 2, "stride": 1, "opacity": 0.50 },
+        { "src": "Q4,4", "quad": 1, "perimeter": 2, "stride": 2, "opacity": 0.50 },
+        { "src": "Q4,4", "quad": 2, "perimeter": 2, "stride": 2, "opacity": 0.50 },
+        { "src": "Q4,4", "quad":13, "perimeter": 2, "stride": 0, "opacity": 0.50 }
+      ],
+      "AdvSqs1": [
+        { "src": "Q4,4", "srcTile": [0,0,0], "quad": 1, "perimeter": 2, "stride": 0, "opacity": 0.50 },
+        { "src": "Q4,4", "srcTile": [0,0,0], "quad": 1, "perimeter": 3, "stride": 0, "opacity": 0.50 },
+        { "src": "Q4,4", "srcTile": [0,0,0], "quad": 1, "perimeter": 2, "stride": 1, "opacity": 0.50 },
+        { "src": "Q4,4", "srcTile": [0,0,0], "quad": 1, "perimeter": 2, "stride": 2, "opacity": 0.50 },
+        { "src": "Q4,4", "srcTile": [0,0,0], "quad": 2, "perimeter": 2, "stride": 2, "opacity": 0.50 },
+        { "src": "Q4,4", "srcTile": [0,0,0], "quad":13, "perimeter": 2, "stride": 0, "opacity": 0.50 }
+      ]
+    },
+    "panelLines": {
+      "Setup": [],
+      "Moves": [],
+      "Gambits": [
+        " 1 Q1  R KB4,4 → KB6,6   : 9", 
+        " 2 L1  B Q4,4  → KB6,4   :LFU", 
+        " 3 DMM D Q4,4  → KR4,4   :1,0,0|Left", 
+        ""
+      ]
+    }
   }
 }
 

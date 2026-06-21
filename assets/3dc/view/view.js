@@ -5,13 +5,6 @@
   Date: 4/02/26
   Recommended access: import * as view from "../view/view.js";
   UI: the export functions.
-  Philosophy: Delete a module by deleting its directory - not so much.
-    controller/ model/ view/
-    play.md - DOM
-    main.js - regressions
-    view.js - wire, build payload
-    game.js - rewind, FF
-    state.js - undo, redo
 */
 
 // --- Load JSON ---
@@ -58,15 +51,15 @@ export function init(playBoard) {
   cameras.setJitter(range, speed);
   }
 
-export function buildAdvSqGroup(specs) { // Params: srcTile, quad, perimeter, stride, opacity.
-  console.log("view : view.js - buildAdvSqGroup(specs).", specs);
+export function buildAdvSqGroup(entry) { // Params: srcTile, quad, perimeter, stride, opacity.
+  console.log("view : view.js - buildAdvSqGroup(specs).", entry);
 
   const group = new THREE.Group();
 
   group.userData = group.userData || {};
   group.userData.overlays = [];
 
-  const { src, srcTile, quad, perimeter, stride, opacity } = specs;
+  const { gambitId, action, src, srcTile, quad, perimeter, stride, opacity } = entry;
 
   const advsq = gAdvsqs.AdvSq.fromQuad(srcTile, quad, perimeter);
   const piece = advsq.getPiece();
@@ -86,7 +79,7 @@ export function buildAdvSqGroup(specs) { // Params: srcTile, quad, perimeter, st
     decorateQuadPerimeter(lastPerim, perim, piece, quadType, group, opacity, stride, 0.05);
   }
 
-  console.log("view : view.js - buildAdvSqGroup()...group", group);
+  console.log("*** group.userData", group.userData);
   return group;
   }
 

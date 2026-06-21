@@ -5,13 +5,6 @@
   Date: 4/15/26
   Recommended access: import * as mGambits from "../../model/gambits/gambits.js";
   UI: the export functions.
-  Philosophy: Dlete a module by deleting its directory - not so much.
-    controller/ model/ view/
-    play.md - DOM
-    main.js - regressions
-    view.js - wire, build payload
-    game.js - rewind, FF
-    state.js - undo, redo
 */
 
 // --- Load JSON ---
@@ -20,6 +13,7 @@
 // Seampoint: more objects...
 
 // --- Dependencies ---
+  import * as panels  from "../../panels/panels.js";
   import * as utils   from "../../../utils/utils.js";  
 
   import * as state   from "../../model/state/state.js";
@@ -41,6 +35,16 @@ export function reset() {
   console.log("model: gambits.js - reset()");
 
   vGambits.clearGambits();
+  }
+
+export function makeEntry(payload) {  // Never called, specialized versions below.
+  console.log(`model: gambits.js - makeEntry(payload):`, payload);
+
+  const { action, src, srcTile, quad, perimeter, stride, opacity } = payload;  // Informative.
+
+  const entry = payload;
+
+  return entry;
   }
 
 export function makeQuadrantEntry(advsq) {
@@ -119,20 +123,104 @@ export function makeDuplexEntry(advsq) {
 
   return { entry, line };
 }
+// Seampoint: more Entry functions...
 
-export function fetchThisEntry(idx) {
-  console.log(`model: gambits.js - fetchThisEntry(idx):`, idx);
+export function buttonAffordances(situation) {
+  console.log("model: gambits.js - buttonAffordances(situation)", situation);
 
-  const len = state.getBufferLength("Gambits");
-  if (idx < 0 || idx >= len) return null;
+  switch (situation) {
+    case "on":
+      panels.enableButton("freezeQ",   true);             // Enable all the panel buttons.
+      panels.enableButton("freezeL",   true);
+      panels.enableButton("freezeD",   true);
+      panels.enableButton("freezeO",   true);
 
-  const prev = state.getCurrentIndex("Gambits");
-  state.setBufferIndex("Gambits", idx + 1);
+      panels.enableButton("freezeN",   true);
+      panels.enableButton("freezeP",   true);
+      panels.enableButton("freezeK",   true);
+      panels.enableButton("asAPlane",  true);
 
-  const entry = state.fetchCurrentState("Gambits");
-  state.setBufferIndex("Gambits", prev);
+      panels.enableButton("nextPlane", true);
+      panels.enableButton("expand",    true);
+      panels.enableButton("contract",  true);
+      panels.enableButton("delete",    true);
+      panels.enableButton("remove",    true);
+      break;
 
-  return entry;
+    case "freezeQ":
+      buttonAffordances("off");
+      panels.enableButton("freezeQ",   true);
+      break;
+    case "freezeL":
+      buttonAffordances("off");
+      panels.enableButton("freezeL",   true);
+      break;
+    case "freezeD":
+      buttonAffordances("off");
+      panels.enableButton("freezeD",   true);
+      break;
+    case "freezeO":
+      buttonAffordances("off");
+      panels.enableButton("freezeO",   true);
+    break;
+
+    case "linear":
+      buttonAffordances("off");
+      panels.enableButton("freezeQ",   true);
+      panels.enableButton("freezeL",   true);
+      break;
+    case "duplex":
+      buttonAffordances("off");
+      panels.enableButton("freezeQ",   true);
+      panels.enableButton("freezeD",   true);
+    break;
+
+    case "freezeN":
+      buttonAffordances("off");
+      panels.enableButton("freezeN",   true);
+      break;
+    case "freezeP":
+      buttonAffordances("off");
+      panels.enableButton("freezeP",   true);
+      break;
+    case "freezeK":
+      buttonAffordances("off");
+      panels.enableButton("freezeK",   true);
+      break;
+    case "asAPlane":
+      buttonAffordances("off");
+      panels.enableButton("asAPlane",  true);
+    break;
+
+    case "selected":
+      buttonAffordances("off");
+      panels.enableButton("nextPlane", true);
+      panels.enableButton("expand",    true);
+      panels.enableButton("contract",  true);
+      panels.enableButton("delete",    true);
+      panels.enableButton("remove",    true);
+      break;
+    case "off":
+      panels.enableButton("freezeQ",   false);              // Disable all the panel buttons.
+      panels.enableButton("freezeL",   false);
+      panels.enableButton("freezeD",   false);
+      panels.enableButton("freezeO",   false);
+
+      panels.enableButton("freezeN",   false);
+      panels.enableButton("freezeP",   false);
+      panels.enableButton("freezeK",   false);
+      panels.enableButton("asAPlane",  false);
+      panels.enableButton("next",      false);
+
+      panels.enableButton("expand",    false);
+      panels.enableButton("contract",  false);
+      panels.enableButton("delete",    false);
+      panels.enableButton("removeAll", false);
+      break;
+    default:
+      throw new Error(`Unknown button situation ${situation} for gambits.`);
+      break;
+  }
 }
 // Seampoint: more global functions...
 
@@ -239,10 +327,9 @@ function buildAdvRects(srcTile, quadPairs, perimeter, stride, opacity) {
  * 2. No single source of registry
  * 3. Entry not canonical
  * 4. Load does not restore indexed state correctly
- * 5. Load does not use rerunGambits()
+ * 5. ✅ Free Load from rerunGambits()
  * 6. Group creation path is unclear
  * 7. Delete by passes state API
  * 8. Hard coded UI reset values
  * 9. Panel + state desync possibility.
 */
-

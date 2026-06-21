@@ -74,6 +74,18 @@ export function clearPieceFromBoardOccupancy(key) { // occupancy[z][x][y] = null
   }
 }
 
+export function clearOccupancy() {
+  console.log("model: boards.js - clearOccupancy()");
+
+  for(let z = 0; z < occupancy.length; z++) {
+    for(let x = 0; x < occupancy[z].length; x++) {
+      for(let y = 0; y < occupancy[z][x].length; y++) {
+        occupancy[z][x][y] = null;
+      }
+    }
+  }
+  }
+
 export function isOccupied(vts) {
   let occupied = false;
   if(vts) {
@@ -86,18 +98,6 @@ export function isOccupied(vts) {
 // Seampoint: more global functions...
 
 // --- Helpers ---
-function clearOccupancy() {
-  console.log("model: boards.js - clearOccupancy()");
-
-  for(let z = 0; z < occupancy.length; z++) {
-    for(let x = 0; x < occupancy[z].length; x++) {
-      for(let y = 0; y < occupancy[z][x].length; y++) {
-        occupancy[z][x][y] = null;
-      }
-    }
-  }
-}
-
 function pieceLocOnBoard(key) { // [z, x, y]|null.
   const occ = occupancy;
 

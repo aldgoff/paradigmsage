@@ -5,13 +5,6 @@
   Date: 4/27/26
   Recommended access: import * as cMoves from "../../controller/moves/moves.js";
   UI: the export functions.
-  Philosophy: Delete a module by deleting its directory - not so much.
-    controller/ model/ view/
-    play.md - DOM
-    main.js - regressions
-    view.js - wire, build payload
-    game.js - rewind, FF
-    state.js - undo, redo
 */
 
 // --- Load JSON ---
@@ -98,12 +91,14 @@ export function buildForward(entry) {     // Redo.
   console.log("cntrl: moves.js - buildForward(entry)", entry);
 
   const { action, turn, player, key, prev, next } = entry;
+  // const { action, turn, player, list } = entry;
 
   if(     action === "move") {
+    // const {action,turn,player,list:[{key,prev,post}]} = entry;
     forewardMove(entry);
     }
   else if(action === "capture") {
-    // TODO: ForwardTask()
+    forewardCapture(entry);
     }
   else if(action === "enpassant") {
     // TODO: ForwardTask()
@@ -142,15 +137,17 @@ export function buildForward(entry) {     // Redo.
   }
 
 export function buildBackward(entry) {    // Undo.
-  console.log("cntrl: moves.js - buildForward(entry)", entry);
+  console.log("cntrl: moves.js - buildBackward(entry)", entry);
 
   const { action, turn, player, key, prev, next } = entry;
+  // const { action, turn, player, list } = entry;
 
   if(     action === "move") {
+    // const {action,turn,player,list:[{key,prev,post}]} = entry;
     backwardMove(entry);
     }
   else if(action === "capture") {
-    // TODO: BackwardTask()
+    backwardCapture(entry);
     }
   else if(action === "enpassant") {
     // TODO: BackwardTask()
@@ -193,22 +190,33 @@ export function buildBackward(entry) {    // Undo.
 function handleMove(payload) {
   console.log("cntrl: moves.js - handleMove(payload)", payload);
 
-  const { action, player, piece, src, dst, sec, captured, opts } = payload;
+  const { action, player } = payload;
   const selections = cSelections.getSelections();
 
   const entry = mMoves.makeMoveEntry(selections, payload);
 
   forewardMove(entry);
 
-  applyEntry(entry);
+  branchHistory(entry);
+  state.pushNewMove(entry);           // Change state.
+  vMoves.pushPanelLine(entry);        // Create and add line to panel.
+  vMoves.refreshPanel(entry);
   }
 
 function handleCapture(payload) {
   console.log("cntrl: moves.js - handleCapture(payload)", payload);
 
-  const { player, piece, src, dst, sec, captured, opts } = payload;  // Informative.
+  const { action, player } = payload;
+  const selections = cSelections.getSelections();
 
-  // TODO: change state - handleCapture().
+  const entry = mMoves.makeCaptureEntry(selections, payload);
+
+  forewardCapture(entry);
+
+  branchHistory(entry);
+  state.pushNewMove(entry);           // Change state.
+  vMoves.pushPanelCaptureLine(entry); // Add line to panel.
+  vMoves.refreshPanel(entry);
   }
 
 function handleEnpassant(payload) {
@@ -281,12 +289,9 @@ function forewardMove(entry) {
   console.log("cntrl: moves.js - forewardMove(entry)", entry);
 
   let { action, turn, player, key, prev, post } = entry;
-
-  const boardSpec = cSetup.getCurrBoard().boardSize;
+  // const {action,turn,player,list:[{key,prev,post}]} = entry;
 
   const [, dstStr] = post.split("@");
-  const dstTile = coords.normalizeTileToVts(dstStr, boardSpec);
-
   const { ok, err } = mPieces.movePieceTileToTile(key, dstStr);
   if(!ok) return { ok, err };
   }
@@ -295,18 +300,40 @@ function backwardMove(entry) {
   console.log("cntrl: moves.js - backwardMove(entry)", entry);
 
   let { action, turn, player, key, prev, post } = entry;
-
-  const boardSpec = cSetup.getCurrBoard().boardSize;
+  // const {action,turn,player,list:[{key,prev,post}]} = entry;
 
   const [, dstStr] = prev.split("@");
-  const dstTile = coords.normalizeTileToVts(dstStr, boardSpec);
-
   const { ok, err } = mPieces.movePieceTileToTile(key, dstStr);
   if(!ok) return { ok, err };
 }
 
-function applyEntry(entry) {
-  console.log("cntrl: moves.js - applyEntry(entry)", entry);
+function forewardCapture(entry) {
+  console.log("cntrl: moves.js - forewardCapture(entry)", entry);
+
+  const { action, turn, player, list } = entry;
+  const attacker = list[0]; // {key,prev,post}
+  const captured = list[1]; // {key,prev,post}
+
+  const [, dstStr]  = attacker.post.split("@");
+  mPieces.movePieceFromBoardToTray(captured.key);
+  mPieces.movePieceTileToTile(attacker.key, dstStr);
+  }
+
+function backwardCapture(entry) { // TODO: write.
+  console.log("cntrl: moves.js - backwardCapture(entry)", entry);
+
+  const { action, turn, player, list } = entry;
+  const attacker = list[0]; // {key,prev,post}
+  const captured = list[1]; // {key,prev,post}
+
+  const [, attStr]  = attacker.prev.split("@");
+  const [, capStr]  = captured.prev.split("@");
+  mPieces.movePieceTileToTile(attacker.key, attStr);
+  mPieces.movePieceFromTrayToBoard(captured.key, capStr);
+}
+
+function branchHistory(entry) {
+  console.log("cntrl: moves.js - branchHistory(entry):", entry);
 
   if(!state.isAtEnd("Moves")) {               // Undo branch.
     let top = state.getBufferLength("Moves");
@@ -319,26 +346,26 @@ function applyEntry(entry) {
     vMoves.refreshPanel(entry);
   }
 
-  // vGambits.clearGambits();  // Remove all entries in downstream buffers.
-  // state.clearBuffer("Gambits");
+  vGambits.clearGambits();            // Remove all entries in downstream buffers.
+  state.clearBuffer("Gambits");
 
-  vAdvsqs.clearAdvsqs();  // Remove all entries in downstream buffers.
+  vAdvsqs.clearAdvsqs();
   state.clearBuffer("AdvSqs");
+  }
 
-  game.showUndoStatus();
+function applyEntry(entry) {
+  console.log("cntrl: moves.js - applyEntry(entry)", entry);
 
   state.pushNewMove(entry);           // Change state.
   vMoves.pushPanelLine(entry);        // Add line to panel.
-
-  // TODO: remove all entries in the downstream buffers; 
-  // a new move invalidates gambits and advsqs.
+  vMoves.refreshPanel(entry);
 }
 // Seampoint: more local functions...
 
 /* TODO: QC checklist✅ 
     1. Write handle routines.
-    2. Branch.
-    3. Remove all downstream buffers.
+    2. ✅ Branch.
+    3. ✅ Remove all downstream buffers.
     4. Write the forward functions.
     5. Write the backward functions.
 */

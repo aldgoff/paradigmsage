@@ -5,13 +5,6 @@
   Date: 4/15/26
   Recommended access: import * as vAdvsqs from "../../view/advsqs/advsqs.js";
   UI: the export functions.
-  Philosophy: Dlete a module by deleting its directory - not so much.
-    controller/ model/ view/
-    play.md - DOM
-    main.js - regressions
-    view.js - wire, build payload
-    game.js - rewind, FF
-    state.js - undo, redo
 */
 
 // --- Load JSON ---
@@ -116,6 +109,15 @@ export function refreshPanel(advsq) {
   panel.querySelector('[name="advsq-perimeter"]').value    = perimeter;
   panel.querySelector('[name="advsq-stride"]').value       = stride;
   panel.querySelector('[name="advsq-opacity"]').value      = opacity;
+}
+
+export function refreshEntry(entry) {
+  console.log("view : advsqs.js - refreshEntry(entry):", entry);
+  
+  clearAdvsqPanelParams("KR4,4"); // Just to prove load is working.
+
+  // const advsq = entry; // Same code as in Setup, Moves, & Gambits.
+  // refreshPanel(advsq);
 }
 
 export function setAdvsqPanelInitialParams() {
@@ -352,6 +354,5 @@ function specsToPanelParams(specs) {
     opacity:   specs.opacity
   };
 }
-
 // Seampoint: more local functions...
 

@@ -200,13 +200,13 @@ layout: "play"
     <button data-action="freezeP">Pawn</button>
     <button data-action="freezeK">King</button>
     <button data-action="asAPlane">Plane</button>
-    <button data-action="nextPlane">Next</button>
+    <button data-action="next">Next</button>
   </div>
   <div class="section">
     <button data-action="expand">Expand</button>
     <button data-action="contract">Contract</button>
     <button data-action="delete">Delete</button>
-    <button data-action="remove">Remove All</button>
+    <button data-action="removeAll">Remove All</button>
   </div>
   <div class="section">
     <label> Open   :  <output name="gambit-open"  style="opacity:0.7; font-style:italic;"> [,,,,,]</output> </label>
@@ -304,7 +304,6 @@ layout: "play"
   <div class="section"> <label>Selections ----- </label> </div>
   <div class="section"> <label> Piece Selections:  <output name="diags-pieceSels" style="font-style:italic;">0</output> </label> </div>
   <div class="section"> <label> Tile Selections:   <output name="diags-tileSels"  style="font-style:italic;">0</output> </label> </div>
-  <div class="section"> <label> Buttons:           <output name="diags-buttons"   style="font-style:italic;">0</output> </label> </div>
   <div class="section"> <label>Mesh Groups ----- </label> </div>
   <div class="section"> <label> Tile Map:          <output name="diags-tileMap"        style="font-style:italic;">0</output> </label> </div>
   <div class="section"> <label> Curr Pieces Group: <output name="diags-currPiecesGroup"style="font-style:italic;">0</output> </label> </div>

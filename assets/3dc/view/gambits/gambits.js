@@ -5,13 +5,6 @@
   Date: 4/15/26
   Recommended access: import * as vGambits from "../../view/gambits/gambits.js";
   UI: the export functions.
-  Philosophy: Dlete a module by deleting its directory - not so much.
-    controller/ model/ view/
-    play.md - DOM
-    main.js - regressions
-    view.js - wire, build payload
-    game.js - rewind, FF
-    state.js - undo, redo
 */
 
 // --- Load JSON ---
@@ -36,10 +29,8 @@
 
 export function getGambitGroups() { return gambitGroups; }
 // --- UI ---
-export function clearGambits() {  // TODO: clearGambits broken.
+export function clearGambits() {
   console.log("view : gambits.js - clearGambits()");
-
-  return;
 
   let top = state.getBufferLength("Gambits");
   state.truncateState("Gambits", 0);
@@ -49,8 +40,6 @@ export function clearGambits() {  // TODO: clearGambits broken.
   }
 
   const scene = view.getContext().scene;
-  // return;
-
 
   // --- 1. Remove ALL groups (offboard + containers) ---
   scene.children
@@ -77,21 +66,44 @@ export function clearGambits() {  // TODO: clearGambits broken.
 
 export function pushPanelLine(line) {
   console.log("view : gambits.js - pushPanelLine(line)", line);
+  
+  const { symbol, value, piece, src, dst, feedback } = line;
+
+  const row = assembleRowFromLine(line);
+
+  writeRowToScrollList(row);
+  }
+function assembleRowFromLine(line) {
+  console.log("view : gambits.js - assembleRowFromLine(line):", line);
 
   const { symbol, value, piece, src, dst, feedback } = line;
+
+  const count = state.getIndices().Gambits;
+
+  // --- column widths ---
+  const idxCol  = String(count).padStart(2);      // right-aligned
+  const sCol    = `${symbol}${value}`.padEnd(3);  // "Q37 "
+  const pCol    = `${piece}`.padEnd(1);           // "R "
+  const srcCol  = String(src).padEnd(5);          // "KB4,4  "
+  const dstCol  = String(dst).padEnd(8);          // allow offboard arrays
+  const areaCol = String(feedback).padStart(2);   // right-aligned
+
+  const row = `${idxCol} ${sCol} ${pCol} ${srcCol} → ${dstCol}:${areaCol}`;
+
+  return row;
+  }
+function writeRowToScrollList(row) {
+  console.log("view : gambits.js - writeRowToScrollList(row)", row);
 
   const scroll = document.getElementById("gambit-list");
   if(!scroll) return;
 
-  const row = assembleLine(line);
-
   const div = document.createElement("div");
   div.textContent = row;
 
-  // Write to the scroll box.
   scroll.appendChild(div);
   scroll.scrollTop = scroll.scrollHeight;
-  }
+}
 
 export function popPanelLine() {
   console.log("view : gambits.js - popPanelLine()");
@@ -121,6 +133,28 @@ export function refreshPanel(gambit) {
       : "0.5";    // future
     children[i].style.opacity = opacity;
   }
+  }
+
+export function refreshEntry(entry) {
+  console.log("view : gambits.js - refreshEntry(entry):", entry);
+
+  const gambit = entry;
+  refreshPanel(gambit);
+  }
+
+export function renderGambit(entry) {
+  console.log("view : gambits.js - renderGambit(entry):", entry);
+
+  // const line = "Reduce entry to line.";
+  const symbol   = "S";
+  const value    = "60";
+  const piece    = "P";
+  const src      = "src";
+  const dst      = "dst";
+  const feedback = "F";
+  const line = { symbol, value, piece, src, dst, feedback };
+
+  pushPanelLine(line);
 }
 
 export function makeQuadGroup(entry) {
@@ -135,7 +169,8 @@ export function makeQuadGroup(entry) {
   }
 
   const group = view.buildAdvSqGroup(advsq); // {srcTile: Array(3), quad: 1, perimeter: 0, stride: 0, opacity: 0.5}
-  group.userData.entry = entry;
+  // group.userData.entry = entry;
+  // group.userData.gambitId = entry.gambitId;
 
   return group;
   }
@@ -146,7 +181,8 @@ export function makeLinearGroup(entry) {
   const { move, piece, src, dst, ray, advsqs, opacity } = entry;
 
   const group = view.buildAdvRectGroups(entry);
-  group.userData.entry = entry;
+  // group.userData.entry = entry;
+  // group.userData.gambitId = entry.gambitId;
 
   return group;
   }
@@ -157,7 +193,8 @@ export function makeDuplexGroup(entry) {
   const { move, piece, src, dst, ray, advsqs, opacity } = entry;
 
   const group = view.buildDuplexGroup(entry);
-  group.userData.entry = entry;
+  // group.userData.entry = entry;
+  // group.userData.gambitId = entry.gambitId;
 
   return group;
   }
@@ -244,28 +281,28 @@ function applyMaterialOpacity(obj, opacity) {
   }
 }
 /* ----- ----- ----- ----- */
-export function undo(gambit) {
-  const scene = view.getContext().scene;
+export function undo(entry) {
+  console.log("view : gambits.js - undo(entry).", entry);
 
-  const group = scene.children.find(
-    g => g.userData?.entry === gambit
-  );
+  const { gambitId, action, src, srcTile, quad, perimeter, stride, opacity } = entry;
 
-  if (group) {
-    derenderGambit(group);
+  const group = gambitGroups[gambitId];
+  if(group) {
+    derenderGambit(group);    
   }
   }
 
-export function redo(gambit) {
-  const group = makeQuadGroup(gambit);
+export function redo(entry) {
+  console.log("view : gambits.js - redo(entry).", entry);
 
-  group.userData.entry = gambit;
+  const group = gambitGroups[entry.gambitId];
+  console.log("*** gambitGroups.length", gambitGroups.length);
 
-  render(group);
+  render(group, { animate: false });      // Render.
 }
 
 export function render(group, { animate = false } = {}) {
-  console.log("view : gambits.js - render( not shown)");
+  console.log("view : gambits.js - render(group)", group);
 
   view.getContext().scene.add(group);
 
@@ -377,6 +414,7 @@ function animateFreezeTransition(group, duration = 0.8) {
 function derenderGambit(group) {
   console.log("view : gambits.js - derenderGambit(...)",);
   console.log("derender entry:", group.userData.entry);
+
   console.log("overlays tracked:", group.userData.overlays?.length);
 
   if (!group) return;
@@ -408,9 +446,9 @@ function derenderGambit(group) {
   }
 
 function assembleLine(line) {
-  const { symbol, value, piece, src, dst, feedback } = line;
+  console.log("view : gambits.js - assembleLine(line):", line);
 
-  // const { Q, src, dst, area } = gambit;
+  const { symbol, value, piece, src, dst, feedback } = line;
 
   const count = state.getIndices().Gambits;
 

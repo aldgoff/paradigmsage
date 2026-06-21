@@ -5,13 +5,6 @@
   Date: 5/03/26
   Recommended access: import * as vSetup from "../../view/setup/setup.js";
   UI: the export functions.
-  Philosophy: Delete a module by deleting its directory - not so much.
-    controller/ model/ view/
-    play.md - DOM
-    main.js - regressions
-    view.js - wire, build payload
-    game.js - rewind, FF
-    state.js - undo, redo
 */
 
 // --- Load JSON ---
@@ -26,16 +19,34 @@
   import * as planes   from "../../geometry/planes/planes.js";
   import * as quads    from "../../geometry/quads/quads.js";
 
+  import * as mPieces  from "../../model/pieces/pieces.js"
+
   import * as vBoards  from "../../view/boards/boards.js"
   import * as vTrays   from "../../view/trays/trays.js"
+  import * as vPieces  from "../../view/pieces/pieces.js"
+
+  import * as view   from "../../view/view.js";
 // Seampoint: more imports...
 
 // --- Globals ---
 // Seampoint: more globals...
 
 // --- UI ---
-export function clearSetup() {  // TODO: Empty function.
+export function clearSetup() {
   console.log("view : setup.js - clearSetup()");
+
+  let top = state.getBufferLength("Setup");
+  state.truncateState("Setup", 0);
+  while(top > 0) {
+    popPanelLine();
+    top--;
+  }
+
+  const scene = view.getContext().scene;
+
+  vPieces.destroyPieces(mPieces.getPieceList());
+  vTrays.destroyTrays();
+  vBoards.destroyBoards();
   }
 
 export function pushPanelLine(entry) {
@@ -95,7 +106,14 @@ export function refreshPanel(board) {
     : panel.querySelector( `input[name="tray-type"][value="Real"]`);
   if(sizeRadio) sizeRadio.checked = true;
   if(trayTypeRadio) trayTypeRadio.checked = true;  
-}
+  }
+
+export function refreshEntry(entry) {
+  console.log("view : setup.js - refreshEntry(entry):", entry);
+
+  const board = entry;
+  refreshPanel(board);
+  }
 
 export function clear(entry) {
   console.log("view : setup.js - clear(entry)", entry);
@@ -122,11 +140,9 @@ export function clearSetupPanelParams(params) {
 
   const sizeRadio     = panel.querySelector( `input[name="board-size"][value="${boardSize}"]`);
   const trayTypeRadio = panel.querySelector( `input[name="tray-type"][value="${trayType}"]`);
-  // const initPosRadio  = panel.querySelector( `input[name="initial-pos"][value="${initialPos}"]`);
 
   if(sizeRadio) sizeRadio.checked = true;
   if(trayTypeRadio) trayTypeRadio.checked = true;
-  // if(initPosRadio) initPosRadio.checked = true;
 }
 // Seampoint: more global functions...
 

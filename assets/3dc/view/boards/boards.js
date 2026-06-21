@@ -25,6 +25,13 @@
 // Seampoint: more globals.
 
 // --- UI ---
+export function destroyBoards() {
+  console.log("view : boards.js - destroyBoards()");
+
+  clearBoard(currentBoardGroup);
+  }
+
+
 export function render(board) {
   console.log("view : boards.js - render(board)", board);
 

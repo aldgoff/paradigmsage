@@ -140,9 +140,218 @@ title: "Dev"
   - 6/15/26 - Starting Lineup. Setup todos. Remove Play button. Selection button management. 1st level move button restraints.
   - 6/16/26 - Add two stack move buttons. Popup help panels. Detect occupied dst tiles. Multi-line help texts. Move pieces around the board.
   - 6/17/26 - Popup help texts. White/Black move order. Indicate player. Plumbing for undo moves. Undo/Redo/RW/FF/Load/Save pure moves. QC moves. Undo branching. Push & Pop panel lines.
-  - 6/18/26 - Normalize gambits.
-  
+  - 6/18/26 - Normalize gambits. Normalize refreshEntry() & applyEntry(). Undo/redo/RW/FF/load/save for quadrant gambits. Deadcode & todo updates.
+  - 6/19/26 - Load reset. Occupancy reset. Normalize model layer. Undo branching. Button affordances.
+  - 6/20/26 - Cross panel button affordances. Revise entry standards. Draft move entries. Captures.
+   QC quad gambits, all gambits, all moves.
+
+## Capture Development:
+  **2-4-0-0**
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"startingPos"}],"Moves":[{"action":"move","turn":1,"player":"White","key":"WKRP","prev":"@KR2,2","post":"@KR4,4"},{"action":"move","turn":1,"player":"Black","key":"BKRP","prev":"@KR7,7","post":"@KR5,5"},{"action":"capture","turn":2,"player":"White","list":[{"key":"WKRP","prev":"@KR4,4","post":"@KR5,5"},{"key":"BKRP","prev":"@KR5,5","post":"~KR2,2"}]},{"action":"capture","turn":2,"player":"Black","list":[{"key":"BKRR","prev":"@KR8,8","post":"@KR5,5"},{"key":"WKRP","prev":"@KR5,5","post":"~KR2,2"}]}],"Gambits":[],"AdvSqs":[]}
+
+  **2-4-0-0**
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"startingPos"}],"Moves":[{"action":"move","turn":1,"player":"White","key":"WKRP","prev":"@KR2,2","post":"@KR4,4"},{"action":"move","turn":1,"player":"Black","key":"BKRP","prev":"@KR7,7","post":"@KR5,5"},{"action":"capture","turn":2,"player":"White","list":[{"key":"WKRP","prev":"@KR4,4","post":"@KR5,5"},{"key":"BKRP","prev":"KR5,5"}]},{"action":"capture","turn":2,"player":"Black","list":[{"key":"BKRR","prev":"@KR8,8","post":"@KR5,5"},{"key":"WKRP","prev":"KR5,5"}]}],"Gambits":[],"AdvSqs":[]}
+
+  **2-1-0-0**
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"startingPos"}],"Moves":[{"action":"move","turn":1,"player":"White","key":"WKRP","prev":"@KR2,2","post":"@KR5,5"}],"Gambits":[],"AdvSqs":[]}
+
+## Moves:
+  **2-4-0-0**
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"startingPos"}],"Moves":[{"action":"move","turn":1,"player":"White","key":"WKRR","prev":"@KR1,1","post":"@KR3,3"},{"action":"move","turn":1,"player":"Black","key":"BKRR","prev":"@KR8,8","post":"@KR6,6"},{"action":"move","turn":2,"player":"White","key":"WKRR","prev":"@KR3,3","post":"@KR4,4"},{"action":"move","turn":2,"player":"Black","key":"BKRR","prev":"@KR6,6","post":"@KR5,5"}],"Gambits":[],"AdvSqs":[]}
+
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"startingPos"}],
+  "Moves":[
+    {"action":"move","turn":1,"player":"White","key":"WKRR","prev":"@KR1,1","post":"@KR3,3"},
+    {"action":"move","turn":1,"player":"Black","key":"BKRR","prev":"@KR8,8","post":"@KR6,6"},
+    {"action":"move","turn":2,"player":"White","key":"WKRR","prev":"@KR3,3","post":"@KR4,4"},
+    {"action":"move","turn":2,"player":"Black","key":"BKRR","prev":"@KR6,6","post":"@KR5,5"}],
+  "Gambits":[],
+  "AdvSqs":[]}
+
+## Debug
+  - Three examples, 2 & 3 fail (quad, linear, duplex)
+  {"Setup":[],"Moves":[],
+  "Gambits":[
+    {"gambitId":0,"action":"quad","src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":2,"stride":3,"opacity":0.5},{"move":"linear","piece":"bishop","src":"Q4,4","dst":"KB6,4","ray":"LFU","advsqs":[[{"srcTile":[0,0,0],"quad":18,"perimeter":2,"stride":1,"area":9},{"srcTile":[0,0,0],"quad":13,"perimeter":2,"stride":1,"area":9}],[{"srcTile":[0,0,0],"quad":25,"perimeter":2,"stride":1,"area":9},{"srcTile":[0,0,0],"quad":26,"perimeter":2,"stride":1,"area":9}]],"opacity":0.5},{"move":"duplex","piece":"duke","src":"Q4,4","dst":"KR4,4","ray":[1,0,0],"advsqs":[{"src":"Q4,4","srcTile":[0,0,0],"quad":38,"perimeter":2,"stride":3,"opacity":0.5},{"src":"Q4,4","srcTile":[0,0,0],"quad":41,"perimeter":2,"stride":3,"opacity":0.5}],"opacity":0.5}],
+  "AdvSqs":[]}
+
+
+  - Fail on duplex
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"startingPos"}],
+  "Moves":[{"action":"move","turn":1,"player":"White","key":"WKRR","prev":"@KR1,1","post":"@KR3,3"},{"action":"move","turn":1,"player":"Black","key":"BKRR","prev":"@KR8,8","post":"@KR6,6"},{"action":"move","turn":2,"player":"White","key":"WKRR","prev":"@KR3,3","post":"@KR4,4"},{"action":"move","turn":2,"player":"Black","key":"BKRR","prev":"@KR6,6","post":"@KR5,5"},{"action":"move","turn":3,"player":"White","key":"WKBS","prev":"@KB1,1","post":"@KB4,4"}],
+  "Gambits":[{"gambitId":0,"action":"quad","src":"KR4,4","srcTile":[4,0,0],"quad":1,"perimeter":3,"stride":4,"opacity":0.5},{"move":"duplex","piece":"duke","src":"KR4,4","dst":[8,0,0],"ray":[1,0,0],"advsqs":[{"src":"KR4,4","srcTile":[4,0,0],"quad":38,"perimeter":2,"stride":3,"opacity":0.5},{"src":"KR4,4","srcTile":[4,0,0],"quad":41,"perimeter":2,"stride":3,"opacity":0.5}],"opacity":0.5}],
+  "AdvSqs":[]}
+
+  - Fail on linear
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"startingPos"}],
+  "Moves":[{"action":"move","turn":1,"player":"White","key":"WKRR","prev":"@KR1,1","post":"@KR3,3"},{"action":"move","turn":1,"player":"Black","key":"BKRR","prev":"@KR8,8","post":"@KR6,6"},{"action":"move","turn":2,"player":"White","key":"WKRR","prev":"@KR3,3","post":"@KR4,4"},{"action":"move","turn":2,"player":"Black","key":"BKRR","prev":"@KR6,6","post":"@KR5,5"},{"action":"move","turn":3,"player":"White","key":"WKBS","prev":"@KB1,1","post":"@KB4,4"}],
+  "Gambits":[{"gambitId":0,"action":"quad","src":"KR4,4","srcTile":[4,0,0],"quad":1,"perimeter":3,"stride":4,"opacity":0.5},{"move":"linear","piece":"bishop","src":"KR4,4","dst":[6,2,0],"ray":"LFU","advsqs":[[{"srcTile":[4,0,0],"quad":18,"perimeter":2,"stride":1,"area":9},{"srcTile":[4,0,0],"quad":13,"perimeter":2,"stride":1,"area":9}],[{"srcTile":[4,0,0],"quad":25,"perimeter":2,"stride":1,"area":9},{"srcTile":[4,0,0],"quad":26,"perimeter":2,"stride":1,"area":9}]],"opacity":0.5}],
+  "AdvSqs":[]}
+
+  - Success on quadrant
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"startingPos"}],
+  "Moves":[{"action":"move","turn":1,"player":"White","key":"WKRR","prev":"@KR1,1","post":"@KR3,3"},{"action":"move","turn":1,"player":"Black","key":"BKRR","prev":"@KR8,8","post":"@KR6,6"},{"action":"move","turn":2,"player":"White","key":"WKRR","prev":"@KR3,3","post":"@KR4,4"},{"action":"move","turn":2,"player":"Black","key":"BKRR","prev":"@KR6,6","post":"@KR5,5"},{"action":"move","turn":3,"player":"White","key":"WKBS","prev":"@KB1,1","post":"@KB4,4"}],
+  "Gambits":[{"gambitId":0,"action":"quad","src":"KR4,4","srcTile":[4,0,0],"quad":1,"perimeter":3,"stride":4,"opacity":0.5}],
+  "AdvSqs":[]}
+
+  - Success on Setup and Moves
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"startingPos"}],
+  "Moves":[
+    {"action":"move","turn":1,"player":"White","key":"WKRR","prev":"@KR1,1","post":"@KR3,3"},
+    {"action":"move","turn":1,"player":"Black","key":"BKRR","prev":"@KR8,8","post":"@KR6,6"},
+    {"action":"move","turn":2,"player":"White","key":"WKRR","prev":"@KR3,3","post":"@KR4,4"},
+    {"action":"move","turn":2,"player":"Black","key":"BKRR","prev":"@KR6,6","post":"@KR5,5"},
+    {"action":"move","turn":3,"player":"White","key":"WKBS","prev":"@KB1,1","post":"@KB4,4"}],
+  "Gambits":[],
+  "AdvSqs":[]}
+
+
+## Example of Freeze Puzzle
+  {"Setup":
+    [{"action":"makeBoard",
+      "prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},
+      "nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},
+    {"action":"placePiece","key":"BKRR","prev":"~KR1,1","post":"@KR8,8"},
+    {"action":"shiftPiece","key":"BKRR","prev":"@KR8,8","post":"@KR7,7"},
+    {"action":"placePiece","key":"BKRP","prev":"~KR2,2","post":"@KR6,6"},
+    {"action":"returnPiece","key":"BKRR","prev":"@KR7,7","post":"~KR1,1"},
+    {"action":"freezePuzzle","data":1}],
+  "Moves":[],"Gambits":[],"AdvSqs":[]}
+
+
+## Confirm Gambit Entries have an array of advsqs...
+  - Looking at the comprehension pretty print, several incosistencies stand out for Gambits.
+    - src only on duplex moves, should be on all.
+    - linear & duplex use key 'move' instead of key 'action'.
+    - 
+  **2-5-4-5**
+  {"Setup":[
+    {"action":"makeBoard",
+      "prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},
+      "nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},
+    {"action":"startingPos"}],
+  "Moves":[
+    {"action":"move","turn":1,"player":"White","key":"WKRR","prev":"@KR1,1","post":"@KR3,3"},
+    {"action":"move","turn":1,"player":"Black","key":"BKRR","prev":"@KR8,8","post":"@KR6,6"},
+    {"action":"move","turn":2,"player":"White","key":"WKRR","prev":"@KR3,3","post":"@KR4,4"},
+    {"action":"move","turn":2,"player":"Black","key":"BKRR","prev":"@KR6,6","post":"@KR5,5"},
+    {"action":"move","turn":3,"player":"White","key":"WKBS","prev":"@KB1,1","post":"@KB4,4"}],
+  "Gambits":[
+    {"gambitId":0,"action":"quad","src":"KR4,4","srcTile":[4,0,0],"quad":1,"perimeter":2,"stride":3,"opacity":0.5},
+    {"move":"linear","piece":"bishop","src":"Q4,4","dst":"KB6,4","ray":"LFU",
+      "advsqs":[
+        [{"srcTile":[0,0,0],"quad":18,"perimeter":2,"stride":1,"area":9},{"srcTile":[0,0,0],"quad":13,"perimeter":2,"stride":1,"area":9}],
+        [{"srcTile":[0,0,0],"quad":25,"perimeter":2,"stride":1,"area":9},{"srcTile":[0,0,0],"quad":26,"perimeter":2,"stride":1,"area":9}]],
+        "opacity":0.5},
+    {"move":"linear","piece":"duke","src":"Q4,4","dst":"QN6,6","ray":"fore_down",
+      "advsqs":[
+        [{"srcTile":[0,0,0],"quad":40,"perimeter":2,"stride":1,"area":9},{"srcTile":[0,0,0],"quad":37,"perimeter":2,"stride":1,"area":9}],
+        [{"srcTile":[0,0,0],"quad":49,"perimeter":2,"stride":1,"area":9},{"srcTile":[0,0,0],"quad":50,"perimeter":2,"stride":1,"area":9}],
+        [{"srcTile":[0,0,0],"quad":57,"perimeter":2,"stride":1,"area":9},{"srcTile":[0,0,0],"quad":58,"perimeter":2,"stride":1,"area":9}]],
+        "opacity":0.5},
+    {"move":"duplex","piece":"duke","src":"Q4,4","dst":"KR4,4","ray":[1,0,0],
+      "advsqs":[
+        {"src":"Q4,4","srcTile":[0,0,0],"quad":38,"perimeter":2,"stride":3,"opacity":0.5},
+        {"src":"Q4,4","srcTile":[0,0,0],"quad":41,"perimeter":2,"stride":3,"opacity":0.5}],
+        "opacity":0.5}],
+  "AdvSqs":[
+    {"src":"Q4,4","srcTile":[0,0,0],"quad":1,"perimeter":1,"stride":2,"opacity":0.5},
+    {"src":"Q4,4","srcTile":[0,0,0],"quad":1,"perimeter":2,"stride":3,"opacity":0.5},
+    {"src":"Q4,4","srcTile":[0,0,0],"quad":1,"perimeter":3,"stride":4,"opacity":0.5},
+    {"src":"Q4,4","srcTile":[0,0,0],"quad":1,"perimeter":4,"stride":5,"opacity":0.5},
+    {"src":"Q4,4","srcTile":[0,0,0],"quad":1,"perimeter":5,"stride":6,"opacity":0.5}]}
+
+
+
+  **2-5-3-0**
+  {"Setup":[
+    {"action":"makeBoard",
+      "prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},
+      "nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},
+    {"action":"startingPos"}],
+  "Moves":[
+    {"action":"move","turn":1,"player":"White","key":"WKRR","prev":"@KR1,1","post":"@KR3,3"},
+    {"action":"move","turn":1,"player":"Black","key":"BKRR","prev":"@KR8,8","post":"@KR6,6"},
+    {"action":"move","turn":2,"player":"White","key":"WKRR","prev":"@KR3,3","post":"@KR4,4"},
+    {"action":"move","turn":2,"player":"Black","key":"BKRR","prev":"@KR6,6","post":"@KR5,5"},
+    {"action":"move","turn":3,"player":"White","key":"WKBS","prev":"@KB1,1","post":"@KB4,4"}],
+  "Gambits":[
+    {"move":"linear","piece":"rook","src":"KR4,4","dst":"KR4,6","ray":"right_fore",
+      "advsqs":[
+        [{"srcTile":[4,0,0],"quad":1,"perimeter":2,"stride":5,"area":9},{"srcTile":[4,0,0],"quad":2,"perimeter":2,"stride":5,"area":9}],
+        [{"srcTile":[4,0,0],"quad":5,"perimeter":2,"stride":5,"area":9},{"srcTile":[4,0,0],"quad":6,"perimeter":2,"stride":5,"area":9}]],
+        "opacity":0.5},
+    {"move":"duplex","piece":"duke","src":"Q4,4","dst":"KR4,4","ray":[1,0,0],
+      "advsqs":[
+        {"src":"Q4,4","srcTile":[0,0,0],"quad":38,"perimeter":2,"stride":3,"opacity":0.5},
+        {"src":"Q4,4","srcTile":[0,0,0],"quad":41,"perimeter":2,"stride":3,"opacity":0.5}],
+        "opacity":0.5},
+    {"move":"linear","piece":"duke","src":"Q4,4","dst":"KB6,2","ray":"left_up",
+      "advsqs":[
+        [{"srcTile":[0,0,0],"quad":44,"perimeter":2,"stride":1,"area":9},{"srcTile":[0,0,0],"quad":41,"perimeter":2,"stride":1,"area":9}],
+        [{"srcTile":[0,0,0],"quad":48,"perimeter":2,"stride":1,"area":9},{"srcTile":[0,0,0],"quad":45,"perimeter":2,"stride":1,"area":9}],
+        [{"srcTile":[0,0,0],"quad":58,"perimeter":2,"stride":1,"area":9},{"srcTile":[0,0,0],"quad":59,"perimeter":2,"stride":1,"area":9}]],
+        "opacity":0.5}],
+  "AdvSqs":[]}
+
+
+## Review Gamit Entries...
+  **2-5-1-0**
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"startingPos"}],
+  "Moves":[{"action":"move","turn":1,"player":"White","key":"WKRR","prev":"@KR1,1","post":"@KR3,3"},{"action":"move","turn":1,"player":"Black","key":"BKRR","prev":"@KR8,8","post":"@KR6,6"},{"action":"move","turn":2,"player":"White","key":"WKRR","prev":"@KR3,3","post":"@KR4,4"},{"action":"move","turn":2,"player":"Black","key":"BKRR","prev":"@KR6,6","post":"@KR5,5"},{"action":"move","turn":3,"player":"White","key":"WKBS","prev":"@KB1,1","post":"@KB4,4"}],
+  "Gambits":[
+    {"move":"linear","piece":"rook","src":"KR4,4","dst":"KR4,6","ray":"right_fore",
+    "advsqs":[
+      [{"srcTile":[4,0,0],"quad":1,"perimeter":2,"stride":1,"area":9},{"srcTile":[4,0,0],"quad":2,"perimeter":2,"stride":1,"area":9}],
+      [{"srcTile":[4,0,0],"quad":5,"perimeter":2,"stride":1,"area":9},{"srcTile":[4,0,0],"quad":6,"perimeter":2,"stride":1,"area":9}]],
+      "opacity":0.5}],
+  "AdvSqs":[]}
+
+
+## Debug button Allowuances for Gambits.
+  **2-5-0-9**
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"startingPos"}],"Moves":[{"action":"move","turn":1,"player":"White","key":"WKRR","prev":"@KR1,1","post":"@KR3,3"},{"action":"move","turn":1,"player":"Black","key":"BKRR","prev":"@KR8,8","post":"@KR6,6"},{"action":"move","turn":2,"player":"White","key":"WKRR","prev":"@KR3,3","post":"@KR4,4"},{"action":"move","turn":2,"player":"Black","key":"BKRR","prev":"@KR6,6","post":"@KR5,5"},{"action":"move","turn":3,"player":"White","key":"WKBS","prev":"@KB1,1","post":"@KB4,4"}],"Gambits":[],"AdvSqs":[{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":1,"stride":2,"opacity":0.5},{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":2,"stride":3,"opacity":0.5},{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":3,"stride":4,"opacity":0.5},{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":2,"stride":4,"opacity":0.5},{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":1,"stride":3,"opacity":0.5},{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":2,"stride":3,"opacity":0.5},{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":3,"stride":3,"opacity":0.5},{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":3,"stride":2,"opacity":0.5},{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":3,"stride":1,"opacity":0.5}]}
+
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"startingPos"}],
+  "Moves":[{"action":"move","turn":1,"player":"White","key":"WKRR","prev":"@KR1,1","post":"@KR3,3"},{"action":"move","turn":1,"player":"Black","key":"BKRR","prev":"@KR8,8","post":"@KR6,6"},{"action":"move","turn":2,"player":"White","key":"WKRR","prev":"@KR3,3","post":"@KR4,4"},{"action":"move","turn":2,"player":"Black","key":"BKRR","prev":"@KR6,6","post":"@KR5,5"},{"action":"move","turn":3,"player":"White","key":"WKBS","prev":"@KB1,1","post":"@KB4,4"}],
+  "Gambits":[],
+  "AdvSqs":[]}
+
+## Combined Saved Test
+  **2-3-3-6**
+    {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"startingPos"}],"Moves":[{"action":"move","turn":1,"player":"White","key":"WKRR","prev":"@KR1,1","post":"@KR3,3"},{"action":"move","turn":1,"player":"Black","key":"BKRR","prev":"@KR8,8","post":"@KR6,6"},{"action":"move","turn":2,"player":"White","key":"WKRR","prev":"@KR3,3","post":"@KR4,4"}],"Gambits":[{"gambitId":0,"action":"quad","src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":2,"stride":3,"opacity":0.5},{"gambitId":1,"action":"quad","src":"Q4,4","srcTile":[0,0,0],"quad":13,"perimeter":3,"stride":1,"opacity":0.5},{"gambitId":2,"action":"quad","src":"Q4,4","srcTile":[0,0,0],"quad":37,"perimeter":3,"stride":1,"opacity":0.5}],"AdvSqs":[{"action":"place","src":"KR4,4","srcTile":[4,0,0],"quad":1,"perimeter":0,"stride":0,"opacity":0.5},{"src":"KR4,4","srcTile":[4,0,0],"quad":1,"perimeter":1,"stride":2,"opacity":0.5},{"src":"KR4,4","srcTile":[4,0,0],"quad":1,"perimeter":2,"stride":3,"opacity":0.5},{"src":"KR4,4","srcTile":[4,0,0],"quad":1,"perimeter":3,"stride":4,"opacity":0.5},{"src":"KR4,4","srcTile":[4,0,0],"quad":1,"perimeter":4,"stride":5,"opacity":0.5},{"src":"KR4,4","srcTile":[4,0,0],"quad":1,"perimeter":5,"stride":6,"opacity":0.5}]}
+
+    {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"startingPos"}],
+    "Moves":[{"action":"move","turn":1,"player":"White","key":"WKRR","prev":"@KR1,1","post":"@KR3,3"},{"action":"move","turn":1,"player":"Black","key":"BKRR","prev":"@KR8,8","post":"@KR6,6"},{"action":"move","turn":2,"player":"White","key":"WKRR","prev":"@KR3,3","post":"@KR4,4"}],
+    "Gambits":[{"gambitId":0,"action":"quad","src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":2,"stride":3,"opacity":0.5},{"gambitId":1,"action":"quad","src":"Q4,4","srcTile":[0,0,0],"quad":13,"perimeter":3,"stride":1,"opacity":0.5},{"gambitId":2,"action":"quad","src":"Q4,4","srcTile":[0,0,0],"quad":37,"perimeter":3,"stride":1,"opacity":0.5}],
+    "AdvSqs":[{"action":"place","src":"KR4,4","srcTile":[4,0,0],"quad":1,"perimeter":0,"stride":0,"opacity":0.5},{"src":"KR4,4","srcTile":[4,0,0],"quad":1,"perimeter":1,"stride":2,"opacity":0.5},{"src":"KR4,4","srcTile":[4,0,0],"quad":1,"perimeter":2,"stride":3,"opacity":0.5},{"src":"KR4,4","srcTile":[4,0,0],"quad":1,"perimeter":3,"stride":4,"opacity":0.5},{"src":"KR4,4","srcTile":[4,0,0],"quad":1,"perimeter":4,"stride":5,"opacity":0.5},{"src":"KR4,4","srcTile":[4,0,0],"quad":1,"perimeter":5,"stride":6,"opacity":0.5}]}
+
+
 ## Gambits Development
+ ### Quads, rook, bishop, duke.
+  **0-0-3-0**
+  {"Setup":[],"Moves":[],"Gambits":[{"gambitId":0,"action":"quad","src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":2,"stride":3,"opacity":0.5},{"gambitId":1,"action":"quad","src":"Q4,4","srcTile":[0,0,0],"quad":13,"perimeter":3,"stride":1,"opacity":0.5},{"gambitId":2,"action":"quad","src":"Q4,4","srcTile":[0,0,0],"quad":37,"perimeter":3,"stride":1,"opacity":0.5}],"AdvSqs":[]}
+
+  { "Setup":[],
+    "Moves":[],
+    "Gambits":[
+      {"gambitId":0,"action":"quad","src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":2,"stride":3,"opacity":0.5},
+      {"gambitId":1,"action":"quad","src":"Q4,4","srcTile":[0,0,0],"quad":13,"perimeter":3,"stride":1,"opacity":0.5},
+      {"gambitId":2,"action":"quad","src":"Q4,4","srcTile":[0,0,0],"quad":37,"perimeter":3,"stride":1,"opacity":0.5}],
+    "AdvSqs":[]}
+
+ ### Quads, rook, rook, bishop.
+  **0-0-3-0**
+  {"Setup":[],"Moves":[],"Gambits":[{"action":"quad","src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":2,"stride":3,"opacity":0.5},{"action":"quad","src":"Q4,4","srcTile":[0,0,0],"quad":1,"perimeter":3,"stride":4,"opacity":0.5},{"action":"quad","src":"Q4,4","srcTile":[0,0,0],"quad":13,"perimeter":3,"stride":1,"opacity":0.5}],"AdvSqs":[]}
+
+  { "Setup":[],
+    "Moves":[],
+    "Gambits":[
+      {"action":"quad","src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":2,"stride":3,"opacity":0.5},
+      {"action":"quad","src":"Q4,4","srcTile":[0,0,0],"quad":1,"perimeter":3,"stride":4,"opacity":0.5},
+      {"action":"quad","src":"Q4,4","srcTile":[0,0,0],"quad":13,"perimeter":3,"stride":1,"opacity":0.5}],
+    "AdvSqs":[]}
+
  ### Quads, rook, bishop, duke.
   **0-0-3-0**
   {"Setup":[],"Moves":[],"Gambits":[{"Q":1,"src":"KR4,4","dst":"KR6,6","area":9,"advsqs":[{"src":"KR4,4","srcTile":[4,0,0],"quad":1,"perimeter":2,"stride":3,"opacity":0.5}]},{"Q":13,"src":"Q4,4","dst":"KN7,4","area":16,"advsqs":[{"src":"Q4,4","srcTile":[0,0,0],"quad":13,"perimeter":3,"stride":1,"opacity":0.5}]},{"Q":37,"src":"Q4,4","dst":"QR7,7","area":16,"advsqs":[{"src":"Q4,4","srcTile":[0,0,0],"quad":37,"perimeter":3,"stride":1,"opacity":0.5}]}],"AdvSqs":[]}
