@@ -46,26 +46,25 @@ export function makeEntry(payload) {  // Never called, specialized versions belo
   return entry;
   }
 
-export function makeMoveEntry(selections, payload) {
-  console.log(`model: moves.js - makeMoveEntry(selections, payload):`, selections, payload);
+export function makeMoveEntry(payload, selections) {
+  console.log(`model: moves.js - makeMoveEntry(payload, selections):`, payload, selections);
 
   const { action, player } = payload;
   const { pieceSelections, tileSelections } = selections;
 
-  const boardSpec = cSetup.getCurrBoard().boardSize;
-
   const index = state.getIndices()["Moves"] + 1;
   let turn = Math.floor((index + 1) / 2);
 
-  const key     = pieceSelections.values().next().value;
-  const dstTile = tileSelections.values().next().value;
-  const dstStr  = coords.vtsToBoard(dstTile, boardSpec);
+  const [key]     = [...pieceSelections];
+  const [dstTile] = [...tileSelections];
+  const dstStr  = coords.vtsToBoard(dstTile, cSetup.getCurrBoard().boardSize);
 
   const piece = mPieces.getPieceList()[key];
   const prev  = `@${piece.pos}`;
   const post  = `@${dstStr}`;  
 
-  let entry = { action, turn, player, key, prev, post };
+  const list = [{ key, prev, post }];
+  let entry = { action, turn, player, list };
   console.log("*** entry", entry);
 
   cSetup.clearAllPieceSelections();
@@ -73,10 +72,10 @@ export function makeMoveEntry(selections, payload) {
   cSelections.clearSelections();
   
   return entry; // {"action":"move","turn":1,"player":"White","list":[{"key":"WKRR","prev":"@KR1,1","post":"@KR3,3"}]}.
-}
+  }
 
-export function makeCaptureEntry(selections, payload) {
-  console.log(`model: gambits.js - makeCaptureEntry(selections, payload):`, selections, payload);
+export function makeCaptureEntry(payload, selections) {
+  console.log(`model: gambits.js - makeCaptureEntry(payload, selections):`, payload, selections);
 
   const { action, player } = payload;
   const { pieceSelections, tileSelections } = selections;
@@ -105,8 +104,7 @@ export function makeCaptureEntry(selections, payload) {
   
   console.log("*** entry", entry);
   return entry;
-  }
-
+}
 // Seampoint: more Entry functions...
 
 export function buttonAffordances(situation) {

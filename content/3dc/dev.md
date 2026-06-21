@@ -145,7 +145,7 @@ title: "Dev"
   - 6/20/26 - Cross panel button affordances. Revise entry standards. Draft move entries. Captures.
 
  ### Week 15:
-  - 6/21/26 - Fixed White/Black radio buttons in move panel. Remove obsolete saved game strings.
+  - 6/21/26 - Fixed White/Black radio buttons in move panel. Remove obsolete saved game strings. Normalize move entry and payload/selections order.
    QC quad gambits, all gambits, all moves.
 
 ## Capture Development:

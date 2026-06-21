@@ -145,11 +145,6 @@ export function movePieceTileToTile(key, dstStr) {
     const indices = utils.add(mBoards.getOrigin(), dstTile);
     const [z, x, y] = indices;  // New.
     const occupancy = mBoards.getBoardOccupancy();
-    if(occupancy[z][x][y]) {
-      const err = `Cannot move to an occupied ${occupancy[z][x][y]} tile ${dstStr}.`;
-      console.log("***", err);
-      return { ok: false, err };
-    }
     const [Z,X,Y] = utils.add(mBoards.getOrigin(), piece.coords); // Previous.
     occupancy[Z][X][Y] = null;
     occupancy[z][x][y] = key;
@@ -194,7 +189,6 @@ export function movePieceFromBoardToTray(key) {
     const [k, i, j] = piece.home.trayCoords;
     // console.log("*** Parse", k, i, j);
 
-  
   // --- Update board occupancy ---
     const indices = utils.add(mBoards.getOrigin(), coords);
     const [z, x, y] = indices;

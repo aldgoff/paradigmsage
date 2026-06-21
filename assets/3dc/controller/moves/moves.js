@@ -39,21 +39,20 @@ export function panelDispatch(payload) {
 
   vGambits.cancelAnimation();
 
-  const { action, 
-    player,   // White|Black
-  } = payload;
+  const { action, player,} = payload;   // White|Black
+  const selections = cSelections.getSelections();
 
   switch (action) {
-    case "move":          handleMove(payload); break;
-    case "capture":       handleCapture(payload); break;
-    case "enpassant":     handleEnpassant(payload); break;
-    case "castle":        handleCastle(payload); break;
-    case "promote":       handlePromote(payload); break;
-    case "duke-decay":    handleDukeDecay(payload); break;
-    case "bishop-decay":  handleBishopDecay(payload); break;
-    case "fission":       handleFission(payload); break;
-    case "teleportation": handleTeleportation(payload); break;
-    case "uplift  ":      handleUplift(payload); break;
+    case "move":          handleMove(payload, selections); break;
+    case "capture":       handleCapture(payload, selections); break;
+    case "enpassant":     handleEnpassant(payload, selections); break;
+    case "castle":        handleCastle(payload, selections); break;
+    case "promote":       handlePromote(payload, selections); break;
+    case "duke-decay":    handleDukeDecay(payload, selections); break;
+    case "bishop-decay":  handleBishopDecay(payload, selections); break;
+    case "fission":       handleFission(payload, selections); break;
+    case "teleportation": handleTeleportation(payload, selections); break;
+    case "uplift  ":      handleUplift(payload, selections); break;
     case "updateParam":  break;
 
     default: throw new Error(`Unknown moves action ${action}.`);  break;
@@ -81,20 +80,18 @@ export function panelDispatch(payload) {
 export function buildPayload(panel, action) {
   console.log("     ---------- cntrl: moves.js");
 
-  return {
-    action,
-    player:   panel.querySelector('input[name="move-player"]:checked')?.value,
-  };
+  const player = panel.querySelector('input[name="move-player"]:checked')?.value;
+
+  return { action, player };
 }
 
 export function buildForward(entry) {     // Redo.
   console.log("cntrl: moves.js - buildForward(entry)", entry);
 
-  const { action, turn, player, key, prev, next } = entry;
-  // const { action, turn, player, list } = entry;
+  const { action, turn, player, list } = entry;
+  // const {action,turn,player,list:[{key,prev,post},...]} = entry;
 
   if(     action === "move") {
-    // const {action,turn,player,list:[{key,prev,post}]} = entry;
     forewardMove(entry);
     }
   else if(action === "capture") {
@@ -139,11 +136,10 @@ export function buildForward(entry) {     // Redo.
 export function buildBackward(entry) {    // Undo.
   console.log("cntrl: moves.js - buildBackward(entry)", entry);
 
-  const { action, turn, player, key, prev, next } = entry;
-  // const { action, turn, player, list } = entry;
+  const { action, turn, player, list } = entry;
+  // const {action,turn,player,list:[{key,prev,post},...]} = entry;
 
   if(     action === "move") {
-    // const {action,turn,player,list:[{key,prev,post}]} = entry;
     backwardMove(entry);
     }
   else if(action === "capture") {
@@ -187,14 +183,11 @@ export function buildBackward(entry) {    // Undo.
 // Seampoint: more global functions...
 
 // --- Handle Functions ---
-function handleMove(payload) {
-  console.log("cntrl: moves.js - handleMove(payload)", payload);
+function handleMove(payload, selections) {
+  console.log("cntrl: moves.js - handleMove(payload, selections)", payload, selections);
 
   const { action, player } = payload;
-  const selections = cSelections.getSelections();
-
-  const entry = mMoves.makeMoveEntry(selections, payload);
-
+  const entry = mMoves.makeMoveEntry(payload, selections);
   forewardMove(entry);
 
   branchHistory(entry);
@@ -203,82 +196,79 @@ function handleMove(payload) {
   vMoves.refreshPanel(entry);
   }
 
-function handleCapture(payload) {
-  console.log("cntrl: moves.js - handleCapture(payload)", payload);
+function handleCapture(payload, selections) {
+  console.log("cntrl: moves.js - handleCapture(payload, selections)", payload, selections);
 
   const { action, player } = payload;
-  const selections = cSelections.getSelections();
-
-  const entry = mMoves.makeCaptureEntry(selections, payload);
-
+  const entry = mMoves.makeCaptureEntry(payload, selections);
   forewardCapture(entry);
 
-  branchHistory(entry);
+  branchHistory(entry);               // Manage undo history when branched.
   state.pushNewMove(entry);           // Change state.
-  vMoves.pushPanelCaptureLine(entry); // Add line to panel.
-  vMoves.refreshPanel(entry);
+  vMoves.pushPanelLine(entry);        // Add line to panel.
+  vMoves.refreshPanel(entry);         // Refresh panel (dimmed future rows).
   }
 
-function handleEnpassant(payload) {
-  console.log("cntrl: moves.js - handleEnpassant(payload)", payload);
+function handleEnpassant(payload, selections) {
+  console.log("cntrl: moves.js - handleEnpassant(payload, selections)", payload, selections);
 
-  const { player, piece, src, dst, sec, captured, opts } = payload;  // Informative.
+  const { action, player } = payload;
 
   // TODO: change state - handleEnpassant().
   }
 
-function handleCastle(payload) {
-  console.log("cntrl: moves.js - handleCastle(payload)", payload);
+function handleCastle(payload, selections) {
+  console.log("cntrl: moves.js - handleCastle(payload, selections)", payload, selections);
  
-  const { player, piece, src, dst, sec, captured, opts } = payload;  // Informative.
+  const { action, player } = payload;
 
  // TODO: change state - handleCastle().
   }
 
-function handlePromote(payload) {
-  console.log("cntrl: moves.js - handlePromote(payload)", payload);
+function handlePromote(payload, selections) {
+  console.log("cntrl: moves.js - handlePromote(payload, selections)", payload, selections);
 
-  const { player, piece, src, dst, sec, captured, opts } = payload;  // Informative.
+  const { action, player } = payload;
 
   // TODO: change state - handlePromote().
   }
 
-function handleDukeDecay(payload) {
-  console.log("cntrl: moves.js - handleDukeDecay(payload)", payload);
+function handleDukeDecay(payload, selections) {
+  console.log("cntrl: moves.js - handleDukeDecay(payload, selections)", payload, selections);
 
-  const { player, piece, src, dst, sec, captured, opts } = payload;  // Informative.
+  const { action, player } = payload;
 
   // TODO: change state - handleDukeDecay().
   }
 
-function handleBishopDecay(payload) {
-  console.log("cntrl: moves.js - handleBishopDecay(payload)", payload);
+function handleBishopDecay(payload, selections) {
+  console.log("cntrl: moves.js - handleBishopDecay(payload, selections)", payload, selections);
 
-  const { player, piece, src, dst, sec, captured, opts } = payload;  // Informative.
+  const { action, player } = payload;
 
   // TODO: change state - handleBishopDecay().
   }
 
-function handleFission(payload) {
-  console.log("cntrl: moves.js - handleFission(payload)", payload);
+function handleFission(payload, selections) {
+  console.log("cntrl: moves.js - handleFission(payload, selections)", payload, selections);
 
-  const { player, piece, src, dst, sec, captured, opts } = payload;  // Informative.
+  const { action, player } = payload;
 
   // TODO: change state - handleFission().
   }
 
-function handleTeleportation(payload) {
-  console.log("cntrl: moves.js - handleTeleportation(payload)", payload);
+function handleTeleportation(payload, selections) {
+  console.log("cntrl: moves.js - handleTeleportation(payload, selections)", payload, selections);
 
-  const { player, piece, src, dst, sec, captured, opts } = payload;  // Informative.
+  const { action, player } = payload;
 
   // TODO: change state - handleTeleportation().
   }
 
-function handleUplift(payload) {
-  console.log("cntrl: moves.js - handleUplift(payload)", payload);
+function handleUplift(payload, selections) {
+  console.log("cntrl: moves.js - handleUplift(payload)", payload, selections);
 
-  const { player, piece, src, dst, sec, captured, opts } = payload;  // Informative.
+  const { action, player } = payload;
 
   // TODO: change state - handleUplift().
 }
@@ -288,23 +278,21 @@ function handleUplift(payload) {
 function forewardMove(entry) {
   console.log("cntrl: moves.js - forewardMove(entry)", entry);
 
-  let { action, turn, player, key, prev, post } = entry;
-  // const {action,turn,player,list:[{key,prev,post}]} = entry;
+  const { action, turn, player, list } = entry;
+  const mover = list[0]; // list: {key,prev,post}.
 
-  const [, dstStr] = post.split("@");
-  const { ok, err } = mPieces.movePieceTileToTile(key, dstStr);
-  if(!ok) return { ok, err };
+  const [, dstStr] = mover.post.split("@");
+  mPieces.movePieceTileToTile(mover.key, dstStr);
   }
 
 function backwardMove(entry) {
   console.log("cntrl: moves.js - backwardMove(entry)", entry);
 
-  let { action, turn, player, key, prev, post } = entry;
-  // const {action,turn,player,list:[{key,prev,post}]} = entry;
+  const { action, turn, player, list } = entry;
+  const mover = list[0]; // list: {key,prev,post}.
 
-  const [, dstStr] = prev.split("@");
-  const { ok, err } = mPieces.movePieceTileToTile(key, dstStr);
-  if(!ok) return { ok, err };
+  const [, dstStr] = mover.prev.split("@");
+  mPieces.movePieceTileToTile(mover.key, dstStr);
 }
 
 function forewardCapture(entry) {
@@ -319,7 +307,7 @@ function forewardCapture(entry) {
   mPieces.movePieceTileToTile(attacker.key, dstStr);
   }
 
-function backwardCapture(entry) { // TODO: write.
+function backwardCapture(entry) {
   console.log("cntrl: moves.js - backwardCapture(entry)", entry);
 
   const { action, turn, player, list } = entry;
@@ -356,9 +344,10 @@ function branchHistory(entry) {
 function applyEntry(entry) {
   console.log("cntrl: moves.js - applyEntry(entry)", entry);
 
+  branchHistory(entry);               // Manage undo history when branched.
   state.pushNewMove(entry);           // Change state.
   vMoves.pushPanelLine(entry);        // Add line to panel.
-  vMoves.refreshPanel(entry);
+  vMoves.refreshPanel(entry);         // Refresh panel (dimmed future rows).
 }
 // Seampoint: more local functions...
 

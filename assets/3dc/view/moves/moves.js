@@ -46,28 +46,9 @@ export function pushPanelLine(entry) {
   if(!scroll) return;
 
   let line = "";
-  if(action === "move")
-    line = assembleMoveLine(entry);
-  else if(action == "capture")
-    line = assembleCaptureLine(entry);
-
-  const div = document.createElement("div");
-  div.textContent = line;
-
-  // Write to the scroll box.
-  scroll.appendChild(div);
-  scroll.scrollTop = scroll.scrollHeight;
-  }
-
-export function pushPanelCaptureLine(entry) {
-  console.log("view : moves.js - pushPanelCaptureLine(move)", entry);
-  
-  // const {action,turn,player,list:[{key,prev,post},{key,prev,post}]} = entry;
-
-  const scroll = document.getElementById("move-list");
-  if(!scroll) return;
-
-  const line = assembleCaptureLine(entry);
+  if(     action === "move")    line = assembleMoveLine(entry);
+  else if(action === "capture") line = assembleCaptureLine(entry);
+  // Seampoint: more assemble line functions.
 
   const div = document.createElement("div");
   div.textContent = line;
@@ -134,16 +115,16 @@ export function cancelAnimation() {
 function assembleMoveLine(move) {
   console.log("view : moves.js - assembleMoveLine(move)", move);
 
-  let { action, turn, player, key, prev, post } = move;
-  // const {action,turn,player,list:[{key,prev,post}]} = entry;
+  let { action, turn, player, list } = move;
+  const mover = list[0]; // list: {key,prev,post}.
 
   const index = state.getIndices().Moves;
 
   // --- Column widths ---
   const turnCol  = (String(turn).padStart(3)).padEnd(4);
-  const pieceCol = `${key}`.padEnd(4);
-  const srcCol   = `${prev}`.padEnd(6);
-  const dstCol   = `${post}`.padEnd(10);
+  const pieceCol = `${mover.key}`.padEnd(4);
+  const srcCol   = `${mover.prev}`.padEnd(6);
+  const dstCol   = `${mover.post}`.padEnd(10);
 
   const whiteCol = (player === "White") ? `${pieceCol} ${srcCol} - ${dstCol}`: "                         ";
   const blackCol = (player === "Black") ? `${pieceCol} ${srcCol} - ${dstCol}`: "                         ";
@@ -153,15 +134,15 @@ function assembleMoveLine(move) {
   const line = `${turnCol} ${whiteCol} ${blackCol} ${annotationsCol}`;
 
   return line;
-}
+  }
 
 function assembleCaptureLine(entry) {
   console.log("view : moves.js - assembleCaptureLine(entry)", entry);
 
   // const {action,turn,player,list:[{key,prev,post}]} = entry;
   const { action, turn, player, list } = entry;
-  const attacker = list[0]; // {key,prev,post}
-  const captured = list[1]; // {key,prev,post}
+  const attacker = list[0]; // {key,prev,post}.
+  const captured = list[1]; // {key,prev,post}.
 
   const index = state.getIndices().Moves;
 
