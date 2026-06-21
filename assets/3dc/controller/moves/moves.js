@@ -98,7 +98,7 @@ export function buildForward(entry) {     // Redo.
     forewardMove(entry);
     }
   else if(action === "capture") {
-    // TODO: ForwardTask()
+    forewardCapture(entry);
     }
   else if(action === "enpassant") {
     // TODO: ForwardTask()
@@ -137,7 +137,7 @@ export function buildForward(entry) {     // Redo.
   }
 
 export function buildBackward(entry) {    // Undo.
-  console.log("cntrl: moves.js - buildForward(entry)", entry);
+  console.log("cntrl: moves.js - buildBackward(entry)", entry);
 
   const { action, turn, player, key, prev, next } = entry;
   // const { action, turn, player, list } = entry;
@@ -147,7 +147,7 @@ export function buildBackward(entry) {    // Undo.
     backwardMove(entry);
     }
   else if(action === "capture") {
-    // TODO: BackwardTask()
+    backwardCapture(entry);
     }
   else if(action === "enpassant") {
     // TODO: BackwardTask()
@@ -198,15 +198,25 @@ function handleMove(payload) {
   forewardMove(entry);
 
   branchHistory(entry);
-  applyEntry(entry);
+  state.pushNewMove(entry);           // Change state.
+  vMoves.pushPanelLine(entry);        // Create and add line to panel.
+  vMoves.refreshPanel(entry);
   }
 
 function handleCapture(payload) {
   console.log("cntrl: moves.js - handleCapture(payload)", payload);
 
-  const { player, piece, src, dst, sec, captured, opts } = payload;  // Informative.
+  const { action, player } = payload;
+  const selections = cSelections.getSelections();
 
-  // TODO: change state - handleCapture().
+  const entry = mMoves.makeCaptureEntry(selections, payload);
+
+  forewardCapture(entry);
+
+  branchHistory(entry);
+  state.pushNewMove(entry);           // Change state.
+  vMoves.pushPanelCaptureLine(entry); // Add line to panel.
+  vMoves.refreshPanel(entry);
   }
 
 function handleEnpassant(payload) {
@@ -281,11 +291,7 @@ function forewardMove(entry) {
   let { action, turn, player, key, prev, post } = entry;
   // const {action,turn,player,list:[{key,prev,post}]} = entry;
 
-  const boardSpec = cSetup.getCurrBoard().boardSize;
-
   const [, dstStr] = post.split("@");
-  const dstTile = coords.normalizeTileToVts(dstStr, boardSpec);
-
   const { ok, err } = mPieces.movePieceTileToTile(key, dstStr);
   if(!ok) return { ok, err };
   }
@@ -296,13 +302,34 @@ function backwardMove(entry) {
   let { action, turn, player, key, prev, post } = entry;
   // const {action,turn,player,list:[{key,prev,post}]} = entry;
 
-  const boardSpec = cSetup.getCurrBoard().boardSize;
-
   const [, dstStr] = prev.split("@");
-  const dstTile = coords.normalizeTileToVts(dstStr, boardSpec);
-
   const { ok, err } = mPieces.movePieceTileToTile(key, dstStr);
   if(!ok) return { ok, err };
+}
+
+function forewardCapture(entry) {
+  console.log("cntrl: moves.js - forewardCapture(entry)", entry);
+
+  const { action, turn, player, list } = entry;
+  const attacker = list[0]; // {key,prev,post}
+  const captured = list[1]; // {key,prev,post}
+
+  const [, dstStr]  = attacker.post.split("@");
+  mPieces.movePieceFromBoardToTray(captured.key);
+  mPieces.movePieceTileToTile(attacker.key, dstStr);
+  }
+
+function backwardCapture(entry) { // TODO: write.
+  console.log("cntrl: moves.js - backwardCapture(entry)", entry);
+
+  const { action, turn, player, list } = entry;
+  const attacker = list[0]; // {key,prev,post}
+  const captured = list[1]; // {key,prev,post}
+
+  const [, attStr]  = attacker.prev.split("@");
+  const [, capStr]  = captured.prev.split("@");
+  mPieces.movePieceTileToTile(attacker.key, attStr);
+  mPieces.movePieceFromTrayToBoard(captured.key, capStr);
 }
 
 function branchHistory(entry) {

@@ -142,8 +142,18 @@ title: "Dev"
   - 6/17/26 - Popup help texts. White/Black move order. Indicate player. Plumbing for undo moves. Undo/Redo/RW/FF/Load/Save pure moves. QC moves. Undo branching. Push & Pop panel lines.
   - 6/18/26 - Normalize gambits. Normalize refreshEntry() & applyEntry(). Undo/redo/RW/FF/load/save for quadrant gambits. Deadcode & todo updates.
   - 6/19/26 - Load reset. Occupancy reset. Normalize model layer. Undo branching. Button affordances.
-  - 6/20/26 - Cross panel button affordances. Revise entry standards. Draft move entries.
+  - 6/20/26 - Cross panel button affordances. Revise entry standards. Draft move entries. Captures.
    QC quad gambits, all gambits, all moves.
+
+## Capture Development:
+  **2-4-0-0**
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"startingPos"}],"Moves":[{"action":"move","turn":1,"player":"White","key":"WKRP","prev":"@KR2,2","post":"@KR4,4"},{"action":"move","turn":1,"player":"Black","key":"BKRP","prev":"@KR7,7","post":"@KR5,5"},{"action":"capture","turn":2,"player":"White","list":[{"key":"WKRP","prev":"@KR4,4","post":"@KR5,5"},{"key":"BKRP","prev":"@KR5,5","post":"~KR2,2"}]},{"action":"capture","turn":2,"player":"Black","list":[{"key":"BKRR","prev":"@KR8,8","post":"@KR5,5"},{"key":"WKRP","prev":"@KR5,5","post":"~KR2,2"}]}],"Gambits":[],"AdvSqs":[]}
+
+  **2-4-0-0**
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"startingPos"}],"Moves":[{"action":"move","turn":1,"player":"White","key":"WKRP","prev":"@KR2,2","post":"@KR4,4"},{"action":"move","turn":1,"player":"Black","key":"BKRP","prev":"@KR7,7","post":"@KR5,5"},{"action":"capture","turn":2,"player":"White","list":[{"key":"WKRP","prev":"@KR4,4","post":"@KR5,5"},{"key":"BKRP","prev":"KR5,5"}]},{"action":"capture","turn":2,"player":"Black","list":[{"key":"BKRR","prev":"@KR8,8","post":"@KR5,5"},{"key":"WKRP","prev":"KR5,5"}]}],"Gambits":[],"AdvSqs":[]}
+
+  **2-1-0-0**
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"startingPos"}],"Moves":[{"action":"move","turn":1,"player":"White","key":"WKRP","prev":"@KR2,2","post":"@KR5,5"}],"Gambits":[],"AdvSqs":[]}
 
 ## Moves:
   **2-4-0-0**

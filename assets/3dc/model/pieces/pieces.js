@@ -138,7 +138,7 @@ export function movePieceTileToTile(key, dstStr) {
     const piece = pieceList[key];                                   // Ensure valid args - should never fail.
     if(!piece) throw new Error(`Piece ${key} not found.`);
     if(!coords.onBoardStr(dstStr, spec)) throw new Error(`Destination ${dstStr} not on board.`);
-    console.log("*** Parse", piece);
+    // console.log("*** Parse", piece);
 
   // --- Update board occupancy ---
     const dstTile = coords.normalizeTileToVts(dstStr, spec);        // Determine occupancy indices.
@@ -147,7 +147,7 @@ export function movePieceTileToTile(key, dstStr) {
     const occupancy = mBoards.getBoardOccupancy();
     if(occupancy[z][x][y]) {
       const err = `Cannot move to an occupied ${occupancy[z][x][y]} tile ${dstStr}.`;
-      // console.log("***", err);
+      console.log("***", err);
       return { ok: false, err };
     }
     const [Z,X,Y] = utils.add(mBoards.getOrigin(), piece.coords); // Previous.

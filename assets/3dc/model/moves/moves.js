@@ -66,7 +66,6 @@ export function makeMoveEntry(selections, payload) {
   const post  = `@${dstStr}`;  
 
   let entry = { action, turn, player, key, prev, post };
-  let err = null;
   console.log("*** entry", entry);
 
   cSetup.clearAllPieceSelections();
@@ -75,6 +74,39 @@ export function makeMoveEntry(selections, payload) {
   
   return entry; // {"action":"move","turn":1,"player":"White","list":[{"key":"WKRR","prev":"@KR1,1","post":"@KR3,3"}]}.
 }
+
+export function makeCaptureEntry(selections, payload) {
+  console.log(`model: gambits.js - makeCaptureEntry(selections, payload):`, selections, payload);
+
+  const { action, player } = payload;
+  const { pieceSelections, tileSelections } = selections;
+
+  const index = state.getIndices()["Moves"] + 1;
+  let turn = Math.floor((index + 1) / 2);
+
+  const [attacker, captured] = [...pieceSelections];
+  const piece1 = mPieces.getPieceList()[attacker];
+  const piece2 = mPieces.getPieceList()[captured];
+  console.log("*** piece1", piece1);
+  console.log("*** piece2", piece2);
+
+  let prev  = `@${piece1.pos}`;
+  let post  = `@${piece2.pos}`;
+
+  let first  = { key: attacker, prev, post };
+  let second = { key: captured, prev: post, post: `~${piece2.home.trayPos}` };
+  let list = [first, second];
+
+  let entry = { action, turn, player, list };
+
+  cSetup.clearAllPieceSelections();
+  cSetup.clearAllTileSelections();
+  cSelections.clearSelections();
+  
+  console.log("*** entry", entry);
+  return entry;
+  }
+
 // Seampoint: more Entry functions...
 
 export function buttonAffordances(situation) {

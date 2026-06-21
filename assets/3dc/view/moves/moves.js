@@ -45,7 +45,29 @@ export function pushPanelLine(entry) {
   const scroll = document.getElementById("move-list");
   if(!scroll) return;
 
-  const line = assembleMoveLine(entry);
+  let line = "";
+  if(action === "move")
+    line = assembleMoveLine(entry);
+  else if(action == "capture")
+    line = assembleCaptureLine(entry);
+
+  const div = document.createElement("div");
+  div.textContent = line;
+
+  // Write to the scroll box.
+  scroll.appendChild(div);
+  scroll.scrollTop = scroll.scrollHeight;
+  }
+
+export function pushPanelCaptureLine(entry) {
+  console.log("view : moves.js - pushPanelCaptureLine(move)", entry);
+  
+  // const {action,turn,player,list:[{key,prev,post},{key,prev,post}]} = entry;
+
+  const scroll = document.getElementById("move-list");
+  if(!scroll) return;
+
+  const line = assembleCaptureLine(entry);
 
   const div = document.createElement("div");
   div.textContent = line;
@@ -116,10 +138,36 @@ function assembleMoveLine(move) {
   const turnCol  = (String(turn).padStart(3)).padEnd(4);
   const pieceCol = `${key}`.padEnd(4);
   const srcCol   = `${prev}`.padEnd(6);
-  const dstCol   = `${post}`.padEnd(6);
+  const dstCol   = `${post}`.padEnd(10);
 
-  const whiteCol = (player === "White") ? `${pieceCol} ${srcCol} - ${dstCol}`: "                     ";
-  const blackCol = (player === "Black") ? `${pieceCol} ${srcCol} - ${dstCol}`: "                     ";
+  const whiteCol = (player === "White") ? `${pieceCol} ${srcCol} - ${dstCol}`: "                         ";
+  const blackCol = (player === "Black") ? `${pieceCol} ${srcCol} - ${dstCol}`: "                         ";
+
+  const annotationsCol = ".....";
+
+  const line = `${turnCol} ${whiteCol} ${blackCol} ${annotationsCol}`;
+
+  return line;
+}
+
+function assembleCaptureLine(entry) {
+  console.log("view : moves.js - assembleCaptureLine(entry)", entry);
+
+  // const {action,turn,player,list:[{key,prev,post}]} = entry;
+  const { action, turn, player, list } = entry;
+  const attacker = list[0]; // {key,prev,post}
+  const captured = list[1]; // {key,prev,post}
+
+  const index = state.getIndices().Moves;
+
+  // --- Column widths ---
+  const turnCol  = (String(turn).padStart(3)).padEnd(4);
+  const pieceCol = `${attacker.key}`.padEnd(4);
+  const srcCol   = `${attacker.prev}`.padEnd(6);
+  const dstCol   = `${captured.key}${attacker.post}`.padEnd(10);
+
+  const whiteCol = (player === "White") ? `${pieceCol} ${srcCol} x ${dstCol}`: "                         ";
+  const blackCol = (player === "Black") ? `${pieceCol} ${srcCol} x ${dstCol}`: "                         ";
 
   const annotationsCol = ".....";
 
