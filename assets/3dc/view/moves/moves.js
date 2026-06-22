@@ -49,6 +49,7 @@ export function pushPanelLine(entry) {
   if(     action === "move")      line = assembleMoveLine(entry);
   else if(action === "capture")   line = assembleCaptureLine(entry);
   else if(action === "enpassant") line = assembleEnpassantLine(entry);
+  else if(action === "castle")    line = assembleCastleLine(entry);
   // SeampointAdd: more assemble line functions.
 
   const div = document.createElement("div");
@@ -89,8 +90,8 @@ export function refreshPanel(move) {
       : "0.5";    // future
     children[i].style.opacity = opacity;
   }
-  console.log("*** count", count);                        // Player radio buttons.
-  (count%2 === 1)
+
+  (count%2 === 1)                                         // Player radio buttons.
     ? document.querySelector('input[name="move-player"][value="Black"]').checked = true
     : document.querySelector('input[name="move-player"][value="White"]').checked = true;
   }
@@ -118,15 +119,15 @@ const blank = "                         ";
 function assembleMoveLine(entry) {
   console.log("view : moves.js - assembleMoveLine(move)", entry);
 
-  const { action, turn, player, list } = entry;           // Parse.
+  const { action, turn, player, list } = entry;               // Parse.
   const mover = list[0]; // [{key,prev,post}].
 
-  const turnCol  = (String(turn).padStart(3)).padEnd(4);  // Columns.
+  const turnCol  = (String(turn).padStart(3)).padEnd(4);      // Columns.
   const pieceCol = `${mover.key}`.padEnd(4);
-  const srcCol   = `${mover.prev}`.padEnd(6);
+  const srcCol   = `${mover.prev}`.padEnd(7);
   const dstCol   = `${mover.post}`.padEnd(10);
 
-  const row = `${pieceCol} ${srcCol} - ${dstCol}`;        // Assemble.
+  const row = `${pieceCol} ${srcCol} - ${dstCol}`.padEnd(26); // Assemble.
   const whiteCol = (player === "White") ? row: `${blank}`;
   const blackCol = (player === "Black") ? row: `${blank}`;
   const annotationsCol = ".....";
@@ -138,16 +139,16 @@ function assembleMoveLine(entry) {
 function assembleCaptureLine(entry) {
   console.log("view : moves.js - assembleCaptureLine(entry)", entry);
 
-  const { action, turn, player, list } = entry;           // Parse.
+  const { action, turn, player, list } = entry;               // Parse.
   const attacker = list[0]; // [{key,prev,post}].
   const captured = list[1]; // [{key,prev,post}].
 
-  const turnCol  = (String(turn).padStart(3)).padEnd(4);  // Columns.
+  const turnCol  = (String(turn).padStart(3)).padEnd(4);      // Columns.
   const pieceCol = `${attacker.key}`.padEnd(4);
-  const srcCol   = `${attacker.prev}`.padEnd(6);
+  const srcCol   = `${attacker.prev}`.padEnd(7);
   const dstCol   = `${captured.key}${attacker.post}`.padEnd(10);
 
-  const row = `${pieceCol} ${srcCol} x ${dstCol}`;        // Assemble.
+  const row = `${pieceCol} ${srcCol} x ${dstCol}`.padEnd(26);  // Assemble.
   const whiteCol = (player === "White") ? row: `${blank}`;
   const blackCol = (player === "Black") ? row: `${blank}`;
   const annotationsCol = ".....";
@@ -159,19 +160,42 @@ function assembleCaptureLine(entry) {
 function assembleEnpassantLine(entry) {
   console.log("view : moves.js - assembleEnpassantLine(entry)", entry);
 
-  const { action, turn, player, list } = entry;           // Parse.
+  const { action, turn, player, list } = entry;               // Parse.
   const attacker = list[0]; // [{key,prev,post}].
   const captured = list[1]; // [{key,prev,post}].
 
-  const turnCol  = (String(turn).padStart(3)).padEnd(4);  // Columns.
+  const turnCol  = (String(turn).padStart(3)).padEnd(4);      // Columns.
   const pieceCol = `${attacker.key}`.padEnd(4);
-  const srcCol   = `${attacker.prev}`.padEnd(6);
+  const srcCol   = `${attacker.prev}`.padEnd(7);
   const dstCol   = `${captured.key}${attacker.post}`.padEnd(10);
 
-  const row = `${pieceCol} ${srcCol} x ${dstCol}`;        // Assemble.
+  const row = `${pieceCol} ${srcCol} x ${dstCol}`.padEnd(26); // Assemble.
   const whiteCol = (player === "White") ? row: `${blank}`;
   const blackCol = (player === "Black") ? row: `${blank}`;
   const annotationsCol = "ep";
+  const line = `${turnCol} ${whiteCol} ${blackCol} ${annotationsCol}`;
+
+  return line;  // 2  WKRP @KR4,4 x BKRP@KR5,5...
+}
+
+function assembleCastleLine(entry) {
+  console.log("view : moves.js - assembleCastleLine(entry)", entry);
+
+  const { action, turn, player, list } = entry;               // Parse.
+  const king  = list[0]; // [{key,prev,post}].
+  const rook  = list[1]; // [{key,prev,post}].
+  const rook2 = (list.length === 3) ? list[2] : null; // [{key,prev,post}].
+
+  const turnCol  = (String(turn).padStart(3)).padEnd(4);      // Columns.
+  const kingCol  = `K${king.post}`.padEnd(7);
+  const rookCol  = `R${rook.post}`.padEnd(7);
+  const rook2Col = (list.length === 3) ? `R${rook2.post}`.padEnd(8) : "".padEnd(8);
+
+  const row = `${kingCol} ${rookCol} ${rook2Col}`.padEnd(26); // Assemble.
+  const whiteCol = (player === "White") ? row: `${blank}`;
+  const blackCol = (player === "Black") ? row: `${blank}`;
+  const annotationsCol = (list.length === 3) ? "double" : "castle";
+  // const annotationsCol = "castle: kingside, queenside, royal, double";  // TODO: castle type.
   const line = `${turnCol} ${whiteCol} ${blackCol} ${annotationsCol}`;
 
   return line;  // 2  WKRP @KR4,4 x BKRP@KR5,5...

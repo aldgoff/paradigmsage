@@ -93,7 +93,7 @@ export function buildForward(entry) {     // Restore from redo.
   if(     action === "move")          forewardMove(entry);
   else if(action === "capture")       forewardCapture(entry);
   else if(action === "enpassant")     forewardEnpassant(entry);
-  else if(action === "castle")        ; // TODO: ForwardTask()
+  else if(action === "castle")        forewardCastle(entry);
   else if(action === "promote")       ; // TODO: ForwardTask()
   else if(action === "duke-decay")    ; // TODO: ForwardTask()
   else if(action === "bishop-decay")  ; // TODO: ForwardTask()
@@ -120,7 +120,7 @@ export function buildBackward(entry) {    // Restore from undo.
   if(     action === "move")          backwardMove(entry);
   else if(action === "capture")       backwardCapture(entry);
   else if(action === "enpassant")     backwardEnpassant(entry);
-  else if(action === "castle")        ; // TODO: BackwardTask()
+  else if(action === "castle")        backwardCastle(entry);
   else if(action === "promote")       ; // TODO: BackwardTask()
   else if(action === "duke-decay")    ; // TODO: BackwardTask()
   else if(action === "bishop-decay")  ; // TODO: BackwardTask()
@@ -175,8 +175,10 @@ function handleCastle(payload, selections) {
   console.log("cntrl: moves.js - handleCastle(payload, selections)", payload, selections);
  
   const { action, player } = payload;
+  const entry = mMoves.makeCastleEntry(payload, selections);
+  forewardCastle(entry);
 
- // TODO: change state - handleCastle().
+  applyEntry(entry);
   }
 
 function handlePromote(payload, selections) {
@@ -232,31 +234,31 @@ function handleUplift(payload, selections) {
 function forewardMove(entry) {        // Move piece.
   console.log("cntrl: moves.js - forewardMove(entry)", entry);
 
-  const { action, turn, player, list } = entry;
+  const { action, turn, player, list } = entry;           // Parse.
   const mover = list[0]; // list: {key,prev,post}.
 
-  const [, dstStr] = mover.post.split("@");
+  const [, dstStr] = mover.post.split("@");               // Move(s).
   mPieces.movePieceTileToTile(mover.key, dstStr);
   }
 
 function backwardMove(entry) {
   console.log("cntrl: moves.js - backwardMove(entry)", entry);
 
-  const { action, turn, player, list } = entry;
+  const { action, turn, player, list } = entry;           // Parse.
   const mover = list[0]; // list: {key,prev,post}.
 
-  const [, dstStr] = mover.prev.split("@");
+  const [, dstStr] = mover.prev.split("@");               // Move(s).
   mPieces.movePieceTileToTile(mover.key, dstStr);
 }
 
 function forewardCapture(entry) {     // Capture piece.
   console.log("cntrl: moves.js - forewardCapture(entry)", entry);
 
-  const { action, turn, player, list } = entry;
+  const { action, turn, player, list } = entry;           // Parse.
   const attacker = list[0]; // {key,prev,post}
   const captured = list[1]; // {key,prev,post}
 
-  const [, dstStr]  = attacker.post.split("@");
+  const [, dstStr]  = attacker.post.split("@");           // Move(s).
   mPieces.movePieceFromBoardToTray(captured.key);
   mPieces.movePieceTileToTile(attacker.key, dstStr);
   }
@@ -264,24 +266,24 @@ function forewardCapture(entry) {     // Capture piece.
 function backwardCapture(entry) {
   console.log("cntrl: moves.js - backwardCapture(entry)", entry);
 
-  const { action, turn, player, list } = entry;
+  const { action, turn, player, list } = entry;           // Parse.
   const attacker = list[0]; // {key,prev,post}
   const captured = list[1]; // {key,prev,post}
 
-  const [, attStr]  = attacker.prev.split("@");
+  const [, attStr]  = attacker.prev.split("@");           // Move(s).
   const [, capStr]  = captured.prev.split("@");
   mPieces.movePieceTileToTile(attacker.key, attStr);
   mPieces.movePieceFromTrayToBoard(captured.key, capStr);
 }
 
-function forewardEnpassant(entry) {     // En passant.
+function forewardEnpassant(entry) {   // En passant.
   console.log("cntrl: moves.js - forewardEnpassant(entry)", entry);
 
-  const { action, turn, player, list } = entry;
+  const { action, turn, player, list } = entry;           // Parse.
   const attacker = list[0]; // {key,prev,post}
   const captured = list[1]; // {key,prev,post}
 
-  const [, dstStr]  = attacker.post.split("@");
+  const [, dstStr]  = attacker.post.split("@");           // Move(s).
   mPieces.movePieceFromBoardToTray(captured.key);
   mPieces.movePieceTileToTile(attacker.key, dstStr);
   }
@@ -289,14 +291,50 @@ function forewardEnpassant(entry) {     // En passant.
 function backwardEnpassant(entry) {
   console.log("cntrl: moves.js - backwardEnpassant(entry)", entry);
 
-  const { action, turn, player, list } = entry;
+  const { action, turn, player, list } = entry;           // Parse.
   const attacker = list[0]; // {key,prev,post}
   const captured = list[1]; // {key,prev,post}
 
-  const [, attStr]  = attacker.prev.split("@");
+  const [, attStr]  = attacker.prev.split("@");           // Move(s).
   const [, capStr]  = captured.prev.split("@");
   mPieces.movePieceTileToTile(attacker.key, attStr);
   mPieces.movePieceFromTrayToBoard(captured.key, capStr);
+}
+
+function forewardCastle(entry) {      // Castle.
+  console.log("cntrl: moves.js - forewardCastle(entry)", entry);
+
+  const { action, turn, player, list } = entry;           // Parse.
+  const king = list[0]; // {key,prev,post}
+  const rook = list[1]; // {key,prev,post}
+  const rook2 = (list.length === 3) ? list[2] : null; // [{key,prev,post}].
+
+  const [, kingStr]  = king.post.split("@");              // Move(s).
+  const [, rookStr]  = rook.post.split("@");
+  mPieces.movePieceTileToTile(king.key, kingStr);
+  mPieces.movePieceTileToTile(rook.key, rookStr);
+  if(rook2) {
+    const [, rookStr]  = rook2.post.split("@");
+    mPieces.movePieceTileToTile(rook2.key, rookStr);
+  }
+  }
+
+function backwardCastle(entry) {
+  console.log("cntrl: moves.js - backwardCastle(entry)", entry);
+
+  const { action, turn, player, list } = entry;           // Parse.
+  const king = list[0]; // {key,prev,post}
+  const rook = list[1]; // {key,prev,post}
+  const rook2 = (list.length === 3) ? list[2] : null; // [{key,prev,post}].
+
+  const [, kingStr]  = king.prev.split("@");              // Move(s).
+  const [, rookStr]  = rook.prev.split("@");
+  mPieces.movePieceTileToTile(king.key, kingStr);
+  mPieces.movePieceTileToTile(rook.key, rookStr);
+  if(rook2) {
+    const [, rookStr]  = rook2.prev.split("@");
+    mPieces.movePieceTileToTile(rook2.key, rookStr);
+  }
 }
 // SeampointAdd: more fore/back functions...
 

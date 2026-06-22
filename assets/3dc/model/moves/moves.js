@@ -108,6 +108,41 @@ export function makeEnpassantEntry(payload, selections) {
   
   return { action, turn, player, list };                  // Entry.
 }
+
+export function makeCastleEntry(payload, selections) {
+  console.log(`model: gambits.js - makeCastleEntry(payload, selections):`, payload, selections);
+
+  const { action, player, pieceSelections, tileSelections, turn } = parse(payload, selections);
+
+  const [king, rook, rook2] = [...pieceSelections];       // Pieces.
+  const piece1 = mPieces.getPieceList()[king];
+  const piece2 = mPieces.getPieceList()[rook];
+  const piece3 = (pieceSelections.size === 3)
+    ? mPieces.getPieceList()[rook2]
+    : null;
+  
+  const [kingDst, rookDst, rook2Dst] = [...tileSelections]; // Tiles.
+  const kingStr  = coords.vtsToBoard(kingDst,  cSetup.getCurrBoard().boardSize);
+  const rookStr  = coords.vtsToBoard(rookDst,  cSetup.getCurrBoard().boardSize);
+  const rook2Str = (pieceSelections.size === 3)
+    ? coords.vtsToBoard(rook2Dst, cSetup.getCurrBoard().boardSize)
+    : null;
+
+  const prev1  = `@${piece1.pos}`;                        // Assemble.
+  const prev2  = `@${piece2.pos}`;
+  const first  = { key: king, prev: prev1, post: `@${kingStr}` };
+  const second = { key: rook, prev: prev2, post: `@${rookStr}` };
+  let list   = [first, second]; // list:[{key,prev,post}, {key,prev,post}].
+  if(piece3) {  // Double castle.
+    const prev3 = `@${piece3.pos}`;
+    const third = { key: rook2, prev: prev3, post: `@${rook2Str}` };
+    list.push(third); // list:[{key,prev,post}, {key,prev,post}, {key,prev,post}].
+  }
+
+  cleanupSelections();                                    // Cleanup.
+  
+  return { action, turn, player, list };                  // Entry.
+}
 // SeampointAdd: more Entry functions...
 
 export function buttonAffordances(situation) {
