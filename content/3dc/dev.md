@@ -146,7 +146,29 @@ title: "Dev"
 
  ### Week 15:
   - 6/21/26 - Fixed White/Black radio buttons in move panel. Remove obsolete saved game strings. Normalize move entry and payload/selections order.
+  - 6/21/26 - En passant. Rest of moves.
    QC quad gambits, all gambits, all moves.
+
+## Examples:
+ ### En Passant
+  **2-4-0-0**
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"startingPos"}],"Moves":[{"action":"move","turn":1,"player":"White","list":[{"key":"WKRP","prev":"@KR2,2","post":"@KR4,4"}]},{"action":"move","turn":1,"player":"Black","list":[{"key":"BKKP","prev":"@K7,7","post":"@K6,5"}]},{"action":"move","turn":2,"player":"White","list":[{"key":"WKRP","prev":"@KR4,4","post":"@KR5,5"}]},{"action":"move","turn":2,"player":"Black","list":[{"key":"BKNP","prev":"@KN7,7","post":"@KN5,5"}]},{"action":"enpassant","turn":3,"player":"White","list":[{"key":"WKRP","prev":"@KR5,5","post":"@KN6,6"},{"key":"BKNP","prev":"@KN5,5","post":"~KN2,2"}]}],"Gambits":[],"AdvSqs":[]}
+
+  {"Setup":[
+    {"action":"makeBoard",
+      "prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},
+      "nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},
+    {"action":"startingPos"}],
+  "Moves":[
+    {"action":"move","turn":1,"player":"White","list":[{"key":"WKRP","prev":"@KR2,2","post":"@KR4,4"}]},
+    {"action":"move","turn":1,"player":"Black","list":[{"key":"BKKP","prev":"@K7,7","post":"@K6,5"}]},
+    {"action":"move","turn":2,"player":"White","list":[{"key":"WKRP","prev":"@KR4,4","post":"@KR5,5"}]},
+    {"action":"move","turn":2,"player":"Black","list":[{"key":"BKNP","prev":"@KN7,7","post":"@KN5,5"}]},
+    {"action":"enpassant","turn":3,"player":"White",
+    "list":[
+      {"key":"WKRP","prev":"@KR5,5","post":"@KN6,6"},
+      {"key":"BKNP","prev":"@KN5,5","post":"~KN2,2"}]}],
+  "Gambits":[],"AdvSqs":[]}
 
 ## Capture Development:
   **2-4-0-0**

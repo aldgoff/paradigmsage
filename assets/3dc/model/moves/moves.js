@@ -49,63 +49,66 @@ export function makeEntry(payload) {  // Never called, specialized versions belo
 export function makeMoveEntry(payload, selections) {
   console.log(`model: moves.js - makeMoveEntry(payload, selections):`, payload, selections);
 
-  const { action, player } = payload;
-  const { pieceSelections, tileSelections } = selections;
+  const { action, player, pieceSelections, tileSelections, turn } = parse(payload, selections);
 
-  const index = state.getIndices()["Moves"] + 1;
-  let turn = Math.floor((index + 1) / 2);
+  const [key] = [...pieceSelections];                     // Pieces.
+  const piece = mPieces.getPieceList()[key];
 
-  const [key]     = [...pieceSelections];
-  const [dstTile] = [...tileSelections];
+  const [dstTile] = [...tileSelections];                  // Tiles.
   const dstStr  = coords.vtsToBoard(dstTile, cSetup.getCurrBoard().boardSize);
 
-  const piece = mPieces.getPieceList()[key];
-  const prev  = `@${piece.pos}`;
+  const prev  = `@${piece.pos}`;                          // Assemble.
   const post  = `@${dstStr}`;  
+  const list  = [{ key, prev, post }]; // list:[{key:"WKRR", prev:"@KR1,1", post:"@KR3,3"}]
 
-  const list = [{ key, prev, post }];
-  let entry = { action, turn, player, list };
-  console.log("*** entry", entry);
-
-  cSetup.clearAllPieceSelections();
-  cSetup.clearAllTileSelections();
-  cSelections.clearSelections();
+  cleanupSelections();                                    // Cleanup.
   
-  return entry; // {"action":"move","turn":1,"player":"White","list":[{"key":"WKRR","prev":"@KR1,1","post":"@KR3,3"}]}.
+  return { action, turn, player, list };                  // Entry.
   }
 
 export function makeCaptureEntry(payload, selections) {
   console.log(`model: gambits.js - makeCaptureEntry(payload, selections):`, payload, selections);
 
-  const { action, player } = payload;
-  const { pieceSelections, tileSelections } = selections;
+  const { action, player, pieceSelections, tileSelections, turn } = parse(payload, selections);
 
-  const index = state.getIndices()["Moves"] + 1;
-  let turn = Math.floor((index + 1) / 2);
-
-  const [attacker, captured] = [...pieceSelections];
+  const [attacker, captured] = [...pieceSelections];     // Pieces.
   const piece1 = mPieces.getPieceList()[attacker];
   const piece2 = mPieces.getPieceList()[captured];
-  console.log("*** piece1", piece1);
-  console.log("*** piece2", piece2);
 
-  let prev  = `@${piece1.pos}`;
-  let post  = `@${piece2.pos}`;
+  const prev   = `@${piece1.pos}`;                        // Assemble.
+  const post   = `@${piece2.pos}`;
+  const first  = { key: attacker, prev, post };
+  const second = { key: captured, prev: post, post: `~${piece2.home.trayPos}` };
+  const list   = [first, second]; // list:[{key,prev,post}, {key,prev,post}].
 
-  let first  = { key: attacker, prev, post };
-  let second = { key: captured, prev: post, post: `~${piece2.home.trayPos}` };
-  let list = [first, second];
-
-  let entry = { action, turn, player, list };
-
-  cSetup.clearAllPieceSelections();
-  cSetup.clearAllTileSelections();
-  cSelections.clearSelections();
+  cleanupSelections();                                    // Cleanup.
   
-  console.log("*** entry", entry);
-  return entry;
+  return { action, turn, player, list };                  // Entry.
 }
-// Seampoint: more Entry functions...
+
+export function makeEnpassantEntry(payload, selections) {
+  console.log(`model: gambits.js - makeEnpassantEntry(payload, selections):`, payload, selections);
+
+  const { action, player, pieceSelections, tileSelections, turn } = parse(payload, selections);
+
+  const [attacker, captured] = [...pieceSelections];      // Pieces.
+  const piece1 = mPieces.getPieceList()[attacker];
+  const piece2 = mPieces.getPieceList()[captured];
+
+  const [dstTile] = [...tileSelections];                  // Tiles.
+  const dstStr  = coords.vtsToBoard(dstTile, cSetup.getCurrBoard().boardSize);
+
+  const prev   = `@${piece1.pos}`;                        // Assemble.
+  const post   = `@${piece2.pos}`;
+  const first  = { key: attacker, prev, post: `@${dstStr}` };
+  const second = { key: captured, prev: post, post: `~${piece2.home.trayPos}` };
+  const list   = [first, second]; // list:[{key,prev,post}, {key,prev,post}].
+
+  cleanupSelections();                                    // Cleanup.
+  
+  return { action, turn, player, list };                  // Entry.
+}
+// SeampointAdd: more Entry functions...
 
 export function buttonAffordances(situation) {
   console.log("model: moves.js - buttonAffordances(situation)", situation);
@@ -141,5 +144,19 @@ export function buttonAffordances(situation) {
 // Seampoint: more global functions...
 
 // --- Helpers ---
+function cleanupSelections() {
+  cSetup.clearAllPieceSelections();                       // Cleanup.
+  cSetup.clearAllTileSelections();
+  cSelections.clearSelections();
+}
+
+function parse(payload, selections) {
+  const { action, player } = payload;
+  const { pieceSelections, tileSelections } = selections;
+  const index = state.getIndices()["Moves"] + 1;
+  const turn = Math.floor((index + 1) / 2);
+
+  return { action, player, pieceSelections, tileSelections, turn };
+}
 // Seampoint: more local functions...
 

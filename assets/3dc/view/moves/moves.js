@@ -46,9 +46,10 @@ export function pushPanelLine(entry) {
   if(!scroll) return;
 
   let line = "";
-  if(     action === "move")    line = assembleMoveLine(entry);
-  else if(action === "capture") line = assembleCaptureLine(entry);
-  // Seampoint: more assemble line functions.
+  if(     action === "move")      line = assembleMoveLine(entry);
+  else if(action === "capture")   line = assembleCaptureLine(entry);
+  else if(action === "enpassant") line = assembleEnpassantLine(entry);
+  // SeampointAdd: more assemble line functions.
 
   const div = document.createElement("div");
   div.textContent = line;
@@ -112,54 +113,70 @@ export function cancelAnimation() {
 // Seampoint: more global functions...
 
 // --- Helpers ---
-function assembleMoveLine(move) {
-  console.log("view : moves.js - assembleMoveLine(move)", move);
+const blank = "                         ";
 
-  let { action, turn, player, list } = move;
-  const mover = list[0]; // list: {key,prev,post}.
+function assembleMoveLine(entry) {
+  console.log("view : moves.js - assembleMoveLine(move)", entry);
 
-  const index = state.getIndices().Moves;
+  const { action, turn, player, list } = entry;           // Parse.
+  const mover = list[0]; // [{key,prev,post}].
 
-  // --- Column widths ---
-  const turnCol  = (String(turn).padStart(3)).padEnd(4);
+  const turnCol  = (String(turn).padStart(3)).padEnd(4);  // Columns.
   const pieceCol = `${mover.key}`.padEnd(4);
   const srcCol   = `${mover.prev}`.padEnd(6);
   const dstCol   = `${mover.post}`.padEnd(10);
 
-  const whiteCol = (player === "White") ? `${pieceCol} ${srcCol} - ${dstCol}`: "                         ";
-  const blackCol = (player === "Black") ? `${pieceCol} ${srcCol} - ${dstCol}`: "                         ";
-
+  const row = `${pieceCol} ${srcCol} - ${dstCol}`;        // Assemble.
+  const whiteCol = (player === "White") ? row: `${blank}`;
+  const blackCol = (player === "Black") ? row: `${blank}`;
   const annotationsCol = ".....";
-
   const line = `${turnCol} ${whiteCol} ${blackCol} ${annotationsCol}`;
 
-  return line;
+  return line;  // 1  WKRP @KR2,2 - @KR4,4...
   }
 
 function assembleCaptureLine(entry) {
   console.log("view : moves.js - assembleCaptureLine(entry)", entry);
 
-  // const {action,turn,player,list:[{key,prev,post}]} = entry;
-  const { action, turn, player, list } = entry;
-  const attacker = list[0]; // {key,prev,post}.
-  const captured = list[1]; // {key,prev,post}.
+  const { action, turn, player, list } = entry;           // Parse.
+  const attacker = list[0]; // [{key,prev,post}].
+  const captured = list[1]; // [{key,prev,post}].
 
-  const index = state.getIndices().Moves;
-
-  // --- Column widths ---
-  const turnCol  = (String(turn).padStart(3)).padEnd(4);
+  const turnCol  = (String(turn).padStart(3)).padEnd(4);  // Columns.
   const pieceCol = `${attacker.key}`.padEnd(4);
   const srcCol   = `${attacker.prev}`.padEnd(6);
   const dstCol   = `${captured.key}${attacker.post}`.padEnd(10);
 
-  const whiteCol = (player === "White") ? `${pieceCol} ${srcCol} x ${dstCol}`: "                         ";
-  const blackCol = (player === "Black") ? `${pieceCol} ${srcCol} x ${dstCol}`: "                         ";
-
+  const row = `${pieceCol} ${srcCol} x ${dstCol}`;        // Assemble.
+  const whiteCol = (player === "White") ? row: `${blank}`;
+  const blackCol = (player === "Black") ? row: `${blank}`;
   const annotationsCol = ".....";
-
   const line = `${turnCol} ${whiteCol} ${blackCol} ${annotationsCol}`;
 
-  return line;
+  return line;  // 2  WKRP @KR4,4 x BKRP@KR5,5...
 }
+
+function assembleEnpassantLine(entry) {
+  console.log("view : moves.js - assembleEnpassantLine(entry)", entry);
+
+  const { action, turn, player, list } = entry;           // Parse.
+  const attacker = list[0]; // [{key,prev,post}].
+  const captured = list[1]; // [{key,prev,post}].
+
+  const turnCol  = (String(turn).padStart(3)).padEnd(4);  // Columns.
+  const pieceCol = `${attacker.key}`.padEnd(4);
+  const srcCol   = `${attacker.prev}`.padEnd(6);
+  const dstCol   = `${captured.key}${attacker.post}`.padEnd(10);
+
+  const row = `${pieceCol} ${srcCol} x ${dstCol}`;        // Assemble.
+  const whiteCol = (player === "White") ? row: `${blank}`;
+  const blackCol = (player === "Black") ? row: `${blank}`;
+  const annotationsCol = "ep";
+  const line = `${turnCol} ${whiteCol} ${blackCol} ${annotationsCol}`;
+
+  return line;  // 2  WKRP @KR4,4 x BKRP@KR5,5...
+}
+// SeampointAdd: more assemble line functions...
+
 // Seampoint: more local functions...
 
