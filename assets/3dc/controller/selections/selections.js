@@ -215,15 +215,11 @@ function manageMoveButtons() {
   const tiles  = tileSelections.size;
 
   if(     pieces === 1 && tiles === 1) {        // Move, promote, or decay.
-    const promotable = (type1 === "P") && lastCol(dstStr1, size, player1);
     if(occupied) return;
     if(type1 === 'S') {  // TODO: figure out how to specify stack subpieces.
       panels.enableButton("move",        true);
       panels.enableButton("duke-decay",  true);
       panels.enableButton("bishop-decay",true);
-    }
-    else if(promotable) {
-      panels.enableButton("promote", true);
     }
     else {
       console.log("*** move");
@@ -235,24 +231,29 @@ function manageMoveButtons() {
       
     panels.enableButton("capture", true);
     }
-  else if(pieces === 2 && tiles === 1) {        // En Passant, teleportation, uplift.
+  else if(pieces === 2 && tiles === 1) {        // En Passant, teleportation, uplift, promote.
+    const promotable = (type1 === "P") && lastCol(dstStr1, size, player1);
     const piece2 = mPieces.getPieceList()[key2];
-    console.log("***", piece2.coords, dstStr1);
-    if(player1 != player2
-    && type1  === 'P'
-    && type2  === 'P')
+    if(     player1 != player2                  // En Passant.
+      && type1  === 'P'
+      && type2  === 'P')
       panels.enableButton("enpassant", true);
-    else if(player1 === player2
-    && ( type1  === 'S' && type2  === 'B'
-      || type1  === 'S' && type2  === 'D')
-    && piece2.pos === dstStr1)
+    else if(player1 === player2                 // Teleportation.
+      && ( type1  === 'S' && type2  === 'B'
+        || type1  === 'S' && type2  === 'D')
+      && piece2.pos === dstStr1)
       panels.enableButton("teleportation", true);
-    else if(player1 === player2
-    && ( type1  === 'P' && type2  === 'B'
-      || type1  === 'P' && type2  === 'D')
-    && lastCol(dstStr1, size, player1)
-    && piece2.pos === dstStr1)
+    else if(player1 === player2                 // Upllift.
+      && ( type1  === 'P' && type2  === 'B'
+        || type1  === 'P' && type2  === 'D')
+      && lastCol(dstStr1, size, player1)
+      && piece2.pos === dstStr1)
       panels.enableButton("uplift", true);
+    else if(player1 === player2                 // Promote.
+      && promotable
+      && type2 != 'P' 
+      && type2 != 'K')
+      panels.enableButton("promote", true);
     }
   else if(pieces === 2 && tiles === 2) {        // Castle.
     if(player1 != player2) return;

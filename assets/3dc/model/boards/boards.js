@@ -98,7 +98,7 @@ export function isOccupied(vts) {
 // Seampoint: more global functions...
 
 // --- Helpers ---
-function pieceLocOnBoard(key) { // [z, x, y]|null.
+export function pieceLocOnBoard(key) { // [z, x, y]|null.
   const occ = occupancy;
 
   for(let z = 0; z < occ.length; z++) {

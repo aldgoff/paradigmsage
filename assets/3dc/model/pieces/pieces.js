@@ -357,7 +357,7 @@ function createPiecesForTray(tray, trayDef, offset=0) {
   }
   }
 
-function createPiece(key, pos, coords, trayOffset=0) {
+export function createPiece(key, pos, coords, trayOffset=0) {
   // console.log("model: pieces.js - createPiece(key, pos, coords, trayOffset)", key, pos, coords, trayOffset);
 
   const [k, i, j] = coords;

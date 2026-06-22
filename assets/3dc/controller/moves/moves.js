@@ -94,7 +94,7 @@ export function buildForward(entry) {     // Restore from redo.
   else if(action === "capture")       forewardCapture(entry);
   else if(action === "enpassant")     forewardEnpassant(entry);
   else if(action === "castle")        forewardCastle(entry);
-  else if(action === "promote")       ; // TODO: ForwardTask()
+  else if(action === "promote")       forewardPromote(entry)
   else if(action === "duke-decay")    ; // TODO: ForwardTask()
   else if(action === "bishop-decay")  ; // TODO: ForwardTask()
   else if(action === "fission")       ; // TODO: ForwardTask()
@@ -121,7 +121,7 @@ export function buildBackward(entry) {    // Restore from undo.
   else if(action === "capture")       backwardCapture(entry);
   else if(action === "enpassant")     backwardEnpassant(entry);
   else if(action === "castle")        backwardCastle(entry);
-  else if(action === "promote")       ; // TODO: BackwardTask()
+  else if(action === "promote")       backwardPromote(entry)
   else if(action === "duke-decay")    ; // TODO: BackwardTask()
   else if(action === "bishop-decay")  ; // TODO: BackwardTask()
   else if(action === "fission")       ; // TODO: BackwardTask()
@@ -185,8 +185,10 @@ function handlePromote(payload, selections) {
   console.log("cntrl: moves.js - handlePromote(payload, selections)", payload, selections);
 
   const { action, player } = payload;
+  const entry = mMoves.makePromoteEntry(payload, selections);
+  forewardPromote(entry);
 
-  // TODO: change state - handlePromote().
+  applyEntry(entry);
   }
 
 function handleDukeDecay(payload, selections) {
@@ -335,6 +337,32 @@ function backwardCastle(entry) {
     const [, rookStr]  = rook2.prev.split("@");
     mPieces.movePieceTileToTile(rook2.key, rookStr);
   }
+}
+
+function forewardPromote(entry) {      // Promote.
+  console.log("cntrl: moves.js - forewardPromote(entry)", entry);
+
+  const { action, turn, player, list } = entry;           // Parse.
+  const pawn  = list[0]; // {key,prev,post}
+  const queen = list[1]; // {key,prev,post}
+
+  const [, pawnStr]  = pawn.post.split("@");              // Move(s).
+  const [, queenStr] = queen.post.split("@");
+  mPieces.movePieceTileToTile(pawn.key, pawnStr);
+  // TODO: promote pawn to queen (or whatever).
+  }
+
+function backwardPromote(entry) {
+  console.log("cntrl: moves.js - backwardPromote(entry)", entry);
+
+  const { action, turn, player, list } = entry;           // Parse.
+  const pawn  = list[0]; // {key,prev,post}
+  const queen = list[1]; // {key,prev,post}
+
+  const [, pawnStr]  = pawn.prev.split("@");              // Move(s).
+  const [, queenStr] = queen.prev.split("@");
+  // TODO: demote queen to pawn.
+  mPieces.movePieceTileToTile(pawn.key, pawnStr);
 }
 // SeampointAdd: more fore/back functions...
 

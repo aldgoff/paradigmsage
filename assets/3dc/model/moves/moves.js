@@ -21,9 +21,11 @@
 
   import * as state   from "../../model/state/state.js";
   import * as mPieces from "../../model/pieces/pieces.js";
+  import * as mBoards from "../../model/boards/boards.js";
   import * as coords  from "../../foundation/coords/coords.js";
 
   import * as vMoves  from "../../view/moves/moves.js";
+  import * as vPieces from "../../view/pieces/pieces.js";
 // Seampoint: more imports...
 
 // --- Globals ---
@@ -84,7 +86,7 @@ export function makeCaptureEntry(payload, selections) {
   cleanupSelections();                                    // Cleanup.
   
   return { action, turn, player, list };                  // Entry.
-}
+  }
 
 export function makeEnpassantEntry(payload, selections) {
   console.log(`model: gambits.js - makeEnpassantEntry(payload, selections):`, payload, selections);
@@ -143,6 +145,29 @@ export function makeCastleEntry(payload, selections) {
   
   return { action, turn, player, list };                  // Entry.
 }
+
+export function makePromoteEntry(payload, selections) {
+  console.log(`model: gambits.js - makePromoteEntry(payload, selections):`, payload, selections);
+
+  const { action, player, pieceSelections, tileSelections, turn } = parse(payload, selections);
+
+  const [key, upgrade] = [...pieceSelections];              // Pieces.
+  const newKey = "WKRQ";  // TODO: compute actual.
+  const pawn = mPieces.getPieceList()[key];
+
+  const [dstTile] = [...tileSelections];                  // Tiles.
+  const dstStr  = coords.vtsToBoard(dstTile, cSetup.getCurrBoard().boardSize);
+
+  const prev  = `@${pawn.pos}`;                          // Assemble.
+  const post  = `@${dstStr}`;  
+  const list1 = { key, prev, post };    // list:[{key:"WKRP", prev:"@KR7,7", post:"@KR8,8"}]
+  const list2 = { key, prev, post };    // list:[{key:"WKRQ", prev:"@KR7,7", post:"@KR8,8"}]
+  const list  = [list1, list2];
+
+  cleanupSelections();                                    // Cleanup.
+  
+  return { action, turn, player, list };                  // Entry.
+}
 // SeampointAdd: more Entry functions...
 
 export function buttonAffordances(situation) {
@@ -183,7 +208,7 @@ function cleanupSelections() {
   cSetup.clearAllPieceSelections();                       // Cleanup.
   cSetup.clearAllTileSelections();
   cSelections.clearSelections();
-}
+  }
 
 function parse(payload, selections) {
   const { action, player } = payload;
@@ -192,6 +217,42 @@ function parse(payload, selections) {
   const turn = Math.floor((index + 1) / 2);
 
   return { action, player, pieceSelections, tileSelections, turn };
+}
+
+function promotePiece(oldKey, upgrade) {  // TODO: questionable approach.
+  console.log("model: moves.js - promotePiece(oldKey, upgrade)", oldKey, upgrade);
+
+  const piece = mPieces.getPieceList()[oldKey];
+  const home = piece.home;
+
+  const newKey = oldKey.slice(0, 3) + upgrade[3];  // Change oldKey, WKRP->WRKQ.
+
+  const newPiece = mPieces.createPiece(newKey, home.trayPos, home.trayCoords);
+  const [z, x, y] = mBoards.pieceLocOnBoard(oldKey);
+
+  mBoards.getBoardOccupancy()[z][x][y] = newKey;
+
+  delete mPieces.getPieceList()[oldKey];           // Update key in occupancies.
+  mPieces.getPieceList()[newKey] = piece;
+
+  const pieceGroups = vPieces.getPieceGroups();
+
+  const oldGroup = pieceGroups[oldKey];
+  const newGroup = vPieces.createPiece(newKey);
+
+  newGroup.userData.key = newKey;
+  pieceGroups[newKey] = newGroup;
+  delete pieceGroups[oldKey];
+
+  vPieces.getCurrPiecesGroup().remove(oldGroup);
+  vPieces.getCurrPiecesGroup().add(newGroup);
+
+  // console.log("*** oldGroup", oldGroup);
+  // console.log("*** newGroup", newGroup);
+  // console.log("*** vPieces.getCurrPiecesGroup()", vPieces.getCurrPiecesGroup());
+  // console.log("*** vPieces.getPieceGroups()", vPieces.getPieceGroups());
+
+  return newKey;
 }
 // Seampoint: more local functions...
 

@@ -50,6 +50,7 @@ export function pushPanelLine(entry) {
   else if(action === "capture")   line = assembleCaptureLine(entry);
   else if(action === "enpassant") line = assembleEnpassantLine(entry);
   else if(action === "castle")    line = assembleCastleLine(entry);
+  else if(action === "promote")   line = assemblePromoteLine(entry);
   // SeampointAdd: more assemble line functions.
 
   const div = document.createElement("div");
@@ -155,7 +156,7 @@ function assembleCaptureLine(entry) {
   const line = `${turnCol} ${whiteCol} ${blackCol} ${annotationsCol}`;
 
   return line;  // 2  WKRP @KR4,4 x BKRP@KR5,5...
-}
+  }
 
 function assembleEnpassantLine(entry) {
   console.log("view : moves.js - assembleEnpassantLine(entry)", entry);
@@ -200,6 +201,27 @@ function assembleCastleLine(entry) {
 
   return line;  // 2  WKRP @KR4,4 x BKRP@KR5,5...
 }
+
+function assemblePromoteLine(entry) {
+  console.log("view : moves.js - assemblePromoteLine(entry)", entry);
+
+  const { action, turn, player, list } = entry;               // Parse.
+  const pawn  = list[0]; // [{key,prev,post}].
+  const queen = list[1]; // [{key,prev,post}].
+
+  const turnCol  = (String(turn).padStart(3)).padEnd(4);      // Columns.
+  const pieceCol = `${pawn.key}`.padEnd(4);
+  const srcCol   = `${pawn.prev}`.padEnd(7);
+  const dstCol   = `${pawn.post}`.padEnd(10);
+
+  const row = `${pieceCol} ${srcCol} - ${queen.key[3]}${dstCol}`.padEnd(26); // Assemble.
+  const whiteCol = (player === "White") ? row: `${blank}`;
+  const blackCol = (player === "Black") ? row: `${blank}`;
+  const annotationsCol = ".....";
+  const line = `${turnCol} ${whiteCol} ${blackCol} ${annotationsCol}`;
+
+  return line;  // 1  WKRP @KR7,7 - Q@KR8,8...
+  }
 // SeampointAdd: more assemble line functions...
 
 // Seampoint: more local functions...
