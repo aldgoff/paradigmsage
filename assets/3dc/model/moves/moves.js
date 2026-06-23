@@ -36,17 +36,7 @@ export function reset() {
   console.log("model: moves.js - reset()");
 
   vMoves.clearMoves();
-  }
-
-export function makeEntry(payload) {  // Never called, specialized versions below.
-  console.log(`model: gambits.js - makeEntry(payload):`, payload);
-
-  const { action, src, srcTile, quad, perimeter, stride, opacity } = payload;  // Informative.
-
-  const entry = payload;
-
-  return entry;
-  }
+}
 
 export function makeMoveEntry(payload, selections) {
   console.log(`model: moves.js - makeMoveEntry(payload, selections):`, payload, selections);
@@ -109,7 +99,7 @@ export function makeEnpassantEntry(payload, selections) {
   cleanupSelections();                                    // Cleanup.
   
   return { action, turn, player, list };                  // Entry.
-}
+  }
 
 export function makeCastleEntry(payload, selections) {
   console.log(`model: gambits.js - makeCastleEntry(payload, selections):`, payload, selections);
@@ -144,17 +134,17 @@ export function makeCastleEntry(payload, selections) {
   cleanupSelections();                                    // Cleanup.
   
   return { action, turn, player, list };                  // Entry.
-}
+  }
 
 export function makePromoteEntry(payload, selections) {
   console.log(`model: gambits.js - makePromoteEntry(payload, selections):`, payload, selections);
 
   const { action, player, pieceSelections, tileSelections, turn } = parse(payload, selections);
 
-  const [key, upgrade] = [...pieceSelections];              // Pieces.
-  const newKey = "WKRQ";  // TODO: compute actual.
+  const [key, upgrade] = [...pieceSelections];            // Pieces.
   const pawn = mPieces.getPieceList()[key];
 
+  // TODO: upgrade not used, and it is critical.
   const [dstTile] = [...tileSelections];                  // Tiles.
   const dstStr  = coords.vtsToBoard(dstTile, cSetup.getCurrBoard().boardSize);
 
@@ -168,6 +158,164 @@ export function makePromoteEntry(payload, selections) {
   
   return { action, turn, player, list };                  // Entry.
 }
+
+export function makeDukeDecayEntry(payload, selections) { 
+  console.log(`model: gambits.js - makeDukeDecayEntry(payload, selections):`, payload, selections);
+
+  const { action, player, pieceSelections, tileSelections, turn } = parse(payload, selections);
+
+  const [stack] = [...pieceSelections];                   // Pieces.
+  const piece = mPieces.getPieceList()[stack];
+
+  const [dstTile] = [...tileSelections];                  // Tiles.
+  const dstStr  = coords.vtsToBoard(dstTile, cSetup.getCurrBoard().boardSize);
+
+  const prev  = `@${piece.pos}`;                          // Assemble.
+  const post  = `@${dstStr}`;  
+  
+  const playr = stack[0];
+  const side  = stack[1];
+  const level = stack[2];
+  const type  = stack[3];
+  const keyB = `${playr}${side}${level}B`;
+  const keyD = `${playr}${side}${level}D`;
+
+  const listS = { stack, prev, post: null };       // list:[{key:"WKRS", prev:"@KB1,1", post:null}]
+  const listB = { keyB, prev: null, post: prev };  // list:[{key:"WKRB", prev:null,     post:"@KB3,3"}]
+  const listD = { keyD, prev: null, post };        // list:[{key:"WKRD", prev:null,     post:"@KB3,3"}]
+  const list = [listS, listB, listD];
+
+  cleanupSelections();                                    // Cleanup.
+  
+  return { action, turn, player, list };                  // Entry.
+  }
+
+export function makeBishopDecayEntry(payload, selections) {
+  console.log(`model: gambits.js - makeBishopDecayEntry(payload, selections):`, payload, selections);
+
+  const { action, player, pieceSelections, tileSelections, turn } = parse(payload, selections);
+
+  const [stack] = [...pieceSelections];                   // Pieces.
+  const piece = mPieces.getPieceList()[stack];
+
+  const [dstTile] = [...tileSelections];                  // Tiles.
+  const dstStr  = coords.vtsToBoard(dstTile, cSetup.getCurrBoard().boardSize);
+
+  const prev  = `@${piece.pos}`;                          // Assemble.
+  const post  = `@${dstStr}`;  
+  
+  const playr = stack[0];
+  const side  = stack[1];
+  const level = stack[2];
+  const type  = stack[3];
+  const keyB = `${playr}${side}${level}B`;
+  const keyD = `${playr}${side}${level}D`;
+
+  const listS = { stack, prev, post: null };      // list:[{key:"WKRS", prev:"@KB1,1", post:null}]
+  const listB = { keyB, prev: null, post };       // list:[{key:"WKRB", prev:null,     post:"@KB3,3"}]
+  const listD = { keyD, prev: null, post: prev }; // list:[{key:"WKRD", prev:null,     post:"@KB3,3"}]
+  const list = [listS, listB, listD];
+
+  cleanupSelections();                                    // Cleanup.
+  
+  return { action, turn, player, list };                  // Entry.
+  }
+
+export function makeFissionEntry(payload, selections) {
+  console.log(`model: gambits.js - makeFissionEntry(payload, selections):`, payload, selections);
+
+  const { action, player, pieceSelections, tileSelections, turn } = parse(payload, selections);
+
+  const [stack] = [...pieceSelections];                   // Pieces.
+  const piece = mPieces.getPieceList()[stack];
+
+  const [tileB, tileD] = [...tileSelections];             // Tiles.
+  const bishopStr = coords.vtsToBoard(tileB, cSetup.getCurrBoard().boardSize);
+  const dukeStr   = coords.vtsToBoard(tileD, cSetup.getCurrBoard().boardSize);
+
+  const prev  = `@${piece.pos}`;                          // Assemble.
+  const postB = `@${bishopStr}`;  
+  const postD = `@${dukeStr}`;
+
+  const playr = stack[0];
+  const side  = stack[1];
+  const level = stack[2];
+  const type  = stack[3];
+  const keyB = `${playr}${side}${level}B`;
+  const keyD = `${playr}${side}${level}D`;
+
+  const listS = { stack, prev, post: null };        // list:[{key:"WKRS", prev:"@KB1,1", post:null}]
+  const listB = { keyB, prev: null, post: postB };  // list:[{key:"WKRB", prev:null,     post:"@KB3,3"}]
+  const listD = { keyD, prev: null, post: postD };  // list:[{key:"WKRD", prev:null,     post:"@KB3,3"}]
+  const list = [listS, listB, listD];
+
+  cleanupSelections();                                    // Cleanup.
+  
+  return { action, turn, player, list };                  // Entry.
+  }
+
+export function makeTeleportationEntry(payload, selections) { 
+  console.log(`model: gambits.js - makeTeleportationEntry(payload, selections):`, payload, selections);
+
+  const { action, player, pieceSelections, tileSelections, turn } = parse(payload, selections);
+
+  const [stack, subPiece] = [...pieceSelections];         // Pieces.
+  const piece1 = mPieces.getPieceList()[stack];
+  const piece2 = mPieces.getPieceList()[subPiece];
+
+  const prev  = `@${piece1.pos}`;                         // Assemble.
+  const post  = `@${piece2.pos}`;  
+
+  const playr = stack[0];
+  const side  = stack[1];
+  const level = stack[2];
+  const type  = stack[3];
+  const key1 = `${playr}${side}${level}${subpiece[3]}`;
+  let key2 = null;
+  if(     subPiece[3] === 'B') {      // Teleport duke - stack and bishop swap.
+    key2 = `${playr}${side}${level}D`;
+    }
+  else if(subpiece[3] === 'D') {      // Teleport bishop - stack and duke swap.
+    key2 = `${playr}${side}${level}B`;
+    }
+  else {
+    throw new Error(`Can't teleport a non subpiece ${subpiece}.`);
+  }
+  const listS   = { stack, prev, post };            // list:[{key:"WKRS", prev:"@KB1,1", post:"@KB3,3"}]
+  const listSub = { key2, prev: post, post: prev }; // list:[{key:"WKRB", prev:"@KB3,3", post:"@KB1,1"}]
+  const list = [listS, listSub];
+
+  cleanupSelections();                                    // Cleanup.
+  
+  return { action, turn, player, list };                  // Entry.
+  }
+
+export function makeUpliftEntry(payload, selections) {
+  console.log(`model: gambits.js - makeUpliftEntry(payload, selections):`, payload, selections);
+
+  const { action, player, pieceSelections, tileSelections, turn } = parse(payload, selections);
+
+  const [pawn, subpiece] = [...pieceSelections];     // Pieces.
+  const piece1 = mPieces.getPieceList()[pawn];
+  const piece2 = mPieces.getPieceList()[subpiece];
+
+  const [dstTile] = [...tileSelections];                  // Tiles.
+  const dstStr  = coords.vtsToBoard(dstTile, cSetup.getCurrBoard().boardSize);
+
+    // TODO: finish.
+
+  // const prev  = `@${piece1.pos}`;                         // Assemble.
+  // const post  = `@${dstStr}`;  
+  // const listS = { key, prev, post: null };        // list:[{key:"WKRS", prev:"@KB1,1", post:null}]
+  // const listB = { key, prev: null, post: prev };  // list:[{key:"WKRB", prev:null,     post:"@KB3,3"}]
+  // const listD = { key, prev: null, post };        // list:[{key:"WKRD", prev:null,     post:"@KB3,3"}]
+  // const list = [listS, listB, listD];
+
+  cleanupSelections();                                    // Cleanup.
+  
+  return { action, turn, player, list };                  // Entry.
+  }
+
 // SeampointAdd: more Entry functions...
 
 export function buttonAffordances(situation) {

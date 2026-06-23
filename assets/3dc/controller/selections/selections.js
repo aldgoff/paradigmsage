@@ -227,23 +227,24 @@ function manageMoveButtons() {
     }
     }
   else if(pieces === 2 && tiles === 0) {        // Capture.
-    if(player1 === player2) return;
-      
-    panels.enableButton("capture", true);
+    if(player1 != player2) {
+      panels.enableButton("capture", true);
     }
-  else if(pieces === 2 && tiles === 1) {        // En Passant, teleportation, uplift, promote.
+    else if(player1 === player2                 // Teleportation.
+      && ( type1  === 'S' && type2  === 'B'
+        || type1  === 'S' && type2  === 'D')
+      && piece2.pos === dstStr1) {
+      panels.enableButton("teleportation", true);
+    }
+    }
+  else if(pieces === 2 && tiles === 1) {        // En Passant, uplift, promote.
     const promotable = (type1 === "P") && lastCol(dstStr1, size, player1);
     const piece2 = mPieces.getPieceList()[key2];
     if(     player1 != player2                  // En Passant.
       && type1  === 'P'
       && type2  === 'P')
       panels.enableButton("enpassant", true);
-    else if(player1 === player2                 // Teleportation.
-      && ( type1  === 'S' && type2  === 'B'
-        || type1  === 'S' && type2  === 'D')
-      && piece2.pos === dstStr1)
-      panels.enableButton("teleportation", true);
-    else if(player1 === player2                 // Upllift.
+    else if(player1 === player2                 // Uplift.
       && ( type1  === 'P' && type2  === 'B'
         || type1  === 'P' && type2  === 'D')
       && lastCol(dstStr1, size, player1)

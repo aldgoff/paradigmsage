@@ -39,19 +39,22 @@ export function clearMoves() {
 export function pushPanelLine(entry) {
   console.log("view : moves.js - pushPanelLine(move)", entry);
   
-  const { action, turn, player, key, prev, post } = entry;
-  // const {action,turn,player,list:[{key,prev,post}]} = entry;
+  const { action, turn, player, list } = entry;   // list:[{key,prev,post}].
 
   const scroll = document.getElementById("move-list");
   if(!scroll) return;
 
   let line = "";
-  if(     action === "move")      line = assembleMoveLine(entry);
-  else if(action === "capture")   line = assembleCaptureLine(entry);
-  else if(action === "enpassant") line = assembleEnpassantLine(entry);
-  else if(action === "castle")    line = assembleCastleLine(entry);
-  else if(action === "promote")   line = assemblePromoteLine(entry);
-  // SeampointAdd: more assemble line functions.
+  if(     action === "move")          line = assembleMoveLine(entry);
+  else if(action === "capture")       line = assembleCaptureLine(entry);
+  else if(action === "enpassant")     line = assembleEnpassantLine(entry);
+  else if(action === "castle")        line = assembleCastleLine(entry);
+  else if(action === "promote")       line = assemblePromoteLine(entry);
+  else if(action === "dukeDecay")     line = assembleDukeDecayLine(entry);
+  else if(action === "bishopDecay")   line = assembleBishopDecayLine(entry);
+  else if(action === "fission")       line = assembleFissionLine(entry);
+  else if(action === "teleportation") line = assembleTeleportationLine(entry);
+  else if(action === "uplift")        line = assembleUpliftLine(entry);
 
   const div = document.createElement("div");
   div.textContent = line;
@@ -177,7 +180,7 @@ function assembleEnpassantLine(entry) {
   const line = `${turnCol} ${whiteCol} ${blackCol} ${annotationsCol}`;
 
   return line;  // 2  WKRP @KR4,4 x BKRP@KR5,5...
-}
+  }
 
 function assembleCastleLine(entry) {
   console.log("view : moves.js - assembleCastleLine(entry)", entry);
@@ -221,8 +224,55 @@ function assemblePromoteLine(entry) {
   const line = `${turnCol} ${whiteCol} ${blackCol} ${annotationsCol}`;
 
   return line;  // 1  WKRP @KR7,7 - Q@KR8,8...
-  }
-// SeampointAdd: more assemble line functions...
+}
 
+function assembleDukeDecayLine(entry) {
+  console.log("view : moves.js - assembleDukeDecayLine(entry)", entry);
+
+  const { action, turn, player, list } = entry;               // Parse.
+  const stack  = list[0]; // [{key,prev,post}].
+  const bishop = list[1]; // [{key,prev,post}].
+  const duke   = list[1]; // [{key,prev,post}].
+
+}
+
+function assembleBishopDecayLine(entry) {
+  console.log("view : moves.js - assembleBishopDecayLine(entry)", entry);
+
+  const { action, turn, player, list } = entry;               // Parse.
+  const stack  = list[0]; // [{key,prev,post}].
+  const bishop = list[1]; // [{key,prev,post}].
+  const duke   = list[1]; // [{key,prev,post}].
+
+}
+
+function assembleFissionLine(entry) {
+  console.log("view : moves.js - assembleFissionLine(entry)", entry);
+
+  const { action, turn, player, list } = entry;               // Parse.
+  const stack  = list[0]; // [{key,prev,post}].
+  const bishop = list[1]; // [{key,prev,post}].
+  const duke   = list[1]; // [{key,prev,post}].
+
+}
+
+function assembleTeleportationLine(entry) {
+  console.log("view : moves.js - assembleTeleportationLine(entry)", entry);
+
+  const { action, turn, player, list } = entry;               // Parse.
+  const stack    = list[0]; // [{key,prev,post}].
+  const subPiece = list[1]; // [{key,prev,post}].
+
+}
+
+function assembleUpliftLine(entry) {
+  console.log("view : moves.js - assembleUpliftLine(entry)", entry);
+
+  const { action, turn, player, list } = entry;               // Parse.
+  const stack  = list[0]; // [{key,prev,post}].
+  const bishop = list[1]; // [{key,prev,post}].
+  const duke   = list[1]; // [{key,prev,post}].
+
+}
 // Seampoint: more local functions...
 

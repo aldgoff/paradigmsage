@@ -146,7 +146,7 @@ title: "Dev"
 
  ### Week 15:
   - 6/21/26 - Fixed White/Black radio buttons in move panel. Remove obsolete saved game strings. Normalize move entry and payload/selections order.
-  - 6/21/26 - En passant. Castling. Promotion sans queen mesh.
+  - 6/22/26 - En passant. Castling. Promotion sans queen mesh. Stem out move makeEntries and assembleLines.
     Rest of moves.
    QC quad gambits, all gambits, all moves.
 
