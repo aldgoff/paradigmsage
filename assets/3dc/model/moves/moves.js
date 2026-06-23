@@ -43,15 +43,17 @@ export function makeMoveEntry(payload, selections) {
 
   const { action, player, pieceSelections, tileSelections, turn } = parse(payload, selections);
 
-  const [key] = [...pieceSelections];                     // Pieces.
-  const piece = mPieces.getPieceList()[key];
+  const [key1, key2] = [...pieceSelections];              // Pieces.
+  const piece = mPieces.getPieceList()[key1];
 
   const [dstTile] = [...tileSelections];                  // Tiles.
   const dstStr  = coords.vtsToBoard(dstTile, cSetup.getCurrBoard().boardSize);
 
   const prev  = `@${piece.pos}`;                          // Assemble.
   const post  = `@${dstStr}`;  
-  const list  = [{ key, prev, post }]; // list:[{key:"WKRR", prev:"@KR1,1", post:"@KR3,3"}]
+  const list = [{ key: key1, prev, post }];  // list:[{key:"WKRR", prev:"@KR1,1", post:"@KR3,3"}].
+  if(key2) 
+    list.push({ key: key2, prev, post });   // list:[{key, prev, post}, {key, prev, post}].
 
   cleanupSelections();                                    // Cleanup.
   

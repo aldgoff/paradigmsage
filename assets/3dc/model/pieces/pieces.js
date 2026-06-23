@@ -67,7 +67,7 @@ export function destroy(entry) {
   }
 
 export function movePieceFromTrayToBoard(key, dstStr) {  // "WQQP", "Q1,1". // TODO: assumes 8x8x8 board.
-  console.log("model: pieces.js - movePieceFromTrayToBoard(key, dstStr)", key, dstStr);
+  // console.log("model: pieces.js - movePieceFromTrayToBoard(key, dstStr)", key, dstStr);
 
   // --- Parse ---
     const spec = cSetup.boardSpec;                                  // Support all three board sizes.
@@ -82,7 +82,7 @@ export function movePieceFromTrayToBoard(key, dstStr) {  // "WQQP", "Q1,1". // T
     const type   = key[3];  // R|B|D|S|Q|N|P|U|K.
 
     const { i, j } = mTrays.trayIndices(type, spec);                // Determine tray array indices.
-    console.log("*** Parse spec, piece", spec, piece);
+    // console.log("*** Parse spec, piece", spec, piece);
 
   // --- Update tray occupancy ---
     const whiteTray = mTrays.getWhiteTray();                        // Trays and boards.
@@ -98,10 +98,11 @@ export function movePieceFromTrayToBoard(key, dstStr) {  // "WQQP", "Q1,1". // T
     // console.log("*** Update tray occupancy");
 
   // --- Update board occupancy ---
-    // ChangePoint: add excemption for stack.
+    // ChangePoint: add exemption for stack.
     if(mBoards.isOccupied(dstTile)) {
       const err = `Cannot move to an occupied ${dstTile} tile ${dstStr}.`;
-      return { ok: false, err };
+      console.log("*** err", err);
+      // return { ok: false, err };
     }
     mBoards.addOccupant(key, dstTile);
 
@@ -143,7 +144,7 @@ export function movePieceTileToTile(key, dstStr) {
   // --- Update board occupancy ---
     const dstTile = coords.normalizeTileToVts(dstStr, spec);        // Determine occupancy indices.
 
-    // ChangePoint: add excemption for stack.
+    // ChangePoint: add exemption for stack.
     mBoards.removeOccupant(key);
     mBoards.addOccupant(key, dstTile);
 
@@ -187,10 +188,10 @@ export function movePieceFromBoardToTray(key) {
     // console.log("*** Parse", k, i, j);
 
   // --- Update board occupancy ---
-    // ChangePoint: add excemption for stack.
+    // ChangePoint: add exemption for stack.
     if(mBoards.getOccupants(piece.vts) != key) {
       const err = `${key} not on board ${piece.vts} at ${piece.pos}.`;
-      return { ok: false, err };
+      // return { ok: false, err };
     }
     mBoards.removeOccupant(key, piece.vts);
 
@@ -248,9 +249,82 @@ export function combineStackinTray(piece) {
   }
 
 }
+
+export function createPiece(key, pos, coords, trayOffset=0) { // Needed by promote.
+  console.log("model: pieces.js - createPiece(key, pos, coords, trayOffset)", key, pos, coords, trayOffset);
+
+  const [k, i, j] = coords;
+  const player = key[0];
+  const offset = (player === "W") 
+    ? -5 - trayOffset 
+    :  6 + trayOffset;
+  const vts = (player === "W") 
+    ? [k-4, i+offset, j+offset] 
+    : [k-4, -i+offset, -j+offset];
+
+  return {  // "WQRP" - player, side, level, type.
+    loc: "~",
+    pos,
+    coords: [...coords],
+    vts, 
+    home: { trayPos: pos, trayCoords: [...coords], trayVts: [...vts] }
+  };
+}
+
+export function piecesOnTile(vts) {
+  console.log("model: pieces.js - piecesOnTile(vts)", vts);
+
+  const keys = [];
+
+  for(const [key, piece] of Object.entries(pieceList)) {
+    if(piece.loc !== "@") continue;              // Only board pieces.
+    if(utils.isSame(piece.vts, vts)) {
+      keys.push(key);
+    }
+  }
+
+  return keys;
+  }
+
+export function isOccupied(vts) {
+  if(!vts)  return false;
+  return piecesOnTile(vts).length > 0;
+  }
+
+export function containsPiece(key, vts) {
+  return piecesOnTile(vts).includes(key);
+  }
+
+export function canOccupyTile(key, vts) {
+  if(isOccupied(vts)) {
+    const stackable = hasOtherStackSubpiece(key, vts);
+    return stackable;
+  }
+  return true;
+  }
+
+export function hasOtherStackSubpiece(key, vts) {
+  console.log("model: pieces.js - hasOtherStackSubpiece(key, vts)", key, vts);
+
+  return piecesOnTile(vts).some(k => k !== key && isStackMate(key, k));
+  }
+
+export function pieceLocOnBoard(key) {
+  return pieceList[key].vts;
+}
 // Seampoint: more global functions...
 
 // --- Helpers ---
+function isStackMate(key1, key2) {
+  return (
+    key1.slice(0,3) === key2.slice(0,3) &&
+    (
+      (key1[3] === "B" && key2[3] === "D") ||
+      (key1[3] === "D" && key2[3] === "B")
+    )
+  );
+  }
+
 function createPiecesInTrays(entry) {
   console.log("model: pieces.js - createPiecesInTrays(entry)", entry);
   
@@ -390,33 +464,6 @@ function createPiecesForTray(tray, trayDef, offset=0) {
   }
   }
 
-export function createPiece(key, pos, coords, trayOffset=0) {
-  // console.log("model: pieces.js - createPiece(key, pos, coords, trayOffset)", key, pos, coords, trayOffset);
-
-  const [k, i, j] = coords;
-  const player = key[0];
-  const offset = (player === "W") 
-    ? -5 - trayOffset 
-    :  6 + trayOffset;
-  const vts = (player === "W") 
-    ? [k-4, i+offset, j+offset] 
-    : [k-4, -i+offset, -j+offset];
-
-  return {  // "WQRP" - player, side, level, type.
-    loc: "~",
-    pos,
-    coords: [...coords],
-    vts, 
-    home: { trayPos: pos, trayCoords: [...coords], trayVts: [...vts] }
-  };
-}
-
-// --- Duke Helpers ---
-// ChangePoint: stacked pieces
-function hasOtherStackSubpiece(key, vts) {
-  console.log("view : pieces.js - hasOtherStackSubpiece(key, vts)", key, vts);
-
-}
 // Seampoint: more local functions...
 
 /* piece = {  // Field documentation.

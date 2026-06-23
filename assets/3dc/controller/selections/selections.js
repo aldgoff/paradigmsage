@@ -201,7 +201,7 @@ function manageMoveButtons() {
   panel.querySelector('[name="move-selTiles"]').textContent  = `${dstStr1} ${dstStr2} ${dstStr3}`;
 
   if(piece1?.pos === dstStr1)  return;                    // Piece can't be on dst tile.
-  const occupied = mBoards.isOccupied(tile1);             // Dst tile might be occupied.
+  const occupied = mPieces.isOccupied(tile1);             // Dst tile might be occupied.
 
   const index = state.getIndices()["Moves"] + 1;          // Players take turns.
   if((index%2 === 1 && player1 === 'B')
@@ -215,16 +215,9 @@ function manageMoveButtons() {
   const tiles  = tileSelections.size;
 
   if(     pieces === 1 && tiles === 1) {        // Move, promote, or decay.
-    if(occupied) return;
-    if(type1 === 'S') {  // TODO: figure out how to specify stack subpieces.
-      panels.enableButton("move",        true);
-      panels.enableButton("duke-decay",  true);
-      panels.enableButton("bishop-decay",true);
-    }
-    else {
-      console.log("*** move");
-      panels.enableButton("move", true);
-    }
+    if(!mPieces.canOccupyTile(key1, tile1))
+      return;
+    panels.enableButton("move", true);
     }
   else if(pieces === 2 && tiles === 0) {        // Capture.
     if(player1 != player2) {
@@ -244,6 +237,10 @@ function manageMoveButtons() {
       && type1  === 'P'
       && type2  === 'P')
       panels.enableButton("enpassant", true);
+    else if(player1 === player2                 // Stack.
+      && ( type1  === 'D' && type2  === 'B'
+        || type1  === 'B' && type2  === 'D'))
+      panels.enableButton("move", true);
     else if(player1 === player2                 // Uplift.
       && ( type1  === 'P' && type2  === 'B'
         || type1  === 'P' && type2  === 'D')

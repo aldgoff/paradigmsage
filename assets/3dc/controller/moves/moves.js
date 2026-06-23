@@ -237,10 +237,14 @@ function forewardMove(entry) {        // Move piece.
   console.log("cntrl: moves.js - forewardMove(entry)", entry);
 
   const { action, turn, player, list } = entry;           // Parse.
-  const mover = list[0]; // list: {key,prev,post}.
+  const mover = list[0]; // list: [{key,prev,post}].
+  const stack = list[1]; // list: [{key,prev,post}, {key,prev,post}].
 
   const [, dstStr] = mover.post.split("@");               // Move(s).
   mPieces.movePieceTileToTile(mover.key, dstStr);
+  if(stack) {
+    mPieces.movePieceTileToTile(stack.key, dstStr);
+  }
   }
 
 function backwardMove(entry) {
@@ -248,9 +252,13 @@ function backwardMove(entry) {
 
   const { action, turn, player, list } = entry;           // Parse.
   const mover = list[0]; // list: {key,prev,post}.
+  const stack = list[1]; // list: [{key,prev,post}, {key,prev,post}].
 
   const [, dstStr] = mover.prev.split("@");               // Move(s).
   mPieces.movePieceTileToTile(mover.key, dstStr);
+  if(stack) {
+    mPieces.movePieceTileToTile(stack.key, dstStr);
+  }
 }
 
 function forewardCapture(entry) {     // Capture piece.

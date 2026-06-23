@@ -65,8 +65,6 @@ export function initPieces(pieceList) {
     placePieceInTray(key);    // Pieces start in the trays.
     currPiecesGroup.add(group);
   }  
-  console.log("*** currPiecesGroup", currPiecesGroup);
-  console.log("*** pieceGroups", pieceGroups);
 
   view.getContext().scene.add(currPiecesGroup);
   }
@@ -102,11 +100,6 @@ export function placePieceInTray(key) {      // "WKRR", ...
   const tileHeight = tileSize[0];  // Z.
   const zOffset = tileHeight/2;
   const decoratorGap = 2;
-
-// ChangePoint: stacked pieces
-  // const type = key[3];
-  // const dukeAdjust = (type === "D") ? duke.stackOffset : 0;
-  // setDukeHeight(group, vts, zOffset+decoratorGap, zAdjust);
 
   const grid2 = coordsMaps.vts2pixels(group.userData.vts)
   group.position.set(grid2[0], grid2[1]+zOffset+decoratorGap, grid2[2]);

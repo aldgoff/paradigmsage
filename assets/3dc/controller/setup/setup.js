@@ -10,6 +10,7 @@
 // --- Load JSON ---
   import setupData from "./setup.json" assert { type: "json" };
   const setupModule = setupData.setup_module;
+  const dash   = setupModule.dash;
   const eights = setupModule.eights;
   const ten    = setupModule.ten;
   const tens   = setupModule.tens;
@@ -506,7 +507,9 @@ function initialLineup(entry) {
 
   const { action, boardSize, trayType } = entry;
 
-  let board = eights;
+  let board;
+  if(currBoard.boardSize === "8-8-8") board = dash;
+  if(currBoard.boardSize === "8x8x8") board = eights;
   if(currBoard.boardSize === "10x8x8") board = ten;
   if(currBoard.boardSize === "10x10x10") board = tens;
 
