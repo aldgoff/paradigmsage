@@ -147,11 +147,15 @@ title: "Dev"
  ### Week 15:
   - 6/21/26 - Fixed White/Black radio buttons in move panel. Remove obsolete saved game strings. Normalize move entry and payload/selections order.
   - 6/22/26 - En passant. Castling. Promotion sans queen mesh. Stem out move makeEntries and assembleLines.
-  - 6/23/26 - Stack offset value.
+  - 6/23/26 - Stack offset value. New UI for occupancy.
     Rest of moves.
    QC quad gambits, all gambits, all moves.
 
 ## Eamples:
+ ### Place-shift-return
+  **4-0-0-0**
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8-8-8","trayType":"Real","trayGap":0}},{"action":"placePiece","key":"BKRP","prev":"~KR2,2","post":"@KR8,8"},{"action":"shiftPiece","key":"BKRP","prev":"@KR8,8","post":"@KR7,7"},{"action":"returnPiece","key":"BKRP","prev":"@KR7,7","post":"~KR2,2"}],"Moves":[],"Gambits":[],"AdvSqs":[]}
+
  ### Promotion (except for queen mesh)
   **2-3-0-0**
   {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"startingPos"}],"Moves":[{"action":"move","turn":1,"player":"White","list":[{"key":"WKRP","prev":"@KR2,2","post":"@KR8,7"}]},{"action":"move","turn":1,"player":"Black","list":[{"key":"BKRR","prev":"@KR8,8","post":"@KR6,6"}]},{"action":"promote","turn":2,"player":"White","list":[{"key":"WKRP","prev":"@KR8,7","post":"@KR8,8"},{"key":"WKRP","prev":"@KR8,7","post":"@KR8,8"}]}],"Gambits":[],"AdvSqs":[]}

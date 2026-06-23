@@ -102,8 +102,13 @@ export function placePieceInTray(key) {      // "WKRR", ...
   const tileHeight = tileSize[0];  // Z.
   const zOffset = tileHeight/2;
   const decoratorGap = 2;
+
+// ChangePoint: stacked pieces
+  // const type = key[3];
+  // const dukeAdjust = (type === "D") ? duke.stackOffset : 0;
+  // setDukeHeight(group, vts, zOffset+decoratorGap, zAdjust);
+
   const grid2 = coordsMaps.vts2pixels(group.userData.vts)
-  // console.log("*** position: ", grid2[0], grid2[1]+zOffset+decoratorGap, grid2[2]); // Debug instrumention.
   group.position.set(grid2[0], grid2[1]+zOffset+decoratorGap, grid2[2]);
   }
 
@@ -142,7 +147,7 @@ export function placePiece(key) {      // "WKRR", ...
   }
 
 export function renderPiece(key) {  // "WKRR".  // Deprecated.
-  // console.log("view : pieces.js - renderPiece(key)", key);
+  console.log("view : pieces.js - renderPiece(key)", key);
 
   const piece = mPieces.getPieceList()[key];              // Arg validation.
   if(!piece) throw Error(`No such piece ${key}.`);
@@ -305,10 +310,19 @@ export function createPiece(key) {      // "WKRR", ...
   group.userData.key = key;
 
   return group;
-  }
+}
+
+// --- Duke Helpers ---
+// ChangePoint: stacked pieces
+function setDukeHeight(group, vts, tileOffset, stackOffset=0) {
+  const grid2 = coordsMaps.vts2pixels(vts)
+
+  const zAdjust = tileOffset + stackOffset;
+  group.position.set(grid2[0], grid2[1]+zAdjust, grid2[2]);
+}
 
 function renderInTray(player, side, type, tray, pos) {
-  // console.log("view : pieces.js - renderInTray(player, type, tray, pos)", player, type, tray, pos);
+  console.log("view : pieces.js - renderInTray(player, type, tray, pos)", player, type, tray, pos);
 
   let group = null;
 
@@ -332,7 +346,6 @@ function renderInTray(player, side, type, tray, pos) {
 
   group.userData.isPiece = true;
 
-  
   const tileSize = tiles.tileSize();
   const tileHeight = tileSize[0];  // Z.
   const zOffset = tileHeight/2;
@@ -342,7 +355,9 @@ function renderInTray(player, side, type, tray, pos) {
   const vts = tileToVts(player, pos, gap);
   const grid2 = coordsMaps.vts2pixels(vts)
 
+  // ChangePoint: adjust duke if bishop present.
   group.position.set(grid2[0], grid2[1]+zOffset+decoratorGap, grid2[2]);
+
   group.userData.vts = vts;
 
   currPiecesGroup.add(group);

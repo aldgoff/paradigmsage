@@ -134,7 +134,8 @@ layout: "play"
     <label>Board Size</label>
   </div>
   <div class="section">
-    <label> <input type="radio" name="board-size" value="8x8x8" checked> 8×8×8 </label><br>
+    <label> <input type="radio" name="board-size" value="8-8-8" checked> 8-8-8 </label><br>
+    <label> <input type="radio" name="board-size" value="8x8x8"> 8×8×8 </label><br>
     <label> <input type="radio" name="board-size" value="10x8x8"> 10×8×8 </label><br>
     <label> <input type="radio" name="board-size" value="10x10x10"> 10×10×10 </label>
   </div>  

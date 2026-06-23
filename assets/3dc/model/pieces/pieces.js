@@ -10,6 +10,8 @@
 // --- Load JSON ---
   import piecesData from "./pieces.json" assert { type: "json" };
   const piecesModule = piecesData.pieces_module;
+  // ChangePoint:
+  const dash   = piecesModule.dash;
   const eight  = piecesModule.eight;
   const ten    = piecesModule.ten;
   const tens   = piecesModule.tens;
@@ -65,7 +67,7 @@ export function destroy(entry) {
   }
 
 export function movePieceFromTrayToBoard(key, dstStr) {  // "WQQP", "Q1,1". // TODO: assumes 8x8x8 board.
-  // console.log("model: pieces.js - movePieceFromTrayToBoard(key, dstStr)", key, dstStr);
+  console.log("model: pieces.js - movePieceFromTrayToBoard(key, dstStr)", key, dstStr);
 
   // --- Parse ---
     const spec = cSetup.boardSpec;                                  // Support all three board sizes.
@@ -80,7 +82,7 @@ export function movePieceFromTrayToBoard(key, dstStr) {  // "WQQP", "Q1,1". // T
     const type   = key[3];  // R|B|D|S|Q|N|P|U|K.
 
     const { i, j } = mTrays.trayIndices(type, spec);                // Determine tray array indices.
-    // console.log("*** Parse spec, piece", spec, piece);
+    console.log("*** Parse spec, piece", spec, piece);
 
   // --- Update tray occupancy ---
     const whiteTray = mTrays.getWhiteTray();                        // Trays and boards.
@@ -96,14 +98,13 @@ export function movePieceFromTrayToBoard(key, dstStr) {  // "WQQP", "Q1,1". // T
     // console.log("*** Update tray occupancy");
 
   // --- Update board occupancy ---
-    const indices = utils.add(mBoards.getOrigin(), dstTile);
-    const [z, x, y] = indices;
-    const occupancy = mBoards.getBoardOccupancy();
-    if(occupancy[z][x][y]) {
-      const err = `Cannot move to an occupied ${occupancy[z][x][y]} tile ${dstStr}.`;
+    // ChangePoint: add excemption for stack.
+    if(mBoards.isOccupied(dstTile)) {
+      const err = `Cannot move to an occupied ${dstTile} tile ${dstStr}.`;
       return { ok: false, err };
     }
-    occupancy[z][x][y] = key;
+    mBoards.addOccupant(key, dstTile);
+
     // console.log("*** Update board occupancy");
 
   // --- Update piece ---
@@ -116,7 +117,6 @@ export function movePieceFromTrayToBoard(key, dstStr) {  // "WQQP", "Q1,1". // T
 
   // Debug instrumention.
     // console.log("*** tray: ", structuredClone(tray[z]));
-    // console.log("*** occ:  ", structuredClone(occupancy[z][x][y]));
     // console.log("*** rcs:  ", structuredClone(indices));
     // console.log("*** dst:  ", structuredClone(dstTile));
     // console.log("*** piece:", structuredClone(pieceList[key]));
@@ -142,12 +142,10 @@ export function movePieceTileToTile(key, dstStr) {
 
   // --- Update board occupancy ---
     const dstTile = coords.normalizeTileToVts(dstStr, spec);        // Determine occupancy indices.
-    const indices = utils.add(mBoards.getOrigin(), dstTile);
-    const [z, x, y] = indices;  // New.
-    const occupancy = mBoards.getBoardOccupancy();
-    const [Z,X,Y] = utils.add(mBoards.getOrigin(), piece.coords); // Previous.
-    occupancy[Z][X][Y] = null;
-    occupancy[z][x][y] = key;
+
+    // ChangePoint: add excemption for stack.
+    mBoards.removeOccupant(key);
+    mBoards.addOccupant(key, dstTile);
 
   // --- Update piece ---
     piece.loc    = "@";                                             // Update pieceList.
@@ -158,7 +156,6 @@ export function movePieceTileToTile(key, dstStr) {
     vPieces.placePiece(key);                                        // Relocate the piece mesh (group).
 
   // Debug instrumention.
-    // console.log("*** occ:  ", structuredClone(occupancy[z][x][y]));
     // console.log("*** rcs:  ", structuredClone(indices));
     // console.log("*** dst:  ", structuredClone(dstTile));
     // console.log("*** piece:", structuredClone(piece));
@@ -190,15 +187,12 @@ export function movePieceFromBoardToTray(key) {
     // console.log("*** Parse", k, i, j);
 
   // --- Update board occupancy ---
-    const indices = utils.add(mBoards.getOrigin(), coords);
-    const [z, x, y] = indices;
-    const occupancy = mBoards.getBoardOccupancy();
-    if(occupancy[z][x][y] != key) {
-      const err = `${key} not on board ${occupancy[z][x][y]} at ${z},${x},${y}.`;
+    // ChangePoint: add excemption for stack.
+    if(mBoards.getOccupants(piece.vts) != key) {
+      const err = `${key} not on board ${piece.vts} at ${piece.pos}.`;
       return { ok: false, err };
     }
-    occupancy[z][x][y] = null;
-    // console.log("*** Update board occupancy", indices);
+    mBoards.removeOccupant(key, piece.vts);
 
   // --- Update tray occupancy ---
     const tray = (player === "W")
@@ -219,7 +213,6 @@ export function movePieceFromBoardToTray(key) {
     vPieces.placePieceInTray(key);                                 // Relocate the piece mesh (group).
 
   // Debug instrumention.
-    // console.log("*** occ:  ", structuredClone(occupancy[z][x][y]));
     // console.log("*** tray: ", structuredClone(tray[z]));
     // console.log("*** rcs:  ", structuredClone(indices));
     // console.log("*** dst:  ", structuredClone(piece.home));
@@ -263,7 +256,9 @@ function createPiecesInTrays(entry) {
   
   const { action, boardSize, trayType, trayGap, boardSpec } = entry;
   
-  if(     boardSize === "8x8x8")    { createPiecesForEightBoard(trayGap); } 
+  // ChangePoint:
+  if(     boardSize === "8-8-8")    { createPiecesForDashBoard(trayGap); } 
+  else if(boardSize === "8x8x8")    { createPiecesForEightBoard(trayGap); } 
   else if(boardSize === "10x8x8")   { createPiecesForTenBoards(trayGap);  }
   else if(boardSize === "10x10x10") { createPiecesForTensBoards(trayGap); }
   else { throw new Error(`Unknown board spec ${spec}.`); }
@@ -289,9 +284,24 @@ function destroyPieces(entry) {
   }
   }
 
+// ChangePoint:
+function createPiecesForDashBoard(trayGap) {
+  console.log("model: pieces.js - createPiecesForDashBoard(trayGap)", trayGap);
+  // console.log("***", dash);
+  
+  for(const player of ["White","Black"]) {
+    const tray = (player === "White") 
+    ? mTrays.getWhiteTray() 
+    : mTrays.getBlackTray();
+    const trayDef = dash.trays[player];
+    const offset  = dash.trays.offset + trayGap;
+
+    createPiecesForDashTray(tray, trayDef, offset);
+  }
+  }
 
 function createPiecesForEightBoard(trayGap) {
-  console.log("model: pieces.js - createPiecesForEightBoard()", );
+  console.log("model: pieces.js - createPiecesForEightBoard(trayGap)", trayGap);
   // console.log("***", eight);
   
   for(const player of ["White","Black"]) {
@@ -306,7 +316,7 @@ function createPiecesForEightBoard(trayGap) {
   }
 
 function createPiecesForTenBoards(trayGap) {
-  console.log("model: pieces.js - createPiecesForTenBoards()", );
+  console.log("model: pieces.js - createPiecesForTenBoards(trayGap)", trayGap);
   // console.log("*** ", ten);
   
   for(const player of ["White","Black"]) {
@@ -321,9 +331,9 @@ function createPiecesForTenBoards(trayGap) {
   }
 
 function createPiecesForTensBoards(trayGap) {
-  console.log("model: pieces.js - createPiecesForTensBoards()", );
+  console.log("model: pieces.js - createPiecesForTensBoards(trayGap)", trayGap);
   // console.log("*** ", tens);
-  
+
   for(const player of ["White","Black"]) {
     const tray = (player === "White") 
     ? mTrays.getWhiteTray() 
@@ -332,6 +342,29 @@ function createPiecesForTensBoards(trayGap) {
     const offset  = tens.trays.offset;
 
     createPiecesForTray(tray, trayDef, offset + trayGap);
+  }
+  }
+
+// ChangePoint:
+function createPiecesForDashTray(tray, trayDef, offset=0) {
+  // console.log("model: pieces.js - createPiecesForTray(tray, trayDef, offset)", tray, trayDef, offset);
+
+  for(let k=0; k<10; k++) {
+    for(let i=0; i<2; i++) {
+      for(let j=0; j<2; j++) {
+        const key = trayDef[k][i][j];
+        if(!key) continue;
+
+        const side  = key[1];
+        const level = key[2];
+        const LL = (side === level) ? `${side}` : `${side}${level}`;
+        const pos = `${LL}${i+1},${j+1}`;  // "QR" <LL>i,j
+        const coords = [k,i,j];
+
+        pieceList[key] = createPiece(key, pos, coords, offset);
+        tray[k][i][j] = key;
+      }
+    }
   }
   }
 
@@ -376,6 +409,13 @@ export function createPiece(key, pos, coords, trayOffset=0) {
     vts, 
     home: { trayPos: pos, trayCoords: [...coords], trayVts: [...vts] }
   };
+}
+
+// --- Duke Helpers ---
+// ChangePoint: stacked pieces
+function hasOtherStackSubpiece(key, vts) {
+  console.log("view : pieces.js - hasOtherStackSubpiece(key, vts)", key, vts);
+
 }
 // Seampoint: more local functions...
 
