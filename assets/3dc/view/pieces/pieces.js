@@ -65,8 +65,6 @@ export function initPieces(pieceList) {
     placePieceInTray(key);    // Pieces start in the trays.
     currPiecesGroup.add(group);
   }  
-  console.log("*** currPiecesGroup", currPiecesGroup);
-  console.log("*** pieceGroups", pieceGroups);
 
   view.getContext().scene.add(currPiecesGroup);
   }
@@ -102,8 +100,8 @@ export function placePieceInTray(key) {      // "WKRR", ...
   const tileHeight = tileSize[0];  // Z.
   const zOffset = tileHeight/2;
   const decoratorGap = 2;
+
   const grid2 = coordsMaps.vts2pixels(group.userData.vts)
-  // console.log("*** position: ", grid2[0], grid2[1]+zOffset+decoratorGap, grid2[2]); // Debug instrumention.
   group.position.set(grid2[0], grid2[1]+zOffset+decoratorGap, grid2[2]);
   }
 
@@ -142,7 +140,7 @@ export function placePiece(key) {      // "WKRR", ...
   }
 
 export function renderPiece(key) {  // "WKRR".  // Deprecated.
-  // console.log("view : pieces.js - renderPiece(key)", key);
+  console.log("view : pieces.js - renderPiece(key)", key);
 
   const piece = mPieces.getPieceList()[key];              // Arg validation.
   if(!piece) throw Error(`No such piece ${key}.`);
@@ -273,7 +271,7 @@ export function deHighlight(key) {
 // Seampoint: more global functions...
 
 // --- Helpers ---
-function createPiece(key) {      // "WKRR", ...
+export function createPiece(key) {      // "WKRR", ...
   // console.log("view : pieces.js - createPiece(key)", key);
 
   let group = null;                                       // Return object.
@@ -305,10 +303,19 @@ function createPiece(key) {      // "WKRR", ...
   group.userData.key = key;
 
   return group;
-  }
+}
+
+// --- Duke Helpers ---
+// ChangePoint: stacked pieces
+function setDukeHeight(group, vts, tileOffset, stackOffset=0) {
+  const grid2 = coordsMaps.vts2pixels(vts)
+
+  const zAdjust = tileOffset + stackOffset;
+  group.position.set(grid2[0], grid2[1]+zAdjust, grid2[2]);
+}
 
 function renderInTray(player, side, type, tray, pos) {
-  // console.log("view : pieces.js - renderInTray(player, type, tray, pos)", player, type, tray, pos);
+  console.log("view : pieces.js - renderInTray(player, type, tray, pos)", player, type, tray, pos);
 
   let group = null;
 
@@ -332,7 +339,6 @@ function renderInTray(player, side, type, tray, pos) {
 
   group.userData.isPiece = true;
 
-  
   const tileSize = tiles.tileSize();
   const tileHeight = tileSize[0];  // Z.
   const zOffset = tileHeight/2;
@@ -342,7 +348,9 @@ function renderInTray(player, side, type, tray, pos) {
   const vts = tileToVts(player, pos, gap);
   const grid2 = coordsMaps.vts2pixels(vts)
 
+  // ChangePoint: adjust duke if bishop present.
   group.position.set(grid2[0], grid2[1]+zOffset+decoratorGap, grid2[2]);
+
   group.userData.vts = vts;
 
   currPiecesGroup.add(group);
@@ -852,7 +860,7 @@ function addCubeBevelLines(mesh, cubeSize, color) {
     2. Common mesh helpers.
     3. White/Black materials.
     4. ✅ Confirm black tray placement.
-    5. Ghost visibility + occupancy inversion.
+    5. Ghost visibility.
     6. ✅ Piece edge conventions.
 
   === Phase 2: Interaction Semantics ===

@@ -15,7 +15,6 @@
   - Moves:   0/0
   - Gambits: 0/0
   - AdvSqs:  0/0
-   ### 2.3 Files
 
 ## 3. Theory
   - This is a descrete log undo system.
@@ -85,272 +84,60 @@
       - For advsqs, do not recursively redo, just skip to the end.
     - Update the state status list in the panel.
 
-
-## 2. Validate Load/Save
+## 7. Validate Load/Save
   Can load either single string or pretty print.
   - May pop up a permissions dialog, may pop up only once.
+  - Is very useful to summarize each string with 4 numbers; **0-0-0-0**.
+  - Most useful to record twice, 
+    - once as single line (wraps) for each copy and paste
+    - once as a manual pretty print, shows basic contents by buffer and action, w/o too many line.
 
- ### 2.1 3 boards, 3 moves, 3 gambits, 10 advsqs
+ ### 7.1 3 boards, 3 moves, 3 gambits, 10 advsqs
+  **3-3-3-10**
 
- ### 2.1.2 Pretty Print Version
+ ### 7.2 Current Bugs
+  Gambits not updating.
 
- ### 2.2 Current Bugs
-  Moves and gambits not rendering or updating panels.
-
-## 3. Debug Moves
-  {"Setup":[],"Moves":[{"turn":1,"player":"White","piece":"P","src":"K2,2","action":"move","dst":"K4,4","sec":""},{"turn":1,"player":"Black","piece":"P","src":"K2,2","action":"move","dst":"K4,4","sec":""},{"turn":2,"player":"White","piece":"P","src":"Q2,2","action":"move","dst":"K4,4","sec":""}],"Gambits":[],"AdvSqs":[]}
-
-  {"Setup":[],"Moves":[{"turn":1,"player":"White","piece":"P","src":"K2,2","action":"move","dst":"K4,4","sec":""},{"turn":1,"player":"Black","piece":"P","src":"K2,2","action":"move","dst":"K4,4","sec":""},{"turn":2,"player":"White","piece":"P","src":"Q2,2","action":"move","dst":"K4,4","sec":""},{"turn":2,"player":"Black","piece":"N","src":"KN1,1","dst":"KB3,3","action":"move","sec":""}],"Gambits":[],"AdvSqs":[]}
-
-## 4. Example Full Undo
+## 8. Examples
+ ### 8.1. Example Full Undo
   **1-4-3-8**
-  {"Setup":[{"action":"makeBoard","boardSize":"8x8x8","initialPos":"standard"}],"Moves":[{"turn":1,"player":"White","piece":"P","src":"K2,2","dst":"K4,4","action":"move","sec":""},{"turn":1,"player":"Black","piece":"P","src":"K2,2","dst":"K4,4","action":"move","sec":""},{"turn":2,"player":"White","piece":"P","src":"Q2,2","dst":"Q4,4","action":"move","sec":""},{"turn":2,"player":"Black","piece":"N","src":"KN1,1","dst":"K3,3","action":"move","sec":""}],"Gambits":[{"Q":1,"src":"KB4,4","dst":"KB6,6","area":9},{"Q":13,"src":"Q4,4","dst":"KN7,4","area":16},{"Q":38,"src":"Q4,4","dst":"KR8,8","area":25}],"AdvSqs":[{"srcTile":[0,0,0],"quad":1,"perimeter":0,"stride":0,"opacity":0.5},{"srcTile":[0,0,0],"quad":1,"perimeter":1,"stride":2,"opacity":0.5},{"srcTile":[0,0,0],"quad":1,"perimeter":2,"stride":3,"opacity":0.5},{"srcTile":[0,0,0],"quad":1,"perimeter":3,"stride":4,"opacity":0.5},{"srcTile":[0,1,0],"quad":1,"perimeter":3,"stride":4,"opacity":0.5},{"srcTile":[0,1,1],"quad":1,"perimeter":3,"stride":4,"opacity":0.5},{"srcTile":[0,2,1],"quad":1,"perimeter":3,"stride":4,"opacity":0.5},{"srcTile":[0,2,2],"quad":1,"perimeter":3,"stride":4,"opacity":0.5}]}
 
-  {
-    "Setup": [
-      {
-        "action": "makeBoard",
-        "boardSize": "8x8x8",
-        "initialPos": "standard"
-      }
-    ],
-    "Moves": [
-      {
-        "turn": 1,
-        "player": "White",
-        "piece": "P",
-        "src": "K2,2",
-        "dst": "K4,4",
-        "action": "move",
-        "sec": ""
-      },
-      {
-        "turn": 1,
-        "player": "Black",
-        "piece": "P",
-        "src": "K2,2",
-        "dst": "K4,4",
-        "action": "move",
-        "sec": ""
-      },
-      {
-        "turn": 2,
-        "player": "White",
-        "piece": "P",
-        "src": "Q2,2",
-        "dst": "Q4,4",
-        "action": "move",
-        "sec": ""
-      },
-      {
-        "turn": 2,
-        "player": "Black",
-        "piece": "N",
-        "src": "KN1,1",
-        "dst": "K3,3",
-        "action": "move",
-        "sec": ""
-      }
-    ],
-    "Gambits": [
-      {
-        "Q": 1,
-        "src": "KB4,4",
-        "dst": "KB6,6",
-        "area": 9
-      },
-      {
-        "Q": 13,
-        "src": "Q4,4",
-        "dst": "KN7,4",
-        "area": 16
-      },
-      {
-        "Q": 38,
-        "src": "Q4,4",
-        "dst": "KR8,8",
-        "area": 25
-      }
-    ],
-    "AdvSqs": [
-      {
-        "srcTile": [
-          0,
-          0,
-          0
-        ],
-        "quad": 1,
-        "perimeter": 0,
-        "stride": 0,
-        "opacity": 0.5
-      },
-      {
-        "srcTile": [
-          0,
-          0,
-          0
-        ],
-        "quad": 1,
-        "perimeter": 1,
-        "stride": 2,
-        "opacity": 0.5
-      },
-      {
-        "srcTile": [
-          0,
-          0,
-          0
-        ],
-        "quad": 1,
-        "perimeter": 2,
-        "stride": 3,
-        "opacity": 0.5
-      },
-      {
-        "srcTile": [
-          0,
-          0,
-          0
-        ],
-        "quad": 1,
-        "perimeter": 3,
-        "stride": 4,
-        "opacity": 0.5
-      },
-      {
-        "srcTile": [
-          0,
-          1,
-          0
-        ],
-        "quad": 1,
-        "perimeter": 3,
-        "stride": 4,
-        "opacity": 0.5
-      },
-      {
-        "srcTile": [
-          0,
-          1,
-          1
-        ],
-        "quad": 1,
-        "perimeter": 3,
-        "stride": 4,
-        "opacity": 0.5
-      },
-      {
-        "srcTile": [
-          0,
-          2,
-          1
-        ],
-        "quad": 1,
-        "perimeter": 3,
-        "stride": 4,
-        "opacity": 0.5
-      },
-      {
-        "srcTile": [
-          0,
-          2,
-          2
-        ],
-        "quad": 1,
-        "perimeter": 3,
-        "stride": 4,
-        "opacity": 0.5
-      }
-    ]
-  }
-
-## 5. Examples
- ### 5.0 Null State
+ ### 8.2 Null State
   **0-0-0-0**
-  {"Setup":[],"Moves":[],"Gambits":[],"AdvSqs":[]}
+    {"Setup":[],"Moves":[],"Gambits":[],"AdvSqs":[]}
 
- ### 5.1 Setup
+ ### 8.3 Setup
   **2-0-0-0**
 
- ### 5.2 Setup, Advsqs
+ ### 8.4 Setup, Advsqs
   **2-0-0-6**
 
- ### 5.3 Moves, Gambits
+ ### 8.5 Moves, Gambits
   **0-4-3-0**
-  {"Setup":[],"Moves":[{"turn":1,"player":"White","piece":"P","src":"K2,2","dst":"K4,4","action":"move","sec":""},{"turn":1,"player":"Black","piece":"P","src":"K2,2","dst":"K4,4","action":"move","sec":""},{"turn":2,"player":"White","piece":"P","src":"Q2,2","dst":"Q4,4","action":"move","sec":""},{"turn":2,"player":"Black","piece":"N","src":"KN1,1","dst":"K3,3","action":"move","sec":""}],"Gambits":[{"Q":1,"src":"KB4,4","dst":"KB6,6","area":9},{"Q":13,"src":"Q4,4","dst":"KN7,4","area":16},{"Q":38,"src":"Q4,4","dst":"KR8,8","area":25}],"AdvSqs":[]}
 
- ### 5.4 Advsqs
+ ### 8.6 Advsqs
   **0-0-0-6**
 
- ### 5.5 Setup, Moves, Gambits, Advsqs
+ ### 8.7 Setup, Moves, Gambits, Advsqs
   **2-4-3-6**
 
-## 6. Debug Gambits
+ ### 8.8 Min Full State (1-1-1-7)
 
-## 7. New Entry Standard for Gambits.
- ### 7.1 Null State (0-0-0-0)
-  {"Setup":[],"Moves":[],"Gambits":[],"AdvSqs":[]}
+## 9. Tutorial of 3D Chess Basics
+ ### 9.1 Quadrant Move
+  **2-0-0-0**
 
- ### 7.1 Full State (1-2-3-8)
+ ### 9.2 Linear Move
+  **2-0-0-0** - Horizontal Rook Plane
 
- ### 7.2 Min Full State (1-1-1-7)
+  **2-0-0-0** - Both Rook Planes
 
- ### 7.3 Debugging (4-0-0-7)
+ ### 9.3 Duplex Move
+  **2-0-0-0**
 
- ### 7.4 Dbugging (1-4-3-4)
+ ### 9.4 Overlap Move
+  **2-0-0-0**
 
- ### (3-0-0-7) RW & FF work
-
- ### (0-3-3-0) RW & FF work
-  {"Setup":[],"Moves":[{"turn":1,"player":"White","piece":"P","src":"K2,2","dst":"K4,4","action":"move","sec":""},{"turn":1,"player":"Black","piece":"P","src":"K2,2","dst":"K4,4","action":"move","sec":""},{"turn":2,"player":"White","piece":"P","src":"K2,2","dst":"Q4,4","action":"move","sec":""}],"Gambits":[{"Q":1,"src":"KB4,4","dst":"KB7,7","area":16,"srcTile":[2,0,0],"quad":1,"perimeter":3,"stride":4,"opacity":0.5},{"Q":13,"src":"Q4,4","dst":"KN7,4","area":16,"srcTile":[0,0,0],"quad":13,"perimeter":3,"stride":1,"opacity":0.5},{"Q":38,"src":"Q4,4","dst":"KR8,8","area":25,"srcTile":[0,0,0],"quad":38,"perimeter":4,"stride":1,"opacity":0.5}],"AdvSqs":[]}
-
- ### (0-0-3-4) RW & FF work
-
- ### (3-3-0-0) RW & FF work
-
- ### (1-1-1-1)
-
- ### Changes in Advsq Payload
- ### Sort form
-
- ### Long Form
-
-## Refactored Advsq Payload
- ### Short Form
-
- ### Long Form
-
-## Linear Moves
- ### Short Form (right-fore)
-
- ### Clear Form (right-fore)
-
- ### Long Form (right-fore)
-
-## Duplex Move
- ### Short Form (right-fore)
-
- ### Clear Form (right-fore)
-
- ### Long Form (right-fore)
- 
- ## Advsqs Work Through Board Undo and Load
-
- ### (1-0-3-0)
-
-## QC Pass on Modules
-
- ### (4-3-3-6)
-
-## Advsq UI Surface Reduction
- ### 1-0-0-6
-
-## Linear Move Example 
- ### Horizontal Rook Plane
-
- ### Both Rook Planes
-
-### Constructured Rook Linear Move
-
-### Improving Base Piece Linear Moves (1-0-2-0)
+ ### 9.5 Knight Move
+  **2-0-0-0**
 

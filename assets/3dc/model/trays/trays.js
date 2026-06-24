@@ -73,7 +73,13 @@ export function trayIndices(type, spec="8x8x8") {
   let i;
   let j;
 
-  if(spec === "8x8x8") {
+  if(spec === "8-8-8") {
+    if(     type === "P") { i = 1; j = 1; }
+    else if(type === "B") { i = 1; j = 0; }
+    else if(type === "D") { i = 0; j = 1; }
+    else                  { i = 0; j = 0; }
+    }
+  else if(spec === "8x8x8") {
     if(     type === "P") { i = 1; j = 1; }
     else if(type === "B") { i = 1; j = 0; }
     else if(type === "D") { i = 0; j = 1; }

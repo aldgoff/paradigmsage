@@ -11,7 +11,7 @@
 const THREE = window.THREE;
 
 // --- Load JSON ---
-import tilesData from "./tiles.json" assert { type: "json" };
+  import tilesData from "./tiles.json" assert { type: "json" };
   const tilesModule = tilesData.tiles_module;
   const tile = tilesModule.tile;
   const face = tile.face.colors;

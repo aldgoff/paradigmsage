@@ -25,7 +25,7 @@ export function init(entry) {
   
   const { action, boardSize, trayType, trayGap, boardSpec } = entry;
 
-  mPieces.init(entry);  // Initial occupancy depends on board size and tray type.
+  mPieces.init(entry);  // Initial set depends on board size and tray type.
 
   return;
   }
@@ -35,7 +35,7 @@ export function destroy(entry) {
   
   const { action, boardSize, trayType, trayGap, boardSpec } = entry;
 
-  mPieces.destroy(entry);  // Initial occupancy depends on board size and tray type.
+  mPieces.destroy(entry);  // Initial set depends on board size and tray type.
 
   return;
   }

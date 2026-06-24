@@ -7,6 +7,22 @@
       "even_dimensions_required": true
       },
     "board_specs": [
+      { "name": "8-8-8",
+        "Nz": 8,
+        "Nx": 8,
+        "Ny": 8,
+        "level_prefixes": ["QR","QN","QB","Q","K","KB","KN","KR"],
+        "level_map": {
+          "QR": 1, "QN": 2, "QB": 3, "Q": 4,
+          "K": 5, "KB": 6, "KN": 7, "KR": 8
+        },
+        "inverse_level_map": {
+          "1": "QR", "2": "QN", "3": "QB", "4": "Q",
+          "5": "K", "6": "KB", "7": "KN", "8": "KR"
+        },
+        "anchor_board": "Q4,4",
+        "anchor_vts": [0, 0, 0]
+        },
       { "name": "8x8x8",
         "Nz": 8,
         "Nx": 8,

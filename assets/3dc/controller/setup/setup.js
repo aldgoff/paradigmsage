@@ -10,6 +10,7 @@
 // --- Load JSON ---
   import setupData from "./setup.json" assert { type: "json" };
   const setupModule = setupData.setup_module;
+  const dash   = setupModule.dash;
   const eights = setupModule.eights;
   const ten    = setupModule.ten;
   const tens   = setupModule.tens;
@@ -268,7 +269,6 @@ export function returnAllPiecesToHomeTray() {
   console.log("***", mPieces.getPieceList());
   console.log("***", mTrays.getWhiteTray());
   console.log("***", mTrays.getBlackTray());
-  console.log("***", mBoards.getBoardOccupancy());
   }
 
 export function clearAllTileSelections() {
@@ -325,8 +325,8 @@ function handlePlacePiece(payload) {
   applyEntry(entry);
 
   // --- Buttons ---
-    const pieceCount = mBoards.getBoardOccupancy().flat(2).filter(cell => cell !== null).length;
-    const max = 40; // TODO: magic number
+    const pieceCount = 0; // TODO: turn off place piece etc. when trays are empty.
+    const max = 36; // TODO: magic number
     (pieceCount === max)
       ? mSetup.buttonAffordances("emptyTrays")
       : mSetup.buttonAffordances("pieces");
@@ -367,14 +367,7 @@ function handleReturnPiece(payload) {
   clearAllTileSelections();
 
   // --- Buttons ---
-    const pieceCount = mBoards.getBoardOccupancy()
-      .flat(2)
-      .filter(cell => cell !== null)
-      .length;
-    const boardPieces =
-      Object.values(mPieces.getPieceList())
-        .filter(piece => piece.loc === "@")
-        .length;
+    const pieceCount = 36;  // TODO: disable buttons when trays empty.
     (pieceCount === 0)
       ? mSetup.buttonAffordances("boardDone")
       : mSetup.buttonAffordances("pieces");
@@ -506,7 +499,9 @@ function initialLineup(entry) {
 
   const { action, boardSize, trayType } = entry;
 
-  let board = eights;
+  let board;
+  if(currBoard.boardSize === "8-8-8") board = dash;
+  if(currBoard.boardSize === "8x8x8") board = eights;
   if(currBoard.boardSize === "10x8x8") board = ten;
   if(currBoard.boardSize === "10x10x10") board = tens;
 

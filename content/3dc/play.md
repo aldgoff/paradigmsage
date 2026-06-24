@@ -75,7 +75,7 @@ layout: "play"
   }
   
   #setup-window       { top:  160px; left:   20px; width: 163px }  /* DOM Control Panels */
-  #move-window        { top: 1000px; left:   20px; width: 400px }
+  #move-window        { top: 1000px; left:   20px; width: 500px }
   #gambit-window      { top:  745px; left:   20px; width: 280px }
   #advsq-window       { top:  160px; left:  210px; width: 155px }
   #compass-window     { top:  160px; left:  560px; width: 160px; height: 220px }
@@ -134,7 +134,8 @@ layout: "play"
     <label>Board Size</label>
   </div>
   <div class="section">
-    <label> <input type="radio" name="board-size" value="8x8x8" checked> 8×8×8 </label><br>
+    <label> <input type="radio" name="board-size" value="8-8-8" checked> 8-8-8 </label><br>
+    <label> <input type="radio" name="board-size" value="8x8x8"> 8×8×8 </label><br>
     <label> <input type="radio" name="board-size" value="10x8x8"> 10×8×8 </label><br>
     <label> <input type="radio" name="board-size" value="10x10x10"> 10×10×10 </label>
   </div>  
@@ -169,18 +170,15 @@ layout: "play"
   <div class="section">
     <button data-action="move"      disabled>Move</button>
     <button data-action="capture"   disabled>Capture</button>
+    <button data-action="fission"   disabled>Fission</button>
     <button data-action="enpassant" disabled>En Passant</button>
     <button data-action="castle"    disabled>Castle</button>
-    <button data-action="promote"   disabled>Promote</button>
     <label> <input type="radio" name="move-player" value="White" disabled checked> W </label>
     <label> <input type="radio" name="move-player" value="Black" disabled> B </label>
   </div>
   <div class="section">
-    <button data-action="duke-decay"    disabled>Duke Decay</button>
-    <button data-action="bishop-decay"  disabled>Bishop Decay</button>
-    <button data-action="fission"       disabled>Fission</button>
-    <button data-action="teleportation" disabled>Teleportation</button>
-    <button data-action="uplift"        disabled>Uplift</button>
+    <button data-action="promote"   disabled>Promote</button>
+    <button data-action="uplift"    disabled>Uplift</button>
   </div>
   <div class="section scroll-box" id="move-list"></div>
   </div>

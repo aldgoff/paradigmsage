@@ -10,6 +10,8 @@
 // --- Load JSON ---
   import piecesData from "./pieces.json" assert { type: "json" };
   const piecesModule = piecesData.pieces_module;
+  // ChangePoint:
+  const dash   = piecesModule.dash;
   const eight  = piecesModule.eight;
   const ten    = piecesModule.ten;
   const tens   = piecesModule.tens;
@@ -95,17 +97,6 @@ export function movePieceFromTrayToBoard(key, dstStr) {  // "WQQP", "Q1,1". // T
     tray[k][i][j] = null;
     // console.log("*** Update tray occupancy");
 
-  // --- Update board occupancy ---
-    const indices = utils.add(mBoards.getOrigin(), dstTile);
-    const [z, x, y] = indices;
-    const occupancy = mBoards.getBoardOccupancy();
-    if(occupancy[z][x][y]) {
-      const err = `Cannot move to an occupied ${occupancy[z][x][y]} tile ${dstStr}.`;
-      return { ok: false, err };
-    }
-    occupancy[z][x][y] = key;
-    // console.log("*** Update board occupancy");
-
   // --- Update piece ---
     piece.loc    = "@";                                             // Update pieceList.
     piece.pos    = dstStr; 
@@ -116,7 +107,6 @@ export function movePieceFromTrayToBoard(key, dstStr) {  // "WQQP", "Q1,1". // T
 
   // Debug instrumention.
     // console.log("*** tray: ", structuredClone(tray[z]));
-    // console.log("*** occ:  ", structuredClone(occupancy[z][x][y]));
     // console.log("*** rcs:  ", structuredClone(indices));
     // console.log("*** dst:  ", structuredClone(dstTile));
     // console.log("*** piece:", structuredClone(pieceList[key]));
@@ -138,21 +128,8 @@ export function movePieceTileToTile(key, dstStr) {
     const piece = pieceList[key];                                   // Ensure valid args - should never fail.
     if(!piece) throw new Error(`Piece ${key} not found.`);
     if(!coords.onBoardStr(dstStr, spec)) throw new Error(`Destination ${dstStr} not on board.`);
-    // console.log("*** Parse", piece);
-
-  // --- Update board occupancy ---
     const dstTile = coords.normalizeTileToVts(dstStr, spec);        // Determine occupancy indices.
-    const indices = utils.add(mBoards.getOrigin(), dstTile);
-    const [z, x, y] = indices;  // New.
-    const occupancy = mBoards.getBoardOccupancy();
-    if(occupancy[z][x][y]) {
-      const err = `Cannot move to an occupied ${occupancy[z][x][y]} tile ${dstStr}.`;
-      console.log("***", err);
-      return { ok: false, err };
-    }
-    const [Z,X,Y] = utils.add(mBoards.getOrigin(), piece.coords); // Previous.
-    occupancy[Z][X][Y] = null;
-    occupancy[z][x][y] = key;
+    // console.log("*** Parse", piece);
 
   // --- Update piece ---
     piece.loc    = "@";                                             // Update pieceList.
@@ -163,7 +140,6 @@ export function movePieceTileToTile(key, dstStr) {
     vPieces.placePiece(key);                                        // Relocate the piece mesh (group).
 
   // Debug instrumention.
-    // console.log("*** occ:  ", structuredClone(occupancy[z][x][y]));
     // console.log("*** rcs:  ", structuredClone(indices));
     // console.log("*** dst:  ", structuredClone(dstTile));
     // console.log("*** piece:", structuredClone(piece));
@@ -194,18 +170,6 @@ export function movePieceFromBoardToTray(key) {
     const [k, i, j] = piece.home.trayCoords;
     // console.log("*** Parse", k, i, j);
 
-  
-  // --- Update board occupancy ---
-    const indices = utils.add(mBoards.getOrigin(), coords);
-    const [z, x, y] = indices;
-    const occupancy = mBoards.getBoardOccupancy();
-    if(occupancy[z][x][y] != key) {
-      const err = `${key} not on board ${occupancy[z][x][y]} at ${z},${x},${y}.`;
-      return { ok: false, err };
-    }
-    occupancy[z][x][y] = null;
-    // console.log("*** Update board occupancy", indices);
-
   // --- Update tray occupancy ---
     const tray = (player === "W")
       ? mTrays.getWhiteTray() 
@@ -225,7 +189,6 @@ export function movePieceFromBoardToTray(key) {
     vPieces.placePieceInTray(key);                                 // Relocate the piece mesh (group).
 
   // Debug instrumention.
-    // console.log("*** occ:  ", structuredClone(occupancy[z][x][y]));
     // console.log("*** tray: ", structuredClone(tray[z]));
     // console.log("*** rcs:  ", structuredClone(indices));
     // console.log("*** dst:  ", structuredClone(piece.home));
@@ -261,15 +224,89 @@ export function combineStackinTray(piece) {
   }
 
 }
+
+export function createPiece(key, pos, coords, trayOffset=0) { // Needed by promote.
+  console.log("model: pieces.js - createPiece(key, pos, coords, trayOffset)", key, pos, coords, trayOffset);
+
+  const [k, i, j] = coords;
+  const player = key[0];
+  const offset = (player === "W") 
+    ? -5 - trayOffset 
+    :  6 + trayOffset;
+  const vts = (player === "W") 
+    ? [k-4, i+offset, j+offset] 
+    : [k-4, -i+offset, -j+offset];
+
+  return {  // "WQRP" - player, side, level, type.
+    loc: "~",
+    pos,
+    coords: [...coords],
+    vts, 
+    home: { trayPos: pos, trayCoords: [...coords], trayVts: [...vts] }
+  };
+}
+
+export function piecesOnTile(vts) {
+  console.log("model: pieces.js - piecesOnTile(vts)", vts);
+
+  const keys = [];
+
+  for(const [key, piece] of Object.entries(pieceList)) {
+    if(piece.loc !== "@") continue;              // Only board pieces.
+    if(utils.isSame(piece.vts, vts)) {
+      keys.push(key);
+    }
+  }
+
+  return keys;
+  }
+
+export function isOccupied(vts) {
+  if(!vts)  return false;
+  return piecesOnTile(vts).length > 0;
+  }
+
+export function containsPiece(key, vts) {
+  return piecesOnTile(vts).includes(key);
+  }
+
+export function canOccupyTile(key, vts) {
+  if(isOccupied(vts)) {
+    const stackable = hasOtherStackSubpiece(key, vts);
+    return stackable;
+  }
+  return true;
+  }
+
+export function hasOtherStackSubpiece(key, vts) {
+  console.log("model: pieces.js - hasOtherStackSubpiece(key, vts)", key, vts);
+
+  return piecesOnTile(vts).some(k => k !== key && isStackMate(key, k));
+  }
+
+export function pieceLocOnBoard(key) {
+  return pieceList[key].vts;
+}
 // Seampoint: more global functions...
 
 // --- Helpers ---
+function isStackMate(key1, key2) {
+  const player1 = key1[0];
+  const player2 = key2[0];
+  return ((player1 === player2) && (
+      (key1[3] === "B" && key2[3] === "D") ||
+      (key1[3] === "D" && key2[3] === "B"))
+  );
+  }
+
 function createPiecesInTrays(entry) {
   console.log("model: pieces.js - createPiecesInTrays(entry)", entry);
   
   const { action, boardSize, trayType, trayGap, boardSpec } = entry;
   
-  if(     boardSize === "8x8x8")    { createPiecesForEightBoard(trayGap); } 
+  // ChangePoint:
+  if(     boardSize === "8-8-8")    { createPiecesForDashBoard(trayGap); } 
+  else if(boardSize === "8x8x8")    { createPiecesForEightBoard(trayGap); } 
   else if(boardSize === "10x8x8")   { createPiecesForTenBoards(trayGap);  }
   else if(boardSize === "10x10x10") { createPiecesForTensBoards(trayGap); }
   else { throw new Error(`Unknown board spec ${spec}.`); }
@@ -295,9 +332,24 @@ function destroyPieces(entry) {
   }
   }
 
+// ChangePoint:
+function createPiecesForDashBoard(trayGap) {
+  console.log("model: pieces.js - createPiecesForDashBoard(trayGap)", trayGap);
+  // console.log("***", dash);
+  
+  for(const player of ["White","Black"]) {
+    const tray = (player === "White") 
+    ? mTrays.getWhiteTray() 
+    : mTrays.getBlackTray();
+    const trayDef = dash.trays[player];
+    const offset  = dash.trays.offset + trayGap;
+
+    createPiecesForDashTray(tray, trayDef, offset);
+  }
+  }
 
 function createPiecesForEightBoard(trayGap) {
-  console.log("model: pieces.js - createPiecesForEightBoard()", );
+  console.log("model: pieces.js - createPiecesForEightBoard(trayGap)", trayGap);
   // console.log("***", eight);
   
   for(const player of ["White","Black"]) {
@@ -312,7 +364,7 @@ function createPiecesForEightBoard(trayGap) {
   }
 
 function createPiecesForTenBoards(trayGap) {
-  console.log("model: pieces.js - createPiecesForTenBoards()", );
+  console.log("model: pieces.js - createPiecesForTenBoards(trayGap)", trayGap);
   // console.log("*** ", ten);
   
   for(const player of ["White","Black"]) {
@@ -327,9 +379,9 @@ function createPiecesForTenBoards(trayGap) {
   }
 
 function createPiecesForTensBoards(trayGap) {
-  console.log("model: pieces.js - createPiecesForTensBoards()", );
+  console.log("model: pieces.js - createPiecesForTensBoards(trayGap)", trayGap);
   // console.log("*** ", tens);
-  
+
   for(const player of ["White","Black"]) {
     const tray = (player === "White") 
     ? mTrays.getWhiteTray() 
@@ -338,6 +390,29 @@ function createPiecesForTensBoards(trayGap) {
     const offset  = tens.trays.offset;
 
     createPiecesForTray(tray, trayDef, offset + trayGap);
+  }
+  }
+
+// ChangePoint:
+function createPiecesForDashTray(tray, trayDef, offset=0) {
+  // console.log("model: pieces.js - createPiecesForTray(tray, trayDef, offset)", tray, trayDef, offset);
+
+  for(let k=0; k<10; k++) {
+    for(let i=0; i<2; i++) {
+      for(let j=0; j<2; j++) {
+        const key = trayDef[k][i][j];
+        if(!key) continue;
+
+        const side  = key[1];
+        const level = key[2];
+        const LL = (side === level) ? `${side}` : `${side}${level}`;
+        const pos = `${LL}${i+1},${j+1}`;  // "QR" <LL>i,j
+        const coords = [k,i,j];
+
+        pieceList[key] = createPiece(key, pos, coords, offset);
+        tray[k][i][j] = key;
+      }
+    }
   }
   }
 
@@ -363,26 +438,6 @@ function createPiecesForTray(tray, trayDef, offset=0) {
   }
   }
 
-function createPiece(key, pos, coords, trayOffset=0) {
-  // console.log("model: pieces.js - createPiece(key, pos, coords, trayOffset)", key, pos, coords, trayOffset);
-
-  const [k, i, j] = coords;
-  const player = key[0];
-  const offset = (player === "W") 
-    ? -5 - trayOffset 
-    :  6 + trayOffset;
-  const vts = (player === "W") 
-    ? [k-4, i+offset, j+offset] 
-    : [k-4, -i+offset, -j+offset];
-
-  return {  // "WQRP" - player, side, level, type.
-    loc: "~",
-    pos,
-    coords: [...coords],
-    vts, 
-    home: { trayPos: pos, trayCoords: [...coords], trayVts: [...vts] }
-  };
-}
 // Seampoint: more local functions...
 
 /* piece = {  // Field documentation.

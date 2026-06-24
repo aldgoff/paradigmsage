@@ -35,6 +35,7 @@
       "aspect": 1.0,
       "breadth": 0.30,
       "height": -5.0,
+      "stackOffset": 20,
       "orientation": 0.75,
       "bevel": 0.00
     },

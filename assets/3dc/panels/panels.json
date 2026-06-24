@@ -28,10 +28,13 @@
           "title": "Move Panel Help",
           "lines": [
             "To specify a move, select a piece and a tile.",
+            "To specify a capture, select two pieces, first captures second.",
             "Buttons are enabled if the combination of selected piece(s) and tile(s) form an eligible move.",
-            "To be legal, a move must be both eligible and allowed.",
-            "It is disallowed if out of plane, out of range, blocked, etc.",
-            "Some moves may require multiple piece and tile selections (castling, en passant, decay, etc.)."
+            "To be legal, a move must be both eligible and allowed. It is disallowed if out of plane, out of range, blocked, etc.",
+            "This separation converts the move buttons into affordances, good user ergonomics.",
+            "Some moves require multiple piece and tile selections (castling, en passant, fission, etc.) - order is important; first piece goes with first tile.",
+            "To select a stack, select both the bishop and duke subpieces.",
+            "To deselect, click again. To clear all selections, click off board."
           ]
         },
       "gambitText": {

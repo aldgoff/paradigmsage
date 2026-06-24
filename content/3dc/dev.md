@@ -143,11 +143,203 @@ title: "Dev"
   - 6/18/26 - Normalize gambits. Normalize refreshEntry() & applyEntry(). Undo/redo/RW/FF/load/save for quadrant gambits. Deadcode & todo updates.
   - 6/19/26 - Load reset. Occupancy reset. Normalize model layer. Undo branching. Button affordances.
   - 6/20/26 - Cross panel button affordances. Revise entry standards. Draft move entries. Captures.
+
+ ### Week 15:
+  - 6/21/26 - Fixed White/Black radio buttons in move panel. Remove obsolete saved game strings. Normalize move entry and payload/selections order.
+  - 6/22/26 - En passant. Castling. Promotion sans queen mesh. Stem out move makeEntries and assembleLines.
+  - 6/23/26 - Stack offset value. New UI for occupancy. New approach; pieceList and trays only - POC.
+  - 6/24/26 - Remove stack buttons. Line notation standards. Stablize clicks, entries, and move listing rows. Remove board occupancy.
+    Rest of moves.
    QC quad gambits, all gambits, all moves.
+
+## Move Lines:
+  **2-10-0-0**
+
+## Development
+ ### Fission:
+  **2-5-0-0**
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8-8-8","trayType":"Real","trayGap":0}},{"action":"startingPos"}],"Moves":[{"action":"move","turn":1,"player":"White","list":[{"key":"WKBB","prev":"@KB1,1","post":"@KB3,3"}]},{"action":"move","turn":1,"player":"Black","list":[{"key":"BKBD","prev":"@KB8,8","post":"@KB6,6"}]},{"action":"move","turn":2,"player":"White","list":[{"key":"WQBD","prev":"@QB1,1","post":"@KB3,3"}]},{"action":"move","turn":2,"player":"Black","list":[{"key":"BKBB","prev":"@KB8,8","post":"@KB6,6"}]},{"action":"fission","turn":3,"player":"White","list":[{"key":"WKBB","prev":"@KB3,3","post":"@KB4,4"},{"key":"WQBD","prev":"@KB3,3","post":"@KB5,5"}]}],"Gambits":[],"AdvSqs":[]}
+
+  {"Setup":[
+    {"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8-8-8","trayType":"Real","trayGap":0}},
+    {"action":"startingPos"}],
+  "Moves":[
+    {"action":"move","turn":1,"player":"White","list":[{"key":"WKBB","prev":"@KB1,1","post":"@KB3,3"}]},
+    {"action":"move","turn":1,"player":"Black","list":[{"key":"BKBD","prev":"@KB8,8","post":"@KB6,6"}]},
+    {"action":"move","turn":2,"player":"White","list":[{"key":"WQBD","prev":"@QB1,1","post":"@KB3,3"}]},
+    {"action":"move","turn":2,"player":"Black","list":[{"key":"BKBB","prev":"@KB8,8","post":"@KB6,6"}]},
+    {"action":"fission","turn":3,"player":"White","list":[{"key":"WKBB","prev":"@KB3,3","post":"@KB4,4"},{"key":"WQBD","prev":"@KB3,3","post":"@KB5,5"}]}],
+  "Gambits":[],"AdvSqs":[]}
+
+  **2-4-0-0**
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8-8-8","trayType":"Real","trayGap":0}},{"action":"startingPos"}],"Moves":[{"action":"move","turn":1,"player":"White","list":[{"key":"WKBB","prev":"@KB1,1","post":"@KB3,3"}]},{"action":"move","turn":1,"player":"Black","list":[{"key":"BKBD","prev":"@KB8,8","post":"@KB6,6"}]},{"action":"move","turn":2,"player":"White","list":[{"key":"WQBD","prev":"@QB1,1","post":"@KB3,3"}]},{"action":"move","turn":2,"player":"Black","list":[{"key":"BKBB","prev":"@KB8,8","post":"@KB6,6"}]}],"Gambits":[],"AdvSqs":[]}
+
+ ### Stack: Initial setup, decays, advance: Full undo stack 
+  **2-6-0-0**
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8-8-8","trayType":"Real","trayGap":0}},{"action":"startingPos"}],"Moves":[{"action":"move","turn":1,"player":"White","list":[{"key":"WKBB","prev":"@KB1,1","post":"@KB3,3"}]},{"action":"move","turn":1,"player":"Black","list":[{"key":"BKBD","prev":"@KB8,8","post":"@KB6,6"}]},{"action":"move","turn":2,"player":"White","list":[{"key":"WKBD","prev":"@KB1,1","post":"@KB3,3"}]},{"action":"move","turn":2,"player":"Black","list":[{"key":"BKBB","prev":"@KB8,8","post":"@KB6,6"}]},{"action":"move","turn":3,"player":"White","list":[{"key":"WKBD","prev":"@KB3,3","post":"@KB4,4"},{"key":"WKBB","prev":"@KB3,3","post":"@KB4,4"}]},{"action":"move","turn":3,"player":"Black","list":[{"key":"BKBB","prev":"@KB6,6","post":"@KB5,5"}]}],"Gambits":[],"AdvSqs":[]}
+
+  {"Setup":[
+    {"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8-8-8","trayType":"Real","trayGap":0}},
+    {"action":"startingPos"}],
+  "Moves":[
+    {"action":"move","turn":1,"player":"White","list":[{"key":"WKBB","prev":"@KB1,1","post":"@KB3,3"}]},
+    {"action":"move","turn":1,"player":"Black","list":[{"key":"BKBD","prev":"@KB8,8","post":"@KB6,6"}]},
+    {"action":"move","turn":2,"player":"White","list":[{"key":"WKBD","prev":"@KB1,1","post":"@KB3,3"}]},
+    {"action":"move","turn":2,"player":"Black","list":[{"key":"BKBB","prev":"@KB8,8","post":"@KB6,6"}]},
+    {"action":"move","turn":3,"player":"White","list":[{"key":"WKBD","prev":"@KB3,3","post":"@KB4,4"},{"key":"WKBB","prev":"@KB3,3","post":"@KB4,4"}]},
+    {"action":"move","turn":3,"player":"Black","list":[{"key":"BKBB","prev":"@KB6,6","post":"@KB5,5"}]}],
+  "Gambits":[],"AdvSqs":[]}
+
+ **2-5-0-0**
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8-8-8","trayType":"Real","trayGap":0}},{"action":"startingPos"}],"Moves":[{"action":"move","turn":1,"player":"White","list":[{"key":"WKBB","prev":"@KB1,1","post":"@KB3,3"}]},{"action":"move","turn":1,"player":"Black","list":[{"key":"BKBD","prev":"@KB8,8","post":"@KB6,6"}]},{"action":"move","turn":2,"player":"White","list":[{"key":"WKBD","prev":"@KB1,1","post":"@KB3,3"}]},{"action":"move","turn":2,"player":"Black","list":[{"key":"BKBB","prev":"@KB8,8","post":"@KB6,6"}]}],"Gambits":[],"AdvSqs":[]}
+
+  **2-2-0-0**
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8-8-8","trayType":"Real","trayGap":0}},{"action":"startingPos"}],"Moves":[{"action":"move","turn":1,"player":"White","list":[{"key":"WKBB","prev":"@KB1,1","post":"@KB3,3"}]},{"action":"move","turn":1,"player":"Black","list":[{"key":"BKBD","prev":"@KB8,8","post":"@KB6,6"}]}],"Gambits":[],"AdvSqs":[]}
+
+## Eamples:
+ ### Bishop-decay, Duke-decay, Teleportation
+  **2-3-0-0**
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8-8-8","trayType":"Real","trayGap":0}},{"action":"startingPos"}],"Moves":[{"action":"move","turn":1,"player":"White","list":[{"key":"WKBB","prev":"@KB1,1","post":"@KB3,3"}]},{"action":"move","turn":1,"player":"Black","list":[{"key":"BKBD","prev":"@KB8,8","post":"@KB6,6"}]},{"action":"move","turn":2,"player":"White","list":[{"key":"WQBD","prev":"@QB1,1","post":"@KB3,3"}]}],"Gambits":[],"AdvSqs":[]}
+
+  {"Setup":[
+    {"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8-8-8","trayType":"Real","trayGap":0}},
+    {"action":"startingPos"}],
+  "Moves":[
+    {"action":"move","turn":1,"player":"White","list":[{"key":"WKBB","prev":"@KB1,1","post":"@KB3,3"}]},
+    {"action":"move","turn":1,"player":"Black","list":[{"key":"BKBD","prev":"@KB8,8","post":"@KB6,6"}]},
+    {"action":"move","turn":2,"player":"White","list":[{"key":"WQBD","prev":"@QB1,1","post":"@KB3,3"}]}],
+  "Gambits":[],"AdvSqs":[]}
+
+ ### Place-shift-return
+  **4-0-0-0**
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8-8-8","trayType":"Real","trayGap":0}},{"action":"placePiece","key":"BKRP","prev":"~KR2,2","post":"@KR8,8"},{"action":"shiftPiece","key":"BKRP","prev":"@KR8,8","post":"@KR7,7"},{"action":"returnPiece","key":"BKRP","prev":"@KR7,7","post":"~KR2,2"}],"Moves":[],"Gambits":[],"AdvSqs":[]}
+
+ ### Promotion (except for queen mesh)
+  **2-3-0-0**
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"startingPos"}],"Moves":[{"action":"move","turn":1,"player":"White","list":[{"key":"WKRP","prev":"@KR2,2","post":"@KR8,7"}]},{"action":"move","turn":1,"player":"Black","list":[{"key":"BKRR","prev":"@KR8,8","post":"@KR6,6"}]},{"action":"promote","turn":2,"player":"White","list":[{"key":"WKRP","prev":"@KR8,7","post":"@KR8,8"},{"key":"WKRP","prev":"@KR8,7","post":"@KR8,8"}]}],"Gambits":[],"AdvSqs":[]}
+
+  {"Setup":[
+    {"action":"makeBoard",
+      "prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},
+      "nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},
+    {"action":"startingPos"}],
+  "Moves":[
+    {"action":"move","turn":1,"player":"White","list":[{"key":"WKRP","prev":"@KR2,2","post":"@KR8,7"}]},
+    {"action":"move","turn":1,"player":"Black","list":[{"key":"BKRR","prev":"@KR8,8","post":"@KR6,6"}]},
+    {"action":"promote","turn":2,"player":"White",
+      "list":[
+        {"key":"WKRP","prev":"@KR8,7","post":"@KR8,8"},
+        {"key":"WKRP","prev":"@KR8,7","post":"@KR8,8"}]
+      }],
+  "Gambits":[],"AdvSqs":[]}
+
+ ### Double Castle
+  **2-2-0-0**
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"startingPos"}],"Moves":[{"action":"castle","turn":1,"player":"White","list":[{"key":"WKKK","prev":"@K1,1","post":"@K1,2"},{"key":"WKRR","prev":"@KR1,1","post":"@Q1,2"},{"key":"WQRR","prev":"@QR1,1","post":"@KB1,2"}]},{"action":"castle","turn":1,"player":"Black","list":[{"key":"BKKK","prev":"@K8,8","post":"@KB7,8"},{"key":"BKRR","prev":"@KR8,8","post":"@K7,8"}]},{"action":"move","turn":2,"player":"White","list":[{"key":"WKRP","prev":"@KR2,2","post":"@KR3,3"}]},{"action":"move","turn":2,"player":"Black","list":[{"key":"BKRP","prev":"@KR7,7","post":"@KR6,6"}]}],"Gambits":[],"AdvSqs":[]}
+
+  {"Setup":[
+    {"action":"makeBoard",
+      "prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},
+      "nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},
+    {"action":"startingPos"}],
+  "Moves":[
+    {"action":"castle","turn":1,"player":"White",
+      "list":[
+        {"key":"WKKK","prev":"@K1,1","post":"@K1,2"},
+        {"key":"WKRR","prev":"@KR1,1","post":"@Q1,2"},
+        {"key":"WQRR","prev":"@QR1,1","post":"@KB1,2"}]},
+    {"action":"castle","turn":1,"player":"Black",
+      "list":[
+        {"key":"BKKK","prev":"@K8,8","post":"@KB7,8"},
+        {"key":"BKRR","prev":"@KR8,8","post":"@K7,8"}]},
+    {"action":"move","turn":2,"player":"White","list":[{"key":"WKRP","prev":"@KR2,2","post":"@KR3,3"}]},
+    {"action":"move","turn":2,"player":"Black","list":[{"key":"BKRP","prev":"@KR7,7","post":"@KR6,6"}]}],
+  "Gambits":[],"AdvSqs":[]}
+
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"startingPos"}],"Moves":[{"action":"castle","turn":1,"player":"White","list":[{"key":"WKKK","prev":"@K1,1","post":"@K1,2"},{"key":"WKRR","prev":"@KR1,1","post":"@Q1,2"},{"key":"WQRR","prev":"@QR1,1","post":"@KB1,2"}]}],"Gambits":[],"AdvSqs":[]}
+
+  {"Setup":[
+    {"action":"makeBoard",
+      "prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},
+      "nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},
+    {"action":"startingPos"}],
+  "Moves":[
+    {"action":"castle","turn":1,"player":"White",
+      "list":[
+        {"key":"WKKK","prev":"@K1,1","post":"@K1,2"},
+        {"key":"WKRR","prev":"@KR1,1","post":"@Q1,2"},
+        {"key":"WQRR","prev":"@QR1,1","post":"@KB1,2"}]}],
+  "Gambits":[],"AdvSqs":[]}
+
+ ### Castle
+  **2-2-0-0**
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"startingPos"}],"Moves":[{"action":"castle","turn":1,"player":"White","list":[{"key":"WKKK","prev":"@K1,1","post":"@KB1,2"},{"key":"WKRR","prev":"@KR1,1","post":"@K1,2"}]}],"Gambits":[],"AdvSqs":[]}
+
+  {"Setup":[
+    {"action":"makeBoard",
+      "prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},
+      "nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},
+    {"action":"startingPos"}],
+  "Moves":[
+    {"action":"castle","turn":1,"player":"White",
+      "list":[
+        {"key":"WKKK","prev":"@K1,1","post":"@KB1,2"},
+        {"key":"WKRR","prev":"@KR1,1","post":"@K1,2"}]}],
+  "Gambits":[],"AdvSqs":[]}
+
+ ### En Passant
+  **2-4-0-0**
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"startingPos"}],"Moves":[{"action":"move","turn":1,"player":"White","list":[{"key":"WKRP","prev":"@KR2,2","post":"@KR4,4"}]},{"action":"move","turn":1,"player":"Black","list":[{"key":"BKKP","prev":"@K7,7","post":"@K6,5"}]},{"action":"move","turn":2,"player":"White","list":[{"key":"WKRP","prev":"@KR4,4","post":"@KR5,5"}]},{"action":"move","turn":2,"player":"Black","list":[{"key":"BKNP","prev":"@KN7,7","post":"@KN5,5"}]},{"action":"enpassant","turn":3,"player":"White","list":[{"key":"WKRP","prev":"@KR5,5","post":"@KN6,6"},{"key":"BKNP","prev":"@KN5,5","post":"~KN2,2"}]}],"Gambits":[],"AdvSqs":[]}
+
+  {"Setup":[
+    {"action":"makeBoard",
+      "prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},
+      "nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},
+    {"action":"startingPos"}],
+  "Moves":[
+    {"action":"move","turn":1,"player":"White","list":[{"key":"WKRP","prev":"@KR2,2","post":"@KR4,4"}]},
+    {"action":"move","turn":1,"player":"Black","list":[{"key":"BKKP","prev":"@K7,7","post":"@K6,5"}]},
+    {"action":"move","turn":2,"player":"White","list":[{"key":"WKRP","prev":"@KR4,4","post":"@KR5,5"}]},
+    {"action":"move","turn":2,"player":"Black","list":[{"key":"BKNP","prev":"@KN7,7","post":"@KN5,5"}]},
+    {"action":"enpassant","turn":3,"player":"White",
+      "list":[
+        {"key":"WKRP","prev":"@KR5,5","post":"@KN6,6"},
+        {"key":"BKNP","prev":"@KN5,5","post":"~KN2,2"}]}],
+  "Gambits":[],"AdvSqs":[]}
 
 ## Capture Development:
   **2-4-0-0**
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"startingPos"}],"Moves":[{"action":"move","turn":1,"player":"White","list":[{"key":"WKRP","prev":"@KR2,2","post":"@KR4,4"}]},{"action":"move","turn":1,"player":"Black","list":[{"key":"BKRP","prev":"@KR7,7","post":"@KR5,5"}]},{"action":"capture","turn":2,"player":"White","list":[{"key":"WKRP","prev":"@KR4,4","post":"@KR5,5"},{"key":"BKRP","prev":"@KR5,5","post":"~KR2,2"}]},{"action":"capture","turn":2,"player":"Black","list":[{"key":"BKRR","prev":"@KR8,8","post":"@KR5,5"},{"key":"WKRP","prev":"@KR5,5","post":"~KR2,2"}]}],"Gambits":[],"AdvSqs":[]}
+
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"startingPos"}],
+  "Moves":[
+    {"action":"move","turn":1,"player":"White","list":[{"key":"WKRP","prev":"@KR2,2","post":"@KR4,4"}]},
+    {"action":"move","turn":1,"player":"Black","list":[{"key":"BKRP","prev":"@KR7,7","post":"@KR5,5"}]},
+    {"action":"capture","turn":2,"player":"White","list":[{"key":"WKRP","prev":"@KR4,4","post":"@KR5,5"},{"key":"BKRP","prev":"@KR5,5","post":"~KR2,2"}]},
+    {"action":"capture","turn":2,"player":"Black","list":[{"key":"BKRR","prev":"@KR8,8","post":"@KR5,5"},{"key":"WKRP","prev":"@KR5,5","post":"~KR2,2"}]}],
+  "Gambits":[],"AdvSqs":[]}
+
+  **2-4-0-0**
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"startingPos"}],"Moves":[{"action":"move","turn":1,"player":"White","key":"WKRP","prev":"@KR2,2","post":"@KR4,4","list":[{"key":"WKRP","prev":"@KR2,2","post":"@KR4,4"}]},{"action":"move","turn":1,"player":"Black","key":"BKRP","prev":"@KR7,7","post":"@KR5,5","list":[{"key":"BKRP","prev":"@KR7,7","post":"@KR5,5"}]},{"action":"capture","turn":2,"player":"White","list":[{"key":"WKRP","prev":"@KR4,4","post":"@KR5,5"},{"key":"BKRP","prev":"@KR5,5","post":"~KR2,2"}]},{"action":"capture","turn":2,"player":"Black","list":[{"key":"BKRR","prev":"@KR8,8","post":"@KR5,5"},{"key":"WKRP","prev":"@KR5,5","post":"~KR2,2"}]}],"Gambits":[],"AdvSqs":[]}
+
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"startingPos"}],
+  "Moves":[
+    {"action":"move","turn":1,"player":"White","key":"WKRP","prev":"@KR2,2","post":"@KR4,4","list":[{"key":"WKRP","prev":"@KR2,2","post":"@KR4,4"}]},
+    {"action":"move","turn":1,"player":"Black","key":"BKRP","prev":"@KR7,7","post":"@KR5,5","list":[{"key":"BKRP","prev":"@KR7,7","post":"@KR5,5"}]},
+    {"action":"capture","turn":2,"player":"White","list":[{"key":"WKRP","prev":"@KR4,4","post":"@KR5,5"},{"key":"BKRP","prev":"@KR5,5","post":"~KR2,2"}]},
+    {"action":"capture","turn":2,"player":"Black","list":[{"key":"BKRR","prev":"@KR8,8","post":"@KR5,5"},{"key":"WKRP","prev":"@KR5,5","post":"~KR2,2"}]}],
+  "Gambits":[],"AdvSqs":[]}
+
+  **2-4-0-0**
   {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"startingPos"}],"Moves":[{"action":"move","turn":1,"player":"White","key":"WKRP","prev":"@KR2,2","post":"@KR4,4"},{"action":"move","turn":1,"player":"Black","key":"BKRP","prev":"@KR7,7","post":"@KR5,5"},{"action":"capture","turn":2,"player":"White","list":[{"key":"WKRP","prev":"@KR4,4","post":"@KR5,5"},{"key":"BKRP","prev":"@KR5,5","post":"~KR2,2"}]},{"action":"capture","turn":2,"player":"Black","list":[{"key":"BKRR","prev":"@KR8,8","post":"@KR5,5"},{"key":"WKRP","prev":"@KR5,5","post":"~KR2,2"}]}],"Gambits":[],"AdvSqs":[]}
+
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"startingPos"}],
+  "Moves":[
+    {"action":"move","turn":1,"player":"White","key":"WKRP","prev":"@KR2,2","post":"@KR4,4"},
+    {"action":"move","turn":1,"player":"Black","key":"BKRP","prev":"@KR7,7","post":"@KR5,5"},
+    {"action":"capture","turn":2,"player":"White","list":[{"key":"WKRP","prev":"@KR4,4","post":"@KR5,5"},{"key":"BKRP","prev":"@KR5,5","post":"~KR2,2"}]},
+    {"action":"capture","turn":2,"player":"Black","list":[{"key":"BKRR","prev":"@KR8,8","post":"@KR5,5"},{"key":"WKRP","prev":"@KR5,5","post":"~KR2,2"}]}],
+  "Gambits":[],"AdvSqs":[]}
 
   **2-4-0-0**
   {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"startingPos"}],"Moves":[{"action":"move","turn":1,"player":"White","key":"WKRP","prev":"@KR2,2","post":"@KR4,4"},{"action":"move","turn":1,"player":"Black","key":"BKRP","prev":"@KR7,7","post":"@KR5,5"},{"action":"capture","turn":2,"player":"White","list":[{"key":"WKRP","prev":"@KR4,4","post":"@KR5,5"},{"key":"BKRP","prev":"KR5,5"}]},{"action":"capture","turn":2,"player":"Black","list":[{"key":"BKRR","prev":"@KR8,8","post":"@KR5,5"},{"key":"WKRP","prev":"KR5,5"}]}],"Gambits":[],"AdvSqs":[]}

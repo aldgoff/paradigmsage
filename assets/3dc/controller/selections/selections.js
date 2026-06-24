@@ -184,21 +184,30 @@ function manageMoveButtons() {
   console.log("cntrl: selections.js - manageMoveButtons()");
 
   const size = cSetup.getCurrBoard().boardSize;           // Parse piece and tile info.
-  const [key1,  key2]  = [...pieceSelections];
-  const [tile1, tile2] = [...tileSelections];
+  const [key1, key2, key3, key4] = [...pieceSelections];
+  const [tile1, tile2, tile3]    = [...tileSelections];
+  const pieces = pieceSelections.size;
+  const tiles  = tileSelections.size;
+  console.log("*** pieces, tiles", pieces, tiles);
+
   const piece1 = (key1) ? mPieces.getPieceList()[key1] : null;
   const piece2 = (key2) ? mPieces.getPieceList()[key2] : null;
+  const piece3 = (key3) ? mPieces.getPieceList()[key3] : null;
+  const piece4 = (key4) ? mPieces.getPieceList()[key4] : null;
   const dstStr1 = (tile1) ? coords.vtsToBoard(tile1, size) : "";
   const dstStr2 = (tile2) ? coords.vtsToBoard(tile2, size) : "";
+  const dstStr3 = (tile3) ? coords.vtsToBoard(tile3, size) : "";
   const { player: player1, side: side1, level: level1, type: type1 } = utils.parsePieceKey(key1);
   const { player: player2, side: side2, level: level2, type: type2 } = utils.parsePieceKey(key2);
+  const { player: player3, side: side3, level: level3, type: type3 } = utils.parsePieceKey(key3);
+  const { player: player4, side: side4, level: level4, type: type4 } = utils.parsePieceKey(key4);
 
   const panel = document.getElementById("move-window");   // Update panel fields.
   panel.querySelector('[name="move-selPieces"]').textContent = [...pieceSelections];
-  panel.querySelector('[name="move-selTiles"]').textContent  = `${dstStr1} ${dstStr2}`;
+  panel.querySelector('[name="move-selTiles"]').textContent  = `${dstStr1} ${dstStr2} ${dstStr3}`;
 
   if(piece1?.pos === dstStr1)  return;                    // Piece can't be on dst tile.
-  const occupied = mBoards.isOccupied(tile1);             // Dst tile might be occupied.
+  const occupied = mPieces.isOccupied(tile1);             // Dst tile might be occupied.
 
   const index = state.getIndices()["Moves"] + 1;          // Players take turns.
   if((index%2 === 1 && player1 === 'B')
@@ -206,60 +215,71 @@ function manageMoveButtons() {
     return;
   }
 
-  mMoves.buttonAffordances("off");                      // Reset all the panel buttons.
+  mMoves.buttonAffordances("off");                        // Reset all the panel buttons.
 
-  const pieces = pieceSelections.size;          // 1st level button restraints.
-  const tiles  = tileSelections.size;
-
-  if(     pieces === 1 && tiles === 1) {        // Move, promote, or decay.
-    const promotable = (type1 === "P") && lastCol(dstStr1, size, player1);
-    if(occupied) return;
-    if(type1 === 'S') {  // TODO: figure out how to specify stack subpieces.
-      panels.enableButton("move",        true);
-      panels.enableButton("duke-decay",  true);
-      panels.enableButton("bishop-decay",true);
+  if(     pieces === 1 && tiles === 1) {  // Move, decayMovs, promoteMov.
+    if(!mPieces.canOccupyTile(key1, tile1))
+      return;
+    panels.enableButton("move", true);
     }
-    else if(promotable) {
+  else if(pieces === 2 && tiles === 0) {  // Teleports, capture, combines, decayCaps, promoteCap, uplifts.
+    if(player1 != player2) {
+      panels.enableButton("capture", true);
+    }
+    }
+  else if(pieces === 3 && tiles === 0) {  // StackCap.
+    if(player1 != player2) {
+      panels.enableButton("capture", true);
+    }
+    else if(player1 === player2 && player1 != player3) {
+      panels.enableButton("capture", true);
+    }
+    }
+  else if(pieces === 2 && tiles === 1) {  // StackMov, Enpassant.
+    const promotable = (type1 === "P") && lastCol(dstStr1, size, player1);
+    const piece2 = mPieces.getPieceList()[key2];
+    if(     player1 != player2                  // En Passant.
+      && type1  === 'P'
+      && type2  === 'P')
+      panels.enableButton("enpassant", true);
+    else if(player1 === player2                 // Stack.
+      && ( type1  === 'D' && type2  === 'B'
+        || type1  === 'B' && type2  === 'D'))
+      panels.enableButton("move", true);
+    else if(player1 === player2                 // Uplift.
+      && ( type1  === 'P' && type2  === 'B'
+        || type1  === 'P' && type2  === 'D')
+      && lastCol(dstStr1, size, player1)
+      && piece2.pos === dstStr1)
+      panels.enableButton("uplift", true);
+    else if(player1 === player2                 // Promote.
+      && promotable
+      && type2 != 'P' 
+      && type2 != 'K')
       panels.enableButton("promote", true);
     }
-    else {
-      console.log("*** move");
-      panels.enableButton("move", true);
-    }
-    }
-  else if(pieces === 2 && tiles === 0) {        // Capture.
-    if(player1 === player2) return;
-      
-    panels.enableButton("capture", true);
-    }
-  else if(pieces === 2 && tiles === 1) {        // En Passant, teleportation, uplift.
-    const piece2 = mPieces.getPieceList()[key2];
-    console.log("***", piece2.coords, dstStr1);
-    if(player1 != player2
-    && type1  === 'P'
-    && type2  === 'P')
-      panels.enableButton("enpassant", true);
-    else if(player1 === player2
-    && ( type1  === 'S' && type2  === 'B'
-      || type1  === 'S' && type2  === 'D')
-    && piece2.pos === dstStr1)
-      panels.enableButton("teleportation", true);
-    else if(player1 === player2
-    && ( type1  === 'P' && type2  === 'B'
-      || type1  === 'P' && type2  === 'D')
-    && lastCol(dstStr1, size, player1)
-    && piece2.pos === dstStr1)
-      panels.enableButton("uplift", true);
-    }
-  else if(pieces === 2 && tiles === 2) {        // Castle.
+  else if(pieces === 2 && tiles === 2) {  // FissionMM, castle, royal.
+    console.log("*** 2 x 2");
     if(player1 != player2) return;
-    if((type1 === 'K' && type2 === 'R') || (type1 === 'R' && type2 === 'K'))
+    if((type1 === 'K' && type2 === 'R'))        // Castle.
+      panels.enableButton("castle", true);
+    else if(type1  === 'D' && type2  === 'B'    // Stack fission.
+         || type1  === 'B' && type2  === 'D')
+      panels.enableButton("fission", true);
+    }
+  else if(pieces === 3 && tiles === 1) {  // FissionCM, fissionMC.
+    console.log("*** 3 x 1");
+    }
+  else if(pieces === 4 && tiles === 0) {  // FissionCC.
+    console.log("*** 4 x 0");
+    if(player1 != player2) return;
+    }
+  else if(pieces === 3 && tiles === 3) {  // DoubleCastle.
+    console.log("*** 3 x 3");
+    if(player1 != player2) return;
+    if((type1 === 'K' && type2 === 'R' && type3 === 'R'))
       panels.enableButton("castle", true);
     }
-  else if(pieces === 1 && tiles === 2) {        // Stack fission.
-    if(type1 != 'S') return;
-    panels.enableButton("fission", true);
-  }
   }
 
 function lastCol(dstStr1, size, player1) {
@@ -277,4 +297,13 @@ function lastCol(dstStr1, size, player1) {
   return last_col;
 }
 // Seampoint: more local functions...
+
+// Move, decayMovs, promoteMov.
+// Teleports, capture, combines, decayCaps, promoteCap, uplifts.
+// StackCap.
+// StackMov, Enpassant.
+// FissionMM, castle, royal.
+// fissionCM, fissionMC.
+// fissionCC.
+// DoubleCastle.
 

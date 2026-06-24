@@ -84,6 +84,9 @@
 
   git switch main
   git merge --no-ff 3dc3
+  vi: Merge 3dc3 bug fix|feature add|whatever.
+  vi: Merge 3dc3 Board occupancy, entry standards, stack simplification.
+
   git push origin main
 
   git switch 3dc3

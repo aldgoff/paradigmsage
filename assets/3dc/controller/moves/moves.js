@@ -39,21 +39,17 @@ export function panelDispatch(payload) {
 
   vGambits.cancelAnimation();
 
-  const { action, 
-    player,   // White|Black
-  } = payload;
+  const { action, player,} = payload;   // White|Black
+  const selections = cSelections.getSelections();
 
   switch (action) {
-    case "move":          handleMove(payload); break;
-    case "capture":       handleCapture(payload); break;
-    case "enpassant":     handleEnpassant(payload); break;
-    case "castle":        handleCastle(payload); break;
-    case "promote":       handlePromote(payload); break;
-    case "duke-decay":    handleDukeDecay(payload); break;
-    case "bishop-decay":  handleBishopDecay(payload); break;
-    case "fission":       handleFission(payload); break;
-    case "teleportation": handleTeleportation(payload); break;
-    case "uplift  ":      handleUplift(payload); break;
+    case "move":          handleMove(payload, selections); break;
+    case "capture":       handleCapture(payload, selections); break;
+    case "fission":       handleFission(payload, selections); break;
+    case "enpassant":     handleEnpassant(payload, selections); break;
+    case "castle":        handleCastle(payload, selections); break;
+    case "promote":       handlePromote(payload, selections); break;
+    case "uplift  ":      handleUplift(payload, selections); break;
     case "updateParam":  break;
 
     default: throw new Error(`Unknown moves action ${action}.`);  break;
@@ -81,256 +77,339 @@ export function panelDispatch(payload) {
 export function buildPayload(panel, action) {
   console.log("     ---------- cntrl: moves.js");
 
-  return {
-    action,
-    player:   panel.querySelector('input[name="move-player"]:checked')?.value,
-  };
+  const player = panel.querySelector('input[name="move-player"]:checked')?.value;
+
+  return { action, player };
 }
 
-export function buildForward(entry) {     // Redo.
+export function buildForward(entry) {     // Restore from redo.
   console.log("cntrl: moves.js - buildForward(entry)", entry);
 
-  const { action, turn, player, key, prev, next } = entry;
-  // const { action, turn, player, list } = entry;
+  const { action, turn, player, list } = entry;  // list:[{key,prev,post},...]}.
 
-  if(     action === "move") {
-    // const {action,turn,player,list:[{key,prev,post}]} = entry;
-    forewardMove(entry);
-    }
-  else if(action === "capture") {
-    forewardCapture(entry);
-    }
-  else if(action === "enpassant") {
-    // TODO: ForwardTask()
-    }
-  else if(action === "castle") {
-    // TODO: ForwardTask()
-    }
-  else if(action === "promote") {
-    // TODO: ForwardTask()
-    }
-  else if(action === "duke-decay") {
-    // TODO: ForwardTask()
-    }
-  else if(action === "bishop-decay") {
-    // TODO: ForwardTask()
-    }
-  else if(action === "fission") {
-    // TODO: ForwardTask()
-    }
-  else if(action === "teleportation") {
-    // TODO: ForwardTask()
-    }
-  else if(action === "uplift") {
-    // TODO: ForwardTask()
-    }
-  else {  // Seampoint: more buttons...
+  if(     action === "move")          forewardMove(entry);
+  else if(action === "capture")       forewardCapture(entry);
+  else if(action === "enpassant")     forewardEnpassant(entry);
+  else if(action === "castle")        forewardCastle(entry);
+  else if(action === "promote")       forewardPromote(entry)
+  else if(action === "fission")       forewardFission(entry);
+  else if(action === "uplift")        ; // TODO: ForwardTask()
+  else {  // SeampointAdd: more build functions (fore)...
     throw new Error(`Unknown forward action ${action} for moves.`);
   }
 
-  vMoves.refreshPanel();         
+  vMoves.refreshPanel(entry);         
 
   console.log("*** pieceList", mPieces.getPieceList());
-  console.log("*** occupancy", mBoards.getBoardOccupancy());
 
   panels.diagnostics();
   }
 
-export function buildBackward(entry) {    // Undo.
+export function buildBackward(entry) {    // Restore from undo.
   console.log("cntrl: moves.js - buildBackward(entry)", entry);
 
-  const { action, turn, player, key, prev, next } = entry;
-  // const { action, turn, player, list } = entry;
+  const { action, turn, player, list } = entry;  // list:[{key,prev,post},...]}.
 
-  if(     action === "move") {
-    // const {action,turn,player,list:[{key,prev,post}]} = entry;
-    backwardMove(entry);
-    }
-  else if(action === "capture") {
-    backwardCapture(entry);
-    }
-  else if(action === "enpassant") {
-    // TODO: BackwardTask()
-    }
-  else if(action === "castle") {
-    // TODO: BackwardTask()
-    }
-  else if(action === "promote") {
-    // TODO: BackwardTask()
-    }
-  else if(action === "duke-decay") {
-    // TODO: BackwardTask()
-    }
-  else if(action === "bishop-decay") {
-    // TODO: BackwardTask()
-    }
-  else if(action === "fission") {
-    // TODO: BackwardTask()
-    }
-  else if(action === "teleportation") {
-    // TODO: BackwardTask()
-    }
-  else if(action === "uplift") {
-    // TODO: BackwardTask()
-    }
-  else {  // Seampoint: more buttons...
+  if(     action === "move")          backwardMove(entry);
+  else if(action === "capture")       backwardCapture(entry);
+  else if(action === "enpassant")     backwardEnpassant(entry);
+  else if(action === "castle")        backwardCastle(entry);
+  else if(action === "promote")       backwardPromote(entry);
+  else if(action === "fission")       backwardFission(entry);
+  else if(action === "uplift")        ; // TODO: BackwardTask()
+  else {  // SeampointAdd: more build functions (back)...
     throw new Error(`Unknown backward action ${action} for moves.`);
   }
 
-  vMoves.refreshPanel();         
+  vMoves.refreshPanel(entry);         
 
   console.log("*** pieceList", mPieces.getPieceList());
-  console.log("*** occupancy", mBoards.getBoardOccupancy());
 
   panels.diagnostics();
 }
 // Seampoint: more global functions...
 
 // --- Handle Functions ---
-function handleMove(payload) {
-  console.log("cntrl: moves.js - handleMove(payload)", payload);
+function handleMove(payload, selections) {      // Create from panel.
+  console.log("cntrl: moves.js - handleMove(payload, selections)", payload, selections);
 
   const { action, player } = payload;
-  const selections = cSelections.getSelections();
-
-  const entry = mMoves.makeMoveEntry(selections, payload);
-
+  const entry = mMoves.makeMoveEntry(payload, selections);
   forewardMove(entry);
 
-  branchHistory(entry);
-  state.pushNewMove(entry);           // Change state.
-  vMoves.pushPanelLine(entry);        // Create and add line to panel.
-  vMoves.refreshPanel(entry);
+  applyEntry(entry);
   }
 
-function handleCapture(payload) {
-  console.log("cntrl: moves.js - handleCapture(payload)", payload);
+function handleCapture(payload, selections) {   // Create from panel.
+  console.log("cntrl: moves.js - handleCapture(payload, selections)", payload, selections);
 
   const { action, player } = payload;
-  const selections = cSelections.getSelections();
-
-  const entry = mMoves.makeCaptureEntry(selections, payload);
-
+  const entry = mMoves.makeCaptureEntry(payload, selections);
   forewardCapture(entry);
 
-  branchHistory(entry);
-  state.pushNewMove(entry);           // Change state.
-  vMoves.pushPanelCaptureLine(entry); // Add line to panel.
-  vMoves.refreshPanel(entry);
+  applyEntry(entry);
   }
 
-function handleEnpassant(payload) {
-  console.log("cntrl: moves.js - handleEnpassant(payload)", payload);
+function handleFission(payload, selections) {   // Create from panel.
+  console.log("cntrl: moves.js - handleFission(payload, selections)", payload, selections);
 
-  const { player, piece, src, dst, sec, captured, opts } = payload;  // Informative.
+  const { action, player } = payload;
 
-  // TODO: change state - handleEnpassant().
+  const entry = mMoves.makeFissionEntry(payload, selections);
+  forewardFission(entry);
+
+  applyEntry(entry);
   }
 
-function handleCastle(payload) {
-  console.log("cntrl: moves.js - handleCastle(payload)", payload);
+function handleEnpassant(payload, selections) { // Create from panel.
+  console.log("cntrl: moves.js - handleEnpassant(payload, selections)", payload, selections);
+
+  const { action, player } = payload;
+  const entry = mMoves.makeEnpassantEntry(payload, selections);
+  forewardEnpassant(entry);
+
+  applyEntry(entry);
+  }
+
+function handleCastle(payload, selections) {    // Create from panel.
+  console.log("cntrl: moves.js - handleCastle(payload, selections)", payload, selections);
  
-  const { player, piece, src, dst, sec, captured, opts } = payload;  // Informative.
+  const { action, player } = payload;
+  const entry = mMoves.makeCastleEntry(payload, selections);
+  forewardCastle(entry);
 
- // TODO: change state - handleCastle().
+  applyEntry(entry);
   }
 
-function handlePromote(payload) {
-  console.log("cntrl: moves.js - handlePromote(payload)", payload);
+function handlePromote(payload, selections) {   // Create from panel.
+  console.log("cntrl: moves.js - handlePromote(payload, selections)", payload, selections);
 
-  const { player, piece, src, dst, sec, captured, opts } = payload;  // Informative.
+  const { action, player } = payload;
+  const entry = mMoves.makePromoteEntry(payload, selections);
+  forewardPromote(entry);
 
-  // TODO: change state - handlePromote().
+  applyEntry(entry);
   }
 
-function handleDukeDecay(payload) {
-  console.log("cntrl: moves.js - handleDukeDecay(payload)", payload);
+function handleUplift(payload, selections) {
+  console.log("cntrl: moves.js - handleUplift(payload)", payload, selections);
 
-  const { player, piece, src, dst, sec, captured, opts } = payload;  // Informative.
-
-  // TODO: change state - handleDukeDecay().
-  }
-
-function handleBishopDecay(payload) {
-  console.log("cntrl: moves.js - handleBishopDecay(payload)", payload);
-
-  const { player, piece, src, dst, sec, captured, opts } = payload;  // Informative.
-
-  // TODO: change state - handleBishopDecay().
-  }
-
-function handleFission(payload) {
-  console.log("cntrl: moves.js - handleFission(payload)", payload);
-
-  const { player, piece, src, dst, sec, captured, opts } = payload;  // Informative.
-
-  // TODO: change state - handleFission().
-  }
-
-function handleTeleportation(payload) {
-  console.log("cntrl: moves.js - handleTeleportation(payload)", payload);
-
-  const { player, piece, src, dst, sec, captured, opts } = payload;  // Informative.
-
-  // TODO: change state - handleTeleportation().
-  }
-
-function handleUplift(payload) {
-  console.log("cntrl: moves.js - handleUplift(payload)", payload);
-
-  const { player, piece, src, dst, sec, captured, opts } = payload;  // Informative.
+  const { action, player } = payload;
 
   // TODO: change state - handleUplift().
 }
 // Seampoint: more handle functions...
 
 // --- Helpers...
-function forewardMove(entry) {
+function forewardMove(entry) {        // Move.
   console.log("cntrl: moves.js - forewardMove(entry)", entry);
 
-  let { action, turn, player, key, prev, post } = entry;
-  // const {action,turn,player,list:[{key,prev,post}]} = entry;
+  const { action, turn, player, list, annotation } = entry; // Parse.
+  const mover = list[0]; // list: [{key,prev,post}].
+  const stack = list[1]; // list: [{key,prev,post}, {key,prev,post}].
 
-  const [, dstStr] = post.split("@");
-  const { ok, err } = mPieces.movePieceTileToTile(key, dstStr);
-  if(!ok) return { ok, err };
+  const [, dstStr] = mover.post.split("@");                 // Move(s).
+  mPieces.movePieceTileToTile(mover.key, dstStr);
+  if(stack) {
+    mPieces.movePieceTileToTile(stack.key, dstStr);
+  }
   }
 
 function backwardMove(entry) {
   console.log("cntrl: moves.js - backwardMove(entry)", entry);
 
-  let { action, turn, player, key, prev, post } = entry;
-  // const {action,turn,player,list:[{key,prev,post}]} = entry;
+  const { action, turn, player, list, annotation } = entry; // Parse.
+  const mover = list[0]; // list: {key,prev,post}.
+  const stack = list[1]; // list: [{key,prev,post}, {key,prev,post}].
 
-  const [, dstStr] = prev.split("@");
-  const { ok, err } = mPieces.movePieceTileToTile(key, dstStr);
-  if(!ok) return { ok, err };
+  const [, dstStr] = mover.prev.split("@");                 // Move(s).
+  mPieces.movePieceTileToTile(mover.key, dstStr);
+  if(stack) {
+    mPieces.movePieceTileToTile(stack.key, dstStr);
+  }
 }
 
-function forewardCapture(entry) {
+function forewardCapture(entry) {     // Capture.
   console.log("cntrl: moves.js - forewardCapture(entry)", entry);
 
-  const { action, turn, player, list } = entry;
+  const { action, turn, player, list, annotation } = entry; // Parse.
+  const lists = list.length;
+  const list1 = list[0];    // {key,prev,post}
+  const list2 = list[1];    // [{key,prev,post}].
+  const list3 = list[2];    // Possibly null.
+
+  const captured = (annotation === "capture") ? list2 : list3; // {key,prev,post}
+  const key = list3 ? `${list1.key.slice(0,3)}S` : list1.key;
+
+  const [, dstStr]  = list1.post.split("@");                // Move(s).
+  mPieces.movePieceFromBoardToTray(captured.key);
+  mPieces.movePieceTileToTile(list1.key, dstStr);
+
+  if(annotation === "stackCap") {
+    mPieces.movePieceTileToTile(list2.key, dstStr);
+  }
+  }
+
+function backwardCapture(entry) {
+  console.log("cntrl: moves.js - backwardCapture(entry)", entry);
+
+  const { action, turn, player, list, annotation } = entry; // Parse.
+  const lists = list.length;
+  const list1 = list[0];    // {key,prev,post}
+  const list2 = list[1];    // [{key,prev,post}].
+  const list3 = list[2];    // Possibly null.
+
+  const captured = (annotation === "capture") ? list2 : list3; // {key,prev,post}
+  const key = list3 ? `${list1.key.slice(0,3)}S` : list1.key;
+
+  const [, attStr]  = list1.prev.split("@");             // Move(s).
+  const [, capStr]  = captured.prev.split("@");
+  if(annotation === "stackCap") {
+    mPieces.movePieceTileToTile(list2.key, attStr);
+  }
+  mPieces.movePieceTileToTile(list1.key, attStr);
+  mPieces.movePieceFromTrayToBoard(captured.key, capStr);
+}
+
+function forewardFission(entry) {     // Fission.
+  console.log("cntrl: moves.js - forewardFission(entry)", entry);
+
+  const { action, turn, player, list, annotation } = entry; // Parse.
+  const piece1 = list[0]; // {key,prev,post}
+  const piece2 = list[1]; // {key,prev,post}
+
+  const [, piece1Str]  = piece1.post.split("@");            // Move(s).
+  const [, piece2Str]  = piece2.post.split("@");
+  mPieces.movePieceTileToTile(piece1.key, piece1Str);
+  mPieces.movePieceTileToTile(piece2.key, piece2Str);
+  }
+
+function backwardFission(entry) {
+  console.log("cntrl: moves.js - backwardFission(entry)", entry);
+
+  const { action, turn, player, list, annotation } = entry; // Parse.
+  const piece1 = list[0]; // {key,prev,post}
+  const piece2 = list[1]; // {key,prev,post}
+
+  const [, piece1Str]  = piece1.prev.split("@");            // Move(s).
+  const [, piece2Str]  = piece2.prev.split("@");
+  mPieces.movePieceTileToTile(piece1.key, piece1Str);
+  mPieces.movePieceTileToTile(piece2.key, piece2Str);
+}
+
+function forewardEnpassant(entry) {   // Enpassant.
+  console.log("cntrl: moves.js - forewardEnpassant(entry)", entry);
+
+  const { action, turn, player, list, annotation } = entry; // Parse.
   const attacker = list[0]; // {key,prev,post}
   const captured = list[1]; // {key,prev,post}
 
-  const [, dstStr]  = attacker.post.split("@");
+  const [, dstStr]  = attacker.post.split("@");             // Move(s).
   mPieces.movePieceFromBoardToTray(captured.key);
   mPieces.movePieceTileToTile(attacker.key, dstStr);
   }
 
-function backwardCapture(entry) { // TODO: write.
-  console.log("cntrl: moves.js - backwardCapture(entry)", entry);
+function backwardEnpassant(entry) {
+  console.log("cntrl: moves.js - backwardEnpassant(entry)", entry);
 
-  const { action, turn, player, list } = entry;
+  const { action, turn, player, list, annotation } = entry; // Parse.
   const attacker = list[0]; // {key,prev,post}
   const captured = list[1]; // {key,prev,post}
 
-  const [, attStr]  = attacker.prev.split("@");
+  const [, attStr]  = attacker.prev.split("@");             // Move(s).
   const [, capStr]  = captured.prev.split("@");
   mPieces.movePieceTileToTile(attacker.key, attStr);
   mPieces.movePieceFromTrayToBoard(captured.key, capStr);
 }
+
+function forewardCastle(entry) {      // Castle.
+  console.log("cntrl: moves.js - forewardCastle(entry)", entry);
+
+  const { action, turn, player, list, annotation } = entry; // Parse.
+  const king = list[0]; // {key,prev,post}
+  const rook = list[1]; // {key,prev,post}
+  const rook2 = (list.length === 3) ? list[2] : null; // [{key,prev,post}].
+
+  const [, kingStr]  = king.post.split("@");                // Move(s).
+  const [, rookStr]  = rook.post.split("@");
+  mPieces.movePieceTileToTile(king.key, kingStr);
+  mPieces.movePieceTileToTile(rook.key, rookStr);
+  if(rook2) {
+    const [, rookStr]  = rook2.post.split("@");
+    mPieces.movePieceTileToTile(rook2.key, rookStr);
+  }
+  }
+
+function backwardCastle(entry) {
+  console.log("cntrl: moves.js - backwardCastle(entry)", entry);
+
+  const { action, turn, player, list, annotation } = entry; // Parse.
+  const king = list[0]; // {key,prev,post}
+  const rook = list[1]; // {key,prev,post}
+  const rook2 = (list.length === 3) ? list[2] : null; // [{key,prev,post}].
+
+  const [, kingStr]  = king.prev.split("@");                // Move(s).
+  const [, rookStr]  = rook.prev.split("@");
+  mPieces.movePieceTileToTile(king.key, kingStr);
+  mPieces.movePieceTileToTile(rook.key, rookStr);
+  if(rook2) {
+    const [, rookStr]  = rook2.prev.split("@");
+    mPieces.movePieceTileToTile(rook2.key, rookStr);
+  }
+}
+
+function forewardPromote(entry) {     // Promote.
+  console.log("cntrl: moves.js - forewardPromote(entry)", entry);
+
+  const { action, turn, player, list, annotation } = entry; // Parse.
+  const pawn  = list[0]; // {key,prev,post}
+  const queen = list[1]; // {key,prev,post}
+
+  const [, pawnStr]  = pawn.post.split("@");                // Move(s).
+  const [, queenStr] = queen.post.split("@");
+  mPieces.movePieceTileToTile(pawn.key, pawnStr);
+  // TODO: promote pawn to queen (or whatever).
+  }
+
+function backwardPromote(entry) {
+  console.log("cntrl: moves.js - backwardPromote(entry)", entry);
+
+  const { action, turn, player, list, annotation } = entry; // Parse.
+  const pawn  = list[0]; // {key,prev,post}
+  const queen = list[1]; // {key,prev,post}
+
+  const [, pawnStr]  = pawn.prev.split("@");                // Move(s).
+  const [, queenStr] = queen.prev.split("@");
+  // TODO: demote queen to pawn.
+  mPieces.movePieceTileToTile(pawn.key, pawnStr);
+}
+
+function forewardUplift(entry) {      // Uplift.
+  console.log("cntrl: moves.js - forewardPromote(entry)", entry);
+
+  const { action, turn, player, list, annotation } = entry; // Parse.
+  const pawn  = list[0]; // {key,prev,post}
+  const queen = list[1]; // {key,prev,post}
+
+  const [, pawnStr]  = pawn.post.split("@");                // Move(s).
+  const [, queenStr] = queen.post.split("@");
+  mPieces.movePieceTileToTile(pawn.key, pawnStr);
+  // TODO: finish uplift.
+  }
+
+function backwardUplift(entry) {
+  console.log("cntrl: moves.js - backwardUplift(entry)", entry);
+
+  const { action, turn, player, list, annotation } = entry; // Parse.
+  const pawn  = list[0]; // {key,prev,post}
+  const queen = list[1]; // {key,prev,post}
+
+  const [, pawnStr]  = pawn.prev.split("@");                // Move(s).
+  const [, queenStr] = queen.prev.split("@");
+  mPieces.movePieceTileToTile(pawn.key, pawnStr);
+  // TODO: demote queen to pawn.
+}
+// Seampoint: more fore/back functions...
 
 function branchHistory(entry) {
   console.log("cntrl: moves.js - branchHistory(entry):", entry);
@@ -356,9 +435,10 @@ function branchHistory(entry) {
 function applyEntry(entry) {
   console.log("cntrl: moves.js - applyEntry(entry)", entry);
 
+  branchHistory(entry);               // Manage undo history when branched.
   state.pushNewMove(entry);           // Change state.
   vMoves.pushPanelLine(entry);        // Add line to panel.
-  vMoves.refreshPanel(entry);
+  vMoves.refreshPanel(entry);         // Refresh panel (dimmed future rows).
 }
 // Seampoint: more local functions...
 
