@@ -1,5 +1,48 @@
 {
   "moves_module": {
+    "moves":     { "schema": "key prev(s) - post(s)  (8)",
+      "simple":    { "string": "WKRP P@KR2,2 - P@KR4,4", "pieces": 1, "tiles": 1 },
+      "stackMov":  { "string": "WKBS S@KR2,2 - S@KR4,4", "pieces": 2, "tiles": 1 },
+      "bDecayMov": { "string": "WKBS B@KB2,2 - B@KB4,4", "pieces": 1, "tiles": 1 },
+      "dDecayMov": { "string": "WKBS D@KB2,2 - D@KB4,4", "pieces": 1, "tiles": 1 },
+      "bCombine":  { "string": "WKBB B@KB2,2 - S@KB4,4", "pieces": 2, "tiles": 0 },
+      "dCombine":  { "string": "WKBD D@KB2,2 - S@KB4,4", "pieces": 2, "tiles": 0 },
+      "bTeleport": { "string": "WKBS B@KB2,2 - S@KB4,4", "pieces": 2, "tiles": 0 },
+      "dTeleport": { "string": "WKBS D@KB2,2 - S@KB4,4", "pieces": 2, "tiles": 0 },
+      "fusion": "unspecified"
+      },
+    "captures":  { "schema": "key prevs - posts  (4)",
+      "simple":    { "string": "WKRP P@KR2,2 x R@KR4,4", "pieces": 2, "tiles": 0 },
+      "stackCap":  { "string": "WQBS S@KR2,2 x R@KR4,4", "pieces": 3, "tiles": 0 },
+      "bDecayCap": { "string": "WQBS B@KB2,2 x Q@KB4,4", "pieces": 2, "tiles": 0 },
+      "dDecayCap": { "string": "WQBS D@KB2,2 x P@KB4,4", "pieces": 2, "tiles": 0 },
+      "fusion": "unspecified"
+      },
+    "fissions":  { "schema": "key prevs -x posts  (4)",
+      "fissionMM": { "string": "WKBS S@KB2,2 - B@KB3,3 - D@KB4,4", "pieces": 2, "tiles": 2 },
+      "fissionCM": { "string": "WKBS S@KB2,2 x N@KB3,3 - D@KB4,4", "pieces": 3, "tiles": 1 },
+      "fissionMC": { "string": "WKBS S@KB2,2 - B@KB3,3 x R@KB4,4", "pieces": 3, "tiles": 1 },
+      "fissionCC": { "string": "WKBS S@KB2,2 x N@KB3,3 x R@KB4,4", "pieces": 4, "tiles": 0 }
+      },
+    "enPassant": { "schema": "key prevs x- posts  (1)",
+      "simple": { "string": "WKRP @KR5,5 x P@KN5,5 - P@KN6,6", "pieces": 2, "tiles": 1 }
+      },
+    "castles":   { "schema": "key prevs - posts  (3)",
+      "simple": { "string": "WKRP @KR4,4 - BKRP@KR5,5", "pieces": 2, "tiles": 2 },
+      "royal":  { "string": "WKRP @KR4,4 - BKRP@KR5,5", "pieces": 2, "tiles": 2 },
+      "double": { "string": "WKRP @KR4,4 - BKRP@KR5,5", "pieces": 3, "tiles": 3 }
+      },
+    "promotes":  { "schema": "key prev(s) (x)^ post(s)  (2)",
+      "promoteMov": { "string": "WKRP P@KR7,7 ^ Q@KR8,8",           "pieces": 1, "tiles": 1 },
+      "promoteCap": { "string": "WKRP P@KR7,7 x N@KR8,8 ^ Q@KR8,8", "pieces": 2, "tiles": 0 },
+      "_last": ""
+      },
+    "uplifts":   { "schema": "key prevs ^ post  (2)",
+      "bishop": { "string": "WKRP P@KR7,7 ^ B@KR8,8 S@KR8,8", "pieces": 2, "tiles": 0 },
+      "duke":   { "string": "WKRP P@KR7,7 ^ D@KR8,8 S@KR8,8", "pieces": 2, "tiles": 0 },
+      "_last": ""
+    },
+    "_last": ""
   }
 }
 

@@ -115,9 +115,9 @@ export function cancelAnimation() {
 // Seampoint: more global functions...
 
 // --- Helpers ---
-const blank = "                         ";
+const blank = "                          ";
 
-function assembleMoveLine(entry) {
+function assembleMoveLine(entry) {      // WKRP @KR2,2 - @KR4,4...
   console.log("view : moves.js - assembleMoveLine(move)", entry);
 
   const { action, turn, player, list } = entry;               // Parse.
@@ -125,10 +125,10 @@ function assembleMoveLine(entry) {
 
   const turnCol  = (String(turn).padStart(3)).padEnd(4);      // Columns.
   const pieceCol = `${mover.key}`.padEnd(4);
-  const srcCol   = `${mover.prev}`.padEnd(7);
-  const dstCol   = `${mover.post}`.padEnd(10);
+  const srcCol   = `${mover.prev}`.padEnd(6);
+  const dstCol   = `${mover.post}`.padEnd(11);
 
-  const row = `${pieceCol} ${srcCol} - ${dstCol}`.padEnd(26); // Assemble.
+  const row = `${pieceCol} ${srcCol} - ${dstCol}`.padEnd(27); // Assemble.
   const whiteCol = (player === "White") ? row: `${blank}`;
   const blackCol = (player === "Black") ? row: `${blank}`;
   const annotationsCol = ".....";
@@ -137,7 +137,7 @@ function assembleMoveLine(entry) {
   return line;  // 1  WKRP @KR2,2 - @KR4,4...
   }
 
-function assembleCaptureLine(entry) {
+function assembleCaptureLine(entry) {   // WKRP @KR4,4 x BKRP@KR5,5...
   console.log("view : moves.js - assembleCaptureLine(entry)", entry);
 
   const { action, turn, player, list } = entry;               // Parse.
@@ -146,10 +146,10 @@ function assembleCaptureLine(entry) {
 
   const turnCol  = (String(turn).padStart(3)).padEnd(4);      // Columns.
   const pieceCol = `${attacker.key}`.padEnd(4);
-  const srcCol   = `${attacker.prev}`.padEnd(7);
-  const dstCol   = `${captured.key}${attacker.post}`.padEnd(10);
+  const srcCol   = `${attacker.prev}`.padEnd(6);
+  const dstCol   = `${captured.key} ${attacker.post}`.padEnd(11);
 
-  const row = `${pieceCol} ${srcCol} x ${dstCol}`.padEnd(26);  // Assemble.
+  const row = `${pieceCol} ${srcCol} x ${dstCol}`.padEnd(27);  // Assemble.
   const whiteCol = (player === "White") ? row: `${blank}`;
   const blackCol = (player === "Black") ? row: `${blank}`;
   const annotationsCol = ".....";
@@ -158,7 +158,29 @@ function assembleCaptureLine(entry) {
   return line;  // 2  WKRP @KR4,4 x BKRP@KR5,5...
   }
 
-function assembleEnpassantLine(entry) {
+function assembleFissionLine(entry) {   // WKRP @KR4,4 x BKRP@KR5,5...
+  console.log("view : moves.js - assembleFissionLine(entry)", entry);
+
+  const { action, turn, player, list } = entry;               // Parse.
+  const list1 = list[0]; // [{key,prev,post}].
+  const list2 = list[1]; // [{key,prev,post}].
+  const type1 = list1.key[3];
+  const type2 = list2.key[3];
+
+  const turnCol  = (String(turn).padStart(3)).padEnd(4);      // Columns.
+  const piece1Col  = `${type1}${list1.post}`.padEnd(7);
+  const piece2Col  = `${type2}${list2.post}`.padEnd(7);
+
+  const row = `${piece1Col} ${piece2Col}`.padEnd(26);         // Assemble.
+  const whiteCol = (player === "White") ? row: `${blank}`;
+  const blackCol = (player === "Black") ? row: `${blank}`;
+  const annotationsCol = "fission";
+  const line = `${turnCol} ${whiteCol} ${blackCol} ${annotationsCol}`;
+
+  return line;  // 2  WKRP @KR4,4 x BKRP@KR5,5...
+  }
+
+function assembleEnpassantLine(entry) { // WKRP @KR4,4 x BKRP@KR5,5...
   console.log("view : moves.js - assembleEnpassantLine(entry)", entry);
 
   const { action, turn, player, list } = entry;               // Parse.
@@ -179,7 +201,7 @@ function assembleEnpassantLine(entry) {
   return line;  // 2  WKRP @KR4,4 x BKRP@KR5,5...
   }
 
-function assembleCastleLine(entry) {
+function assembleCastleLine(entry) {    // WKRP @KR4,4 x BKRP@KR5,5...
   console.log("view : moves.js - assembleCastleLine(entry)", entry);
 
   const { action, turn, player, list } = entry;               // Parse.
@@ -202,7 +224,7 @@ function assembleCastleLine(entry) {
   return line;  // 2  WKRP @KR4,4 x BKRP@KR5,5...
 }
 
-function assemblePromoteLine(entry) {
+function assemblePromoteLine(entry) {   // WKRP @KR7,7 - Q@KR8,8...
   console.log("view : moves.js - assemblePromoteLine(entry)", entry);
 
   const { action, turn, player, list } = entry;               // Parse.
@@ -221,29 +243,7 @@ function assemblePromoteLine(entry) {
   const line = `${turnCol} ${whiteCol} ${blackCol} ${annotationsCol}`;
 
   return line;  // 1  WKRP @KR7,7 - Q@KR8,8...
-}
-
-function assembleFissionLine(entry) {
-  console.log("view : moves.js - assembleFissionLine(entry)", entry);
-
-  const { action, turn, player, list } = entry;               // Parse.
-  const list1 = list[0]; // [{key,prev,post}].
-  const list2 = list[1]; // [{key,prev,post}].
-  const type1 = list1.key[3];
-  const type2 = list2.key[3];
-
-  const turnCol  = (String(turn).padStart(3)).padEnd(4);      // Columns.
-  const piece1Col  = `${type1}${list1.post}`.padEnd(7);
-  const piece2Col  = `${type2}${list2.post}`.padEnd(7);
-
-  const row = `${piece1Col} ${piece2Col}`.padEnd(26);         // Assemble.
-  const whiteCol = (player === "White") ? row: `${blank}`;
-  const blackCol = (player === "Black") ? row: `${blank}`;
-  const annotationsCol = "fission";
-  const line = `${turnCol} ${whiteCol} ${blackCol} ${annotationsCol}`;
-
-  return line;  // 2  WKRP @KR4,4 x BKRP@KR5,5...
-}
+  }
 
 function assembleUpliftLine(entry) {
   console.log("view : moves.js - assembleUpliftLine(entry)", entry);
@@ -256,3 +256,13 @@ function assembleUpliftLine(entry) {
 }
 // Seampoint: more local functions...
 
+// Move, decayMovs, promoteMov.
+// Teleports, capture, combines, decayCaps, promoteCap, uplifts.
+// StackCap.
+// StackMov, Enpassant.
+// FissionMM, castle, royal.
+// fissionCM, fissionMC.
+// fissionCC.
+// DoubleCastle.
+
+//WTF? Fission: capture and teleportation ?!?

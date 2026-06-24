@@ -170,14 +170,14 @@ layout: "play"
   <div class="section">
     <button data-action="move"      disabled>Move</button>
     <button data-action="capture"   disabled>Capture</button>
+    <button data-action="fission"   disabled>Fission</button>
     <button data-action="enpassant" disabled>En Passant</button>
     <button data-action="castle"    disabled>Castle</button>
-    <button data-action="promote"   disabled>Promote</button>
     <label> <input type="radio" name="move-player" value="White" disabled checked> W </label>
     <label> <input type="radio" name="move-player" value="Black" disabled> B </label>
   </div>
   <div class="section">
-    <button data-action="fission"   disabled>Fission</button>
+    <button data-action="promote"   disabled>Promote</button>
     <button data-action="uplift"    disabled>Uplift</button>
   </div>
   <div class="section scroll-box" id="move-list"></div>

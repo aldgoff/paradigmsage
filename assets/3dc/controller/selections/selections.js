@@ -184,17 +184,19 @@ function manageMoveButtons() {
   console.log("cntrl: selections.js - manageMoveButtons()");
 
   const size = cSetup.getCurrBoard().boardSize;           // Parse piece and tile info.
-  const [key1,  key2,  key3]  = [...pieceSelections];
-  const [tile1, tile2, tile3] = [...tileSelections];
+  const [key1, key2, key3, key4] = [...pieceSelections];
+  const [tile1, tile2, tile3]    = [...tileSelections];
   const piece1 = (key1) ? mPieces.getPieceList()[key1] : null;
   const piece2 = (key2) ? mPieces.getPieceList()[key2] : null;
   const piece3 = (key3) ? mPieces.getPieceList()[key3] : null;
+  const piece4 = (key4) ? mPieces.getPieceList()[key4] : null;
   const dstStr1 = (tile1) ? coords.vtsToBoard(tile1, size) : "";
   const dstStr2 = (tile2) ? coords.vtsToBoard(tile2, size) : "";
   const dstStr3 = (tile3) ? coords.vtsToBoard(tile3, size) : "";
   const { player: player1, side: side1, level: level1, type: type1 } = utils.parsePieceKey(key1);
   const { player: player2, side: side2, level: level2, type: type2 } = utils.parsePieceKey(key2);
   const { player: player3, side: side3, level: level3, type: type3 } = utils.parsePieceKey(key3);
+  const { player: player4, side: side4, level: level4, type: type4 } = utils.parsePieceKey(key4);
 
   const panel = document.getElementById("move-window");   // Update panel fields.
   panel.querySelector('[name="move-selPieces"]').textContent = [...pieceSelections];
@@ -214,17 +216,22 @@ function manageMoveButtons() {
   const pieces = pieceSelections.size;          // 1st level button restraints.
   const tiles  = tileSelections.size;
 
-  if(     pieces === 1 && tiles === 1) {        // Move, promote, or decay.
+  if(     pieces === 1 && tiles === 1) {  // Move, decayMovs, promoteMov.
     if(!mPieces.canOccupyTile(key1, tile1))
       return;
     panels.enableButton("move", true);
     }
-  else if(pieces === 2 && tiles === 0) {        // Capture.
+  else if(pieces === 2 && tiles === 0) {  // Teleports, capture, combines, decayCaps, promoteCap, uplifts.
     if(player1 != player2) {
       panels.enableButton("capture", true);
     }
     }
-  else if(pieces === 2 && tiles === 1) {        // En Passant, uplift, promote.
+  else if(pieces === 3 && tiles === 0) {  // StackCap.
+    if(player1 != player2) {
+      panels.enableButton("capture", true);
+    }
+    }
+  else if(pieces === 2 && tiles === 1) {  // StackMov, Enpassant.
     const promotable = (type1 === "P") && lastCol(dstStr1, size, player1);
     const piece2 = mPieces.getPieceList()[key2];
     if(     player1 != player2                  // En Passant.
@@ -247,7 +254,7 @@ function manageMoveButtons() {
       && type2 != 'K')
       panels.enableButton("promote", true);
     }
-  else if(pieces === 2 && tiles === 2) {        // Castle, fission.
+  else if(pieces === 2 && tiles === 2) {  // FissionMM, castle, royal.
     console.log("*** 2 x 2");
     if(player1 != player2) return;
     if((type1 === 'K' && type2 === 'R'))        // Castle.
@@ -256,7 +263,15 @@ function manageMoveButtons() {
          || type1  === 'B' && type2  === 'D')
       panels.enableButton("fission", true);
     }
-  else if(pieces === 3 && tiles === 3) {        // Double castle.
+  else if(pieces === 3 && tiles === 1) {  // FissionCM, fissionMC.
+    console.log("*** 3 x 1");
+    }
+  else if(pieces === 4 && tiles === 0) {  // FissionCC.
+    console.log("*** 4 x 0");
+    if(player1 != player2) return;
+    }
+  else if(pieces === 3 && tiles === 3) {  // DoubleCastle.
+    console.log("*** 3 x 3");
     if(player1 != player2) return;
     if((type1 === 'K' && type2 === 'R' && type3 === 'R'))
       panels.enableButton("castle", true);
@@ -278,4 +293,13 @@ function lastCol(dstStr1, size, player1) {
   return last_col;
 }
 // Seampoint: more local functions...
+
+// Move, decayMovs, promoteMov.
+// Teleports, capture, combines, decayCaps, promoteCap, uplifts.
+// StackCap.
+// StackMov, Enpassant.
+// FissionMM, castle, royal.
+// fissionCM, fissionMC.
+// fissionCC.
+// DoubleCastle.
 

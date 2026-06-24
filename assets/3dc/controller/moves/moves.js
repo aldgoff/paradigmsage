@@ -45,10 +45,10 @@ export function panelDispatch(payload) {
   switch (action) {
     case "move":          handleMove(payload, selections); break;
     case "capture":       handleCapture(payload, selections); break;
+    case "fission":       handleFission(payload, selections); break;
     case "enpassant":     handleEnpassant(payload, selections); break;
     case "castle":        handleCastle(payload, selections); break;
     case "promote":       handlePromote(payload, selections); break;
-    case "fission":       handleFission(payload, selections); break;
     case "uplift  ":      handleUplift(payload, selections); break;
     case "updateParam":  break;
 
@@ -152,6 +152,17 @@ function handleCapture(payload, selections) {   // Create from panel.
   applyEntry(entry);
   }
 
+function handleFission(payload, selections) {   // Create from panel.
+  console.log("cntrl: moves.js - handleFission(payload, selections)", payload, selections);
+
+  const { action, player } = payload;
+
+  const entry = mMoves.makeFissionEntry(payload, selections);
+  forewardFission(entry);
+
+  applyEntry(entry);
+  }
+
 function handleEnpassant(payload, selections) { // Create from panel.
   console.log("cntrl: moves.js - handleEnpassant(payload, selections)", payload, selections);
 
@@ -178,17 +189,6 @@ function handlePromote(payload, selections) {   // Create from panel.
   const { action, player } = payload;
   const entry = mMoves.makePromoteEntry(payload, selections);
   forewardPromote(entry);
-
-  applyEntry(entry);
-  }
-
-function handleFission(payload, selections) {   // Create from panel.
-  console.log("cntrl: moves.js - handleFission(payload, selections)", payload, selections);
-
-  const { action, player } = payload;
-
-  const entry = mMoves.makeFissionEntry(payload, selections);
-  forewardFission(entry);
 
   applyEntry(entry);
   }
@@ -256,7 +256,33 @@ function backwardCapture(entry) {
   mPieces.movePieceFromTrayToBoard(captured.key, capStr);
 }
 
-function forewardEnpassant(entry) {   // En passant.
+function forewardFission(entry) {     // Fission.
+  console.log("cntrl: moves.js - forewardFission(entry)", entry);
+
+  const { action, turn, player, list } = entry;           // Parse.
+  const piece1 = list[0]; // {key,prev,post}
+  const piece2 = list[1]; // {key,prev,post}
+
+  const [, piece1Str]  = piece1.post.split("@");          // Move(s).
+  const [, piece2Str]  = piece2.post.split("@");
+  mPieces.movePieceTileToTile(piece1.key, piece1Str);
+  mPieces.movePieceTileToTile(piece2.key, piece2Str);
+  }
+
+function backwardFission(entry) {
+  console.log("cntrl: moves.js - backwardFission(entry)", entry);
+
+  const { action, turn, player, list } = entry;           // Parse.
+  const piece1 = list[0]; // {key,prev,post}
+  const piece2 = list[1]; // {key,prev,post}
+
+  const [, piece1Str]  = piece1.prev.split("@");          // Move(s).
+  const [, piece2Str]  = piece2.prev.split("@");
+  mPieces.movePieceTileToTile(piece1.key, piece1Str);
+  mPieces.movePieceTileToTile(piece2.key, piece2Str);
+}
+
+function forewardEnpassant(entry) {   // Enpassant.
   console.log("cntrl: moves.js - forewardEnpassant(entry)", entry);
 
   const { action, turn, player, list } = entry;           // Parse.
@@ -343,30 +369,30 @@ function backwardPromote(entry) {
   mPieces.movePieceTileToTile(pawn.key, pawnStr);
 }
 
-function forewardFission(entry) {     // Fission.
-  console.log("cntrl: moves.js - forewardFission(entry)", entry);
+function forewardUplift(entry) {      // Uplift.
+  console.log("cntrl: moves.js - forewardPromote(entry)", entry);
 
   const { action, turn, player, list } = entry;           // Parse.
-  const piece1 = list[0]; // {key,prev,post}
-  const piece2 = list[1]; // {key,prev,post}
+  const pawn  = list[0]; // {key,prev,post}
+  const queen = list[1]; // {key,prev,post}
 
-  const [, piece1Str]  = piece1.post.split("@");          // Move(s).
-  const [, piece2Str]  = piece2.post.split("@");
-  mPieces.movePieceTileToTile(piece1.key, piece1Str);
-  mPieces.movePieceTileToTile(piece2.key, piece2Str);
+  const [, pawnStr]  = pawn.post.split("@");              // Move(s).
+  const [, queenStr] = queen.post.split("@");
+  mPieces.movePieceTileToTile(pawn.key, pawnStr);
+  // TODO: finish uplift.
   }
 
-function backwardFission(entry) {
-  console.log("cntrl: moves.js - backwardFission(entry)", entry);
+function backwardUplift(entry) {
+  console.log("cntrl: moves.js - backwardUplift(entry)", entry);
 
   const { action, turn, player, list } = entry;           // Parse.
-  const piece1 = list[0]; // {key,prev,post}
-  const piece2 = list[1]; // {key,prev,post}
+  const pawn  = list[0]; // {key,prev,post}
+  const queen = list[1]; // {key,prev,post}
 
-  const [, piece1Str]  = piece1.prev.split("@");          // Move(s).
-  const [, piece2Str]  = piece2.prev.split("@");
-  mPieces.movePieceTileToTile(piece1.key, piece1Str);
-  mPieces.movePieceTileToTile(piece2.key, piece2Str);
+  const [, pawnStr]  = pawn.prev.split("@");              // Move(s).
+  const [, queenStr] = queen.prev.split("@");
+  mPieces.movePieceTileToTile(pawn.key, pawnStr);
+  // TODO: demote queen to pawn.
 }
 // Seampoint: more fore/back functions...
 
