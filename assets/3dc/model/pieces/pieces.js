@@ -316,12 +316,11 @@ export function pieceLocOnBoard(key) {
 
 // --- Helpers ---
 function isStackMate(key1, key2) {
-  return (
-    key1.slice(0,3) === key2.slice(0,3) &&
-    (
+  const player1 = key1[0];
+  const player2 = key2[0];
+  return ((player1 === player2) && (
       (key1[3] === "B" && key2[3] === "D") ||
-      (key1[3] === "D" && key2[3] === "B")
-    )
+      (key1[3] === "D" && key2[3] === "B"))
   );
   }
 

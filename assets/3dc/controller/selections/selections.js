@@ -223,12 +223,6 @@ function manageMoveButtons() {
     if(player1 != player2) {
       panels.enableButton("capture", true);
     }
-    else if(player1 === player2                 // Teleportation.
-      && ( type1  === 'S' && type2  === 'B'
-        || type1  === 'S' && type2  === 'D')
-      && piece2.pos === dstStr1) {
-      panels.enableButton("teleportation", true);
-    }
     }
   else if(pieces === 2 && tiles === 1) {        // En Passant, uplift, promote.
     const promotable = (type1 === "P") && lastCol(dstStr1, size, player1);
@@ -253,20 +247,20 @@ function manageMoveButtons() {
       && type2 != 'K')
       panels.enableButton("promote", true);
     }
-  else if(pieces === 2 && tiles === 2) {        // Castle.
+  else if(pieces === 2 && tiles === 2) {        // Castle, fission.
+    console.log("*** 2 x 2");
     if(player1 != player2) return;
-    if((type1 === 'K' && type2 === 'R'))
+    if((type1 === 'K' && type2 === 'R'))        // Castle.
       panels.enableButton("castle", true);
+    else if(type1  === 'D' && type2  === 'B'    // Stack fission.
+         || type1  === 'B' && type2  === 'D')
+      panels.enableButton("fission", true);
     }
   else if(pieces === 3 && tiles === 3) {        // Double castle.
     if(player1 != player2) return;
     if((type1 === 'K' && type2 === 'R' && type3 === 'R'))
       panels.enableButton("castle", true);
     }
-  else if(pieces === 1 && tiles === 2) {        // Stack fission.
-    if(type1 != 'S') return;
-    panels.enableButton("fission", true);
-  }
   }
 
 function lastCol(dstStr1, size, player1) {

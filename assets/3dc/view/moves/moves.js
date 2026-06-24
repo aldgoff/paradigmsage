@@ -50,10 +50,7 @@ export function pushPanelLine(entry) {
   else if(action === "enpassant")     line = assembleEnpassantLine(entry);
   else if(action === "castle")        line = assembleCastleLine(entry);
   else if(action === "promote")       line = assemblePromoteLine(entry);
-  else if(action === "dukeDecay")     line = assembleDukeDecayLine(entry);
-  else if(action === "bishopDecay")   line = assembleBishopDecayLine(entry);
   else if(action === "fission")       line = assembleFissionLine(entry);
-  else if(action === "teleportation") line = assembleTeleportationLine(entry);
   else if(action === "uplift")        line = assembleUpliftLine(entry);
 
   const div = document.createElement("div");
@@ -226,43 +223,26 @@ function assemblePromoteLine(entry) {
   return line;  // 1  WKRP @KR7,7 - Q@KR8,8...
 }
 
-function assembleDukeDecayLine(entry) {
-  console.log("view : moves.js - assembleDukeDecayLine(entry)", entry);
-
-  const { action, turn, player, list } = entry;               // Parse.
-  const stack  = list[0]; // [{key,prev,post}].
-  const bishop = list[1]; // [{key,prev,post}].
-  const duke   = list[1]; // [{key,prev,post}].
-
-}
-
-function assembleBishopDecayLine(entry) {
-  console.log("view : moves.js - assembleBishopDecayLine(entry)", entry);
-
-  const { action, turn, player, list } = entry;               // Parse.
-  const stack  = list[0]; // [{key,prev,post}].
-  const bishop = list[1]; // [{key,prev,post}].
-  const duke   = list[1]; // [{key,prev,post}].
-
-}
-
 function assembleFissionLine(entry) {
   console.log("view : moves.js - assembleFissionLine(entry)", entry);
 
   const { action, turn, player, list } = entry;               // Parse.
-  const stack  = list[0]; // [{key,prev,post}].
-  const bishop = list[1]; // [{key,prev,post}].
-  const duke   = list[1]; // [{key,prev,post}].
+  const list1 = list[0]; // [{key,prev,post}].
+  const list2 = list[1]; // [{key,prev,post}].
+  const type1 = list1.key[3];
+  const type2 = list2.key[3];
 
-}
+  const turnCol  = (String(turn).padStart(3)).padEnd(4);      // Columns.
+  const piece1Col  = `${type1}${list1.post}`.padEnd(7);
+  const piece2Col  = `${type2}${list2.post}`.padEnd(7);
 
-function assembleTeleportationLine(entry) {
-  console.log("view : moves.js - assembleTeleportationLine(entry)", entry);
+  const row = `${piece1Col} ${piece2Col}`.padEnd(26);         // Assemble.
+  const whiteCol = (player === "White") ? row: `${blank}`;
+  const blackCol = (player === "Black") ? row: `${blank}`;
+  const annotationsCol = "fission";
+  const line = `${turnCol} ${whiteCol} ${blackCol} ${annotationsCol}`;
 
-  const { action, turn, player, list } = entry;               // Parse.
-  const stack    = list[0]; // [{key,prev,post}].
-  const subPiece = list[1]; // [{key,prev,post}].
-
+  return line;  // 2  WKRP @KR4,4 x BKRP@KR5,5...
 }
 
 function assembleUpliftLine(entry) {

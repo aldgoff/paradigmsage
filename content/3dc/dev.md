@@ -148,10 +148,29 @@ title: "Dev"
   - 6/21/26 - Fixed White/Black radio buttons in move panel. Remove obsolete saved game strings. Normalize move entry and payload/selections order.
   - 6/22/26 - En passant. Castling. Promotion sans queen mesh. Stem out move makeEntries and assembleLines.
   - 6/23/26 - Stack offset value. New UI for occupancy. New approach; pieceList and trays only - POC.
+  - 6/24/26 - Remove stack buttons.
     Rest of moves.
    QC quad gambits, all gambits, all moves.
 
 ## Development
+ ### Fission:
+  **2-5-0-0**
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8-8-8","trayType":"Real","trayGap":0}},{"action":"startingPos"}],"Moves":[{"action":"move","turn":1,"player":"White","list":[{"key":"WKBB","prev":"@KB1,1","post":"@KB3,3"}]},{"action":"move","turn":1,"player":"Black","list":[{"key":"BKBD","prev":"@KB8,8","post":"@KB6,6"}]},{"action":"move","turn":2,"player":"White","list":[{"key":"WQBD","prev":"@QB1,1","post":"@KB3,3"}]},{"action":"move","turn":2,"player":"Black","list":[{"key":"BKBB","prev":"@KB8,8","post":"@KB6,6"}]},{"action":"fission","turn":3,"player":"White","list":[{"key":"WKBB","prev":"@KB3,3","post":"@KB4,4"},{"key":"WQBD","prev":"@KB3,3","post":"@KB5,5"}]}],"Gambits":[],"AdvSqs":[]}
+
+  {"Setup":[
+    {"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8-8-8","trayType":"Real","trayGap":0}},
+    {"action":"startingPos"}],
+  "Moves":[
+    {"action":"move","turn":1,"player":"White","list":[{"key":"WKBB","prev":"@KB1,1","post":"@KB3,3"}]},
+    {"action":"move","turn":1,"player":"Black","list":[{"key":"BKBD","prev":"@KB8,8","post":"@KB6,6"}]},
+    {"action":"move","turn":2,"player":"White","list":[{"key":"WQBD","prev":"@QB1,1","post":"@KB3,3"}]},
+    {"action":"move","turn":2,"player":"Black","list":[{"key":"BKBB","prev":"@KB8,8","post":"@KB6,6"}]},
+    {"action":"fission","turn":3,"player":"White","list":[{"key":"WKBB","prev":"@KB3,3","post":"@KB4,4"},{"key":"WQBD","prev":"@KB3,3","post":"@KB5,5"}]}],
+  "Gambits":[],"AdvSqs":[]}
+
+  **2-4-0-0**
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8-8-8","trayType":"Real","trayGap":0}},{"action":"startingPos"}],"Moves":[{"action":"move","turn":1,"player":"White","list":[{"key":"WKBB","prev":"@KB1,1","post":"@KB3,3"}]},{"action":"move","turn":1,"player":"Black","list":[{"key":"BKBD","prev":"@KB8,8","post":"@KB6,6"}]},{"action":"move","turn":2,"player":"White","list":[{"key":"WQBD","prev":"@QB1,1","post":"@KB3,3"}]},{"action":"move","turn":2,"player":"Black","list":[{"key":"BKBB","prev":"@KB8,8","post":"@KB6,6"}]}],"Gambits":[],"AdvSqs":[]}
+
  ### Stack: Initial setup, decays, advance: Full undo stack 
   **2-6-0-0**
   {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8-8-8","trayType":"Real","trayGap":0}},{"action":"startingPos"}],"Moves":[{"action":"move","turn":1,"player":"White","list":[{"key":"WKBB","prev":"@KB1,1","post":"@KB3,3"}]},{"action":"move","turn":1,"player":"Black","list":[{"key":"BKBD","prev":"@KB8,8","post":"@KB6,6"}]},{"action":"move","turn":2,"player":"White","list":[{"key":"WKBD","prev":"@KB1,1","post":"@KB3,3"}]},{"action":"move","turn":2,"player":"Black","list":[{"key":"BKBB","prev":"@KB8,8","post":"@KB6,6"}]},{"action":"move","turn":3,"player":"White","list":[{"key":"WKBD","prev":"@KB3,3","post":"@KB4,4"},{"key":"WKBB","prev":"@KB3,3","post":"@KB4,4"}]},{"action":"move","turn":3,"player":"Black","list":[{"key":"BKBB","prev":"@KB6,6","post":"@KB5,5"}]}],"Gambits":[],"AdvSqs":[]}
@@ -168,22 +187,6 @@ title: "Dev"
     {"action":"move","turn":3,"player":"Black","list":[{"key":"BKBB","prev":"@KB6,6","post":"@KB5,5"}]}],
   "Gambits":[],"AdvSqs":[]}
 
-  {"Setup":[
-    {"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8-8-8","trayType":"Real","trayGap":0}},
-    {"action":"startingPos"}],
-  "Moves":[
-    {"action":"move","turn":1,"player":"White","list":[{"key":"WKBB","prev":"@KB1,1","post":"@KB3,3"}]},
-    {"action":"move","turn":1,"player":"Black","list":[{"key":"BKBD","prev":"@KB8,8","post":"@KB6,6"}]},
-    {"action":"move","turn":2,"player":"White","list":[{"key":"WKBD","prev":"@KB1,1","post":"@KB3,3"}]},
-    {"action":"move","turn":2,"player":"Black","list":[{"key":"BKBB","prev":"@KB8,8","post":"@KB6,6"}]},
-    {"action":"move","turn":3,"player":"White",
-  "list":[
-    {"key":"WKBD","prev":"@KB3,3","post":"@KB4,4"},
-    {"key":"WKBB","prev":"@KB3,3","post":"@KB4,4"}]
-    }],
-  "Gambits":[],"AdvSqs":[]}
-
-
  **2-5-0-0**
   {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8-8-8","trayType":"Real","trayGap":0}},{"action":"startingPos"}],"Moves":[{"action":"move","turn":1,"player":"White","list":[{"key":"WKBB","prev":"@KB1,1","post":"@KB3,3"}]},{"action":"move","turn":1,"player":"Black","list":[{"key":"BKBD","prev":"@KB8,8","post":"@KB6,6"}]},{"action":"move","turn":2,"player":"White","list":[{"key":"WKBD","prev":"@KB1,1","post":"@KB3,3"}]},{"action":"move","turn":2,"player":"Black","list":[{"key":"BKBB","prev":"@KB8,8","post":"@KB6,6"}]}],"Gambits":[],"AdvSqs":[]}
 
@@ -191,6 +194,19 @@ title: "Dev"
   {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8-8-8","trayType":"Real","trayGap":0}},{"action":"startingPos"}],"Moves":[{"action":"move","turn":1,"player":"White","list":[{"key":"WKBB","prev":"@KB1,1","post":"@KB3,3"}]},{"action":"move","turn":1,"player":"Black","list":[{"key":"BKBD","prev":"@KB8,8","post":"@KB6,6"}]}],"Gambits":[],"AdvSqs":[]}
 
 ## Eamples:
+ ### Bishop-decay, Duke-decay, Teleportation
+  **2-3-0-0**
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8-8-8","trayType":"Real","trayGap":0}},{"action":"startingPos"}],"Moves":[{"action":"move","turn":1,"player":"White","list":[{"key":"WKBB","prev":"@KB1,1","post":"@KB3,3"}]},{"action":"move","turn":1,"player":"Black","list":[{"key":"BKBD","prev":"@KB8,8","post":"@KB6,6"}]},{"action":"move","turn":2,"player":"White","list":[{"key":"WQBD","prev":"@QB1,1","post":"@KB3,3"}]}],"Gambits":[],"AdvSqs":[]}
+
+  {"Setup":[
+    {"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8-8-8","trayType":"Real","trayGap":0}},
+    {"action":"startingPos"}],
+  "Moves":[
+    {"action":"move","turn":1,"player":"White","list":[{"key":"WKBB","prev":"@KB1,1","post":"@KB3,3"}]},
+    {"action":"move","turn":1,"player":"Black","list":[{"key":"BKBD","prev":"@KB8,8","post":"@KB6,6"}]},
+    {"action":"move","turn":2,"player":"White","list":[{"key":"WQBD","prev":"@QB1,1","post":"@KB3,3"}]}],
+  "Gambits":[],"AdvSqs":[]}
+
  ### Place-shift-return
   **4-0-0-0**
   {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8-8-8","trayType":"Real","trayGap":0}},{"action":"placePiece","key":"BKRP","prev":"~KR2,2","post":"@KR8,8"},{"action":"shiftPiece","key":"BKRP","prev":"@KR8,8","post":"@KR7,7"},{"action":"returnPiece","key":"BKRP","prev":"@KR7,7","post":"~KR2,2"}],"Moves":[],"Gambits":[],"AdvSqs":[]}

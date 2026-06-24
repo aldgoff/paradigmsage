@@ -48,10 +48,7 @@ export function panelDispatch(payload) {
     case "enpassant":     handleEnpassant(payload, selections); break;
     case "castle":        handleCastle(payload, selections); break;
     case "promote":       handlePromote(payload, selections); break;
-    case "duke-decay":    handleDukeDecay(payload, selections); break;
-    case "bishop-decay":  handleBishopDecay(payload, selections); break;
     case "fission":       handleFission(payload, selections); break;
-    case "teleportation": handleTeleportation(payload, selections); break;
     case "uplift  ":      handleUplift(payload, selections); break;
     case "updateParam":  break;
 
@@ -95,10 +92,7 @@ export function buildForward(entry) {     // Restore from redo.
   else if(action === "enpassant")     forewardEnpassant(entry);
   else if(action === "castle")        forewardCastle(entry);
   else if(action === "promote")       forewardPromote(entry)
-  else if(action === "duke-decay")    ; // TODO: ForwardTask()
-  else if(action === "bishop-decay")  ; // TODO: ForwardTask()
-  else if(action === "fission")       ; // TODO: ForwardTask()
-  else if(action === "teleportation") ; // TODO: ForwardTask()
+  else if(action === "fission")       forewardFission(entry);
   else if(action === "uplift")        ; // TODO: ForwardTask()
   else {  // SeampointAdd: more build functions (fore)...
     throw new Error(`Unknown forward action ${action} for moves.`);
@@ -121,11 +115,8 @@ export function buildBackward(entry) {    // Restore from undo.
   else if(action === "capture")       backwardCapture(entry);
   else if(action === "enpassant")     backwardEnpassant(entry);
   else if(action === "castle")        backwardCastle(entry);
-  else if(action === "promote")       backwardPromote(entry)
-  else if(action === "duke-decay")    ; // TODO: BackwardTask()
-  else if(action === "bishop-decay")  ; // TODO: BackwardTask()
-  else if(action === "fission")       ; // TODO: BackwardTask()
-  else if(action === "teleportation") ; // TODO: BackwardTask()
+  else if(action === "promote")       backwardPromote(entry);
+  else if(action === "fission")       backwardFission(entry);
   else if(action === "uplift")        ; // TODO: BackwardTask()
   else {  // SeampointAdd: more build functions (back)...
     throw new Error(`Unknown backward action ${action} for moves.`);
@@ -141,7 +132,7 @@ export function buildBackward(entry) {    // Restore from undo.
 // Seampoint: more global functions...
 
 // --- Handle Functions ---
-function handleMove(payload, selections) {  // Create from panel.
+function handleMove(payload, selections) {      // Create from panel.
   console.log("cntrl: moves.js - handleMove(payload, selections)", payload, selections);
 
   const { action, player } = payload;
@@ -151,7 +142,7 @@ function handleMove(payload, selections) {  // Create from panel.
   applyEntry(entry);
   }
 
-function handleCapture(payload, selections) {  // Create from panel.
+function handleCapture(payload, selections) {   // Create from panel.
   console.log("cntrl: moves.js - handleCapture(payload, selections)", payload, selections);
 
   const { action, player } = payload;
@@ -161,7 +152,7 @@ function handleCapture(payload, selections) {  // Create from panel.
   applyEntry(entry);
   }
 
-function handleEnpassant(payload, selections) {  // Create from panel.
+function handleEnpassant(payload, selections) { // Create from panel.
   console.log("cntrl: moves.js - handleEnpassant(payload, selections)", payload, selections);
 
   const { action, player } = payload;
@@ -171,7 +162,7 @@ function handleEnpassant(payload, selections) {  // Create from panel.
   applyEntry(entry);
   }
 
-function handleCastle(payload, selections) {
+function handleCastle(payload, selections) {    // Create from panel.
   console.log("cntrl: moves.js - handleCastle(payload, selections)", payload, selections);
  
   const { action, player } = payload;
@@ -181,7 +172,7 @@ function handleCastle(payload, selections) {
   applyEntry(entry);
   }
 
-function handlePromote(payload, selections) {
+function handlePromote(payload, selections) {   // Create from panel.
   console.log("cntrl: moves.js - handlePromote(payload, selections)", payload, selections);
 
   const { action, player } = payload;
@@ -191,36 +182,15 @@ function handlePromote(payload, selections) {
   applyEntry(entry);
   }
 
-function handleDukeDecay(payload, selections) {
-  console.log("cntrl: moves.js - handleDukeDecay(payload, selections)", payload, selections);
-
-  const { action, player } = payload;
-
-  // TODO: change state - handleDukeDecay().
-  }
-
-function handleBishopDecay(payload, selections) {
-  console.log("cntrl: moves.js - handleBishopDecay(payload, selections)", payload, selections);
-
-  const { action, player } = payload;
-
-  // TODO: change state - handleBishopDecay().
-  }
-
-function handleFission(payload, selections) {
+function handleFission(payload, selections) {   // Create from panel.
   console.log("cntrl: moves.js - handleFission(payload, selections)", payload, selections);
 
   const { action, player } = payload;
 
-  // TODO: change state - handleFission().
-  }
+  const entry = mMoves.makeFissionEntry(payload, selections);
+  forewardFission(entry);
 
-function handleTeleportation(payload, selections) {
-  console.log("cntrl: moves.js - handleTeleportation(payload, selections)", payload, selections);
-
-  const { action, player } = payload;
-
-  // TODO: change state - handleTeleportation().
+  applyEntry(entry);
   }
 
 function handleUplift(payload, selections) {
@@ -230,10 +200,10 @@ function handleUplift(payload, selections) {
 
   // TODO: change state - handleUplift().
 }
-// SeampointAdd: more handle functions...
+// Seampoint: more handle functions...
 
 // --- Helpers...
-function forewardMove(entry) {        // Move piece.
+function forewardMove(entry) {        // Move.
   console.log("cntrl: moves.js - forewardMove(entry)", entry);
 
   const { action, turn, player, list } = entry;           // Parse.
@@ -261,7 +231,7 @@ function backwardMove(entry) {
   }
 }
 
-function forewardCapture(entry) {     // Capture piece.
+function forewardCapture(entry) {     // Capture.
   console.log("cntrl: moves.js - forewardCapture(entry)", entry);
 
   const { action, turn, player, list } = entry;           // Parse.
@@ -347,7 +317,7 @@ function backwardCastle(entry) {
   }
 }
 
-function forewardPromote(entry) {      // Promote.
+function forewardPromote(entry) {     // Promote.
   console.log("cntrl: moves.js - forewardPromote(entry)", entry);
 
   const { action, turn, player, list } = entry;           // Parse.
@@ -372,7 +342,33 @@ function backwardPromote(entry) {
   // TODO: demote queen to pawn.
   mPieces.movePieceTileToTile(pawn.key, pawnStr);
 }
-// SeampointAdd: more fore/back functions...
+
+function forewardFission(entry) {     // Fission.
+  console.log("cntrl: moves.js - forewardFission(entry)", entry);
+
+  const { action, turn, player, list } = entry;           // Parse.
+  const piece1 = list[0]; // {key,prev,post}
+  const piece2 = list[1]; // {key,prev,post}
+
+  const [, piece1Str]  = piece1.post.split("@");          // Move(s).
+  const [, piece2Str]  = piece2.post.split("@");
+  mPieces.movePieceTileToTile(piece1.key, piece1Str);
+  mPieces.movePieceTileToTile(piece2.key, piece2Str);
+  }
+
+function backwardFission(entry) {
+  console.log("cntrl: moves.js - backwardFission(entry)", entry);
+
+  const { action, turn, player, list } = entry;           // Parse.
+  const piece1 = list[0]; // {key,prev,post}
+  const piece2 = list[1]; // {key,prev,post}
+
+  const [, piece1Str]  = piece1.prev.split("@");          // Move(s).
+  const [, piece2Str]  = piece2.prev.split("@");
+  mPieces.movePieceTileToTile(piece1.key, piece1Str);
+  mPieces.movePieceTileToTile(piece2.key, piece2Str);
+}
+// Seampoint: more fore/back functions...
 
 function branchHistory(entry) {
   console.log("cntrl: moves.js - branchHistory(entry):", entry);

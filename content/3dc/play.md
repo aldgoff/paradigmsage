@@ -177,11 +177,8 @@ layout: "play"
     <label> <input type="radio" name="move-player" value="Black" disabled> B </label>
   </div>
   <div class="section">
-    <button data-action="duke-decay"    disabled>Duke Decay</button>
-    <button data-action="bishop-decay"  disabled>Bishop Decay</button>
-    <button data-action="fission"       disabled>Fission</button>
-    <button data-action="teleportation" disabled>Teleportation</button>
-    <button data-action="uplift"        disabled>Uplift</button>
+    <button data-action="fission"   disabled>Fission</button>
+    <button data-action="uplift"    disabled>Uplift</button>
   </div>
   <div class="section scroll-box" id="move-list"></div>
   </div>
