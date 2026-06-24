@@ -38,9 +38,7 @@ export function render(board) {
   // const { action, boardSize, trayType, trayGap, boardSpec } = entry;
   const { boardSize, trayType, trayGap } = board;
 
-  // ChangePoint:
   const dims = boardSize.split(/[x-]/).map(Number);
-  // const dims = boardSize.split("x").map(Number);
   makeBoard(dims);
   }
 

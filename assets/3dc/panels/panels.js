@@ -155,8 +155,6 @@ export function diagnostics() {
   const whiteCount = mTrays.getWhiteTray().flat(2).filter(cell => cell !== null).length;
   const blackCount = mTrays.getBlackTray().flat(2).filter(cell => cell !== null).length;
 
-  const boardOcc = mBoards.getBoardOccupancy().flat(2).filter(cell => cell !== null).length;
-
   const { pieceSelections, tileSelections } = cSelections.getSelections();
 
   const whiteGroupCount = vTrays.getWhiteTrayGroup()
@@ -176,7 +174,6 @@ export function diagnostics() {
   panel.querySelector('[name="diags-blackTray"]').textContent  = blackCount;
 
   panel.querySelector('[name="diags-boardCount"]').textContent = boardCount;
-  panel.querySelector('[name="diags-boardOcc"]').textContent   = boardOcc;
 
   panel.querySelector('[name="diags-pieceSels"]').textContent  = tileSelections.size;
   panel.querySelector('[name="diags-tileSels"]').textContent   = pieceSelections.size;

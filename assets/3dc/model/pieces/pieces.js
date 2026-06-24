@@ -97,17 +97,6 @@ export function movePieceFromTrayToBoard(key, dstStr) {  // "WQQP", "Q1,1". // T
     tray[k][i][j] = null;
     // console.log("*** Update tray occupancy");
 
-  // --- Update board occupancy ---
-    // ChangePoint: add exemption for stack.
-    if(mBoards.isOccupied(dstTile)) {
-      const err = `Cannot move to an occupied ${dstTile} tile ${dstStr}.`;
-      console.log("*** err", err);
-      // return { ok: false, err };
-    }
-    mBoards.addOccupant(key, dstTile);
-
-    // console.log("*** Update board occupancy");
-
   // --- Update piece ---
     piece.loc    = "@";                                             // Update pieceList.
     piece.pos    = dstStr; 
@@ -139,14 +128,8 @@ export function movePieceTileToTile(key, dstStr) {
     const piece = pieceList[key];                                   // Ensure valid args - should never fail.
     if(!piece) throw new Error(`Piece ${key} not found.`);
     if(!coords.onBoardStr(dstStr, spec)) throw new Error(`Destination ${dstStr} not on board.`);
-    // console.log("*** Parse", piece);
-
-  // --- Update board occupancy ---
     const dstTile = coords.normalizeTileToVts(dstStr, spec);        // Determine occupancy indices.
-
-    // ChangePoint: add exemption for stack.
-    mBoards.removeOccupant(key);
-    mBoards.addOccupant(key, dstTile);
+    // console.log("*** Parse", piece);
 
   // --- Update piece ---
     piece.loc    = "@";                                             // Update pieceList.
@@ -186,14 +169,6 @@ export function movePieceFromBoardToTray(key) {
     // const { i, j } = mTrays.trayIndices(type, spec);                // Determine tray array indices.
     const [k, i, j] = piece.home.trayCoords;
     // console.log("*** Parse", k, i, j);
-
-  // --- Update board occupancy ---
-    // ChangePoint: add exemption for stack.
-    if(mBoards.getOccupants(piece.vts) != key) {
-      const err = `${key} not on board ${piece.vts} at ${piece.pos}.`;
-      // return { ok: false, err };
-    }
-    mBoards.removeOccupant(key, piece.vts);
 
   // --- Update tray occupancy ---
     const tray = (player === "W")

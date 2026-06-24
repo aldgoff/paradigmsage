@@ -253,7 +253,6 @@ async function handleLoad() {
 
     mPieces.clearPieceState();        // Reset occupancies.
     mTrays.clearTrays();
-    mBoards.clearOccupancy();
     panels.diagnostics();
 
     showUndoStatus();                 // Visual indicator of successful load.

@@ -101,7 +101,6 @@ export function buildForward(entry) {     // Restore from redo.
   vMoves.refreshPanel(entry);         
 
   console.log("*** pieceList", mPieces.getPieceList());
-  console.log("*** occupancy", mBoards.getBoardOccupancy());
 
   panels.diagnostics();
   }
@@ -125,7 +124,6 @@ export function buildBackward(entry) {    // Restore from undo.
   vMoves.refreshPanel(entry);         
 
   console.log("*** pieceList", mPieces.getPieceList());
-  console.log("*** occupancy", mBoards.getBoardOccupancy());
 
   panels.diagnostics();
 }

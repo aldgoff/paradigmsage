@@ -332,9 +332,6 @@ function promotePiece(oldKey, upgrade) {  // TODO: questionable approach.
   const newKey = oldKey.slice(0, 3) + upgrade[3];  // Change oldKey, WKRP->WRKQ.
 
   const newPiece = mPieces.createPiece(newKey, home.trayPos, home.trayCoords);
-  const [z, x, y] = mBoards.pieceLocOnBoard(oldKey);
-
-  mBoards.getBoardOccupancy()[z][x][y] = newKey;
 
   delete mPieces.getPieceList()[oldKey];           // Update key in occupancies.
   mPieces.getPieceList()[newKey] = piece;

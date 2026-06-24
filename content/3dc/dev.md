@@ -148,7 +148,7 @@ title: "Dev"
   - 6/21/26 - Fixed White/Black radio buttons in move panel. Remove obsolete saved game strings. Normalize move entry and payload/selections order.
   - 6/22/26 - En passant. Castling. Promotion sans queen mesh. Stem out move makeEntries and assembleLines.
   - 6/23/26 - Stack offset value. New UI for occupancy. New approach; pieceList and trays only - POC.
-  - 6/24/26 - Remove stack buttons. Line notation standards. Stablize clicks, entries, and move listing rows.
+  - 6/24/26 - Remove stack buttons. Line notation standards. Stablize clicks, entries, and move listing rows. Remove board occupancy.
     Rest of moves.
    QC quad gambits, all gambits, all moves.
 

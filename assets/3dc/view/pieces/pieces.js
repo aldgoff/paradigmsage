@@ -860,7 +860,7 @@ function addCubeBevelLines(mesh, cubeSize, color) {
     2. Common mesh helpers.
     3. White/Black materials.
     4. ✅ Confirm black tray placement.
-    5. Ghost visibility + occupancy inversion.
+    5. Ghost visibility.
     6. ✅ Piece edge conventions.
 
   === Phase 2: Interaction Semantics ===
