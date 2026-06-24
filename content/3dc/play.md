@@ -75,7 +75,7 @@ layout: "play"
   }
   
   #setup-window       { top:  160px; left:   20px; width: 163px }  /* DOM Control Panels */
-  #move-window        { top: 1000px; left:   20px; width: 470px }
+  #move-window        { top: 1000px; left:   20px; width: 500px }
   #gambit-window      { top:  745px; left:   20px; width: 280px }
   #advsq-window       { top:  160px; left:  210px; width: 155px }
   #compass-window     { top:  160px; left:  560px; width: 160px; height: 220px }

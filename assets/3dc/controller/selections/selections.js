@@ -186,6 +186,10 @@ function manageMoveButtons() {
   const size = cSetup.getCurrBoard().boardSize;           // Parse piece and tile info.
   const [key1, key2, key3, key4] = [...pieceSelections];
   const [tile1, tile2, tile3]    = [...tileSelections];
+  const pieces = pieceSelections.size;
+  const tiles  = tileSelections.size;
+  console.log("*** pieces, tiles", pieces, tiles);
+
   const piece1 = (key1) ? mPieces.getPieceList()[key1] : null;
   const piece2 = (key2) ? mPieces.getPieceList()[key2] : null;
   const piece3 = (key3) ? mPieces.getPieceList()[key3] : null;
@@ -213,9 +217,6 @@ function manageMoveButtons() {
 
   mMoves.buttonAffordances("off");                        // Reset all the panel buttons.
 
-  const pieces = pieceSelections.size;          // 1st level button restraints.
-  const tiles  = tileSelections.size;
-
   if(     pieces === 1 && tiles === 1) {  // Move, decayMovs, promoteMov.
     if(!mPieces.canOccupyTile(key1, tile1))
       return;
@@ -228,6 +229,9 @@ function manageMoveButtons() {
     }
   else if(pieces === 3 && tiles === 0) {  // StackCap.
     if(player1 != player2) {
+      panels.enableButton("capture", true);
+    }
+    else if(player1 === player2 && player1 != player3) {
       panels.enableButton("capture", true);
     }
     }

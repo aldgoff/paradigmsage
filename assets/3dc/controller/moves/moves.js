@@ -206,11 +206,11 @@ function handleUplift(payload, selections) {
 function forewardMove(entry) {        // Move.
   console.log("cntrl: moves.js - forewardMove(entry)", entry);
 
-  const { action, turn, player, list } = entry;           // Parse.
+  const { action, turn, player, list, annotation } = entry; // Parse.
   const mover = list[0]; // list: [{key,prev,post}].
   const stack = list[1]; // list: [{key,prev,post}, {key,prev,post}].
 
-  const [, dstStr] = mover.post.split("@");               // Move(s).
+  const [, dstStr] = mover.post.split("@");                 // Move(s).
   mPieces.movePieceTileToTile(mover.key, dstStr);
   if(stack) {
     mPieces.movePieceTileToTile(stack.key, dstStr);
@@ -220,11 +220,11 @@ function forewardMove(entry) {        // Move.
 function backwardMove(entry) {
   console.log("cntrl: moves.js - backwardMove(entry)", entry);
 
-  const { action, turn, player, list } = entry;           // Parse.
+  const { action, turn, player, list, annotation } = entry; // Parse.
   const mover = list[0]; // list: {key,prev,post}.
   const stack = list[1]; // list: [{key,prev,post}, {key,prev,post}].
 
-  const [, dstStr] = mover.prev.split("@");               // Move(s).
+  const [, dstStr] = mover.prev.split("@");                 // Move(s).
   mPieces.movePieceTileToTile(mover.key, dstStr);
   if(stack) {
     mPieces.movePieceTileToTile(stack.key, dstStr);
@@ -234,36 +234,53 @@ function backwardMove(entry) {
 function forewardCapture(entry) {     // Capture.
   console.log("cntrl: moves.js - forewardCapture(entry)", entry);
 
-  const { action, turn, player, list } = entry;           // Parse.
-  const attacker = list[0]; // {key,prev,post}
-  const captured = list[1]; // {key,prev,post}
+  const { action, turn, player, list, annotation } = entry; // Parse.
+  const lists = list.length;
+  const list1 = list[0];    // {key,prev,post}
+  const list2 = list[1];    // [{key,prev,post}].
+  const list3 = list[2];    // Possibly null.
 
-  const [, dstStr]  = attacker.post.split("@");           // Move(s).
+  const captured = (annotation === "capture") ? list2 : list3; // {key,prev,post}
+  const key = list3 ? `${list1.key.slice(0,3)}S` : list1.key;
+
+  const [, dstStr]  = list1.post.split("@");                // Move(s).
   mPieces.movePieceFromBoardToTray(captured.key);
-  mPieces.movePieceTileToTile(attacker.key, dstStr);
+  mPieces.movePieceTileToTile(list1.key, dstStr);
+
+  if(annotation === "stackCap") {
+    mPieces.movePieceTileToTile(list2.key, dstStr);
+  }
   }
 
 function backwardCapture(entry) {
   console.log("cntrl: moves.js - backwardCapture(entry)", entry);
 
-  const { action, turn, player, list } = entry;           // Parse.
-  const attacker = list[0]; // {key,prev,post}
-  const captured = list[1]; // {key,prev,post}
+  const { action, turn, player, list, annotation } = entry; // Parse.
+  const lists = list.length;
+  const list1 = list[0];    // {key,prev,post}
+  const list2 = list[1];    // [{key,prev,post}].
+  const list3 = list[2];    // Possibly null.
 
-  const [, attStr]  = attacker.prev.split("@");           // Move(s).
+  const captured = (annotation === "capture") ? list2 : list3; // {key,prev,post}
+  const key = list3 ? `${list1.key.slice(0,3)}S` : list1.key;
+
+  const [, attStr]  = list1.prev.split("@");             // Move(s).
   const [, capStr]  = captured.prev.split("@");
-  mPieces.movePieceTileToTile(attacker.key, attStr);
+  if(annotation === "stackCap") {
+    mPieces.movePieceTileToTile(list2.key, attStr);
+  }
+  mPieces.movePieceTileToTile(list1.key, attStr);
   mPieces.movePieceFromTrayToBoard(captured.key, capStr);
 }
 
 function forewardFission(entry) {     // Fission.
   console.log("cntrl: moves.js - forewardFission(entry)", entry);
 
-  const { action, turn, player, list } = entry;           // Parse.
+  const { action, turn, player, list, annotation } = entry; // Parse.
   const piece1 = list[0]; // {key,prev,post}
   const piece2 = list[1]; // {key,prev,post}
 
-  const [, piece1Str]  = piece1.post.split("@");          // Move(s).
+  const [, piece1Str]  = piece1.post.split("@");            // Move(s).
   const [, piece2Str]  = piece2.post.split("@");
   mPieces.movePieceTileToTile(piece1.key, piece1Str);
   mPieces.movePieceTileToTile(piece2.key, piece2Str);
@@ -272,11 +289,11 @@ function forewardFission(entry) {     // Fission.
 function backwardFission(entry) {
   console.log("cntrl: moves.js - backwardFission(entry)", entry);
 
-  const { action, turn, player, list } = entry;           // Parse.
+  const { action, turn, player, list, annotation } = entry; // Parse.
   const piece1 = list[0]; // {key,prev,post}
   const piece2 = list[1]; // {key,prev,post}
 
-  const [, piece1Str]  = piece1.prev.split("@");          // Move(s).
+  const [, piece1Str]  = piece1.prev.split("@");            // Move(s).
   const [, piece2Str]  = piece2.prev.split("@");
   mPieces.movePieceTileToTile(piece1.key, piece1Str);
   mPieces.movePieceTileToTile(piece2.key, piece2Str);
@@ -285,11 +302,11 @@ function backwardFission(entry) {
 function forewardEnpassant(entry) {   // Enpassant.
   console.log("cntrl: moves.js - forewardEnpassant(entry)", entry);
 
-  const { action, turn, player, list } = entry;           // Parse.
+  const { action, turn, player, list, annotation } = entry; // Parse.
   const attacker = list[0]; // {key,prev,post}
   const captured = list[1]; // {key,prev,post}
 
-  const [, dstStr]  = attacker.post.split("@");           // Move(s).
+  const [, dstStr]  = attacker.post.split("@");             // Move(s).
   mPieces.movePieceFromBoardToTray(captured.key);
   mPieces.movePieceTileToTile(attacker.key, dstStr);
   }
@@ -297,11 +314,11 @@ function forewardEnpassant(entry) {   // Enpassant.
 function backwardEnpassant(entry) {
   console.log("cntrl: moves.js - backwardEnpassant(entry)", entry);
 
-  const { action, turn, player, list } = entry;           // Parse.
+  const { action, turn, player, list, annotation } = entry; // Parse.
   const attacker = list[0]; // {key,prev,post}
   const captured = list[1]; // {key,prev,post}
 
-  const [, attStr]  = attacker.prev.split("@");           // Move(s).
+  const [, attStr]  = attacker.prev.split("@");             // Move(s).
   const [, capStr]  = captured.prev.split("@");
   mPieces.movePieceTileToTile(attacker.key, attStr);
   mPieces.movePieceFromTrayToBoard(captured.key, capStr);
@@ -310,12 +327,12 @@ function backwardEnpassant(entry) {
 function forewardCastle(entry) {      // Castle.
   console.log("cntrl: moves.js - forewardCastle(entry)", entry);
 
-  const { action, turn, player, list } = entry;           // Parse.
+  const { action, turn, player, list, annotation } = entry; // Parse.
   const king = list[0]; // {key,prev,post}
   const rook = list[1]; // {key,prev,post}
   const rook2 = (list.length === 3) ? list[2] : null; // [{key,prev,post}].
 
-  const [, kingStr]  = king.post.split("@");              // Move(s).
+  const [, kingStr]  = king.post.split("@");                // Move(s).
   const [, rookStr]  = rook.post.split("@");
   mPieces.movePieceTileToTile(king.key, kingStr);
   mPieces.movePieceTileToTile(rook.key, rookStr);
@@ -328,12 +345,12 @@ function forewardCastle(entry) {      // Castle.
 function backwardCastle(entry) {
   console.log("cntrl: moves.js - backwardCastle(entry)", entry);
 
-  const { action, turn, player, list } = entry;           // Parse.
+  const { action, turn, player, list, annotation } = entry; // Parse.
   const king = list[0]; // {key,prev,post}
   const rook = list[1]; // {key,prev,post}
   const rook2 = (list.length === 3) ? list[2] : null; // [{key,prev,post}].
 
-  const [, kingStr]  = king.prev.split("@");              // Move(s).
+  const [, kingStr]  = king.prev.split("@");                // Move(s).
   const [, rookStr]  = rook.prev.split("@");
   mPieces.movePieceTileToTile(king.key, kingStr);
   mPieces.movePieceTileToTile(rook.key, rookStr);
@@ -346,11 +363,11 @@ function backwardCastle(entry) {
 function forewardPromote(entry) {     // Promote.
   console.log("cntrl: moves.js - forewardPromote(entry)", entry);
 
-  const { action, turn, player, list } = entry;           // Parse.
+  const { action, turn, player, list, annotation } = entry; // Parse.
   const pawn  = list[0]; // {key,prev,post}
   const queen = list[1]; // {key,prev,post}
 
-  const [, pawnStr]  = pawn.post.split("@");              // Move(s).
+  const [, pawnStr]  = pawn.post.split("@");                // Move(s).
   const [, queenStr] = queen.post.split("@");
   mPieces.movePieceTileToTile(pawn.key, pawnStr);
   // TODO: promote pawn to queen (or whatever).
@@ -359,11 +376,11 @@ function forewardPromote(entry) {     // Promote.
 function backwardPromote(entry) {
   console.log("cntrl: moves.js - backwardPromote(entry)", entry);
 
-  const { action, turn, player, list } = entry;           // Parse.
+  const { action, turn, player, list, annotation } = entry; // Parse.
   const pawn  = list[0]; // {key,prev,post}
   const queen = list[1]; // {key,prev,post}
 
-  const [, pawnStr]  = pawn.prev.split("@");              // Move(s).
+  const [, pawnStr]  = pawn.prev.split("@");                // Move(s).
   const [, queenStr] = queen.prev.split("@");
   // TODO: demote queen to pawn.
   mPieces.movePieceTileToTile(pawn.key, pawnStr);
@@ -372,11 +389,11 @@ function backwardPromote(entry) {
 function forewardUplift(entry) {      // Uplift.
   console.log("cntrl: moves.js - forewardPromote(entry)", entry);
 
-  const { action, turn, player, list } = entry;           // Parse.
+  const { action, turn, player, list, annotation } = entry; // Parse.
   const pawn  = list[0]; // {key,prev,post}
   const queen = list[1]; // {key,prev,post}
 
-  const [, pawnStr]  = pawn.post.split("@");              // Move(s).
+  const [, pawnStr]  = pawn.post.split("@");                // Move(s).
   const [, queenStr] = queen.post.split("@");
   mPieces.movePieceTileToTile(pawn.key, pawnStr);
   // TODO: finish uplift.
@@ -385,11 +402,11 @@ function forewardUplift(entry) {      // Uplift.
 function backwardUplift(entry) {
   console.log("cntrl: moves.js - backwardUplift(entry)", entry);
 
-  const { action, turn, player, list } = entry;           // Parse.
+  const { action, turn, player, list, annotation } = entry; // Parse.
   const pawn  = list[0]; // {key,prev,post}
   const queen = list[1]; // {key,prev,post}
 
-  const [, pawnStr]  = pawn.prev.split("@");              // Move(s).
+  const [, pawnStr]  = pawn.prev.split("@");                // Move(s).
   const [, queenStr] = queen.prev.split("@");
   mPieces.movePieceTileToTile(pawn.key, pawnStr);
   // TODO: demote queen to pawn.

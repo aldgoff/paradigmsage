@@ -120,18 +120,22 @@ const blank = "                          ";
 function assembleMoveLine(entry) {      // WKRP @KR2,2 - @KR4,4...
   console.log("view : moves.js - assembleMoveLine(move)", entry);
 
-  const { action, turn, player, list } = entry;               // Parse.
+  const { action, turn, player, list, annotation } = entry;   // Parse.
+  const lists = list.length;
   const mover = list[0]; // [{key,prev,post}].
+  const list2 = (lists === 2) ? list[1] : null;
+
+  const key = (lists === 2) ? `${mover.key.slice(0,3)}S` : mover.key;
 
   const turnCol  = (String(turn).padStart(3)).padEnd(4);      // Columns.
-  const pieceCol = `${mover.key}`.padEnd(4);
+  const pieceCol = `${key}`.padEnd(4);
   const srcCol   = `${mover.prev}`.padEnd(6);
   const dstCol   = `${mover.post}`.padEnd(11);
 
   const row = `${pieceCol} ${srcCol} - ${dstCol}`.padEnd(27); // Assemble.
   const whiteCol = (player === "White") ? row: `${blank}`;
   const blackCol = (player === "Black") ? row: `${blank}`;
-  const annotationsCol = ".....";
+  const annotationsCol = `${annotation}`;
   const line = `${turnCol} ${whiteCol} ${blackCol} ${annotationsCol}`;
 
   return line;  // 1  WKRP @KR2,2 - @KR4,4...
@@ -140,19 +144,23 @@ function assembleMoveLine(entry) {      // WKRP @KR2,2 - @KR4,4...
 function assembleCaptureLine(entry) {   // WKRP @KR4,4 x BKRP@KR5,5...
   console.log("view : moves.js - assembleCaptureLine(entry)", entry);
 
-  const { action, turn, player, list } = entry;               // Parse.
+  const { action, turn, player, list, annotation } = entry;   // Parse.
   const attacker = list[0]; // [{key,prev,post}].
-  const captured = list[1]; // [{key,prev,post}].
+  const list2 = list[1]; // [{key,prev,post}].
+  const list3 = list[2];    // Possibly null.
+
+  const captured = (annotation === "capture") ? list2 : list3;
+  const key = list3 ? `${attacker.key.slice(0,3)}S` : attacker.key;
 
   const turnCol  = (String(turn).padStart(3)).padEnd(4);      // Columns.
-  const pieceCol = `${attacker.key}`.padEnd(4);
+  const pieceCol = `${key}`.padEnd(4);
   const srcCol   = `${attacker.prev}`.padEnd(6);
   const dstCol   = `${captured.key} ${attacker.post}`.padEnd(11);
 
   const row = `${pieceCol} ${srcCol} x ${dstCol}`.padEnd(27);  // Assemble.
   const whiteCol = (player === "White") ? row: `${blank}`;
   const blackCol = (player === "Black") ? row: `${blank}`;
-  const annotationsCol = ".....";
+  const annotationsCol = `${annotation}`;
   const line = `${turnCol} ${whiteCol} ${blackCol} ${annotationsCol}`;
 
   return line;  // 2  WKRP @KR4,4 x BKRP@KR5,5...
@@ -161,7 +169,7 @@ function assembleCaptureLine(entry) {   // WKRP @KR4,4 x BKRP@KR5,5...
 function assembleFissionLine(entry) {   // WKRP @KR4,4 x BKRP@KR5,5...
   console.log("view : moves.js - assembleFissionLine(entry)", entry);
 
-  const { action, turn, player, list } = entry;               // Parse.
+  const { action, turn, player, list, annotation } = entry;   // Parse.
   const list1 = list[0]; // [{key,prev,post}].
   const list2 = list[1]; // [{key,prev,post}].
   const type1 = list1.key[3];
@@ -183,7 +191,7 @@ function assembleFissionLine(entry) {   // WKRP @KR4,4 x BKRP@KR5,5...
 function assembleEnpassantLine(entry) { // WKRP @KR4,4 x BKRP@KR5,5...
   console.log("view : moves.js - assembleEnpassantLine(entry)", entry);
 
-  const { action, turn, player, list } = entry;               // Parse.
+  const { action, turn, player, list, annotation } = entry;   // Parse.
   const attacker = list[0]; // [{key,prev,post}].
   const captured = list[1]; // [{key,prev,post}].
 
@@ -204,7 +212,7 @@ function assembleEnpassantLine(entry) { // WKRP @KR4,4 x BKRP@KR5,5...
 function assembleCastleLine(entry) {    // WKRP @KR4,4 x BKRP@KR5,5...
   console.log("view : moves.js - assembleCastleLine(entry)", entry);
 
-  const { action, turn, player, list } = entry;               // Parse.
+  const { action, turn, player, list, annotation } = entry;   // Parse.
   const king  = list[0]; // [{key,prev,post}].
   const rook  = list[1]; // [{key,prev,post}].
   const rook2 = (list.length === 3) ? list[2] : null; // [{key,prev,post}].
@@ -227,7 +235,7 @@ function assembleCastleLine(entry) {    // WKRP @KR4,4 x BKRP@KR5,5...
 function assemblePromoteLine(entry) {   // WKRP @KR7,7 - Q@KR8,8...
   console.log("view : moves.js - assemblePromoteLine(entry)", entry);
 
-  const { action, turn, player, list } = entry;               // Parse.
+  const { action, turn, player, list, annotation } = entry;   // Parse.
   const pawn  = list[0]; // [{key,prev,post}].
   const queen = list[1]; // [{key,prev,post}].
 
@@ -248,7 +256,7 @@ function assemblePromoteLine(entry) {   // WKRP @KR7,7 - Q@KR8,8...
 function assembleUpliftLine(entry) {
   console.log("view : moves.js - assembleUpliftLine(entry)", entry);
 
-  const { action, turn, player, list } = entry;               // Parse.
+  const { action, turn, player, list, annotation } = entry;   // Parse.
   const stack  = list[0]; // [{key,prev,post}].
   const bishop = list[1]; // [{key,prev,post}].
   const duke   = list[1]; // [{key,prev,post}].
