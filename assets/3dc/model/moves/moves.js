@@ -54,14 +54,24 @@ export function makeMoveEntry(payload, selections) {
 
   const [tile1, tile2] = [...tileSelections];             // Tiles.
   const tile1Str = coords.vtsToBoard(tile1, size);
-  const tile2Str = tile2
+  let tile2Str = tile2
     ? coords.vtsToBoard(tile2, size)
     : null;
 
   let annotation = "";                                    // Annotation.
-  if(pieces === 1 && tiles === 1) annotation = "move";
-  if(pieces === 2 && tiles === 1) annotation = "stackMov";
-  console.log("*** annotation", annotation);
+  if(pieces === 1 && tiles === 1) {
+    if(mPieces.hasOtherStackSubpiece(key1, tile1)) {
+      if(stack)   annotation = "tele";
+      else        annotation = "join";
+    }
+    else {
+      if(stack)   annotation = "decay";
+      else        annotation = "move";
+    }
+    }
+  else if(pieces === 2 && tiles === 1) {
+                  annotation = "stack";
+  }
 
   const prev  = `@${piece1.pos}`;                         // Assemble.
   const post  = `@${tile1Str}`;  

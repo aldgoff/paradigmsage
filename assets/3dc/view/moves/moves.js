@@ -130,9 +130,9 @@ function assembleMoveLine(entry) {      // WKRP @KR2,2 - @KR4,4...
   const turnCol  = (String(turn).padStart(3)).padEnd(4);      // Columns.
   const pieceCol = `${key}`.padEnd(4);
   const srcCol   = `${mover.prev}`.padEnd(6);
-  const dstCol   = `${mover.post}`.padEnd(11);
+  const dstCol   = `${mover.post.slice(1)}`.padEnd(10);
 
-  const row = `${pieceCol} ${srcCol} - ${dstCol}`.padEnd(27); // Assemble.
+  const row = `${pieceCol} ${srcCol} ${key[3]}-${dstCol}`.padEnd(26); // Assemble.
   const whiteCol = (player === "White") ? row: `${blank}`;
   const blackCol = (player === "Black") ? row: `${blank}`;
   const annotationsCol = `${annotation}`;

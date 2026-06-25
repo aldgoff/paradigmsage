@@ -226,6 +226,10 @@ function manageMoveButtons() {
     if(player1 != player2) {
       panels.enableButton("capture", true);
     }
+    else if((key1[3] === 'B' && key2[3] === 'D')
+         || (key1[3] === 'D' && key2[3] === 'B')) {
+      panels.enableButton("move", true);
+    }
     }
   else if(pieces === 3 && tiles === 0) {  // StackCap.
     if(player1 != player2) {
@@ -244,8 +248,11 @@ function manageMoveButtons() {
       panels.enableButton("enpassant", true);
     else if(player1 === player2                 // Stack.
       && ( type1  === 'D' && type2  === 'B'
-        || type1  === 'B' && type2  === 'D'))
-      panels.enableButton("move", true);
+        || type1  === 'B' && type2  === 'D')) {
+      if(piece1.pos === piece2.pos) // Stack move.
+        panels.enableButton("move", true);
+      else {} // Fusion unspecified.
+      }
     else if(player1 === player2                 // Uplift.
       && ( type1  === 'P' && type2  === 'B'
         || type1  === 'P' && type2  === 'D')

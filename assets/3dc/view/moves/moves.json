@@ -1,6 +1,17 @@
 {
   "moves_module": {
-    "moves":     { "schema": "key prev(s) - post(s)  (8)",
+    "moves":  { "entry schema": "key prev(s) - post(s)  (8)",
+      "move":   { "string": "WKRP @KR2,2 P-KR4,4", "pieces": 1, "tiles": 1 },
+      "stack":  { "string": "BKBS @KB1,1 S-KB3,3", "pieces": 2, "tiles": 1 },
+      "Bdecay": { "string": "WQBB @QB1,1 B-QB3,3", "pieces": 1, "tiles": 1 },
+      "Ddecay": { "string": "BQBD @QB1,1 D-QB3,3", "pieces": 1, "tiles": 1 },
+      "Btele":  { "string": "WKBB @KB1,1 B-QB3,3", "pieces": 2, "tiles": 1 },
+      "Dtele":  { "string": "BKBD @KB3,3 D-QB3,3", "pieces": 2, "tiles": 1 },
+      "Bjoin":  { "string": "WKBB @KB1,1 B-QB1,1", "pieces": 2, "tiles": 1 },
+      "Djoin":  { "string": "BKBD @KB3,3 D-QB1,1", "pieces": 2, "tiles": 1 },
+      "fusion": "unspecified"
+      },
+    "moves1":     { "schema": "key prev(s) - post(s)  (8)",
       "simple":    { "string": "WKRP P@KR2,2 - P@KR4,4", "pieces": 1, "tiles": 1 },
       "stackMov":  { "string": "WKBS S@KR2,2 - S@KR4,4", "pieces": 2, "tiles": 1 },
       "bDecayMov": { "string": "WKBS B@KB2,2 - B@KB4,4", "pieces": 1, "tiles": 1 },
