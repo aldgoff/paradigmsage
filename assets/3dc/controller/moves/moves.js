@@ -442,7 +442,7 @@ function applyEntry(entry) {
 }
 // Seampoint: more local functions...
 
-/* TODO: QC checklist✅ 
+/* ✅ TODO: QC checklist
     1. Write handle routines.
     2. ✅ Branch.
     3. ✅ Remove all downstream buffers.

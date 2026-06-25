@@ -20,16 +20,9 @@
 // Seampoint: more imports...
 
 // --- Globals ---
-  const occupancy =
-    Array.from({ length: 10 }, () =>
-      Array.from({ length: 10 }, () =>
-        Array(10).fill(null)  // Piece key = null|"WKRP".
-      )
-    );
   const origin = [4,4,4]; // Q4,4 - for the board occupancy 3D array.
 // Seampoint: more globals...
 
-export function getBoardOccupancy() { return occupancy; }
 export function getOrigin() { return origin; }
 // --- UI ---
 export function init(board) {

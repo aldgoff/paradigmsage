@@ -10,20 +10,17 @@
 // --- Load JSON ---
   import advsqsData from "./advsqs.json" assert { type: "json" };
   const advsqsModule = advsqsData.advsqs_module;
-  const category  = advsqsModule.category;
 // Seampoint: more objects...
 
 // --- Dependencies ---
   import * as utils  from "../../../utils/debug.js";
+
   import * as state    from "../../model/state/state.js";
   import * as coords   from "../../foundation/coords/coords.js";
   import * as planes   from "../../geometry/planes/planes.js";
   import * as quads    from "../../geometry/quads/quads.js";
   import * as overlaps from "../../geometry/overlaps/overlaps.js";
-
-  import {AdvSq,
-          isEqual,
-  } from "../../geometry/advsqs/advsqs.js";
+  import * as advsqs   from "../../geometry/advsqs/advsqs.js";
 
   import * as view       from "../view.js";
   import * as decorators from "../decorators/decorators.js";
@@ -203,19 +200,6 @@ export function setLevelSep(levelSep) {
 // Seampoint: more global functions...
 
 // --- Helpers ---
-function getActiveBoardSpec() {
-  const setupArray = state.getState().Setup;
-
-  if (!setupArray || setupArray.length === 0) {
-    return coords.getBoardSpec("8x8x8"); // fallback
-  }
-
-  const curr = state.fetchCurrentState("Setup");
-  if (!curr) return coords.getBoardSpec("8x8x8");
-  const boardStr = curr.boardSize;
-  return coords.getBoardSpec(boardStr);
-  }
-
 function computeAdvsqDerived({ quad, perimeter, stride }) {
   // console.log("view : advsqs.js - computeAdvsqDerived()", { quad, perimeter, stride });
 
@@ -255,7 +239,7 @@ function perimDerived(q, k, s) {
   const panel = document.getElementById("advsq-window");
   const srcTile = panel.querySelector('[name="advsq-src"]')?.value;
   const source = coords.normalizeTileToVts(srcTile);
-  const advSq = AdvSq.fromQuad(source, q, k);
+  const advSq = advsqs.AdvSq.fromQuad(source, q, k);
 
   onboard = advSq.getOnboardCount();
 
@@ -333,26 +317,5 @@ function getAdvsqPanelParams() {
 
   return params;
   }
-
-function specsToPanelParams(specs) {
-  console.log("view : advsqs.js - specsToPanelParams(specs):", specs);
-
-  if(!specs) return getAdvsqPanelInitialParams();
-
-  const spec = getActiveBoardSpec();
-  // TODO: get boardspec from setup panel.
-  // const spec = coords.getBoardSpec("8x8x8");
-  console.log("   specs", specs);
-  let src = coords.vtsToBoard(specs.srcTile, spec);
-  console.log("   spec", spec);
-
-  return {
-    srcTile:   specs.srcTile,
-    quad:      specs.quad,
-    perimeter: specs.perimeter,
-    stride:    specs.stride,
-    opacity:   specs.opacity
-  };
-}
 // Seampoint: more local functions...
 

@@ -6,33 +6,18 @@
   UI: the export functions.
 */
 
-// --- Regression framework ---
-import {TEST_MODE,
-        assertEqual,
-        assertThrows,
-        report,
-        snapshotTotals,
-        finalReport,
-  } from "../core/asserts.js";
+// --- Dependencies ---
+  import * as quads   from "../../geometry/quads/quads.js";
+  import * as advsqs  from "../../geometry/advsqs/advsqs.js";
+  import * as asserts from "../core/asserts.js";
+// Seampoint: more imports...
 
-import { invariant } from "../core/invariants.js";
+// --- Globals ---
+// Seampoint: more globals...
 
-// --- Layers ---
-import {getBoardSpec,
-} from "../../foundation/coords/coords.js";
-import {planeToQuad,
-} from "../../geometry/quads/quads.js";
-//TODO: Convert tests to import * as yadas...
-
-// --- Module ---
-import {AdvSq,
-        isEqual,
-} from "../../geometry/advsqs/advsqs.js";
-
-// ------------------------------------------------------------
-
+// --- UI ---
 export function run() {
-  let prev = snapshotTotals();
+  let prev = asserts.snapshotTotals();
 
   test_quad_ctor();
   test_raypair_ctor();
@@ -43,16 +28,16 @@ export function run() {
   test_advSqColors();
   // Seampoint: more tests...
 
-  let curr = snapshotTotals();
+  let curr = asserts.snapshotTotals();
   const pass = curr.pass - prev.pass;
   const fail = curr.fail - prev.fail;
   prev = curr;
 
-  finalReport("Geometry/advsqs");
+  asserts.finalReport("Geometry/advsqs");
 }
+// Seampoint: more global functions...
 
 // ------------------------------------------------------------
-
 function test_quad_ctor() {
   const source = [0,0,0];
   const cases = [
@@ -62,15 +47,15 @@ function test_quad_ctor() {
   ];
 
   for(const { input, expect, label } of cases) {
-    const advSq = AdvSq.fromQuad(source, input.quad, input.k);
-    assertEqual(advSq.getPiece(),   expect.piece,   `AdvSq validation failed for piece   ${label} ${input.quad} ${input.k}.`);
-    assertEqual(advSq.getPlane(),   expect.plane,   `AdvSq validation failed for plane   ${label} ${input.quad} ${input.k}.`);
-    assertEqual(advSq.getRayPair(), expect.rayPair, `AdvSq validation failed for rayPair ${label} ${input.quad} ${input.k}.`);
-    assertEqual(advSq.getRange(),   expect.range,   `AdvSq validation failed for range   ${label} ${input.quad} ${input.k}.`);
-    assertEqual(advSq.getArea(),    expect.area,    `AdvSq validation failed for area    ${label} ${input.quad} ${input.k}.`);
+    const advSq = advsqs.AdvSq.fromQuad(source, input.quad, input.k);
+    asserts.assertEqual(advSq.getPiece(),   expect.piece,   `AdvSq validation failed for piece   ${label} ${input.quad} ${input.k}.`);
+    asserts.assertEqual(advSq.getPlane(),   expect.plane,   `AdvSq validation failed for plane   ${label} ${input.quad} ${input.k}.`);
+    asserts.assertEqual(advSq.getRayPair(), expect.rayPair, `AdvSq validation failed for rayPair ${label} ${input.quad} ${input.k}.`);
+    asserts.assertEqual(advSq.getRange(),   expect.range,   `AdvSq validation failed for range   ${label} ${input.quad} ${input.k}.`);
+    asserts.assertEqual(advSq.getArea(),    expect.area,    `AdvSq validation failed for area    ${label} ${input.quad} ${input.k}.`);
   }
 
-  report("quad_ctor", "advsqs");
+  asserts.report("quad_ctor", "advsqs");
   }
 
 function test_raypair_ctor() {
@@ -82,15 +67,15 @@ function test_raypair_ctor() {
   ];
 
   for(const { input, expect, label } of cases) {
-    const advSq = AdvSq.fromRayPair(source, input.rayPair, input.k);
-    assertEqual(advSq.getPiece(), expect.piece, `AdvSq validation failed for piece ${label} ${input.rayPair} ${input.k}.`);
-    assertEqual(advSq.getPlane(), expect.plane, `AdvSq validation failed for plane ${label} ${input.rayPair} ${input.k}.`);
-    assertEqual(advSq.getQuad(),  expect.quad,  `AdvSq validation failed for quad  ${label} ${input.rayPair} ${input.k}.`);
-    assertEqual(advSq.getRange(), expect.range, `AdvSq validation failed for range ${label} ${input.rayPair} ${input.k}.`);
-    assertEqual(advSq.getArea(),  expect.area,  `AdvSq validation failed for area  ${label} ${input.rayPair} ${input.k}.`);
+    const advSq = advsqs.AdvSq.fromRayPair(source, input.rayPair, input.k);
+    asserts.assertEqual(advSq.getPiece(), expect.piece, `AdvSq validation failed for piece ${label} ${input.rayPair} ${input.k}.`);
+    asserts.assertEqual(advSq.getPlane(), expect.plane, `AdvSq validation failed for plane ${label} ${input.rayPair} ${input.k}.`);
+    asserts.assertEqual(advSq.getQuad(),  expect.quad,  `AdvSq validation failed for quad  ${label} ${input.rayPair} ${input.k}.`);
+    asserts.assertEqual(advSq.getRange(), expect.range, `AdvSq validation failed for range ${label} ${input.rayPair} ${input.k}.`);
+    asserts.assertEqual(advSq.getArea(),  expect.area,  `AdvSq validation failed for area  ${label} ${input.rayPair} ${input.k}.`);
   }
 
-  report("raypair_ctor", "advsqs");
+  asserts.report("raypair_ctor", "advsqs");
   }
 
 function test_advSqValidation() {
@@ -102,15 +87,15 @@ function test_advSqValidation() {
   ];
 
   for(const { input, expect, label } of cases) {
-    const advSq = AdvSq.fromQuad(source, input.quad, input.k);
-    assertEqual(advSq.getPiece(),   expect.piece,   `AdvSq validation failed for piece   ${label} ${input.quad} ${input.k}.`);
-    assertEqual(advSq.getPlane(),   expect.plane,   `AdvSq validation failed for plane   ${label} ${input.quad} ${input.k}.`);
-    assertEqual(advSq.getRayPair(), expect.rayPair, `AdvSq validation failed for rayPair ${label} ${input.quad} ${input.k}.`);
-    assertEqual(advSq.getRange(),   expect.range,   `AdvSq validation failed for range   ${label} ${input.quad} ${input.k}.`);
-    assertEqual(advSq.getArea(),    expect.area,    `AdvSq validation failed for area    ${label} ${input.quad} ${input.k}.`);
+    const advSq = advsqs.AdvSq.fromQuad(source, input.quad, input.k);
+    asserts.assertEqual(advSq.getPiece(),   expect.piece,   `AdvSq validation failed for piece   ${label} ${input.quad} ${input.k}.`);
+    asserts.assertEqual(advSq.getPlane(),   expect.plane,   `AdvSq validation failed for plane   ${label} ${input.quad} ${input.k}.`);
+    asserts.assertEqual(advSq.getRayPair(), expect.rayPair, `AdvSq validation failed for rayPair ${label} ${input.quad} ${input.k}.`);
+    asserts.assertEqual(advSq.getRange(),   expect.range,   `AdvSq validation failed for range   ${label} ${input.quad} ${input.k}.`);
+    asserts.assertEqual(advSq.getArea(),    expect.area,    `AdvSq validation failed for area    ${label} ${input.quad} ${input.k}.`);
   }
 
-  report("advSqValid", "advsqs");
+  asserts.report("advSqValid", "advsqs");
   }
 
 function test_nextPrevQuads() {
@@ -148,26 +133,26 @@ function test_nextPrevQuads() {
   ];
 
   for(const { input, expected, label } of cases) {
-    const advSq = AdvSq.fromQuad(input.source, input.quad, input.k);
+    const advSq = advsqs.AdvSq.fromQuad(input.source, input.quad, input.k);
     let nextAdvSq = advSq.nextQuad();
     let prevAdvSq = advSq.nextQuad();
 
-    assertEqual(nextAdvSq.quad, expected, `advsqs next/prev quads failed for ${label} ${input.quad} ${input.k}.`);
+    asserts.assertEqual(nextAdvSq.quad, expected, `advsqs next/prev quads failed for ${label} ${input.quad} ${input.k}.`);
 
     for(let i=2; i<SENTRY; i++) {
       let next = nextAdvSq.nextQuad();
       prevAdvSq = next.prevQuad();
-      assertEqual(prevAdvSq, nextAdvSq, `advSq bijection failed at ${nextAdvSq}`);
+      asserts.assertEqual(prevAdvSq, nextAdvSq, `advSq bijection failed at ${nextAdvSq}`);
       nextAdvSq = next;
       if(nextAdvSq.quad === advSq.quad) {
-        assertEqual(nextAdvSq, advSq, `advSq bijection failed at ${nextAdvSq}`);
+        asserts.assertEqual(nextAdvSq, advSq, `advSq bijection failed at ${nextAdvSq}`);
         // console.log(`cycle closed at ${i}`);
         break;
       }
     }
   }
 
-  report("nextPrevQuads", "advsqs");
+  asserts.report("nextPrevQuads", "advsqs");
   }
 
 function test_nextPrevPlanes() {
@@ -195,14 +180,14 @@ function test_nextPrevPlanes() {
   ];
 
   for (const { input, label } of cases) {
-    const advSq = AdvSq.fromQuad(input.source, input.quad, input.k);
+    const advSq = advsqs.AdvSq.fromQuad(input.source, input.quad, input.k);
 
     let nextAdvSq = advSq.nextPlane();
     let prevAdvSq = advSq.prevPlane();
 
     // --- Basic sanity: next then prev returns original ---
     const back = nextAdvSq.prevPlane();
-    assertEqual(back, advSq, `plane next/prev mismatch for ${label} ${input.quad}`);
+    asserts.assertEqual(back, advSq, `plane next/prev mismatch for ${label} ${input.quad}`);
 
     // --- Cycle traversal ---
     let count = 1;
@@ -211,13 +196,13 @@ function test_nextPrevPlanes() {
       const next = nextAdvSq.nextPlane();
       prevAdvSq = next.prevPlane();
 
-      assertEqual(prevAdvSq, nextAdvSq, `plane bijection failed at quad ${nextAdvSq.quad}`);
+      asserts.assertEqual(prevAdvSq, nextAdvSq, `plane bijection failed at quad ${nextAdvSq.quad}`);
 
       nextAdvSq = next;
       count++;
 
       if (nextAdvSq.quad === advSq.quad) {
-        assertEqual(nextAdvSq, advSq, `plane cycle failed to return to origin for ${label}`);
+        asserts.assertEqual(nextAdvSq, advSq, `plane cycle failed to return to origin for ${label}`);
 
         // Optional: check expected cycle sizes
         // rook=3, bishop=4, duke=6
@@ -228,7 +213,7 @@ function test_nextPrevPlanes() {
     }
   }
 
-  report("nextPrevPlanes", "advsqs");
+  asserts.report("nextPrevPlanes", "advsqs");
   }
 
 function test_apexEnds() {
@@ -292,18 +277,18 @@ function test_apexEnds() {
   ];
 
   for(const { input, expect, label } of cases) {
-    const quad = planeToQuad(input, planeQuad);
-    const advSq = AdvSq.fromQuad(source, quad, k);
+    const quad = quads.planeToQuad(input, planeQuad);
+    const advSq = advsqs.AdvSq.fromQuad(source, quad, k);
     const end1Seq = advSq.getEnd1Tiles();
     const apexSeq = advSq.getApexTiles();
     const end2Seq = advSq.getEnd2Tiles();
 
-    assertEqual(JSON.stringify(end1Seq), JSON.stringify(expect.E1),   `AdvSq tile E1 sequence failed for ${label} ${input} ${quad}.`);
-    assertEqual(JSON.stringify(apexSeq), JSON.stringify(expect.Apex), `AdvSq tile Apex sequence failed for ${label} ${input} ${quad}.`);
-    assertEqual(JSON.stringify(end2Seq), JSON.stringify(expect.E2),   `AdvSq tile E2 sequence failed for ${label} ${input} ${quad}.`);
+    asserts.assertEqual(JSON.stringify(end1Seq), JSON.stringify(expect.E1),   `AdvSq tile E1 sequence failed for ${label} ${input} ${quad}.`);
+    asserts.assertEqual(JSON.stringify(apexSeq), JSON.stringify(expect.Apex), `AdvSq tile Apex sequence failed for ${label} ${input} ${quad}.`);
+    asserts.assertEqual(JSON.stringify(end2Seq), JSON.stringify(expect.E2),   `AdvSq tile E2 sequence failed for ${label} ${input} ${quad}.`);
   }
 
-  report("apexEnds", "advsqs");
+  asserts.report("apexEnds", "advsqs");
   }
 
 function test_advSqColors() {
@@ -333,12 +318,12 @@ function test_advSqColors() {
   ];
 
   for(const { input, expect, label } of cases) {
-    const advSq = AdvSq.fromQuad(input.source, input.quad, input.k);
+    const advSq = advsqs.AdvSq.fromQuad(input.source, input.quad, input.k);
     const colors = advSq.colors();
-    assertEqual(JSON.stringify(colors), JSON.stringify(expect), `${label}`);
+    asserts.assertEqual(JSON.stringify(colors), JSON.stringify(expect), `${label}`);
   }
 
-  report("advSqColors", "advsqs");
+  asserts.report("advSqColors", "advsqs");
   }
 // Seampoint: more tests...
 

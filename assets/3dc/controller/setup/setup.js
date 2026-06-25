@@ -559,7 +559,7 @@ function applyEntry(entry) {
 }
 // Seampoint: more local functions...
 
-/* TODO: QC checklist✅ 
+/* ✅ TODO: QC checklist
     1. ✅ Load/Save fails to make board.
     2. Corruption if attempt to place a piece on an occupied tile.
     3. Support factory trays.
