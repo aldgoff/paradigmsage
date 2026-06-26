@@ -58,6 +58,9 @@ export function makeMoveEntry(payload, selections) {
     ? coords.vtsToBoard(tile2, size)
     : null;
 
+  const stack = (pieces > 1)
+    ? mPieces.isStackMate(key1, key2)
+    : false;
   let annotation = "";                                    // Annotation.
   if(pieces === 1 && tiles === 1) {
     if(mPieces.hasOtherStackSubpiece(key1, tile1)) {
@@ -93,37 +96,64 @@ export function makeCaptureEntry(payload, selections) {
   const pieces = pieceSelections.size;
   const tiles  = tileSelections.size;
   console.log("*** pieces, tiles", pieces, tiles);
+  if(tiles != 0) return;
 
-  const [key1, key2, key3] = [...pieceSelections];        // Pieces.
+  const [key1, key2, key3, key4] = [...pieceSelections];  // Pieces.
   const piece1 = mPieces.getPieceList()[key1];
   const piece2 = mPieces.getPieceList()[key2];
-  const piece3 = (pieces === 3) ? mPieces.getPieceList()[key3] : null;
-
-  const [tile1, tile2] = [...tileSelections];             // Tiles.
-  const tile1Str = tile1 ? coords.vtsToBoard(tile1, size) : null;
-  const tile2Str = tile2 ? coords.vtsToBoard(tile2, size) : null;
+  const piece3 = (pieces >= 3) ? mPieces.getPieceList()[key3] : null;
+  const piece4 = (pieces >= 4) ? mPieces.getPieceList()[key4] : null;
 
   let annotation = "";                                    // Annotation.
-  if(pieces === 2 && tiles === 0) annotation = "capture";
-  if(pieces === 3 && tiles === 0) annotation = "stackCap";
+  if(pieces === 2 ) annotation = "capture";
+  if(pieces === 2 && (mPieces.piecesOnTile(piece1.vts).length === 2)) annotation = "decay";
+  if(pieces === 3 && (piece1.pos === piece2.pos)) annotation = "SxZ";
+  if(pieces === 3 && (piece2.pos === piece3.pos)) annotation = "ZxS";
+  if(pieces === 4 ) annotation = "SxS";
   console.log("*** annotation", annotation);
+  // console.log("*** mPieces.piecesOnTile(piece1.vts)", mPieces.piecesOnTile(piece1.vts));
 
   let list = [];                                          // Assemble.
-  if(annotation === "capture") {
-    const prev   = `@${piece1.pos}`;
-    const post   = `@${piece2.pos}`;
-    const first  = { key: key1, prev, post };
-    const second = { key: key2, prev: post, post: `~${piece2.home.trayPos}` };
+  const prev   = `@${piece1.pos}`;
+  const post   = `@${piece2.pos}`;
+  const first  = { key: key1, prev, post };
+  let second = {};
+  let third = {};
+  let fourth = {};
+  if(annotation === "capture") {  // ZxZ
+    const first  = { key: key1, prev: `@${piece1.pos}`, post: `@${piece2.pos}` };
+    const second = { key: key2, prev: `@${piece2.pos}`, post: `~${piece2.home.trayPos}` };
     list = [first, second]; // list:[{key,prev,post}, {key,prev,post}].
     }
-  else {
-    const prev   = `@${piece1.pos}`;
-    const post   = `@${piece3.pos}`;
-    const first  = { key: key1, prev, post };
-    const second = { key: key2, prev, post };
-    const third  = { key: key3, prev: post, post: `~${piece3.home.trayPos}` };
+  else if(annotation === "decay"){
+    const first  = { key: key1, prev: `@${piece1.pos}`, post: `@${piece2.pos}` };
+    const second = { key: key2, prev: `@${piece2.pos}`, post: `@${piece2.pos}` };
+    list = [first, second]; // list:[{key,prev,post}, {key,prev,post}, {key,prev,post}].
+    }
+  else if(annotation === "SxZ"){
+    const first  = { key: key1, prev: `@${piece1.pos}`, post: `@${piece3.pos}` };
+    const second = { key: key2, prev: `@${piece2.pos}`, post: `@${piece3.pos}` };
+    const third  = { key: key3, prev: `@${piece3.pos}`, post: `~${piece3.home.trayPos}` };
     list = [first, second, third]; // list:[{key,prev,post}, {key,prev,post}, {key,prev,post}].
+    }
+  else if(annotation === "ZxS"){
+    const first  = { key: key1, prev: `@${piece1.pos}`, post: `@${piece2.pos}` };
+    const second = { key: key2, prev: `@${piece2.pos}`, post: `~${piece2.home.trayPos}` };
+    const third  = { key: key3, prev: `@${piece3.pos}`, post: `~${piece3.home.trayPos}` };
+    list = [first, second, third]; // list:[{key,prev,post}, {key,prev,post}, {key,prev,post}].
+    }
+  else if(annotation === "SxS"){
+    const first  = { key: key1, prev: `@${piece1.pos}`, post: `@${piece3.pos}` };
+    const second = { key: key2, prev: `@${piece2.pos}`, post: `@${piece4.pos}` };
+    const third  = { key: key3, prev: `@${piece3.pos}`, post: `~${piece3.home.trayPos}` };
+    const fourth = { key: key4, prev: `@${piece4.pos}`, post: `~${piece4.home.trayPos}` };
+    list = [first, second, third, fourth]; // list:[{key,prev,post}, {key,prev,post}, {key,prev,post}, {key,prev,post}].
   }
+  else {
+    throw new Error(`Unknown annotation ${annotation}.`);
+  }
+
+  console.log("*** mPieces.getPieceList()", mPieces.getPieceList());
 
   cleanupSelections();                                    // Cleanup.
   

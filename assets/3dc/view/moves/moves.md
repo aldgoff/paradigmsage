@@ -88,7 +88,7 @@
       "dTeleport": { "string": "WKBS D@KB2,2 - S@KB4,4", "pieces": 2, "tiles": 0 },
      }
 
-## 4. Exhaustive
+## 4. Exhaustive Moves
  ### 4.1 Listing
   ```
     1. P-KR4,4    S-KB3,3   move, stack
@@ -120,24 +120,107 @@
     {"action":"move","turn":4,"player":"Black","list":[{"key":"BKBB","prev":"@KB6,6","post":"@QB8,8"}],"annotation":"join"}],
   "Gambits":[],"AdvSqs":[]}
 
-
- ### 4.1 Listing
+## 5. Exhaustive Captures
+ ### 5.1 Listing
   ```
-    1. P-KR4,4    D-KB3,3   move, decay
-    2. B-KB3,3    S-QB3,3   decay, stack
-    3. D-KB3,3    B-KB3,3   join, join
-    4. B-QB4,4    D-QB4,4   decay, decay
-    5. D-QB4,4    B-QB4,4   tele, tele
+    1. RxR      DxP       capture, decay
+    2. BxP      D-KB1,1   decay, join
+    3. B-KB1,1  NxS       join, ZxS
+    4. SxQ      SxS       SxZ, SxS
   ```
 
- ### 4.2 Save
-  **2-10-0-0**
-  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8-8-8","trayType":"Real","trayGap":0}},{"action":"startingPos"}],"Moves":[{"action":"move","turn":1,"player":"White","list":[{"key":"WKRP","prev":"@KR2,2","post":"@KR4,4"}],"annotation":"move"},{"action":"move","turn":1,"player":"Black","list":[{"key":"BKBD","prev":"@KB8,8","post":"@KB6,6"}],"annotation":"move"},{"action":"move","turn":2,"player":"White","list":[{"key":"WKBB","prev":"@KB1,1","post":"@KB3,3"}],"annotation":"move"},{"action":"move","turn":2,"player":"Black","list":[{"key":"BQBD","prev":"@QB8,8","post":"@QB6,6"},{"key":"BQBB","prev":"@QB8,8","post":"@QB6,6"}],"annotation":"stackMov"},{"action":"move","turn":3,"player":"White","list":[{"key":"WKBD","prev":"@KB1,1","post":"@KB3,3"}],"annotation":"move"},{"action":"move","turn":3,"player":"Black","list":[{"key":"BKBB","prev":"@KB8,8","post":"@KB6,6"}],"annotation":"move"},{"action":"move","turn":4,"player":"White","list":[{"key":"WQBB","prev":"@QB1,1","post":"@QB4,4"}],"annotation":"move"},{"action":"move","turn":4,"player":"Black","list":[{"key":"BQBD","prev":"@QB6,6","post":"@QB5,5"}],"annotation":"move"},{"action":"move","turn":5,"player":"White","list":[{"key":"WKBD","prev":"@KB3,3","post":"@QB4,4"}],"annotation":"move"},{"action":"move","turn":5,"player":"Black","list":[{"key":"BKBB","prev":"@KB6,6","post":"@QB5,5"}],"annotation":"move"}],"Gambits":[],"AdvSqs":[]}
+ ### 5.2 Save
+  **2-8-0-0**
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8-8-8","trayType":"Real","trayGap":0}},{"action":"startingPos"}],"Moves":[{"action":"capture","turn":1,"player":"White","list":[{"key":"WKRR","prev":"@KR1,1","post":"@KR8,8"},{"key":"BKRR","prev":"@KR8,8","post":"~KR1,1"}],"annotation":"capture"},{"action":"capture","turn":1,"player":"Black","list":[{"key":"BKBD","prev":"@KB8,8","post":"@KB2,2"},{"key":"WKBP","prev":"@KB2,2","post":"@KB2,2"}],"annotation":"decay"},{"action":"capture","turn":2,"player":"White","list":[{"key":"WKBB","prev":"@KB1,1","post":"@KB7,7"},{"key":"BKBP","prev":"@KB7,7","post":"@KB7,7"}],"annotation":"decay"},{"action":"move","turn":2,"player":"Black","list":[{"key":"BKBD","prev":"@KB2,2","post":"@KB8,8"}],"annotation":"join"},{"action":"move","turn":3,"player":"White","list":[{"key":"WKBB","prev":"@KB7,7","post":"@KB1,1"}],"annotation":"join"},{"action":"capture","turn":3,"player":"Black","list":[{"key":"BKNN","prev":"@KN8,8","post":"@KB1,1"},{"key":"WKBD","prev":"@KB1,1","post":"~KB1,2"},{"key":"WKBB","prev":"@KB1,1","post":"~KB2,1"}],"annotation":"ZxS"},{"action":"capture","turn":4,"player":"White","list":[{"key":"WQBD","prev":"@QB1,1","post":"@Q8,8"},{"key":"WQBB","prev":"@QB1,1","post":"@Q8,8"},{"key":"BQQQ","prev":"@Q8,8","post":"~Q1,1"}],"annotation":"SxZ"},{"action":"capture","turn":4,"player":"Black","list":[{"key":"BQBD","prev":"@QB8,8","post":"@Q8,8"},{"key":"BQBB","prev":"@QB8,8","post":"@Q8,8"},{"key":"WQBD","prev":"@Q8,8","post":"~QB1,2"},{"key":"WQBB","prev":"@Q8,8","post":"~QB2,1"}],"annotation":"SxS"}],"Gambits":[],"AdvSqs":[]}
+
+  {"Setup":[
+    {"action":"makeBoard",
+      "prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},
+      "nextBoard":{"boardSize":"8-8-8","trayType":"Real","trayGap":0}},
+    {"action":"startingPos"}],
+  "Moves":[
+    {"action":"capture","turn":1,"player":"White",
+      "list":[
+        {"key":"WKRR","prev":"@KR1,1","post":"@KR8,8"},
+        {"key":"BKRR","prev":"@KR8,8","post":"~KR1,1"}],
+      "annotation":"capture"},
+    {"action":"capture","turn":1,"player":"Black",
+      "list":[
+        {"key":"BKBD","prev":"@KB8,8","post":"@KB2,2"},
+        {"key":"WKBP","prev":"@KB2,2","post":"@KB2,2"}],
+      "annotation":"decay"},
+    {"action":"capture","turn":2,"player":"White",
+      "list":[
+        {"key":"WKBB","prev":"@KB1,1","post":"@KB7,7"},
+        {"key":"BKBP","prev":"@KB7,7","post":"@KB7,7"}],
+      "annotation":"decay"},
+    {"action":"move","turn":2,"player":"Black",
+      "list":[{"key":"BKBD","prev":"@KB2,2","post":"@KB8,8"}],
+      "annotation":"join"},
+    {"action":"move","turn":3,"player":"White",
+      "list":[{"key":"WKBB","prev":"@KB7,7","post":"@KB1,1"}],
+      "annotation":"join"},
+    {"action":"capture","turn":3,"player":"Black",
+      "list":[
+        {"key":"BKNN","prev":"@KN8,8","post":"@KB1,1"},
+        {"key":"WKBD","prev":"@KB1,1","post":"~KB1,2"},
+        {"key":"WKBB","prev":"@KB1,1","post":"~KB2,1"}],
+      "annotation":"ZxS"},
+    {"action":"capture","turn":4,"player":"White",
+      "list":[
+        {"key":"WQBD","prev":"@QB1,1","post":"@Q8,8"},
+        {"key":"WQBB","prev":"@QB1,1","post":"@Q8,8"},
+        {"key":"BQQQ","prev":"@Q8,8","post":"~Q1,1"}],
+      "annotation":"SxZ"},
+    {"action":"capture","turn":4,"player":"Black",
+      "list":[
+        {"key":"BQBD","prev":"@QB8,8","post":"@Q8,8"},
+        {"key":"BQBB","prev":"@QB8,8","post":"@Q8,8"},
+        {"key":"WQBD","prev":"@Q8,8","post":"~QB1,2"},
+        {"key":"WQBB","prev":"@Q8,8","post":"~QB2,1"}],
+      "annotation":"SxS"}],
+  "Gambits":[],"AdvSqs":[]}
+
+## 6. Exhaustive Fissions
+ ### 6.1 Listing
+  ```
+    1. RxR    SxP   capture, SxP
+  ```
+
+ ### 6.2 Save
+  **0-0-0-0**
+
+
 
 
 ## Development - Eligibility POC, Legality Incidental
  ### Moves **2-4-0-0** 1. P-KR4,4; S-KB5,5;  2. PxP  SxN
-  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8-8-8","trayType":"Real","trayGap":0}},{"action":"startingPos"}],"Moves":[{"action":"move","turn":1,"player":"White","list":[{"key":"WKRP","prev":"@KR2,2","post":"@KR4,4"}],"annotation":"move"},{"action":"move","turn":1,"player":"Black","list":[{"key":"BKBD","prev":"@KB8,8","post":"@KB5,5"},{"key":"BKBB","prev":"@KB8,8","post":"@KB5,5"}],"annotation":"stackMov"},{"action":"capture","turn":2,"player":"White","list":[{"key":"WKRP","prev":"@KR4,4","post":"@KR7,7"},{"key":"BKRP","prev":"@KR7,7","post":"~KR2,2"}],"annotation":"capture"},{"action":"capture","turn":2,"player":"Black","list":[{"key":"BKBB","prev":"@KB5,5","post":"@KN1,1"},{"key":"BKBD","prev":"@KB5,5","post":"@KN1,1"},{"key":"WKNN","prev":"@KN1,1","post":"~KN1,1"}],"annotation":"stackCap"}],"Gambits":[],"AdvSqs":[]}
+  {"Setup":[
+    {"action":"makeBoard",
+    "prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},
+    "nextBoard":{"boardSize":"8-8-8","trayType":"Real","trayGap":0}},
+    {"action":"startingPos"}],
+  "Moves":[
+    {"action":"move","turn":1,"player":"White",
+      "list":[{"key":"WKRP","prev":"@KR2,2","post":"@KR4,4"}],
+      "annotation":"move"},
+    {"action":"move","turn":1,"player":"Black",
+      "list":[
+        {"key":"BKBD","prev":"@KB8,8","post":"@KB5,5"},
+        {"key":"BKBB","prev":"@KB8,8","post":"@KB5,5"}],
+      "annotation":"stackMov"},
+    {"action":"capture","turn":2,"player":"White",
+      "list":[
+        {"key":"WKRP","prev":"@KR4,4","post":"@KR7,7"},
+        {"key":"BKRP","prev":"@KR7,7","post":"~KR2,2"}],
+      "annotation":"capture"},
+    {"action":"capture","turn":2,"player":"Black",
+      "list":[
+        {"key":"BKBB","prev":"@KB5,5","post":"@KN1,1"},
+        {"key":"BKBD","prev":"@KB5,5","post":"@KN1,1"},
+        {"key":"WKNN","prev":"@KN1,1","post":"~KN1,1"}],
+      "annotation":"stackCap"}],
+  "Gambits":[],"AdvSqs":[]}
 
   {"Setup":[
     {"action":"makeBoard",

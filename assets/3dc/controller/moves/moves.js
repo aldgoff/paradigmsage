@@ -85,7 +85,7 @@ export function buildPayload(panel, action) {
 export function buildForward(entry) {     // Restore from redo.
   console.log("cntrl: moves.js - buildForward(entry)", entry);
 
-  const { action, turn, player, list } = entry;  // list:[{key,prev,post},...]}.
+  const { action, turn, player, list, annotation } = entry;  // list:[{key,prev,post},...]}.
 
   if(     action === "move")          forewardMove(entry);
   else if(action === "capture")       forewardCapture(entry);
@@ -108,7 +108,7 @@ export function buildForward(entry) {     // Restore from redo.
 export function buildBackward(entry) {    // Restore from undo.
   console.log("cntrl: moves.js - buildBackward(entry)", entry);
 
-  const { action, turn, player, list } = entry;  // list:[{key,prev,post},...]}.
+  const { action, turn, player, list, annotation } = entry;  // list:[{key,prev,post},...]}.
 
   if(     action === "move")          backwardMove(entry);
   else if(action === "capture")       backwardCapture(entry);
@@ -237,16 +237,36 @@ function forewardCapture(entry) {     // Capture.
   const list1 = list[0];    // {key,prev,post}
   const list2 = list[1];    // [{key,prev,post}].
   const list3 = list[2];    // Possibly null.
-
-  const captured = (annotation === "capture") ? list2 : list3; // {key,prev,post}
-  const key = list3 ? `${list1.key.slice(0,3)}S` : list1.key;
+  const list4 = list[3];    // Possibly null.
 
   const [, dstStr]  = list1.post.split("@");                // Move(s).
-  mPieces.movePieceFromBoardToTray(captured.key);
-  mPieces.movePieceTileToTile(list1.key, dstStr);
 
-  if(annotation === "stackCap") {
+  if(annotation === "capture") {
+    mPieces.movePieceFromBoardToTray(list2.key);
+    mPieces.movePieceTileToTile(list1.key, dstStr);
+    }
+  else if(annotation === "decay") {
+    mPieces.movePieceFromBoardToTray(list2.key);
+    mPieces.movePieceTileToTile(list1.key, dstStr);
+    }
+  else if(annotation === "SxZ") {
+    mPieces.movePieceFromBoardToTray(list3.key);
+    mPieces.movePieceTileToTile(list1.key, dstStr);
     mPieces.movePieceTileToTile(list2.key, dstStr);
+    }
+  else if(annotation === "ZxS") {
+    mPieces.movePieceFromBoardToTray(list2.key);
+    mPieces.movePieceFromBoardToTray(list3.key);
+    mPieces.movePieceTileToTile(list1.key, dstStr);
+    }
+  else if(annotation === "SxS") {
+    mPieces.movePieceFromBoardToTray(list3.key);
+    mPieces.movePieceFromBoardToTray(list4.key);
+    mPieces.movePieceTileToTile(list1.key, dstStr);
+    mPieces.movePieceTileToTile(list2.key, dstStr);
+    }
+  else {
+    throw new Error(`Unknown capture annotation ${annotation}.`);
   }
   }
 
@@ -258,17 +278,42 @@ function backwardCapture(entry) {
   const list1 = list[0];    // {key,prev,post}
   const list2 = list[1];    // [{key,prev,post}].
   const list3 = list[2];    // Possibly null.
+  const list4 = list[3];    // Possibly null.
 
-  const captured = (annotation === "capture") ? list2 : list3; // {key,prev,post}
-  const key = list3 ? `${list1.key.slice(0,3)}S` : list1.key;
+  const [, dstStr]  = list1.prev.split("@");                // Move(s).
 
-  const [, attStr]  = list1.prev.split("@");             // Move(s).
-  const [, capStr]  = captured.prev.split("@");
-  if(annotation === "stackCap") {
-    mPieces.movePieceTileToTile(list2.key, attStr);
+  if(annotation === "capture") {
+    mPieces.movePieceTileToTile(list1.key, dstStr);
+    const [, srcStr] = list2.prev.split("@");
+    mPieces.movePieceFromTrayToBoard(list2.key, srcStr);
+    }
+  else if(annotation === "decay") {
+    mPieces.movePieceTileToTile(list1.key, dstStr);
+    const [, srcStr] = list2.prev.split("@");
+    mPieces.movePieceFromTrayToBoard(list2.key, srcStr);
+    }
+  else if(annotation === "SxZ") {
+    mPieces.movePieceTileToTile(list1.key, dstStr);
+    mPieces.movePieceTileToTile(list2.key, dstStr);
+    const [, srcStr] = list3.prev.split("@");
+    mPieces.movePieceFromTrayToBoard(list3.key, srcStr);
+    }
+  else if(annotation === "ZxS") {
+    mPieces.movePieceTileToTile(list1.key, dstStr);
+    const [, srcStr] = list2.prev.split("@");
+    mPieces.movePieceFromTrayToBoard(list2.key, srcStr);
+    mPieces.movePieceFromTrayToBoard(list3.key, srcStr);
+    }
+  else if(annotation === "SxS") {
+    mPieces.movePieceTileToTile(list1.key, dstStr);
+    mPieces.movePieceTileToTile(list2.key, dstStr);
+    const [, srcStr] = list3.prev.split("@");
+    mPieces.movePieceFromTrayToBoard(list3.key, srcStr);
+    mPieces.movePieceFromTrayToBoard(list4.key, srcStr);
+    }
+  else {
+    throw new Error(`Unknown capture annotation ${annotation}.`);
   }
-  mPieces.movePieceTileToTile(list1.key, attStr);
-  mPieces.movePieceFromTrayToBoard(captured.key, capStr);
 }
 
 function forewardFission(entry) {     // Fission.

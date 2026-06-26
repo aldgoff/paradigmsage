@@ -290,7 +290,7 @@ export function pieceLocOnBoard(key) {
 // Seampoint: more global functions...
 
 // --- Helpers ---
-function isStackMate(key1, key2) {
+export function isStackMate(key1, key2) {
   const player1 = key1[0];
   const player2 = key2[0];
   return ((player1 === player2) && (

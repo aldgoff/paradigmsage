@@ -115,7 +115,7 @@ export function cancelAnimation() {
 // Seampoint: more global functions...
 
 // --- Helpers ---
-const blank = "                          ";
+  const blank = "                          ";
 
 function assembleMoveLine(entry) {      // WKRP @KR2,2 - @KR4,4...
   console.log("view : moves.js - assembleMoveLine(move)", entry);
@@ -138,33 +138,69 @@ function assembleMoveLine(entry) {      // WKRP @KR2,2 - @KR4,4...
   const annotationsCol = `${annotation}`;
   const line = `${turnCol} ${whiteCol} ${blackCol} ${annotationsCol}`;
 
-  return line;  // 1  WKRP @KR2,2 - @KR4,4...
+  return line;  // 1  WKRP @KR2,2 P-KR4,4    ....
   }
 
 function assembleCaptureLine(entry) {   // WKRP @KR4,4 x BKRP@KR5,5...
   console.log("view : moves.js - assembleCaptureLine(entry)", entry);
 
   const { action, turn, player, list, annotation } = entry;   // Parse.
-  const attacker = list[0]; // [{key,prev,post}].
-  const list2 = list[1]; // [{key,prev,post}].
-  const list3 = list[2];    // Possibly null.
 
-  const captured = (annotation === "capture") ? list2 : list3;
-  const key = list3 ? `${attacker.key.slice(0,3)}S` : attacker.key;
+  const lists = list.length;
+  const list1 = list[0];    // [{key,prev,post}].
+  const list2 = list[1];    // [{key,prev,post}].
+  const list3 = list[2];    // Possibly null.
+  const list4 = list[3];    // Possibly null.
+
+  let row = "";
+  if(annotation === "capture") {
+    const key = list1.key;
+    const pieceCol = `${list1.key}`.padEnd(4);
+    const srcCol   = `${list1.prev}`.padEnd(6);
+    const dstCol   = `${list1.post}`.padEnd(10);
+    row = `${pieceCol} ${srcCol} ${list1.key[3]}x${list2.key[3]} ${dstCol}`.padEnd(26);  // Assemble.
+    }
+  else if(annotation === "decay") {
+    const key = list1.key;
+    const pieceCol = `${list1.key}`.padEnd(4);
+    const srcCol   = `${list1.prev}`.padEnd(6);
+    const dstCol   = `${list1.post}`.padEnd(10);
+    row = `${pieceCol} ${srcCol} ${list1.key[3]}x${list2.key[3]} ${dstCol}`.padEnd(26);  // Assemble.
+    }
+  else if(annotation === "SxZ") {
+    const key = `${list1.key.slice(0,3)}S`;
+    const pieceCol = `${key}`.padEnd(4);
+    const srcCol   = `${list1.prev}`.padEnd(6);
+    const dstCol   = `${list1.post}`.padEnd(10);
+    row = `${pieceCol} ${srcCol} Sx${list3.key[3]} ${dstCol}`.padEnd(26);  // Assemble.
+    }
+  else if(annotation === "ZxS") {
+    const key = `${list2.key.slice(0,3)}S`;
+    const pieceCol = `${list1.key}`.padEnd(4);
+    const srcCol   = `${list1.prev}`.padEnd(6);
+    const dstCol   = `${list1.post}`.padEnd(10);
+    row = `${pieceCol} ${srcCol} ${list1.key[3]}xS ${dstCol}`.padEnd(26);  // Assemble.
+    }
+  else if(annotation === "SxS") {
+    const key1 = `${list1.key.slice(0,3)}S`;
+    const key3 = `${list3.key.slice(0,3)}S`;
+    const pieceCol = `${key1}`.padEnd(4);
+    const srcCol   = `${list1.prev}`.padEnd(6);
+    const dstCol   = `${list1.post}`.padEnd(10);
+    row = `${pieceCol} ${srcCol} SxS ${dstCol}`.padEnd(26);  // Assemble.
+    }
+  else {
+    throw new Error(`Unknown annotation ${annotation}.`);
+  }
 
   const turnCol  = (String(turn).padStart(3)).padEnd(4);      // Columns.
-  const pieceCol = `${key}`.padEnd(4);
-  const srcCol   = `${attacker.prev}`.padEnd(6);
-  const dstCol   = `${captured.key} ${attacker.post}`.padEnd(11);
-
-  const row = `${pieceCol} ${srcCol} x ${dstCol}`.padEnd(27);  // Assemble.
   const whiteCol = (player === "White") ? row: `${blank}`;
   const blackCol = (player === "Black") ? row: `${blank}`;
   const annotationsCol = `${annotation}`;
   const line = `${turnCol} ${whiteCol} ${blackCol} ${annotationsCol}`;
 
-  return line;  // 2  WKRP @KR4,4 x BKRP@KR5,5...
-  }
+  return line;  // 1  WKRP @KR2,2 P-KR4,4    ....
+}
 
 function assembleFissionLine(entry) {   // WKRP @KR4,4 x BKRP@KR5,5...
   console.log("view : moves.js - assembleFissionLine(entry)", entry);

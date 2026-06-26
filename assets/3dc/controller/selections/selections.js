@@ -216,30 +216,38 @@ function manageMoveButtons() {
   }
 
   mMoves.buttonAffordances("off");                        // Reset all the panel buttons.
+  console.log("*** all move buttons off.");
 
-  if(     pieces === 1 && tiles === 1) {  // Move, decayMovs, promoteMov.
+  if(     pieces === 1 && tiles === 1) {  // Move, decayMovs. promoteMov.
+    console.log("*** 1 x 1");
     if(!mPieces.canOccupyTile(key1, tile1))
       return;
     panels.enableButton("move", true);
     }
-  else if(pieces === 2 && tiles === 0) {  // Teleports, capture, combines, decayCaps, promoteCap, uplifts.
-    if(player1 != player2) {
+  else if(pieces === 2 && tiles === 0) {  // Capture, decayCaps. promoteCap.
+    console.log("*** 2 x 0");
+    if(player1 != player2) {                              // ZxZ
+      console.log("*** target", mPieces.piecesOnTile(piece2.vts).length);
+      if(mPieces.piecesOnTile(piece2.vts).length === 1)
+        panels.enableButton("capture", true);
+    }
+    }
+  else if(pieces === 3 && tiles === 0) {  // Stack captures.
+    console.log("*** 3 x 0");
+    if(     (player1 === player2 && player1 != player3)   // SxZ.
+     && ((key1[3] === 'B' && key2[3] === 'D') || (key1[3] === 'D' && key2[3] === 'B'))
+     && (piece1.pos === piece2.pos)
+     && (mPieces.piecesOnTile(piece3.vts).length === 1)) {
+      panels.enableButton("capture", true);
+      }
+    else if((player1 !=  player2 && player2 === player3)  // ZxS.
+     && ((key2[3] === 'B' && key3[3] === 'D') || (key2[3] === 'D' && key3[3] === 'B'))
+     && (piece2.pos === piece3.pos)) {
       panels.enableButton("capture", true);
     }
-    else if((key1[3] === 'B' && key2[3] === 'D')
-         || (key1[3] === 'D' && key2[3] === 'B')) {
-      panels.enableButton("move", true);
     }
-    }
-  else if(pieces === 3 && tiles === 0) {  // StackCap.
-    if(player1 != player2) {
-      panels.enableButton("capture", true);
-    }
-    else if(player1 === player2 && player1 != player3) {
-      panels.enableButton("capture", true);
-    }
-    }
-  else if(pieces === 2 && tiles === 1) {  // StackMov, Enpassant.
+  else if(pieces === 2 && tiles === 1) {  // Tele, join. StackMov, Enpassant.
+    console.log("*** 2 x 1");
     const promotable = (type1 === "P") && lastCol(dstStr1, size, player1);
     const piece2 = mPieces.getPieceList()[key2];
     if(     player1 != player2                  // En Passant.
@@ -277,9 +285,13 @@ function manageMoveButtons() {
   else if(pieces === 3 && tiles === 1) {  // FissionCM, fissionMC.
     console.log("*** 3 x 1");
     }
-  else if(pieces === 4 && tiles === 0) {  // FissionCC.
+  else if(pieces === 4 && tiles === 0) {  // SxS. FissionCC.
     console.log("*** 4 x 0");
-    if(player1 != player2) return;
+    if((player1 === player2 && player3 === player4)
+    && (player2 != player3)
+    && (piece3.pos === piece4.pos)) {                     // SxS.
+      panels.enableButton("capture", true);
+    }
     }
   else if(pieces === 3 && tiles === 3) {  // DoubleCastle.
     console.log("*** 3 x 3");
