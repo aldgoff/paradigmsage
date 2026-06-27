@@ -91,10 +91,39 @@
 ## 4. Exhaustive Moves
  ### 4.1 Listing
   ```
+  Desired:
     1. P-KR4,4    S-KB3,3   move, stack
     2. D-QB3,3    B-QB3,3   decay, decay
     3. B-QB3,3    D-QB3,3   tele, tele
     4. D-QB1,1    B-QB1,1   join, join
+
+  Undo mode:
+    1  WKRP @KR2,2 P-KR4,4                                   move
+    1                             BKBS @KB8,8 S-KB6,6        stack
+    2  WQBD @QB1,1 D-QB3,3                                   decay
+    2                             BQBB @QB8,8 B-QB6,6        decay
+    3  WKBB @KB1,1 B-QB3,3                                   tele
+    3                             BKBD @KB6,6 D-QB6,6        tele
+    4  WKBD @KB1,1 D-QB1,1                                   join
+    4                             BKBB @KB6,6 B-QB8,8        join
+
+  Verbose mode:
+    1  WKRP @KR2,2 P-KR4,4        BKBS @KB8,8 S-KB6,6        move, stack
+    2  WQBD @QB1,1 D-QB3,3        BQBB @QB8,8 B-QB6,6        decay, decay
+    3  WKBB @KB1,1 B-QB3,3        BKBD @KB6,6 D-QB6,6        tele, tele
+    4  WKBD @KB1,1 D-QB1,1        BKBB @KB6,6 B-QB8,8        join, join
+
+  Terse mode:
+    1  P-KR4,4        S-KB6,6        move, stack
+    2  D-QB3,3        B-QB6,6        decay, decay
+    3  B-QB3,3        D-QB6,6        tele, tele
+    4  D-QB1,1        B-QB8,8        join, join
+
+  Relative coords:
+    1  P-KR4,4        S-KB3,3        move, stack
+    2  D-QB3,3        B-QB3,3        decay, decay
+    3  B-QB3,3        D-QB3,3        tele, tele
+    4  D-QB1,1        B-QB1,1        join, join
   ```
 
  ### 4.2 Save
@@ -182,15 +211,72 @@
   "Gambits":[],"AdvSqs":[]}
 
 ## 6. Exhaustive Fissions
- ### 6.1 Listing
+ ### 6.1 Kingside Stacks
   ```
-    1. B-KB3,3; D-KB4,4    B-KB3,3; D-KB4,4   fiss, fiss
-    1. S-KB3,3/KB4,4    S-KB3,3/D-KB4,4   fiss, fiss
-  ```
+  1  WKBS @KB1,1 S-KB3,3-KB4,4                             fissMM
+  1                             BKBS @KB8,8 S-KB6,6-KB5,5  fissMM
 
- ### 6.2 Save - Fission Kingside Stacks
+  ```
   **2-2-0-0**
   {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8-8-8","trayType":"Real","trayGap":0}},{"action":"startingPos"}],"Moves":[{"action":"fission","turn":1,"player":"White","list":[{"key":"WKBD","prev":"@KB1,1","post":"@KB4,4"},{"key":"WKBB","prev":"@KB1,1","post":"@KB3,3"}],"annotation":"fissMM"},{"action":"fission","turn":1,"player":"Black","list":[{"key":"BKBB","prev":"@KB8,8","post":"@KB6,6"},{"key":"BKBD","prev":"@KB8,8","post":"@KB5,5"}],"annotation":"fissMM"}],"Gambits":[],"AdvSqs":[]}
+
+  {"Setup":[
+    {"action":"makeBoard",
+      "prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},
+      "nextBoard":{"boardSize":"8-8-8","trayType":"Real","trayGap":0}},
+    {"action":"startingPos"}],
+  "Moves":[
+    {"action":"fission","turn":1,"player":"White",
+      "list":[
+        {"key":"WKBD","prev":"@KB1,1","post":"@KB4,4"},
+        {"key":"WKBB","prev":"@KB1,1","post":"@KB3,3"}],
+      "annotation":"fissMM"},
+    {"action":"fission","turn":1,"player":"Black",
+      "list":[
+        {"key":"BKBB","prev":"@KB8,8","post":"@KB6,6"},
+        {"key":"BKBD","prev":"@KB8,8","post":"@KB5,5"}],
+      "annotation":"fissMM"}],
+  "Gambits":[],"AdvSqs":[]}
+
+ ### 6.2 JJ & MJ with Different B/D Order
+  ```
+  1  WKBS @KB1,1 S-KB3,3-KB4,4                             fissMM
+  1                             BKBS @KB8,8 S-KB6,6-KB5,5  fissMM
+  2  WQBS @QB1,1 S-KB4,4-KB3,3                             fissJJ
+  2                             BQBS @QB8,8 S-KB5,5-KB7,5  fissMJ
+
+  ```
+  **2-4-0-0**
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8-8-8","trayType":"Real","trayGap":0}},{"action":"startingPos"}],"Moves":[{"action":"fission","turn":1,"player":"White","list":[{"key":"WKBD","prev":"@KB1,1","post":"@KB4,4"},{"key":"WKBB","prev":"@KB1,1","post":"@KB3,3"}],"annotation":"fissMM"},{"action":"fission","turn":1,"player":"Black","list":[{"key":"BKBB","prev":"@KB8,8","post":"@KB6,6"},{"key":"BKBD","prev":"@KB8,8","post":"@KB5,5"}],"annotation":"fissMM"},{"action":"fission","turn":2,"player":"White","list":[{"key":"WQBB","prev":"@QB1,1","post":"@KB4,4"},{"key":"WQBD","prev":"@QB1,1","post":"@KB3,3"}],"annotation":"fissJJ"},{"action":"fission","turn":2,"player":"Black","list":[{"key":"BQBD","prev":"@QB8,8","post":"@KB7,5"},{"key":"BQBB","prev":"@QB8,8","post":"@KB5,5"}],"annotation":"fissMJ"}],"Gambits":[],"AdvSqs":[]}
+
+  {"Setup":[
+    {"action":"makeBoard",
+      "prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},
+      "nextBoard":{"boardSize":"8-8-8","trayType":"Real","trayGap":0}},
+    {"action":"startingPos"}],
+  "Moves":[
+    {"action":"fission","turn":1,"player":"White",
+      "list":[
+        {"key":"WKBD","prev":"@KB1,1","post":"@KB4,4"},
+        {"key":"WKBB","prev":"@KB1,1","post":"@KB3,3"}],
+      "annotation":"fissMM"},
+    {"action":"fission","turn":1,"player":"Black",
+      "list":[
+        {"key":"BKBB","prev":"@KB8,8","post":"@KB6,6"},
+        {"key":"BKBD","prev":"@KB8,8","post":"@KB5,5"}],
+      "annotation":"fissMM"},
+    {"action":"fission","turn":2,"player":"White",
+      "list":[
+        {"key":"WQBB","prev":"@QB1,1","post":"@KB4,4"},
+        {"key":"WQBD","prev":"@QB1,1","post":"@KB3,3"}],
+      "annotation":"fissJJ"},
+    {"action":"fission","turn":2,"player":"Black",
+      "list":[
+        {"key":"BQBD","prev":"@QB8,8","post":"@KB7,5"},
+        {"key":"BQBB","prev":"@QB8,8","post":"@KB5,5"}],
+      "annotation":"fissMJ"}],
+  "Gambits":[],"AdvSqs":[]}
+
 
 ### 6.3 Save - Fission S-KB3,3/KB4,4   P-KB3,3
   **2-2-0-0**
