@@ -244,7 +244,7 @@ export function highlight(key) {
   }
 
 export function deHighlight(key) {
-  console.log("view : pieces.js - deHighlight(key)", key);
+  // console.log("view : pieces.js - deHighlight(key)", key);
 
   let found = null;
 

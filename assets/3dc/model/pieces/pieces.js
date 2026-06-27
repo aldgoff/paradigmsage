@@ -18,6 +18,8 @@
 // Seampoint: more objects...
 
 // --- Dependencies ---
+  import * as asserts from "../../tests/core/asserts.js";
+
   import * as utils   from "../../../utils/utils.js";
   import * as cSetup  from "../../controller/setup/setup.js";
 
@@ -226,7 +228,7 @@ export function combineStackinTray(piece) {
 }
 
 export function createPiece(key, pos, coords, trayOffset=0) { // Needed by promote.
-  console.log("model: pieces.js - createPiece(key, pos, coords, trayOffset)", key, pos, coords, trayOffset);
+  // console.log("model: pieces.js - createPiece(key, pos, coords, trayOffset)", key, pos, coords, trayOffset);
 
   const [k, i, j] = coords;
   const player = key[0];
@@ -238,6 +240,7 @@ export function createPiece(key, pos, coords, trayOffset=0) { // Needed by promo
     : [k-4, -i+offset, -j+offset];
 
   return {  // "WQRP" - player, side, level, type.
+    key,
     loc: "~",
     pos,
     coords: [...coords],
@@ -284,12 +287,6 @@ export function hasOtherStackSubpiece(key, vts) {
   return piecesOnTile(vts).some(k => k !== key && isStackMate(key, k));
   }
 
-export function pieceLocOnBoard(key) {
-  return pieceList[key].vts;
-}
-// Seampoint: more global functions...
-
-// --- Helpers ---
 export function isStackMate(key1, key2) {
   const player1 = key1[0];
   const player2 = key2[0];
@@ -299,6 +296,23 @@ export function isStackMate(key1, key2) {
   );
   }
 
+export function test_isStackMate() {
+  let count = 0;
+  if(asserts.assertEqual(isStackMate("WKBB", "WKBB"), false, "stackMate()")) count++;
+  if(asserts.assertEqual(isStackMate("WKBB", "WKBD"), true,  "stackMate()")) count++;
+  if(asserts.assertEqual(isStackMate("WKBD", "WKBB"), true,  "stackMate()")) count++;
+  if(asserts.assertEqual(isStackMate("WKBD", "WKBD"), false, "stackMate()")) count++;
+  console.log("*** count of isStackMate()", count);
+
+  return (count === 4);
+}
+
+export function pieceLocOnBoard(key) {
+  return pieceList[key].vts;
+}
+// Seampoint: more global functions...
+
+// --- Helpers ---
 function createPiecesInTrays(entry) {
   console.log("model: pieces.js - createPiecesInTrays(entry)", entry);
   
@@ -441,11 +455,12 @@ function createPiecesForTray(tray, trayDef, offset=0) {
 // Seampoint: more local functions...
 
 /* piece = {  // Field documentation.
- *   loc,        // "@"|"~" - board or tray (player (W|B in the key) determines which one).
- *   curPos,     // "<LL><x,y>", x,y: 1-8, or 0-9.
- *   curCoords,  // location of piece now.
- *   vts,        // [z,x,y].
- *   home: {     // Fixed at creation time.
+ *   key,       // WKRP.
+ *   loc,       // "@"|"~" - board or tray (player (W|B in the key) determines which one).
+ *   pos,       // "<LL><x,y>", x,y: 1-8, or 0-9.
+ *   coord,     // location of piece now.
+ *   vts,       // [z,x,y].
+ *   home: {    // Fixed at creation time.
  *     trayPos,    // "<LL><i,j>", i,j: 1-2, (pawns on 2,2).
  *     trayCoords, // [k,i,j], k: 1-8, or 0-9, i,j: 0-1, bishop on 1,0, duke on 0,1.
  *     trayVts     // virtual Tile Space location in tray.

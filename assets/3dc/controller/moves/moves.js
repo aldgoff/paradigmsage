@@ -235,7 +235,7 @@ function forewardCapture(entry) {     // Capture.
   const { action, turn, player, list, annotation } = entry; // Parse.
   const lists = list.length;
   const list1 = list[0];    // {key,prev,post}
-  const list2 = list[1];    // [{key,prev,post}].
+  const list2 = list[1];    // {key,prev,post}.
   const list3 = list[2];    // Possibly null.
   const list4 = list[3];    // Possibly null.
 
@@ -320,26 +320,123 @@ function forewardFission(entry) {     // Fission.
   console.log("cntrl: moves.js - forewardFission(entry)", entry);
 
   const { action, turn, player, list, annotation } = entry; // Parse.
-  const piece1 = list[0]; // {key,prev,post}
-  const piece2 = list[1]; // {key,prev,post}
+  const lists = list.length;
+  const list1 = list[0];    // {key,prev,post}.
+  const list2 = list[1];    // {key,prev,post}.
+  const list3 = list[2];    // {key,prev,post}.
+  const list4 = list[3];    // {key,prev,post}.
+  const list5 = list[4];    // Possibly null.
+  const list6 = list[5];    // Possibly null.
+  const [, dstStr1] = list1.post.split("@");    // Subpiece 1 destination.
+  const [, dstStr2] = list2.post.split("@");    // Subpiece 1 destination.
 
-  const [, piece1Str]  = piece1.post.split("@");            // Move(s).
-  const [, piece2Str]  = piece2.post.split("@");
-  mPieces.movePieceTileToTile(piece1.key, piece1Str);
-  mPieces.movePieceTileToTile(piece2.key, piece2Str);
+  if(     annotation === "fissMM") {
+    mPieces.movePieceTileToTile(list1.key, dstStr1);
+    mPieces.movePieceTileToTile(list2.key, dstStr2);
+    }
+  else if(annotation === "fissMJ") {
+    mPieces.movePieceTileToTile(list1.key, dstStr1);
+    mPieces.movePieceTileToTile(list2.key, dstStr2);
+    }
+  else if(annotation === "fissJM") {
+    mPieces.movePieceTileToTile(list1.key, dstStr1);
+    mPieces.movePieceTileToTile(list2.key, dstStr2);
+    }
+  else if(annotation === "fissJJ") {
+    mPieces.movePieceTileToTile(list1.key, dstStr1);
+    mPieces.movePieceTileToTile(list2.key, dstStr2);
+  }
+  else if(annotation === "fiss") {
+    
+    }
+  else if(annotation === "fiss") {
+    
+    }
+  else if(annotation === "fiss") {
+    
+    }
+  else if(annotation === "fiss") {
+    
+    }
+  else if(annotation === "fiss") {
+    
+    }
+  else if(annotation === "fiss") {
+    
+    }
+  else if(annotation === "fiss") {
+    
+    }
+  else if(annotation === "fiss") {
+    
+  }
+  else if(annotation === "fiss") {
+    
+    }
+  else if(annotation === "fiss") {
+    
+    }
+  else if(annotation === "fiss") {
+    
+    }
+  else if(annotation === "fiss") {
+    
+    }
+  else {
+    throw new Error(`Unknown fission annotation ${annotation}.`);
+  }
+  // const piece1 = list[0]; // {key,prev,post}
+  // const piece2 = list[1]; // {key,prev,post}
+
+  // const [, piece1Str]  = piece1.post.split("@");            // Move(s).
+  // const [, piece2Str]  = piece2.post.split("@");
+  // mPieces.movePieceTileToTile(piece1.key, piece1Str);
+  // mPieces.movePieceTileToTile(piece2.key, piece2Str);
   }
 
 function backwardFission(entry) {
   console.log("cntrl: moves.js - backwardFission(entry)", entry);
 
   const { action, turn, player, list, annotation } = entry; // Parse.
-  const piece1 = list[0]; // {key,prev,post}
-  const piece2 = list[1]; // {key,prev,post}
+  const lists = list.length;
+  const list1 = list[0];    // {key,prev,post}.
+  const list2 = list[1];    // {key,prev,post}.
+  const list3 = list[2];    // {key,prev,post}.
+  const list4 = list[3];    // {key,prev,post}.
+  const list5 = list[4];    // Possibly null.
+  const list6 = list[5];    // Possibly null.
+  const [, dstStr1] = list1.prev.split("@");    // Subpiece 1 destination.
+  const [, dstStr2] = list2.prev.split("@");    // Subpiece 1 destination.
 
-  const [, piece1Str]  = piece1.prev.split("@");            // Move(s).
-  const [, piece2Str]  = piece2.prev.split("@");
-  mPieces.movePieceTileToTile(piece1.key, piece1Str);
-  mPieces.movePieceTileToTile(piece2.key, piece2Str);
+  if(     annotation === "fissMM") {
+    mPieces.movePieceTileToTile(list1.key, dstStr1);
+    mPieces.movePieceTileToTile(list2.key, dstStr2);
+    }
+  else if(annotation === "fissMJ") {
+    mPieces.movePieceTileToTile(list1.key, dstStr1);
+    mPieces.movePieceTileToTile(list2.key, dstStr2);
+    }
+  else if(annotation === "fissJM") {
+    mPieces.movePieceTileToTile(list1.key, dstStr1);
+    mPieces.movePieceTileToTile(list2.key, dstStr2);
+    }
+  else if(annotation === "fissJJ") {
+    mPieces.movePieceTileToTile(list1.key, dstStr1);
+    mPieces.movePieceTileToTile(list2.key, dstStr2);
+  }
+  // Seampoint: more fission permutations.
+  else {
+    throw new Error(`Unknown fission annotation ${annotation}.`);
+  }
+
+  // const { action, turn, player, list, annotation } = entry; // Parse.
+  // const piece1 = list[0]; // {key,prev,post}
+  // const piece2 = list[1]; // {key,prev,post}
+
+  // const [, piece1Str]  = piece1.prev.split("@");            // Move(s).
+  // const [, piece2Str]  = piece2.prev.split("@");
+  // mPieces.movePieceTileToTile(piece1.key, piece1Str);
+  // mPieces.movePieceTileToTile(piece2.key, piece2Str);
 }
 
 function forewardEnpassant(entry) {   // Enpassant.

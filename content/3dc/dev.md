@@ -151,6 +151,7 @@ title: "Dev"
   - 6/24/26 - Remove stack buttons. Line notation standards. Stablize clicks, entries, and move listing rows. Remove board occupancy. A couple of TODOs.
   - 6/25/26 - Rest of base moves. Rest of non fission captures.
   - 6/26/26 - Fission, 16 permutations, just eligibility.
+  - 6/27/27 - Fission moves (4): entries, lines, and pieces.
    QC quad gambits, all gambits, all moves.
 
 ## Move Lines:

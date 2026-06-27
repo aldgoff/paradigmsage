@@ -218,7 +218,7 @@ function assembleFissionLine(entry) {   // WKRP @KR4,4 x BKRP@KR5,5...
   const row = `${piece1Col} ${piece2Col}`.padEnd(26);         // Assemble.
   const whiteCol = (player === "White") ? row: `${blank}`;
   const blackCol = (player === "Black") ? row: `${blank}`;
-  const annotationsCol = "fission";
+  const annotationsCol = `${annotation}`;
   const line = `${turnCol} ${whiteCol} ${blackCol} ${annotationsCol}`;
 
   return line;  // 2  WKRP @KR4,4 x BKRP@KR5,5...

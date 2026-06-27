@@ -27,11 +27,13 @@ export function assertEqual(actual, expected, label) {
 
   if (ok) {
     PASS++;
+    return true;
   } else {
     FAIL++;
     console.error(`FAIL: ${label}`);
     console.error("  expected:", expected);
     console.error("  actual:  ", actual);
+    return false;
   }
   }
 

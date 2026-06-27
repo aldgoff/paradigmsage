@@ -33,8 +33,10 @@
 // --- Globals ---
   const pieceSelections = new Set();  // Holds piece key - "WKRP".
   const tileSelections  = new Set();  // Holds tile vts - [z,x,y].
+  let annotation = "";
 // Seampoint: more globals...
 
+export function getAnnotation() { return annotation; }
 // --- UI ---
 export function getSelections() {               // O(1).
   return { pieceSelections, tileSelections };
@@ -47,7 +49,7 @@ export function getTileSelection() {            // O(1).
   }
 
 export function clearSelections() {
-  console.log("cntrl: selections.js - clearSelections()");
+  // console.log("cntrl: selections.js - clearSelections()");
 
   clearPieceSelections();
   clearTileSelections();
@@ -81,7 +83,7 @@ export function deselectPiece(key) {            // O(1).
   }
 
 export function clearPieceSelections() {        // O(1).
-  console.log("cntrl: selections.js - clearPieceSelections()");
+  // console.log("cntrl: selections.js - clearPieceSelections()");
 
   for(const key of [...pieceSelections]) deselectPiece(key)
   pieceSelections.clear();
@@ -125,7 +127,7 @@ export function deselectTile(vts) {             // O(3).
   }
 
 export function clearTileSelections() {         // O(1).
-  console.log("cntrl: selections.js - clearTileSelections()");
+  // console.log("cntrl: selections.js - clearTileSelections()");
 
   for(const tile of [...tileSelections]) deselectTile(tile)
   tileSelections.clear();
@@ -188,7 +190,7 @@ function manageMoveButtons() {
   const [tile1, tile2, tile3]    = [...tileSelections];
   const pieces = pieceSelections.size;
   const tiles  = tileSelections.size;
-  console.log("*** pieces, tiles", pieces, tiles);
+  // console.log("*** pieces, tiles", pieces, tiles);
 
   const piece1 = (key1) ? mPieces.getPieceList()[key1] : null;
   const piece2 = (key2) ? mPieces.getPieceList()[key2] : null;
@@ -203,6 +205,8 @@ function manageMoveButtons() {
   const { player: player2, side: side2, level: level2, type: type2 } = utils.parsePieceKey(key2);
   const { player: player3, side: side3, level: level3, type: type3 } = utils.parsePieceKey(key3);
   const { player: player4, side: side4, level: level4, type: type4 } = utils.parsePieceKey(key4);
+  const { player: player5, side: side5, level: level5, type: type5 } = utils.parsePieceKey(key5);
+  const { player: player6, side: side6, level: level6, type: type6 } = utils.parsePieceKey(key6);
 
   const panel = document.getElementById("move-window");   // Update panel fields.
   panel.querySelector('[name="move-selPieces"]').textContent = [...pieceSelections];
@@ -218,7 +222,7 @@ function manageMoveButtons() {
   }
 
   mMoves.buttonAffordances("off");                        // Reset all the panel buttons.
-  console.log("*** all move buttons off.");
+  // console.log("*** all move buttons off.");
 
   if(     pieces === 1 && tiles === 1) {  // Move, decayMovs. promoteMov.
     console.log("*** 1 x 1");
@@ -277,7 +281,7 @@ function manageMoveButtons() {
     }
   else if(pieces === 2 && tiles === 2) {  // FissionMM, castle, royal.
     console.log("*** 2 x 2");
-    const fissMove = fissionMove(piece1, piece2, tile1, tile2);
+    const fissMove = fissionMove(key1, key2, tile1, tile2);
     console.log("*** fissMove", fissMove);
     if(fissMove)
       panels.enableButton("fission", true);
@@ -294,8 +298,8 @@ function manageMoveButtons() {
     }
   else if(pieces === 4 && tiles === 0) {  // FissionCC. SxS.
     console.log("*** 4 x 0");
-    if(key3[0] === key1[0]) return;           // Not an opponent ('W' != 'B').
-    if(key4[0] === key1[0]) return;
+    if(player3 === player1) return;           // Not an opponent ('W' != 'B').
+    if(player4 === player1) return;
 
     if(piece3.pos === piece4.pos) {           // Target is a stack.
       panels.enableButton("capture", true);
@@ -308,8 +312,8 @@ function manageMoveButtons() {
     }
   else if(pieces === 4 && tiles === 1) {  // Fission: SxS-M|S-MxS
     console.log("*** 4 x 1");
-    if(key3[0] === key1[0]) return;     // Not an opponent ('W' != 'B').
-    if(key4[0] === key1[0]) return;
+    if(player3 === player1) return;           // Not an opponent ('W' != 'B').
+    if(player4 === player1) return;
     const fissSplit = fissionSplit(key1, key2, piece3, tile1, piece4);
     console.log("*** fissSplit", fissSplit);
     if(fissSplit)
@@ -317,9 +321,9 @@ function manageMoveButtons() {
     }
   else if(pieces === 5 && tiles === 0) {  // Fission: SxSxZ|SxZxS.
     console.log("*** 5 x 0");
-    if(key3[0] === key1[0]) return;     // Not an opponent ('W' != 'B').
-    if(key4[0] === key1[0]) return;
-    if(key5[0] === key1[0]) return;
+    if(player3 === player1) return;           // Not an opponent ('W' != 'B').
+    if(player4 === player1) return;
+    if(player5 === player1) return;
     const fissCapture = fissionCapture(piece1, piece2, piece3, piece4, piece5);
     console.log("*** fissCapture", fissCapture);
     if(fissCapture)
@@ -327,10 +331,9 @@ function manageMoveButtons() {
     }
   else if(pieces === 6 && tiles === 0) {  // Fission: SxSxS.
     console.log("*** 6 x 0");
-    if(key3[0] === key1[0]) return;     // Not an opponent ('W' != 'B').
-    if(key4[0] === key1[0]) return;
-    if(key5[0] === key1[0]) return;
-    if(key6[0] === key1[0]) return;
+    if(player3 === player1) return;           // Not an opponent ('W' != 'B').
+    if(player4 === player1) return;
+    if(player5 === player1) return;
     const fissCapture = fissionCapture(piece1, piece2, piece3, piece4, piece5, piece6);
     console.log("*** fissCapture", fissCapture);
     if(fissCapture)
@@ -359,31 +362,49 @@ function lastCol(dstStr1, size, player1) {
   return last_col;
 }
 
-function fissionMove(piece1, piece2, tile1, tile2) {
-  console.log("cntrl: selections.js - fissionMove(...)", piece1, piece2, tile1, tile2);
+function fissionMove(key1, key2, tile1, tile2) {
+  console.log("cntrl: selections.js - fissionMove(...)", key1, key2, tile1, tile2);
 
+  annotation = "";
   let fissType = null;  // fissMM, fissMJ, fissJM, fissJJ.
 
-  if(piece1.pos != piece2.pos)  return null;  // Not a stack.
+  const piece1 = mPieces.getPieceList()[key1];
+  const piece2 = mPieces.getPieceList()[key2];
+  if(piece1.pos != piece2.pos)  return null;  // Attacker not a stack.
+  const player1 = key1[0];
 
-  if(mPieces.canOccupyTile(piece1.key, tile1)
-  && mPieces.canOccupyTile(piece2.key, tile2))
-    fissType = "fissMM";  // TODO: split out MM|MJ|JM|JJ.
+  const occupied1 = mPieces.isOccupied(tile1);
+  const occupied2 = mPieces.isOccupied(tile2);
+  const key3 = mPieces.piecesOnTile(tile1)[0];
+  const key4 = mPieces.piecesOnTile(tile2)[0];
 
-  if(     mPieces.isOccupied(tile1) &&  mPieces.isOccupied(tile1)) {
-    if(mPieces.hasOtherStackSubpiece(key1, tile1)
-    && mPieces.hasOtherStackSubpiece(key2, tile1))  fisstype = "fissJJ";
+  let char1 = 'M';
+  if(occupied1) {
+    const player3 = key3[0];
+    if(player3 != player1)                        return null;  // Opponent on tile 1.
+    if(mPieces.piecesOnTile(tile1).length === 2)  return null;  // Stack on tile 1.
+    if(!mPieces.isStackMate(key1, key3))          return null;  // Not a stack mate.
+    char1 = 'J';
   }
-  else if(mPieces.isOccupied(tile1) && !mPieces.isOccupied(tile1)) {
-
+  let char2 = 'M';
+  if(occupied2) {
+    const player4 = key4[0];
+    if(player4 != player1)                        return null; // Opponent on tile 2.
+    if(mPieces.piecesOnTile(tile2).length === 2)  return null; // Stack on tile 2.
+    if(!mPieces.isStackMate(key2, key4))          return null;  // Not a stack mate.
+    char2 = 'J';
   }
 
+  fissType = `fiss${char1}${char2}`;  // fissMM, fissMJ, fissJM, fissJJ.
+
+  annotation = fissType;
   return fissType;
-}
+  }
 
 function fissionSplit(key1, key2, piece3, tile1, piece4=null) {
   console.log("cntrl: selections.js - fissionSplit(...)", key1, key2, piece3, tile1, piece4);
 
+  annotation = "";
   let fissType = null;  // fissMZ, fissMS, fissJZ, fissJS, fissZM, fissSM, fissZJ, fissSJ
 
   const piece1 = mPieces.getPieceList()[key1];
@@ -407,7 +428,7 @@ function fissionSplit(key1, key2, piece3, tile1, piece4=null) {
   else if(!stackA && piece3 && piece4) { // Too many targets.
     return null;
   }
-  else {  // Capture piece or stack plus move: fissM, fissM, fissM, fissM.
+  else {  // Capture piece or stack plus move: fissMZ, fissMS, fissFM, fissSM.
     const subpiece1 = key1[3];
     const subpiece2 = key2[3];
     if(      stackA && subpiece1 === 'B') fissType = "fissSM";
@@ -417,12 +438,14 @@ function fissionSplit(key1, key2, piece3, tile1, piece4=null) {
     else fissType = null;
   }
 
+  annotation = fissType;
   return fissType;
-}
+  }
 
 function fissionCapture(piece1, piece2, piece3, piece4, piece5=null, piece6=null) {
   console.log("cntrl: selections.js - fissionCapture(...)", piece1, piece2, piece3, piece4, piece5, piece6);
 
+  annotation = "";
   let fissType = null;  // fissCC, fissCS, fissSC, fissSS.
   if(piece1.pos != piece2.pos)  return null;  // Not a stack.
 
@@ -449,6 +472,7 @@ function fissionCapture(piece1, piece2, piece3, piece4, piece5=null, piece6=null
   else if(stackB)                       fissType = "fissCS";
   else if(!stackA && !stackC)           fissType = "fissCC";
 
+  annotation = fissType;
   return fissType;
 }
 // Seampoint: more local functions...

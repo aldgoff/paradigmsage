@@ -272,7 +272,7 @@ export function returnAllPiecesToHomeTray() {
   }
 
 export function clearAllTileSelections() {
-  console.log("cntrl: setup.js - clearAllTileSelections()");
+  // console.log("cntrl: setup.js - clearAllTileSelections()");
 
   const { pieceSelections, tileSelections } = cSelections.getSelections();
   for(const vts of tileSelections) {            // vts, ...
@@ -282,7 +282,7 @@ export function clearAllTileSelections() {
   }
 
 export function clearAllPieceSelections() {
-  console.log("cntrl: setup.js - clearAllPieceSelections()");
+  // console.log("cntrl: setup.js - clearAllPieceSelections()");
 
   const { pieceSelections, tileSelections } = cSelections.getSelections();
   for(const key of pieceSelections) {           // "WKRR", ...

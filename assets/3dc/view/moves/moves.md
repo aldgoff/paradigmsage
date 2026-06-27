@@ -184,13 +184,17 @@
 ## 6. Exhaustive Fissions
  ### 6.1 Listing
   ```
-    1. RxR    SxP   capture, SxP
+    1. B-KB3,3; D-KB4,4    B-KB3,3; D-KB4,4   fiss, fiss
+    1. S-KB3,3/KB4,4    S-KB3,3/D-KB4,4   fiss, fiss
   ```
 
  ### 6.2 Save - Fission Kingside Stacks
   **2-2-0-0**
   {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8-8-8","trayType":"Real","trayGap":0}},{"action":"startingPos"}],"Moves":[{"action":"fission","turn":1,"player":"White","list":[{"key":"WKBD","prev":"@KB1,1","post":"@KB4,4"},{"key":"WKBB","prev":"@KB1,1","post":"@KB3,3"}]},{"action":"fission","turn":1,"player":"Black","list":[{"key":"BKBB","prev":"@KB8,8","post":"@KB6,6"},{"key":"BKBD","prev":"@KB8,8","post":"@KB5,5"}]}],"Gambits":[],"AdvSqs":[]}
 
+### 6.3 Save - Fission S-KB3,3/KB4,4   P-KB3,3
+  **2-2-0-0**
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8-8-8","trayType":"Real","trayGap":0}},{"action":"startingPos"}],"Moves":[{"action":"fission","turn":1,"player":"White","list":[{"key":"WKBB","prev":"@KB1,1","post":"@KB3,3"},{"key":"WKBD","prev":"@KB1,1","post":"@KB4,4"}],"annotation":"fissMM"},{"action":"move","turn":1,"player":"Black","list":[{"key":"BKBP","prev":"@KB7,7","post":"@KB6,6"}],"annotation":"move"}],"Gambits":[],"AdvSqs":[]}
 
 
 
