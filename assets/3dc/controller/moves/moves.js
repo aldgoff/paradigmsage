@@ -249,12 +249,12 @@ function forewardCapture(entry) {     // Capture.
     mPieces.movePieceFromBoardToTray(list2.key);
     mPieces.movePieceTileToTile(list1.key, dstStr);
     }
-  else if(annotation === "SxZ") {
+  else if(annotation === "SxC") {
     mPieces.movePieceFromBoardToTray(list3.key);
     mPieces.movePieceTileToTile(list1.key, dstStr);
     mPieces.movePieceTileToTile(list2.key, dstStr);
     }
-  else if(annotation === "ZxS") {
+  else if(annotation === "CxS") {
     mPieces.movePieceFromBoardToTray(list2.key);
     mPieces.movePieceFromBoardToTray(list3.key);
     mPieces.movePieceTileToTile(list1.key, dstStr);
@@ -292,13 +292,13 @@ function backwardCapture(entry) {
     const [, srcStr] = list2.prev.split("@");
     mPieces.movePieceFromTrayToBoard(list2.key, srcStr);
     }
-  else if(annotation === "SxZ") {
+  else if(annotation === "SxC") {
     mPieces.movePieceTileToTile(list1.key, dstStr);
     mPieces.movePieceTileToTile(list2.key, dstStr);
     const [, srcStr] = list3.prev.split("@");
     mPieces.movePieceFromTrayToBoard(list3.key, srcStr);
     }
-  else if(annotation === "ZxS") {
+  else if(annotation === "CxS") {
     mPieces.movePieceTileToTile(list1.key, dstStr);
     const [, srcStr] = list2.prev.split("@");
     mPieces.movePieceFromTrayToBoard(list2.key, srcStr);

@@ -167,14 +167,14 @@ function assembleCaptureLine(entry) {   // WKRP @KR4,4 x BKRP@KR5,5...
     const dstCol   = `${list1.post}`.padEnd(10);
     row = `${pieceCol} ${srcCol} ${list1.key[3]}x${list2.key[3]} ${dstCol}`.padEnd(26);  // Assemble.
     }
-  else if(annotation === "SxZ") {
+  else if(annotation === "SxC") {
     const key = `${list1.key.slice(0,3)}S`;
     const pieceCol = `${key}`.padEnd(4);
     const srcCol   = `${list1.prev}`.padEnd(6);
     const dstCol   = `${list1.post}`.padEnd(10);
     row = `${pieceCol} ${srcCol} Sx${list3.key[3]} ${dstCol}`.padEnd(26);  // Assemble.
     }
-  else if(annotation === "ZxS") {
+  else if(annotation === "CxS") {
     const key = `${list2.key.slice(0,3)}S`;
     const pieceCol = `${list1.key}`.padEnd(4);
     const srcCol   = `${list1.prev}`.padEnd(6);
@@ -207,19 +207,33 @@ function assembleFissionLine(entry) {   // WKRP @KR4,4 x BKRP@KR5,5...
 
   const { action, turn, player, list, annotation } = entry;   // Parse.
   const list1 = list[0]; // [{key,prev,post}].
-  const list2 = list[1]; // [{key,prev,post}].
+  const list2 = list[1];
+  const list3 = list[2];
+  const list4 = list[3];
+  const list5 = list[4];
+  const list6 = list[5];
   const type1 = list1.key[3];
   const type2 = list2.key[3];
 
   const turnCol  = (String(turn).padStart(3)).padEnd(4);      // Columns.
-  const piece1Col  = `${type1}${list1.post}`.padEnd(7);
-  const piece2Col  = `${type2}${list2.post}`.padEnd(7);
+  const piece1Col  = `${list1.key.slice(0,3)}S ${list1.prev}`.padEnd(7);
+  let piece2Col;
+  if(list1.key[3] === 'B')  // Stack moves show bishop first duke second.
+    piece2Col  = `S-${list1.post.slice(1)}-${list2.post.slice(1)}`.padEnd(7); // Strip off '@'.
+  else
+    piece2Col  = `S-${list2.post.slice(1)}-${list1.post.slice(1)}`.padEnd(7); // Strip off '@'.
+
 
   const row = `${piece1Col} ${piece2Col}`.padEnd(26);         // Assemble.
+
   const whiteCol = (player === "White") ? row: `${blank}`;
   const blackCol = (player === "Black") ? row: `${blank}`;
   const annotationsCol = `${annotation}`;
   const line = `${turnCol} ${whiteCol} ${blackCol} ${annotationsCol}`;
+
+  //    piece1Col    
+  // 1. WKBS @KB1,1 S-KB3,3/KB4,4    BKBS @KB2,2 S-KB3,3/KB4,4   fissMM, fissMM
+  //                1234567890123                1234567890123
 
   return line;  // 2  WKRP @KR4,4 x BKRP@KR5,5...
 }

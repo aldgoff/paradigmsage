@@ -107,8 +107,8 @@ export function makeCaptureEntry(payload, selections) {
   let annotation = "";                                    // Annotation.
   if(pieces === 2 ) annotation = "capture";
   if(pieces === 2 && (mPieces.piecesOnTile(piece1.vts).length === 2)) annotation = "decay";
-  if(pieces === 3 && (piece1.pos === piece2.pos)) annotation = "SxZ";
-  if(pieces === 3 && (piece2.pos === piece3.pos)) annotation = "ZxS";
+  if(pieces === 3 && (piece1.pos === piece2.pos)) annotation = "SxC";
+  if(pieces === 3 && (piece2.pos === piece3.pos)) annotation = "CxS";
   if(pieces === 4 ) annotation = "SxS";
   console.log("*** annotation", annotation);
   // console.log("*** mPieces.piecesOnTile(piece1.vts)", mPieces.piecesOnTile(piece1.vts));
@@ -118,7 +118,7 @@ export function makeCaptureEntry(payload, selections) {
   const post  = `@${piece2.pos}`;
   const first = { key: key1, prev, post };
 
-  if(annotation === "capture") {  // ZxZ
+  if(annotation === "capture") {  // CxC
     const first  = { key: key1, prev: `@${piece1.pos}`, post: `@${piece2.pos}` };
     const second = { key: key2, prev: `@${piece2.pos}`, post: `~${piece2.home.trayPos}` };
     list = [first, second]; // list:[{key,prev,post}, {key,prev,post}].
@@ -128,13 +128,13 @@ export function makeCaptureEntry(payload, selections) {
     const second = { key: key2, prev: `@${piece2.pos}`, post: `@${piece2.pos}` };
     list = [first, second]; // list:[{key,prev,post}, {key,prev,post}, {key,prev,post}].
     }
-  else if(annotation === "SxZ") {
+  else if(annotation === "SxC") {
     const first  = { key: key1, prev: `@${piece1.pos}`, post: `@${piece3.pos}` };
     const second = { key: key2, prev: `@${piece2.pos}`, post: `@${piece3.pos}` };
     const third  = { key: key3, prev: `@${piece3.pos}`, post: `~${piece3.home.trayPos}` };
     list = [first, second, third]; // list:[{key,prev,post}, {key,prev,post}, {key,prev,post}].
     }
-  else if(annotation === "ZxS") {
+  else if(annotation === "CxS") {
     const first  = { key: key1, prev: `@${piece1.pos}`, post: `@${piece2.pos}` };
     const second = { key: key2, prev: `@${piece2.pos}`, post: `~${piece2.home.trayPos}` };
     const third  = { key: key3, prev: `@${piece3.pos}`, post: `~${piece3.home.trayPos}` };
