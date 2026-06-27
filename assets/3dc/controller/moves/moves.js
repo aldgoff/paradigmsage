@@ -89,10 +89,10 @@ export function buildForward(entry) {     // Restore from redo.
 
   if(     action === "move")          forewardMove(entry);
   else if(action === "capture")       forewardCapture(entry);
+  else if(action === "fission")       forewardFission(entry);
   else if(action === "enpassant")     forewardEnpassant(entry);
   else if(action === "castle")        forewardCastle(entry);
   else if(action === "promote")       forewardPromote(entry)
-  else if(action === "fission")       forewardFission(entry);
   else if(action === "uplift")        ; // TODO: ForwardTask()
   else {  // SeampointAdd: more build functions (fore)...
     throw new Error(`Unknown forward action ${action} for moves.`);
@@ -112,10 +112,10 @@ export function buildBackward(entry) {    // Restore from undo.
 
   if(     action === "move")          backwardMove(entry);
   else if(action === "capture")       backwardCapture(entry);
+  else if(action === "fission")       backwardFission(entry);
   else if(action === "enpassant")     backwardEnpassant(entry);
   else if(action === "castle")        backwardCastle(entry);
   else if(action === "promote")       backwardPromote(entry);
-  else if(action === "fission")       backwardFission(entry);
   else if(action === "uplift")        ; // TODO: BackwardTask()
   else {  // SeampointAdd: more build functions (back)...
     throw new Error(`Unknown backward action ${action} for moves.`);

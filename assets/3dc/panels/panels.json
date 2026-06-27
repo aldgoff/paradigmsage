@@ -29,12 +29,15 @@
           "lines": [
             "To specify a move, select a piece and a tile.",
             "To specify a capture, select two pieces, first captures second.",
+            "Captures require a target piece, moves require a tile.",
             "Buttons are enabled if the combination of selected piece(s) and tile(s) form an eligible move.",
             "To be legal, a move must be both eligible and allowed. It is disallowed if out of plane, out of range, blocked, etc.",
-            "This separation converts the move buttons into affordances, good user ergonomics.",
-            "Some moves require multiple piece and tile selections (castling, en passant, fission, etc.) - order is important; first piece goes with first tile.",
+            "This separation converts the move buttons into affordances, good user ergonomics. They are only enabled when eligible.",
+            "Some moves require multiple piece and tile selections (castling, en passant, fission, etc.) - click order is important.",
             "To select a stack, select both the bishop and duke subpieces.",
-            "To deselect, click again. To clear all selections, click off board."
+            "In a fission, first subpiece goes with the first target piece, or if no target, with the first tile.",
+            "To deselect, click again. To clear all selections, click off board.",
+            "This idiom is consistent and becomes intuitive pretty quickly."
           ]
         },
       "gambitText": {

@@ -21,10 +21,25 @@
       "fusion": "unspecified"
       },
     "fissions":  { "schema": "key prevs -x posts  (4)",
-      "fissionMM": { "string": "WKBS S@KB2,2 - B@KB3,3 - D@KB4,4", "pieces": 2, "tiles": 2 },
-      "fissionCM": { "string": "WKBS S@KB2,2 x N@KB3,3 - D@KB4,4", "pieces": 3, "tiles": 1 },
-      "fissionMC": { "string": "WKBS S@KB2,2 - B@KB3,3 x R@KB4,4", "pieces": 3, "tiles": 1 },
-      "fissionCC": { "string": "WKBS S@KB2,2 x N@KB3,3 x R@KB4,4", "pieces": 4, "tiles": 0 }
+      "fissMM": { "string": "WKBS S@KB2,2 - B@KB3,3 - D@KB4,4", "pieces": 2, "tiles": 2 },
+      "fissMJ": { "string": "WKBS S@KB2,2 - B@KB3,3 - D@KB4,4", "pieces": 2, "tiles": 2 },
+      "fissJM": { "string": "WKBS S@KB2,2 - B@KB3,3 - D@KB4,4", "pieces": 2, "tiles": 2 },
+      "fissJJ": { "string": "WKBS S@KB2,2 - B@KB3,3 - D@KB4,4", "pieces": 2, "tiles": 2 },
+
+      "fissMZ": { "string": "WKBS S@KB2,2 x N@KB3,3 - D@KB4,4", "pieces": 3, "tiles": 1 },
+      "fissMS": { "string": "WKBS S@KB2,2 x N@KB3,3 - D@KB4,4", "pieces": 3, "tiles": 1 },
+      "fissJZ": { "string": "WKBS S@KB2,2 x N@KB3,3 - D@KB4,4", "pieces": 3, "tiles": 1 },
+      "fissJS": { "string": "WKBS S@KB2,2 x N@KB3,3 - D@KB4,4", "pieces": 3, "tiles": 1 },
+
+      "fissZM": { "string": "WKBS S@KB2,2 - B@KB3,3 x R@KB4,4", "pieces": 3, "tiles": 1 },
+      "fissSM": { "string": "WKBS S@KB2,2 - B@KB3,3 x R@KB4,4", "pieces": 3, "tiles": 1 },
+      "fissZJ": { "string": "WKBS S@KB2,2 - B@KB3,3 x R@KB4,4", "pieces": 3, "tiles": 1 },
+      "fissSJ": { "string": "WKBS S@KB2,2 - B@KB3,3 x R@KB4,4", "pieces": 3, "tiles": 1 },
+
+      "fissCC": { "string": "WKBS S@KB2,2 x N@KB3,3 x R@KB4,4", "pieces": 4, "tiles": 0 },
+      "fissCS": { "string": "WKBS S@KB2,2 x N@KB3,3 x R@KB4,4", "pieces": 4, "tiles": 0 },
+      "fissSC": { "string": "WKBS S@KB2,2 x N@KB3,3 x R@KB4,4", "pieces": 4, "tiles": 0 },
+      "fissSS": { "string": "WKBS S@KB2,2 x N@KB3,3 x R@KB4,4", "pieces": 4, "tiles": 0 }
       },
     "enPassant": { "schema": "key prevs x- posts  (1)",
       "simple": { "string": "WKRP @KR5,5 x P@KN5,5 - P@KN6,6", "pieces": 2, "tiles": 1 }

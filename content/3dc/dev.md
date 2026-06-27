@@ -150,6 +150,7 @@ title: "Dev"
   - 6/23/26 - Stack offset value. New UI for occupancy. New approach; pieceList and trays only - POC.
   - 6/24/26 - Remove stack buttons. Line notation standards. Stablize clicks, entries, and move listing rows. Remove board occupancy. A couple of TODOs.
   - 6/25/26 - Rest of base moves. Rest of non fission captures.
+  - 6/26/26 - Fission, 16 permutations, just eligibility.
    QC quad gambits, all gambits, all moves.
 
 ## Move Lines:

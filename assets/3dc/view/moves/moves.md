@@ -187,8 +187,9 @@
     1. RxR    SxP   capture, SxP
   ```
 
- ### 6.2 Save
-  **0-0-0-0**
+ ### 6.2 Save - Fission Kingside Stacks
+  **2-2-0-0**
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8-8-8","trayType":"Real","trayGap":0}},{"action":"startingPos"}],"Moves":[{"action":"fission","turn":1,"player":"White","list":[{"key":"WKBD","prev":"@KB1,1","post":"@KB4,4"},{"key":"WKBB","prev":"@KB1,1","post":"@KB3,3"}]},{"action":"fission","turn":1,"player":"Black","list":[{"key":"BKBB","prev":"@KB8,8","post":"@KB6,6"},{"key":"BKBD","prev":"@KB8,8","post":"@KB5,5"}]}],"Gambits":[],"AdvSqs":[]}
 
 
 

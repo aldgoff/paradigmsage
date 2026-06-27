@@ -170,7 +170,7 @@ export function makeFissionEntry(payload, selections) {
   const tiles  = tileSelections.size;
   console.log("*** pieces, tiles", pieces, tiles);
 
-  const [key1, key2] = [...pieceSelections];              // Pieces.
+  const [key1, key2, key3, key4] = [...pieceSelections];              // Pieces.
   const piece1 = mPieces.getPieceList()[key1];
   const piece2 = mPieces.getPieceList()[key2];
 

@@ -91,7 +91,7 @@ layout: "play"
 
     top: 100px;
     left: 100px;
-    width: 350px;
+    width: 450px;
 
     background: #222;
     color: white;

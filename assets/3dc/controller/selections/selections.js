@@ -184,7 +184,7 @@ function manageMoveButtons() {
   console.log("cntrl: selections.js - manageMoveButtons()");
 
   const size = cSetup.getCurrBoard().boardSize;           // Parse piece and tile info.
-  const [key1, key2, key3, key4] = [...pieceSelections];
+  const [key1, key2, key3, key4, key5, key6] = [...pieceSelections];
   const [tile1, tile2, tile3]    = [...tileSelections];
   const pieces = pieceSelections.size;
   const tiles  = tileSelections.size;
@@ -194,6 +194,8 @@ function manageMoveButtons() {
   const piece2 = (key2) ? mPieces.getPieceList()[key2] : null;
   const piece3 = (key3) ? mPieces.getPieceList()[key3] : null;
   const piece4 = (key4) ? mPieces.getPieceList()[key4] : null;
+  const piece5 = (key5) ? mPieces.getPieceList()[key5] : null;
+  const piece6 = (key6) ? mPieces.getPieceList()[key6] : null;
   const dstStr1 = (tile1) ? coords.vtsToBoard(tile1, size) : "";
   const dstStr2 = (tile2) ? coords.vtsToBoard(tile2, size) : "";
   const dstStr3 = (tile3) ? coords.vtsToBoard(tile3, size) : "";
@@ -275,23 +277,64 @@ function manageMoveButtons() {
     }
   else if(pieces === 2 && tiles === 2) {  // FissionMM, castle, royal.
     console.log("*** 2 x 2");
-    if(player1 != player2) return;
-    if((type1 === 'K' && type2 === 'R'))        // Castle.
-      panels.enableButton("castle", true);
-    else if(type1  === 'D' && type2  === 'B'    // Stack fission.
-         || type1  === 'B' && type2  === 'D')
+    const fissMove = fissionMove(piece1, piece2, tile1, tile2);
+    console.log("*** fissMove", fissMove);
+    if(fissMove)
       panels.enableButton("fission", true);
+    else if((type1 === 'K' && type2 === 'R'))        // Castle.
+      panels.enableButton("castle", true);
     }
   else if(pieces === 3 && tiles === 1) {  // FissionCM, fissionMC.
     console.log("*** 3 x 1");
+    if(key3[0] === key1[0]) return;     // Not an opponent ('W' != 'B').
+    const fissSplit = fissionSplit(key1, key2, piece3, tile1);
+    console.log("*** fissSplit", fissSplit);
+    if(fissSplit)
+      panels.enableButton("fission", true);
     }
-  else if(pieces === 4 && tiles === 0) {  // SxS. FissionCC.
+  else if(pieces === 4 && tiles === 0) {  // FissionCC. SxS.
     console.log("*** 4 x 0");
-    if((player1 === player2 && player3 === player4)
-    && (player2 != player3)
-    && (piece3.pos === piece4.pos)) {                     // SxS.
+    if(key3[0] === key1[0]) return;           // Not an opponent ('W' != 'B').
+    if(key4[0] === key1[0]) return;
+
+    if(piece3.pos === piece4.pos) {           // Target is a stack.
       panels.enableButton("capture", true);
     }
+
+    const fissCapture = fissionCapture(piece1, piece2, piece3, piece4);
+    console.log("*** fissCapture", fissCapture);
+    if(fissCapture)
+      panels.enableButton("fission", true);
+    }
+  else if(pieces === 4 && tiles === 1) {  // Fission: SxS-M|S-MxS
+    console.log("*** 4 x 1");
+    if(key3[0] === key1[0]) return;     // Not an opponent ('W' != 'B').
+    if(key4[0] === key1[0]) return;
+    const fissSplit = fissionSplit(key1, key2, piece3, tile1, piece4);
+    console.log("*** fissSplit", fissSplit);
+    if(fissSplit)
+      panels.enableButton("fission", true);
+    }
+  else if(pieces === 5 && tiles === 0) {  // Fission: SxSxZ|SxZxS.
+    console.log("*** 5 x 0");
+    if(key3[0] === key1[0]) return;     // Not an opponent ('W' != 'B').
+    if(key4[0] === key1[0]) return;
+    if(key5[0] === key1[0]) return;
+    const fissCapture = fissionCapture(piece1, piece2, piece3, piece4, piece5);
+    console.log("*** fissCapture", fissCapture);
+    if(fissCapture)
+      panels.enableButton("fission", true);
+    }
+  else if(pieces === 6 && tiles === 0) {  // Fission: SxSxS.
+    console.log("*** 6 x 0");
+    if(key3[0] === key1[0]) return;     // Not an opponent ('W' != 'B').
+    if(key4[0] === key1[0]) return;
+    if(key5[0] === key1[0]) return;
+    if(key6[0] === key1[0]) return;
+    const fissCapture = fissionCapture(piece1, piece2, piece3, piece4, piece5, piece6);
+    console.log("*** fissCapture", fissCapture);
+    if(fissCapture)
+      panels.enableButton("fission", true);
     }
   else if(pieces === 3 && tiles === 3) {  // DoubleCastle.
     console.log("*** 3 x 3");
@@ -315,14 +358,104 @@ function lastCol(dstStr1, size, player1) {
   
   return last_col;
 }
+
+function fissionMove(piece1, piece2, tile1, tile2) {
+  console.log("cntrl: selections.js - fissionMove(...)", piece1, piece2, tile1, tile2);
+
+  let fissType = null;  // fissMM, fissMJ, fissJM, fissJJ.
+
+  if(piece1.pos != piece2.pos)  return null;  // Not a stack.
+
+  if(mPieces.canOccupyTile(piece1.key, tile1)
+  && mPieces.canOccupyTile(piece2.key, tile2))
+    fissType = "fissMM";  // TODO: split out MM|MJ|JM|JJ.
+
+  if(     mPieces.isOccupied(tile1) &&  mPieces.isOccupied(tile1)) {
+    if(mPieces.hasOtherStackSubpiece(key1, tile1)
+    && mPieces.hasOtherStackSubpiece(key2, tile1))  fisstype = "fissJJ";
+  }
+  else if(mPieces.isOccupied(tile1) && !mPieces.isOccupied(tile1)) {
+
+  }
+
+  return fissType;
+}
+
+function fissionSplit(key1, key2, piece3, tile1, piece4=null) {
+  console.log("cntrl: selections.js - fissionSplit(...)", key1, key2, piece3, tile1, piece4);
+
+  let fissType = null;  // fissMZ, fissMS, fissJZ, fissJS, fissZM, fissSM, fissZJ, fissSJ
+
+  const piece1 = mPieces.getPieceList()[key1];
+  const piece2 = mPieces.getPieceList()[key2];
+  if(piece1.pos != piece2.pos)  return null;  // Attacker not a stack.
+
+  let stackA = (piece4 && (piece3.pos === piece4.pos)) ? [[piece3, piece4]] : null;
+  if(!stackA && (mPieces.piecesOnTile(piece3.vts).length === 2))  // Haven't selected all of stack.
+    return null;
+  if(mPieces.isOccupied(tile1)) {  // Capture piece or stack plus blocked or teleport.
+    const subpiece1 = mPieces.hasOtherStackSubpiece(key2, tile1);
+    const subpiece2 = mPieces.hasOtherStackSubpiece(key2, tile1);
+    console.log("*** subpiece1", subpiece1);
+    console.log("*** subpiece2", subpiece2);
+    if(      stackA && subpiece1) fissType = "fissSJ";
+    else if(!stackA && subpiece1) fissType = "fissZJ";
+    else if( stackA && subpiece2) fissType = "fissJS";
+    else if(!stackA && subpiece2) fissType = "fissJZ";
+    else fissType = null;
+  }
+  else if(!stackA && piece3 && piece4) { // Too many targets.
+    return null;
+  }
+  else {  // Capture piece or stack plus move: fissM, fissM, fissM, fissM.
+    const subpiece1 = key1[3];
+    const subpiece2 = key2[3];
+    if(      stackA && subpiece1 === 'B') fissType = "fissSM";
+    else if(!stackA && subpiece1 === 'B') fissType = "fissZM";
+    else if( stackA && subpiece2 === 'B') fissType = "fissMS";
+    else if(!stackA && subpiece2 === 'B') fissType = "fissMZ";
+    else fissType = null;
+  }
+
+  return fissType;
+}
+
+function fissionCapture(piece1, piece2, piece3, piece4, piece5=null, piece6=null) {
+  console.log("cntrl: selections.js - fissionCapture(...)", piece1, piece2, piece3, piece4, piece5, piece6);
+
+  let fissType = null;  // fissCC, fissCS, fissSC, fissSS.
+  if(piece1.pos != piece2.pos)  return null;  // Not a stack.
+
+  let stackA = (                    (piece3.pos === piece4.pos)) ? [[piece3, piece4]] : null;
+  let stackB = (piece5 &&           (piece4.pos === piece5.pos)) ? [[piece4, piece5]] : null;
+  let stackC = (piece5 && piece6 && (piece5.pos === piece6.pos)) ? [[piece5, piece6]] : null;
+
+  if(!stackA && !stackB && !stackC && (piece5 || piece6)) return null;  // 3+ targets - sss|ssss.
+  else if(stackA && !stackC && (piece5 && piece6))        return null;  // 3 targets - Sss.
+  else if(stackB && piece6)                               return null;  // 3 targets - sSs.
+  else if(!stackA && !stackB && !stackC) {          // Can't capture subpieces - ss.
+    if((mPieces.piecesOnTile(piece3.vts).length === 2))   return null;
+    if((mPieces.piecesOnTile(piece4.vts).length === 2))   return null;
+    }
+  else if(stackA && piece5 && !stackC) {            // Can't capture subpieces - Ss.
+    if((mPieces.piecesOnTile(piece5.vts).length === 2))   return null;
+    }
+  else if(stackB) {                                 // Can't capture subpieces - sS.
+    if((mPieces.piecesOnTile(piece3.vts).length === 2))   return null;
+  }
+
+  if(     stackA && stackC)             fissType = "fissSS";
+  else if(stackA && !stackC && piece5)  fissType = "fissSC";
+  else if(stackB)                       fissType = "fissCS";
+  else if(!stackA && !stackC)           fissType = "fissCC";
+
+  return fissType;
+}
 // Seampoint: more local functions...
 
 // Move, decayMovs, promoteMov.
-// Teleports, capture, combines, decayCaps, promoteCap, uplifts.
-// StackCap.
-// StackMov, Enpassant.
-// FissionMM, castle, royal.
-// fissionCM, fissionMC.
-// fissionCC.
+// Combines,, promoteCap, uplifts.
+// Enpassant.
+// Castle, royal.
 // DoubleCastle.
 
