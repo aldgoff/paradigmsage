@@ -289,37 +289,43 @@ function assembleFissionLine(entry) {   // WKRP @KR4,4 x BKRP@KR5,5...
   const type2 = list2.key[3];
 
   const turnCol    = (String(turn).padStart(3)).padEnd(TURN_WIDTH);      // Columns.
-  const keyPrevCol = `${list1.key.slice(0,3)}S ${list1.prev}`.padEnd(7);
+  const keyPrevCol = `${list1.key.slice(0,3)}S ${list1.prev}`.padEnd(7);  // WKBB/D => WKBS.
+
+  let secondCol;                        // Second column: sub pieces to destinations.
+  const sub1 = `${list1.key[3]}`;         // B|D.
+  const sub2 = `${list2.key[3]}`;         // D|B.
+  const mov1 = `${list1.post.slice(1)}`;  // @KR1,1 => KR1,1.
+  const mov2 = `${list2.post.slice(1)}`;
+  // console.log("*** sub1", sub1);
+  // console.log("*** sub2", sub2);
+  // console.log("*** mov1", mov1);
+  // console.log("*** mov2", mov2);
+
+  //    -keyPrevCol-
+  //  1  WKBS @KB1,1 B-KB3,3 D-KB4,4        BKBS @KB8,8 D-KB6,6 B-KB5,5         fissMM,fissMM
+  //  2  WQBS @QB1,1 B-KB4,4 D-KB3,3        BQBS @QB8,8 D-KB5,5 B-KB6,6         fissJJ,fissJJ
+
 
   const bMovCol = (list1.key[3] === 'B') ? `${list1.post.slice(1)}` : `${list2.post.slice(1)}`;
   const dMovCol = (list1.key[3] === 'B') ? `${list2.post.slice(1)}` : `${list1.post.slice(1)}`;
 
-  let secondCol;
-
-  //    keyPrevCol
-  // 1  WKBS @KB1,1 S-KB3,3-KB4,4                              fissMM
-  // 1                             BKBS @KB8,8 S-KB6,6-KB5,5   fissMM
-  //
-  // 1  WKBS @KB1,1 S-KB3,3-KB4,4  BKBS @KB8,8 S-KB6,6-KB5,5   fissMM,fissMM
-  //                1234567890123              1234567890123
-  // 2  WKBS @KB1,1 S-KB3,3xP @KB4,4                              fissMM
-  // 2                             BKBS @KB8,8 S-KB6,6-KB5,5   fissMM
-  //
-  // 2  WKBS @KB1,1 S-KB3,3-KB4,4  BKBS @KB8,8 S-KB6,6-KB5,5   fissMM,fissMM
-  //                1234567890123              1234567890123
   if(     annotation === "fissMM") {
-    secondCol = `S-${bMovCol}-${dMovCol}`.padEnd(PIECE_WIDTH);
+    secondCol = `${sub1}-${mov1} ${sub2}-${mov2}`.padEnd(PIECE_WIDTH);
     }
   else if(annotation === "fissMJ") {
-    secondCol = `S-${bMovCol}-${dMovCol}`.padEnd(PIECE_WIDTH);
+    secondCol = `${sub1}-${mov1} ${sub2}-${mov2}`.padEnd(PIECE_WIDTH);
     }
   else if(annotation === "fissJM") {
-    secondCol = `S-${bMovCol}-${dMovCol}`.padEnd(PIECE_WIDTH);
+    secondCol = `${sub1}-${mov1} ${sub2}-${mov2}`.padEnd(PIECE_WIDTH);
     }
   else if(annotation === "fissJJ") {
-    secondCol = `S-${bMovCol}-${dMovCol}`.padEnd(PIECE_WIDTH);
+    secondCol = `${sub1}-${mov1} ${sub2}-${mov2}`.padEnd(PIECE_WIDTH);
   }
   else if(annotation === "fissMC") {
+    if(selections.getTileFirst())
+      secondCol = `B-${bCapCol} Dx${dCapCol}`.padEnd(PIECE_WIDTH);
+    else
+      secondCol = `Bx${bCapCol} D-${dCapCol}`.padEnd(PIECE_WIDTH);
     secondCol = `S-${bMovCol}x${dMovCol}`.padEnd(PIECE_WIDTH);
     }
   else if(annotation === "fissMS") {

@@ -152,6 +152,9 @@ title: "Dev"
   - 6/25/26 - Rest of base moves. Rest of non fission captures.
   - 6/26/26 - Fission, 16 permutations, just eligibility.
   - 6/27/27 - Fission moves (4): entries, lines, and pieces. Revert fission Z to C. Merge listing line pairs. 8/16 fissions, but B/D click order problematic.
+
+ ### Week 16:
+  - 6/28/26 - Correct click order for fission moves. Fission move listings.
    QC quad gambits, all gambits, all moves.
 
 ## Move Lines:

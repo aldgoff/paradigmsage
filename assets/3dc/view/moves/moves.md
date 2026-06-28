@@ -207,12 +207,13 @@
     "Gambits":[],"AdvSqs":[]}
 
 ## 6. Exhaustive Fissions
- ### 6.1 Secnario: Kingside Stacks
+ ### 6.1 Secnario: Kingside Stacks (fissMM) w/ Recombination (fissJJ) either click order
   ```
-    1  WKBS @KB1,1 S-KB3,3-KB4,4  BKBS @KB8,8 S-KB6,6-KB5,5   fissMM,fissMM
+    1  WKBS @KB1,1 B-KB3,3 D-KB4,4        BKBS @KB8,8 D-KB6,6 B-KB5,5         fissMM,fissMM
+    2  WQBS @QB1,1 B-KB4,4 D-KB3,3        BQBS @QB8,8 D-KB5,5 B-KB6,6         fissJJ,fissJJ
   ```
-  **2-2-0-0**
-    {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8-8-8","trayType":"Real","trayGap":0}},{"action":"startingPos"}],"Moves":[{"action":"fission","turn":1,"player":"White","list":[{"key":"WKBD","prev":"@KB1,1","post":"@KB4,4"},{"key":"WKBB","prev":"@KB1,1","post":"@KB3,3"}],"annotation":"fissMM"},{"action":"fission","turn":1,"player":"Black","list":[{"key":"BKBB","prev":"@KB8,8","post":"@KB6,6"},{"key":"BKBD","prev":"@KB8,8","post":"@KB5,5"}],"annotation":"fissMM"}],"Gambits":[],"AdvSqs":[]}
+  **2-4-0-0**
+    {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8-8-8","trayType":"Real","trayGap":0}},{"action":"startingPos"}],"Moves":[{"action":"fission","turn":1,"player":"White","list":[{"key":"WKBB","prev":"@KB1,1","post":"@KB3,3"},{"key":"WKBD","prev":"@KB1,1","post":"@KB4,4"}],"annotation":"fissMM"},{"action":"fission","turn":1,"player":"Black","list":[{"key":"BKBD","prev":"@KB8,8","post":"@KB6,6"},{"key":"BKBB","prev":"@KB8,8","post":"@KB5,5"}],"annotation":"fissMM"},{"action":"fission","turn":2,"player":"White","list":[{"key":"WQBB","prev":"@QB1,1","post":"@KB4,4"},{"key":"WQBD","prev":"@QB1,1","post":"@KB3,3"}],"annotation":"fissJJ"},{"action":"fission","turn":2,"player":"Black","list":[{"key":"BQBD","prev":"@QB8,8","post":"@KB5,5"},{"key":"BQBB","prev":"@QB8,8","post":"@KB6,6"}],"annotation":"fissJJ"}],"Gambits":[],"AdvSqs":[]}
 
     {"Setup":[
       {"action":"makeBoard",
@@ -222,14 +223,24 @@
     "Moves":[
       {"action":"fission","turn":1,"player":"White",
         "list":[
-          {"key":"WKBD","prev":"@KB1,1","post":"@KB4,4"},
-          {"key":"WKBB","prev":"@KB1,1","post":"@KB3,3"}],
+          {"key":"WKBB","prev":"@KB1,1","post":"@KB3,3"},
+          {"key":"WKBD","prev":"@KB1,1","post":"@KB4,4"}],
         "annotation":"fissMM"},
       {"action":"fission","turn":1,"player":"Black",
         "list":[
-          {"key":"BKBB","prev":"@KB8,8","post":"@KB6,6"},
-          {"key":"BKBD","prev":"@KB8,8","post":"@KB5,5"}],
-        "annotation":"fissMM"}],
+          {"key":"BKBD","prev":"@KB8,8","post":"@KB6,6"},
+          {"key":"BKBB","prev":"@KB8,8","post":"@KB5,5"}],
+        "annotation":"fissMM"},
+      {"action":"fission","turn":2,"player":"White",
+        "list":[
+          {"key":"WQBB","prev":"@QB1,1","post":"@KB4,4"},
+          {"key":"WQBD","prev":"@QB1,1","post":"@KB3,3"}],
+        "annotation":"fissJJ"},
+      {"action":"fission","turn":2,"player":"Black",
+        "list":[
+          {"key":"BQBD","prev":"@QB8,8","post":"@KB5,5"},
+          {"key":"BQBB","prev":"@QB8,8","post":"@KB6,6"}],
+        "annotation":"fissJJ"}],
     "Gambits":[],"AdvSqs":[]}
 
  ### 6.2 Secnario: JJ & MJ with Different B/D Order
@@ -320,7 +331,6 @@
 
  ### 6.5 Scenario: Stack captures two pieces.
   ```
-    1  WKBS @KB1,1 SxKB7,7xKB8,8  BQBS @QB8,8 SxQB1,1xQB2,2   fissCS,fissSC
     1  WKBS @KB1,1 BxR @KR8,8 DxP @KR7,7                            fissCC
   ```
   **2-1-0-0**
@@ -342,7 +352,13 @@
     "Gambits":[],"AdvSqs":[]}
 
  ### 6.6 Scenario: Stacks capture P and S (click B, then D), then simple move and capture, and vice versa.
+   1  WKBS @KB1,1 BxP @KB7,7 DxS @KB8,8      fissCS --- click D, then B: list is backwards.
+
   ```
+  1. BxS DxP   BxP DxS
+  2. R-KR4,4   PxR
+  3. NxP       R-KR5,4
+
   1  WKBS @KB1,1 BxS @KB8,8 DxP @KB7,7  BQBS @QB8,8 BxP @QB2,2 DxS @QB1,1   fissSC,fissCS
   2  WKRR @KR1,1 R-KR4,4                BKRP @KR7,7 PxR @KR4,4              move,capture
   3  WKNN @KN1,1 NxP @KR4,4             BKRR @KR8,8 R-KR5,5                 capture,move

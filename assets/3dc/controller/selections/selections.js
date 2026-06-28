@@ -33,9 +33,11 @@
 // --- Globals ---
   const pieceSelections = new Set();  // Holds piece key - "WKRP".
   const tileSelections  = new Set();  // Holds tile vts - [z,x,y].
+  let tileFirst = false; // Required for fission line listings.
   let annotation = "";
 // Seampoint: more globals...
 
+export function getTileFirst() { return tileFirst; }
 export function getAnnotation() { return annotation; }
 // --- UI ---
 export function getSelections() {               // O(1).
@@ -45,7 +47,7 @@ export function getPieceSelection() {           // O(1).
   return pieceSelections;
  }
 export function getTileSelection() {            // O(1).
-  return tileSelections ;
+  return tileSelections;
   }
 
 export function clearSelections() {
@@ -113,6 +115,11 @@ export function selectTile(vts) {               // O(3).
 
   const mesh = vTiles.getTileMesh(view.getContext().tileMap, vts);
   vBoards.decorateTile(mesh);
+
+  if(tileSelections.size === 1) {
+    if(pieceSelections.size === 2)  tileFirst = true;
+    else                            tileFirst = false;
+  }
   }
 
 export function deselectTile(vts) {             // O(3).
@@ -124,6 +131,11 @@ export function deselectTile(vts) {             // O(3).
 
   const mesh = vTiles.getTileMesh(view.getContext().tileMap, vts);
   vBoards.undecorateTile(mesh);
+
+  if(tileSelections.size === 1) {
+    if(pieceSelections.size === 2)  tileFirst = true;
+    else                            tileFirst = false;
+  }
   }
 
 export function clearTileSelections() {         // O(1).
@@ -134,6 +146,8 @@ export function clearTileSelections() {         // O(1).
 
   const panel = document.getElementById("diagnostics-window");
   panel.querySelector('[name="diags-tileSels"]').textContent = tileSelections.size;
+
+  tileFirst = false;
 }
 
 export function handlePieceClick(group) {       // O(1).
