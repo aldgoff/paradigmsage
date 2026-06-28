@@ -167,9 +167,9 @@ export function makeFissionEntry(payload, selections) {
     const pieces = pieceSelections.size;
     const tiles  = tileSelections.size;
     const annotation = cSelections.getAnnotation();
-    // console.log("*** pieces, tiles, annotation", pieces, tiles, annotation);
+    console.log("*** pieces, tiles, annotation", pieces, tiles, annotation);
 
-    const [key1, key2, key3, key4, key5, key6] = [...pieceSelections];              // Pieces.
+    const [key1,key2,key3,key4,key5,key6] = [...pieceSelections];   // Pieces.
     const piece1 = mPieces.getPieceList()[key1];
     const piece2 = mPieces.getPieceList()[key2];
     const piece3 = (pieces >= 3) ? mPieces.getPieceList()[key3] : null;
@@ -177,13 +177,18 @@ export function makeFissionEntry(payload, selections) {
     const piece5 = (pieces >= 5) ? mPieces.getPieceList()[key5] : null;
     const piece6 = (pieces >= 6) ? mPieces.getPieceList()[key6] : null;
 
-  const [tile1, tile2] = [...tileSelections];             // Tiles.
-  const dstStr1 = coords.vtsToBoard(tile1, size);
-  const dstStr2 = coords.vtsToBoard(tile2, size);
+    const [tile1, tile2] = [...tileSelections];                     // Tiles.
+    console.log("*** tile1, tile2", tile1, tile2);
+
+    const dstStr1 = tile1 ? coords.vtsToBoard(tile1, size) : null;
+    const dstStr2 = tile1 ? coords.vtsToBoard(tile2, size) : null;
+    console.log("*** dstStr1, dstStr2", dstStr1, dstStr2);
+
+    const prev1 = `@${piece1.pos}`;
+    const prev2 = `@${piece2.pos}`;
+    console.log("*** prev1, prev2", prev1, prev2);
 
   let list = [];                                          // Assemble.
-  const prev1 = `@${piece1.pos}`;
-  const prev2 = `@${piece2.pos}`;
 
   if(     annotation === "fissMM") {
     const first  = { key: key1, prev: `@${piece1.pos}`, post: `@${dstStr1}` };
@@ -205,29 +210,29 @@ export function makeFissionEntry(payload, selections) {
     const second = { key: key2, prev: `@${piece2.pos}`, post: `@${dstStr2}` };
     list = [first, second];   // list:[{},{}].
   }
-  else if(annotation === "fiss") {
-
+  else if(annotation === "fissMC") {
+    
     }
-  else if(annotation === "fiss") {
-
+  else if(annotation === "fissMS") {
+    
     }
-  else if(annotation === "fiss") {
-
+  else if(annotation === "fissJC") {
+    
     }
-  else if(annotation === "fiss") {
-
+  else if(annotation === "fissJS") {
+    
     }
-  else if(annotation === "fiss") {
-
+  else if(annotation === "fissCM") {
+    
     }
-  else if(annotation === "fiss") {
-
+  else if(annotation === "fissSM") {
+    
     }
-  else if(annotation === "fiss") {
-
+  else if(annotation === "fissCJ") {
+    
     }
-  else if(annotation === "fiss") {
-
+  else if(annotation === "fissSJ") {
+    //
   }
   else if(annotation === "fissCC") {
     const first  = { key: key1, prev: `@${piece1.pos}`, post: `@${piece3.pos}` }; // Piece.

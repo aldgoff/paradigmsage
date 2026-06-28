@@ -20,9 +20,10 @@
 
 // --- Globals ---
   let activeAnimation = null;
-  const TURN_WIDTH =  4;
-  const KEY_WIDTH  =  4;
-  const COL_WIDTH  = 26;
+  const TURN_WIDTH  =  4;
+  const KEY_WIDTH   =  4;
+  const PIECE_WIDTH = 22;
+  const COL_WIDTH   = 36;
 // Seampoint: more globals...
 
 // --- UI ---
@@ -176,7 +177,7 @@ export function cancelAnimation() {
 // Seampoint: more global functions...
 
 // --- Helpers ---
-  const blank = "                          ";
+  const blank = "                                  ";
 
 /* Notation Summary:
   * - => pure move
@@ -188,15 +189,15 @@ function assembleMoveLine(entry) {      // WKRP @KR2,2 - @KR4,4...
 
   const { action, turn, player, list, annotation } = entry;   // Parse.
   const lists = list.length;
-  const mover = list[0]; // [{key,prev,post}].
+  const list1 = list[0]; // [{key,prev,post}].
   const list2 = (lists === 2) ? list[1] : null;
 
-  const key = (lists === 2) ? `${mover.key.slice(0,3)}S` : mover.key;
+  const key = (lists === 2) ? `${list1.key.slice(0,3)}S` : list1.key;
 
   const turnCol  = (String(turn).padStart(3)).padEnd(TURN_WIDTH);      // Columns.
   const keyCol   = `${key}`.padEnd(KEY_WIDTH);
-  const srcCol   = `${mover.prev}`.padEnd(6);
-  const dstCol   = `${mover.post.slice(1)}`.padEnd(10);
+  const srcCol   = `${list1.prev}`.padEnd(6);
+  const dstCol   = `${list1.post.slice(1)}`.padEnd(10);
   const transCol = `${key[3]}-${dstCol}`;
 
   const row = `${keyCol} ${srcCol} ${transCol}`.padEnd(COL_WIDTH);   // Assemble.
@@ -287,27 +288,89 @@ function assembleFissionLine(entry) {   // WKRP @KR4,4 x BKRP@KR5,5...
   const type1 = list1.key[3];
   const type2 = list2.key[3];
 
-  const turnCol  = (String(turn).padStart(3)).padEnd(TURN_WIDTH);      // Columns.
-  const keyCol   = `${list1.key.slice(0,3)}S ${list1.prev}`.padEnd(7);
-  let piece2Col;
-  if(list1.key[3] === 'B')  // Stack moves show bishop first duke second.
-    piece2Col  = `S-${list1.post.slice(1)}-${list2.post.slice(1)}`.padEnd(7); // Strip off '@'.
-  else
-    piece2Col  = `S-${list2.post.slice(1)}-${list1.post.slice(1)}`.padEnd(7); // Strip off '@'.
+  const turnCol    = (String(turn).padStart(3)).padEnd(TURN_WIDTH);      // Columns.
+  const keyPrevCol = `${list1.key.slice(0,3)}S ${list1.prev}`.padEnd(7);
 
+  const bMovCol = (list1.key[3] === 'B') ? `${list1.post.slice(1)}` : `${list2.post.slice(1)}`;
+  const dMovCol = (list1.key[3] === 'B') ? `${list2.post.slice(1)}` : `${list1.post.slice(1)}`;
 
-  const row = `${keyCol} ${piece2Col}`.padEnd(COL_WIDTH);         // Assemble.
+  let secondCol;
 
+  //    keyPrevCol
+  // 1  WKBS @KB1,1 S-KB3,3-KB4,4                              fissMM
+  // 1                             BKBS @KB8,8 S-KB6,6-KB5,5   fissMM
+  //
+  // 1  WKBS @KB1,1 S-KB3,3-KB4,4  BKBS @KB8,8 S-KB6,6-KB5,5   fissMM,fissMM
+  //                1234567890123              1234567890123
+  // 2  WKBS @KB1,1 S-KB3,3xP @KB4,4                              fissMM
+  // 2                             BKBS @KB8,8 S-KB6,6-KB5,5   fissMM
+  //
+  // 2  WKBS @KB1,1 S-KB3,3-KB4,4  BKBS @KB8,8 S-KB6,6-KB5,5   fissMM,fissMM
+  //                1234567890123              1234567890123
+  if(     annotation === "fissMM") {
+    secondCol = `S-${bMovCol}-${dMovCol}`.padEnd(PIECE_WIDTH);
+    }
+  else if(annotation === "fissMJ") {
+    secondCol = `S-${bMovCol}-${dMovCol}`.padEnd(PIECE_WIDTH);
+    }
+  else if(annotation === "fissJM") {
+    secondCol = `S-${bMovCol}-${dMovCol}`.padEnd(PIECE_WIDTH);
+    }
+  else if(annotation === "fissJJ") {
+    secondCol = `S-${bMovCol}-${dMovCol}`.padEnd(PIECE_WIDTH);
+  }
+  else if(annotation === "fissMC") {
+    secondCol = `S-${bMovCol}x${dMovCol}`.padEnd(PIECE_WIDTH);
+    }
+  else if(annotation === "fissMS") {
+    secondCol = `S-${bMovCol}x${dMovCol}`.padEnd(PIECE_WIDTH);
+    }
+  else if(annotation === "fissJC") {
+    secondCol = `S-${bMovCol}x${dCapCol}`.padEnd(PIECE_WIDTH);
+    }
+  else if(annotation === "fissJS") {
+    secondCol = `S-${bMovCol}x${dMovCol}`.padEnd(PIECE_WIDTH);
+  }
+  else if(annotation === "fissCM") {
+    secondCol = `Sx${bMovCol}-${dMovCol}`.padEnd(PIECE_WIDTH);
+    }
+  else if(annotation === "fissSM") {
+    secondCol = `Sx${bMovCol}-${dMovCol}`.padEnd(PIECE_WIDTH);
+    }
+  else if(annotation === "fissCJ") {
+    secondCol = `Sx${bMovCol}-${dMovCol}`.padEnd(PIECE_WIDTH);
+    }
+  else if(annotation === "fissSJ") {
+    secondCol = `Sx${bMovCol}-${dMovCol}`.padEnd(PIECE_WIDTH);
+  }
+  else if(annotation === "fissCC") {
+    const bCapCol = (list1.key[3] === 'B') ? `${list3.key[3]} ${list1.post}` : `${list4.key[3]} ${list2.post}`;
+    const dCapCol = (list1.key[3] === 'B') ? `${list4.key[3]} ${list2.post}` : `${list3.key[3]} ${list1.post}`;
+    secondCol = `Bx${bCapCol} Dx${dCapCol}`.padEnd(PIECE_WIDTH);
+    }
+  else if(annotation === "fissCS") {
+    const bCapCol = `${list3.key[3]} ${list1.post}`;
+    const dCapCol = `S ${list2.post}`;
+    secondCol = `Bx${bCapCol} Dx${dCapCol}`.padEnd(PIECE_WIDTH);
+    }
+  else if(annotation === "fissSC") {
+    const bCapCol = `S ${list1.post}`;
+    const dCapCol = `${list5.key[3]} ${list2.post}`;
+    secondCol = `Bx${bCapCol} Dx${dCapCol}`.padEnd(PIECE_WIDTH);
+    }
+  else if(annotation === "fissSS") {
+    const bCapCol = `S ${list1.post}`;
+    const dCapCol = `S ${list2.post}`;
+    secondCol = `Bx${bCapCol} Dx${dCapCol}`.padEnd(PIECE_WIDTH);
+  }
+  
+  const row = `${keyPrevCol} ${secondCol}`.padEnd(COL_WIDTH);         // Assemble.
   const whiteCol = (player === "White") ? row: `${blank}`;
   const blackCol = (player === "Black") ? row: `${blank}`;
   const annotationsCol = `${annotation}`;
   const line = `${turnCol} ${whiteCol} ${blackCol} ${annotationsCol}`;
 
-  //    keyCol
-  // 1. WKBS @KB1,1 S-KB3,3/KB4,4    BKBS @KB2,2 S-KB3,3/KB4,4   fissMM, fissMM
-  //                1234567890123                1234567890123
-
-  return line;  // 2  WKRP @KR4,4 x BKRP@KR5,5...
+  return line;  // 2  WKBS... 
 }
 
 function assembleEnpassantLine(entry) { // WKRP @KR4,4 x BKRP@KR5,5...
