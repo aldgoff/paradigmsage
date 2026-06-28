@@ -163,83 +163,113 @@ export function makeFissionEntry(payload, selections) {
 
   const { action, player, pieceSelections, tileSelections, turn } = parse(payload, selections);
 
-    const size = cSetup.getCurrBoard().boardSize;           // Parse piece and tile info.
-    const pieces = pieceSelections.size;
-    const tiles  = tileSelections.size;
-    const annotation = cSelections.getAnnotation();
-    console.log("*** pieces, tiles, annotation", pieces, tiles, annotation);
+  const size = cSetup.getCurrBoard().boardSize;                 // Parse piece and tile info.
+  const pieces = pieceSelections.size;
+  const tiles  = tileSelections.size;
+  const annotation = cSelections.getAnnotation();
+  console.log("*** pieces, tiles, annotation", pieces, tiles, annotation);
 
-    const [key1,key2,key3,key4,key5,key6] = [...pieceSelections];   // Pieces.
-    const piece1 = mPieces.getPieceList()[key1];
-    const piece2 = mPieces.getPieceList()[key2];
-    const piece3 = (pieces >= 3) ? mPieces.getPieceList()[key3] : null;
-    const piece4 = (pieces >= 4) ? mPieces.getPieceList()[key4] : null;
-    const piece5 = (pieces >= 5) ? mPieces.getPieceList()[key5] : null;
-    const piece6 = (pieces >= 6) ? mPieces.getPieceList()[key6] : null;
+  const [key1,key2,key3,key4,key5,key6] = [...pieceSelections]; // Pieces.
+  const piece1 = mPieces.getPieceList()[key1];
+  const piece2 = mPieces.getPieceList()[key2];
+  const piece3 = (pieces >= 3) ? mPieces.getPieceList()[key3] : null;
+  const piece4 = (pieces >= 4) ? mPieces.getPieceList()[key4] : null;
+  const piece5 = (pieces >= 5) ? mPieces.getPieceList()[key5] : null;
+  const piece6 = (pieces >= 6) ? mPieces.getPieceList()[key6] : null;
 
-    const [tile1, tile2] = [...tileSelections];                     // Tiles.
-    console.log("*** tile1, tile2", tile1, tile2);
+  const [tile1, tile2] = [...tileSelections];                   // Tiles.
+  console.log("*** tile1, tile2", tile1, tile2);
 
-    const dstStr1 = tile1 ? coords.vtsToBoard(tile1, size) : null;
-    const dstStr2 = tile1 ? coords.vtsToBoard(tile2, size) : null;
-    console.log("*** dstStr1, dstStr2", dstStr1, dstStr2);
+  const dstStr1 = (tile1) ? coords.vtsToBoard(tile1, size) : null;
+  const dstStr2 = (tile2) ? coords.vtsToBoard(tile2, size) : null;
+  console.log("*** dstStr1, dstStr2", dstStr1, dstStr2);
 
-    const prev1 = `@${piece1.pos}`;
-    const prev2 = `@${piece2.pos}`;
-    console.log("*** prev1, prev2", prev1, prev2);
+  const prev1 = (piece1) ? `@${piece1.pos}` : null;
+  const prev2 = (piece2) ? `@${piece2.pos}` : null;
+  console.log("*** prev1, prev2", prev1, prev2);
 
-  let list = [];                                          // Assemble.
+  const movCap = cSelections.getTileFirst();
+
+  let list = [];                                                // Assemble.
 
   if(     annotation === "fissMM") {
-    const first  = { key: key1, prev: `@${piece1.pos}`, post: `@${dstStr1}` };
-    const second = { key: key2, prev: `@${piece2.pos}`, post: `@${dstStr2}` };
-    list = [first, second];   // list:[{},{}].
+    const first  = { key: key1, prev: `@${piece1.pos}`, post: `@${dstStr1}` };    // Tile.
+    const second = { key: key2, prev: `@${piece2.pos}`, post: `@${dstStr2}` };    // Tile.
+    list = [first, second];  // list:[{},{}].
     }
   else if(annotation === "fissMJ") {
-    const first  = { key: key1, prev: `@${piece1.pos}`, post: `@${dstStr1}` };
-    const second = { key: key2, prev: `@${piece2.pos}`, post: `@${dstStr2}` };
-    list = [first, second];   // list:[{},{}].
+    const first  = { key: key1, prev: `@${piece1.pos}`, post: `@${dstStr1}` };    // Tile.
+    const second = { key: key2, prev: `@${piece2.pos}`, post: `@${dstStr2}` };    // Tile.
+    list = [first, second];  // list:[{},{}].
     }
   else if(annotation === "fissJM") {
-    const first  = { key: key1, prev: `@${piece1.pos}`, post: `@${dstStr1}` };
-    const second = { key: key2, prev: `@${piece2.pos}`, post: `@${dstStr2}` };
-    list = [first, second];   // list:[{},{}].
+    const first  = { key: key1, prev: `@${piece1.pos}`, post: `@${dstStr1}` };    // Tile.
+    const second = { key: key2, prev: `@${piece2.pos}`, post: `@${dstStr2}` };    // Tile.
+    list = [first, second];  // list:[{},{}].
     }
   else if(annotation === "fissJJ") {
-    const first  = { key: key1, prev: `@${piece1.pos}`, post: `@${dstStr1}` };
-    const second = { key: key2, prev: `@${piece2.pos}`, post: `@${dstStr2}` };
-    list = [first, second];   // list:[{},{}].
+    const first  = { key: key1, prev: `@${piece1.pos}`, post: `@${dstStr1}` };    // Tile.
+    const second = { key: key2, prev: `@${piece2.pos}`, post: `@${dstStr2}` };    // Tile.
+    list = [first, second];  // list:[{},{}].
   }
   else if(annotation === "fissMC") {
-    
+    const first  = { key: key1, prev: `@${piece1.pos}`, post: `@${dstStr1}` };    // Tile.
+    const second = { key: key2, prev: `@${piece2.pos}`, post: `@${piece3.pos}` }; // Piece.
+    const third  = { key: key3, prev: `@${piece3.pos}`, post: `~${piece3.home.trayPos}` };
+    list = [first, second, third];  // list:[{},{},{}].
     }
   else if(annotation === "fissMS") {
-    
+    const first  = { key: key1, prev: `@${piece1.pos}`, post: `@${dstStr1}` };    // Tile.
+    const second = { key: key2, prev: `@${piece2.pos}`, post: `@${piece3.pos}` }; // Piece.
+    const third  = { key: key3, prev: `@${piece3.pos}`, post: `~${piece3.home.trayPos}` };
+    const fourth = { key: key4, prev: `@${piece4.pos}`, post: `~${piece4.home.trayPos}` };
+    list = [first, second, third, fourth];  // list:[{},{},{},{}].
     }
   else if(annotation === "fissJC") {
-    
+    const first  = { key: key1, prev: `@${piece1.pos}`, post: `@${dstStr1}` };    // Tile.
+    const second = { key: key2, prev: `@${piece2.pos}`, post: `@${piece3.pos}` }; // Piece.
+    const third  = { key: key3, prev: `@${piece3.pos}`, post: `~${piece3.home.trayPos}` };
+    list = [first, second, third];  // list:[{},{},{}].
     }
   else if(annotation === "fissJS") {
-    
-    }
+    const first  = { key: key1, prev: `@${piece1.pos}`, post: `@${dstStr1}` };    // Tile.
+    const second = { key: key2, prev: `@${piece2.pos}`, post: `@${piece3.pos}` }; // Piece.
+    const third  = { key: key3, prev: `@${piece3.pos}`, post: `~${piece3.home.trayPos}` };
+    const fourth = { key: key4, prev: `@${piece4.pos}`, post: `~${piece4.home.trayPos}` };
+    list = [first, second, third, fourth];  // list:[{},{},{},{}].
+  }
   else if(annotation === "fissCM") {
-    
+    const first  = { key: key1, prev: `@${piece1.pos}`, post: `@${piece3.pos}` }; // Piece.
+    const second = { key: key2, prev: `@${piece2.pos}`, post: `@${dstStr1}` };    // Tile.
+    const third  = { key: key3, prev: `@${piece3.pos}`, post: `~${piece3.home.trayPos}` };
+    list = [first, second, third];  // list:[{},{},{}].
     }
   else if(annotation === "fissSM") {
-    
+    const first  = { key: key1, prev: `@${piece1.pos}`, post: `@${piece3.pos}` }; // Piece.
+    const second = { key: key2, prev: `@${piece2.pos}`, post: `@${dstStr1}` };    // Tile.
+    const third  = { key: key3, prev: `@${piece3.pos}`, post: `~${piece3.home.trayPos}` };
+    const fourth = { key: key4, prev: `@${piece4.pos}`, post: `~${piece4.home.trayPos}` };
+    list = [first, second, third, fourth];  // list:[{},{},{},{}].
     }
   else if(annotation === "fissCJ") {
-    
+    const first  = { key: key1, prev: `@${piece1.pos}`, post: `@${piece3.pos}` }; // Piece.
+    const second = { key: key2, prev: `@${piece2.pos}`, post: `@${dstStr1}` };    // Tile.
+    const third  = { key: key3, prev: `@${piece3.pos}`, post: `~${piece3.home.trayPos}` };
+    list = [first, second, third];  // list:[{},{},{}].
     }
   else if(annotation === "fissSJ") {
-    //
+    const first  = { key: key1, prev: `@${piece1.pos}`, post: `@${piece3.pos}` }; // Piece.
+    const second = { key: key2, prev: `@${piece2.pos}`, post: `@${dstStr1}` };    // Tile.
+    const third  = { key: key3, prev: `@${piece3.pos}`, post: `~${piece3.home.trayPos}` };
+    const fourth = { key: key4, prev: `@${piece4.pos}`, post: `~${piece4.home.trayPos}` };
+    list = [first, second, third, fourth];  // list:[{},{},{},{}].
   }
   else if(annotation === "fissCC") {
     const first  = { key: key1, prev: `@${piece1.pos}`, post: `@${piece3.pos}` }; // Piece.
     const second = { key: key2, prev: `@${piece2.pos}`, post: `@${piece4.pos}` }; // Piece.
     const third  = { key: key3, prev: `@${piece3.pos}`, post: `~${piece3.home.trayPos}` };
     const fourth = { key: key4, prev: `@${piece4.pos}`, post: `~${piece4.home.trayPos}` };
-    list = [first, second, third, fourth];   // list:[{},{},{},{}].
+    list = [first, second, third, fourth];  // list:[{},{},{},{}].
     }
   else if(annotation === "fissCS") {
     const first  = { key: key1, prev: `@${piece1.pos}`, post: `@${piece3.pos}` }; // Piece.
@@ -247,7 +277,7 @@ export function makeFissionEntry(payload, selections) {
     const third  = { key: key3, prev: `@${piece3.pos}`, post: `~${piece3.home.trayPos}` }; // Piece.
     const fourth = { key: key4, prev: `@${piece4.pos}`, post: `~${piece4.home.trayPos}` }; // Stack.
     const fifth  = { key: key5, prev: `@${piece5.pos}`, post: `~${piece5.home.trayPos}` };
-    list = [first, second, third, fourth, fifth];   // list:[{},{},{},{},{}].
+    list = [first, second, third, fourth, fifth];  // list:[{},{},{},{},{}].
     }
   else if(annotation === "fissSC") {
     const first  = { key: key1, prev: `@${piece1.pos}`, post: `@${piece3.pos}` }; // Stack.
@@ -270,13 +300,9 @@ export function makeFissionEntry(payload, selections) {
     throw new Error(`Unknown fission annotation ${annotation}.`);
   }
 
-  // const listS = { key: key1, prev, post: post1 };  // list:[{key,prev,post}]
-  // const listB = { key: key2, prev, post: post2 };  // list:[{key,prev,post}]
-  // const list = [listS, listB];
-
-  cleanupSelections();                                    // Cleanup.
+  cleanupSelections();                                          // Cleanup.
   
-  return { action, turn, player, list, annotation };      // Entry.
+  return { action, turn, player, list, annotation };            // Entry.
   }
 
 export function makeEnpassantEntry(payload, selections) {

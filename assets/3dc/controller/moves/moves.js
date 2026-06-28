@@ -330,69 +330,56 @@ function forewardFission(entry) {     // Fission.
   const [, dstStr1] = list1.post.split("@");    // Subpiece 1 destination.
   const [, dstStr2] = list2.post.split("@");    // Subpiece 1 destination.
 
-  if(     annotation === "fissMM") {
-    mPieces.movePieceTileToTile(list1.key, dstStr1);
-    mPieces.movePieceTileToTile(list2.key, dstStr2);
-    }
-  else if(annotation === "fissMJ") {
-    mPieces.movePieceTileToTile(list1.key, dstStr1);
-    mPieces.movePieceTileToTile(list2.key, dstStr2);
-    }
-  else if(annotation === "fissJM") {
-    mPieces.movePieceTileToTile(list1.key, dstStr1);
-    mPieces.movePieceTileToTile(list2.key, dstStr2);
-    }
-  else if(annotation === "fissJJ") {
-    mPieces.movePieceTileToTile(list1.key, dstStr1);
-    mPieces.movePieceTileToTile(list2.key, dstStr2);
-  }
+  mPieces.movePieceTileToTile(list1.key, dstStr1);
+  mPieces.movePieceTileToTile(list2.key, dstStr2);
+
+  if(     annotation === "fissMM") {}
+  else if(annotation === "fissMJ") {}
+  else if(annotation === "fissJM") {}
+  else if(annotation === "fissJJ") {}
   else if(annotation === "fissMC") {
-    
+    mPieces.movePieceFromBoardToTray(list3.key);
     }
   else if(annotation === "fissMS") {
-    
+    mPieces.movePieceFromBoardToTray(list3.key);
+    mPieces.movePieceFromBoardToTray(list4.key);
     }
   else if(annotation === "fissJC") {
-    
+    mPieces.movePieceFromBoardToTray(list3.key);
     }
   else if(annotation === "fissJS") {
-    
-    }
+    mPieces.movePieceFromBoardToTray(list3.key);
+    mPieces.movePieceFromBoardToTray(list4.key);
+   }
   else if(annotation === "fissCM") {
-    
+    mPieces.movePieceFromBoardToTray(list3.key);
     }
   else if(annotation === "fissSM") {
-    
+    mPieces.movePieceFromBoardToTray(list3.key);
+    mPieces.movePieceFromBoardToTray(list4.key);
     }
   else if(annotation === "fissCJ") {
-    
+    mPieces.movePieceFromBoardToTray(list3.key);
     }
   else if(annotation === "fissSJ") {
-    //
+    mPieces.movePieceFromBoardToTray(list3.key);
+    mPieces.movePieceFromBoardToTray(list4.key);
   }
   else if(annotation === "fissCC") {
-    mPieces.movePieceTileToTile(list1.key, dstStr1);
-    mPieces.movePieceTileToTile(list2.key, dstStr2);
     mPieces.movePieceFromBoardToTray(list3.key);
     mPieces.movePieceFromBoardToTray(list4.key);
     }
   else if(annotation === "fissCS") {
-    mPieces.movePieceTileToTile(list1.key, dstStr1);
-    mPieces.movePieceTileToTile(list2.key, dstStr2);
     mPieces.movePieceFromBoardToTray(list3.key);
     mPieces.movePieceFromBoardToTray(list4.key);
     mPieces.movePieceFromBoardToTray(list5.key);
     }
   else if(annotation === "fissSC") {
-    mPieces.movePieceTileToTile(list1.key, dstStr1);
-    mPieces.movePieceTileToTile(list2.key, dstStr2);
     mPieces.movePieceFromBoardToTray(list3.key);
     mPieces.movePieceFromBoardToTray(list4.key);
     mPieces.movePieceFromBoardToTray(list5.key);
     }
   else if(annotation === "fissSS") {
-    mPieces.movePieceTileToTile(list1.key, dstStr1);
-    mPieces.movePieceTileToTile(list2.key, dstStr2);
     mPieces.movePieceFromBoardToTray(list3.key);
     mPieces.movePieceFromBoardToTray(list4.key);
     mPieces.movePieceFromBoardToTray(list5.key);
@@ -415,86 +402,66 @@ function backwardFission(entry) {
   const list5 = list[4];    // Possibly null.
   const list6 = list[5];    // Possibly null.
   const [, dstStr1] = list1.prev.split("@");    // Subpiece 1 prev position.
-  const [, dstStr2] = list2.prev.split("@");    // Subpiece 1 prev position.
+  const [, dstStr2] = list2.prev.split("@");    // Subpiece 2 prev position.
+  const srcStr3 = list3 ? list3.prev.split("@")[1] : null;
+  const srcStr4 = list4 ? list4.prev.split("@")[1] : null;
+  const srcStr5 = list5 ? list5.prev.split("@")[1] : null;
+  const srcStr6 = list6 ? list6.prev.split("@")[1] : null;
 
-  if(     annotation === "fissMM") {
-    mPieces.movePieceTileToTile(list1.key, dstStr1);
-    mPieces.movePieceTileToTile(list2.key, dstStr2);
-    }
-  else if(annotation === "fissMJ") {
-    mPieces.movePieceTileToTile(list1.key, dstStr1);
-    mPieces.movePieceTileToTile(list2.key, dstStr2);
-    }
-  else if(annotation === "fissJM") {
-    mPieces.movePieceTileToTile(list1.key, dstStr1);
-    mPieces.movePieceTileToTile(list2.key, dstStr2);
-    }
+  mPieces.movePieceTileToTile(list1.key, dstStr1);
+  mPieces.movePieceTileToTile(list2.key, dstStr2);
+
+  if(     annotation === "fissMM") {}
+  else if(annotation === "fissMJ") {}
+  else if(annotation === "fissJM") {}
   else if(annotation === "fissJJ") {
-    mPieces.movePieceTileToTile(list1.key, dstStr1);
-    mPieces.movePieceTileToTile(list2.key, dstStr2);
   }
   else if(annotation === "fissMC") {
-    
+    mPieces.movePieceFromTrayToBoard(list3.key, srcStr3);
     }
   else if(annotation === "fissMS") {
-    
+    mPieces.movePieceFromTrayToBoard(list3.key, srcStr3);
+    mPieces.movePieceFromTrayToBoard(list4.key, srcStr4);
     }
   else if(annotation === "fissJC") {
-    
+    mPieces.movePieceFromTrayToBoard(list3.key, srcStr3);
     }
   else if(annotation === "fissJS") {
-    
-    }
+    mPieces.movePieceFromTrayToBoard(list3.key, srcStr3);
+    mPieces.movePieceFromTrayToBoard(list4.key, srcStr4);
+  }
   else if(annotation === "fissCM") {
-    
+    mPieces.movePieceFromTrayToBoard(list3.key, srcStr3);
     }
   else if(annotation === "fissSM") {
-    
+    mPieces.movePieceFromTrayToBoard(list3.key, srcStr3);
+    mPieces.movePieceFromTrayToBoard(list4.key, srcStr4);
     }
   else if(annotation === "fissCJ") {
-    
+    mPieces.movePieceFromTrayToBoard(list3.key, srcStr3);
     }
   else if(annotation === "fissSJ") {
-    //
+    mPieces.movePieceFromTrayToBoard(list3.key, srcStr3);
+    mPieces.movePieceFromTrayToBoard(list4.key, srcStr4);
   }
   else if(annotation === "fissCC") {
-    mPieces.movePieceTileToTile(list1.key, dstStr1);
-    mPieces.movePieceTileToTile(list2.key, dstStr2);
-    const [, srcStr3] = list3.prev.split("@");
     mPieces.movePieceFromTrayToBoard(list3.key, srcStr3);
-    const [, srcStr4] = list4.prev.split("@");
     mPieces.movePieceFromTrayToBoard(list4.key, srcStr4);
     }
   else if(annotation === "fissCS") {
-    mPieces.movePieceTileToTile(list1.key, dstStr1);
-    mPieces.movePieceTileToTile(list2.key, dstStr2);
-    const [, srcStr3] = list3.prev.split("@");
     mPieces.movePieceFromTrayToBoard(list3.key, srcStr3);
-    const [, srcStr4] = list4.prev.split("@");
     mPieces.movePieceFromTrayToBoard(list4.key, srcStr4);
-    const [, srcStr5] = list5.prev.split("@");
     mPieces.movePieceFromTrayToBoard(list5.key, srcStr5);
     }
   else if(annotation === "fissSC") {
-    mPieces.movePieceTileToTile(list1.key, dstStr1);
-    mPieces.movePieceTileToTile(list2.key, dstStr2);
-    const [, srcStr3] = list3.prev.split("@");
     mPieces.movePieceFromTrayToBoard(list3.key, srcStr3);
-    const [, srcStr4] = list4.prev.split("@");
     mPieces.movePieceFromTrayToBoard(list4.key, srcStr4);
-    const [, srcStr5] = list5.prev.split("@");
     mPieces.movePieceFromTrayToBoard(list5.key, srcStr5);
     }
   else if(annotation === "fissSS") {
-    mPieces.movePieceTileToTile(list1.key, dstStr1);
-    mPieces.movePieceTileToTile(list2.key, dstStr2);
-    const [, srcStr3] = list3.prev.split("@");
     mPieces.movePieceFromTrayToBoard(list3.key, srcStr3);
-    const [, srcStr4] = list4.prev.split("@");
     mPieces.movePieceFromTrayToBoard(list4.key, srcStr4);
-    const [, srcStr5] = list5.prev.split("@");
     mPieces.movePieceFromTrayToBoard(list5.key, srcStr5);
-    const [, srcStr6] = list6.prev.split("@");
     mPieces.movePieceFromTrayToBoard(list6.key, srcStr6);
     }
   else {

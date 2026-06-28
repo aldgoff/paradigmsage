@@ -15,6 +15,7 @@
 // --- Dependencies ---
   import * as panels  from "../../panels/panels.js";
   import * as utils   from "../../../utils/utils.js";       // isSame(a,b).
+  import * as cSelections from "../../controller/selections/selections.js";
 
   import * as cSetup  from "../../controller/setup/setup.js";
 
@@ -413,43 +414,61 @@ function fissionMove(key1, key2, tile1, tile2) {
 
   annotation = fissType;
   return fissType;
-  }
+}
 
 function fissionSplit(key1, key2, piece3, tile1, piece4=null) {
   console.log("cntrl: selections.js - fissionSplit(...)", key1, key2, piece3, tile1, piece4);
 
   annotation = "";
-  let fissType = null;  // fissMC, fissMS, fissJC, fissJS, fissCM, fissSM, fissCJ, fissSJ
+  let fissType = null;  // fissMC, fissMS, fissJC, fissJS, fissCM, fissSM, fissCJ, fissSJ.
 
-  const piece1 = mPieces.getPieceList()[key1];
+  const piece1 = mPieces.getPieceList()[key1];  // The stack.
   const piece2 = mPieces.getPieceList()[key2];
-  if(piece1.pos != piece2.pos)  return null;  // Attacker not a stack.
+  if(piece1.pos != piece2.pos)  return null;    // Attacker not a stack.
 
-  let stackA = (piece4 && (piece3.pos === piece4.pos)) ? [[piece3, piece4]] : null;
-  if(!stackA && (mPieces.piecesOnTile(piece3.vts).length === 2))  // Haven't selected all of stack.
+  let stack = (piece4 && (piece3.pos === piece4.pos)) ? [[piece3, piece4]] : null;
+  if(!stack && (mPieces.piecesOnTile(piece3.vts).length === 2))  // Haven't selected all of stack.
     return null;
-  if(mPieces.isOccupied(tile1)) {  // Capture piece or stack plus blocked or teleport.
-    const subpiece1 = mPieces.hasOtherStackSubpiece(key2, tile1);
-    const subpiece2 = mPieces.hasOtherStackSubpiece(key2, tile1);
-    console.log("*** subpiece1", subpiece1);
-    console.log("*** subpiece2", subpiece2);
-    if(      stackA && subpiece1) fissType = "fissSJ";
-    else if(!stackA && subpiece1) fissType = "fissCJ";
-    else if( stackA && subpiece2) fissType = "fissJS";
-    else if(!stackA && subpiece2) fissType = "fissJC";
-    else fissType = null;
-  }
-  else if(!stackA && piece3 && piece4) { // Too many targets.
-    return null;
-  }
-  else {  // Capture piece or stack plus move: fissMC, fissMS, fissFM, fissSM.
-    const subpiece1 = key1[3];
-    const subpiece2 = key2[3];
-    if(      stackA && subpiece1 === 'B') fissType = "fissSM";
-    else if(!stackA && subpiece1 === 'B') fissType = "fissCM";
-    else if( stackA && subpiece2 === 'B') fissType = "fissMS";
-    else if(!stackA && subpiece2 === 'B') fissType = "fissMC";
-    else fissType = null;
+  
+  const sub1 = `${piece1.key[3]}`;        // B|D.
+  const sub2 = `${piece2.key[3]}`;        // D|B.
+
+  const movCap = cSelections.getTileFirst();
+
+  console.log("*** sub1", sub1);
+  console.log("*** sub2", sub2);
+  console.log("*** stack", stack);
+  console.log("*** movCap", movCap);
+
+  if(movCap) {  // First subpiece moves, second captures (fissMC, fissMS, fissJC, fissJS).
+    if(mPieces.isOccupied(tile1)) {   // fissJC, fissJS.
+      const subpiece1 = mPieces.hasOtherStackSubpiece(key1, tile1);
+      console.log("*** subpiece1", subpiece1);
+
+      if(     subpiece1 &&  stack) fissType = "fissJS";
+      else if(subpiece1 && !stack) fissType = "fissJC";
+      else fissType = null;
+      }
+    else {                            // fissMC, fissMS.
+      if(      stack) fissType = "fissMS";
+      else if(!stack) fissType = "fissMC";
+      else fissType = null;
+    }
+    }
+  else {        // First subpiece captures, second moves (fissCM, fissSM, fissCJ, fissSJ).
+    if(mPieces.isOccupied(tile1)) {   // fissCJ, fissSJ.
+      const subpiece2 = mPieces.hasOtherStackSubpiece(key2, tile1);
+      console.log("*** subpiece2", subpiece2);
+
+      if(      stack && subpiece2) fissType = "fissSJ";
+      else if(!stack && subpiece2) fissType = "fissCJ";
+      else fissType = null;
+    }
+    else {                            // fissCM, fissSM.
+      if(      stack) fissType = "fissSM";
+      else if(!stack) fissType = "fissCM";
+      else fissType = null;
+    }
   }
 
   annotation = fissType;

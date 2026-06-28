@@ -14,6 +14,7 @@
 
 // --- Dependencies ---
   import * as state  from "../../model/state/state.js";
+  import * as cSelections from "../../controller/selections/selections.js";
 
   import * as view   from "../../view/view.js";
 // Seampoint: more imports...
@@ -284,7 +285,7 @@ function assembleFissionLine(entry) {   // WKRP @KR4,4 x BKRP@KR5,5...
   const list3 = list[2];
   const list4 = list[3];
   const list5 = list[4];
-  const list6 = list[5];
+  const list6 = list[5];  // Unneeded.
   const type1 = list1.key[3];
   const type2 = list2.key[3];
 
@@ -296,78 +297,91 @@ function assembleFissionLine(entry) {   // WKRP @KR4,4 x BKRP@KR5,5...
   const sub2 = `${list2.key[3]}`;         // D|B.
   const mov1 = `${list1.post.slice(1)}`;  // @KR1,1 => KR1,1.
   const mov2 = `${list2.post.slice(1)}`;
+  const cap1 = `${list1.post}`;           // @KR8,8.
+  const cap2 = `${list2.post}`;
+  const piece1 = (list3) ? `${list3.key[3]}` : null;      // RBDSQNPKU.
+  const piece2 = (list4) ? `${list4.key[3]}` : null;
+  const piece3 = (list5) ? `${list5.key[3]}` : null;
+  const stack = 'S';
+  const movCap = cSelections.getTileFirst();
   // console.log("*** sub1", sub1);
   // console.log("*** sub2", sub2);
   // console.log("*** mov1", mov1);
   // console.log("*** mov2", mov2);
+  // console.log("*** cap1", cap1);
+  // console.log("*** cap2", cap2);
+  // console.log("*** piece1", piece1);
+  // console.log("*** piece2", piece2);
+  // console.log("*** piece3", piece3);
+  // console.log("*** movCap", movCap);
 
-  //    -keyPrevCol-
-  //  1  WKBS @KB1,1 B-KB3,3 D-KB4,4        BKBS @KB8,8 D-KB6,6 B-KB5,5         fissMM,fissMM
-  //  2  WQBS @QB1,1 B-KB4,4 D-KB3,3        BQBS @QB8,8 D-KB5,5 B-KB6,6         fissJJ,fissJJ
+  //     keyPrevCol  sub1-mov1 sub2-mov2
+  //  1  WKBS @KB1,1  B-KB3,3   D-KB4,4        BKBS @KB8,8 D-KB6,6 B-KB5,5         fissMM,fissMM
+  //  2  WQBS @QB1,1  B-KB4,4   D-KB3,3        BQBS @QB8,8 D-KB5,5 B-KB6,6         fissJJ,fissJJ
 
-
-  const bMovCol = (list1.key[3] === 'B') ? `${list1.post.slice(1)}` : `${list2.post.slice(1)}`;
-  const dMovCol = (list1.key[3] === 'B') ? `${list2.post.slice(1)}` : `${list1.post.slice(1)}`;
-
-  if(     annotation === "fissMM") {
+  if(     annotation === "fissMM") {  // B|D-KB3,3  B|D-KB4,4.
     secondCol = `${sub1}-${mov1} ${sub2}-${mov2}`.padEnd(PIECE_WIDTH);
     }
-  else if(annotation === "fissMJ") {
+  else if(annotation === "fissMJ") {  // B|D-KB3,3  B|D-KB4,4.
     secondCol = `${sub1}-${mov1} ${sub2}-${mov2}`.padEnd(PIECE_WIDTH);
     }
-  else if(annotation === "fissJM") {
+  else if(annotation === "fissJM") {  // B|D-KB3,3  B|D-KB4,4.
     secondCol = `${sub1}-${mov1} ${sub2}-${mov2}`.padEnd(PIECE_WIDTH);
     }
-  else if(annotation === "fissJJ") {
+  else if(annotation === "fissJJ") {  // B|D-KB3,3  B|D-KB4,4.
     secondCol = `${sub1}-${mov1} ${sub2}-${mov2}`.padEnd(PIECE_WIDTH);
   }
-  else if(annotation === "fissMC") {
-    if(selections.getTileFirst())
-      secondCol = `B-${bCapCol} Dx${dCapCol}`.padEnd(PIECE_WIDTH);
-    else
-      secondCol = `Bx${bCapCol} D-${dCapCol}`.padEnd(PIECE_WIDTH);
-    secondCol = `S-${bMovCol}x${dMovCol}`.padEnd(PIECE_WIDTH);
+  else if(annotation === "fissMC") {  // B|D-KB3,3  B|DxP.
+    secondCol = (movCap)
+      ? `${sub1}-${mov1} ${sub2}x${piece1} ${cap2}`.padEnd(PIECE_WIDTH)
+      : `${sub1}x${piece1} ${cap1} ${sub2}-${mov2}`.padEnd(PIECE_WIDTH);
     }
-  else if(annotation === "fissMS") {
-    secondCol = `S-${bMovCol}x${dMovCol}`.padEnd(PIECE_WIDTH);
+  else if(annotation === "fissMS") {  // B|D-KB3,3  B|DxS.
+    secondCol = (movCap)
+      ? `${sub1}-${mov1} ${sub2}x${stack} ${cap2}`.padEnd(PIECE_WIDTH)
+      : `${sub1}x${stack} ${cap1} ${sub2}-${mov2}`.padEnd(PIECE_WIDTH);
     }
-  else if(annotation === "fissJC") {
-    secondCol = `S-${bMovCol}x${dCapCol}`.padEnd(PIECE_WIDTH);
+  else if(annotation === "fissJC") {  // B|D-KB3,3  B|DxP.
+    secondCol = (movCap)
+      ? `${sub1}-${mov1} ${sub2}x${piece1} ${cap2}`.padEnd(PIECE_WIDTH)
+      : `${sub1}x${piece1} ${cap1} ${sub2}-${mov2}`.padEnd(PIECE_WIDTH);
     }
-  else if(annotation === "fissJS") {
-    secondCol = `S-${bMovCol}x${dMovCol}`.padEnd(PIECE_WIDTH);
+  else if(annotation === "fissJS") {  // B|D-KB3,3  B|DxS.
+    secondCol = (movCap)
+      ? `${sub1}-${mov1} ${sub2}x${stack} ${cap2}`.padEnd(PIECE_WIDTH)
+      : `${sub1}x${stack} ${cap1} ${sub2}-${mov2}`.padEnd(PIECE_WIDTH);
   }
-  else if(annotation === "fissCM") {
-    secondCol = `Sx${bMovCol}-${dMovCol}`.padEnd(PIECE_WIDTH);
+  else if(annotation === "fissCM") {  // B|DxP  B|D-KB3,3.
+    secondCol = (movCap)
+      ? `${sub1}x${piece1} ${cap1} ${sub2}-${mov2}`.padEnd(PIECE_WIDTH)
+      : `${sub1}-${mov1} ${sub2}x${piece1} ${cap2}`.padEnd(PIECE_WIDTH);
     }
-  else if(annotation === "fissSM") {
-    secondCol = `Sx${bMovCol}-${dMovCol}`.padEnd(PIECE_WIDTH);
+  else if(annotation === "fissSM") {  // B|DxS  B|D-KB3,3.
+    secondCol = (movCap)
+      ? `${sub1}x${stack} ${cap1} ${sub2}-${mov2}`.padEnd(PIECE_WIDTH)
+      : `${sub1}-${mov1} ${sub2}x${piece1} ${cap2}`.padEnd(PIECE_WIDTH);
     }
-  else if(annotation === "fissCJ") {
-    secondCol = `Sx${bMovCol}-${dMovCol}`.padEnd(PIECE_WIDTH);
+  else if(annotation === "fissCJ") {  // B|DxP  B|D-KB3,3.
+    secondCol = (movCap)
+      ? `${sub1}x${piece1} ${cap1} ${sub2}-${mov2}`.padEnd(PIECE_WIDTH)
+      : `${sub1}-${mov1} ${sub2}x${piece1} ${cap2}`.padEnd(PIECE_WIDTH);
     }
-  else if(annotation === "fissSJ") {
-    secondCol = `Sx${bMovCol}-${dMovCol}`.padEnd(PIECE_WIDTH);
+  else if(annotation === "fissSJ") {  // B|DxS  B|D-KB3,3.
+    secondCol = (movCap)
+      ? `${sub1}x${stack} ${cap1} ${sub2}-${mov2}`.padEnd(PIECE_WIDTH)
+      : `${sub1}-${mov1} ${sub2}x${piece1} ${cap2}`.padEnd(PIECE_WIDTH);
   }
-  else if(annotation === "fissCC") {
-    const bCapCol = (list1.key[3] === 'B') ? `${list3.key[3]} ${list1.post}` : `${list4.key[3]} ${list2.post}`;
-    const dCapCol = (list1.key[3] === 'B') ? `${list4.key[3]} ${list2.post}` : `${list3.key[3]} ${list1.post}`;
-    secondCol = `Bx${bCapCol} Dx${dCapCol}`.padEnd(PIECE_WIDTH);
+  else if(annotation === "fissCC") {  // B|DxP  B|DxP.
+    secondCol = `${sub1}x${piece1} ${cap1} ${sub2}x${piece2} ${cap2}`.padEnd(PIECE_WIDTH);
     }
-  else if(annotation === "fissCS") {
-    const bCapCol = `${list3.key[3]} ${list1.post}`;
-    const dCapCol = `S ${list2.post}`;
-    secondCol = `Bx${bCapCol} Dx${dCapCol}`.padEnd(PIECE_WIDTH);
+  else if(annotation === "fissCS") {  // B|DxP  B|DxS.
+    secondCol = `${sub1}x${piece1} ${cap1} ${sub2}x${stack} ${cap2}`.padEnd(PIECE_WIDTH);
     }
-  else if(annotation === "fissSC") {
-    const bCapCol = `S ${list1.post}`;
-    const dCapCol = `${list5.key[3]} ${list2.post}`;
-    secondCol = `Bx${bCapCol} Dx${dCapCol}`.padEnd(PIECE_WIDTH);
+  else if(annotation === "fissSC") {  // B|DxS  B|DxP.
+    secondCol = `${sub1}x${stack} ${cap1} ${sub2}x${piece3} ${cap2}`.padEnd(PIECE_WIDTH);
     }
-  else if(annotation === "fissSS") {
-    const bCapCol = `S ${list1.post}`;
-    const dCapCol = `S ${list2.post}`;
-    secondCol = `Bx${bCapCol} Dx${dCapCol}`.padEnd(PIECE_WIDTH);
+  else if(annotation === "fissSS") {  // B|DxS  B|DxS.
+    secondCol = `${sub1}x${stack} ${cap1} ${sub2}x${stack} ${cap2}`.padEnd(PIECE_WIDTH);
   }
   
   const row = `${keyPrevCol} ${secondCol}`.padEnd(COL_WIDTH);         // Assemble.
@@ -456,12 +470,8 @@ function assembleUpliftLine(entry) {
 // Seampoint: more local functions...
 
 // Move, decayMovs, promoteMov.
-// Teleports, capture, combines, decayCaps, promoteCap, uplifts.
-// StackCap.
-// StackMov, Enpassant.
+// Teleports, capture, promoteCap, uplifts.
+// Enpassant.
 // Castle, royal.
-// fissionCM, fissionMC.
-// fissionCC.
 // DoubleCastle.
 
-//WTF? Fission: capture and teleportation ?!?
