@@ -11,7 +11,6 @@
   import piecesData from "./pieces.json" assert { type: "json" };
   const piecesModule = piecesData.pieces_module;
   // ChangePoint:
-  const dash   = piecesModule.dash;
   const eight  = piecesModule.eight;
   const ten    = piecesModule.ten;
   const tens   = piecesModule.tens;
@@ -319,8 +318,7 @@ function createPiecesInTrays(entry) {
   const { action, boardSize, trayType, trayGap, boardSpec } = entry;
   
   // ChangePoint:
-  if(     boardSize === "8-8-8")    { createPiecesForDashBoard(trayGap); } 
-  else if(boardSize === "8x8x8")    { createPiecesForEightBoard(trayGap); } 
+  if(     boardSize === "8x8x8")    { createPiecesForEightBoard(trayGap); } 
   else if(boardSize === "10x8x8")   { createPiecesForTenBoards(trayGap);  }
   else if(boardSize === "10x10x10") { createPiecesForTensBoards(trayGap); }
   else { throw new Error(`Unknown board spec ${spec}.`); }
@@ -343,22 +341,6 @@ function destroyPieces(entry) {
 
   for(const key in pieceList) {
     delete pieceList[key];
-  }
-  }
-
-// ChangePoint:
-function createPiecesForDashBoard(trayGap) {
-  console.log("model: pieces.js - createPiecesForDashBoard(trayGap)", trayGap);
-  // console.log("***", dash);
-  
-  for(const player of ["White","Black"]) {
-    const tray = (player === "White") 
-    ? mTrays.getWhiteTray() 
-    : mTrays.getBlackTray();
-    const trayDef = dash.trays[player];
-    const offset  = dash.trays.offset + trayGap;
-
-    createPiecesForDashTray(tray, trayDef, offset);
   }
   }
 
@@ -404,29 +386,6 @@ function createPiecesForTensBoards(trayGap) {
     const offset  = tens.trays.offset;
 
     createPiecesForTray(tray, trayDef, offset + trayGap);
-  }
-  }
-
-// ChangePoint:
-function createPiecesForDashTray(tray, trayDef, offset=0) {
-  // console.log("model: pieces.js - createPiecesForTray(tray, trayDef, offset)", tray, trayDef, offset);
-
-  for(let k=0; k<10; k++) {
-    for(let i=0; i<2; i++) {
-      for(let j=0; j<2; j++) {
-        const key = trayDef[k][i][j];
-        if(!key) continue;
-
-        const side  = key[1];
-        const level = key[2];
-        const LL = (side === level) ? `${side}` : `${side}${level}`;
-        const pos = `${LL}${i+1},${j+1}`;  // "QR" <LL>i,j
-        const coords = [k,i,j];
-
-        pieceList[key] = createPiece(key, pos, coords, offset);
-        tray[k][i][j] = key;
-      }
-    }
   }
   }
 

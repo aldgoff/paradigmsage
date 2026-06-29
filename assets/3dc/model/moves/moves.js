@@ -148,7 +148,7 @@ export function makeCaptureEntry(payload, selections) {
     list = [first, second, third, fourth]; // list:[{key,prev,post}, {key,prev,post}, {key,prev,post}, {key,prev,post}].
     }
   else {
-    throw new Error(`Unknown annotation ${annotation}.`);
+    throw new Error(`Unknown capture annotation ${annotation}.`);
   }
 
   console.log("*** mPieces.getPieceList()", mPieces.getPieceList());

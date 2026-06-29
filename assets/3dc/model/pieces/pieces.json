@@ -1,6 +1,6 @@
 {
   "pieces_module": {
-    "dash": {
+    "eight": {
       "size": "8x8x8",
       "trays": {
         "size": "10x2x2",
@@ -41,57 +41,6 @@
           [["BKKK", null],
            [null  , "BKKP"]],
           [[null  , "BKBD"],
-           ["BKBB", "BKBP"]],
-          [["BKNN", null],
-           [null  , "BKNP"]],
-          [["BKRR", null],
-           [null  , "BKRP"]],
-          [[null  , null],
-           [null  , null]]
-        ]
-      }
-    },
-    "eight": {
-      "size": "8x8x8",
-      "trays": {
-        "size": "10x2x2",
-        "offset": 0,
-        "White": [
-          [[null  , null],
-           [null  , null]],
-          [["WQRR", null],
-           [null  , "WQRP"]],
-          [["WQNN", null],
-           [null  , "WQNP"]],
-          [["WQBS", "WQBD"],
-           ["WQBB", "WQBP"]],
-          [["WQQQ", null],
-           [null  , "WQQP"]],
-          [["WKKK", null],
-           [null  , "WKKP"]],
-          [["WKBS", "WKBD"],
-           ["WKBB", "WKBP"]],
-          [["WKNN", null],
-           [null  , "WKNP"]],
-          [["WKRR", null],
-           [null  , "WKRP"]],
-          [[null  , null],
-           [null  , null]]
-        ],
-        "Black": [
-          [[null  , null],
-           [null  , null]],
-          [["BQRR", null],
-           [null  , "BQRP"]],
-          [["BQNN", null],
-           [null  , "BQNP"]],
-          [["BQBS", "BQBD"],
-           ["BQBB", "BQBP"]],
-          [["BQQQ", null],
-           [null  , "BQQP"]],
-          [["BKKK", null],
-           [null  , "BKKP"]],
-          [["BKBS", "BKBD"],
            ["BKBB", "BKBP"]],
           [["BKNN", null],
            [null  , "BKNP"]],

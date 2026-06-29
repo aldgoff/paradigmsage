@@ -1,6 +1,6 @@
 {
   "setup_module": {
-    "dash": {
+    "eights": {
       "White": {
         "pieces": {
           "WKRR": "KR1,1",
@@ -35,52 +35,6 @@
           "BQQQ": "Q8,8",
           "BQBD": "QB8,8",
           "BQBB": "QB8,8",
-          "BQNN": "QN8,8",
-          "BQRR": "QR8,8"
-        },
-        "pawns": {
-          "BKRP": "KR7,7",
-          "BKNP": "KN7,7",
-          "BKBP": "KB7,7",
-          "BKKP": "K7,7",
-          "BQQP": "Q7,7",
-          "BQBP": "QB7,7",
-          "BQNP": "QN7,7",
-          "BQRP": "QR7,7"
-        }
-      }
-    },
-    "eights": {
-      "White": {
-        "pieces": {
-          "WKRR": "KR1,1",
-          "WKNN": "KN1,1",
-          "WKBS": "KB1,1",
-          "WKKK": "K1,1",
-          "WQQQ": "Q1,1",
-          "WQBS": "QB1,1",
-          "WQNN": "QN1,1",
-          "WQRR": "QR1,1"
-        },
-        "pawns": {
-          "WKRP": "KR2,2",
-          "WKNP": "KN2,2",
-          "WKBP": "KB2,2",
-          "WKKP": "K2,2",
-          "WQQP": "Q2,2",
-          "WQBP": "QB2,2",
-          "WQNP": "QN2,2",
-          "WQRP": "QR2,2"
-        }
-      },
-      "Black": {
-        "pieces": {
-          "BKRR": "KR8,8",
-          "BKNN": "KN8,8",
-          "BKBS": "KB8,8",
-          "BKKK": "K8,8",
-          "BQQQ": "Q8,8",
-          "BQBS": "QB8,8",
           "BQNN": "QN8,8",
           "BQRR": "QR8,8"
         },

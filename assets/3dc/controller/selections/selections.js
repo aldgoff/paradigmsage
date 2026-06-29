@@ -316,7 +316,7 @@ function manageMoveButtons() {
       }
     else if((type1 === 'K' && type2 === 'R'))        // Castle.
       panels.enableButton("castle", true);
-      annotation = "cstl";
+      // annotation = "cstal"; // TODO: strange bug.
     }
   else if(pieces === 3 && tiles === 1) {  // FissionCM, fissionMC.
     console.log("*** 3 x 1");
@@ -335,7 +335,7 @@ function manageMoveButtons() {
 
     if(piece3.pos === piece4.pos) {           // Target is a stack.
       panels.enableButton("capture", true);
-      annotation = "cstl";
+      annotation = "fissSS";
       }
     else {
       const fissCapture = fissionCapture(piece1, piece2, piece3, piece4);
