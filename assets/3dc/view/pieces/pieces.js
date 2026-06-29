@@ -135,7 +135,42 @@ export function placePiece(key) {      // "WKRR", ...
 
   // console.log("*** position: ", grid2[0], grid2[1]+zOffset+decoratorGap, grid2[2]); // Debug instrumention.
 
-  group.position.set(grid2[0], grid2[1]+zOffset+decoratorGap, grid2[2]);
+  // ChangePoint: stacked pieces
+  // Four scenarios:
+  // 1. ✅ Duke arrives      - lower duke in new location.
+  // 2. ✅ Duke joins bishop - raise duke in new location.
+  // 3. ✅ Bishop joins duke - raise duke in new location.
+  // 4. Bishop leaves     - lower duke in old location.
+  // 5. ✅ Fission - duke and bishop leave stack (covered by duke arrives).
+  if(key[3] === 'D') {
+    if(mPieces.hasOtherStackSubpiece(key, piece.vts)) {
+      console.log("*** Case 2: duke joins.", piece);  // Case 2: duke joins a bishop.
+      const stackOffset = 26;
+      setDukeHeight(group, piece.vts, zOffset+decoratorGap, stackOffset);
+    } 
+    else {              // Case 1: duke arrives.
+      console.log("*** Case 1: duke arrives.", piece);
+      const stackOffset = 0;
+      setDukeHeight(group, piece.vts, zOffset+decoratorGap, stackOffset);
+    }
+    }
+  else if(key[3] === 'B') {  // Case 3: bishop joins.
+    if(mPieces.hasOtherStackSubpiece(key, piece.vts)) {
+      console.log("*** Case 3: bishop joins.", piece);
+      const tiles = mPieces.piecesOnTile(piece.vts);  // [WKBB, WKBD].
+      const dukeKey = (tiles[0][3] === 'D') ? tiles[0] : tiles[1];
+      console.log("*** dukeKey", dukeKey);
+      const group = pieceGroups[dukeKey];                 // Fetch duke mesh (group).
+      const stackOffset = 26;
+      setDukeHeight(group, piece.vts, zOffset+decoratorGap, stackOffset);
+    }
+    console.log("*** place bishop", piece);
+    group.position.set(grid2[0], grid2[1]+zOffset+decoratorGap, grid2[2]);  // Place bishop
+    }
+  else {
+    console.log("*** place other", piece);
+    group.position.set(grid2[0], grid2[1]+zOffset+decoratorGap, grid2[2]);  // Place other pieces.
+  }
   // console.log("*** Piece moved to", loc, pos, "coords:", coords, "vts:", group.userData.vts);
   }
 
@@ -308,6 +343,8 @@ export function createPiece(key) {      // "WKRR", ...
 // --- Duke Helpers ---
 // ChangePoint: stacked pieces
 function setDukeHeight(group, vts, tileOffset, stackOffset=0) {
+  console.log("view : pieces.js - setDukeHeight(..., vts, tileOffset, stackOffset)", vts, tileOffset, stackOffset);
+
   const grid2 = coordsMaps.vts2pixels(vts)
 
   const zAdjust = tileOffset + stackOffset;

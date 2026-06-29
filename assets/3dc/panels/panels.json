@@ -35,9 +35,10 @@
             "This separation converts the move buttons into affordances, good user ergonomics. They are only enabled when eligible.",
             "Some moves require multiple piece and tile selections (castling, en passant, fission, etc.) - click order is important.",
             "To select a stack, select both the bishop and duke subpieces.",
-            "In a fission, first subpiece goes with the first target piece, or if no target, with the first tile.",
+            "In a fission, subpieces align with click order - always select the entire stack prior to tile or piece targets.",
             "To deselect, click again. To clear all selections, click off board.",
-            "This idiom is consistent and becomes intuitive pretty quickly."
+            "This idiom is consistent and becomes intuitive pretty quickly.",
+            "--- Relative coords, terse notation, and rule enforcement are future features. ---"
           ]
         },
       "gambitText": {

@@ -140,26 +140,6 @@ export function refreshPanel(move) {
     : document.querySelector('input[name="move-player"][value="White"]').checked = true;
 }
 
-export function refreshPanel1(move) {
-  console.log("view : moves.js - refreshPanel(move)", move);
-
-  const scroll = document.getElementById("move-list");    // Scroll list.
-  if (!scroll) return;
-
-  const count = state.getIndices().Moves;                 // Scroll text box.
-  const children = scroll.children;
-  for(let i = 0; i < children.length; i++) {
-    const opacity = (i < count)
-      ? "1.0"     // active
-      : "0.5";    // future
-    children[i].style.opacity = opacity;
-  }
-
-  (count%2 === 1)                                         // Player radio buttons.
-    ? document.querySelector('input[name="move-player"][value="Black"]').checked = true
-    : document.querySelector('input[name="move-player"][value="White"]').checked = true;
-}
-
 export function refreshEntry(entry) {
   console.log("view : moves.js - refreshEntry(entry):", entry);
 

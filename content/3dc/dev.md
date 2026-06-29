@@ -154,7 +154,7 @@ title: "Dev"
   - 6/27/27 - Fission moves (4): entries, lines, and pieces. Revert fission Z to C. Merge listing line pairs. 8/16 fissions, but B/D click order problematic.
 
  ### Week 16:
-  - 6/28/26 - Correct click order for fission moves. Fission move listings.
+  - 6/28/26 - Correct click order for fission moves. Fission move listings. Raise and lower duke (all but bishop leaves).
    QC quad gambits, all gambits, all moves.
 
 ## Move Lines:
