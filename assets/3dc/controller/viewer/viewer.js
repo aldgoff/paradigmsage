@@ -93,7 +93,7 @@ function handleShowTrays(payload) {   // Viewer handlers. Not subject to undo.
 
   const { trayGap, levelSep, range, speed } = payload;
 
-  vTrays.makeTrays(trayGap); // Makes trays anew.
+  vTrays.showTray();
   mViewer.buttonAffordances("canHide");
 
   }
@@ -103,7 +103,7 @@ function handleHideTrays(payload) {
 
   const { trayGap, levelSep, range, speed } = payload;
 
-  vTrays.destroyTrays();
+  vTrays.hideTray();
   mViewer.buttonAffordances("canShow");
   }
 

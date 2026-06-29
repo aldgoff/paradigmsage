@@ -168,6 +168,10 @@ export function buildForward(entry) {     // Redo.
     boardSpec = currBoard.boardSize;
 
     mSetup.buttonAffordances("boardDone");
+    mViewer.buttonAffordances("canHide");
+
+    vTrays.showTray();
+
     vSetup.refreshPanel(entry.nextBoard);         
     }
   else if(action === "placePiece") {

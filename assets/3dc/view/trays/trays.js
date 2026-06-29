@@ -88,6 +88,18 @@ export function setTrayGap(trayGap) {
 
   vPieces.reprojectTrayPieces(lastLevelSep, lastTrayGap);
 }
+
+export function showTray() {
+  whiteTrayGroup.visible = true;
+  blackTrayGroup.visible = true;
+  vPieces.showTrayPieces();
+}
+
+export function hideTray() {
+  whiteTrayGroup.visible = false;
+  blackTrayGroup.visible = false;
+  vPieces.hideTrayPieces();
+}
 // Seampoint: more global functions...
 
 // --- Helpers ---

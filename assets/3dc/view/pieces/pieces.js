@@ -48,10 +48,14 @@
   let currPiecesGroup = null;
   let pieceGroups = {};
   let lastTrayGap = 0;
+  const whiteTrayGroup = new THREE.Group();
+  const blackTrayGroup = new THREE.Group();
 // Seampoint: more globals...
 
 export function getCurrPiecesGroup() { return currPiecesGroup; }
 export function getPieceGroups() { return pieceGroups; }
+export function getWhiteTrayGroup() { return whiteTrayGroup; }
+export function getBlackTrayGroup() { return blackTrayGroup; }
 // --- UI ---
 export function initPieces(pieceList) {
   console.log("view : pieces.js - initPieces(pieceList)", pieceList);
@@ -85,7 +89,7 @@ export function destroyPieces(pieceList) {
 }
 
 export function placePieceInTray(key) {      // "WKRR", ...
-  // console.log("view : pieces.js - placePieceInTray(key)", key);
+  console.log("view : pieces.js - placePieceInTray(key)", key);
 
   const piece = mPieces.getPieceList()[key];              // Arg validation.
   if(!piece) throw Error(`No such piece ${key}.`);
@@ -94,6 +98,10 @@ export function placePieceInTray(key) {      // "WKRR", ...
   const player = key[0];  // W|B.                         // Parse arg.
 
   const group = pieceGroups[key];                         // Fetch the mesh (group).
+  if(key[0] ==='W')
+    whiteTrayGroup[key] = group;
+  else
+    blackTrayGroup[key] = group;
   group.userData.vts = home.trayVts;
 
   const tileSize = tiles.tileSize();                      // Place just above tile.
@@ -300,6 +308,27 @@ export function deHighlight(key) {
     }
   });
 }
+
+export function showTrayPieces() {
+  console.log("view : pieces.js - showTrayPieces()");
+
+  for(const key in pieceGroups) {
+      const piece = mPieces.getPieceList()[key];
+      if (piece.loc === "~")
+          pieceGroups[key].visible = true;
+  }
+}
+
+export function hideTrayPieces() {
+  console.log("view : pieces.js - hideTrayPieces()");
+
+  for(const key in pieceGroups) {
+      const piece = mPieces.getPieceList()[key];
+      if (piece.loc === "~")
+          pieceGroups[key].visible = false;
+  }
+}
+
 // Seampoint: more global functions...
 
 // --- Helpers ---
