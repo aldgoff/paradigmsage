@@ -19,8 +19,8 @@
             "Either create a puzzle or start a game.",
             "Puzzle: click on pieces and tiles; place, shift, or return, 'Freeze Puzzle' to accept.",
             "Game: click on 'Starting Position'.",
-            "Use undo/redo and rewind/FF (Game Panel) to change your mind (note scroll window, currently buggy).",
-            "(Factory trays not yet supported, same as Real trays.)",
+            "Use undo/redo and rewind/FF (Game Panel) to change your mind (note scroll window).",
+            "--- Factory trays not yet supported, same as Real trays. ---",
             ""
           ]
         },
@@ -52,7 +52,7 @@
             "Duplex moves (stride must be on a duplex tile, duke face quads only).",
             "Overlap moves (queen and stack only).",
             "Stride must be one of the four overlap tiles (brook, qtile, hotspot, Feynman).",
-            "INCOMPLETE, use with caution."
+            "--- INCOMPLETE, use with caution. ---"
           ]
         },
       "advsqText": {
@@ -99,7 +99,7 @@
           "title": "Compass Panel Help",
           "lines": [
             "Eventually will allow slip and slide of advsqs along planes and quads.",
-            "yada"
+            "--- new pedagogical feature. ---"
           ]
         },
       "viewerText": {

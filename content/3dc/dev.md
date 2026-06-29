@@ -155,7 +155,7 @@ title: "Dev"
 
  ### Week 16:
   - 6/28/26 - Correct click order for fission moves. Fission move listings. Raise and lower duke (all but bishop leaves).
-  - 6/29/26 - Finish en passant and castling. Fix duke height on level sep change. Remove the 8-8-8 dash board.
+  - 6/29/26 - Finish en passant and castling. Fix duke height on level sep change. Remove the 8-8-8 dash board. Nits.
    QC quad gambits, all gambits, all moves.
 
 ## Move Lines:
@@ -403,7 +403,6 @@ title: "Dev"
   "Gambits":[],
   "AdvSqs":[]}
 
-
 ## Example of Freeze Puzzle
   {"Setup":
     [{"action":"makeBoard",
@@ -415,7 +414,6 @@ title: "Dev"
     {"action":"returnPiece","key":"BKRR","prev":"@KR7,7","post":"~KR1,1"},
     {"action":"freezePuzzle","data":1}],
   "Moves":[],"Gambits":[],"AdvSqs":[]}
-
 
 ## Confirm Gambit Entries have an array of advsqs...
   - Looking at the comprehension pretty print, several incosistencies stand out for Gambits.
@@ -492,7 +490,6 @@ title: "Dev"
         "opacity":0.5}],
   "AdvSqs":[]}
 
-
 ## Review Gamit Entries...
   **2-5-1-0**
   {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"startingPos"}],
@@ -504,7 +501,6 @@ title: "Dev"
       [{"srcTile":[4,0,0],"quad":5,"perimeter":2,"stride":1,"area":9},{"srcTile":[4,0,0],"quad":6,"perimeter":2,"stride":1,"area":9}]],
       "opacity":0.5}],
   "AdvSqs":[]}
-
 
 ## Debug button Allowuances for Gambits.
   **2-5-0-9**
@@ -523,7 +519,6 @@ title: "Dev"
     "Moves":[{"action":"move","turn":1,"player":"White","key":"WKRR","prev":"@KR1,1","post":"@KR3,3"},{"action":"move","turn":1,"player":"Black","key":"BKRR","prev":"@KR8,8","post":"@KR6,6"},{"action":"move","turn":2,"player":"White","key":"WKRR","prev":"@KR3,3","post":"@KR4,4"}],
     "Gambits":[{"gambitId":0,"action":"quad","src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":2,"stride":3,"opacity":0.5},{"gambitId":1,"action":"quad","src":"Q4,4","srcTile":[0,0,0],"quad":13,"perimeter":3,"stride":1,"opacity":0.5},{"gambitId":2,"action":"quad","src":"Q4,4","srcTile":[0,0,0],"quad":37,"perimeter":3,"stride":1,"opacity":0.5}],
     "AdvSqs":[{"action":"place","src":"KR4,4","srcTile":[4,0,0],"quad":1,"perimeter":0,"stride":0,"opacity":0.5},{"src":"KR4,4","srcTile":[4,0,0],"quad":1,"perimeter":1,"stride":2,"opacity":0.5},{"src":"KR4,4","srcTile":[4,0,0],"quad":1,"perimeter":2,"stride":3,"opacity":0.5},{"src":"KR4,4","srcTile":[4,0,0],"quad":1,"perimeter":3,"stride":4,"opacity":0.5},{"src":"KR4,4","srcTile":[4,0,0],"quad":1,"perimeter":4,"stride":5,"opacity":0.5},{"src":"KR4,4","srcTile":[4,0,0],"quad":1,"perimeter":5,"stride":6,"opacity":0.5}]}
-
 
 ## Gambits Development
  ### Quads, rook, bishop, duke.
@@ -612,7 +607,6 @@ title: "Dev"
 ## Test less dimming on future entries.
  **2-3-3-0
   {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"startingPos"}],"Moves":[{"action":"move","turn":1,"player":"White","key":"WKRR","prev":"@KR1,1","post":"@KR3,3"},{"action":"move","turn":1,"player":"Black","key":"BKRR","prev":"@KR8,8","post":"@KR6,6"},{"action":"move","turn":2,"player":"White","key":"WKRR","prev":"@KR3,3","post":"@KR4,4"}],"Gambits":[{"Q":1,"src":"KB4,4","dst":"KB7,7","area":16,"advsqs":[{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":3,"stride":4,"opacity":0.5}]},{"Q":13,"src":"Q4,4","dst":"KN7,4","area":16,"advsqs":[{"src":"Q4,4","srcTile":[0,0,0],"quad":13,"perimeter":3,"stride":1,"opacity":0.5}]},{"Q":37,"src":"Q4,4","dst":"QR7,7","area":16,"advsqs":[{"src":"Q4,4","srcTile":[0,0,0],"quad":37,"perimeter":3,"stride":1,"opacity":0.5}]}],"AdvSqs":[]}
-
 
 ## 8x8x8 board with two piece placements, then a pair of moves - success.
   {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"placePiece","key":"WKRR","prev":"~KR1,1","post":"@KR2,2"},{"action":"placePiece","key":"BKRR","prev":"~KR1,1","post":"@KR7,7"},{"action":"freezePuzzle","data":2}],"Moves":[{"action":"move","turn":1,"player":"White","key":"WKRR","prev":"@KR2,2","post":"@KR3,3"},{"action":"move","turn":1,"player":"Black","key":"BKRR","prev":"@KR7,7","post":"@KR6,6"}],"Gambits":[],"AdvSqs":[]}

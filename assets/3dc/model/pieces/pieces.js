@@ -409,8 +409,7 @@ function createPiecesForTray(tray, trayDef, offset=0) {
       }
     }
   }
-  }
-
+}
 // Seampoint: more local functions...
 
 /* piece = {  // Field documentation.

@@ -684,6 +684,5 @@
       {"action":"startingPos"}],
     "Gambits":[],"AdvSqs":[]}
 
-
 ## Development - 
 
