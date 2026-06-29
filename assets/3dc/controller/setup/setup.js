@@ -38,6 +38,7 @@
   import * as vAdvsqs  from "../../view/advsqs/advsqs.js";
   import * as vPieces  from "../../view/pieces/pieces.js";    // Dehighlight selected pieces.
   import * as vTrays   from "../../view/trays/trays.js";
+  import * as mViewer  from "../../model/viewer/viewer.js";
 
   import * as invariants from "../../tests/core/invariants.js";
 // Seampoint: more imports...
@@ -309,6 +310,7 @@ function handleMakeBoard(payload) { // Setup handler. TODO: undo branching?
   vSetup.pushPanelLine(entry);                  // Upate panels.
   vSetup.refreshPanel(nextBoard);         
   mSetup.buttonAffordances("boardDone");
+  mViewer.buttonAffordances("canHide");
   }
 
 function handlePlacePiece(payload) {

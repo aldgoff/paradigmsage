@@ -97,7 +97,8 @@ function makeTrayGroup(side, entry) {
   const { action, boardSize, trayType, trayGap } = entry;
 
   const trayGroup = new window.THREE.Group();
-  trayGroup.name = `${side}Tray`;
+  trayGroup.name = `${side}`;
+  console.log("*** side, trayGroup.name, boardSize", side, trayGroup.name, boardSize);
 
   const trayData = traysModule[boardSize][side];
 
