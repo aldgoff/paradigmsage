@@ -30,7 +30,7 @@
 
 // --- UI ---
 export function init(playBoard) {
-  console.log("control.init(): 3dc/controller/controller.js");
+  console.log("cntrl: controller.js - init(playBoard):", playBoard);
 
   panels.init();
   model.init(playBoard);

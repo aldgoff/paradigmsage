@@ -1,6 +1,7 @@
 {
   "setup_module": {
     "eights": {
+      "pieceCount": 36,
       "White": {
         "pieces": {
           "WKRR": "KR1,1",
@@ -51,6 +52,7 @@
       }
     },
     "ten": {
+      "pieceCount": 32,
       "White": {
         "pieces": {
           "WKRR": "KR1,1",
@@ -105,6 +107,7 @@
       }
     },
     "tens": {
+      "pieceCount": 32,
       "White": {
         "pieces": {
           "WKRR": "KR1,1",

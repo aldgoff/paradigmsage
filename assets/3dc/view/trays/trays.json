@@ -7,6 +7,7 @@
       "maxGap": 3
     },
     "8x8x8": {
+      "pieceCount": 36,
       "White": {
         "pieces": {
           "KR": [ 4,-5,-5],
@@ -56,9 +57,8 @@
         }
       }
     },
-    "8x8x8b": {
-    },
     "10x8x8": {
+      "pieceCount": 32,
       "White": {
         "pieces": {
           "KR": [ 5,-5,-5],
@@ -113,6 +113,7 @@
       }
     },
     "10x10x10": {
+      "pieceCount": 32,
       "White": {
         "pieces": {
           "KR": [ 5,-6,-6],

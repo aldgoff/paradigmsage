@@ -10,7 +10,6 @@
 // --- Load JSON ---
   import piecesData from "./pieces.json" assert { type: "json" };
   const piecesModule = piecesData.pieces_module;
-  // ChangePoint:
   const eight  = piecesModule.eight;
   const ten    = piecesModule.ten;
   const tens   = piecesModule.tens;
@@ -167,7 +166,6 @@ export function movePieceFromBoardToTray(key) {
 
     const { loc, pos, coords, vts, home } = piece;              // Parse the piece fields.
 
-    // const { i, j } = mTrays.trayIndices(type, spec);                // Determine tray array indices.
     const [k, i, j] = piece.home.trayCoords;
     // console.log("*** Parse", k, i, j);
 

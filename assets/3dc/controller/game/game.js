@@ -59,6 +59,9 @@ export function panelDispatch(payload) {
 
 export function buildPayload(panel, action) {
   console.log("     ---------- cntrl: game.js");
+
+  // No input panel fields.
+
   return { action };
   }
 
@@ -295,8 +298,6 @@ function handleSave() {
 function rewindCurrentBuffer(buffer) {
   console.log("cntrl: game.js - rewindCurrentBuffer(buffer):", buffer);
 
-  const idx = state.getCurrentIndex(buffer);
-
   if(     buffer === "AdvSqs") {  // Snapshot buffer.
     const first = state.getState().AdvSqs[0];
     vAdvsqs.removeFromScene();
@@ -390,7 +391,7 @@ function fastForwardCurrentBuffer(buffer) {
   }
   }
 
-function processUndoBuffer(key, idx, N=1) {
+function processUndoBuffer(key, idx) {
   console.log("cntrl: game.js - processUndoBuffer(key, idx):", key, idx);
 
   if(     key === "AdvSqs") {
@@ -449,6 +450,7 @@ function processUndoBuffer(key, idx, N=1) {
     }
   else if(key === "Setup") {
     const entry = state.fetchCurrentState("Setup");
+
     if(entry) {
       state.setBufferIndex("Setup", idx-1);
       cSetup.buildBackward(entry);
@@ -464,7 +466,7 @@ function processUndoBuffer(key, idx, N=1) {
   }
   }
 
-function processRedoBuffer(key, idx, N=1) {
+function processRedoBuffer(key, idx) {
   console.log("cntrl: game.js - processRedoBuffer(key, idx):", key, idx);
 
   if(     key === "Setup") {
@@ -490,7 +492,6 @@ function processRedoBuffer(key, idx, N=1) {
       console.log("*** No next move.");
       return false;
     }
-    state.setBufferIndex("Moves", idx + 1);
     cMoves.buildForward(entry);
 
     cSetup.clearAllTileSelections();
@@ -506,7 +507,6 @@ function processRedoBuffer(key, idx, N=1) {
       console.log("*** No next gambit.");
       return false;
     }
-    state.setBufferIndex("Gambits", idx + 1);
 
     const group = view.buildAdvSqGroup(entry); // {srcTile: Array(3), quad: 1, perimeter: 0, stride: 0, opacity: 0.5}
     vGambits.getGambitGroups()[entry.gambitId] = group;

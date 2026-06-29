@@ -2,6 +2,7 @@
   "pieces_module": {
     "eight": {
       "size": "8x8x8",
+      "pieceCount": 36,
       "trays": {
         "size": "10x2x2",
         "offset": 0,
@@ -53,6 +54,7 @@
     },
     "ten": {
       "size": "10x8x8",
+      "pieceCount": 32,
       "trays": {
         "size": "10x2x2",
         "offset": 0,
@@ -104,6 +106,7 @@
     },
     "tens": {
       "size": "10x10x10",
+      "pieceCount": 32,
       "trays": {
         "size": "10x2x2",
         "offset": 1,
