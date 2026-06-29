@@ -155,7 +155,7 @@ title: "Dev"
 
  ### Week 16:
   - 6/28/26 - Correct click order for fission moves. Fission move listings. Raise and lower duke (all but bishop leaves).
-  - 6/29/26 - Finish en passant and castling.
+  - 6/29/26 - Finish en passant and castling. Fix duke height on level sep change.
    QC quad gambits, all gambits, all moves.
 
 ## Move Lines:

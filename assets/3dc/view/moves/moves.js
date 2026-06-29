@@ -62,7 +62,6 @@ export function pushPanelLine(entry) {
   const div = document.createElement("div");
   div.textContent = line;
 
-  // Changepoint:
   div.dataset.original = line;   // <-- Save pristine text.
 
   // Write to the scroll box.
@@ -105,10 +104,6 @@ export function refreshPanel(move) {
     }
 
     // Collapse Black into White.
-    // const whiteText = white.textContent;
-    // const blackText = black.textContent;
-
-    // Changepoint:
     const whiteText = white.dataset.original;
     const blackText = black.dataset.original;
 

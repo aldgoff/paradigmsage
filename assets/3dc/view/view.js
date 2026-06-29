@@ -24,6 +24,9 @@
   import * as decorators from "./decorators/decorators.js";
   import * as quads      from "../geometry/quads/quads.js";
 
+  import * as mPieces     from "../model/pieces/pieces.js";
+  import * as vPieces     from "../view/pieces/pieces.js";
+
   import * as vSelections from "./selections/selections.js";
   import * as cameras     from "../view/render/cameras.js";
   import * as vAdvsqs     from "../view/advsqs/advsqs.js";
@@ -174,12 +177,40 @@ export function buildDuplexGroup(entry) { // Params: srcTile, quad, perimeter, s
 }
 
 export function reprojectGroup(group, levelSep) {
+  // console.log("view : view.js - reprojectGroup(group, levelSep).", group, levelSep);
+
   group.traverse(obj => {
-    if (!obj.userData?.vts) return;
+    if(!obj.userData?.vts) return;
 
     const pixels = coordsMaps.vts2pixels(obj.userData.vts, levelSep);
-
     obj.position.set(...pixels);
+  });
+}
+
+export function reprojectPiecesGroup(group, levelSep) {
+  console.log("view : view.js - reprojectPiecesGroup(group, levelSep).", group, levelSep);
+
+  group.traverse(obj => {
+    if(!obj.userData?.vts) return;
+
+    const pixels = coordsMaps.vts2pixels(obj.userData.vts, levelSep);
+    obj.position.set(...pixels);
+
+    const keys = mPieces.piecesOnTile(obj.userData.vts);
+    if(keys.length === 2) {
+      let duke = (obj.userData.key[3] === 'D') ? keys[0] : null;
+
+      if(duke) {
+        if(mPieces.hasOtherStackSubpiece(duke, obj.userData.vts)) {
+          const tileSize = tiles.tileSize();                    // Place just above tile.
+          const tileHeight = tileSize[0];  // Z.
+          const zOffset = tileHeight / 2;
+          const decoratorGap = 2;
+          const stackOffset = 26; // TODO: magic number.
+          vPieces.setDukeHeight(obj, obj.userData.vts, zOffset+decoratorGap, stackOffset);
+        }
+      }
+    }
   });
 }
 // Seampoint: more global functions...

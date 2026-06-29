@@ -250,7 +250,7 @@ export function createPiece(key, pos, coords, trayOffset=0) { // Needed by promo
 }
 
 export function piecesOnTile(vts) {
-  console.log("model: pieces.js - piecesOnTile(vts)", vts);
+  // console.log("model: pieces.js - piecesOnTile(vts)", vts);
 
   const keys = [];
 
@@ -282,7 +282,7 @@ export function canOccupyTile(key, vts) {
   }
 
 export function hasOtherStackSubpiece(key, vts) {
-  console.log("model: pieces.js - hasOtherStackSubpiece(key, vts)", key, vts);
+  // console.log("model: pieces.js - hasOtherStackSubpiece(key, vts)", key, vts);
 
   return piecesOnTile(vts).some(k => k !== key && isStackMate(key, k));
   }
