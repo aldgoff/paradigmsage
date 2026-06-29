@@ -313,7 +313,8 @@ export function makeEnpassantEntry(payload, selections) {
   const size = cSetup.getCurrBoard().boardSize;           // Parse piece and tile info.
   const pieces = pieceSelections.size;
   const tiles  = tileSelections.size;
-  console.log("*** pieces, tiles", pieces, tiles);
+  const annotation = cSelections.getAnnotation();
+  console.log("*** pieces, tiles, annotation", pieces, tiles, annotation);
 
   const [attacker, captured] = [...pieceSelections];      // Pieces.
   const piece1 = mPieces.getPieceList()[attacker];
@@ -330,7 +331,7 @@ export function makeEnpassantEntry(payload, selections) {
 
   cleanupSelections();                                    // Cleanup.
   
-  return { action, turn, player, list };                  // Entry.
+  return { action, turn, player, list, annotation };      // Entry.
   }
 
 export function makeCastleEntry(payload, selections) {
@@ -341,7 +342,8 @@ export function makeCastleEntry(payload, selections) {
   const size = cSetup.getCurrBoard().boardSize;           // Parse piece and tile info.
   const pieces = pieceSelections.size;
   const tiles  = tileSelections.size;
-  console.log("*** pieces, tiles", pieces, tiles);
+  const annotation = cSelections.getAnnotation();
+  console.log("*** pieces, tiles, annotation", pieces, tiles, annotation);
 
   const [king, rook, rook2] = [...pieceSelections];       // Pieces.
   const piece1 = mPieces.getPieceList()[king];
@@ -370,7 +372,7 @@ export function makeCastleEntry(payload, selections) {
 
   cleanupSelections();                                    // Cleanup.
   
-  return { action, turn, player, list };                  // Entry.
+  return { action, turn, player, list, annotation };      // Entry.
   }
 
 export function makePromoteEntry(payload, selections) {
@@ -381,7 +383,8 @@ export function makePromoteEntry(payload, selections) {
   const size = cSetup.getCurrBoard().boardSize;           // Parse piece and tile info.
   const pieces = pieceSelections.size;
   const tiles  = tileSelections.size;
-  console.log("*** pieces, tiles", pieces, tiles);
+  const annotation = cSelections.getAnnotation();
+  console.log("*** pieces, tiles, annotation", pieces, tiles, annotation);
 
   const [key, upgrade] = [...pieceSelections];            // Pieces.
   const pawn = mPieces.getPieceList()[key];
@@ -398,7 +401,7 @@ export function makePromoteEntry(payload, selections) {
 
   cleanupSelections();                                    // Cleanup.
   
-  return { action, turn, player, list };                  // Entry.
+  return { action, turn, player, list, annotation };      // Entry.
 }
 
 export function makeUpliftEntry(payload, selections) {
@@ -409,7 +412,8 @@ export function makeUpliftEntry(payload, selections) {
   const size = cSetup.getCurrBoard().boardSize;           // Parse piece and tile info.
   const pieces = pieceSelections.size;
   const tiles  = tileSelections.size;
-  console.log("*** pieces, tiles", pieces, tiles);
+  const annotation = cSelections.getAnnotation();
+  console.log("*** pieces, tiles, annotation", pieces, tiles, annotation);
 
   const [pawn, subpiece] = [...pieceSelections];     // Pieces.
   const piece1 = mPieces.getPieceList()[pawn];
@@ -429,7 +433,7 @@ export function makeUpliftEntry(payload, selections) {
 
   cleanupSelections();                                    // Cleanup.
   
-  return { action, turn, player, list };                  // Entry.
+  return { action, turn, player, list, annotation };      // Entry.
   }
 
 // SeampointAdd: more Entry functions...

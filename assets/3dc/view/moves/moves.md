@@ -620,6 +620,57 @@
     "Gambits":[],"AdvSqs":[]}
 
 
+## 7. Compound Moves
+ ### 7.1 ✅ Scenario: En Passant and castle.
+  ```
+    1  WKNP @KN2,2 P-KN4,4                  BKNN @KN8,8 N-KR6,6                   move,move
+    2  WKNP @KN4,4 P-KN5,5                  BKBP @KB7,7 P-KB5,5                   move,move
+    3  WKNP @KN5,5 ExP @KB6,6               BKRR @KR8,8 K-KB7,8 R-K7,8            e.p.,cstl
+    4  WKQR @RR1,1 K-K2,1 KR-Q2,1 QR-KB2,1                                         dble
+  ```
+  **2-7-0-0**
+    {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8-8-8","trayType":"Real","trayGap":0}},{"action":"startingPos"}],"Moves":[{"action":"move","turn":1,"player":"White","list":[{"key":"WKNP","prev":"@KN2,2","post":"@KN4,4"}],"annotation":"move"},{"action":"move","turn":1,"player":"Black","list":[{"key":"BKNN","prev":"@KN8,8","post":"@KR6,6"}],"annotation":"move"},{"action":"move","turn":2,"player":"White","list":[{"key":"WKNP","prev":"@KN4,4","post":"@KN5,5"}],"annotation":"move"},{"action":"move","turn":2,"player":"Black","list":[{"key":"BKBP","prev":"@KB7,7","post":"@KB5,5"}],"annotation":"move"},{"action":"enpassant","turn":3,"player":"White","list":[{"key":"WKNP","prev":"@KN5,5","post":"@KB6,6"},{"key":"BKBP","prev":"@KB5,5","post":"~KB2,2"}],"annotation":"e.p."},{"action":"castle","turn":3,"player":"Black","list":[{"key":"BKKK","prev":"@K8,8","post":"@KB7,8"},{"key":"BKRR","prev":"@KR8,8","post":"@K7,8"}],"annotation":"cstl"},{"action":"castle","turn":4,"player":"White","list":[{"key":"WKKK","prev":"@K1,1","post":"@K2,1"},{"key":"WKRR","prev":"@KR1,1","post":"@Q2,1"},{"key":"WQRR","prev":"@QR1,1","post":"@KB2,1"}],"annotation":"dble"}],"Gambits":[],"AdvSqs":[]}
+
+    {"Setup":[
+      {"action":"makeBoard",
+        "prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},
+          "nextBoard":{"boardSize":"8-8-8","trayType":"Real","trayGap":0}},
+      {"action":"startingPos"}],
+    "Moves":[
+      {"action":"move","turn":1,"player":"White",
+        "list":[
+          {"key":"WKNP","prev":"@KN2,2","post":"@KN4,4"}],
+        "annotation":"move"},
+      {"action":"move","turn":1,"player":"Black",
+        "list":[
+          {"key":"BKNN","prev":"@KN8,8","post":"@KR6,6"}],
+        "annotation":"move"},
+      {"action":"move","turn":2,"player":"White",
+        "list":[
+          {"key":"WKNP","prev":"@KN4,4","post":"@KN5,5"}],
+        "annotation":"move"},
+      {"action":"move","turn":2,"player":"Black",
+        "list":[
+          {"key":"BKBP","prev":"@KB7,7","post":"@KB5,5"}],
+        "annotation":"move"},
+      {"action":"enpassant","turn":3,"player":"White",
+        "list":[
+          {"key":"WKNP","prev":"@KN5,5","post":"@KB6,6"},
+          {"key":"BKBP","prev":"@KB5,5","post":"~KB2,2"}],
+        "annotation":"e.p."},
+      {"action":"castle","turn":3,"player":"Black",
+        "list":[
+          {"key":"BKKK","prev":"@K8,8","post":"@KB7,8"},
+          {"key":"BKRR","prev":"@KR8,8","post":"@K7,8"}],
+        "annotation":"cstl"},
+      {"action":"castle","turn":4,"player":"White",
+          "list":[
+            {"key":"WKKK","prev":"@K1,1","post":"@K2,1"},
+            {"key":"WKRR","prev":"@KR1,1","post":"@Q2,1"},
+            {"key":"WQRR","prev":"@QR1,1","post":"@KB2,1"}],
+          "annotation":"dble"}],
+    "Gambits":[],"AdvSqs":[]}
+
 ## 9. Template
  ### 9.1 Scenario: () Stack.
   ```

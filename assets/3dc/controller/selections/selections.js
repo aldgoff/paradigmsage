@@ -244,13 +244,16 @@ function manageMoveButtons() {
     if(!mPieces.canOccupyTile(key1, tile1))
       return;
     panels.enableButton("move", true);
+    annotation = "move";
     }
   else if(pieces === 2 && tiles === 0) {  // Capture, decayCaps. promoteCap.
     console.log("*** 2 x 0");
     if(player1 != player2) {                              // CxC
       console.log("*** target", mPieces.piecesOnTile(piece2.vts).length);
-      if(mPieces.piecesOnTile(piece2.vts).length === 1)
+      if(mPieces.piecesOnTile(piece2.vts).length === 1) {
         panels.enableButton("capture", true);
+        annotation = "stack";
+      }
     }
     }
   else if(pieces === 3 && tiles === 0) {  // Stack captures.
@@ -260,11 +263,13 @@ function manageMoveButtons() {
      && (piece1.pos === piece2.pos)
      && (mPieces.piecesOnTile(piece3.vts).length === 1)) {
       panels.enableButton("capture", true);
+      annotation = "stack";
       }
     else if((player1 !=  player2 && player2 === player3)  // CxS.
      && ((key2[3] === 'B' && key3[3] === 'D') || (key2[3] === 'D' && key3[3] === 'B'))
      && (piece2.pos === piece3.pos)) {
       panels.enableButton("capture", true);
+      annotation = "stack";
     }
     }
   else if(pieces === 2 && tiles === 1) {  // Tele, join. StackMov, Enpassant.
@@ -273,43 +278,55 @@ function manageMoveButtons() {
     const piece2 = mPieces.getPieceList()[key2];
     if(     player1 != player2                  // En Passant.
       && type1  === 'P'
-      && type2  === 'P')
+      && type2  === 'P') {
       panels.enableButton("enpassant", true);
+      annotation = "e.p.";
+      }
     else if(player1 === player2                 // Stack.
       && ( type1  === 'D' && type2  === 'B'
         || type1  === 'B' && type2  === 'D')) {
       if(piece1.pos === piece2.pos) // Stack move.
         panels.enableButton("move", true);
       else {} // Fusion unspecified.
+      annotation = "stack";
       }
     else if(player1 === player2                 // Uplift.
       && ( type1  === 'P' && type2  === 'B'
         || type1  === 'P' && type2  === 'D')
       && lastCol(dstStr1, size, player1)
-      && piece2.pos === dstStr1)
+      && piece2.pos === dstStr1) {
       panels.enableButton("uplift", true);
+      annotation = "uplift";
+      }
     else if(player1 === player2                 // Promote.
       && promotable
       && type2 != 'P' 
-      && type2 != 'K')
+      && type2 != 'K') {
       panels.enableButton("promote", true);
+      annotation = "promote";
+      }
     }
   else if(pieces === 2 && tiles === 2) {  // FissionMM, castle, royal.
     console.log("*** 2 x 2");
     const fissMove = fissionMove(key1, key2, tile1, tile2);
     console.log("*** fissMove", fissMove);
-    if(fissMove)
+    if(fissMove) {
       panels.enableButton("fission", true);
+      annotation = fissMove;
+      }
     else if((type1 === 'K' && type2 === 'R'))        // Castle.
       panels.enableButton("castle", true);
+      annotation = "cstl";
     }
   else if(pieces === 3 && tiles === 1) {  // FissionCM, fissionMC.
     console.log("*** 3 x 1");
     if(key3[0] === key1[0]) return;     // Not an opponent ('W' != 'B').
     const fissSplit = fissionSplit(key1, key2, piece3, tile1);
     console.log("*** fissSplit", fissSplit);
-    if(fissSplit)
+    if(fissSplit) {
       panels.enableButton("fission", true);
+      annotation = fissSplit;
+    }
     }
   else if(pieces === 4 && tiles === 0) {  // FissionCC. SxS.
     console.log("*** 4 x 0");
@@ -318,12 +335,16 @@ function manageMoveButtons() {
 
     if(piece3.pos === piece4.pos) {           // Target is a stack.
       panels.enableButton("capture", true);
+      annotation = "cstl";
+      }
+    else {
+      const fissCapture = fissionCapture(piece1, piece2, piece3, piece4);
+      console.log("*** fissCapture", fissCapture);
+      if(fissCapture) {
+        panels.enableButton("fission", true);
+        annotation = fissCapture;
+      }
     }
-
-    const fissCapture = fissionCapture(piece1, piece2, piece3, piece4);
-    console.log("*** fissCapture", fissCapture);
-    if(fissCapture)
-      panels.enableButton("fission", true);
     }
   else if(pieces === 4 && tiles === 1) {  // Fission: SxS-M|S-MxS
     console.log("*** 4 x 1");
@@ -331,8 +352,10 @@ function manageMoveButtons() {
     if(player4 === player1) return;
     const fissSplit = fissionSplit(key1, key2, piece3, tile1, piece4);
     console.log("*** fissSplit", fissSplit);
-    if(fissSplit)
+    if(fissSplit) {
       panels.enableButton("fission", true);
+      annotation = fissSplit;
+    }
     }
   else if(pieces === 5 && tiles === 0) {  // Fission: SxSxC|SxCxS.
     console.log("*** 5 x 0");
@@ -341,8 +364,10 @@ function manageMoveButtons() {
     if(player5 === player1) return;
     const fissCapture = fissionCapture(piece1, piece2, piece3, piece4, piece5);
     console.log("*** fissCapture", fissCapture);
-    if(fissCapture)
+    if(fissCapture) {
       panels.enableButton("fission", true);
+      annotation = fissCapture;
+    }
     }
   else if(pieces === 6 && tiles === 0) {  // Fission: SxSxS.
     console.log("*** 6 x 0");
@@ -351,14 +376,17 @@ function manageMoveButtons() {
     if(player5 === player1) return;
     const fissCapture = fissionCapture(piece1, piece2, piece3, piece4, piece5, piece6);
     console.log("*** fissCapture", fissCapture);
-    if(fissCapture)
+    if(fissCapture) {
       panels.enableButton("fission", true);
+      annotation = fissCapture;
+    }
     }
   else if(pieces === 3 && tiles === 3) {  // DoubleCastle.
     console.log("*** 3 x 3");
     if(player1 != player2) return;
     if((type1 === 'K' && type2 === 'R' && type3 === 'R'))
       panels.enableButton("castle", true);
+      annotation = "dble";
     }
   }
 
@@ -414,7 +442,7 @@ function fissionMove(key1, key2, tile1, tile2) {
 
   annotation = fissType;
   return fissType;
-}
+  }
 
 function fissionSplit(key1, key2, piece3, tile1, piece4=null) {
   console.log("cntrl: selections.js - fissionSplit(...)", key1, key2, piece3, tile1, piece4);
@@ -510,9 +538,7 @@ function fissionCapture(piece1, piece2, piece3, piece4, piece5=null, piece6=null
 }
 // Seampoint: more local functions...
 
-// Move, decayMovs, promoteMov.
-// Combines,, promoteCap, uplifts.
-// Enpassant.
-// Castle, royal.
-// DoubleCastle.
+// PromoteMov.
+// PromoteCap, uplifts.
+// Castle, KQ-side, royal.
 

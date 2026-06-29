@@ -24,7 +24,8 @@
   const TURN_WIDTH  =  4;
   const KEY_WIDTH   =  4;
   const PIECE_WIDTH = 22;
-  const COL_WIDTH   = 36;
+  const COL_WIDTH   = 38;
+  const blank = "                                    ";
 // Seampoint: more globals...
 
 // --- UI ---
@@ -158,7 +159,6 @@ export function cancelAnimation() {
 // Seampoint: more global functions...
 
 // --- Helpers ---
-  const blank = "                                  ";
 
 /* Notation Summary:
   * - => pure move
@@ -254,7 +254,7 @@ function assembleCaptureLine(entry) {   // WKRP @KR4,4 x BKRP@KR5,5...
   const line = `${turnCol} ${whiteCol} ${blackCol} ${annotationsCol}`;
 
   return line;  // 1  WKRP @KR2,2 P-KR4,4    ....
-}
+  }
 
 function assembleFissionLine(entry) {   // WKRP @KR4,4 x BKRP@KR5,5...
   console.log("view : moves.js - assembleFissionLine(entry)", entry);
@@ -371,24 +371,25 @@ function assembleFissionLine(entry) {   // WKRP @KR4,4 x BKRP@KR5,5...
   const line = `${turnCol} ${whiteCol} ${blackCol} ${annotationsCol}`;
 
   return line;  // 2  WKBS... 
-}
+  }
 
-function assembleEnpassantLine(entry) { // WKRP @KR4,4 x BKRP@KR5,5...
+function assembleEnpassantLine(entry) { // WKNP @KN5,5 ExP @KB6,6 e.p. ...WKRP @KR4,4 x BKRP@KR5,5...
   console.log("view : moves.js - assembleEnpassantLine(entry)", entry);
 
   const { action, turn, player, list, annotation } = entry;   // Parse.
+
   const attacker = list[0]; // [{key,prev,post}].
   const captured = list[1]; // [{key,prev,post}].
 
   const turnCol  = (String(turn).padStart(3)).padEnd(TURN_WIDTH);      // Columns.
-  const keyCol   = `${attacker.key}`.padEnd(KEY_WIDTH);
-  const srcCol   = `${attacker.prev}`.padEnd(7);
-  const dstCol   = `${captured.key}${attacker.post}`.padEnd(10);
+  const keyPrevCol = `${attacker.key} ${attacker.prev}`.padEnd(7);  // WKNP @KN5,5.
+  const cap1 = `${attacker.post}`;           // @KN6,6.
+  const secondCol = `ExP ${cap1}`.padEnd(PIECE_WIDTH);
+  const row = `${keyPrevCol} ${secondCol}`.padEnd(COL_WIDTH);         // Assemble.
 
-  const row = `${keyCol} ${srcCol} x ${dstCol}`.padEnd(COL_WIDTH); // Assemble.
   const whiteCol = (player === "White") ? row: `${blank}`;
   const blackCol = (player === "Black") ? row: `${blank}`;
-  const annotationsCol = "ep";
+  const annotationsCol = `${annotation}`;
   const line = `${turnCol} ${whiteCol} ${blackCol} ${annotationsCol}`;
 
   return line;  // 2  WKRP @KR4,4 x BKRP@KR5,5...
@@ -402,15 +403,27 @@ function assembleCastleLine(entry) {    // WKRP @KR4,4 x BKRP@KR5,5...
   const rook  = list[1]; // [{key,prev,post}].
   const rook2 = (list.length === 3) ? list[2] : null; // [{key,prev,post}].
 
-  const turnCol  = (String(turn).padStart(3)).padEnd(TURN_WIDTH);      // Columns.
-  const kingCol  = `K${king.post}`.padEnd(7);
-  const rookCol  = `R${rook.post}`.padEnd(7);
-  const rook2Col = (list.length === 3) ? `R${rook2.post}`.padEnd(8) : "".padEnd(8);
+  const turnCol = (String(turn).padStart(3)).padEnd(TURN_WIDTH);      // Columns.
+  let row = "";
+  if((list.length === 3)) {  // Double castle.
+    const keyPrevCol = `${rook.key[0]}KQR @RR1,1`.padEnd(7);  // WKQR @KR1,1.
+    const mov1 = `${king.post.slice(1)}`;   // @K1,1 => K1,1.
+    const mov2 = `${rook.post.slice(1)}`;   // @KR1,1 => KR1,1.
+    const mov3 = `${rook2.post.slice(1)}`;  // @QR1,1 => QR1,1.
+    const secondCol = `K-${mov1} KR-${mov2} QR-${mov3}`.padEnd(PIECE_WIDTH);
+    row = `${keyPrevCol} ${secondCol}`.padEnd(COL_WIDTH);         // Assemble.
+  }
+  else {  // Single castle (kingside, queenside, royal)
+    const keyPrevCol = `${rook.key} ${rook.prev}`.padEnd(7);  // WKKR @KR1,1.
+    const mov1 = `${king.post.slice(1)}`;   // @K1,1 => K1,1.
+    const mov2 = `${rook.post.slice(1)}`;   // @KR1,1 => KR1,1.
+    const secondCol = `K-${mov1} R-${mov2}`.padEnd(PIECE_WIDTH);
+    row = `${keyPrevCol} ${secondCol}`.padEnd(COL_WIDTH);         // Assemble.
+  }
 
-  const row = `${kingCol} ${rookCol} ${rook2Col}`.padEnd(COL_WIDTH); // Assemble.
   const whiteCol = (player === "White") ? row: `${blank}`;
   const blackCol = (player === "Black") ? row: `${blank}`;
-  const annotationsCol = (list.length === 3) ? "double" : "castle";
+  const annotationsCol = `${annotation}`;
   // const annotationsCol = "castle: kingside, queenside, royal, double";  // TODO: castle type.
   const line = `${turnCol} ${whiteCol} ${blackCol} ${annotationsCol}`;
 
@@ -449,9 +462,7 @@ function assembleUpliftLine(entry) {
 }
 // Seampoint: more local functions...
 
-// Move, decayMovs, promoteMov.
-// Teleports, capture, promoteCap, uplifts.
-// Enpassant.
-// Castle, royal.
-// DoubleCastle.
+// PromoteMov.
+// PromoteCap, uplifts.
+// Castle, KQ-side, royal.
 
