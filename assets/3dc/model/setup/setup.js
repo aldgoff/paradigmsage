@@ -39,7 +39,7 @@ export function makeEntry(payload) {
 }
 
 export function buttonAffordances(situation) {
-  console.log("model: setup.js - buttonAffordances(situation)", situation);
+  console.log(`model: setup.js - buttonAffordances(${situation})`);
 
   switch (situation) {
     case "on":              // Enable all panel buttons.
@@ -56,21 +56,27 @@ export function buttonAffordances(situation) {
       panels.enableButton("makeBoard",    true);
       break;
     case "startable":
-      buttonAffordances("off");
-      panels.enableButton("makeBoard",    true);
+      buttonAffordances("makeBoard");
       panels.enableButton("freezePuzzle", true);
       panels.enableButton("startingPos",  true);
       break;
     case "placeable":
-      buttonAffordances("off");
+      buttonAffordances("makeBoard");
       panels.enableButton("placePiece",   true);
+      panels.enableButton("startingPos",  false);
+      break;
+    case "placed":
+      buttonAffordances("makeBoard");
+      panels.enableButton("placePiece",   false);
+      panels.enableButton("freezePuzzle", true);
+      panels.enableButton("startingPos",  false);
       break;
     case "shiftable":
-      buttonAffordances("off");
+      buttonAffordances("makeBoard");
       panels.enableButton("shiftPiece",   true);
       break;
     case "returnable":
-      buttonAffordances("off");
+      buttonAffordances("makeBoard");
       panels.enableButton("returnPiece",  true);
       break;
     case "boardDone":

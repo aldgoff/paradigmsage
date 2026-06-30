@@ -204,7 +204,7 @@ export function handleTileClick(vts) {          // O(n).
 // Seampoint: more global functions...
 
 // --- Helpers ---
-function manageSetupButtons() {
+export function manageSetupButtons() {
   console.log("cntrl: selections.js - manageSetupButtons()");
 
   const size = cSetup.getCurrBoard().boardSize;           // Parse piece and tile info.
@@ -230,6 +230,8 @@ function manageSetupButtons() {
    * 2. Tile occupied?
    * 3. Subpiece on occupied tile?
    * 4. Stack selected?
+   * 5. Is board empty?
+   * 6. is there a board?
    */
 
   const onBoard1  = (piece1 && (piece1.loc === "@"));     // Location of piece(s).
@@ -244,41 +246,65 @@ function manageSetupButtons() {
   const occupied = occupants.length > 0;
   console.log("*** occupants, occupied", occupants, occupied);
 
-  const stack     = (occupants.length === 2) ? mPieces.isStackMate(key1, key2) : false;
+  const stack     = (key1 && key2) ? mPieces.isStackMate(key1, key2) : false;
+  // const stack     = (occupants.length === 2) ? mPieces.isStackMate(key1, key2) : false;
   const full      = stack || (occupants.length === 1);
   console.log("*** stack, full", stack, full);
 
-  if(     pieces === 1 && tiles === 1) {  // 
+  const diagPanel = document.getElementById("diagnostics-window");
+  const pieceCount = Number(diagPanel.querySelector('[name="diags-pieceCount"]')?.value);
+  const trayCount  = Number(diagPanel.querySelector('[name="diags-trayCount"]')?.value);
+  const emptyBoard = (trayCount === pieceCount);
+  console.log("*** emptyBoard", emptyBoard);
+
+  const currBoard = cSetup.getCurrBoard();
+  console.log("*** currBoard.boardSize", currBoard.boardSize);
+  const isBoard = (cSetup.getCurrBoard().boardSize != "0x0x0") ? true : false;
+  console.log("*** isBoard", isBoard);
+
+  const joinable = (key1 && tile1) ? mPieces.canOccupyTile(key1, tile1) : false;
+  console.log("*** joinable", joinable);
+
+  if(     pieces === 0 && tiles === 0) {  // Click off board.
+    console.log("*** 0 x 0");
+
+    mSetup.buttonAffordances("makeBoard");
+    if(isBoard) {
+      panels.enableButton("freezePuzzle", true);
+      if(emptyBoard) panels.enableButton("startingPos", true);
+    }
+    }
+  else if(pieces === 1 && tiles === 0) {  // 1 piece no dst: returnable.
+    console.log("*** 1 x 0");
+
+    if(onBoard1)   mSetup.buttonAffordances("returnable");
+    if(emptyBoard) panels.enableButton("startingPos", true);
+    }
+  else if(pieces === 1 && tiles === 1) {  // 1 piece 1 tile: placeable or shiftable.
     console.log("*** 1 x 1");
 
-    if(inTray1 && !occupied) {
-      // panels.enableButton("placeable", true);
-      mSetup.buttonAffordances("placeable");
+    if(     inTray1 && !occupied) mSetup.buttonAffordances("placeable");
+    else if(inTray1 && joinable)  mSetup.buttonAffordances("placeable");
+    else if(onBoard1 && !occupied) mSetup.buttonAffordances("shiftable");
+    else if(onBoard1 && joinable)  mSetup.buttonAffordances("shiftable");
     }
-    else if(!tile1) {
-      panels.enableButton("returnable", true);
-    }
-    else {
-      panels.enableButton("shiftable", true);
-    }
+  else if(pieces === 2 && tiles === 0) {  // 2 pieces no dst: if stack, returnable.
+    console.log("*** 2 x 0");
 
-    // TODO: Complete logic.
-    // if(!mPieces.canOccupyTile(key1, tile1))
-    //   return;
-    // panels.enableButton("placePiece",   true);
-    // panels.enableButton("shiftPiece" ,  true);
-    // panels.enableButton("returnPiece",  true);
-    // panels.enableButton("freezePuzzle", true);
+    // TODO: Convert place, shift, and return to take a list of {key, prev, post}.
+
+    // if(stack) {
+    //   if(onBoard1 && onBoard2)      mSetup.buttonAffordances("returnable");
+    // }
     }
-  else if(pieces === 2 && tiles === 1) {
+  else if(pieces === 2 && tiles === 1) {  // 2 pieces 1 tile: if stack, placeable or shiftable.
     console.log("*** 2 x 1");
 
-    // TODO: Complete logic.
-    // if(player1 != player2) {
-    //   console.log("*** target", mPieces.piecesOnTile(piece2.vts).length);
-    //   if(mPieces.piecesOnTile(piece2.vts).length === 1) {
-    //     panels.enableButton("placePiece", true);
-    //   }
+    // TODO: Convert place, shift, and return to take a list of {key, prev, post}.
+    
+    // if(stack) {
+    //   if(inTray1 && inTray2)        mSetup.buttonAffordances("placeable");
+    //   else if(onBoard1 && onBoard2) mSetup.buttonAffordances("shiftable");
     // }
   }
 }

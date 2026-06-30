@@ -13,7 +13,8 @@
 // Seampoint: more objects...
 
 // --- Dependencies ---
-  import * as panels   from "../../panels/panels.js";
+  import * as panels      from "../../panels/panels.js";
+  import * as cSelections from "../../controller/selections/selections.js";
 
   import * as cSetup   from "../../controller/setup/setup.js";
   import * as cMoves   from "../../controller/moves/moves.js";
@@ -460,6 +461,8 @@ function processUndoBuffer(key, idx) {
       cSetup.clearAllPieceSelections();
     }
 
+    cSelections.manageSetupButtons();
+
     return true;
     }
   else {  // Unreachable.
@@ -482,6 +485,8 @@ function processRedoBuffer(key, idx) {
 
     cSetup.clearAllTileSelections();
     cSetup.clearAllPieceSelections();
+    
+    cSelections.manageSetupButtons();
 
     return true;
     }

@@ -206,6 +206,8 @@ export function buildForward(entry) {     // Redo.
     }
   else { throw new Error(`Unknown setup action ${action}`); }
   
+  cSelections.manageSetupButtons();
+
   panels.diagnostics();
   }
 
@@ -232,24 +234,20 @@ export function buildBackward(entry) {    // Undo.
   else if(action === "placePiece") {
     const { action, key, prev, post } = entry;
     returnPieceToTray(key, post, prev);
-    mSetup.buttonAffordances("pieces");
     vSetup.refreshPanel(currBoard);         
     }
   else if(action === "shiftPiece") {
     const { action, key, prev, post } = entry;
     shiftPieceAroundBoard(key, post, prev);
-    mSetup.buttonAffordances("pieces");
     vSetup.refreshPanel(currBoard);         
     }
   else if(action === "returnPiece") {
     const { action, key, prev, post } = entry;
     placePieceOnBoard(key, post, prev);
-    mSetup.buttonAffordances("pieces");
     vSetup.refreshPanel(currBoard);         
     }
   else if(action === "freezePuzzle") {
     const { action } = entry;
-    mSetup.buttonAffordances("pieces");
     vSetup.refreshPanel(currBoard);         
     }
   else if(action === "startingPos") {
@@ -260,6 +258,8 @@ export function buildBackward(entry) {    // Undo.
     vSetup.refreshPanel(currBoard);         
     }
   else { throw new Error(`Unknown setup action ${action}`); }
+
+  cSelections.manageSetupButtons();
 
   panels.diagnostics();
 }
@@ -347,6 +347,7 @@ function pieceSetup(payload) {
   clearAllPieceSelections();
   clearAllTileSelections();
   cSelections.clearSelections();
+  mSetup.buttonAffordances("placed");
 }
 
 function handleFreeze(payload) {
