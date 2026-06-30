@@ -52,10 +52,11 @@ export function getTileSelection() {            // O(1).
   }
 
 export function clearSelections() {
-  // console.log("cntrl: selections.js - clearSelections()");
+  console.log("cntrl: selections.js - clearSelections()");
 
   clearPieceSelections();
   clearTileSelections();
+  managePlaceButtons();
   manageMoveButtons();
 }
 
@@ -86,7 +87,7 @@ export function deselectPiece(key) {            // O(1).
   }
 
 export function clearPieceSelections() {        // O(1).
-  // console.log("cntrl: selections.js - clearPieceSelections()");
+  console.log("cntrl: selections.js - clearPieceSelections()");
 
   for(const key of [...pieceSelections]) deselectPiece(key)
   pieceSelections.clear();
@@ -159,13 +160,15 @@ export function handlePieceClick(group) {       // O(1).
     return;
   }
 
-  // console.log("cntrl: selections.js - handlePieceClick(...)", group.userData);
   const key = group.userData.key;
   (pieceSelections.has(key))
     ? deselectPiece(key)
     : selectPiece(key);
 
-  manageMoveButtons();
+  if(cSetup.getStillPlacingPieces()) // Still placing pieces...
+    managePlaceButtons();
+  else
+    manageMoveButtons();
 
   return;
   }
@@ -174,7 +177,7 @@ export function handleTileClick(vts) {          // O(n).
   console.log("cntrl: selections.js - handleTileClick(vts)", vts);
   
   if(!vts) {
-    console.log("Ray casting: click off tile.");
+    console.log("*** Ray casting: click off tile.");
     return;
   }
 
@@ -190,13 +193,60 @@ export function handleTileClick(vts) {          // O(n).
   else
     selectTile(vts);
 
-  manageMoveButtons();
+  if(cSetup.getStillPlacingPieces()) // Still placing pieces...
+    managePlaceButtons();
+  else
+    manageMoveButtons();
 
   return;
 }
 // Seampoint: more global functions...
 
 // --- Helpers ---
+function managePlaceButtons() {
+  console.log("cntrl: selections.js - managePlaceButtons()");
+
+  const size = cSetup.getCurrBoard().boardSize;           // Parse piece and tile info.
+  const [key1, key2] = [...pieceSelections];
+  const [tile1]    = [...tileSelections];
+  const pieces = pieceSelections.size;
+  const tiles  = tileSelections.size;
+  // console.log("*** pieces, tiles", pieces, tiles);
+
+  const piece1 = (key1) ? mPieces.getPieceList()[key1] : null;
+  const piece2 = (key2) ? mPieces.getPieceList()[key2] : null;
+  const dstStr1 = (tile1) ? coords.vtsToBoard(tile1, size) : "";
+  const { player: player1, side: side1, level: level1, type: type1 } = utils.parsePieceKey(key1);
+  const { player: player2, side: side2, level: level2, type: type2 } = utils.parsePieceKey(key2);
+
+  const panel = document.getElementById("setup-window");   // Update panel fields.
+  panel.querySelector('[name="setup-selPieces"]').textContent = [...pieceSelections];
+  panel.querySelector('[name="setup-selTiles"]').textContent  = `${dstStr1}`;
+
+  if(     pieces === 1 && tiles === 1) {  // Move, decayMovs. promoteMov.
+    console.log("*** 1 x 1");
+
+    // TODO: Complete logic.
+    // if(!mPieces.canOccupyTile(key1, tile1))
+    //   return;
+    // panels.enableButton("placePiece",   true);
+    // panels.enableButton("shiftPiece" ,  true);
+    // panels.enableButton("returnPiece",  true);
+    // panels.enableButton("freezePuzzle", true);
+    }
+  else if(pieces === 2 && tiles === 1) {
+    console.log("*** 2 x 1");
+
+    // TODO: Complete logic.
+    // if(player1 != player2) {
+    //   console.log("*** target", mPieces.piecesOnTile(piece2.vts).length);
+    //   if(mPieces.piecesOnTile(piece2.vts).length === 1) {
+    //     panels.enableButton("placePiece", true);
+    //   }
+    // }
+  }
+}
+
 function manageMoveButtons() {
   console.log("cntrl: selections.js - manageMoveButtons()");
 
@@ -388,7 +438,7 @@ function manageMoveButtons() {
       panels.enableButton("castle", true);
       annotation = "dble";
     }
-  }
+}
 
 function lastCol(dstStr1, size, player1) {
   const [, prefix, x, y] = dstStr1.match(/^([A-Z]+)(\d+),(\d+)$/);

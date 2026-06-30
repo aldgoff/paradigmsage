@@ -439,28 +439,28 @@ export function makeUpliftEntry(payload, selections) {
 // SeampointAdd: more Entry functions...
 
 export function buttonAffordances(situation) {
-  // console.log("model: moves.js - buttonAffordances(situation)", situation);
+  console.log("model: moves.js - buttonAffordances(situation)", situation);
 
-  if(situation === "on") {
-    panels.enableButton("move",         true);            // Enable all the panel buttons.
-    panels.enableButton("capture",      true);
-    panels.enableButton("enpassant",    true);
-    panels.enableButton("castle",       true);
-    panels.enableButton("promote",      true);
-    panels.enableButton("fission",      true);
-    panels.enableButton("uplift",       true);
-    }
-  else if(situation === "off") {
-    panels.enableButton("move",         false);           // Disable all the panel buttons.
-    panels.enableButton("capture",      false);
-    panels.enableButton("enpassant",    false);
-    panels.enableButton("castle",       false);
-    panels.enableButton("promote",      false);
-    panels.enableButton("fission",      false);
-    panels.enableButton("uplift",       false);
-    }
-  else {
-    throw new Error(`Unknown button situation ${situation} for moves.`);
+  switch (situation) {
+    case "on":
+      panels.enableButton("move",      true);   // Enable all the panel buttons.
+      panels.enableButton("capture",   true);
+      panels.enableButton("enpassant", true);
+      panels.enableButton("castle",    true);
+      panels.enableButton("promote",   true);
+      panels.enableButton("fission",   true);
+      panels.enableButton("uplift",    true);
+      break;
+    case "off":
+      panels.enableButton("move",      false);  // Disable all the panel buttons.
+      panels.enableButton("capture",   false);
+      panels.enableButton("enpassant", false);
+      panels.enableButton("castle",    false);
+      panels.enableButton("promote",   false);
+      panels.enableButton("fission",   false);
+      panels.enableButton("uplift",    false);
+      break;
+    default: throw new Error(`Unknown button situation ${situation} for moves.`);
   }
 }
 // Seampoint: more global functions...

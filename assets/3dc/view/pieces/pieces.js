@@ -89,7 +89,7 @@ export function destroyPieces(pieceList) {
 }
 
 export function placePieceInTray(key) {      // "WKRR", ...
-  console.log("view : pieces.js - placePieceInTray(key)", key);
+  // console.log("view : pieces.js - placePieceInTray(key)", key);
 
   const piece = mPieces.getPieceList()[key];              // Arg validation.
   if(!piece) throw Error(`No such piece ${key}.`);
@@ -317,7 +317,7 @@ export function showTrayPieces() {
       if (piece.loc === "~")
           pieceGroups[key].visible = true;
   }
-}
+  }
 
 export function hideTrayPieces() {
   console.log("view : pieces.js - hideTrayPieces()");
@@ -328,7 +328,6 @@ export function hideTrayPieces() {
           pieceGroups[key].visible = false;
   }
 }
-
 // Seampoint: more global functions...
 
 // --- Helpers ---

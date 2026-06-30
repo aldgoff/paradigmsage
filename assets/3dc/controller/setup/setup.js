@@ -43,9 +43,11 @@
 // --- Globals ---
   export let boardSpec = "0x0x0"; // Deprecate.
   let currBoard = { boardSize: "0x0x0", trayType: "None", trayGap: 0 };
+  let stillPlacingPieces = true;
 // Seampoint: more globals...
 
 export function getCurrBoard() { return currBoard; }
+export function getStillPlacingPieces() { return stillPlacingPieces; }
 // --- UI ---
 export function panelDispatch(payload) {    // Dispatch payload from panel to handle event functions.
   console.log("cntrl: setup.js - panelDispatch(payload):", payload);
@@ -190,12 +192,17 @@ export function buildForward(entry) {     // Redo.
   else if(action === "freezePuzzle") {
     const { action } = entry;
     mSetup.buttonAffordances("loaded");
+    stillPlacingPieces = false;
+    console.log("*** stillPlacingPieces", stillPlacingPieces);
+
     vSetup.refreshPanel(currBoard);         
     }
   else if(action === "startingPos") {
     const { action } = entry;
     initialLineup(entry);
     mSetup.buttonAffordances("loaded");
+    stillPlacingPieces = false;
+    console.log("*** stillPlacingPieces", stillPlacingPieces);
     vSetup.refreshPanel(currBoard);         
     }
   else { throw new Error(`Unknown setup action ${action}`); }
@@ -352,6 +359,7 @@ function pieceSetup(payload) {
 
   clearAllPieceSelections();
   clearAllTileSelections();
+  cSelections.clearSelections();
 }
 
 function handleFreeze(payload) {
@@ -368,6 +376,7 @@ function handleFreeze(payload) {
   branchHistory(entry);
   applyEntry(entry);
   mSetup.buttonAffordances("loaded");
+  stillPlacingPieces = false;
   }
 
 function handleStartingPos(payload) {
@@ -388,6 +397,7 @@ function handleStartingPos(payload) {
   branchHistory(entry);
   applyEntry(entry);
   mSetup.buttonAffordances("loaded");
+  stillPlacingPieces = false;
   }
 
 // Seampoint: more handlers...

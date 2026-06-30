@@ -152,6 +152,10 @@ layout: "play"
     <button data-action="returnPiece"  disabled>Return Piece</button>
     <button data-action="freezePuzzle" disabled>Freeze Puzzle</button>
   </div>
+  <div class="section" style="display:flex; align-items:center;">
+    <label>Pieces:                          <output name="setup-selPieces" style="opacity:0.7; font-style:italic;">...</output> </label>
+    <label style="margin-left:12px;">Tiles: <output name="setup-selTiles"  style="opacity:0.7; font-style:italic;">...</output> </label>
+  </div>
   <div class="section">
     <button data-action="startingPos" disabled>Starting Position</button>
   </div>
@@ -163,8 +167,8 @@ layout: "play"
     <button class="help-btn" data-help="move">?</button>
   </div>
   <div class="section" style="display:flex; align-items:center;">
-    <label>Pieces: <output name="move-selPieces" style="opacity:0.7; font-style:italic;">...</output> </label>
-    <label style="margin-left:12px;">Tiles: <output name="move-selTiles" style="opacity:0.7; font-style:italic;">...</output> </label>
+    <label>Pieces:                          <output name="move-selPieces" style="opacity:0.7; font-style:italic;">...</output> </label>
+    <label style="margin-left:12px;">Tiles: <output name="move-selTiles"  style="opacity:0.7; font-style:italic;">...</output> </label>
     <label style="margin-left:auto;"> <input type="checkbox" name="move-rules" disabled> Enforce Rules </label>
   </div>
   <div class="section">
