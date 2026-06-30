@@ -42,13 +42,36 @@ export function buttonAffordances(situation) {
   console.log("model: setup.js - buttonAffordances(situation)", situation);
 
   switch (situation) {
-    case "makeBoard":
+    case "on":              // Enable all panel buttons.
       panels.enableButton("makeBoard",   true);
-      panels.enableButton("placePiece",  false);
-      panels.enableButton("shiftPiece",  false);
-      panels.enableButton("returnPiece", false);
-      panels.enableButton("freezePuzzle",false);
-      panels.enableButton("startingPos", false);
+      panels.enableButton("placePiece",  true);
+      panels.enableButton("shiftPiece",  true);
+      panels.enableButton("returnPiece", true);
+      panels.enableButton("freezePuzzle",true);
+      panels.enableButton("startingPos", true);
+    break;
+
+    case "makeBoard":
+      buttonAffordances("off");
+      panels.enableButton("makeBoard",    true);
+      break;
+    case "startable":
+      buttonAffordances("off");
+      panels.enableButton("makeBoard",    true);
+      panels.enableButton("freezePuzzle", true);
+      panels.enableButton("startingPos",  true);
+      break;
+    case "placeable":
+      buttonAffordances("off");
+      panels.enableButton("placePiece",   true);
+      break;
+    case "shiftable":
+      buttonAffordances("off");
+      panels.enableButton("shiftPiece",   true);
+      break;
+    case "returnable":
+      buttonAffordances("off");
+      panels.enableButton("returnPiece",  true);
       break;
     case "boardDone":
       panels.enableButton("makeBoard",   true);
@@ -78,10 +101,17 @@ export function buttonAffordances(situation) {
       panels.enableButton("shiftPiece",   false);
       panels.enableButton("freezePuzzle", false);
       panels.enableButton("startingPos",  false);
+    break;
+
+    case "off":              // Disable all panel buttons.
+      panels.enableButton("makeBoard",   false);
+      panels.enableButton("placePiece",  false);
+      panels.enableButton("shiftPiece",  false);
+      panels.enableButton("returnPiece", false);
+      panels.enableButton("freezePuzzle",false);
+      panels.enableButton("startingPos", false);
       break;
-    default:
-      throw new Error(`Unknown button situation ${situation} for setup.`);
-      break;
+    default: throw new Error(`Unknown button situation ${situation} for setup.`);
   }
 }
 // Seampoint: more global functions...

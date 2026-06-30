@@ -20,6 +20,7 @@
   import * as cSetup  from "../../controller/setup/setup.js";
 
   import * as state   from "../../model/state/state.js";
+  import * as mSetup  from "../../model/setup/setup.js";
   import * as mMoves  from "../../model/moves/moves.js";
   import * as mPieces from "../../model/pieces/pieces.js";
   import * as mBoards from "../../model/boards/boards.js";
@@ -56,7 +57,7 @@ export function clearSelections() {
 
   clearPieceSelections();
   clearTileSelections();
-  managePlaceButtons();
+  manageSetupButtons();
   manageMoveButtons();
 }
 
@@ -166,7 +167,7 @@ export function handlePieceClick(group) {       // O(1).
     : selectPiece(key);
 
   if(cSetup.getStillPlacingPieces()) // Still placing pieces...
-    managePlaceButtons();
+    manageSetupButtons();
   else
     manageMoveButtons();
 
@@ -194,7 +195,7 @@ export function handleTileClick(vts) {          // O(n).
     selectTile(vts);
 
   if(cSetup.getStillPlacingPieces()) // Still placing pieces...
-    managePlaceButtons();
+    manageSetupButtons();
   else
     manageMoveButtons();
 
@@ -203,18 +204,19 @@ export function handleTileClick(vts) {          // O(n).
 // Seampoint: more global functions...
 
 // --- Helpers ---
-function managePlaceButtons() {
-  console.log("cntrl: selections.js - managePlaceButtons()");
+function manageSetupButtons() {
+  console.log("cntrl: selections.js - manageSetupButtons()");
 
   const size = cSetup.getCurrBoard().boardSize;           // Parse piece and tile info.
   const [key1, key2] = [...pieceSelections];
-  const [tile1]    = [...tileSelections];
+  const [tile1]      = [...tileSelections];
   const pieces = pieceSelections.size;
   const tiles  = tileSelections.size;
   // console.log("*** pieces, tiles", pieces, tiles);
 
   const piece1 = (key1) ? mPieces.getPieceList()[key1] : null;
   const piece2 = (key2) ? mPieces.getPieceList()[key2] : null;
+  console.log("*** piece1, piece2",  piece1, piece2);
   const dstStr1 = (tile1) ? coords.vtsToBoard(tile1, size) : "";
   const { player: player1, side: side1, level: level1, type: type1 } = utils.parsePieceKey(key1);
   const { player: player2, side: side2, level: level2, type: type2 } = utils.parsePieceKey(key2);
@@ -223,8 +225,42 @@ function managePlaceButtons() {
   panel.querySelector('[name="setup-selPieces"]').textContent = [...pieceSelections];
   panel.querySelector('[name="setup-selTiles"]').textContent  = `${dstStr1}`;
 
-  if(     pieces === 1 && tiles === 1) {  // Move, decayMovs. promoteMov.
+  /* Questions:
+   * 1. Piece on board or tray?
+   * 2. Tile occupied?
+   * 3. Subpiece on occupied tile?
+   * 4. Stack selected?
+   */
+
+  const onBoard1  = (piece1 && (piece1.loc === "@"));     // Location of piece(s).
+  const onBoard2  = (piece2 && (piece2.loc === "@"));
+  const inTray1   = (piece1 && (piece1.loc === "~"));
+  const inTray2   = (piece2 && (piece2.loc === "~"));
+  console.log("*** onBoard1, onBoard2", onBoard1, onBoard2);
+  console.log("*** inTray1, inTray2",   inTray1, inTray2);
+
+  const occupants = (tile1) ? mPieces.piecesOnTile(tile1) : [];   // Status of tile.
+  const [occupant1, occupant2] = occupants;
+  const occupied = occupants.length > 0;
+  console.log("*** occupants, occupied", occupants, occupied);
+
+  const stack     = (occupants.length === 2) ? mPieces.isStackMate(key1, key2) : false;
+  const full      = stack || (occupants.length === 1);
+  console.log("*** stack, full", stack, full);
+
+  if(     pieces === 1 && tiles === 1) {  // 
     console.log("*** 1 x 1");
+
+    if(inTray1 && !occupied) {
+      // panels.enableButton("placeable", true);
+      mSetup.buttonAffordances("placeable");
+    }
+    else if(!tile1) {
+      panels.enableButton("returnable", true);
+    }
+    else {
+      panels.enableButton("shiftable", true);
+    }
 
     // TODO: Complete logic.
     // if(!mPieces.canOccupyTile(key1, tile1))

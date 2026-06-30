@@ -1,8 +1,10 @@
 # Moves Spec (view)
-  Desc
+  Describe the view layer of the setup feature.
+  - Basic intent of the move panel.
+  - Some examples of moves that can be loaded.
 
 ## 1. Purpose
-  text
+  Make moves in the game.
 
 ## 2. Descriptions
   - All moves consist of a list of piece transactions: {key, prev, post}.

@@ -90,12 +90,16 @@ export function setTrayGap(trayGap) {
 }
 
 export function showTray() {
+  console.log("view : trays.js - showTray()");
+
   whiteTrayGroup.visible = true;
   blackTrayGroup.visible = true;
   vPieces.showTrayPieces();
 }
 
 export function hideTray() {
+  console.log("view : trays.js - hideTray()");
+
   whiteTrayGroup.visible = false;
   blackTrayGroup.visible = false;
   vPieces.hideTrayPieces();

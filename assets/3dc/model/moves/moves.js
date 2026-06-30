@@ -442,8 +442,8 @@ export function buttonAffordances(situation) {
   console.log("model: moves.js - buttonAffordances(situation)", situation);
 
   switch (situation) {
-    case "on":
-      panels.enableButton("move",      true);   // Enable all the panel buttons.
+    case "on":              // Enable all panel buttons.
+      panels.enableButton("move",      true);
       panels.enableButton("capture",   true);
       panels.enableButton("enpassant", true);
       panels.enableButton("castle",    true);
@@ -451,8 +451,8 @@ export function buttonAffordances(situation) {
       panels.enableButton("fission",   true);
       panels.enableButton("uplift",    true);
       break;
-    case "off":
-      panels.enableButton("move",      false);  // Disable all the panel buttons.
+    case "off":             // Disable all panel buttons.
+      panels.enableButton("move",      false);
       panels.enableButton("capture",   false);
       panels.enableButton("enpassant", false);
       panels.enableButton("castle",    false);
