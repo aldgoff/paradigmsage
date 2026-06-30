@@ -77,5 +77,19 @@ title: "Clues"
   - 6/16/26 - Pawn engagement can be solved by selecting a 10x8x8 board, that's only 640 tiles.
   - 6/17/26 - But the lack of symmetry distorts pawn race endgames (king, knight).
   - 6/18/26 - Again, we lose the quest.
+  - 6/19/26 - What must change to keep the 8x8x8 board, to keep the 8^N invariant?
+  - 6/20/26 - What if, we allow the duke and the bishop to colocate?
+  - 6/21/26 - Call it, imaginatively enough, the stack.
+  - 6/22/26 - A name, while not medieval, is descriptive and starts with a letter different than all the other pieces.
+  - 6/23/26 - Both piece designs have a tri-lateral symmetry, so they *stack* nicely, even look a little like a 2D bishop.
+  - 6/24/26 - They even have overlap tiles (qtile and Feynman tiles).
+  - 6/25/26 - If the moves of both *subpieces* are unblocked, it can even move as a single piece.
+  - 6/26/26 - A stack can only reach 1/8 of the board, so it completes the board geometric equivalence classes.
+  - 6/27/26 - It is also allowed to move just one subpiece, a *decay* move - yet another quantum-like feature.
+  - 6/28/26 - If the decay piece moves to an overlap tile, the subpiece left behind defends it; tactically interesting.
+  - 6/29/26 - Either the duke or the bishop may move; *duke decay* or *bishop decay* (b-decay, ahem...beta-decay).
+  - 6/30/26 - And, under restrictive conditions, both can leave in a single move called a *fission*.
+  - 7/01/26 - Fusion, however, remains undefined - a challenge for some future generation.
+  - 7/02/26 - 
 
 

@@ -69,7 +69,6 @@
   vi: Merge branch '3dc' - Linear gambits.
   vi: Merge branch '3dc' - Linear gambits next plane feature.
   vi: Merge branch '3dc' - Duplex gambits, clues, trays, dots.
-  Merge branch '3dc' - Duplex gambits, clues, trays, dots.
   git log --oneline --decorate --graph --all --boundary -n 50
   git push origin main
   ```
@@ -84,11 +83,11 @@
 
   git switch main
   git merge --no-ff 3dc3
-  vi: Merge 3dc3 bug fix|feature add|whatever.
-  vi: Merge 3dc3 Board occupancy, entry standards, stack simplification.
-
+    Merge 3dc3 bug fix|feature add|whatever.
+    Merge branch '3dc' - Duplex gambits, clues, trays, dots.
+    Merge 3dc3 Board occupancy, entry standards, stack simplification.
+    Merge 3dc3 Fission, duke lowering, button affordances, clues, tag.
   git push origin main
-
   git switch 3dc3
   ```
 
@@ -110,8 +109,13 @@
   ```
   History (a little muddled - all associated with qt3).
   ```
-  v0.1
+  3dc-advsq-stable-v1
+  3dc-foundation-bootstrap
   v0.1-topology
+  v0.2-feynman-tile
+  v0.3-3dc
+  v0.4-move-pieces
+  v0.5-3dc-affordances
   v1.0.1
   ```
   Canonical Use Going Forward
