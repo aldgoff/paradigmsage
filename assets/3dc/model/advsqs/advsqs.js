@@ -42,7 +42,7 @@ export function makeEntry(payload) {
 export function buttonAffordances(situation) {
   console.log("model: advsqs.js - buttonAffordances(situation)", situation);
 
-  if(     situation === "on") {                 // Enable all the panel buttons.
+  if(     situation === "on") {         // Enable all panel buttons.
     panels.enableButton("place",     true);
     panels.enableButton("remove",    true);
     panels.enableButton("grow",      true);
@@ -52,18 +52,18 @@ export function buttonAffordances(situation) {
     panels.enableButton("nextPlane", true);
     panels.enableButton("nextPiece", true);
     }
-  else if(situation === "build") {              // Initial values, ready to build advsqs.
+  else if(situation === "build") {      // Initial values, ready to build advsqs.
     buttonAffordances("off");
     panels.enableButton("place",     true);
     panels.enableButton("grow",      true);
     }
-  else if(situation === "src-tile") {           // Single tile, perimeter 0, src tile.
+  else if(situation === "src-tile") {   // Single tile, perimeter 0, src tile.
     buttonAffordances("off");
     panels.enableButton("remove",    true);
     panels.enableButton("grow",      true);
     panels.enableButton("nextPiece", true);
     }
-  else if(situation === "adv-sq") {             // Advsq.
+  else if(situation === "adv-sq") {     // Advsq.
     buttonAffordances("off");
     panels.enableButton("remove",    true);
     panels.enableButton("grow",      true);
@@ -72,7 +72,7 @@ export function buttonAffordances(situation) {
     panels.enableButton("nextPlane", true);
     panels.enableButton("nextPiece", true);
     }
-  else if(situation === "off") {                // Disable all the panel buttons.
+  else if(situation === "off") {        // Disable all panel buttons.
     panels.enableButton("place",     false);
     panels.enableButton("remove",    false);
     panels.enableButton("grow",      false);
@@ -82,9 +82,7 @@ export function buttonAffordances(situation) {
     panels.enableButton("nextPlane", false);
     panels.enableButton("nextPiece", false);
     }
-  else {
-    throw new Error(`Unknown button situation ${situation} for advsqs.`);
-  }
+  else { throw new Error(`Unknown button situation ${situation} for advsqs.`); }
 }
 // Seampoint: more global functions...
 

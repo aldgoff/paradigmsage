@@ -48,10 +48,14 @@
   let currPiecesGroup = null;
   let pieceGroups = {};
   let lastTrayGap = 0;
+  const whiteTrayGroup = new THREE.Group();
+  const blackTrayGroup = new THREE.Group();
 // Seampoint: more globals...
 
 export function getCurrPiecesGroup() { return currPiecesGroup; }
 export function getPieceGroups() { return pieceGroups; }
+export function getWhiteTrayGroup() { return whiteTrayGroup; }
+export function getBlackTrayGroup() { return blackTrayGroup; }
 // --- UI ---
 export function initPieces(pieceList) {
   console.log("view : pieces.js - initPieces(pieceList)", pieceList);
@@ -94,6 +98,10 @@ export function placePieceInTray(key) {      // "WKRR", ...
   const player = key[0];  // W|B.                         // Parse arg.
 
   const group = pieceGroups[key];                         // Fetch the mesh (group).
+  if(key[0] ==='W')
+    whiteTrayGroup[key] = group;
+  else
+    blackTrayGroup[key] = group;
   group.userData.vts = home.trayVts;
 
   const tileSize = tiles.tileSize();                      // Place just above tile.
@@ -135,7 +143,39 @@ export function placePiece(key) {      // "WKRR", ...
 
   // console.log("*** position: ", grid2[0], grid2[1]+zOffset+decoratorGap, grid2[2]); // Debug instrumention.
 
-  group.position.set(grid2[0], grid2[1]+zOffset+decoratorGap, grid2[2]);
+  // ChangePoint: stacked pieces
+  // Four scenarios:
+  // 1. ✅ Duke arrives      - lower duke in new location.
+  // 2. ✅ Duke joins bishop - raise duke in new location.
+  // 3. ✅ Bishop joins duke - raise duke in new location.
+  // 4. Bishop leaves     - lower duke in old location.
+  // 5. ✅ Fission - duke and bishop leave stack (covered by duke arrives).
+  if(key[3] === 'D') {
+    if(mPieces.hasOtherStackSubpiece(key, piece.vts)) {
+      // console.log("*** Case 2: duke joins.", piece);  // Case 2: duke joins a bishop.
+      const stackOffset = 26;
+      setDukeHeight(group, piece.vts, zOffset+decoratorGap, stackOffset);
+    } 
+    else {              // Case 1: duke arrives.
+      // console.log("*** Case 1: duke arrives.", piece);
+      const stackOffset = 0;
+      setDukeHeight(group, piece.vts, zOffset+decoratorGap, stackOffset);
+    }
+    }
+  else if(key[3] === 'B') {  // Case 3: bishop joins.
+    if(mPieces.hasOtherStackSubpiece(key, piece.vts)) {
+      // console.log("*** Case 3: bishop joins.", piece);
+      const tiles = mPieces.piecesOnTile(piece.vts);  // [WKBB, WKBD].
+      const dukeKey = (tiles[0][3] === 'D') ? tiles[0] : tiles[1];
+      const group = pieceGroups[dukeKey];                 // Fetch duke mesh (group).
+      const stackOffset = 26;
+      setDukeHeight(group, piece.vts, zOffset+decoratorGap, stackOffset);
+    }
+    group.position.set(grid2[0], grid2[1]+zOffset+decoratorGap, grid2[2]);  // Place bishop
+    }
+  else {
+    group.position.set(grid2[0], grid2[1]+zOffset+decoratorGap, grid2[2]);  // Place other pieces.
+  }
   // console.log("*** Piece moved to", loc, pos, "coords:", coords, "vts:", group.userData.vts);
   }
 
@@ -178,7 +218,7 @@ export function setLevelSep(levelSep) {
 
   if(!currPiecesGroup) return;
 
-  view.reprojectGroup(currPiecesGroup, levelSep);
+  view.reprojectPiecesGroup(currPiecesGroup, levelSep);
   }
 
 export function reprojectTrayPieces(levelSep, trayGap) {
@@ -202,13 +242,13 @@ export function reprojectTrayPieces(levelSep, trayGap) {
     const displacement = (player === "W") ? [0, -change, -change]: [0, change, change];
     const vts = utils.add(piece.vts, displacement);
     
-    const pixels = coordsMaps.vts2pixels(vts, levelSep);  // Level sep.
+    const grid2 = coordsMaps.vts2pixels(vts, levelSep);  // Level sep.
 
     const tileSize = tiles.tileSize();                    // Place just above tile.
     const tileHeight = tileSize[0];  // Z.
     const zOffset = tileHeight / 2;
     const decoratorGap = 2;
-    obj.position.set(pixels[0], pixels[1] + zOffset + decoratorGap, pixels[2]);
+    obj.position.set(grid2[0], grid2[1] + zOffset+decoratorGap, grid2[2]);
 
     obj.userData.vts = vts;
     piece.vts = vts;
@@ -244,7 +284,7 @@ export function highlight(key) {
   }
 
 export function deHighlight(key) {
-  console.log("view : pieces.js - deHighlight(key)", key);
+  // console.log("view : pieces.js - deHighlight(key)", key);
 
   let found = null;
 
@@ -267,6 +307,26 @@ export function deHighlight(key) {
       : obj.material.color.set(black.lineColor);
     }
   });
+}
+
+export function showTrayPieces() {
+  console.log("view : pieces.js - showTrayPieces()");
+
+  for(const key in pieceGroups) {
+      const piece = mPieces.getPieceList()[key];
+      if (piece.loc === "~")
+          pieceGroups[key].visible = true;
+  }
+  }
+
+export function hideTrayPieces() {
+  console.log("view : pieces.js - hideTrayPieces()");
+
+  for(const key in pieceGroups) {
+      const piece = mPieces.getPieceList()[key];
+      if (piece.loc === "~")
+          pieceGroups[key].visible = false;
+  }
 }
 // Seampoint: more global functions...
 
@@ -306,8 +366,9 @@ export function createPiece(key) {      // "WKRR", ...
 }
 
 // --- Duke Helpers ---
-// ChangePoint: stacked pieces
-function setDukeHeight(group, vts, tileOffset, stackOffset=0) {
+export function setDukeHeight(group, vts, tileOffset, stackOffset=0) {
+  // console.log("view : pieces.js - setDukeHeight(..., vts, tileOffset, stackOffset)", vts, tileOffset, stackOffset);
+
   const grid2 = coordsMaps.vts2pixels(vts)
 
   const zAdjust = tileOffset + stackOffset;

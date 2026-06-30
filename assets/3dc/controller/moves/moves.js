@@ -85,14 +85,14 @@ export function buildPayload(panel, action) {
 export function buildForward(entry) {     // Restore from redo.
   console.log("cntrl: moves.js - buildForward(entry)", entry);
 
-  const { action, turn, player, list } = entry;  // list:[{key,prev,post},...]}.
+  const { action, turn, player, list, annotation } = entry;  // list:[{key,prev,post},...]}.
 
   if(     action === "move")          forewardMove(entry);
   else if(action === "capture")       forewardCapture(entry);
+  else if(action === "fission")       forewardFission(entry);
   else if(action === "enpassant")     forewardEnpassant(entry);
   else if(action === "castle")        forewardCastle(entry);
   else if(action === "promote")       forewardPromote(entry)
-  else if(action === "fission")       forewardFission(entry);
   else if(action === "uplift")        ; // TODO: ForwardTask()
   else {  // SeampointAdd: more build functions (fore)...
     throw new Error(`Unknown forward action ${action} for moves.`);
@@ -108,14 +108,14 @@ export function buildForward(entry) {     // Restore from redo.
 export function buildBackward(entry) {    // Restore from undo.
   console.log("cntrl: moves.js - buildBackward(entry)", entry);
 
-  const { action, turn, player, list } = entry;  // list:[{key,prev,post},...]}.
+  const { action, turn, player, list, annotation } = entry;  // list:[{key,prev,post},...]}.
 
   if(     action === "move")          backwardMove(entry);
   else if(action === "capture")       backwardCapture(entry);
+  else if(action === "fission")       backwardFission(entry);
   else if(action === "enpassant")     backwardEnpassant(entry);
   else if(action === "castle")        backwardCastle(entry);
   else if(action === "promote")       backwardPromote(entry);
-  else if(action === "fission")       backwardFission(entry);
   else if(action === "uplift")        ; // TODO: BackwardTask()
   else {  // SeampointAdd: more build functions (back)...
     throw new Error(`Unknown backward action ${action} for moves.`);
@@ -235,18 +235,38 @@ function forewardCapture(entry) {     // Capture.
   const { action, turn, player, list, annotation } = entry; // Parse.
   const lists = list.length;
   const list1 = list[0];    // {key,prev,post}
-  const list2 = list[1];    // [{key,prev,post}].
+  const list2 = list[1];    // {key,prev,post}.
   const list3 = list[2];    // Possibly null.
-
-  const captured = (annotation === "capture") ? list2 : list3; // {key,prev,post}
-  const key = list3 ? `${list1.key.slice(0,3)}S` : list1.key;
+  const list4 = list[3];    // Possibly null.
 
   const [, dstStr]  = list1.post.split("@");                // Move(s).
-  mPieces.movePieceFromBoardToTray(captured.key);
-  mPieces.movePieceTileToTile(list1.key, dstStr);
 
-  if(annotation === "stackCap") {
+  if(annotation === "capture") {
+    mPieces.movePieceFromBoardToTray(list2.key);
+    mPieces.movePieceTileToTile(list1.key, dstStr);
+    }
+  else if(annotation === "decay") {
+    mPieces.movePieceFromBoardToTray(list2.key);
+    mPieces.movePieceTileToTile(list1.key, dstStr);
+    }
+  else if(annotation === "SxC") {
+    mPieces.movePieceFromBoardToTray(list3.key);
+    mPieces.movePieceTileToTile(list1.key, dstStr);
     mPieces.movePieceTileToTile(list2.key, dstStr);
+    }
+  else if(annotation === "CxS") {
+    mPieces.movePieceFromBoardToTray(list2.key);
+    mPieces.movePieceFromBoardToTray(list3.key);
+    mPieces.movePieceTileToTile(list1.key, dstStr);
+    }
+  else if(annotation === "SxS") {
+    mPieces.movePieceFromBoardToTray(list3.key);
+    mPieces.movePieceFromBoardToTray(list4.key);
+    mPieces.movePieceTileToTile(list1.key, dstStr);
+    mPieces.movePieceTileToTile(list2.key, dstStr);
+    }
+  else {
+    throw new Error(`Unknown capture annotation ${annotation}.`);
   }
   }
 
@@ -258,43 +278,195 @@ function backwardCapture(entry) {
   const list1 = list[0];    // {key,prev,post}
   const list2 = list[1];    // [{key,prev,post}].
   const list3 = list[2];    // Possibly null.
+  const list4 = list[3];    // Possibly null.
 
-  const captured = (annotation === "capture") ? list2 : list3; // {key,prev,post}
-  const key = list3 ? `${list1.key.slice(0,3)}S` : list1.key;
+  const [, dstStr]  = list1.prev.split("@");                // Move(s).
 
-  const [, attStr]  = list1.prev.split("@");             // Move(s).
-  const [, capStr]  = captured.prev.split("@");
-  if(annotation === "stackCap") {
-    mPieces.movePieceTileToTile(list2.key, attStr);
+  if(annotation === "capture") {
+    mPieces.movePieceTileToTile(list1.key, dstStr);
+    const [, srcStr] = list2.prev.split("@");
+    mPieces.movePieceFromTrayToBoard(list2.key, srcStr);
+    }
+  else if(annotation === "decay") {
+    mPieces.movePieceTileToTile(list1.key, dstStr);
+    const [, srcStr] = list2.prev.split("@");
+    mPieces.movePieceFromTrayToBoard(list2.key, srcStr);
+    }
+  else if(annotation === "SxC") {
+    mPieces.movePieceTileToTile(list1.key, dstStr);
+    mPieces.movePieceTileToTile(list2.key, dstStr);
+    const [, srcStr] = list3.prev.split("@");
+    mPieces.movePieceFromTrayToBoard(list3.key, srcStr);
+    }
+  else if(annotation === "CxS") {
+    mPieces.movePieceTileToTile(list1.key, dstStr);
+    const [, srcStr] = list2.prev.split("@");
+    mPieces.movePieceFromTrayToBoard(list2.key, srcStr);
+    mPieces.movePieceFromTrayToBoard(list3.key, srcStr);
+    }
+  else if(annotation === "SxS") {
+    mPieces.movePieceTileToTile(list1.key, dstStr);
+    mPieces.movePieceTileToTile(list2.key, dstStr);
+    const [, srcStr] = list3.prev.split("@");
+    mPieces.movePieceFromTrayToBoard(list3.key, srcStr);
+    mPieces.movePieceFromTrayToBoard(list4.key, srcStr);
+    }
+  else {
+    throw new Error(`Unknown capture annotation ${annotation}.`);
   }
-  mPieces.movePieceTileToTile(list1.key, attStr);
-  mPieces.movePieceFromTrayToBoard(captured.key, capStr);
 }
 
 function forewardFission(entry) {     // Fission.
   console.log("cntrl: moves.js - forewardFission(entry)", entry);
 
   const { action, turn, player, list, annotation } = entry; // Parse.
-  const piece1 = list[0]; // {key,prev,post}
-  const piece2 = list[1]; // {key,prev,post}
+  const lists = list.length;
+  const list1 = list[0];    // {key,prev,post}.
+  const list2 = list[1];    // {key,prev,post}.
+  const list3 = list[2];    // {key,prev,post}.
+  const list4 = list[3];    // {key,prev,post}.
+  const list5 = list[4];    // Possibly null.
+  const list6 = list[5];    // Possibly null.
+  const [, dstStr1] = list1.post.split("@");    // Subpiece 1 destination.
+  const [, dstStr2] = list2.post.split("@");    // Subpiece 1 destination.
 
-  const [, piece1Str]  = piece1.post.split("@");            // Move(s).
-  const [, piece2Str]  = piece2.post.split("@");
-  mPieces.movePieceTileToTile(piece1.key, piece1Str);
-  mPieces.movePieceTileToTile(piece2.key, piece2Str);
+  mPieces.movePieceTileToTile(list1.key, dstStr1);
+  mPieces.movePieceTileToTile(list2.key, dstStr2);
+
+  if(     annotation === "fissMM") {}
+  else if(annotation === "fissMJ") {}
+  else if(annotation === "fissJM") {}
+  else if(annotation === "fissJJ") {}
+  else if(annotation === "fissMC") {
+    mPieces.movePieceFromBoardToTray(list3.key);
+    }
+  else if(annotation === "fissMS") {
+    mPieces.movePieceFromBoardToTray(list3.key);
+    mPieces.movePieceFromBoardToTray(list4.key);
+    }
+  else if(annotation === "fissJC") {
+    mPieces.movePieceFromBoardToTray(list3.key);
+    }
+  else if(annotation === "fissJS") {
+    mPieces.movePieceFromBoardToTray(list3.key);
+    mPieces.movePieceFromBoardToTray(list4.key);
+   }
+  else if(annotation === "fissCM") {
+    mPieces.movePieceFromBoardToTray(list3.key);
+    }
+  else if(annotation === "fissSM") {
+    mPieces.movePieceFromBoardToTray(list3.key);
+    mPieces.movePieceFromBoardToTray(list4.key);
+    }
+  else if(annotation === "fissCJ") {
+    mPieces.movePieceFromBoardToTray(list3.key);
+    }
+  else if(annotation === "fissSJ") {
+    mPieces.movePieceFromBoardToTray(list3.key);
+    mPieces.movePieceFromBoardToTray(list4.key);
+  }
+  else if(annotation === "fissCC") {
+    mPieces.movePieceFromBoardToTray(list3.key);
+    mPieces.movePieceFromBoardToTray(list4.key);
+    }
+  else if(annotation === "fissCS") {
+    mPieces.movePieceFromBoardToTray(list3.key);
+    mPieces.movePieceFromBoardToTray(list4.key);
+    mPieces.movePieceFromBoardToTray(list5.key);
+    }
+  else if(annotation === "fissSC") {
+    mPieces.movePieceFromBoardToTray(list3.key);
+    mPieces.movePieceFromBoardToTray(list4.key);
+    mPieces.movePieceFromBoardToTray(list5.key);
+    }
+  else if(annotation === "fissSS") {
+    mPieces.movePieceFromBoardToTray(list3.key);
+    mPieces.movePieceFromBoardToTray(list4.key);
+    mPieces.movePieceFromBoardToTray(list5.key);
+    mPieces.movePieceFromBoardToTray(list6.key);
+    }
+  else {
+    throw new Error(`Unknown fission annotation ${annotation}.`);
+  }  
   }
 
 function backwardFission(entry) {
   console.log("cntrl: moves.js - backwardFission(entry)", entry);
 
   const { action, turn, player, list, annotation } = entry; // Parse.
-  const piece1 = list[0]; // {key,prev,post}
-  const piece2 = list[1]; // {key,prev,post}
+  const lists = list.length;
+  const list1 = list[0];    // {key,prev,post}.
+  const list2 = list[1];    // {key,prev,post}.
+  const list3 = list[2];    // {key,prev,post}.
+  const list4 = list[3];    // {key,prev,post}.
+  const list5 = list[4];    // Possibly null.
+  const list6 = list[5];    // Possibly null.
+  const [, dstStr1] = list1.prev.split("@");    // Subpiece 1 prev position.
+  const [, dstStr2] = list2.prev.split("@");    // Subpiece 2 prev position.
+  const srcStr3 = list3 ? list3.prev.split("@")[1] : null;
+  const srcStr4 = list4 ? list4.prev.split("@")[1] : null;
+  const srcStr5 = list5 ? list5.prev.split("@")[1] : null;
+  const srcStr6 = list6 ? list6.prev.split("@")[1] : null;
 
-  const [, piece1Str]  = piece1.prev.split("@");            // Move(s).
-  const [, piece2Str]  = piece2.prev.split("@");
-  mPieces.movePieceTileToTile(piece1.key, piece1Str);
-  mPieces.movePieceTileToTile(piece2.key, piece2Str);
+  mPieces.movePieceTileToTile(list1.key, dstStr1);
+  mPieces.movePieceTileToTile(list2.key, dstStr2);
+
+  if(     annotation === "fissMM") {}
+  else if(annotation === "fissMJ") {}
+  else if(annotation === "fissJM") {}
+  else if(annotation === "fissJJ") {
+  }
+  else if(annotation === "fissMC") {
+    mPieces.movePieceFromTrayToBoard(list3.key, srcStr3);
+    }
+  else if(annotation === "fissMS") {
+    mPieces.movePieceFromTrayToBoard(list3.key, srcStr3);
+    mPieces.movePieceFromTrayToBoard(list4.key, srcStr4);
+    }
+  else if(annotation === "fissJC") {
+    mPieces.movePieceFromTrayToBoard(list3.key, srcStr3);
+    }
+  else if(annotation === "fissJS") {
+    mPieces.movePieceFromTrayToBoard(list3.key, srcStr3);
+    mPieces.movePieceFromTrayToBoard(list4.key, srcStr4);
+  }
+  else if(annotation === "fissCM") {
+    mPieces.movePieceFromTrayToBoard(list3.key, srcStr3);
+    }
+  else if(annotation === "fissSM") {
+    mPieces.movePieceFromTrayToBoard(list3.key, srcStr3);
+    mPieces.movePieceFromTrayToBoard(list4.key, srcStr4);
+    }
+  else if(annotation === "fissCJ") {
+    mPieces.movePieceFromTrayToBoard(list3.key, srcStr3);
+    }
+  else if(annotation === "fissSJ") {
+    mPieces.movePieceFromTrayToBoard(list3.key, srcStr3);
+    mPieces.movePieceFromTrayToBoard(list4.key, srcStr4);
+  }
+  else if(annotation === "fissCC") {
+    mPieces.movePieceFromTrayToBoard(list3.key, srcStr3);
+    mPieces.movePieceFromTrayToBoard(list4.key, srcStr4);
+    }
+  else if(annotation === "fissCS") {
+    mPieces.movePieceFromTrayToBoard(list3.key, srcStr3);
+    mPieces.movePieceFromTrayToBoard(list4.key, srcStr4);
+    mPieces.movePieceFromTrayToBoard(list5.key, srcStr5);
+    }
+  else if(annotation === "fissSC") {
+    mPieces.movePieceFromTrayToBoard(list3.key, srcStr3);
+    mPieces.movePieceFromTrayToBoard(list4.key, srcStr4);
+    mPieces.movePieceFromTrayToBoard(list5.key, srcStr5);
+    }
+  else if(annotation === "fissSS") {
+    mPieces.movePieceFromTrayToBoard(list3.key, srcStr3);
+    mPieces.movePieceFromTrayToBoard(list4.key, srcStr4);
+    mPieces.movePieceFromTrayToBoard(list5.key, srcStr5);
+    mPieces.movePieceFromTrayToBoard(list6.key, srcStr6);
+    }
+  else {
+    throw new Error(`Unknown fission annotation ${annotation}.`);
+  }
 }
 
 function forewardEnpassant(entry) {   // Enpassant.
@@ -442,7 +614,7 @@ function applyEntry(entry) {
 }
 // Seampoint: more local functions...
 
-/* TODO: QC checklist✅ 
+/* ✅ TODO: QC checklist
     1. Write handle routines.
     2. ✅ Branch.
     3. ✅ Remove all downstream buffers.

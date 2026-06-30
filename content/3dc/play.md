@@ -75,7 +75,7 @@ layout: "play"
   }
   
   #setup-window       { top:  160px; left:   20px; width: 163px }  /* DOM Control Panels */
-  #move-window        { top: 1000px; left:   20px; width: 500px }
+  #move-window        { top: 1000px; left:   20px; width: 670px }
   #gambit-window      { top:  745px; left:   20px; width: 280px }
   #advsq-window       { top:  160px; left:  210px; width: 155px }
   #compass-window     { top:  160px; left:  560px; width: 160px; height: 220px }
@@ -91,7 +91,7 @@ layout: "play"
 
     top: 100px;
     left: 100px;
-    width: 350px;
+    width: 450px;
 
     background: #222;
     color: white;
@@ -134,8 +134,7 @@ layout: "play"
     <label>Board Size</label>
   </div>
   <div class="section">
-    <label> <input type="radio" name="board-size" value="8-8-8" checked> 8-8-8 </label><br>
-    <label> <input type="radio" name="board-size" value="8x8x8"> 8×8×8 </label><br>
+    <label> <input type="radio" name="board-size" value="8x8x8"checked> 8×8×8 </label><br>
     <label> <input type="radio" name="board-size" value="10x8x8"> 10×8×8 </label><br>
     <label> <input type="radio" name="board-size" value="10x10x10"> 10×10×10 </label>
   </div>  
@@ -153,6 +152,10 @@ layout: "play"
     <button data-action="returnPiece"  disabled>Return Piece</button>
     <button data-action="freezePuzzle" disabled>Freeze Puzzle</button>
   </div>
+  <div class="section" style="display:flex; align-items:center;">
+    <label>Pieces:                          <output name="setup-selPieces" style="opacity:0.7; font-style:italic;">...</output> </label>
+    <label style="margin-left:12px;">Tiles: <output name="setup-selTiles"  style="opacity:0.7; font-style:italic;">...</output> </label>
+  </div>
   <div class="section">
     <button data-action="startingPos" disabled>Starting Position</button>
   </div>
@@ -163,9 +166,10 @@ layout: "play"
   <div class="panel-title"><span>Move Panel</span>
     <button class="help-btn" data-help="move">?</button>
   </div>
-  <div class="section"> 
-    <label> Pieces: <output name="move-selPieces" style="opacity:0.7; font-style:italic;">...</output> </label>
-    <label> Tiles:  <output name="move-selTiles"  style="opacity:0.7; font-style:italic;">...</output> </label> 
+  <div class="section" style="display:flex; align-items:center;">
+    <label>Pieces:                          <output name="move-selPieces" style="opacity:0.7; font-style:italic;">...</output> </label>
+    <label style="margin-left:12px;">Tiles: <output name="move-selTiles"  style="opacity:0.7; font-style:italic;">...</output> </label>
+    <label style="margin-left:auto;"> <input type="checkbox" name="move-rules" disabled> Enforce Rules </label>
   </div>
   <div class="section">
     <button data-action="move"      disabled>Move</button>
@@ -173,12 +177,18 @@ layout: "play"
     <button data-action="fission"   disabled>Fission</button>
     <button data-action="enpassant" disabled>En Passant</button>
     <button data-action="castle"    disabled>Castle</button>
-    <label> <input type="radio" name="move-player" value="White" disabled checked> W </label>
-    <label> <input type="radio" name="move-player" value="Black" disabled> B </label>
+    <label> <input type="radio" name="move-player" value="White" disabled checked> White </label>
+    <label> <input type="radio" name="move-player" value="Black" disabled> Black </label>
   </div>
+
   <div class="section">
     <button data-action="promote"   disabled>Promote</button>
     <button data-action="uplift"    disabled>Uplift</button>
+    <label> Listing <output name="move-listing" style="opacity:1.0; font-style:italic;"></output> </label>
+    <label> <input type="radio" name="move-coords" value="Absolute" disabled checked> Abs </label>
+    <label> <input type="radio" name="move-coords" value="Relative" disabled> Rel </label>
+    <label> <input type="radio" name="move-lines" value="Verbose" disabled checked> Verbose </label>
+    <label> <input type="radio" name="move-lines" value="Terse" disabled> Terse </label>
   </div>
   <div class="section scroll-box" id="move-list"></div>
   </div>

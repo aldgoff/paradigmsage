@@ -8,11 +8,13 @@
 */
 
 // --- Load JSON ---
-import viewerData from "./viewer.json" assert { type: "json" };
+  import viewerData from "./viewer.json" assert { type: "json" };
   const viewerModule = viewerData.viewer_module;
 // Seampoint: more objects...
 
 // --- Dependencies ---
+  import * as mViewer  from "../../model/viewer/viewer.js";
+
   import * as cameras  from "../../view/render/cameras.js";
   import * as vGambits from "../../view/gambits/gambits.js";
   import * as vViewer  from "../../view/viewer/viewer.js";
@@ -91,7 +93,9 @@ function handleShowTrays(payload) {   // Viewer handlers. Not subject to undo.
 
   const { trayGap, levelSep, range, speed } = payload;
 
-  vTrays.makeTrays(trayGap); // Makes trays anew.
+  vTrays.showTray();
+  mViewer.buttonAffordances("canHide");
+
   }
 
 function handleHideTrays(payload) {
@@ -99,7 +103,8 @@ function handleHideTrays(payload) {
 
   const { trayGap, levelSep, range, speed } = payload;
 
-  vTrays.destroyTrays();
+  vTrays.hideTray();
+  mViewer.buttonAffordances("canShow");
   }
 
 function handleToggleAnimation(payload) {

@@ -19,8 +19,8 @@
             "Either create a puzzle or start a game.",
             "Puzzle: click on pieces and tiles; place, shift, or return, 'Freeze Puzzle' to accept.",
             "Game: click on 'Starting Position'.",
-            "Use undo/redo and rewind/FF (Game Panel) to change your mind (note scroll window, currently buggy).",
-            "(Factory trays not yet supported, same as Real trays.)",
+            "Use undo/redo and rewind/FF (Game Panel) to change your mind (note scroll window).",
+            "--- Factory trays not yet supported, same as Real trays. ---",
             ""
           ]
         },
@@ -29,12 +29,16 @@
           "lines": [
             "To specify a move, select a piece and a tile.",
             "To specify a capture, select two pieces, first captures second.",
+            "Captures require a target piece, moves require a tile.",
             "Buttons are enabled if the combination of selected piece(s) and tile(s) form an eligible move.",
             "To be legal, a move must be both eligible and allowed. It is disallowed if out of plane, out of range, blocked, etc.",
-            "This separation converts the move buttons into affordances, good user ergonomics.",
-            "Some moves require multiple piece and tile selections (castling, en passant, fission, etc.) - order is important; first piece goes with first tile.",
+            "This separation converts the move buttons into affordances, good user ergonomics. They are only enabled when eligible.",
+            "Some moves require multiple piece and tile selections (castling, en passant, fission, etc.) - click order is important.",
             "To select a stack, select both the bishop and duke subpieces.",
-            "To deselect, click again. To clear all selections, click off board."
+            "In a fission, subpieces align with click order - always select the entire stack prior to tile or piece targets.",
+            "To deselect, click again. To clear all selections, click off board.",
+            "This idiom is consistent and becomes intuitive pretty quickly.",
+            "--- Relative coords, terse notation, and rule enforcement are future features. ---"
           ]
         },
       "gambitText": {
@@ -48,7 +52,7 @@
             "Duplex moves (stride must be on a duplex tile, duke face quads only).",
             "Overlap moves (queen and stack only).",
             "Stride must be one of the four overlap tiles (brook, qtile, hotspot, Feynman).",
-            "INCOMPLETE, use with caution."
+            "--- INCOMPLETE, use with caution. ---"
           ]
         },
       "advsqText": {
@@ -95,7 +99,7 @@
           "title": "Compass Panel Help",
           "lines": [
             "Eventually will allow slip and slide of advsqs along planes and quads.",
-            "yada"
+            "--- new pedagogical feature. ---"
           ]
         },
       "viewerText": {

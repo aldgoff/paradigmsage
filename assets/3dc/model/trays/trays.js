@@ -14,6 +14,7 @@
 // Seampoint: more objects...
 
 // --- Dependencies ---
+  import * as mTrays from "../../model/trays/trays.js";
   import * as vTrays from "../../view/trays/trays.js";
 // Seampoint: more imports...
 

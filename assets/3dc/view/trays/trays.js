@@ -88,6 +88,22 @@ export function setTrayGap(trayGap) {
 
   vPieces.reprojectTrayPieces(lastLevelSep, lastTrayGap);
 }
+
+export function showTray() {
+  console.log("view : trays.js - showTray()");
+
+  whiteTrayGroup.visible = true;
+  blackTrayGroup.visible = true;
+  vPieces.showTrayPieces();
+}
+
+export function hideTray() {
+  console.log("view : trays.js - hideTray()");
+
+  whiteTrayGroup.visible = false;
+  blackTrayGroup.visible = false;
+  vPieces.hideTrayPieces();
+}
 // Seampoint: more global functions...
 
 // --- Helpers ---
@@ -97,7 +113,8 @@ function makeTrayGroup(side, entry) {
   const { action, boardSize, trayType, trayGap } = entry;
 
   const trayGroup = new window.THREE.Group();
-  trayGroup.name = `${side}Tray`;
+  trayGroup.name = `${side}`;
+  console.log("*** side, trayGroup.name, boardSize", side, trayGroup.name, boardSize);
 
   const trayData = traysModule[boardSize][side];
 

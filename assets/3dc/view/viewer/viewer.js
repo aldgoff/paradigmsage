@@ -8,7 +8,7 @@
 */
 
 // --- Load JSON ---
-import viewerData from "./viewer.json" assert { type: "json" };
+  import viewerData from "./viewer.json" assert { type: "json" };
   const viewerModule = viewerData.viewer_module;
 // Seampoint: more objects...
 

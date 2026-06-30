@@ -15,5 +15,5 @@ The discourse introduces the topic, the chapter dives into the technical details
 
 --------------------
 
-Last updated: 2026-06-15
+Last updated: 2026-06-30
 

@@ -10,7 +10,6 @@
 // --- Load JSON ---
   import setupData from "./setup.json" assert { type: "json" };
   const setupModule = setupData.setup_module;
-  const dash   = setupModule.dash;
   const eights = setupModule.eights;
   const ten    = setupModule.ten;
   const tens   = setupModule.tens;
@@ -28,9 +27,9 @@
   import * as coords   from "../../foundation/coords/coords.js";
   import * as state    from "../../model/state/state.js";
   import * as mSetup   from "../../model/setup/setup.js";
-  import * as mBoards  from "../../model/boards/boards.js";
   import * as mTrays   from "../../model/trays/trays.js";
   import * as mPieces  from "../../model/pieces/pieces.js";
+  import * as mViewer  from "../../model/viewer/viewer.js";
 
   import * as view     from "../../view/view.js";
   import * as vSetup   from "../../view/setup/setup.js";
@@ -39,34 +38,34 @@
   import * as vAdvsqs  from "../../view/advsqs/advsqs.js";
   import * as vPieces  from "../../view/pieces/pieces.js";    // Dehighlight selected pieces.
   import * as vTrays   from "../../view/trays/trays.js";
-
-  import * as invariants from "../../tests/core/invariants.js";
 // Seampoint: more imports...
 
 // --- Globals ---
   export let boardSpec = "0x0x0"; // Deprecate.
   let currBoard = { boardSize: "0x0x0", trayType: "None", trayGap: 0 };
+  let startedPlacing = false; // Flag for placking puzzle pieces.
+  let stillPlacingPieces = true;
 // Seampoint: more globals...
 
 export function getCurrBoard() { return currBoard; }
+export function getStillPlacingPieces() { return stillPlacingPieces; }
 // --- UI ---
 export function panelDispatch(payload) {    // Dispatch payload from panel to handle event functions.
   console.log("cntrl: setup.js - panelDispatch(payload):", payload);
 
   vGambits.cancelAnimation();
 
-  const { action, prevBoard, nextBoard } = payload;
+  const { action, prevBoard, nextBoard } = payload; // Informative.
 
   switch (action) {
-    case "makeBoard":    handleMakeBoard(payload); break;
-    case "placePiece":   handlePlacePiece(payload); break;
-    case "shiftPiece":   handleShiftPiece(payload); break;
-    case "returnPiece":  handleReturnPiece(payload); break;
-    case "freezePuzzle": handleFreeze(payload); break;
-    case "startingPos":  handleStartingPos(payload); break;
-    case "updateParam": break;
-
-    default: throw new Error(`Unknown setup action ${action}.`);
+    case "makeBoard":    handleMakeBoard(payload);    break;
+    case "placePiece":   handlePlacePiece(payload);   break;
+    case "shiftPiece":   handleShiftPiece(payload);   break;
+    case "returnPiece":  handleReturnPiece(payload);  break;
+    case "freezePuzzle": handleFreeze(payload);       break;
+    case "startingPos":  handleStartingPos(payload);  break;
+    case "updateParam":                               break;
+    default: throw new Error(`Unknown setup action ${action}.`); break;
   }
 
   panels.diagnostics();
@@ -142,115 +141,126 @@ export function buildPayload(panel, action) {
 
     return { action };
     }
-  else { throw new Error(`Unknown setup action ${action}`);
-  }
+  else { throw new Error(`Unknown setup action ${action}`); }
   }
 
 export function buildSetup(entry) {       // Handle.
   console.log("cntrl: setup.js - buildSetup(entry)", entry);
 
-  const { action, prevBoard, nextBoard } = entry;
+  const { action, prevBoard, nextBoard } = entry; // Informative.
 
   clearBoard(entry.prevBoard);
   buildBoard(entry.nextBoard);
-
   }
 
 export function buildForward(entry) {     // Redo.
   console.log("cntrl: setup.js - buildForward(entry)", entry);
 
   const { action, prevBoard, nextBoard } = entry;
+
   if(     action === "makeBoard") {
-    clearBoard(entry.prevBoard);
-    buildBoard(entry.nextBoard);
-    currBoard = structuredClone(entry.nextBoard);
+    console.log("*** makeBoard");
+    clearBoard(prevBoard);
+    buildBoard(nextBoard);
+    currBoard = structuredClone(nextBoard);
+      boardSpec = currBoard.boardSize;  // Deprecate.
 
-    boardSpec = currBoard.boardSize;
+    vSetup.refreshPanel(nextBoard);         
 
-    mSetup.buttonAffordances("boardDone");
-    vSetup.refreshPanel(entry.nextBoard);         
+    startedPlacing = false;
+    mSetup.buttonAffordances("startable");
+    mViewer.buttonAffordances("canHide");
     }
   else if(action === "placePiece") {
     const { action, key, prev, post } = entry;
     placePieceOnBoard(key, prev, post);
-    mSetup.buttonAffordances("pieces");
+    // mSetup.buttonAffordances("pieces");
     vSetup.refreshPanel(currBoard);         
     }
   else if(action === "shiftPiece") {
     const { action, key, prev, post } = entry;
     shiftPieceAroundBoard(key, prev, post);
-    mSetup.buttonAffordances("pieces");
+    // mSetup.buttonAffordances("pieces");
     vSetup.refreshPanel(currBoard);         
     }
   else if(action === "returnPiece") {
     const { action, key, prev, post } = entry;
     returnPieceToTray(key, prev, post);
-    mSetup.buttonAffordances("pieces");
+    // mSetup.buttonAffordances("pieces");
     vSetup.refreshPanel(currBoard);         
     }
   else if(action === "freezePuzzle") {
     const { action } = entry;
-    mSetup.buttonAffordances("loaded");
+    // mSetup.buttonAffordances("loaded");
+    stillPlacingPieces = false;
+    console.log("*** stillPlacingPieces", stillPlacingPieces);
+
     vSetup.refreshPanel(currBoard);         
     }
   else if(action === "startingPos") {
     const { action } = entry;
     initialLineup(entry);
-    mSetup.buttonAffordances("loaded");
+    stillPlacingPieces = false;
+    mSetup.buttonAffordances("makeBoard");
     vSetup.refreshPanel(currBoard);         
     }
-  else {
-  }
+  else { throw new Error(`Unknown setup action ${action}`); }
+  
+  cSelections.manageSetupButtons();
+
   panels.diagnostics();
   }
 
 export function buildBackward(entry) {    // Undo.
   console.log("cntrl: setup.js - buildBackwards(entry)", entry);
 
-  const { action, prevBoard, nextBoard } = entry;
+  const { action, prevBoard, nextBoard } = entry; // Informative.
+
   if(     action === "makeBoard") {
     clearBoard(nextBoard);
     buildBoard(prevBoard);
     currBoard = structuredClone(prevBoard);
+      boardSpec = currBoard.boardSize;
+    
+    vSetup.refreshPanel(prevBoard);         
 
-    boardSpec = currBoard.boardSize;
-
-    (prevBoard.boardSize === "0x0x0")
-      ? mSetup.buttonAffordances("makeBoard")
-      : mSetup.buttonAffordances("boardDone");
-    vSetup.refreshPanel(entry.prevBoard);         
+    startedPlacing = false;
+    if(currBoard.boardSize === "0x0x0")
+      mSetup.buttonAffordances("makeBoard");
+    else
+      mSetup.buttonAffordances("startable");
+    mViewer.buttonAffordances("off");
     }
   else if(action === "placePiece") {
     const { action, key, prev, post } = entry;
     returnPieceToTray(key, post, prev);
-    mSetup.buttonAffordances("pieces");
     vSetup.refreshPanel(currBoard);         
     }
   else if(action === "shiftPiece") {
     const { action, key, prev, post } = entry;
     shiftPieceAroundBoard(key, post, prev);
-    mSetup.buttonAffordances("pieces");
     vSetup.refreshPanel(currBoard);         
     }
   else if(action === "returnPiece") {
     const { action, key, prev, post } = entry;
     placePieceOnBoard(key, post, prev);
-    mSetup.buttonAffordances("pieces");
     vSetup.refreshPanel(currBoard);         
     }
   else if(action === "freezePuzzle") {
     const { action } = entry;
-    mSetup.buttonAffordances("pieces");
     vSetup.refreshPanel(currBoard);         
     }
   else if(action === "startingPos") {
     const { action } = entry;
     returnAllPiecesToHomeTray();
-    mSetup.buttonAffordances("pieces");
+    stillPlacingPieces = false;
+    mSetup.buttonAffordances("startable");
     vSetup.refreshPanel(currBoard);         
     }
-  else {
-  }
+  else { throw new Error(`Unknown setup action ${action}`); }
+
+  cSelections.manageSetupButtons();
+
   panels.diagnostics();
 }
 
@@ -272,7 +282,7 @@ export function returnAllPiecesToHomeTray() {
   }
 
 export function clearAllTileSelections() {
-  console.log("cntrl: setup.js - clearAllTileSelections()");
+  // console.log("cntrl: setup.js - clearAllTileSelections()");
 
   const { pieceSelections, tileSelections } = cSelections.getSelections();
   for(const vts of tileSelections) {            // vts, ...
@@ -282,7 +292,7 @@ export function clearAllTileSelections() {
   }
 
 export function clearAllPieceSelections() {
-  console.log("cntrl: setup.js - clearAllPieceSelections()");
+  // console.log("cntrl: setup.js - clearAllPieceSelections()");
 
   const { pieceSelections, tileSelections } = cSelections.getSelections();
   for(const key of pieceSelections) {           // "WKRR", ...
@@ -295,83 +305,50 @@ export function clearAllPieceSelections() {
 function handleMakeBoard(payload) { // Setup handler. TODO: undo branching?
   console.log("cntrl: setup.js - handleMakeBoard(payload):", payload);
 
-  const { action, prevBoard, nextBoard, boardSize,trayType,trayGap } = payload;
+  const { action, prevBoard, nextBoard } = payload; // Informative.
   
-  const entry = mSetup.makeEntry(payload);
-
-
-  clearBoard(entry.prevBoard);
-  buildBoard(entry.nextBoard);
-
-  boardSpec = nextBoard.boardSize;
-  currBoard = structuredClone(nextBoard);       // Capture current board.
+  const entry = mSetup.makeEntry(payload);      // Create entry.
 
   state.pushNewSetup(entry);                    // Log state change in undo buffer.
   vSetup.pushPanelLine(entry);                  // Upate panels.
-  vSetup.refreshPanel(nextBoard);         
-  mSetup.buttonAffordances("boardDone");
+
+  buildForward(entry);                          // Build board, trays, and pieces.
   }
 
 function handlePlacePiece(payload) {
   console.log("cntrl: setup.js - handlePlacePiece(payload):", payload);
-   
-  let result = createPieceEntry(payload);
-  const { entry, err } = result;
-  if(!entry) { throw new Error(`${err} - don't log.`); return; }
 
-  buildForward(entry);
+  pieceSetup(payload);
 
-  branchHistory(entry);
-  applyEntry(entry);
-
-  // --- Buttons ---
-    const pieceCount = 0; // TODO: turn off place piece etc. when trays are empty.
-    const max = 36; // TODO: magic number
-    (pieceCount === max)
-      ? mSetup.buttonAffordances("emptyTrays")
-      : mSetup.buttonAffordances("pieces");
-  
-  clearAllPieceSelections();
-  clearAllTileSelections();
+  startedPlacing = true;
   }
 
 function handleShiftPiece(payload) {
   console.log("cntrl: setup.js - handleShiftPiece(payload):", payload);
 
-  let result = createPieceEntry(payload);
-  const { entry, err } = result;
-  if(!entry) { throw new Error(`${err} - don't log.`); return; }
-
-  buildForward(entry);
-
-  branchHistory(entry);
-  applyEntry(entry);
-
-  clearAllPieceSelections();
-  clearAllTileSelections();
+  pieceSetup(payload);
   }
 
 function handleReturnPiece(payload) {
   console.log("cntrl: setup.js - handleReturnPiece(payload):", payload);
 
-  let result = createPieceEntry(payload);
-  const { entry, err } = result;
-  if(!entry) { throw new Error(`${err} - don't log.`); return; }
+  pieceSetup(payload);
+  }
+
+function pieceSetup(payload) {
+  console.log("cntrl: setup.js - pieceSetup(payload):", payload);
+
+  const entry = createPieceEntry(payload);
 
   buildForward(entry);
-
   branchHistory(entry);
   applyEntry(entry);
 
   clearAllPieceSelections();
   clearAllTileSelections();
-
-  // --- Buttons ---
-    const pieceCount = 36;  // TODO: disable buttons when trays empty.
-    (pieceCount === 0)
-      ? mSetup.buttonAffordances("boardDone")
-      : mSetup.buttonAffordances("pieces");
-  }
+  cSelections.clearSelections();
+  mSetup.buttonAffordances("placed");
+}
 
 function handleFreeze(payload) {
   console.log("cntrl: setup.js - handleFreeze(payload):", payload);
@@ -387,6 +364,7 @@ function handleFreeze(payload) {
   branchHistory(entry);
   applyEntry(entry);
   mSetup.buttonAffordances("loaded");
+  stillPlacingPieces = false;
   }
 
 function handleStartingPos(payload) {
@@ -407,6 +385,7 @@ function handleStartingPos(payload) {
   branchHistory(entry);
   applyEntry(entry);
   mSetup.buttonAffordances("loaded");
+  stillPlacingPieces = false;
   }
 
 // Seampoint: more handlers...
@@ -441,10 +420,10 @@ function createPieceEntry(payload) {
   console.log("cntrl: setup.js - createPieceEntry(payload):", payload);
 
   let { action, key, prev, post } = payload;
-  let entry = { action, key, prev, post };
-  let err = null;
 
-  return { entry, err };
+  const entry = { action, key, prev, post };
+
+  return entry;
   }
 
 function placePieceOnBoard(key, prev, post) {
@@ -500,7 +479,6 @@ function initialLineup(entry) {
   const { action, boardSize, trayType } = entry;
 
   let board;
-  if(currBoard.boardSize === "8-8-8") board = dash;
   if(currBoard.boardSize === "8x8x8") board = eights;
   if(currBoard.boardSize === "10x8x8") board = ten;
   if(currBoard.boardSize === "10x10x10") board = tens;
@@ -559,9 +537,9 @@ function applyEntry(entry) {
 }
 // Seampoint: more local functions...
 
-/* TODO: QC checklist✅ 
+/* ✅ TODO: QC checklist
     1. ✅ Load/Save fails to make board.
-    2. Corruption if attempt to place a piece on an occupied tile.
+    2. ✅ Corruption if attempt to place a piece on an occupied tile.
     3. Support factory trays.
     4. ✅ Make code work for all three board sizes.
     5. ✅ Implement startup position.
@@ -569,5 +547,9 @@ function applyEntry(entry) {
     7. ✅ Undo does not restore buttons.
     8. const max = 40;
     9. Stack management.
+    10. disable Place Piece button when trays empty.
+    11. turn off return piece when trays are full.
+    12. undo branching appears broken, again.
+    13. Not sure how to include in entry.
  */
 

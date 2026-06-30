@@ -129,7 +129,7 @@ export function buttonAffordances(situation) {
   console.log("model: gambits.js - buttonAffordances(situation)", situation);
 
   switch (situation) {
-    case "on":
+    case "on":              // Enable all panel buttons.
       panels.enableButton("freezeQ",   true);             // Enable all the panel buttons.
       panels.enableButton("freezeL",   true);
       panels.enableButton("freezeD",   true);
@@ -145,9 +145,9 @@ export function buttonAffordances(situation) {
       panels.enableButton("contract",  true);
       panels.enableButton("delete",    true);
       panels.enableButton("remove",    true);
-      break;
+    break;
 
-    case "freezeQ":
+    case "freezeQ":         // Advancement manifolds.
       buttonAffordances("off");
       panels.enableButton("freezeQ",   true);
       break;
@@ -164,7 +164,7 @@ export function buttonAffordances(situation) {
       panels.enableButton("freezeO",   true);
     break;
 
-    case "linear":
+    case "linear":          // Quadrant options.
       buttonAffordances("off");
       panels.enableButton("freezeQ",   true);
       panels.enableButton("freezeL",   true);
@@ -175,7 +175,7 @@ export function buttonAffordances(situation) {
       panels.enableButton("freezeD",   true);
     break;
 
-    case "freezeN":
+    case "freezeN":         // Restricted pieces.
       buttonAffordances("off");
       panels.enableButton("freezeN",   true);
       break;
@@ -186,21 +186,23 @@ export function buttonAffordances(situation) {
     case "freezeK":
       buttonAffordances("off");
       panels.enableButton("freezeK",   true);
-      break;
-    case "asAPlane":
+    break;
+
+    case "asAPlane":        // The whole plane.
       buttonAffordances("off");
       panels.enableButton("asAPlane",  true);
     break;
 
-    case "selected":
+    case "selected":        // Manifold management.
       buttonAffordances("off");
       panels.enableButton("nextPlane", true);
       panels.enableButton("expand",    true);
       panels.enableButton("contract",  true);
       panels.enableButton("delete",    true);
       panels.enableButton("remove",    true);
-      break;
-    case "off":
+    break;
+
+    case "off":              // Disable all panel buttons.
       panels.enableButton("freezeQ",   false);              // Disable all the panel buttons.
       panels.enableButton("freezeL",   false);
       panels.enableButton("freezeD",   false);

@@ -20,6 +20,7 @@
   import * as mMoves   from "../model/moves/moves.js";
   import * as mGambits from "../model/gambits/gambits.js";
   import * as mAdvsqs  from "../model/advsqs/advsqs.js";
+  import * as mViewer  from "../model/viewer/viewer.js";
 
   import * as view     from "../view/view.js";
 // Seampoint: more imports...
@@ -29,16 +30,17 @@
 
 // --- UI ---
 export function init(playBoard) {
-  console.log("control.init(): 3dc/controller/controller.js");
+  console.log("cntrl: controller.js - init(playBoard):", playBoard);
 
   panels.init();
   model.init(playBoard);
   view.init(playBoard);
 
-  // mSetup.buttonAffordances("off");
+  mSetup.buttonAffordances("makeBoard");
   mMoves.buttonAffordances("off");
   mGambits.buttonAffordances("off");
   mAdvsqs.buttonAffordances("build");
+  mViewer.buttonAffordances("off");
 
   panels.diagnostics();
 }

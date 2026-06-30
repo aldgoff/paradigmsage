@@ -10,14 +10,14 @@
 // --- Load JSON ---
   import piecesData from "./pieces.json" assert { type: "json" };
   const piecesModule = piecesData.pieces_module;
-  // ChangePoint:
-  const dash   = piecesModule.dash;
   const eight  = piecesModule.eight;
   const ten    = piecesModule.ten;
   const tens   = piecesModule.tens;
 // Seampoint: more objects...
 
 // --- Dependencies ---
+  import * as asserts from "../../tests/core/asserts.js";
+
   import * as utils   from "../../../utils/utils.js";
   import * as cSetup  from "../../controller/setup/setup.js";
 
@@ -166,7 +166,6 @@ export function movePieceFromBoardToTray(key) {
 
     const { loc, pos, coords, vts, home } = piece;              // Parse the piece fields.
 
-    // const { i, j } = mTrays.trayIndices(type, spec);                // Determine tray array indices.
     const [k, i, j] = piece.home.trayCoords;
     // console.log("*** Parse", k, i, j);
 
@@ -226,7 +225,7 @@ export function combineStackinTray(piece) {
 }
 
 export function createPiece(key, pos, coords, trayOffset=0) { // Needed by promote.
-  console.log("model: pieces.js - createPiece(key, pos, coords, trayOffset)", key, pos, coords, trayOffset);
+  // console.log("model: pieces.js - createPiece(key, pos, coords, trayOffset)", key, pos, coords, trayOffset);
 
   const [k, i, j] = coords;
   const player = key[0];
@@ -238,6 +237,7 @@ export function createPiece(key, pos, coords, trayOffset=0) { // Needed by promo
     : [k-4, -i+offset, -j+offset];
 
   return {  // "WQRP" - player, side, level, type.
+    key,
     loc: "~",
     pos,
     coords: [...coords],
@@ -247,7 +247,7 @@ export function createPiece(key, pos, coords, trayOffset=0) { // Needed by promo
 }
 
 export function piecesOnTile(vts) {
-  console.log("model: pieces.js - piecesOnTile(vts)", vts);
+  // console.log("model: pieces.js - piecesOnTile(vts)", vts);
 
   const keys = [];
 
@@ -279,18 +279,12 @@ export function canOccupyTile(key, vts) {
   }
 
 export function hasOtherStackSubpiece(key, vts) {
-  console.log("model: pieces.js - hasOtherStackSubpiece(key, vts)", key, vts);
+  // console.log("model: pieces.js - hasOtherStackSubpiece(key, vts)", key, vts);
 
   return piecesOnTile(vts).some(k => k !== key && isStackMate(key, k));
   }
 
-export function pieceLocOnBoard(key) {
-  return pieceList[key].vts;
-}
-// Seampoint: more global functions...
-
-// --- Helpers ---
-function isStackMate(key1, key2) {
+export function isStackMate(key1, key2) {
   const player1 = key1[0];
   const player2 = key2[0];
   return ((player1 === player2) && (
@@ -299,14 +293,30 @@ function isStackMate(key1, key2) {
   );
   }
 
+export function test_isStackMate() {
+  let count = 0;
+  if(asserts.assertEqual(isStackMate("WKBB", "WKBB"), false, "stackMate()")) count++;
+  if(asserts.assertEqual(isStackMate("WKBB", "WKBD"), true,  "stackMate()")) count++;
+  if(asserts.assertEqual(isStackMate("WKBD", "WKBB"), true,  "stackMate()")) count++;
+  if(asserts.assertEqual(isStackMate("WKBD", "WKBD"), false, "stackMate()")) count++;
+  console.log("*** count of isStackMate()", count);
+
+  return (count === 4);
+}
+
+export function pieceLocOnBoard(key) {
+  return pieceList[key].vts;
+}
+// Seampoint: more global functions...
+
+// --- Helpers ---
 function createPiecesInTrays(entry) {
   console.log("model: pieces.js - createPiecesInTrays(entry)", entry);
   
   const { action, boardSize, trayType, trayGap, boardSpec } = entry;
   
   // ChangePoint:
-  if(     boardSize === "8-8-8")    { createPiecesForDashBoard(trayGap); } 
-  else if(boardSize === "8x8x8")    { createPiecesForEightBoard(trayGap); } 
+  if(     boardSize === "8x8x8")    { createPiecesForEightBoard(trayGap); } 
   else if(boardSize === "10x8x8")   { createPiecesForTenBoards(trayGap);  }
   else if(boardSize === "10x10x10") { createPiecesForTensBoards(trayGap); }
   else { throw new Error(`Unknown board spec ${spec}.`); }
@@ -329,22 +339,6 @@ function destroyPieces(entry) {
 
   for(const key in pieceList) {
     delete pieceList[key];
-  }
-  }
-
-// ChangePoint:
-function createPiecesForDashBoard(trayGap) {
-  console.log("model: pieces.js - createPiecesForDashBoard(trayGap)", trayGap);
-  // console.log("***", dash);
-  
-  for(const player of ["White","Black"]) {
-    const tray = (player === "White") 
-    ? mTrays.getWhiteTray() 
-    : mTrays.getBlackTray();
-    const trayDef = dash.trays[player];
-    const offset  = dash.trays.offset + trayGap;
-
-    createPiecesForDashTray(tray, trayDef, offset);
   }
   }
 
@@ -393,29 +387,6 @@ function createPiecesForTensBoards(trayGap) {
   }
   }
 
-// ChangePoint:
-function createPiecesForDashTray(tray, trayDef, offset=0) {
-  // console.log("model: pieces.js - createPiecesForTray(tray, trayDef, offset)", tray, trayDef, offset);
-
-  for(let k=0; k<10; k++) {
-    for(let i=0; i<2; i++) {
-      for(let j=0; j<2; j++) {
-        const key = trayDef[k][i][j];
-        if(!key) continue;
-
-        const side  = key[1];
-        const level = key[2];
-        const LL = (side === level) ? `${side}` : `${side}${level}`;
-        const pos = `${LL}${i+1},${j+1}`;  // "QR" <LL>i,j
-        const coords = [k,i,j];
-
-        pieceList[key] = createPiece(key, pos, coords, offset);
-        tray[k][i][j] = key;
-      }
-    }
-  }
-  }
-
 function createPiecesForTray(tray, trayDef, offset=0) {
   // console.log("model: pieces.js - createPiecesForTray(tray, trayDef, offset)", tray, trayDef, offset);
 
@@ -436,16 +407,16 @@ function createPiecesForTray(tray, trayDef, offset=0) {
       }
     }
   }
-  }
-
+}
 // Seampoint: more local functions...
 
 /* piece = {  // Field documentation.
- *   loc,        // "@"|"~" - board or tray (player (W|B in the key) determines which one).
- *   curPos,     // "<LL><x,y>", x,y: 1-8, or 0-9.
- *   curCoords,  // location of piece now.
- *   vts,        // [z,x,y].
- *   home: {     // Fixed at creation time.
+ *   key,       // WKRP.
+ *   loc,       // "@"|"~" - board or tray (player (W|B in the key) determines which one).
+ *   pos,       // "<LL><x,y>", x,y: 1-8, or 0-9.
+ *   coord,     // location of piece now.
+ *   vts,       // [z,x,y].
+ *   home: {    // Fixed at creation time.
  *     trayPos,    // "<LL><i,j>", i,j: 1-2, (pawns on 2,2).
  *     trayCoords, // [k,i,j], k: 1-8, or 0-9, i,j: 0-1, bishop on 1,0, duke on 0,1.
  *     trayVts     // virtual Tile Space location in tray.
