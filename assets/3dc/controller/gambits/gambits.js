@@ -398,21 +398,21 @@ function applyDuplexEntry({entry, line}) {   // Group, state, render, panel.
 // Seampoint: more local functions...
 
 /* TODO: Gambit additions:
-  *  1. ✅ Clear AdvSq buffer
-  *  2. ✅ Render (with animation)
-  *  3. Compute derived fields
-  *  4. ✅ Add to scroll window
-  *  5. ✅ Put resolveDstTile under test
-  *  6. ✅ Move add and scale and isSame to utils.
-  *  7. ✅ Test aliases to AI (skipped)
-  *  8. ✅ If that passes, port geo into subdirs.
-  *  9. ✅ Update specs
-  * 10. ✅ Freeze Linear
-  * 11. Freeze Duplex
-  * 12. Freeze Overlap
-  * 13. ✅ Plumbing for test suite
-  * 14. Add expand & contract feature
-  * 15. Next fails if dst is offboard (at least for duplex moves)
-  * 16. Button enable/disable - document.querySelector('[data-action="freezeQ"]').disabled = false;
+   1. ✅ Clear AdvSq buffer
+   2. ✅ Render (with animation)
+   3. Compute derived fields
+   4. ✅ Add to scroll window
+   5. ✅ Put resolveDstTile under test
+   6. ✅ Move add and scale and isSame to utils.
+   7. ✅ Test aliases to AI (skipped)
+   8. ✅ If that passes, port geo into subdirs.
+   9. ✅ Update specs
+  10. ✅ Freeze Linear
+  11. Freeze Duplex
+  12. Freeze Overlap
+  13. ✅ Plumbing for test suite
+  14. Add expand & contract feature
+  15. Next fails if dst is offboard (at least for duplex moves)
+  16. Button enable/disable - document.querySelector('[data-action="freezeQ"]').disabled = false;
 */
 

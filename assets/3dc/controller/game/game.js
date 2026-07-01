@@ -14,8 +14,8 @@
 
 // --- Dependencies ---
   import * as panels      from "../../panels/panels.js";
-  import * as cSelections from "../../controller/selections/selections.js";
 
+  import * as cSelects from "../../controller/selections/selections.js";
   import * as cSetup   from "../../controller/setup/setup.js";
   import * as cMoves   from "../../controller/moves/moves.js";
   import * as cGambits from "../../controller/gambits/gambits.js";
@@ -425,7 +425,7 @@ function processUndoBuffer(key, idx) {
       return true;
     }
 
-    cSelections.manageAdvsqButtons();
+    cSelects.manageAdvsqButtons();
 
     }
   else if(key === "Gambits") {
@@ -439,7 +439,7 @@ function processUndoBuffer(key, idx) {
     vGambits.undo(entry);
     vGambits.refreshPanel(entry);
 
-    cSelections.manageGambitButtons();
+    cSelects.manageGambitButtons();
 
     return true;
     }
@@ -456,7 +456,7 @@ function processUndoBuffer(key, idx) {
     cSetup.clearAllTileSelections();
     cSetup.clearAllPieceSelections();
     
-    cSelections.manageMoveButtons();
+    cSelects.manageMoveButtons();
 
     return true;
     }
@@ -471,7 +471,7 @@ function processUndoBuffer(key, idx) {
       cSetup.clearAllPieceSelections();
     }
 
-    cSelections.manageSetupButtons();
+    cSelects.manageSetupButtons();
 
     return true;
     }
@@ -496,7 +496,7 @@ function processRedoBuffer(key, idx) {
     cSetup.clearAllTileSelections();
     cSetup.clearAllPieceSelections();
     
-    cSelections.manageSetupButtons();
+    cSelects.manageSetupButtons();
 
     return true;
     }
@@ -513,7 +513,7 @@ function processRedoBuffer(key, idx) {
     cSetup.clearAllTileSelections();
     cSetup.clearAllPieceSelections();
     
-    cSelections.manageMoveButtons();
+    cSelects.manageMoveButtons();
 
     return true;
     }
@@ -534,7 +534,7 @@ function processRedoBuffer(key, idx) {
 
     vGambits.refreshPanel();         
         
-    cSelections.manageGambitsButtons();
+    cSelects.manageGambitsButtons();
 
     return true;
     }
@@ -561,7 +561,7 @@ function processRedoBuffer(key, idx) {
       return true;
     }
         
-    cSelections.manageAdvsqButtons();
+    cSelects.manageAdvsqButtons();
 
     }
   else {  // Unreachable.
@@ -630,9 +630,9 @@ function assertStateConsistency() {
 // Seampoint: more local functions...
 
 /* ✅ TODO: QC checklist
-    1. ✅ Load/Save fails to make board.
-    2. ✅ Still have gambit issues.
-    3. ✅ Undo from play throws an error, play removed.
-    4. ✅ Load does not clear the scene.
+  1. ✅ Load/Save fails to make board.
+  2. ✅ Still have gambit issues.
+  3. ✅ Undo from play throws an error, play removed.
+  4. ✅ Load does not clear the scene.
  */
 

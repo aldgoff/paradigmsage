@@ -3,7 +3,7 @@
   Purpose: Manage raycasting clicks for tiles, pieces, advsqs, gambits, etc.
   Author: Allan Goff
   Date: 6/04/26
-  Recommended access: import * as cSelections from "../../controller/selections/selections.js";
+  Recommended access: import * as cSelects from "../../controller/selections/selections.js";
   UI: the export functions.
 */
 
@@ -13,18 +13,20 @@
 // Seampoint: more objects...
 
 // --- Dependencies ---
-  import * as panels  from "../../panels/panels.js";
   import * as utils   from "../../../utils/utils.js";       // isSame(a,b).
+  import * as panels  from "../../panels/panels.js";
+
   import * as cSelections from "../../controller/selections/selections.js";
+  import * as cSetup      from "../../controller/setup/setup.js";
 
-  import * as cSetup  from "../../controller/setup/setup.js";
-
-  import * as state   from "../../model/state/state.js";
-  import * as mSetup  from "../../model/setup/setup.js";
-  import * as mMoves  from "../../model/moves/moves.js";
-  import * as mPieces from "../../model/pieces/pieces.js";
-  import * as mBoards from "../../model/boards/boards.js";
-  import * as coords  from "../../foundation/coords/coords.js";
+  import * as state    from "../../model/state/state.js";
+  import * as mSetup   from "../../model/setup/setup.js";
+  import * as mMoves   from "../../model/moves/moves.js";
+  import * as mGambits from "../../model/gambits/gambits.js";
+  import * as mAdvsqs  from "../../model/advsqs/advsqs.js";
+  import * as mPieces  from "../../model/pieces/pieces.js";
+  import * as mBoards  from "../../model/boards/boards.js";
+  import * as coords   from "../../foundation/coords/coords.js";
 
   import * as view    from "../../view/view.js";            // view.getContext().
   import * as vBoards from "../../view/boards/boards.js";   // decorate tile meshes.
@@ -59,7 +61,7 @@ export function clearSelections() {
   clearTileSelections();
   manageSetupButtons();
   manageMoveButtons();
-  manageGambitsButtons();
+  manageGambitButtons();
   manageAdvsqButtons();
 }
 
@@ -319,7 +321,7 @@ export function manageSetupButtons() {
       //   else if(onBoard1 && onBoard2) mSetup.buttonAffordances("shiftable");
       // }
     }
-}
+  }
 
 export function manageMoveButtons() {
   console.log("cntrl: selections.js - manageMoveButtons()");
@@ -512,7 +514,7 @@ export function manageMoveButtons() {
         panels.enableButton("castle", true);
         annotation = "dble";
       }
-}
+  }
 
 export function manageGambitButtons() {
   console.log("cntrl: selections.js - manageGambitButtons()");
@@ -570,7 +572,7 @@ export function manageGambitButtons() {
       }
     else {}  // Selection permutation not germain.
     // Seampoint for more affordance permutations.
-}
+  }
 
 export function manageAdvsqButtons() {
   console.log("cntrl: selections.js - manageAdvsqButtons()");
@@ -651,12 +653,15 @@ function getTiles(tileSelections, size) {
 
   const [tile1, tile2, tile3, tile4, tile5, tile6]  = [...tileSelections];
 
-  const sdStr1 = (tile1) ? coords.vtsToBoard(tile1, size) : "";
-  const sdStr2 = (tile2) ? coords.vtsToBoard(tile2, size) : "";
-  const sdStr3 = (tile3) ? coords.vtsToBoard(tile3, size) : "";
-  const sdStr4 = (tile4) ? coords.vtsToBoard(tile4, size) : "";
-  const sdStr5 = (tile5) ? coords.vtsToBoard(tile5, size) : "";
-  const sdStr6 = (tile6) ? coords.vtsToBoard(tile6, size) : "";
+  // if(!size) return;   // Need a board to have clicks on tiles.
+  // if(!size) size = "0x0x0"; // return;   // Need a board to have clicks on tiles.
+
+  const sdStr1 = (size && tile1) ? coords.vtsToBoard(tile1, size) : "";
+  const sdStr2 = (size && tile2) ? coords.vtsToBoard(tile2, size) : "";
+  const sdStr3 = (size && tile3) ? coords.vtsToBoard(tile3, size) : "";
+  const sdStr4 = (size && tile4) ? coords.vtsToBoard(tile4, size) : "";
+  const sdStr5 = (size && tile5) ? coords.vtsToBoard(tile5, size) : "";
+  const sdStr6 = (size && tile6) ? coords.vtsToBoard(tile6, size) : "";
 
   return { sdStr1, sdStr2, sdStr3, sdStr4, sdStr5, sdStr6 };
 }
@@ -809,7 +814,11 @@ function fissionCapture(piece1, piece2, piece3, piece4, piece5=null, piece6=null
 }
 // Seampoint: more local functions...
 
-// PromoteMov.
-// PromoteCap, uplifts.
-// Castle, KQ-side, royal.
+/* TODO: QC checklist
+  1. PromoteMov
+  2. PromoteCap
+  3. Uplift
+  4. ✅ Castles
+  5. Castle annotations
+ */
 

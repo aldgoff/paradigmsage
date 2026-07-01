@@ -615,10 +615,10 @@ function applyEntry(entry) {
 // Seampoint: more local functions...
 
 /* ✅ TODO: QC checklist
-    1. Write handle routines.
-    2. ✅ Branch.
-    3. ✅ Remove all downstream buffers.
-    4. Write the forward functions.
-    5. Write the backward functions.
+  1. Write handle routines.
+  2. ✅ Branch.
+  3. ✅ Remove all downstream buffers.
+  4. Write the forward functions.
+  5. Write the backward functions.
 */
 

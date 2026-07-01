@@ -537,19 +537,19 @@ function applyEntry(entry) {
 }
 // Seampoint: more local functions...
 
-/* ✅ TODO: QC checklist
-    1. ✅ Load/Save fails to make board.
-    2. ✅ Corruption if attempt to place a piece on an occupied tile.
-    3. Support factory trays.
-    4. ✅ Make code work for all three board sizes.
-    5. ✅ Implement startup position.
-    6. ✅ Implement undo branching.
-    7. ✅ Undo does not restore buttons.
-    8. const max = 40;
-    9. Stack management.
-    10. disable Place Piece button when trays empty.
-    11. turn off return piece when trays are full.
-    12. undo branching appears broken, again.
-    13. Not sure how to include in entry.
+/* TODO: QC checklist
+  1. ✅ Load/Save fails to make board.
+  2. ✅ Corruption if attempt to place a piece on an occupied tile.
+  3. Support factory trays.
+  4. ✅ Make code work for all three board sizes.
+  5. ✅ Implement startup position.
+  6. ✅ Implement undo branching.
+  7. ✅ Undo does not restore buttons.
+  8. const max = 40;
+  9. Stack management.
+  10. disable Place Piece button when trays empty.
+  11. turn off return piece when trays are full.
+  12. undo branching appears broken, again.
+  13. Not sure how to include in entry.
  */
 
