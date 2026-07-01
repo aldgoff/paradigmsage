@@ -27,7 +27,7 @@ export function reset() {
   console.log("model: advsqs.js - reset()");
 
   vAdvsqs.clearAdvsqs();
-  }
+}
 
 export function makeEntry(payload) {
   console.log(`model: advsqs.js - makeEntry(payload):`, payload);

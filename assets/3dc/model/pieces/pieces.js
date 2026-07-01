@@ -173,10 +173,10 @@ export function movePieceFromBoardToTray(key) {
     const tray = (player === "W")
       ? mTrays.getWhiteTray() 
       : mTrays.getBlackTray();
-    if(tray[k][i][j] != null) {                                  // Update occupancy arrays.
-      const err = `Cannot move to an occupied ${tray[k][i][j]} at ${k},${i},${j}.`;
-      return { ok: false, err };
-    }
+    // if(tray[k][i][j] != null) {                                  // Update occupancy arrays.
+    //   const err = `Cannot move to an occupied ${tray[k][i][j]} at ${k},${i},${j}.`;
+    //   return { ok: false, err };
+    // }
     tray[k][i][j] = key;
     // console.log("*** Update tray occupancy", piece.home.trayVts);
 
@@ -198,7 +198,7 @@ export function movePieceFromBoardToTray(key) {
     console.log("*** whiteTray", structuredClone(mTrays.getWhiteTray()));
     console.log("*** blackTray", structuredClone(mTrays.getBlackTray()));
 
-  return { ok: true, err: null };
+  return;
 }
 
 export function splitStackInTray(piece) {

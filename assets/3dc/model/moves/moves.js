@@ -389,7 +389,7 @@ export function makePromoteEntry(payload, selections) {
   cleanupSelections();                                    // Cleanup.
   
   return { action, turn, player, list, annotation };      // Entry.
-}
+  }
 
 export function makeUpliftEntry(payload, selections) {
   console.log(`model: gambits.js - makeUpliftEntry(payload, selections):`, payload, selections);
