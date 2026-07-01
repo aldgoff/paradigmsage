@@ -52,6 +52,11 @@ export function buttonAffordances(situation) {
     panels.enableButton("nextPlane", true);
     panels.enableButton("nextPiece", true);
     }
+  else if(situation === "default") {         // Place or grow (implied place).
+    buttonAffordances("off");
+    panels.enableButton("place",     true);
+    panels.enableButton("grow",      true);
+    }
   else if(situation === "build") {      // Initial values, ready to build advsqs.
     buttonAffordances("off");
     panels.enableButton("place",     true);

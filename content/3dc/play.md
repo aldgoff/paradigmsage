@@ -75,8 +75,8 @@ layout: "play"
   }
   
   #setup-window       { top:  160px; left:   20px; width: 163px }  /* DOM Control Panels */
-  #move-window        { top: 1000px; left:   20px; width: 670px }
-  #gambit-window      { top:  745px; left:   20px; width: 280px }
+  #move-window        { top: 1050px; left:   20px; width: 670px }
+  #gambit-window      { top:  770px; left:   20px; width: 280px }
   #advsq-window       { top:  160px; left:  210px; width: 155px }
   #compass-window     { top:  160px; left:  560px; width: 160px; height: 220px }
   #diagnostics-window { top:  160px; left:  960px; width: 145px }
@@ -216,6 +216,10 @@ layout: "play"
     <button data-action="delete">Delete</button>
     <button data-action="removeAll">Remove All</button>
   </div>
+  <div class="section" style="display:flex; align-items:center;">
+    <label>Pieces:                          <output name="gambit-selPieces" style="opacity:0.7; font-style:italic;">...</output> </label>
+    <label style="margin-left:12px;">Tiles: <output name="gambit-selTiles"  style="opacity:0.7; font-style:italic;">...</output> </label>
+  </div>
   <div class="section">
     <label> Open   :  <output name="gambit-open"  style="opacity:0.7; font-style:italic;"> [,,,,,]</output> </label>
   </div>
@@ -279,6 +283,10 @@ layout: "play"
     <button data-action="nextQuad">Next Quad</button>
     <button data-action="nextPlane">Next Plane</button>
     <button data-action="nextPiece">Next Piece</button>
+  </div>
+  <div class="section" style="display:flex; align-items:center;">
+    <label>Pieces:                          <output name="advsq-selPieces" style="opacity:0.7; font-style:italic;">...</output> </label>
+    <label style="margin-left:12px;">Tiles: <output name="advsq-selTiles"  style="opacity:0.7; font-style:italic;">...</output> </label>
   </div>
   <div class="section">
     <label> Offboard Visibility

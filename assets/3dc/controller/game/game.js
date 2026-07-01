@@ -258,6 +258,9 @@ async function handleLoad() {
     mPieces.clearPieceState();        // Reset occupancies.
     mTrays.clearTrays();
     mSetup.buttonAffordances("makeBoard");
+    mMoves.buttonAffordances("off");
+    mGambits.buttonAffordances("off");
+    mAdvsqs.buttonAffordances("default");
     panels.diagnostics();
 
     showUndoStatus();                 // Visual indicator of successful load.
@@ -421,6 +424,9 @@ function processUndoBuffer(key, idx) {
       state.setBufferIndex("AdvSqs", idx-1);
       return true;
     }
+
+    cSelections.manageAdvsqButtons();
+
     }
   else if(key === "Gambits") {
     const entry = state.fetchCurrentState("Gambits");
@@ -432,6 +438,8 @@ function processUndoBuffer(key, idx) {
     state.setBufferIndex("Gambits", idx-1);
     vGambits.undo(entry);
     vGambits.refreshPanel(entry);
+
+    cSelections.manageGambitButtons();
 
     return true;
     }
@@ -448,6 +456,8 @@ function processUndoBuffer(key, idx) {
     cSetup.clearAllTileSelections();
     cSetup.clearAllPieceSelections();
     
+    cSelections.manageMoveButtons();
+
     return true;
     }
   else if(key === "Setup") {
@@ -503,6 +513,8 @@ function processRedoBuffer(key, idx) {
     cSetup.clearAllTileSelections();
     cSetup.clearAllPieceSelections();
     
+    cSelections.manageMoveButtons();
+
     return true;
     }
   else if(key === "Gambits") {
@@ -521,7 +533,9 @@ function processRedoBuffer(key, idx) {
     vGambits.render(group, { animate: false });      // Render.
 
     vGambits.refreshPanel();         
-    
+        
+    cSelections.manageGambitsButtons();
+
     return true;
     }
   else if(key === "AdvSqs") {
@@ -546,6 +560,9 @@ function processRedoBuffer(key, idx) {
       state.setBufferIndex("AdvSqs", idx + 1);
       return true;
     }
+        
+    cSelections.manageAdvsqButtons();
+
     }
   else {  // Unreachable.
     throw new Error(`Unknown or missing key in redo ${key}.`);

@@ -103,7 +103,7 @@
   git tag
   git tag -a 3dc-v0.5-<desc> -m "yada yada"
   git push origin <tag>  (Preferred)
-  gti show tag
+  git show tag
 
   git push --tags  (Just as good on a solo project.)
   ```
@@ -115,7 +115,7 @@
   v0.2-feynman-tile
   v0.3-3dc
   v0.4-move-pieces
-  v0.5-3dc-affordances
+  v0.5-3dc-fission
   v1.0.1
   ```
   Canonical Use Going Forward
