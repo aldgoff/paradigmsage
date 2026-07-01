@@ -632,8 +632,7 @@ export function manageAdvsqButtons() {
     // Seampoint for more affordance permutations.
 }
 
-// --- Helpers ---
-function getPieces(pieceSelections) {
+export function getPieces(pieceSelections) {
   console.log("cntrl: selections.js - getPieces(pieceSelections)", pieceSelections);
 
   const [key1, key2, key3, key4, key5, key6]  = [...pieceSelections];
@@ -648,7 +647,7 @@ function getPieces(pieceSelections) {
   return { piece1, piece2, piece3, piece4, piece5, piece6 };
   }
 
-function getTiles(tileSelections, size) {
+export function getTiles(tileSelections, size) {
   console.log("cntrl: selections.js - getTiles(tileSelections, size)", tileSelections, size);
 
   const [tile1, tile2, tile3, tile4, tile5, tile6]  = [...tileSelections];
@@ -666,6 +665,7 @@ function getTiles(tileSelections, size) {
   return { sdStr1, sdStr2, sdStr3, sdStr4, sdStr5, sdStr6 };
 }
 
+// --- Helpers ---
 function lastCol(dstStr1, size, player1) {
   const [, prefix, x, y] = dstStr1.match(/^([A-Z]+)(\d+),(\d+)$/);
   const i = Number(x);
