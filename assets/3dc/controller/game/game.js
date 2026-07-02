@@ -465,6 +465,7 @@ function processUndoBuffer(key, idx) {
 
     if(entry) {
       state.setBufferIndex("Setup", idx-1);
+      
       cSetup.buildBackward(entry);
 
       cSetup.clearAllTileSelections();

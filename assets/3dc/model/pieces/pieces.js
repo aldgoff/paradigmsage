@@ -20,6 +20,7 @@
 
   import * as utils   from "../../../utils/utils.js";
   import * as cSetup  from "../../controller/setup/setup.js";
+  import * as cViewer from "../../controller/viewer/viewer.js";
 
   import * as mTrays  from "../trays/trays.js";
   import * as mBoards from "../boards/boards.js";
@@ -67,7 +68,7 @@ export function destroy(entry) {
   }
 
 export function movePieceFromTrayToBoard(key, dstStr) {  // "WQQP", "Q1,1". // TODO: assumes 8x8x8 board.
-  // console.log("model: pieces.js - movePieceFromTrayToBoard(key, dstStr)", key, dstStr);
+  console.log("model: pieces.js - movePieceFromTrayToBoard(key, dstStr)", key, dstStr);
 
   // --- Parse ---
     const spec = cSetup.boardSpec;                                  // Support all three board sizes.
@@ -139,6 +140,11 @@ export function movePieceTileToTile(key, dstStr) {
 
     vPieces.placePiece(key);                                        // Relocate the piece mesh (group).
 
+  // --- Reposition any dukes --- 
+    const piecesGroup = vPieces.getCurrPiecesGroup();
+    const levelSep = cViewer.getLevelSep();
+    view.reprojectPiecesGroup(piecesGroup, levelSep);
+
   // Debug instrumention.
     // console.log("*** rcs:  ", structuredClone(indices));
     // console.log("*** dst:  ", structuredClone(dstTile));
@@ -146,7 +152,9 @@ export function movePieceTileToTile(key, dstStr) {
     // console.log("*** spec: ", structuredClone(spec));
 
     // console.log("*** pieceList", structuredClone(pieceList));                // Diagnositcs.
-
+    // console.log("*** whiteTray", structuredClone(mTrays.getWhiteTray()));
+    // console.log("*** blackTray", structuredClone(mTrays.getBlackTray()));
+    
   return { ok: true, err: null };
   }
 
@@ -186,6 +194,11 @@ export function movePieceFromBoardToTray(key) {
     piece.coords = piece.home.trayCoords;
 
     vPieces.placePieceInTray(key);                                 // Relocate the piece mesh (group).
+
+  // --- Reposition any dukes --- 
+    const piecesGroup = vPieces.getCurrPiecesGroup();
+    const levelSep = cViewer.getLevelSep();
+    view.reprojectPiecesGroup(piecesGroup, levelSep);
 
   // Debug instrumention.
     // console.log("*** tray: ", structuredClone(tray[z]));
