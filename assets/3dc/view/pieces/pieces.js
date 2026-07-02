@@ -144,11 +144,11 @@ export function placePiece(key) {      // "WKRR", ...
   // console.log("*** position: ", grid2[0], grid2[1]+zOffset+decoratorGap, grid2[2]); // Debug instrumention.
 
   // ChangePoint: stacked pieces
-  // Four scenarios:
+  // Five scenarios:
   // 1. ✅ Duke arrives      - lower duke in new location.
   // 2. ✅ Duke joins bishop - raise duke in new location.
   // 3. ✅ Bishop joins duke - raise duke in new location.
-  // 4. Bishop leaves     - lower duke in old location.
+  // 4. ✅ Bishop leaves     - lower duke in old location.
   // 5. ✅ Fission - duke and bishop leave stack (covered by duke arrives).
   if(key[3] === 'D') {
     if(mPieces.hasOtherStackSubpiece(key, piece.vts)) {

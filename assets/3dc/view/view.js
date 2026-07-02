@@ -193,8 +193,12 @@ export function reprojectPiecesGroup(group, levelSep) {
   group.traverse(obj => {
     if(!obj.userData?.vts) return;
 
-    const pixels = coordsMaps.vts2pixels(obj.userData.vts, levelSep);
-    obj.position.set(...pixels);
+    const grid2 = coordsMaps.vts2pixels(obj.userData.vts, levelSep);  // Level sep.
+    const tileSize = tiles.tileSize();          // Place just above tile.
+    const tileHeight = tileSize[0];  // Z.
+    const zOffset = tileHeight / 2;
+    const decoratorGap = 2;
+    obj.position.set(grid2[0], grid2[1] + zOffset+decoratorGap, grid2[2]);
 
     const keys = mPieces.piecesOnTile(obj.userData.vts);
     if(keys.length === 2) {
@@ -202,10 +206,6 @@ export function reprojectPiecesGroup(group, levelSep) {
 
       if(duke) {
         if(mPieces.hasOtherStackSubpiece(duke, obj.userData.vts)) {
-          const tileSize = tiles.tileSize();                    // Place just above tile.
-          const tileHeight = tileSize[0];  // Z.
-          const zOffset = tileHeight / 2;
-          const decoratorGap = 2;
           const stackOffset = 26; // TODO: magic number.
           vPieces.setDukeHeight(obj, obj.userData.vts, zOffset+decoratorGap, stackOffset);
         }

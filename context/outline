@@ -156,10 +156,14 @@
 │   │   │   │   ├── tiles.js
 │   │   │   │   ├── tiles.json
 │   │   │   │   └── tiles.md
-│   │   │   └── trays
-│   │   │       ├── trays.js
-│   │   │       ├── trays.json
-│   │   │       └── trays.md
+│   │   │   ├── trays
+│   │   │   │   ├── trays.js
+│   │   │   │   ├── trays.json
+│   │   │   │   └── trays.md
+│   │   │   └── viewer
+│   │   │       ├── viewer.js
+│   │   │       ├── viewer.json
+│   │   │       └── viewer.md
 │   │   ├── panels
 │   │   │   ├── panels.js
 │   │   │   ├── panels.json
@@ -574,6 +578,13 @@
 │   ├── Screenshot 2026-06-25 at 6.51.45 PM.png
 │   ├── Screenshot 2026-06-25 at 7.07.42 PM.png
 │   ├── Screenshot 2026-06-27 at 2.32.10 PM.png
+│   ├── Screenshot 2026-06-27 at 2.40.05 PM.png
+│   ├── Screenshot 2026-06-27 at 2.40.46 PM.png
+│   ├── Screenshot 2026-06-27 at 2.41.30 PM.png
+│   ├── Screenshot 2026-06-27 at 2.42.18 PM.png
+│   ├── Screenshot 2026-07-01 at 1.16.28 PM.png
+│   ├── Screenshot 2026-07-01 at 4.09.26 PM.png
+│   ├── Screenshot 2026-07-01 at 4.26.12 PM.png
 │   ├── Turn 1.png
 │   ├── Turn 2.png
 │   ├── Turn 3.png
@@ -715,4 +726,4 @@
 │           └── poc.js
 └── themes
 
-122 directories, 593 files
+123 directories, 603 files
