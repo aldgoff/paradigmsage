@@ -158,7 +158,7 @@ title: "Dev"
   - 6/29/26 - En passant, castling. Duke height, level sep. Remove 8-8-8 board. Nits. Button affordances, Viewer. Show/hide trays w/ pieces, undo/redo broken. QC cntrls.
   - 6/30/26 - Manage setup buttons POC. Setup makeBoard affordances. Finish setup affordances except for stack. Update clues page. QC button affordances.
   - 7/01/26 - Controller nits. Use getPieces & getTiles throughout control layer. Convert setup to use lists.
-  - 7/02/26 - Place stacks. Update help panels. Floating duke. Improve setup affordances. Bug fix on floating duke.
+  - 7/02/26 - Place stacks. Update help panels. Floating duke. Improve setup affordances. Bug fix on floating duke. Setup/selections QC.
 
    QC quad gambits, all gambits.
 

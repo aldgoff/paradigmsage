@@ -24,14 +24,12 @@
   import * as cPieces     from "../../controller/pieces/pieces.js";
   import * as cSelections from "../../controller/selections/selections.js";
 
-  import * as coords   from "../../foundation/coords/coords.js";
   import * as state    from "../../model/state/state.js";
   import * as mSetup   from "../../model/setup/setup.js";
   import * as mTrays   from "../../model/trays/trays.js";
   import * as mPieces  from "../../model/pieces/pieces.js";
   import * as mViewer  from "../../model/viewer/viewer.js";
 
-  import * as view     from "../../view/view.js";
   import * as vSetup   from "../../view/setup/setup.js";
   import * as vMoves   from "../../view/moves/moves.js";
   import * as vGambits from "../../view/gambits/gambits.js";
@@ -42,7 +40,6 @@
 // --- Globals ---
   export let boardSpec = "0x0x0"; // Deprecate.
   let currBoard = { boardSize: "0x0x0", trayType: "None", trayGap: 0 };
-  // let stillPlacingPieces = true;
   let frozenPlacement = false;
 // Seampoint: more globals...
 
@@ -54,7 +51,7 @@ export function panelDispatch(payload) {    // Dispatch payload from panel to ha
 
   vGambits.cancelAnimation();
 
-  const { action, prevBoard, nextBoard } = payload; // Informative.
+  const { action } = payload;
   const selections = cSelections.getSelections();
 
   switch (action) {
@@ -89,9 +86,10 @@ export function buildPayload(panel, action) {
     case "placePiece":
     case "shiftPiece":
     case "returnPiece":
+      return { action };
     case "freezePuzzle":
     case "startingPos":
-      return { action };
+      return { action, prevBoard: currBoard, nextBoard };
     break;
     case "updateParam":
       console.log("*** Radio buttons capture state but are not actionable.");
@@ -99,24 +97,15 @@ export function buildPayload(panel, action) {
     break;
     default: throw new Error(`Unknown setup action ${action}`); break;
   }
-  }
-
-export function buildSetup(entry) {       // Handle.
-  console.log("cntrl: setup.js - buildSetup(entry)", entry);
-
-  const { action, prevBoard, nextBoard } = entry; // Informative.
-
-  clearBoard(entry.prevBoard);
-  buildBoard(entry.nextBoard);
 }
 
 export function buildForward(entry) {     // Redo.
   console.log("cntrl: setup.js - buildForward(entry)", entry);
 
-  const { action, prevBoard, nextBoard } = entry;
+  const { action } = entry;
 
   if(     action === "makeBoard") {
-    console.log("*** makeBoard");
+    const { action, prevBoard, nextBoard } = entry;
     clearBoard(prevBoard);
     buildBoard(nextBoard);
     currBoard = structuredClone(nextBoard);
@@ -124,7 +113,6 @@ export function buildForward(entry) {     // Redo.
 
     vSetup.refreshPanel(nextBoard);         
 
-    // stillPlacingPieces = false;
     frozenPlacement = false;
     mSetup.buttonAffordances("startable");
     mViewer.buttonAffordances("canHide");
@@ -132,7 +120,6 @@ export function buildForward(entry) {     // Redo.
   else if(action === "placePiece") {
     const { action, list } = entry;
     placePieceOnBoard(list);
-    // stillPlacingPieces = true;
     vSetup.refreshPanel(currBoard);         
     }
   else if(action === "shiftPiece") {
@@ -147,8 +134,7 @@ export function buildForward(entry) {     // Redo.
     }
   else if(action === "freezePuzzle") {
     const { action } = entry;
-    // mSetup.buttonAffordances("loaded");
-    // stillPlacingPieces = false;
+    mSetup.buttonAffordances("loaded");
     frozenPlacement = true;
 
     vSetup.refreshPanel(currBoard);         
@@ -156,7 +142,6 @@ export function buildForward(entry) {     // Redo.
   else if(action === "startingPos") {
     const { action } = entry;
     initialLineup(entry);
-    // stillPlacingPieces = false;
     frozenPlacement = true;
     mSetup.buttonAffordances("makeBoard");
     vSetup.refreshPanel(currBoard);         
@@ -171,9 +156,10 @@ export function buildForward(entry) {     // Redo.
 export function buildBackward(entry) {    // Undo.
   console.log("cntrl: setup.js - buildBackwards(entry)", entry);
 
-  const { action, prevBoard, nextBoard } = entry; // Informative.
+  const { action } = entry;
 
   if(     action === "makeBoard") {
+    const { action, prevBoard, nextBoard } = entry; // Informative.
     clearBoard(nextBoard);
     buildBoard(prevBoard);
     currBoard = structuredClone(prevBoard);
@@ -181,7 +167,6 @@ export function buildBackward(entry) {    // Undo.
     
     vSetup.refreshPanel(prevBoard);         
 
-    // stillPlacingPieces = false;
     frozenPlacement = false;
     if(currBoard.boardSize === "0x0x0")
       mSetup.buttonAffordances("makeBoard");
@@ -205,7 +190,6 @@ export function buildBackward(entry) {    // Undo.
     const [, backwardStr] = post.split("~");
     if(backwardStr) {
       const listR =[{ key, prev: post, post: prev }]; // Swap prev and post.
-      console.log("*** listR", listR);
       placePieceOnBoard(listR);
     }
     else {
@@ -222,7 +206,6 @@ export function buildBackward(entry) {    // Undo.
   else if(action === "startingPos") {
     const { action } = entry;
     returnAllPiecesToHomeTray();
-    // stillPlacingPieces = false;
     frozenPlacement = false;
     mSetup.buttonAffordances("startable");
     vSetup.refreshPanel(currBoard);         
@@ -239,8 +222,7 @@ export function returnAllPiecesToHomeTray() {
 
   for(const key in mPieces.getPieceList()) {    // "WKRR", ...
     const piece = mPieces.getPieceList()[key];
-    const { loc, pos, coords, vts, home } = piece;              // Parse the piece fields.
-    if(loc === '@')
+    if(piece.loc === '@')
       mPieces.movePieceFromBoardToTray(key);
   }
   const entries = state.getState().Setup;
@@ -272,7 +254,7 @@ export function clearAllPieceSelections() {
 }
 // Seampoint: more global functions...
 
-function handleMakeBoard(payload) { // Setup handler. TODO: undo branching?
+function handleMakeBoard(payload) {
   console.log("cntrl: setup.js - handleMakeBoard(payload):", payload);
 
   const { action, prevBoard, nextBoard } = payload; // Informative.
@@ -286,15 +268,13 @@ function handleMakeBoard(payload) { // Setup handler. TODO: undo branching?
   clearAllPieceSelections();
   clearAllTileSelections();
   cSelections.clearSelections();  
-}
+  }
 
 function handlePlacePiece(payload, selections) {
   console.log("cntrl: setup.js - handlePlacePiece(payload, selections):", payload, selections);
 
   const entry = mSetup.makePlaceEntry(payload, selections);
   pieceSetup(entry);
-
-  // stillPlacingPieces = true;
   }
 
 function handleShiftPiece(payload, selections) {
@@ -331,7 +311,6 @@ function handleFreeze(payload) {
   cSelections.clearSelections();
 
   mSetup.buttonAffordances("loaded");
-  // stillPlacingPieces = false;
   }
 
 function handleStartingPos(payload) {
@@ -339,14 +318,11 @@ function handleStartingPos(payload) {
 
   const { action, boardSize, trayType } = payload;
 
-  const entry = payload;
-
-  initialLineup(entry);
-
-  const boardPieces = // TODO: Not sure how to include in entry.
+  const numBoardPieces = 
     Object.values(mPieces.getPieceList())
       .filter(piece => piece.loc === "@")
       .length;  // Count number of pieces on the board.
+  const entry = { action, boardSize, trayType, data: numBoardPieces };
 
   buildForward(entry);
   branchHistory(entry);
@@ -357,7 +333,6 @@ function handleStartingPos(payload) {
   cSelections.clearSelections();
   
   mSetup.buttonAffordances("loaded");
-  // stillPlacingPieces = false;
   }
 
 // Seampoint: more handlers...
@@ -536,9 +511,9 @@ function applyEntry(entry) {
   9. ✅ Stack management.
   10. Disable Place Piece button when trays empty.
   11. ✅ Turn off return piece when trays are full.
-  12. Undo branching appears broken, again.
-  13. Not sure how to include in entry.
+  12. ✅ Undo branching appears broken, again.
+  13. ✅ Not sure how to include in entry.
   14. ✅ Button management during undo/redo.
   15. ✅ Floating duke.
- */
+*/
 

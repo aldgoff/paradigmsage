@@ -16,8 +16,7 @@
   import * as utils   from "../../../utils/utils.js";       // isSame(a,b).
   import * as panels  from "../../panels/panels.js";
 
-  import * as cSelections from "../../controller/selections/selections.js";
-  import * as cSetup      from "../../controller/setup/setup.js";
+  import * as cSetup  from "../../controller/setup/setup.js";
 
   import * as state    from "../../model/state/state.js";
   import * as mSetup   from "../../model/setup/setup.js";
@@ -225,7 +224,7 @@ export function manageSetupButtons() {
     const [tile1]      = [...tileSelections];
     const pieces = pieceSelections.size;
     const tiles  = tileSelections.size;
-    console.log("*** pieces, tiles, size", pieces, tiles, size);
+    // console.log("*** pieces, tiles, size", pieces, tiles, size);
 
     const { piece1, piece2 } = getPieces([...pieceSelections]);
     const { sdStr1, sdStr2 } = getTiles([...tileSelections], size);
@@ -265,20 +264,18 @@ export function manageSetupButtons() {
     const joinable = (key1 && tile1) ? mPieces.canOccupyTile(key1, tile1) : false;
 
   // --- Development Diagnostics ---
-    console.log("*** onBoard1, onBoard2", onBoard1, onBoard2);
-    console.log("*** inTray1, inTray2",   inTray1, inTray2);
-    console.log("*** occupants, occupied", occupants, occupied);
-    console.log("*** stack, full", stack, full);
-    console.log("*** emptyBoard", emptyBoard);
-    console.log("*** currBoard.boardSize", currBoard.boardSize);
-    console.log("*** isBoard", isBoard);
-    console.log("*** joinable", joinable);
-    console.log("*** frozen", cSetup.getFrozenPlacement());
+    // console.log("*** onBoard1, onBoard2", onBoard1, onBoard2);
+    // console.log("*** inTray1, inTray2",   inTray1, inTray2);
+    // console.log("*** occupants, occupied", occupants, occupied);
+    // console.log("*** stack, full", stack, full);
+    // console.log("*** emptyBoard", emptyBoard);
+    // console.log("*** currBoard.boardSize", currBoard.boardSize);
+    // console.log("*** isBoard", isBoard);
+    // console.log("*** joinable", joinable);
+    // console.log("*** frozen", cSetup.getFrozenPlacement());
 
   // --- Selection Permutations ---
     if(cSetup.getFrozenPlacement()) {  // Board setup is frozen.
-      console.log("*** frozen.");
-
       mSetup.buttonAffordances("makeBoard");
       }
     else if(pieces === 0 && tiles === 0) {  // Click off board.
@@ -307,8 +304,6 @@ export function manageSetupButtons() {
     else if(pieces === 2 && tiles === 0) {  // 2 pieces no dst: if stack, returnable.
       console.log("*** 2 x 0");
 
-      // TODO: Convert place, shift, and return to take a list of {key, prev, post}.
-
       // if(stack) {
       //   if(onBoard1 && onBoard2)      mSetup.buttonAffordances("returnable");
       // }
@@ -330,7 +325,7 @@ export function manageMoveButtons() {
     const [tile1, tile2, tile3]    = [...tileSelections];
     const pieces = pieceSelections.size;
     const tiles  = tileSelections.size;
-    console.log("*** pieces, tiles, size", pieces, tiles, size);
+    // console.log("*** pieces, tiles, size", pieces, tiles, size);
 
     const { piece1, piece2, piece3, piece4, piece5, piece6 } = getPieces([...pieceSelections]);
     const { sdStr1, sdStr2, sdStr3, sdStr4, sdStr5, sdStr6 } = getTiles([...tileSelections], size);
@@ -349,9 +344,6 @@ export function manageMoveButtons() {
   // --- Decision Values ---
     if(piece1?.pos === sdStr1)  return;                     // Piece can't be on dst tile.
     const occupied = mPieces.isOccupied(tile1);             // Dst tile might be occupied.
-
-  // --- Development Diagnostics ---
-    console.log("*** occupied", occupied);
 
   // --- Players Alternate ---
     const index = state.getIndices()["Moves"] + 1;          // Players take turns.
@@ -434,7 +426,6 @@ export function manageMoveButtons() {
     else if(pieces === 2 && tiles === 2) {  // FissionMM, castle, royal.
       console.log("*** 2 x 2");
       const fissMove = fissionMove(key1, key2, tile1, tile2);
-      console.log("*** fissMove", fissMove);
       if(fissMove) {
         panels.enableButton("fission", true);
         annotation = fissMove;
@@ -447,7 +438,6 @@ export function manageMoveButtons() {
       console.log("*** 3 x 1");
       if(key3[0] === key1[0]) return;     // Not an opponent ('W' != 'B').
       const fissSplit = fissionSplit(key1, key2, piece3, tile1);
-      console.log("*** fissSplit", fissSplit);
       if(fissSplit) {
         panels.enableButton("fission", true);
         annotation = fissSplit;
@@ -476,7 +466,6 @@ export function manageMoveButtons() {
       if(player3 === player1) return;           // Not an opponent ('W' != 'B').
       if(player4 === player1) return;
       const fissSplit = fissionSplit(key1, key2, piece3, tile1, piece4);
-      console.log("*** fissSplit", fissSplit);
       if(fissSplit) {
         panels.enableButton("fission", true);
         annotation = fissSplit;
@@ -488,7 +477,6 @@ export function manageMoveButtons() {
       if(player4 === player1) return;
       if(player5 === player1) return;
       const fissCapture = fissionCapture(piece1, piece2, piece3, piece4, piece5);
-      console.log("*** fissCapture", fissCapture);
       if(fissCapture) {
         panels.enableButton("fission", true);
         annotation = fissCapture;
@@ -500,7 +488,6 @@ export function manageMoveButtons() {
       if(player4 === player1) return;
       if(player5 === player1) return;
       const fissCapture = fissionCapture(piece1, piece2, piece3, piece4, piece5, piece6);
-      console.log("*** fissCapture", fissCapture);
       if(fissCapture) {
         panels.enableButton("fission", true);
         annotation = fissCapture;
@@ -524,7 +511,7 @@ export function manageGambitButtons() {
     const [tile1, tile2, tile3, tile4] = [...tileSelections];
     const pieces = pieceSelections.size;
     const tiles  = tileSelections.size;
-    console.log("*** pieces, tiles, size", pieces, tiles, size);
+    // console.log("*** pieces, tiles, size", pieces, tiles, size);
 
     const { piece1, piece2, piece3, piece4 } = getPieces([...pieceSelections]);
     const { sdStr1, sdStr2, sdStr3, sdStr4 } = getTiles([...tileSelections], size);
@@ -582,7 +569,7 @@ export function manageAdvsqButtons() {
     const [tile1, tile2, tile3, tile4] = [...tileSelections];
     const pieces = pieceSelections.size;
     const tiles  = tileSelections.size;
-    console.log("*** pieces, tiles, size", pieces, tiles, size);
+    // console.log("*** pieces, tiles, size", pieces, tiles, size);
 
     const { piece1, piece2, piece3, piece4 } = getPieces([...pieceSelections]);
     const { sdStr1, sdStr2, sdStr3, sdStr4 } = getTiles([...tileSelections], size);
@@ -819,5 +806,5 @@ function fissionCapture(piece1, piece2, piece3, piece4, piece5=null, piece6=null
   3. Uplift
   4. ✅ Castles
   5. Castle annotations
- */
+*/
 
