@@ -169,12 +169,9 @@ export function handlePieceClick(group) {       // O(1).
   (pieceSelections.has(key))
     ? deselectPiece(key)
     : selectPiece(key);
-
-  if(cSetup.getStillPlacingPieces()) // Still placing pieces...
-    manageSetupButtons();
-  else
-    manageMoveButtons();
   
+  manageSetupButtons();
+  manageMoveButtons();
   manageGambitButtons();
   manageAdvsqButtons();
 
@@ -200,12 +197,9 @@ export function handleTileClick(vts) {          // O(n).
     deselectTile(vts);
   else
     selectTile(vts);
-
-  if(cSetup.getStillPlacingPieces()) // Still placing pieces...
-    manageSetupButtons();
-  else
-    manageMoveButtons();
   
+  manageSetupButtons();
+  manageMoveButtons();
   manageGambitButtons();
   manageAdvsqButtons();
 
@@ -235,14 +229,14 @@ export function manageSetupButtons() {
     console.log("*** pieces, tiles, size", pieces, tiles, size);
 
     const { piece1, piece2 } = getPieces([...pieceSelections]);
-    const { sdStr1 }         = getTiles([...tileSelections], size);
+    const { sdStr1, sdStr2 } = getTiles([...tileSelections], size);
     const { player: player1, side: side1, level: level1, type: type1 } = utils.parsePieceKey(key1);
     const { player: player2, side: side2, level: level2, type: type2 } = utils.parsePieceKey(key2);
 
   // --- Panel Access ---
     const panel = document.getElementById("setup-window");   // Update panel fields.
-    panel.querySelector('[name="setup-selPieces"]').textContent = [...pieceSelections];
-    panel.querySelector('[name="setup-selTiles"]').textContent  = `${sdStr1}`;
+    panel.querySelector('[name="setup-selPieces"]').textContent = [...pieceSelections].slice(0, 2).join(" ");
+    panel.querySelector('[name="setup-selTiles"]').textContent  = [sdStr1, sdStr2].filter(Boolean).join(" ");
 
   // --- Decision Values ---
     const onBoard1  = (piece1 && (piece1.loc === "@"));     // Location of piece(s).
@@ -314,12 +308,8 @@ export function manageSetupButtons() {
     else if(pieces === 2 && tiles === 1) {  // 2 pieces 1 tile: if stack, placeable or shiftable.
       console.log("*** 2 x 1");
 
-      // TODO: Convert place, shift, and return to take a list of {key, prev, post}.
-      
-      // if(stack) {
-      //   if(inTray1 && inTray2)        mSetup.buttonAffordances("placeable");
-      //   else if(onBoard1 && onBoard2) mSetup.buttonAffordances("shiftable");
-      // }
+      if(     stack && inTray1 && inTray2 && !occupied) mSetup.buttonAffordances("placeable");
+      else if(stack && onBoard1 && onBoard2 && !occupied) mSetup.buttonAffordances("shiftable");
     }
   }
 
@@ -332,7 +322,7 @@ export function manageMoveButtons() {
     const [tile1, tile2, tile3]    = [...tileSelections];
     const pieces = pieceSelections.size;
     const tiles  = tileSelections.size;
-    // console.log("*** pieces, tiles", pieces, tiles);
+    console.log("*** pieces, tiles, size", pieces, tiles, size);
 
     const { piece1, piece2, piece3, piece4, piece5, piece6 } = getPieces([...pieceSelections]);
     const { sdStr1, sdStr2, sdStr3, sdStr4, sdStr5, sdStr6 } = getTiles([...tileSelections], size);
@@ -343,9 +333,10 @@ export function manageMoveButtons() {
     const { player: player5, side: side5, level: level5, type: type5 } = utils.parsePieceKey(key5);
     const { player: player6, side: side6, level: level6, type: type6 } = utils.parsePieceKey(key6);
 
+  // --- Panel Access ---
     const panel = document.getElementById("move-window");   // Update panel fields.
-    panel.querySelector('[name="move-selPieces"]').textContent = [...pieceSelections];
-    panel.querySelector('[name="move-selTiles"]').textContent  = `${sdStr1} ${sdStr2} ${sdStr3}`;
+    panel.querySelector('[name="move-selPieces"]').textContent = [...pieceSelections].slice(0, 6).join(" ");
+    panel.querySelector('[name="move-selTiles"]').textContent  = [sdStr1, sdStr2, sdStr3].filter(Boolean).join(" ");
 
   // --- Decision Values ---
     if(piece1?.pos === sdStr1)  return;                     // Piece can't be on dst tile.
@@ -525,10 +516,10 @@ export function manageGambitButtons() {
     const [tile1, tile2, tile3, tile4] = [...tileSelections];
     const pieces = pieceSelections.size;
     const tiles  = tileSelections.size;
-    // console.log("*** pieces, tiles", pieces, tiles);
+    console.log("*** pieces, tiles, size", pieces, tiles, size);
 
     const { piece1, piece2, piece3, piece4 } = getPieces([...pieceSelections]);
-    const { sdStr1, sdStr2, sdStr3, sdStr4 } = getTiles([...tileSelections, size]);
+    const { sdStr1, sdStr2, sdStr3, sdStr4 } = getTiles([...tileSelections], size);
     const { player: player1, side: side1, level: level1, type: type1 } = utils.parsePieceKey(key1);
     const { player: player2, side: side2, level: level2, type: type2 } = utils.parsePieceKey(key2);
     const { player: player3, side: side3, level: level3, type: type3 } = utils.parsePieceKey(key3);
@@ -536,10 +527,10 @@ export function manageGambitButtons() {
 
   // --- Panel Access ---
     const panel = document.getElementById("gambit-window");   // Update panel fields.
-    panel.querySelector('[name="gambit-selPieces"]').textContent = [...pieceSelections];
-    panel.querySelector('[name="gambit-selTiles"]').textContent  = `${sdStr1} ${sdStr2} ${sdStr3}`;
+    panel.querySelector('[name="gambit-selPieces"]').textContent = [...pieceSelections].slice(0, 4).join(" ");
+    panel.querySelector('[name="gambit-selTiles"]').textContent  = [sdStr1, sdStr2, sdStr3, sdStr4].filter(Boolean).join(" ");
 
-    // --- Default Affordances ---
+  // --- Default Affordances ---
     mGambits.buttonAffordances("off");                        // Disable all buttons.
 
   // --- Selection Permutations ---
@@ -583,10 +574,10 @@ export function manageAdvsqButtons() {
     const [tile1, tile2, tile3, tile4] = [...tileSelections];
     const pieces = pieceSelections.size;
     const tiles  = tileSelections.size;
-    // console.log("*** pieces, tiles", pieces, tiles);
+    console.log("*** pieces, tiles, size", pieces, tiles, size);
 
     const { piece1, piece2, piece3, piece4 } = getPieces([...pieceSelections]);
-    const { sdStr1, sdStr2, sdStr3, sdStr4 } = getTiles([...tileSelections, size]);
+    const { sdStr1, sdStr2, sdStr3, sdStr4 } = getTiles([...tileSelections], size);
     const { player: player1, side: side1, level: level1, type: type1 } = utils.parsePieceKey(key1);
     const { player: player2, side: side2, level: level2, type: type2 } = utils.parsePieceKey(key2);
     const { player: player3, side: side3, level: level3, type: type3 } = utils.parsePieceKey(key3);
@@ -594,8 +585,8 @@ export function manageAdvsqButtons() {
 
   // --- Panel Access ---
     const panel = document.getElementById("advsq-window");   // Update panel fields.
-    panel.querySelector('[name="advsq-selPieces"]').textContent = [...pieceSelections];
-    panel.querySelector('[name="advsq-selTiles"]').textContent  = `${sdStr1} ${sdStr2} ${sdStr3}`;
+    panel.querySelector('[name="advsq-selPieces"]').textContent = [...pieceSelections].slice(0, 4).join(" ");
+    panel.querySelector('[name="advsq-selTiles"]').textContent  = [sdStr1, sdStr2, sdStr3, sdStr4].filter(Boolean).join(" ");
 
   // --- Default Affordances ---
     mAdvsqs.buttonAffordances("default");                        // Reset to the default buttons.

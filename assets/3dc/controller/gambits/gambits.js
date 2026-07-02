@@ -408,7 +408,7 @@ function applyDuplexEntry({entry, line}) {   // Group, state, render, panel.
    8. ✅ If that passes, port geo into subdirs.
    9. ✅ Update specs
   10. ✅ Freeze Linear
-  11. Freeze Duplex
+  11. ✅ Freeze Duplex
   12. Freeze Overlap
   13. ✅ Plumbing for test suite
   14. Add expand & contract feature

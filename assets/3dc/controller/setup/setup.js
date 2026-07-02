@@ -191,7 +191,7 @@ export function buildBackward(entry) {    // Undo.
     }
   else if(action === "shiftPiece") {
     const { action, list } = entry;
-    revertPieceAroundBoard(list);
+    shiftPieceAroundBoard(list);
     vSetup.refreshPanel(currBoard);         
     }
   else if(action === "returnPiece") {
@@ -387,56 +387,29 @@ function clearBoard(board) {
 function placePieceOnBoard(list) {
   console.log("cntrl: setup.js - placePieceOnBoard(list):", list);
 
-  const stack = list.length === 2;  // TODO: stack.
+  const mover = list[0]; // list: [{key,prev,post}].
+  const stack = list[1]; // list: [{key,prev,post}, {key,prev,post}].
 
-  const { key, prev, post } = list[0]
-
-  const [, dstStr] = post.split("@");
-  const dstTile = coords.normalizeTileToVts(dstStr, boardSpec);
-
-  mPieces.movePieceFromTrayToBoard(key, dstStr);
-
-  vPieces.deHighlight(key);
-  cSelections.clearPieceSelections(key);
-  cSelections.deselectTile(dstTile);
-
+  const [, dstStr] = mover.post.split("@");                 // Move(s).
+  mPieces.movePieceFromTrayToBoard(mover.key, dstStr);
+  if(stack) {
+    mPieces.movePieceFromTrayToBoard(stack.key, dstStr);
+  }
+  
   return;
   }
 
 function shiftPieceAroundBoard(list) {
   console.log("cntrl: setup.js - shiftPieceAroundBoard(list):", list);
 
-  const stack = list.length === 2;  // TODO: stack.
+  const mover = list[0]; // list: [{key,prev,post}].
+  const stack = list[1]; // list: [{key,prev,post}, {key,prev,post}].
 
-  const { key, prev, post } = list[0]
-
-  const [, dstStr] = post.split("@");
-  const dstTile = coords.normalizeTileToVts(dstStr, boardSpec);
-
-  mPieces.movePieceTileToTile(key, dstStr);
-
-  vPieces.deHighlight(key);
-  cSelections.clearPieceSelections(key);
-  cSelections.deselectTile(dstTile);
-
-  return;
+  const [, dstStr] = mover.post.split("@");                 // Move(s).
+  mPieces.movePieceTileToTile(mover.key, dstStr);
+  if(stack) {
+    mPieces.movePieceTileToTile(stack.key, dstStr);
   }
-
-function revertPieceAroundBoard(list) {
-  console.log("cntrl: setup.js - revertPieceAroundBoard(list):", list);
-
-  const stack = list.length === 2;  // TODO: stack.
-
-  const { key, prev, post } = list[0]
-
-  const [, dstStr] = prev.split("@");
-  const dstTile = coords.normalizeTileToVts(dstStr, boardSpec);
-
-  mPieces.movePieceTileToTile(key, dstStr);
-
-  vPieces.deHighlight(key);
-  cSelections.clearPieceSelections(key);
-  cSelections.deselectTile(dstTile);
 
   return;
   }
@@ -444,14 +417,13 @@ function revertPieceAroundBoard(list) {
 function returnPieceToTray(list) {
   console.log("cntrl: setup.js - returnPieceToTray(list):", list);
 
-  const stack = list.length === 2;  // TODO: stack.
+  const mover = list[0]; // list: [{key,prev,post}].
+  const stack = list[1]; // list: [{key,prev,post}, {key,prev,post}].
 
-  const { key, prev, post } = list[0]
-
-  mPieces.movePieceFromBoardToTray(key);
-
-  vPieces.deHighlight(key);
-  cSelections.clearPieceSelections(key);
+  mPieces.movePieceFromBoardToTray(mover.key);              // Move(s).
+  if(stack) {
+    mPieces.movePieceFromBoardToTray(stack.key);
+  }
 
   return;
 }
@@ -529,10 +501,12 @@ function applyEntry(entry) {
   6. ✅ Implement undo branching.
   7. ✅ Undo does not restore buttons.
   8. const max = 40;
-  9. Stack management.
-  10. disable Place Piece button when trays empty.
-  11. turn off return piece when trays are full.
-  12. undo branching appears broken, again.
+  9. ✅ Stack management.
+  10. Disable Place Piece button when trays empty.
+  11. ✅ Turn off return piece when trays are full.
+  12. Undo branching appears broken, again.
   13. Not sure how to include in entry.
+  14. ✅ Button management during undo/redo.
+  15. Floating duke.
  */
 

@@ -153,7 +153,7 @@
     "Moves":[],"Gambits":[],"AdvSqs":[]}
 
 
- ### 4. Puzzle: Endgame, rook versus lone king.
+ ### 4.3 Puzzle: Endgame, rook versus lone king.
   **5-2-0-6**
     {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"placePiece","key":"BKKK","prev":"~K1,1","post":"@KN7,7"},{"action":"placePiece","key":"WKRR","prev":"~KR1,1","post":"@KB5,5"},{"action":"placePiece","key":"WKKK","prev":"~K1,1","post":"@K5,5"},{"action":"freezePuzzle","data":3}],"Moves":[{"action":"move","turn":1,"player":"White","list":[{"key":"WKKK","prev":"@K5,5","post":"@K6,6"}],"annotation":"move"},{"action":"move","turn":1,"player":"Black","list":[{"key":"BKKK","prev":"@KN7,7","post":"@KN6,6"}],"annotation":"move"}],"Gambits":[],"AdvSqs":[{"action":"place","src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":0,"stride":0,"opacity":0.5},{"action":"place","src":"KB4,4","srcTile":[2,1,0],"quad":1,"perimeter":0,"stride":0,"opacity":0.5},{"action":"place","src":"KB4,4","srcTile":[2,1,1],"quad":1,"perimeter":0,"stride":0,"opacity":0.5},{"src":"KB5,5","srcTile":[2,1,1],"quad":1,"perimeter":1,"stride":2,"opacity":0.5},{"src":"KB5,5","srcTile":[2,1,1],"quad":1,"perimeter":2,"stride":3,"opacity":0.5},{"src":"KB5,5","srcTile":[2,1,1],"quad":1,"perimeter":3,"stride":4,"opacity":0.5}]}
 
@@ -181,8 +181,20 @@
         {"src":"KB5,5","srcTile":[2,1,1],"quad":1,"perimeter":2,"stride":3,"opacity":0.5},
         {"src":"KB5,5","srcTile":[2,1,1],"quad":1,"perimeter":3,"stride":4,"opacity":0.5}]}
 
- ### 4. Puzzle: 
+ ### 4.4 Puzzle: 
   **2-0-0-0**
   
 {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"placePiece","list":[{"key":"BKRP","prev":"~KR2,2","post":"@KR7,7"}]},{"action":"shiftPiece","list":[{"key":"BKRP","prev":"@KR7,7","post":"@KR6,6"}]},{"action":"shiftPiece","list":[{"key":"BKRP","prev":"@KR6,6","post":"@KR5,5"}]},{"action":"shiftPiece","list":[{"key":"BKRP","prev":"@KR5,5","post":"@KR4,4"}]},{"action":"returnPiece","list":[{"key":"BKRP","prev":"@KR4,4","post":"~KR2,2"}]}],"Moves":[],"Gambits":[],"AdvSqs":[]}
 
+ ### 4.5 Puzzle: stack place, shift, return - pairs and stacked.
+  **9-0-0-0**
+    {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"placePiece","list":[{"key":"BKBB","prev":"~KB2,1","post":"@KB8,8"},{"key":"BKBD","prev":"~KB1,2","post":"@KB8,8"}]},{"action":"shiftPiece","list":[{"key":"BKBB","prev":"@KB8,8","post":"@KB7,7"},{"key":"BKBD","prev":"@KB8,8","post":"@KB7,7"}]},{"action":"returnPiece","list":[{"key":"BKBB","prev":"@KB7,7","post":"~KB2,1"},{"key":"BKBD","prev":"~KB7,7","post":"~KB1,2"}]},{"action":"placePiece","list":[{"key":"BKBB","prev":"~KB2,1","post":"@KB8,8"}]},{"action":"placePiece","list":[{"key":"BKBD","prev":"~KB1,2","post":"@KB7,7"}]},{"action":"shiftPiece","list":[{"key":"BKBB","prev":"@KB8,8","post":"@KB6,6"},{"key":"BKBD","prev":"@KB7,7","post":"@KB6,6"}]},{"action":"shiftPiece","list":[{"key":"BKBB","prev":"@KB6,6","post":"@KN6,6"}]},{"action":"returnPiece","list":[{"key":"BKBD","prev":"@KB6,6","post":"~KB1,2"},{"key":"BKBB","prev":"~KN6,6","post":"~KB2,1"}]}],"Moves":[],"Gambits":[],"AdvSqs":[]}
+
+    {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"placePiece","list":[{"key":"BKBB","prev":"~KB2,1","post":"@KB8,8"},{"key":"BKBD","prev":"~KB1,2","post":"@KB8,8"}]},{"action":"shiftPiece","list":[{"key":"BKBB","prev":"@KB8,8","post":"@KB7,7"},{"key":"BKBD","prev":"@KB8,8","post":"@KB7,7"}]},{"action":"returnPiece","list":[{"key":"BKBB","prev":"@KB7,7","post":"~KB2,1"},{"key":"BKBD","prev":"~KB7,7","post":"~KB1,2"}]},{"action":"placePiece","list":[{"key":"BKBB","prev":"~KB2,1","post":"@KB8,8"}]},{"action":"placePiece","list":[{"key":"BKBD","prev":"~KB1,2","post":"@KB7,7"}]},{"action":"shiftPiece","list":[{"key":"BKBB","prev":"@KB8,8","post":"@KB6,6"},{"key":"BKBD","prev":"@KB7,7","post":"@KB6,6"}]},{"action":"shiftPiece","list":[{"key":"BKBB","prev":"@KB6,6","post":"@KN6,6"}]},{"action":"returnPiece","list":[{"key":"BKBD","prev":"@KB6,6","post":"~KB1,2"},{"key":"BKBB","prev":"~KN6,6","post":"~KB2,1"}]}],"Moves":[],"Gambits":[],"AdvSqs":[]}
+
+
+ ### 4. Puzzle: 
+  **2-0-0-0**
+
+ ### 4. Puzzle: 
+  **2-0-0-0**
