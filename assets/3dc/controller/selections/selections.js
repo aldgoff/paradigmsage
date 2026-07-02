@@ -25,7 +25,6 @@
   import * as mGambits from "../../model/gambits/gambits.js";
   import * as mAdvsqs  from "../../model/advsqs/advsqs.js";
   import * as mPieces  from "../../model/pieces/pieces.js";
-  import * as mBoards  from "../../model/boards/boards.js";
   import * as coords   from "../../foundation/coords/coords.js";
 
   import * as view    from "../../view/view.js";            // view.getContext().
@@ -235,8 +234,12 @@ export function manageSetupButtons() {
 
   // --- Panel Access ---
     const panel = document.getElementById("setup-window");   // Update panel fields.
-    panel.querySelector('[name="setup-selPieces"]').textContent = [...pieceSelections].slice(0, 2).join(" ");
-    panel.querySelector('[name="setup-selTiles"]').textContent  = [sdStr1, sdStr2].filter(Boolean).join(" ");
+    panel.querySelector('[name="setup-selPieces"]').textContent = "";
+    panel.querySelector('[name="setup-selTiles"]').textContent  = "";
+    if(!cSetup.getFrozenPlacement()) {
+      panel.querySelector('[name="setup-selPieces"]').textContent = [...pieceSelections].slice(0, 2).join(" ");
+      panel.querySelector('[name="setup-selTiles"]').textContent  = [sdStr1, sdStr2].filter(Boolean).join(" ");
+    }
 
   // --- Decision Values ---
     const onBoard1  = (piece1 && (piece1.loc === "@"));     // Location of piece(s).
@@ -267,13 +270,18 @@ export function manageSetupButtons() {
     console.log("*** occupants, occupied", occupants, occupied);
     console.log("*** stack, full", stack, full);
     console.log("*** emptyBoard", emptyBoard);
-    console.log("*** emptyBoard", emptyBoard);
     console.log("*** currBoard.boardSize", currBoard.boardSize);
     console.log("*** isBoard", isBoard);
     console.log("*** joinable", joinable);
+    console.log("*** frozen", cSetup.getFrozenPlacement());
 
   // --- Selection Permutations ---
-    if(     pieces === 0 && tiles === 0) {  // Click off board.
+    if(cSetup.getFrozenPlacement()) {  // Board setup is frozen.
+      console.log("*** frozen.");
+
+      mSetup.buttonAffordances("makeBoard");
+      }
+    else if(pieces === 0 && tiles === 0) {  // Click off board.
       console.log("*** 0 x 0");
 
       mSetup.buttonAffordances("makeBoard");
@@ -728,7 +736,7 @@ function fissionSplit(key1, key2, piece3, tile1, piece4=null) {
   const sub1 = `${piece1.key[3]}`;        // B|D.
   const sub2 = `${piece2.key[3]}`;        // D|B.
 
-  const movCap = cSelections.getTileFirst();
+  const movCap = getTileFirst();
 
   console.log("*** sub1", sub1);
   console.log("*** sub2", sub2);

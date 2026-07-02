@@ -175,8 +175,8 @@ export function diagnostics() {
 
   panel.querySelector('[name="diags-boardCount"]').textContent = boardCount;
 
-  panel.querySelector('[name="diags-pieceSels"]').textContent  = tileSelections.size;
-  panel.querySelector('[name="diags-tileSels"]').textContent   = pieceSelections.size;
+  panel.querySelector('[name="diags-pieceSels"]').textContent  = pieceSelections.size;
+  panel.querySelector('[name="diags-tileSels"]').textContent   = tileSelections.size;
 
   panel.querySelector('[name="diags-tileMap"]').textContent = view.getContext().tileMap?.size ?? 0;
 

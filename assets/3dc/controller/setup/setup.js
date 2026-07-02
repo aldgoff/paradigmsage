@@ -42,11 +42,12 @@
 // --- Globals ---
   export let boardSpec = "0x0x0"; // Deprecate.
   let currBoard = { boardSize: "0x0x0", trayType: "None", trayGap: 0 };
-  let stillPlacingPieces = true;
+  // let stillPlacingPieces = true;
+  let frozenPlacement = false;
 // Seampoint: more globals...
 
 export function getCurrBoard() { return currBoard; }
-export function getStillPlacingPieces() { return stillPlacingPieces; }
+export function getFrozenPlacement() { return frozenPlacement; }
 // --- UI ---
 export function panelDispatch(payload) {    // Dispatch payload from panel to handle event functions.
   console.log("cntrl: setup.js - panelDispatch(payload):", payload);
@@ -123,14 +124,15 @@ export function buildForward(entry) {     // Redo.
 
     vSetup.refreshPanel(nextBoard);         
 
-    stillPlacingPieces = false;
+    // stillPlacingPieces = false;
+    frozenPlacement = false;
     mSetup.buttonAffordances("startable");
     mViewer.buttonAffordances("canHide");
     }
   else if(action === "placePiece") {
     const { action, list } = entry;
     placePieceOnBoard(list);
-    stillPlacingPieces = true;
+    // stillPlacingPieces = true;
     vSetup.refreshPanel(currBoard);         
     }
   else if(action === "shiftPiece") {
@@ -146,14 +148,16 @@ export function buildForward(entry) {     // Redo.
   else if(action === "freezePuzzle") {
     const { action } = entry;
     // mSetup.buttonAffordances("loaded");
-    stillPlacingPieces = false;
+    // stillPlacingPieces = false;
+    frozenPlacement = true;
 
     vSetup.refreshPanel(currBoard);         
     }
   else if(action === "startingPos") {
     const { action } = entry;
     initialLineup(entry);
-    stillPlacingPieces = false;
+    // stillPlacingPieces = false;
+    frozenPlacement = true;
     mSetup.buttonAffordances("makeBoard");
     vSetup.refreshPanel(currBoard);         
     }
@@ -177,7 +181,8 @@ export function buildBackward(entry) {    // Undo.
     
     vSetup.refreshPanel(prevBoard);         
 
-    stillPlacingPieces = false;
+    // stillPlacingPieces = false;
+    frozenPlacement = false;
     if(currBoard.boardSize === "0x0x0")
       mSetup.buttonAffordances("makeBoard");
     else
@@ -191,7 +196,7 @@ export function buildBackward(entry) {    // Undo.
     }
   else if(action === "shiftPiece") {
     const { action, list } = entry;
-    shiftPieceAroundBoard(list);
+    revertPieceAroundBoard(list);
     vSetup.refreshPanel(currBoard);         
     }
   else if(action === "returnPiece") {
@@ -211,12 +216,14 @@ export function buildBackward(entry) {    // Undo.
     }
   else if(action === "freezePuzzle") {
     const { action } = entry;
+    frozenPlacement = false;
     vSetup.refreshPanel(currBoard);         
     }
   else if(action === "startingPos") {
     const { action } = entry;
     returnAllPiecesToHomeTray();
-    stillPlacingPieces = false;
+    // stillPlacingPieces = false;
+    frozenPlacement = false;
     mSetup.buttonAffordances("startable");
     vSetup.refreshPanel(currBoard);         
     }
@@ -272,11 +279,14 @@ function handleMakeBoard(payload) { // Setup handler. TODO: undo branching?
   
   const entry = mSetup.makeBoardEntry(payload);     // Create entry.
 
-  state.pushNewSetup(entry);                    // Log state change in undo buffer.
-  vSetup.pushPanelLine(entry);                  // Upate panels.
-
   buildForward(entry);                          // Build board, trays, and pieces.
-  }
+  branchHistory(entry);
+  applyEntry(entry);
+
+  clearAllPieceSelections();
+  clearAllTileSelections();
+  cSelections.clearSelections();  
+}
 
 function handlePlacePiece(payload, selections) {
   console.log("cntrl: setup.js - handlePlacePiece(payload, selections):", payload, selections);
@@ -284,7 +294,7 @@ function handlePlacePiece(payload, selections) {
   const entry = mSetup.makePlaceEntry(payload, selections);
   pieceSetup(entry);
 
-  stillPlacingPieces = true;
+  // stillPlacingPieces = true;
   }
 
 function handleShiftPiece(payload, selections) {
@@ -312,13 +322,16 @@ function handleFreeze(payload) {
       .length;  // Count number of pieces on the board.
   const entry = { action, data: numBoardPieces };
 
+  buildForward(entry);
   branchHistory(entry);
   applyEntry(entry);
+
   clearAllPieceSelections();
   clearAllTileSelections();
+  cSelections.clearSelections();
 
   mSetup.buttonAffordances("loaded");
-  stillPlacingPieces = false;
+  // stillPlacingPieces = false;
   }
 
 function handleStartingPos(payload) {
@@ -335,13 +348,16 @@ function handleStartingPos(payload) {
       .filter(piece => piece.loc === "@")
       .length;  // Count number of pieces on the board.
 
+  buildForward(entry);
   branchHistory(entry);
   applyEntry(entry);
+
   clearAllPieceSelections();
   clearAllTileSelections();
+  cSelections.clearSelections();
   
   mSetup.buttonAffordances("loaded");
-  stillPlacingPieces = false;
+  // stillPlacingPieces = false;
   }
 
 // Seampoint: more handlers...
@@ -357,6 +373,7 @@ function pieceSetup(entry) {
   clearAllPieceSelections();
   clearAllTileSelections();
   cSelections.clearSelections();
+
   mSetup.buttonAffordances("placed");
 }
 
@@ -406,6 +423,21 @@ function shiftPieceAroundBoard(list) {
   const stack = list[1]; // list: [{key,prev,post}, {key,prev,post}].
 
   const [, dstStr] = mover.post.split("@");                 // Move(s).
+  mPieces.movePieceTileToTile(mover.key, dstStr);
+  if(stack) {
+    mPieces.movePieceTileToTile(stack.key, dstStr);
+  }
+
+  return;
+  }
+
+function revertPieceAroundBoard(list) {
+  console.log("cntrl: setup.js - revertPieceAroundBoard(list):", list);
+
+  const mover = list[0]; // list: [{key,prev,post}].
+  const stack = list[1]; // list: [{key,prev,post}, {key,prev,post}].
+
+  const [, dstStr] = mover.prev.split("@");                 // Move(s).
   mPieces.movePieceTileToTile(mover.key, dstStr);
   if(stack) {
     mPieces.movePieceTileToTile(stack.key, dstStr);
@@ -507,6 +539,6 @@ function applyEntry(entry) {
   12. Undo branching appears broken, again.
   13. Not sure how to include in entry.
   14. ✅ Button management during undo/redo.
-  15. Floating duke.
+  15. ✅ Floating duke.
  */
 

@@ -367,7 +367,7 @@ export function createPiece(key) {      // "WKRR", ...
 
 // --- Duke Helpers ---
 export function setDukeHeight(group, vts, tileOffset, stackOffset=0) {
-  // console.log("view : pieces.js - setDukeHeight(..., vts, tileOffset, stackOffset)", vts, tileOffset, stackOffset);
+  console.log("view : pieces.js - setDukeHeight(..., vts, tileOffset, stackOffset)", vts, tileOffset, stackOffset);
 
   const grid2 = coordsMaps.vts2pixels(vts)
 
