@@ -54,4 +54,7 @@ export function pixels2vts( [x, y, z], Sxy = dims.Sxy, Sz = dims.Sz, center = [d
 // --- Helpers ---
 // Seampoint: more local functions...
 
+/* TODO: QC checklist
+  1. tbd
+*/
 

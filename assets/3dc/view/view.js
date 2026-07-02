@@ -326,3 +326,7 @@ function decorateTile(coords, piece, decorator, group, opacity, zOffset = 0.00) 
 }
 // Seampoint: more local functions...
 
+/* TODO: QC checklist
+  1. tbd
+*/
+

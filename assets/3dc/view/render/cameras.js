@@ -7,11 +7,8 @@
   UI: the export functions.
 */
 
-// --- Load Libraries ---
-const THREE = window.THREE;
-
 // --- Load JSON ---
-import camerasData from "./cameras.json" assert { type: "json" };
+  import camerasData from "./cameras.json" assert { type: "json" };
   const camerasModule = camerasData.cameras_module;
   const POV = camerasModule.POV;
   const jit = camerasModule.jitter;
@@ -20,12 +17,16 @@ import camerasData from "./cameras.json" assert { type: "json" };
 // --- Dependencies ---
 // Seampoint: more imports...
 
-let camera = null;
-let pov    = POV.neutral;   // JSON.
-let basePov = cloneVec3(pov);
-let focalPoint = [0,0,0];   // Center of board.
+// --- Globals ---
+  const THREE = window.THREE;
 
-const specs = { camera, pov, focalPoint };
+  let camera = null;
+  let pov    = POV.neutral;   // JSON.
+  let basePov = cloneVec3(pov);
+  let focalPoint = [0,0,0];   // Center of board.
+
+  const specs = { camera, pov, focalPoint };
+// Seampoint: more globals...
 
 // TODO: Move jitter from render/camera to viewer.
 let jitter = {
@@ -36,6 +37,7 @@ let jitter = {
   angle: 0               // ← PRIMARY STATE
 };
 
+// --- UI ---
 export function setJitter(range, speed) {
   jitter.rangeRad = (range * jit.maxAngleDeg) * (Math.PI / 180);
 
@@ -175,4 +177,8 @@ function cloneVec3(v) {
   return [v[0], v[1], v[2]];
 }
 // Seampoint: more local functions...
+
+/* TODO: QC checklist
+  1. tbd
+*/
 

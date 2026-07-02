@@ -457,7 +457,12 @@ function assembleUpliftLine(entry) {
 }
 // Seampoint: more local functions...
 
-// PromoteMov.
-// PromoteCap, uplifts.
-// Castle, KQ-side, royal.
+/* TODO: QC checklist
+  1. PromoteMov
+  2. PromoteCap
+  3. uplifts
+  4. Castle
+  5. KQ-side
+  6. royal
+*/
 

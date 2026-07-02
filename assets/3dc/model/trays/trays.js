@@ -98,3 +98,7 @@ export function trayIndices(type, spec="8x8x8") {
 // --- Helpers ---
 // Seampoint: more local functions...
 
+/* TODO: QC checklist
+  1. tbd
+*/
+

@@ -447,3 +447,7 @@ function createPiecesForTray(tray, trayDef, offset=0) {
  * } 
 */
 
+/* TODO: QC checklist
+  1. tbd
+*/
+

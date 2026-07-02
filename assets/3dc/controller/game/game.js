@@ -465,7 +465,7 @@ function processUndoBuffer(key, idx) {
 
     if(entry) {
       state.setBufferIndex("Setup", idx-1);
-      
+
       cSetup.buildBackward(entry);
 
       cSetup.clearAllTileSelections();
@@ -635,5 +635,5 @@ function assertStateConsistency() {
   2. ✅ Still have gambit issues.
   3. ✅ Undo from play throws an error, play removed.
   4. ✅ Load does not clear the scene.
- */
+*/
 
