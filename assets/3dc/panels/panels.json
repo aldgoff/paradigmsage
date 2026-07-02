@@ -17,10 +17,13 @@
           "lines": [
             "Select board size and tray type, then click on 'Make Board'.",
             "Either create a puzzle or start a game.",
-            "Puzzle: click on pieces and tiles; place, shift, or return, 'Freeze Puzzle' to accept.",
+            "Puzzle: click on pieces and a tile; place, shift, or return, 'Freeze Puzzle' to accept.",
+            "For a stack, click on both bishop and duke.",
             "Game: click on 'Starting Position'.",
+            "Buttons are affordances - only enabled when appropriate.",
             "Use undo/redo and rewind/FF (Game Panel) to change your mind (note scroll window).",
-            "--- Factory trays not yet supported, same as Real trays. ---",
+            "* Next step: explore advancement squares (Advsq Panel), the key idiom of 3D chess.",
+            "--- Future feature: factory trays. ---",
             ""
           ]
         },
@@ -38,7 +41,8 @@
             "In a fission, subpieces align with click order - always select the entire stack prior to tile or piece targets.",
             "To deselect, click again. To clear all selections, click off board.",
             "This idiom is consistent and becomes intuitive pretty quickly.",
-            "--- Relative coords, terse notation, and rule enforcement are future features. ---"
+            "* Next step: the undo system (Game Panel).",
+            "--- Future features: relative coords, terse notation, and rule enforcement. ---"
           ]
         },
       "gambitText": {
@@ -46,12 +50,13 @@
           "lines": [
             "Use gambits to freeze the current advsq.",
             "Assemble a set to understand a tactical situation.",
-            "Then decide on a move.",
-            "You can freeze quadrants (typical).",
-            "Linear moves (stride must be on an end tile).",
-            "Duplex moves (stride must be on a duplex tile, duke face quads only).",
-            "Overlap moves (queen and stack only).",
-            "Stride must be one of the four overlap tiles (brook, qtile, hotspot, Feynman).",
+            "Freeze quadrant movess (typical).",
+            "Freeze linear moves (stride must be on an end tile).",
+            "Freeze duplex moves (stride must be on a duplex tile, duke face quads only).",
+            "Freeze overlap moves (queen and stack only).",
+            "Stride must be on one of the four overlap tiles (brook, qtile, hotspot, Feynman).",
+            "Buttons are enabled if quad, perimeter, stride form an advsq.",
+            "* Next step: make a move (Move Panel).",
             "--- INCOMPLETE, use with caution. ---"
           ]
         },
@@ -59,18 +64,18 @@
           "title": "Advsq Panel Help",
           "lines": [
             "Reveals the nonintuitive nature of 3D moves.",
-            "Place a source tile.",
-            "Grow and shrink the advancement square into the quadrant (1-60).",
+            "Place a source tile, then grow an advancement square.",
+            "Advancement squares grow into a quadrant (1-60).",
             "Or use the perimeter box for direct entry (0-7).",
-            "To keep the NxN structure of advsqs clear, they are allowed to extend off the board.",
-            "You cannot move to these tiles, they have no effect on the game, just on your visualization.",
+            "All advsqs are square, NxN - thus may exceed the board.",
+            "Offboard tiles have no effect on movement, but denying them hampers visualization.",
             "Use the stride box to 'walk' the perimeter.",
-            "Note the diagnostic fields that reveal the advsq's properties.",
-            "You can move the src tile rectilinear with the keyboard (ijk, IJK).",
-            "Rotate through the quads 'Next Quad'.",
-            "Rotate through the planes 'Next Plane'.",
-            "Rotate through the pieces 'Next Piece'.",
-            "Change the visibility of offboard tiles."
+            "Note the diagnostic fields that reveal advsq properties.",
+            "Move the src tile rectilinearly with the keyboard (ijk, IJK).",
+            "Rotate through quads, planes, and pieces (Next ...).",
+            "Change the visibility of offboard tiles.",
+            "* Next step: capture a set of advsqs into a gambit (Gambit Panel).",
+            "--- Future feature: select a pair of tiles to see their advsq. ---"
           ]
         },
       "gameText": {
@@ -80,9 +85,11 @@
             "Setup - Moves - Gambits - Advsqs.",
             "Undo/redo traverses within and across them.",
             "Rewind traverses from first to last, then across them.",
+            "FF traverses from last to first, then across them.",
             "Save captures them to the clipboard.",
             "Load restarts the game from the clipboard.",
-            "Makes it easy to share games, puzzles, and lessons."
+            "Makes it easy to share games, puzzles, and lessons.",
+            "* Next step: change perspective (Camera Panel)."
           ]
         },
       "cameraText": {
@@ -91,15 +98,17 @@
             "Zoom in and out.",
             "Ascend and descend (view angle), tradeoff tile perspective with obscured tiles.",
             "4 points of views provided, basically all four vertical edges.",
-            "(The top view is basically useless for play, but useful for diagnostics.)",
+            "* Next step: modify the 3D environment (Viewer Panel).",
+            "--- Top view useless for play, just for diagnostics. ---",
             ""
           ]
         },
       "compassText": {
           "title": "Compass Panel Help",
           "lines": [
-            "Eventually will allow slip and slide of advsqs along planes and quads.",
-            "--- new pedagogical feature. ---"
+            "Slip and slide advsqs along planes and quads.",
+            "* Next step: technical feedback (Diagnostics Panel).",
+            "--- Future feature: additional pedagogical tools. ---"
           ]
         },
       "viewerText": {
@@ -108,15 +117,18 @@
             "Show and hide the trays.",
             "Change tray gap and level separation, use as needed.",
             "Put the board into a slow rotation around the z-axis, with variable range and speed.",
-            "Combine with the camera panel to maximize the clarity of the current position.",
+            "Combine with Camera Panel to maximize the clarity of the current position.",
+            "* Next step: pedagogy, tools to learn by (Compass Panel).",
             ""
           ]
         },
       "diagnosticsText": {
           "title": "Diagnostics Panel Help",
           "lines": [
-            "Useful for debugging code.",
-            "Limited use for play.",
+            "Monitor piece occupancies (trays, board).",
+            "Monitor piece and tile selections.",
+            "Monitor mesh and groups in the 3D environment.",
+            "* Next step: done - start playing!",
             ""
           ]
         },
