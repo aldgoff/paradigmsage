@@ -60,3 +60,111 @@
   - Button status provides feedback about the nature of the src/dst tile relationship.
   - Button management is tricky, and changes to a UI cascade through a code base.
 
+## 7. Loads:
+ ### 7. Scenario:
+  **1-0-3-0**
+  {"Setup":[],"Moves":[],"Gambits":[{"gambit":0,"action":"quadrant","value":1,"piece":"rook","src":"KB4,4","dst":"KB7,7","rays":["left_fore","right_fore"],"advsqs":[{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":3,"stride":4,"area":16}],"opacity":0.5},{"gambit":1,"action":"linear","value":"1","piece":"bishop","src":"Q4,4","dst":"KN7,4","rays":"LFU","advsqs":[[{"src":"Q4,4","srcTile":[0,0,0],"quad":18,"perimeter":3,"stride":1,"area":16},{"src":"Q4,4","srcTile":[0,0,0],"quad":13,"perimeter":3,"stride":1,"area":16}],[{"src":"Q4,4","srcTile":[0,0,0],"quad":25,"perimeter":3,"stride":1,"area":16},{"src":"Q4,4","srcTile":[0,0,0],"quad":26,"perimeter":3,"stride":1,"area":16}]],"opacity":0.5},{"gambit":2,"action":"duplex","value":"MM","piece":"duke","src":"Q4,4","dst":"KR4,4","rays":[1,0,0],"advsqs":[{"src":"Q4,4","srcTile":[0,0,0],"quad":38,"perimeter":2,"stride":3,"area":9},{"src":"Q4,4","srcTile":[0,0,0],"quad":41,"perimeter":2,"stride":3,"area":9}],"opacity":0.5}],"AdvSqs":[]}
+
+
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}}],
+  "Moves":[],
+  "Gambits":[
+    {"gambit":0,"action":"quadrant","value":1,"piece":"rook","src":"KB4,4","dst":"KB7,7","rays":["left_fore","right_fore"],"advsqs":[
+      {"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":3,"stride":4,"area":16}],
+      "opacity":0.5},
+    {"gambit":1,"action":"linear","value":"1","piece":"bishop","src":"Q4,4","dst":"KN7,4","rays":"LFU","advsqs":[
+      [{"src":"Q4,4","srcTile":[0,0,0],"quad":18,"perimeter":3,"stride":1,"area":16},{"src":"Q4,4","srcTile":[0,0,0],"quad":13,"perimeter":3,"stride":1,"area":16}],
+      [{"src":"Q4,4","srcTile":[0,0,0],"quad":25,"perimeter":3,"stride":1,"area":16},{"src":"Q4,4","srcTile":[0,0,0],"quad":26,"perimeter":3,"stride":1,"area":16}]],
+      "opacity":0.5},
+    {"gambit":2,"action":"duplex","value":"MM","piece":"duke","src":"Q4,4","dst":"KR4,4","rays":[1,0,0],"advsqs":[
+      {"src":"Q4,4","srcTile":[0,0,0],"quad":38,"perimeter":2,"stride":3,"area":9},{"src":"Q4,4","srcTile":[0,0,0],"quad":41,"perimeter":2,"stride":3,"area":9}],
+      "opacity":0.5}],
+  "AdvSqs":[]}
+
+
+
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}}],
+  "Moves":[],
+  "Gambits":[
+    {"gambit":0,"action":"quadrant","value":1,"piece":"rook","src":"KB4,4","dst":"KB7,7","rays":["left_fore","right_fore"],"advsqs":[
+      {"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":3,"stride":4,"area":16}],
+      "opacity":0.5},
+    {"gambit":1,"action":"linear","value":"1","piece":"bishop","src":"Q4,4","dst":"KN7,4","rays":"LFU","advsqs":[
+      [{"src":"Q4,4","srcTile":[0,0,0],"quad":18,"perimeter":3,"stride":1,"area":16},{"src":"Q4,4","srcTile":[0,0,0],"quad":13,"perimeter":3,"stride":1,"area":16}],
+      [{"src":"Q4,4","srcTile":[0,0,0],"quad":25,"perimeter":3,"stride":1,"area":16},{"src":"Q4,4","srcTile":[0,0,0],"quad":26,"perimeter":3,"stride":1,"area":16}]],
+      "opacity":0.5},
+    {"gambit":2,"action":"duplex","value":"MM","piece":"duke","src":"Q4,4","dst":"KR4,4","rays":[1,0,0],"advsqs":[
+      {"src":"Q4,4","srcTile":[0,0,0],"quad":38,"perimeter":2,"stride":3,"area":9},{"src":"Q4,4","srcTile":[0,0,0],"quad":41,"perimeter":2,"stride":3,"area":9}],
+      "opacity":0.5}],
+  "AdvSqs":[]}
+
+
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}}],
+  "Moves":[],
+  "Gambits":[
+    {"gambit":0,"action":"quadrant","piece":"rook","src":"KB4,4","dst":"KB7,7","rays":["left_fore","right_fore"],"advsqs":[
+      {"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":3,"stride":4,"area":16}],
+      "opacity":0.5},
+    {"gambit":1,"action":"linear","piece":"bishop","src":"Q4,4","dst":"KN7,4","rays":"LFU","advsqs":[
+      [{"src":"Q4,4","srcTile":[0,0,0],"quad":18,"perimeter":3,"stride":1,"area":16},{"src":"Q4,4","srcTile":[0,0,0],"quad":13,"perimeter":3,"stride":1,"area":16}],
+      [{"src":"Q4,4","srcTile":[0,0,0],"quad":25,"perimeter":3,"stride":1,"area":16},{"src":"Q4,4","srcTile":[0,0,0],"quad":26,"perimeter":3,"stride":1,"area":16}]],
+      "opacity":0.5},
+    {"gambit":2,"action":"duplex","piece":"duke","src":"Q4,4","dst":"KR4,4","rays":[1,0,0],"advsqs":[
+      {"src":"Q4,4","srcTile":[0,0,0],"quad":38,"perimeter":2,"stride":3,"area":9},{"src":"Q4,4","srcTile":[0,0,0],"quad":41,"perimeter":2,"stride":3,"area":9}],
+      "opacity":0.5}],
+  "AdvSqs":[]}
+
+
+  {"Setup":[
+    {"action":"makeBoard",
+      "prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},
+      "nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}}],
+  "Moves":[],
+  "Gambits":[
+    {"gambit":0,"action":"quadrant","piece":"R","src":"KB4,4","dst":"KB7,7","rays":["left_fore","right_fore"],"advsqs":[
+      {"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":3,"stride":4,"area":16}],
+      "opacity":0.5},
+    {"gambit":1,"action":"linear","piece":"bishop","src":"Q4,4","dst":"KN7,4","rays":"LFU","advsqs":[
+      [{"src":"Q4,4","srcTile":[0,0,0],"quad":18,"perimeter":3,"stride":1,"area":16},{"src":"Q4,4","srcTile":[0,0,0],"quad":13,"perimeter":3,"stride":1,"area":16}],
+      [{"src":"Q4,4","srcTile":[0,0,0],"quad":25,"perimeter":3,"stride":1,"area":16},{"src":"Q4,4","srcTile":[0,0,0],"quad":26,"perimeter":3,"stride":1,"area":16}]],
+      "opacity":0.5},
+    {"gambit":2,"action":"duplex","piece":"duke","src":"Q4,4","dst":"KR4,4","rays":[1,0,0],"advsqs":[
+      {"src":"Q4,4","srcTile":[0,0,0],"quad":38,"perimeter":2,"stride":3,"area":9},{"src":"Q4,4","srcTile":[0,0,0],"quad":41,"perimeter":2,"stride":3,"area":9}],
+      "opacity":0.5}],
+  "AdvSqs":[]}
+
+
+    {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"startingPos","data":0}],"Moves":[],"Gambits":[{"gambitId":0,"action":"quad","src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":3,"stride":4,"opacity":0.5},{"move":"linear","piece":"bishop","src":"Q4,4","dst":"KN7,4","ray":"LFU","advsqs":[[{"srcTile":[0,0,0],"quad":18,"perimeter":3,"stride":1,"area":16},{"srcTile":[0,0,0],"quad":13,"perimeter":3,"stride":1,"area":16}],[{"srcTile":[0,0,0],"quad":25,"perimeter":3,"stride":1,"area":16},{"srcTile":[0,0,0],"quad":26,"perimeter":3,"stride":1,"area":16}]],"opacity":0.5},{"move":"duplex","piece":"duke","src":"Q4,4","dst":[6,0,0],"ray":[1,0,0],"advsqs":[{"src":"Q4,4","srcTile":[0,0,0],"quad":38,"perimeter":3,"stride":4,"opacity":0.5},{"src":"Q4,4","srcTile":[0,0,0],"quad":41,"perimeter":3,"stride":4,"opacity":0.5}],"opacity":0.5}],"AdvSqs":[{"action":"place","src":"Q4,4","srcTile":[0,0,0],"quad":1,"perimeter":0,"stride":0,"opacity":0.5},{"action":"place","src":"Q4,4","srcTile":[-1,0,0],"quad":1,"perimeter":0,"stride":0,"opacity":0.5},{"action":"place","src":"Q4,4","srcTile":[-2,0,0],"quad":1,"perimeter":0,"stride":0,"opacity":0.5},{"src":"QN4,4","srcTile":[-2,0,0],"quad":1,"perimeter":1,"stride":2,"opacity":0.5},{"src":"QN4,4","srcTile":[-2,0,0],"quad":1,"perimeter":2,"stride":3,"opacity":0.5}]}
+
+    {"Setup":[
+      {"action":"makeBoard",
+        "prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},
+        "nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},
+      {"action":"startingPos","data":0}],
+    "Moves":[],
+    "Gambits":[
+      {"gambitId":0,"action":
+        "quad","src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":3,"stride":4,"opacity":0.5},
+        {"move":"linear","piece":"bishop","src":"Q4,4","dst":"KN7,4","ray":"LFU",
+          "advsqs":[
+            [{"srcTile":[0,0,0],"quad":18,"perimeter":3,"stride":1,"area":16},
+            {"srcTile":[0,0,0],"quad":13,"perimeter":3,"stride":1,"area":16}],
+            [{"srcTile":[0,0,0],"quad":25,"perimeter":3,"stride":1,"area":16},
+            {"srcTile":[0,0,0],"quad":26,"perimeter":3,"stride":1,"area":16}]],
+            "opacity":0.5},
+        {"move":"duplex","piece":"duke","src":"Q4,4","dst":[6,0,0],"ray":[1,0,0],
+          "advsqs":[
+            {"src":"Q4,4","srcTile":[0,0,0],"quad":38,"perimeter":3,"stride":4,"opacity":0.5},
+            {"src":"Q4,4","srcTile":[0,0,0],"quad":41,"perimeter":3,"stride":4,"opacity":0.5}],
+            "opacity":0.5}],
+    "AdvSqs":[
+      {"action":"place",
+        "src":"Q4,4","srcTile":[0,0,0],"quad":1,"perimeter":0,"stride":0,"opacity":0.5},
+      {"action":"place",
+        "src":"Q4,4","srcTile":[-1,0,0],"quad":1,"perimeter":0,"stride":0,"opacity":0.5},
+      {"action":"place",
+        "src":"Q4,4","srcTile":[-2,0,0],"quad":1,"perimeter":0,"stride":0,"opacity":0.5},
+        {"src":"QN4,4","srcTile":[-2,0,0],"quad":1,"perimeter":1,"stride":2,"opacity":0.5},
+        {"src":"QN4,4","srcTile":[-2,0,0],"quad":1,"perimeter":2,"stride":3,"opacity":0.5}]}
+
+

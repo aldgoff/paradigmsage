@@ -64,6 +64,7 @@ export function panelDispatch(payload) {
 
   mAdvsqs.buttonAffordances("build");
   game.showUndoStatus();                        // Update game panel (undo).
+  console.log("*** vGambits.getGambitGroups().length", vGambits.getGambitGroups().length);
   }
 
 export function buildPayload(panel, action) {
@@ -79,73 +80,41 @@ function handleFreezeQuadrant(currAdvsq) {      // N Q1  R KB4,4 → KB7,7    :1
 
   if(!currAdvsq) return;
 
-  const { src, srcTile, quad, perimeter, stride, opacity } = currAdvsq;
+  const {src,srcTile,quad,perimeter,stride,opacity} = currAdvsq; // Informative.
 
-  state.clearBuffer("AdvSqs");                        // Advsq: change state.
-  vAdvsqs.removeFromScene();                          // De-render. // TODO: move to view layer.
-  vAdvsqs.clearAdvsqPanelParams("Q4,4");              // Update panel.
+  state.clearBuffer("AdvSqs");                            // Delete advsq.
+  vAdvsqs.removeFromScene();
+  vAdvsqs.clearAdvsqPanelParams("Q4,4");
 
-  const gambitId = state.getBufferLength("Gambits");
-  const entry = { gambitId, action: "quad", ...currAdvsq };
+  const entry = mGambits.makeQuadrantEntry(currAdvsq);    // Entry.
 
-  branchHistory(entry);
-  state.pushNewGambit(entry);
-
-  const group = view.buildAdvSqGroup(entry); // {srcTile: Array(3), quad: 1, perimeter: 0, stride: 0, opacity: 0.5}
-  vGambits.getGambitGroups()[gambitId] = group;
-  group.userData.entry = entry;
-  vGambits.render(group, { animate: true });      // Render.
-
-  const scene = view.getContext().scene;
-  const foundGroup = scene.children.find(
-    g => g.userData?.entry?.gambitId === entry.gambitId
-  );
-  if(foundGroup) {
-    console.log("*** group entry in userData.");
-  }
-
-  const line = convertEntryToLine(entry)
-  vGambits.pushPanelLine(line);
-  }
-export function convertEntryToLine(entry) {
-  console.log(`cntrl: gambits.js - convertEntryToLine(entry):`, entry);
-
-  const { src, srcTile, quad, perimeter, stride, opacity } = entry; // Advsq.
-
-  const dst = planes.resolveDstTile(srcTile, quad, perimeter, stride);
-  const area = (perimeter+1)*(perimeter+1);
+  state.pushNewGambit(entry);                             // Change state.
+  vGambits.pushPanelLine(entry);                          // Append line to panel.
+  const group = vGambits.makeQuadrantGroup(entry);        // Create mesh group.
+  vGambits.getGambitGroups().push(group);                 // Store it.
   
-  let piece = "D";                                                  // Symbol.
-  if( 1<= quad && quad <= 12)  piece = "R";
-  if(13<= quad && quad <= 36)  piece = "B";
-  const symbol = `Q`;
-
-  const line = { symbol, value: quad, piece, src, dst, feedback: area };
-
-  return line;
-}
+  vGambits.render(group, { animate: true });              // Render with animation.
+  }
 
 function handleFreezeAsLinear(currAdvsq) {      // N L1  R Q4,4  → Q8,4     :left_fore
   console.log("cntrl: gambits.js - handleFreezeAsLinear(currAdvsq)", currAdvsq);
 
   if(!currAdvsq) return;
 
-  const { src, srcTile, quad, perimeter, stride, opacity } = currAdvsq;
+  const {src,srcTile,quad,perimeter,stride,opacity} = currAdvsq; // Informative.
 
-  const e1 = 1;                                       // Allowable?
-  const e2 = 2*perimeter + 1;
-  const allowed = stride === e1 || stride === e2
-  if(!allowed) {                                      // TODO: add msg panel for this sort of thing.
-    console.log(`Stride tile was ${stride}, must be E1(${e1}) or E2(${e2}) - aborting linear freeze.`);
-    return;
-  }
+  state.clearBuffer("AdvSqs");                            // Advsq.
+  vAdvsqs.removeFromScene();
+  vAdvsqs.clearAdvsqPanelParams("Q4,4");
 
-  state.clearBuffer("AdvSqs");                        // Advsq: change state.
-  vAdvsqs.removeFromScene();                          // De-render. // TODO: move to view layer.
-  vAdvsqs.clearAdvsqPanelParams("Q4,4");              // Update panel.
+  const entry = mGambits.makeLinearEntry(currAdvsq);      // Entry.
 
-  const { entry, line } = mGambits.makeLinearEntry(currAdvsq);
-  applyLinearEntry({ entry, line });
+  state.pushNewGambit(entry);                             // Change state.
+  vGambits.pushPanelLine(entry);                          // Append line to panel.
+  const group = vGambits.makeLinearGroup(entry);          // Create mesh group.
+  vGambits.getGambitGroups().push(group);                 // Store it.
+
+  vGambits.render(group, { animate: true });              // Render with animation.
   }
 
 function handleFreezeAsDuplex(currAdvsq) {      // N DMM D KB4,4 → 8,0,0    :1,0,0
@@ -153,23 +122,21 @@ function handleFreezeAsDuplex(currAdvsq) {      // N DMM D KB4,4 → 8,0,0    :1
 
   if(!currAdvsq) return;
 
-  const { src, srcTile, quad, perimeter, stride, opacity } = currAdvsq;
-  console.log("cntrl: gambits.js - quads.pqrTable(quad)", quads.pqrTable(quad));
+  const {src,srcTile,quad,perimeter,stride,opacity} = currAdvsq; // Informative.
+  console.log("*** quads.pqrTable(quad)", quads.pqrTable(quad));
 
-  const { piece, quadType} = quads.pqrTable(quad);    // Allowable?
-  const duplex = perimeter + 1;
-  const allowed = (piece === "duke" && quadType === "face" && stride === duplex);
-  if(!allowed) {                                      // TODO: add msg panel for this sort of thing.
-    console.log(`Aborting duplex freeze: ${piece} must be duke, ${quadType} must be face, and ${stride} must be duplex ${duplex}.`);
-    return;
-  }
+  state.clearBuffer("AdvSqs");                            // Advsq.
+  vAdvsqs.removeFromScene();
+  vAdvsqs.clearAdvsqPanelParams("Q4,4");
 
-  state.clearBuffer("AdvSqs");                        // Advsq: change state.
-  vAdvsqs.removeFromScene();                          // De-render. // TODO: move to view layer.
-  vAdvsqs.clearAdvsqPanelParams("Q4,4");              // Update panel.
+  const entry = mGambits.makeDuplexEntry(currAdvsq);      // Entry.
 
-  const { entry, line } = mGambits.makeDuplexEntry(currAdvsq);
-  applyDuplexEntry({ entry, line });
+  state.pushNewGambit(entry);                             // Change state.
+  vGambits.pushPanelLine(entry);                          // Append line to panel.
+  const group = vGambits.makeDuplexGroup(entry);          // Create mesh group.
+  vGambits.getGambitGroups().push(group);                 // Store it.
+
+  vGambits.render(group, { animate: true });              // Render with animation.
   }
 
 function handleFreezeWithOverlaps(currAdvsq) {  // TODO: finish.
@@ -365,13 +332,13 @@ function applyEntry(entry) {   // Clear curr, branch, state change, render, refr
   // vGambits.refreshEntry(entry); 
 }
 
-function applyQuadrantEntry({ entry, line }) {   // Group, state, render, panel.
+function applyQuadrantEntry(entry) {   // Group, state, render, panel.
   console.log("cntrl: gambits.js - applyQuadrantEntry(entry)", entry);
 
   state.pushNewGambit(entry);                     // Change state.
-  const group = vGambits.makeQuadGroup(entry);    // Recreate from entry.
+  const group = vGambits.makeQuadrantGroup(entry);    // Recreate from entry.
   vGambits.render(group, { animate: true });      // Render.
-  vGambits.pushPanelLine(line);                   // Add line to panel.
+  vGambits.pushPanelLine(entry);                   // Add line to panel.
   }
 
 function applyLinearEntry({entry, line}) {   // Group, state, render, panel.

@@ -239,9 +239,9 @@ async function handleLoad() {
         state.pushNewState(key, entry);
         if(     key === "Setup")   { vSetup.pushPanelLine(entry); }
         else if(key === "Moves")   { vMoves.pushPanelLine(entry); }
-        else if(key === "Gambits") { 
-          const line  = cGambits.convertEntryToLine(entry)
-          vGambits.pushPanelLine(line);
+        else if(key === "Gambits") { vGambits.pushPanelLine(entry);
+          const group = vGambits.makeGroup(entry);        // Create mesh group.
+          vGambits.getGambitGroups().push(group);                 // Store it.
         }
         else if(key === "AdvSqs")  { /* Has no scroll list. */ }
         else  { throw new Error(`Unknown entry key ${key}.`); }
@@ -257,6 +257,7 @@ async function handleLoad() {
 
     mPieces.clearPieceState();        // Reset occupancies.
     mTrays.clearTrays();
+    
     mSetup.buttonAffordances("makeBoard");
     mMoves.buttonAffordances("off");
     mGambits.buttonAffordances("off");
@@ -436,10 +437,9 @@ function processUndoBuffer(key, idx) {
       return false;
     }
     state.setBufferIndex("Gambits", idx-1);
+    
     vGambits.undo(entry);
     vGambits.refreshPanel(entry);
-
-    cSelects.manageGambitButtons();
 
     return true;
     }
@@ -527,15 +527,8 @@ function processRedoBuffer(key, idx) {
       return false;
     }
 
-    const group = view.buildAdvSqGroup(entry); // {srcTile: Array(3), quad: 1, perimeter: 0, stride: 0, opacity: 0.5}
-    vGambits.getGambitGroups()[entry.gambitId] = group;
-    console.log("*** gambitGroups.length", vGambits.getGambitGroups().length);
-    group.userData.entry = entry;
-    vGambits.render(group, { animate: false });      // Render.
-
-    vGambits.refreshPanel();         
-        
-    cSelects.manageGambitsButtons();
+    vGambits.redo(entry);
+    vGambits.refreshPanel(entry.gambit);         
 
     return true;
     }

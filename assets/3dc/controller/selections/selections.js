@@ -503,8 +503,8 @@ export function manageMoveButtons() {
   }
 
 export function manageGambitButtons() {
-  console.log("cntrl: selections.js - manageGambitButtons()");
-
+  // console.log("cntrl: selections.js - manageGambitButtons()");
+  return;
   // --- Selections Access ---
     const size = cSetup.getCurrBoard().boardSize;           // Parse piece and tile info.
     const [key1,  key2,  key3,  key4]  = [...pieceSelections];

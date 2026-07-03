@@ -54,15 +54,15 @@ export function init(playBoard) {
   cameras.setJitter(range, speed);
   }
 
-export function buildAdvSqGroup(entry) { // Params: srcTile, quad, perimeter, stride, opacity.
-  console.log("view : view.js - buildAdvSqGroup(specs).", entry);
+export function buildAdvSqGroup(specs) { // Params: srcTile, quad, perimeter, stride, opacity.
+  console.log("view : view.js - buildAdvSqGroup(specs).", specs);
 
   const group = new THREE.Group();
 
   group.userData = group.userData || {};
   group.userData.overlays = [];
 
-  const { gambitId, action, src, srcTile, quad, perimeter, stride, opacity } = entry;
+  const { gambit, action, src, srcTile, quad, perimeter, stride, opacity } = specs;
 
   const advsq = gAdvsqs.AdvSq.fromQuad(srcTile, quad, perimeter);
   const piece = advsq.getPiece();

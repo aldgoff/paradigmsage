@@ -62,11 +62,53 @@ export function clearGambits() {
         tile.remove(overlay);
       });
   }
-  }
+}
 
-export function pushPanelLine(line) {
-  console.log("view : gambits.js - pushPanelLine(line)", line);
+export function pushPanelLine(entry) {
+  console.log("view : gambits.js - pushPanelLine(entry)", entry);
+
+  const { gambit, action, value, piece, src, dst, rays, advsqs } = entry;
+
+  const scroll = document.getElementById("gambit-list");  // Trap.
+  if(!scroll) return;
+
+  const line = assembleLine9(entry);                      // Assemble line.
+
+  const div = document.createElement("div");              // Write to scroll box.
+  div.textContent = line;
+  scroll.appendChild(div);
+  scroll.scrollTop = scroll.scrollHeight;
+  }
+export function assembleLine9(entry) {
+  console.log("view : gambits.js - assembleLine9(entry)", entry);
+
+  const { gambit, action, value, piece, src, dst, rays, advsqs } = entry;
+
+  const count  = state.getIndices().Gambits;
+  const symbol = action[0].toUpperCase();
+
+  const p      = piece[0].toUpperCase();
+  let area = (advsqs[0].length > 1)
+    ? `${advsqs[0][0].area}`.padStart(2)
+    : `${advsqs[0].area}`.padStart(2);
+  const feedback = `${area} ${rays}`;
+
+  // --- column widths ---
+  const idxCol  = String(count).padStart(2);      // right-aligned
+  const sCol    = `${symbol}${value}`.padEnd(3);  // "Q37 "
+  const pCol    = `${p}`.padEnd(1);               // "R "
+  const srcCol  = String(src).padEnd(5);          // "KB4,4  "
+  const dstCol  = String(dst).padEnd(8);          // allow offboard arrays
+  const areaCol = String(feedback).padStart(2);   // right-aligned
+
+  const line = `${idxCol} ${sCol} ${pCol} ${srcCol} → ${dstCol}:${areaCol}`;
   
+  return line;
+}
+
+export function pushPanelLine1(line) {
+  console.log("view : gambits.js - pushPanelLine1(line)", line);
+
   const { symbol, value, piece, src, dst, feedback } = line;
 
   const row = assembleRowFromLine(line);
@@ -120,8 +162,6 @@ export function popPanelLine() {
 export function refreshPanel(gambit) {
   console.log("view : gambits.js - refreshPanel(gambit)", gambit);
 
-  // const { Q, src, dst, area, advsqs } = gambit;  // undefined.
-
   const scroll = document.getElementById("gambit-list");  // Scroll list.
   if (!scroll) return;
 
@@ -157,8 +197,33 @@ export function renderGambit(entry) {
   pushPanelLine(line);
 }
 
-export function makeQuadGroup(entry) {
-  console.log("view : gambits.js - makeQuadGroup(entry).", entry);
+export function makeGroup(entry) {
+  console.log("view : gambits.js - makeGroup(entry).", entry);
+
+  const { action } = entry;
+
+  let group;
+  if(     action === "quadrant") {
+    group = makeQuadrantGroup(entry);        // Create mesh group.
+    }
+  else if(action === "linear") {
+    group = makeLinearGroup(entry);        // Create mesh group.
+    }
+  else if(action === "duplex") {
+    group = makeDuplexGroup(entry);        // Create mesh group.
+    }
+  else if(action === "overlap") {
+    // group = makeQuadrantGroup(entry);        // Create mesh group.
+    }
+  else {
+    throw new Error(`Unknown action ${action} for buildForward.`);
+  }
+
+  return group;
+}
+
+export function makeQuadrantGroup(entry) {
+  console.log("view : gambits.js - makeQuadrantGroup(entry).", entry);
 
   const { Q, src, dst, area, advsqs } = entry;
   
@@ -169,8 +234,6 @@ export function makeQuadGroup(entry) {
   }
 
   const group = view.buildAdvSqGroup(advsq); // {srcTile: Array(3), quad: 1, perimeter: 0, stride: 0, opacity: 0.5}
-  // group.userData.entry = entry;
-  // group.userData.gambitId = entry.gambitId;
 
   return group;
   }
@@ -181,8 +244,6 @@ export function makeLinearGroup(entry) {
   const { move, piece, src, dst, ray, advsqs, opacity } = entry;
 
   const group = view.buildAdvRectGroups(entry);
-  // group.userData.entry = entry;
-  // group.userData.gambitId = entry.gambitId;
 
   return group;
   }
@@ -193,11 +254,9 @@ export function makeDuplexGroup(entry) {
   const { move, piece, src, dst, ray, advsqs, opacity } = entry;
 
   const group = view.buildDuplexGroup(entry);
-  // group.userData.entry = entry;
-  // group.userData.gambitId = entry.gambitId;
 
   return group;
-  }
+}
 
 export function planeRotation(entry, rotation) {
   console.log("view : gambits.js - planeRotation(rotation, entry).", rotation, entry);
@@ -284,9 +343,7 @@ function applyMaterialOpacity(obj, opacity) {
 export function undo(entry) {
   console.log("view : gambits.js - undo(entry).", entry);
 
-  const { gambitId, action, src, srcTile, quad, perimeter, stride, opacity } = entry;
-
-  const group = gambitGroups[gambitId];
+  const group = gambitGroups[entry.gambit];
   if(group) {
     derenderGambit(group);    
   }
@@ -295,10 +352,13 @@ export function undo(entry) {
 export function redo(entry) {
   console.log("view : gambits.js - redo(entry).", entry);
 
-  const group = gambitGroups[entry.gambitId];
   console.log("*** gambitGroups.length", gambitGroups.length);
 
-  render(group, { animate: false });      // Render.
+  const group = gambitGroups[entry.gambit];
+
+  if(group) {
+    render(group, { animate: false });      // Render.
+  }
 }
 
 export function render(group, { animate = false } = {}) {

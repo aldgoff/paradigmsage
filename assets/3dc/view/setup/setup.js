@@ -50,6 +50,8 @@ export function clearSetup() {
 export function pushPanelLine(entry) {
   console.log("view : setup.js - pushPanelLine(entry)", entry);
 
+  const { action } = entry;
+  
   const scroll = document.getElementById("setup-list");
   if(!scroll) return;
 

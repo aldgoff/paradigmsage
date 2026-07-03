@@ -4,15 +4,15 @@
     "_cannonicalSchema": "Each model layer module file is responsible for complying to this standard.",
     "entries": {
       "_templateGambits": [
-        {"gambitId":99, "action":"quad|linear(2)|duplex|overlap(4)", "ray|rayPair":"...|[,]", "AdvSqs":["..."],"opacity":0.5},
-        {"gambitId":0, "action":"quadrant", "rayPair":["LFU","RFU"], "AdvSqs":["..."]},
-        {"gambitId":1, "action":"duplex",   "ray":"LFU", "AdvSqs":["...","..."]},
-        {"gambitId":2, "action":"linear2",  "ray":"LFU", "AdvSqs":[["...","..."],["...","..."]]},
-        {"gambitId":3, "action":"linear3",  "ray":"LFU", "AdvSqs":[["...","..."],["...","..."],["...","..."]]},
-        {"gambitId":4, "action":"overlapB", "ray":"LFU", "AdvSqs":["...",["...","..."]]},
-        {"gambitId":5, "action":"overlapQ", "ray":"LFU", "AdvSqs":["...",["...","..."],"..."]},
-        {"gambitId":6, "action":"overlapH", "ray":"LFU", "AdvSqs":[["...","..."],["...","..."]]},
-        {"gambitId":7, "action":"overlapF", "ray":"LFU", "AdvSqs":["...","..."]}
+        {"gambit":99, "action":"quad|linear(2)|duplex|overlap(4)", "ray|rayPair":"...|[,]", "AdvSqs":["..."],"opacity":0.5},
+        {"gambit":0, "action":"quadrant", "rayPair":["LFU","RFU"], "AdvSqs":["..."]},
+        {"gambit":1, "action":"duplex",   "ray":"LFU", "AdvSqs":["...","..."]},
+        {"gambit":2, "action":"linear2",  "ray":"LFU", "AdvSqs":[["...","..."],["...","..."]]},
+        {"gambit":3, "action":"linear3",  "ray":"LFU", "AdvSqs":[["...","..."],["...","..."],["...","..."]]},
+        {"gambit":4, "action":"overlapB", "ray":"LFU", "AdvSqs":["...",["...","..."]]},
+        {"gambit":5, "action":"overlapQ", "ray":"LFU", "AdvSqs":["...",["...","..."],"..."]},
+        {"gambit":6, "action":"overlapH", "ray":"LFU", "AdvSqs":[["...","..."],["...","..."]]},
+        {"gambit":7, "action":"overlapF", "ray":"LFU", "AdvSqs":["...","..."]}
       ],
       "_templateMove": [
 
@@ -88,14 +88,14 @@
         { "turn": 3, "moves": ["qnP-QN3,4", "..."], "coords": ["...", "..."], "annotations": ["...", "..."] }
       ],
       "Gambits": [
-        { "gambitId":0, "action":"quadrant", "ray":["LFU","RFU"], "dst":"KR4,4", "AdvSqs":[{}],                      "opacity":0.5 },
-        { "gambitId":1, "action":"duplex",   "ray":["LFU"],       "dst":"KR4,4", "AdvSqs":[{},{}],                   "opacity":0.5 },
-        { "gambitId":2, "action":"linear2",  "ray":["LFU"],       "dst":"KR4,4", "AdvSqs":[[{},{}],[{},{}]],         "opacity":0.5 },
-        { "gambitId":3, "action":"linear3",  "ray":["LFU"],       "dst":"KR4,4", "AdvSqs":[[{},{}],[{},{}],[{},{}]], "opacity":0.5 },
-        { "gambitId":4, "action":"overlapB", "ray":["LFU"],       "dst":"KR4,4", "AdvSqs":[{},[{},{}]],              "opacity":0.5 },
-        { "gambitId":5, "action":"overlapQ", "ray":["LFU"],       "dst":"KR4,4", "AdvSqs":[{},[{},{}],{}],           "opacity":0.5 },
-        { "gambitId":6, "action":"overlapH", "ray":["LFU"],       "dst":"KR4,4", "AdvSqs":[[{},{}],[{},{}]],         "opacity":0.5 },
-        { "gambitId":7, "action":"overlapF", "ray":["LFU"],       "dst":"KR4,4", "AdvSqs":[{},{}],                   "opacity":0.5 }
+        { "gambit":0, "action":"quadrant", "ray":["LFU","RFU"], "dst":"KR4,4", "AdvSqs":[{}],                      "opacity":0.5 },
+        { "gambit":1, "action":"duplex",   "ray":["LFU"],       "dst":"KR4,4", "AdvSqs":[{},{}],                   "opacity":0.5 },
+        { "gambit":2, "action":"linear2",  "ray":["LFU"],       "dst":"KR4,4", "AdvSqs":[[{},{}],[{},{}]],         "opacity":0.5 },
+        { "gambit":3, "action":"linear3",  "ray":["LFU"],       "dst":"KR4,4", "AdvSqs":[[{},{}],[{},{}],[{},{}]], "opacity":0.5 },
+        { "gambit":4, "action":"overlapB", "ray":["LFU"],       "dst":"KR4,4", "AdvSqs":[{},[{},{}]],              "opacity":0.5 },
+        { "gambit":5, "action":"overlapQ", "ray":["LFU"],       "dst":"KR4,4", "AdvSqs":[{},[{},{}],{}],           "opacity":0.5 },
+        { "gambit":6, "action":"overlapH", "ray":["LFU"],       "dst":"KR4,4", "AdvSqs":[[{},{}],[{},{}]],         "opacity":0.5 },
+        { "gambit":7, "action":"overlapF", "ray":["LFU"],       "dst":"KR4,4", "AdvSqs":[{},{}],                   "opacity":0.5 }
       ],
       "Gambits1": [
         { "Q":37, "src": "Q3,3", "dst": "KB2,2", "area": 0 }, 
