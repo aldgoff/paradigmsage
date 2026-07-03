@@ -89,7 +89,7 @@ export function buildPayload(panel, action) {
       return { action };
     case "freezePuzzle":
     case "startingPos":
-      return { action, prevBoard: currBoard, nextBoard };
+      return { action };
     break;
     case "updateParam":
       console.log("*** Radio buttons capture state but are not actionable.");

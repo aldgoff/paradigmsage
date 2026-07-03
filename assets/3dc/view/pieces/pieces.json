@@ -2,12 +2,12 @@
   "pieces_module": {
     "materials": {
       "white": {
-        "surfaceColor": "#f8f8f8",
-        "lineColor": "#555555",
+        "surfaceColor": "#ffffff",
+        "lineColor": "#222222",
         "highlight": "#008800"
       },
       "black": {
-        "surfaceColor": "#202020",
+        "surfaceColor": "#111111",
         "lineColor": "#cccccc",
         "highlight": "#ffff00"
       },
