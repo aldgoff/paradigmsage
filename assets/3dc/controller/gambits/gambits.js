@@ -61,7 +61,8 @@ export function panelDispatch(payload) {
     case "asAPlane": handleFreezeAsAPlane(currAdvsq); break;
     default: throw new Error(`Unknown gambit action ${action}.`);  break;
   }
-
+  
+  mGambits.buttonAffordances("off");
   mAdvsqs.buttonAffordances("build");
   game.showUndoStatus();                        // Update game panel (undo).
   console.log("*** vGambits.getGambitGroups().length", vGambits.getGambitGroups().length);
@@ -90,7 +91,7 @@ function handleFreezeQuadrant(currAdvsq) {      // N Q1  R KB4,4 → KB7,7    :1
 
   state.pushNewGambit(entry);                             // Change state.
   vGambits.pushPanelLine(entry);                          // Append line to panel.
-  const group = vGambits.makeQuadrantGroup(entry);        // Create mesh group.
+  const group = vGambits.makeGroup(entry);                // Recreate mesh group from entry.
   vGambits.getGambitGroups().push(group);                 // Store it.
   
   vGambits.render(group, { animate: true });              // Render with animation.
@@ -111,7 +112,7 @@ function handleFreezeAsLinear(currAdvsq) {      // N L1  R Q4,4  → Q8,4     :l
 
   state.pushNewGambit(entry);                             // Change state.
   vGambits.pushPanelLine(entry);                          // Append line to panel.
-  const group = vGambits.makeLinearGroup(entry);          // Create mesh group.
+  const group = vGambits.makeGroup(entry);                // Recreate mesh group from entry.
   vGambits.getGambitGroups().push(group);                 // Store it.
 
   vGambits.render(group, { animate: true });              // Render with animation.
@@ -133,7 +134,7 @@ function handleFreezeAsDuplex(currAdvsq) {      // N DMM D KB4,4 → 8,0,0    :1
 
   state.pushNewGambit(entry);                             // Change state.
   vGambits.pushPanelLine(entry);                          // Append line to panel.
-  const group = vGambits.makeDuplexGroup(entry);          // Create mesh group.
+  const group = vGambits.makeGroup(entry);                // Recreate mesh group from entry.
   vGambits.getGambitGroups().push(group);                 // Store it.
 
   vGambits.render(group, { animate: true });              // Render with animation.
@@ -149,7 +150,7 @@ function handleFreezeWithOverlaps(currAdvsq) {  // TODO: finish.
 
   branchHistory(entry);
   // applyEntry(entry);  // Eventually.
-}
+  }
 
 function handleFreezeAsKnight(currAdvsq) {      // TODO: finish.
   console.log("cntrl: gambits.js - handleFreezeAsKnight(currAdvsq)", currAdvsq);
@@ -330,37 +331,6 @@ function applyEntry(entry) {   // Clear curr, branch, state change, render, refr
   state.pushNewGambit(entry);          // Log state change in undo buffer.
   vGambits.renderGambit(entry); 
   // vGambits.refreshEntry(entry); 
-}
-
-function applyQuadrantEntry(entry) {   // Group, state, render, panel.
-  console.log("cntrl: gambits.js - applyQuadrantEntry(entry)", entry);
-
-  state.pushNewGambit(entry);                     // Change state.
-  const group = vGambits.makeQuadrantGroup(entry);    // Recreate from entry.
-  vGambits.render(group, { animate: true });      // Render.
-  vGambits.pushPanelLine(entry);                   // Add line to panel.
-  }
-
-function applyLinearEntry({entry, line}) {   // Group, state, render, panel.
-  console.log("cntrl: gambits.js - applyLinearEntry({entry, line})", {entry, line});
- 
-  // TODO: if not at end, branch undo buffer. 
-
-  state.pushNewGambit(entry);                     // Change state.
-  const group = vGambits.makeLinearGroup(entry);  // Recreate from entry.
-  vGambits.render(group, { animate: true });      // Render.
-  vGambits.pushPanelLine(line);                   // Append line to panel.
-  }
-
-function applyDuplexEntry({entry, line}) {   // Group, state, render, panel.
-  console.log("cntrl: gambits.js - applyDuplexEntry({entry, line})", {entry, line});
- 
-  // TODO: if not at end, branch undo buffer. 
-
-  state.pushNewGambit(entry);                     // Change state.
-  const group = vGambits.makeDuplexGroup(entry);  // Recreate from entry.
-  vGambits.render(group, { animate: true });      // Render.
-  vGambits.pushPanelLine(line);                   // Append line to panel.
 }
 // Seampoint: more local functions...
 

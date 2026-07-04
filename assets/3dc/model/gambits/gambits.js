@@ -72,7 +72,7 @@ export function makeLinearEntry(advsq) {
   let piece = "duke"; let p = "D";                                  // Symbol.
   if( 1<= quad && quad <= 12) { piece = "rook";    p = "R";}
   if(13<= quad && quad <= 36) { piece = "bishop";  p = "B";}
-  const value = "1";  // TODO: figure out value.
+  const value = "1";  // TODO: figure out linear coding values.
 
   const quadsList = findQuadsForRay(ray);                           // Advrects.
   const quadPairs = groupByPlane(quadsList);
@@ -223,7 +223,6 @@ function resolveStrideRay(currAdvsq, rayPair, duplex=false) { // ray or null.
   const last   = perims[perims.length - 1];
 
   const strideTile = last.stride[stride - 1];  // <-- actual coord
-  console.log("*** last, strideTile", last, strideTile);
 
   if (utils.isSame(strideTile, last.E1))   return rayPair[0];
   if (utils.isSame(strideTile, last.E2))   return rayPair[1];
@@ -241,9 +240,6 @@ function resolveStrideRay(currAdvsq, rayPair, duplex=false) { // ray or null.
   }
 
   return null;
-
-  // const e2 = 2*perimeter + 1;
-  // throw new Error(`Stride tile was ${stride}, must be E1(1) or E2(${e2})`);
   }
 
 function findQuadsForRay(ray) {
@@ -322,14 +318,18 @@ function buildAdvRects(src, srcTile, quadPairs, perimeter, stride, opacity) {
 // Seampoint: more local functions...
 
 /* TODO: Gambit additions:
- * 0. HandleLoad
- * 1. Rebuild groups on load
- * 2. No single source of registry
- * 3. Entry not canonical
- * 4. Load does not restore indexed state correctly
+ * 0. ✅ HandleLoad
+ * 1. ✅ Rebuild groups on load
+ * 2. ✅ No single source of registry
+ * 3. ✅ Entry not canonical
+ * 4. ✅ Load does not restore indexed state correctly
  * 5. ✅ Free Load from rerunGambits()
  * 6. Group creation path is unclear
  * 7. Delete by passes state API
  * 8. Hard coded UI reset values
  * 9. Panel + state desync possibility.
+ * 10. For duplex, convert to rook ray.
+ * 11. Figure out cross plane abrvs.
+ * 12. Figure out linear coding values.
 */
+
