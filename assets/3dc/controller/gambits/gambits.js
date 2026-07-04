@@ -147,8 +147,18 @@ function handleFreezeWithOverlaps(currAdvsq) {  // TODO: finish.
 
   const { src, srcTile, quad, perimeter, stride, opacity } = currAdvsq;  // Informative.
 
+  state.clearBuffer("AdvSqs");                            // Delete advsq.
+  vAdvsqs.removeFromScene();
+  vAdvsqs.clearAdvsqPanelParams("Q4,4");
 
-  branchHistory(entry);
+  const entry = mGambits.makeOverlapEntry(currAdvsq);    // Entry.
+
+  state.pushNewGambit(entry);                             // Change state.
+  vGambits.pushPanelLine(entry);                          // Append line to panel.
+  const group = vGambits.makeGroup(entry);                // Recreate mesh group from entry.
+  vGambits.getGambitGroups().push(group);                 // Store it.
+
+  branchHistory(entry); // TODO: ??
   // applyEntry(entry);  // Eventually.
   }
 

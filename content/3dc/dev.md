@@ -160,6 +160,7 @@ title: "Dev"
   - 7/01/26 - Controller nits. Use getPieces & getTiles throughout control layer. Convert setup to use lists.
   - 7/02/26 - Place stacks. Update help panels. Floating duke. Improve setup affordances. Bug fix on floating duke. Setup/selections QC. Normalize render files. Piece contrast.
   - 7/03/26 - QC quad gambits. QC gambit module.
+  - 7/04/26 - Overlap affordances.
 
 
 

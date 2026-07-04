@@ -108,6 +108,21 @@ export function makeDuplexEntry(advsq) {
   const entry  = { gambit, action: "duplex", value, piece, src, dst, rays: ray, advsqs, opacity };    // Return values.
 
   return entry;
+  }
+
+export function makeOverlapEntry(advsq) {
+  console.log(`model: gambits.js - makeOverlapEntry(advsq):`, advsq);
+
+  const { src, srcTile, quad, perimeter, stride, opacity } = advsq; // src & dst.
+  const dst = planes.resolveDstTile(srcTile, quad, perimeter, stride);
+  const area = (perimeter+1)*(perimeter+1);
+
+  const { rayPair } = quads.pqrTable(quad);                         // Ray.
+  const ray = resolveStrideRay(advsq, rayPair, true);
+
+  // TODO: create the overlap quads...
+  
+  return entry;
 }
 // Seampoint: more Entry functions...
 
@@ -134,31 +149,16 @@ export function buttonAffordances(situation) {
     break;
 
     case "freezeQ":         // Advancement manifolds.
-      buttonAffordances("off");
-      panels.enableButton("freezeQ",   true);
+      panels.enableButton("freezeQ", true);
       break;
     case "freezeL":
-      buttonAffordances("off");
-      panels.enableButton("freezeL",   true);
+      panels.enableButton("freezeL", true);
       break;
     case "freezeD":
-      buttonAffordances("off");
-      panels.enableButton("freezeD",   true);
+      panels.enableButton("freezeD", true);
       break;
     case "freezeO":
-      buttonAffordances("off");
-      panels.enableButton("freezeO",   true);
-    break;
-
-    case "linear":          // Quadrant options.
-      buttonAffordances("off");
-      panels.enableButton("freezeQ",   true);
-      panels.enableButton("freezeL",   true);
-      break;
-    case "duplex":
-      buttonAffordances("off");
-      panels.enableButton("freezeQ",   true);
-      panels.enableButton("freezeD",   true);
+      panels.enableButton("freezeO", true);
     break;
 
     case "freezeN":         // Restricted pieces.

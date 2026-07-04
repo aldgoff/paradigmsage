@@ -81,11 +81,11 @@ function handlePlace(payload) {
   const { src, srcTile, quad, perimeter, stride, opacity } = payload;  // Unpack primary fields.
 
   mAdvsqs.buttonAffordances("src-tile");
-  updateGambitPanelButtons(quad, perimeter, stride);
   const entry = mAdvsqs.makeEntry(payload);     // Transform panel payload into state entry.
   
   branchHistory(entry);
   applyEntry(entry);
+  updateGambitPanelButtons(quad, perimeter, stride);
   }
 
 function handleRemove(payload) {
@@ -100,6 +100,7 @@ function handleRemove(payload) {
   state.clearBuffer("AdvSqs");            // Log state change in undo buffer.
   vAdvsqs.removeFromScene();              // Derender.
   vAdvsqs.refreshPanel(newAdvsq);         // Update the control panel.
+  updateGambitPanelButtons(quad, perimeter, stride);
   }
 
 function handleGrow(payload) {
@@ -117,15 +118,15 @@ function handleGrow(payload) {
   else {
     stride = 2;
   }
-  perimeter++;   
-                                                             // Manipulate fields.
+
+  perimeter++;                                                        // Manipulate fields.
   if(perimeter  >  0) mAdvsqs.buttonAffordances("adv-sq");
-  updateGambitPanelButtons(quad, perimeter, stride);
 
   const nextEntry = { src, srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
 
   branchHistory(nextEntry);
   applyEntry(nextEntry);  // Clear curr, branch, state change, render, refresh panel.
+  updateGambitPanelButtons(quad, perimeter, stride);
   }
 
 function handleShrink(payload) {
@@ -140,20 +141,30 @@ function handleShrink(payload) {
     else if(stride < 2*perimeter + 1)  { stride-=2; }                 // Inbound - constant distance from E2.
     else if(stride >= 2*perimeter + 1) { stride = 2*perimeter - 1; }  // E2 (or off scale) - stays on end tile.
   }
+
   if(--perimeter < 0) perimeter = 0.                                        // Manipulate fields.
   if(perimeter === 0) mAdvsqs.buttonAffordances("src-tile");
   if(perimeter  >  0) mAdvsqs.buttonAffordances("adv-sq");
-  updateGambitPanelButtons(quad, perimeter, stride);
 
   const nextEntry = { src, srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
 
   applyEntry(nextEntry);  // Clear curr, branch, state change, render, refresh panel.
+  updateGambitPanelButtons(quad, perimeter, stride);
   }
 
 function handleUpdateParam(payload) {
   console.log("cntrl: advsqs.js - handleUpdateParam(payload)", payload);
 
   let { src, srcTile, quad, perimeter, stride, opacity } = payload;  // Unpack primary fields.
+  
+  // TODO: execute only if perimeter changes.
+  // if(perimeter >= 1) {                                                // Stride stability idiom (apex, or fixed distance from E1/E2).
+  //   if(     stride <= 1)               { stride = stride; }           // E1 (or off) - stays on end tile.
+  //   else if(stride < perimeter + 1)    { stride; }                    // Outbound - constant distance from E1.
+  //   else if(stride === perimeter + 1)  { stride--; }                  // Apex - stays on apex tile.
+  //   else if(stride < 2*perimeter + 1)  { stride-=2; }                 // Inbound - constant distance from E2.
+  //   else if(stride >= 2*perimeter + 1) { stride = 2*perimeter - 1; }  // E2 (or off scale) - stays on end tile.
+  // }
 
   const maxStride = 2 * perimeter + 1;                                      // Manipulate fields.
   if(stride > maxStride) {  // Is stride panel limited or perimeter limited?
@@ -172,11 +183,11 @@ function handleUpdateParam(payload) {
   if(perimeter === 0) stride = 0;
   if(perimeter === 0) mAdvsqs.buttonAffordances("src-tile");
   if(perimeter  >  0) mAdvsqs.buttonAffordances("adv-sq");
-  updateGambitPanelButtons(quad, perimeter, stride);
 
   const nextEntry = { src, srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
 
   applyEntry(nextEntry);  // Clear curr, branch, state change, render, refresh panel.
+  updateGambitPanelButtons(quad, perimeter, stride);
   }
 
 function handleNudgeSrc(payload) {
@@ -212,11 +223,11 @@ function handleNextQuad(payload) {
     throw new Error("Unknown quad number in control: advsqs.js - handleNextQuad() quad", quad);
   }
   stride = 1; // First stride.
-  updateGambitPanelButtons(quad, perimeter, stride);
 
   const nextEntry = { src, srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
 
   applyEntry(nextEntry);  // Clear curr, branch, state change, render, refresh panel.
+  updateGambitPanelButtons(quad, perimeter, stride);
   }
 
 function handleNextPlane(payload) {
@@ -231,11 +242,11 @@ function handleNextPlane(payload) {
     throw new Error("Unknown quad number in control: advsqs.js - handleNextPlane() quad", quad);
   }
   stride = 1; // First stride.
-  updateGambitPanelButtons(quad, perimeter, stride);
 
   const nextEntry = { src, srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
 
   applyEntry(nextEntry);  // Clear curr, branch, state change, render, refresh panel.
+  updateGambitPanelButtons(quad, perimeter, stride);
   }
 
 function handleNextPiece(payload) {
@@ -250,11 +261,11 @@ function handleNextPiece(payload) {
     throw new Error("Unknown quad number in control: advsqs.js - handleNextPiece() quad", quad);
   }
   stride = 1; // First stride.
-  updateGambitPanelButtons(quad, perimeter, stride);
 
   const nextEntry = { src, srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
 
   applyEntry(nextEntry);  // Clear curr, branch, state change, render, refresh panel.
+  updateGambitPanelButtons(quad, perimeter, stride);
 }
 // Seampoint: more handlers...
 
@@ -262,14 +273,35 @@ function handleNextPiece(payload) {
 function updateGambitPanelButtons(quad, perimeter, stride) {
   console.log("cntrl: advsqs.js - updateGambitPanelButtons(quad, perimeter, stride)", quad, perimeter, stride);
 
-  mGambits.buttonAffordances("freezeQ");
-  if(perimeter > 0) {
-    if(stride === 1 || stride == 2*perimeter+1) {
-      mGambits.buttonAffordances("linear");
-    }
-    else if(stride === perimeter+1 && quads.pqrTable(quad).quadType === "face") {
-      mGambits.buttonAffordances("duplex");
-    }
+  const panel = document.getElementById("advsq-window");
+  const overlap = panel.querySelector('[name="advsq-overlap"]')?.value;
+  const piece = quads.pqrTable(quad).piece;
+
+  console.log("*** overlap text", overlap); // Essential - advsq panel must be updated prior to updating gambit buttons.
+
+  mGambits.buttonAffordances("off");
+  switch (overlap) {
+    case "source":  mGambits.buttonAffordances("off"); break;
+    case "body":    mGambits.buttonAffordances("freezeQ"); break;
+    case "apex":    mGambits.buttonAffordances("freezeQ"); break;
+    case "end2":    mGambits.buttonAffordances("freezeQ");    
+                    mGambits.buttonAffordances("freezeL"); break;
+    case "end3":    mGambits.buttonAffordances("freezeQ");
+                    mGambits.buttonAffordances("freezeL"); break;
+    case "brook":            mGambits.buttonAffordances("freezeQ");
+      if(piece === "bishop") mGambits.buttonAffordances("freezeL");
+                             mGambits.buttonAffordances("freezeO"); break;
+    case "qtile":             mGambits.buttonAffordances("freezeQ");
+      if(piece === "bishop")  mGambits.buttonAffordances("freezeL");
+                              mGambits.buttonAffordances("freezeO"); break;
+    case "hotspot":             mGambits.buttonAffordances("freezeQ");
+      if(     piece === "rook") mGambits.buttonAffordances("freezeL");
+      else if(piece === "duke") mGambits.buttonAffordances("freezeD");
+                                mGambits.buttonAffordances("freezeO"); break;
+    case "Feynman": mGambits.buttonAffordances("freezeQ");
+                    mGambits.buttonAffordances("freezeO"); break;
+    default:        mGambits.buttonAffordances("off");
+                    mGambits.buttonAffordances("freezeQ"); break;
   }
 }
 
