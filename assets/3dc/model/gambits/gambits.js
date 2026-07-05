@@ -16,16 +16,17 @@
   import * as panels  from "../../panels/panels.js";
   import * as utils   from "../../../utils/utils.js";  
 
-  import * as state   from "../../model/state/state.js";
-  import * as planes  from "../../geometry/planes/planes.js";
-  import * as rays    from "../../foundation/rays/rays.js";
-  import * as coords  from "../../foundation/coords/coords.js";
-  import * as quads   from "../../geometry/quads/quads.js";
-  import * as gAdvsqs from "../../geometry/advsqs/advsqs.js";
+  import * as state    from "../../model/state/state.js";
+  import * as planes   from "../../geometry/planes/planes.js";
+  import * as rays     from "../../foundation/rays/rays.js";
+  import * as coords   from "../../foundation/coords/coords.js";
+  import * as quads    from "../../geometry/quads/quads.js";
+  import * as gAdvsqs  from "../../geometry/advsqs/advsqs.js";
+  import * as overlaps from "../../geometry/overlaps/overlaps.js";
 
   import * as view     from "../../view/view.js";
   import * as vGambits from "../../view/gambits/gambits.js";
-// Seampoint: more imports..
+// Seampoint: more imports...
 
 // --- Globals ---
 // Seampoint: more globals...
@@ -40,7 +41,7 @@ export function reset() {
 export function makeQuadrantEntry(advsq) {
   console.log(`model: gambits.js - makeQuadrantEntry(advsq):`, advsq);
 
-  const { src, srcTile, quad, perimeter, stride, opacity } = advsq; // src & dst.
+  const { src, srcTile, quad, perimeter, stride, opacity } = advsq; // src & implied dst.
   const dst = planes.resolveDstTile(srcTile, quad, perimeter, stride);
   const area = (perimeter+1)*(perimeter+1);
   
@@ -110,18 +111,83 @@ export function makeDuplexEntry(advsq) {
   return entry;
   }
 
-export function makeOverlapEntry(advsq) {
+export function makeOverlapEntry(advsq) { // Player chooses the base advsq; rook, bishop, duke.
   console.log(`model: gambits.js - makeOverlapEntry(advsq):`, advsq);
 
-  const { src, srcTile, quad, perimeter, stride, opacity } = advsq; // src & dst.
+  const { src, srcTile, quad, perimeter, stride, opacity } = advsq; // src & implied dst.
   const dst = planes.resolveDstTile(srcTile, quad, perimeter, stride);
   const area = (perimeter+1)*(perimeter+1);
 
-  const { rayPair } = quads.pqrTable(quad);                         // Ray.
-  const ray = resolveStrideRay(advsq, rayPair, true);
+  const panel = document.getElementById("advsq-window");            // Overlap tile from advsq panel.
+  const overlap = panel.querySelector('[name="advsq-overlap"]')?.value;
+  const piece = quads.pqrTable(quad).piece;
 
-  // TODO: create the overlap quads...
-  
+  let advsqRook;                                                    // Deterimine player's base piece.
+  let advsqBishop;
+  let advsqDuke;
+  if(piece === "rook")    advsqRook   = advsq;
+  if(piece === "bishop")  advsqBishop = advsq;
+  if(piece === "duke")    advsqDuke   = advsq;
+
+  console.log("*** panel", panel);                                  // Diagnostics.
+  console.log("*** overlap", overlap);
+  console.log("*** piece", piece);
+
+  let rays;
+  let value = null;
+  const advsqs = [];
+  if(     overlap === "brook") {
+    // TODO: tbd.
+    }
+  else if(overlap === "qtile") {
+    // TODO: tbd.
+    }
+  else if(overlap === "hotspot") {
+    // const { advsqR, advsqD } = getHotspotAdvsqs(advsq); // Advsq may be for rook or duke.
+    let advsqsL  = null;
+    let advsqsCP = null;
+    let rayRook  = null;
+    let rayDuke  = null;
+    if(     piece === "rook") advsqDuke = overlaps.findHotspotCompanion(advsqRook);
+    else if(piece === "duke") advsqRook = overlaps.findHotspotCompanion(advsqDuke);
+
+    { // TODO: shared with makeLinearEntry, abstract helper.
+    const { src, srcTile, quad, perimeter, stride, opacity } = advsqRook; // src & implied dst.
+    const { rayPair } = quads.pqrTable(quad);                             // Ray.
+    rayRook = resolveStrideRay(advsqRook, rayPair);
+    value = 1;
+    const quadsList = findQuadsForRay(rayRook);                           // Advrects.
+    const quadPairs = groupByPlane(quadsList);
+    const rects     = buildAdvRects(src, srcTile, quadPairs, perimeter, stride);
+    advsqsL = rects;
+    }
+    { // TODO: shared with makeDuplexEntry, abstract helper.
+    const { src, srcTile, quad, perimeter, stride, opacity } = advsqDuke; // src & implied dst.
+    const { rayPair } = quads.pqrTable(quad);                             // Ray.
+    rayDuke = resolveStrideRay(advsqDuke, rayPair, true);// Is duplex.
+    const area = (perimeter+1)*(perimeter+1);
+    const crossPlainsAdv = "MM";  // TODO: figure out cross plane abrvs.
+    value = `${crossPlainsAdv}`;
+
+    const crossQuad = quads.findDuplexFaceQuad(quad);                     // Cross pair advsqs.
+    const crossAdvsq1 = { src, srcTile, quad, perimeter, stride, area };
+    const crossAdvsq2 = { src, srcTile, quad: crossQuad, perimeter, stride, area };
+    advsqsCP = [crossAdvsq1, crossAdvsq2];
+    }
+
+    if(     piece === "rook") advsqs.push(advsqsL[0],advsqsL[1],  advsqsCP);  // Player order.
+    else if(piece === "duke") advsqs.push(advsqsCP,               advsqsL[0],advsqsL[1]);
+    if(     piece === "rook") rays = rayRook;
+    else if(piece === "duke") rays = rayDuke;
+    }
+  else if(overlap === "Feynman") {
+    // TODO: tbd.
+  }
+  console.log("*** advsqs", advsqs);
+
+  const gambit = state.getBufferLength("Gambits");  
+  const entry  = { gambit, action: "overlap", value, piece, src, dst, rays, advsqs, opacity };    // Return values.
+
   return entry;
 }
 // Seampoint: more Entry functions...

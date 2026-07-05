@@ -174,6 +174,21 @@ export function buildDuplexGroup(entry) { // Params: srcTile, quad, perimeter, s
   }
 
   return group;
+  }
+
+export function buildOverlapGroup(entry) { // Params: srcTile, quad, perimeter, stride, opacity.
+  console.log("view : view.js - buildOverlapGroup(entry).", entry);
+
+  const group = new THREE.Group();                                  // The mesh groups.
+  group.userData = group.userData || {};
+  group.userData.overlays = [];
+  group.userData.planes = [];
+
+  const { move, piece, src, dst, ray, advsqs, opacity } = entry;    // Advsq parameters.
+
+  console.log("*** TODO: buildOverlapGroup");
+  
+  return group;
 }
 
 export function reprojectGroup(group, levelSep) {

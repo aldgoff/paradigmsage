@@ -8,12 +8,22 @@
 */
 
 // --- Load module ---
-import overlapsData from "./overlaps.json" assert { type: "json" };
+  import overlapsData from "./overlaps.json" assert { type: "json" };
   const overlaps = overlapsData.overlaps_module;
+  const basePieces = overlaps.basePieces;
+  const queen = overlaps.queen;
+  const map = overlaps.map;
+  const brook   = map.brook;
+  const qtile   = map.qtile;
+  const hotspot = map.hotspot;
+  const Feynman = map.Feynman;
 // Seampoint: more objects...
 
-// --- Build upon the previous layers ---
-  import { } from "../../foundation/coords/coords.js";
+// --- Dependencies ---
+  import * as utils    from "../../../utils/utils.js";  
+
+  import * as planes   from "../../geometry/planes/planes.js";
+  import * as quads    from "../../geometry/quads/quads.js";
 // Seampoint: more imports...
 
 // --- UI ---
@@ -70,13 +80,94 @@ export function getRoles({ piece, subType = null, quadType }) {
   if (!quad) { throw new Error(`Invalid quadType '${quadType}' for piece '${piece}'`); }
 
   return quad.roles;
-}
+  }
 
 export function getOverlapType(basePiece, quadType, perim, stride) {
   const type = overlaps.queen[basePiece].quads[quadType].strides[perim][stride];
   // console.log("model: getOverlapType(basePiece, quadType, perim, stride)...type - ", basePiece, quadType, perim, stride, type);
 
   return type; // source|end2|end3|body|apex|brook|qtile|hotspot|Feynman
+}
+
+export function findBrookCompanion(advsq) {
+  console.log(`model: overlaps.js - findBrookCompanion(advsq):`, advsq);
+
+  let companion = null;
+  // TODO: tbd.
+  return companion; // Rook or bishop.
+  }
+
+export function findQtileCompanion(advsq) {
+  console.log(`model: overlaps.js - findQtileCompanion(advsq):`, advsq);
+
+  let companion = null;
+  // TODO: tbd.
+  return companion; // Rook or bishop.
+}
+
+export function findHotspotCompanion(advsq) {
+  console.log("geometry: overlaps.js - findHotspotCompanion()", advsq);
+
+  const { src, srcTile, quad, perimeter, stride, opacity } = advsq;
+
+  const dstTile = planes.resolveDstTile(srcTile, quad, perimeter, stride);
+  const piece = quads.pqrTable(quad).piece;
+  console.log("*** piece dstTile", piece, dstTile);
+
+  let spec = null;
+
+  if(     piece === "rook") {  // Given rook advsq, find duke companion.
+    for(const entry of hotspot) {
+      if(entry.rook.perimeter === perimeter) {
+        spec = entry;
+        break;
+      }
+    }
+    if(!spec) throw new Error("Hotspot map entry not found for rook.");
+
+    const k = spec.duke.perimeter;
+    for(let dukeQuad = 37; dukeQuad <= 60; dukeQuad++) {
+      console.log("*** duke quad", dukeQuad);
+      for(const s of spec.duke.stride) {
+        const testDst = planes.resolveDstTile(srcTile, dukeQuad, k, s);
+        console.log("  *** testDst", testDst);
+        if(testDst === dstTile) {
+          const companion = { src, srcTile, quad: dukeQuad, perimeter: k, stride: s, opacity };
+          console.log("*** companion", companion);
+          return { src, srcTile, quad: dukeQuad, perimeter: k, stride: s, opacity };
+        }
+      }
+    }
+    }
+  else if(piece === "duke") {  // Given duke advsq, find rook companion.
+    for(const entry of hotspot) {
+      if(entry.duke.perimeter === perimeter) {
+        spec = entry;
+        break;
+      }
+    }
+    if(!spec) throw new Error("Hotspot map entry not found duke.");
+
+    const k = spec.rook.perimeter;
+    for(let rookQuad = 1; rookQuad <= 12; rookQuad++) {
+      for(const s of spec.rook.stride) {
+        const testDst = planes.resolveDstTile(srcTile, rookQuad, k, s);
+        if(utils.isSame(testDst, dstTile)) {
+          return { src, srcTile, quad: rookQuad, perimeter: k, stride: s, opacity };
+        }
+      }
+    }
+  }
+
+  throw new Error("Unable to locate Hotspot companion.");
+}
+
+export function findFeynmanCompanion(advsq) {
+  console.log(`model: overlaps.js - findFeynmanCompanion(advsq):`, advsq);
+
+  let companion = null;
+  // TODO: tbd.
+  return companion; // Rook or bishop.
 }
 // Seampoint: more global functions...
 

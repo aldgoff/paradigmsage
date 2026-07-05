@@ -147,11 +147,11 @@ function handleFreezeWithOverlaps(currAdvsq) {  // TODO: finish.
 
   const { src, srcTile, quad, perimeter, stride, opacity } = currAdvsq;  // Informative.
 
+  const entry = mGambits.makeOverlapEntry(currAdvsq);    // Entry.
+
   state.clearBuffer("AdvSqs");                            // Delete advsq.
   vAdvsqs.removeFromScene();
   vAdvsqs.clearAdvsqPanelParams("Q4,4");
-
-  const entry = mGambits.makeOverlapEntry(currAdvsq);    // Entry.
 
   state.pushNewGambit(entry);                             // Change state.
   vGambits.pushPanelLine(entry);                          // Append line to panel.

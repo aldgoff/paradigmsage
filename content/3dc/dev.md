@@ -162,6 +162,8 @@ title: "Dev"
   - 7/03/26 - QC quad gambits. QC gambit module.
   - 7/04/26 - Overlap affordances.
 
+ ### Week 16:
+  - 7/05/26 - Make hotspot entry.
 
 
 ## Move Lines:

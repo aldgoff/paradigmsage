@@ -8,7 +8,7 @@
 */
 
 // --- Load module ---
-import advsqsData from "./advsqs.json" assert { type: "json" };
+  import advsqsData from "./advsqs.json" assert { type: "json" };
   const advsqsModule = advsqsData.advsqs_module;
   const category  = advsqsModule.category;
 // Seampoint: more objects...
