@@ -168,6 +168,8 @@ export function makeGroup(entry) {
   else if(action === "overlap")   group = makeOverlapGroup(entry);
   else throw new Error(`Unknown action ${action} for makeGroup.`);
 
+  group.userData.entry = entry; // Required for plane presentation (rotate through planes).
+
   return group;
   }
 
@@ -218,16 +220,47 @@ function makeOverlapGroup(entry) {
 }
 
 export function planeRotation(entry, rotation) {
+  console.log("view : gambits.js - planeRotation()", rotation, entry);
+
+  // Locate the rendered group.
+  const group = gambitGroups[entry.gambit];
+  if(!group) return;
+
+  // The builders define the presentation planes.
+  const planeGroups = group.userData?.planes || [];
+  if(planeGroups.length === 0) return;
+
+  // Mode 0 = all planes.
+  const mode = rotation % (planeGroups.length + 1);
+
+  console.log("*** planes", planeGroups.length);
+  console.log("*** mode", mode);
+
+  for(let p = 0; p < planeGroups.length; p++) {
+    const planeGroup = planeGroups[p];
+
+    const opacity = (mode === 0 || p === mode-1)
+      ? 1.0
+      : 0.10;
+
+    applyOverlayOpacity(
+      planeGroup.userData?.overlays || [],
+      opacity
+    );
+  }
+}
+
+export function planeRotation1(entry, rotation) {
   console.log("view : gambits.js - planeRotation(rotation, entry).", rotation, entry);
 
   const scene = view.getContext().scene;
   if (!scene) { return; }
 
   const group = scene.children.find(g => {
-
     const e = g.userData?.entry;
+    console.log("*** e", e);
 
-    if (!e) return false;
+    if(!e) return false;
 
     return (
       e.move === entry.move &&
@@ -236,12 +269,15 @@ export function planeRotation(entry, rotation) {
       e.dst === entry.dst
     );
   });
+  console.log("*** group", group);
 
   if (!group) { return; }
 
   const planeGroups = group.userData?.planes || [];
 
-  if (planeGroups.length === 0) return;
+  console.log("*** planeGroups.length", planeGroups.length);
+
+  if(planeGroups.length === 0) return;
 
   // --- Determine cycle size ---
   const modes = (entry.piece === "duke") ? 4 : 3;
@@ -251,11 +287,10 @@ export function planeRotation(entry, rotation) {
   // duke:        0=all, 1=plane1, 2=plane2, 3=plane3
   const mode = rotation % modes;
 
-  console.log("planeRotation()...mode:", mode);
+  console.log("*** mode:", mode);
 
   // --- ALL PLANES ---
   if (mode === 0) {
-
     planeGroups.forEach(pg => {
       applyOverlayOpacity(
         pg.userData?.overlays || [],

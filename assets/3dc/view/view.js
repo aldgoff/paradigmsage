@@ -52,7 +52,12 @@ export function init(playBoard) {
   game.showUndoStatus();
   const {range, speed} = viewer.getJitterValues();
   cameras.setJitter(range, speed);
-  }
+}
+
+// --- Plane Group Builders ---
+  // Each presentation plane is represented by one child group
+  // and stored in group.userData.planes.
+  // planeRotation() operates solely on this list.
 
 export function buildAdvSqGroup(specs) { // Params: srcTile, quad, perimeter, stride, opacity.
   console.log("view : view.js - buildAdvSqGroup(specs).", specs);
@@ -103,59 +108,10 @@ export function buildAdvRectGroups(entry) { // Params: srcTile, quad, perimeter,
   }
 
   const planes = advsqs.length;                                       // For each plane.
-  buildPlaneGroups(piece, srcTile, dst, advsqs, planes, stride, opacity, group)
+  buildRectPlaneGroups(piece, srcTile, dst, advsqs, planes, stride, opacity, group)
 
   return group;
   }
-// Helpers for linear moves...  
-function buildPlaneGroups(piece, srcTile, dst, advsqs, planes, stride, opacity, group) {
-  console.log("view : view.js - buildPlaneGroups(...).", piece, srcTile, dst, advsqs, planes, stride, opacity, group);
-
-  for(let p=0; p<planes; p++) {
-    const planeGroup = new THREE.Group();
-    planeGroup.userData = planeGroup.userData || {};
-    planeGroup.userData.overlays = [];
-
-    for(let q=0; q<2; q++) {                                          // For each advsq.
-      const { quad, perimeter } = advsqs[p][q];
-      const advsq = gAdvsqs.AdvSq.fromQuad(srcTile, quad, perimeter);
-      const perims = advsq.getPerims();
-      const linear = (q%2) ? true : false;
-
-      for(let k=1; k<perims.length; k++) {                            // For each perimeter.
-        const perim = perims[k];
-        const quadType = quads.quadToQuadType(quad);
-        const lastPerim = (k === perims.length - 1);
-        const dst = stride;
-        decorateRectPerimeter(lastPerim, perim, piece, quadType, planeGroup, opacity, dst, linear, 0.05);
-      }
-    }
-    group.add(planeGroup);
-    group.userData.planes.push(planeGroup);
-  }
-  }
-
-function buildQuadGroups(piece, srcTile, dst, advsqs, planes, stride, opacity, group) {
-  console.log("view : view.js - buildPlaneGroups(...).", piece, srcTile, dst, advsqs, planes, stride, opacity, group);
-
-  for(let p=0; p<planes; p++) { // Will always equal 2.               // For each advsq.
-    const planeGroup = new THREE.Group();
-    planeGroup.userData = planeGroup.userData || {};
-    planeGroup.userData.overlays = [];
-
-    const { quad, perimeter } = advsqs[p];
-    const advsq = gAdvsqs.AdvSq.fromQuad(srcTile, quad, perimeter);
-    const perims = advsq.getPerims();
-
-    for(let k=1; k<perims.length; k++) {                              // For each perimeter.
-      const perim = perims[k];
-      const dst = stride;
-      decorateDuplexPerimeter(perim, piece, planeGroup, opacity, dst, 0.05);  // Skips source & duplex tiles.
-    }
-    group.add(planeGroup);
-    group.userData.planes.push(planeGroup);
-  }
-}
 
 export function buildDuplexGroup(entry) { // Params: srcTile, quad, perimeter, stride, opacity.
   console.log("view : view.js - buildDuplexGroup(entry).", entry);
@@ -178,7 +134,7 @@ export function buildDuplexGroup(entry) { // Params: srcTile, quad, perimeter, s
   }
 
   const planes = advsqs.length;                                       // For each plane.
-  buildQuadGroups(piece, srcTile, dst, advsqs, planes, stride, opacity, group);
+  buildDuplexPlaneGroups(piece, srcTile, dst, advsqs, planes, stride, opacity, group);
   // for(let p=0; p<planes; p++) { // Will always equal 2.
   //   const planeGroup = new THREE.Group();
   //   planeGroup.userData = planeGroup.userData || {};
@@ -227,8 +183,11 @@ export function buildOverlapGroup(entry) { // Params: srcTile, quad, perimeter, 
           ? decorateTile(perims[k].stride[2*k], piece, linear, group, opacity)
           : decorateTile(perims[k].stride[2*k], "queen", "hotspot", group, opacity);
       }
-      buildPlaneGroups(piece, srcTile, dst, advsqs, 2, stride, opacity, group);
-      buildQuadGroups("duke", srcTile, dst, advsqs[2], 2, stride, opacity, group);
+      buildRectPlaneGroups(piece, srcTile, dst, advsqs, 2, stride, opacity, group);
+      buildDuplexPlaneGroups("duke", srcTile, dst, advsqs[2], 2, stride, opacity, group);
+      console.log("*** group.length", group.length);
+      console.log("*** group.size", group.size);
+      console.log("*** group.children.length", group.children.length);
       break;
     case "Feynman":
       break;
@@ -388,6 +347,55 @@ function decorateTile(coords, piece, decorator, group, opacity, zOffset = 0.00) 
 
     // console.log("view : view.js - decorateTile(...)...group.userData.overlays", group.userData.overlays);
     // console.log("decorator:", decorator, "count:", group.userData.overlays.length);
+  }
+}
+
+function buildRectPlaneGroups(piece, srcTile, dst, advsqs, planes, stride, opacity, group) {
+  console.log("view : view.js - buildRectPlaneGroups(...).", piece, srcTile, dst, advsqs, planes, stride, opacity, group);
+
+  for(let p=0; p<planes; p++) {
+    const planeGroup = new THREE.Group();
+    planeGroup.userData = planeGroup.userData || {};
+    planeGroup.userData.overlays = [];
+
+    for(let q=0; q<2; q++) {                                          // For each advsq.
+      const { quad, perimeter } = advsqs[p][q];
+      const advsq = gAdvsqs.AdvSq.fromQuad(srcTile, quad, perimeter);
+      const perims = advsq.getPerims();
+      const linear = (q%2) ? true : false;
+
+      for(let k=1; k<perims.length; k++) {                            // For each perimeter.
+        const perim = perims[k];
+        const quadType = quads.quadToQuadType(quad);
+        const lastPerim = (k === perims.length - 1);
+        const dst = stride;
+        decorateRectPerimeter(lastPerim, perim, piece, quadType, planeGroup, opacity, dst, linear, 0.05);
+      }
+    }
+    group.add(planeGroup);
+    group.userData.planes.push(planeGroup);
+  }
+  }
+
+function buildDuplexPlaneGroups(piece, srcTile, dst, advsqs, planes, stride, opacity, group) {
+  console.log("view : view.js - buildDuplexPlaneGroups(...).", piece, srcTile, dst, advsqs, planes, stride, opacity, group);
+
+  for(let p=0; p<planes; p++) { // Will always equal 2.               // For each advsq.
+    const planeGroup = new THREE.Group();
+    planeGroup.userData = planeGroup.userData || {};
+    planeGroup.userData.overlays = [];
+
+    const { quad, perimeter } = advsqs[p];
+    const advsq = gAdvsqs.AdvSq.fromQuad(srcTile, quad, perimeter);
+    const perims = advsq.getPerims();
+
+    for(let k=1; k<perims.length; k++) {                              // For each perimeter.
+      const perim = perims[k];
+      const dst = stride;
+      decorateDuplexPerimeter(perim, piece, planeGroup, opacity, dst, 0.05);  // Skips source & duplex tiles.
+    }
+    group.add(planeGroup);
+    group.userData.planes.push(planeGroup);
   }
 }
 // Seampoint: more local functions...

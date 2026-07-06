@@ -252,7 +252,8 @@
     {"gambit":0,"action":"overlap","value":"hotspot","piece":"rook","src":"KB1,4","dst":"KB7,4","rays":"left_fore","advsqs":[
       [{"src":"KB1,4","srcTile":[2,-3,0],"quad":4,"perimeter":6,"stride":1,"area":49},{"src":"KB1,4","srcTile":[2,-3,0],"quad":1,"perimeter":6,"stride":1,"area":49}],
       [{"src":"KB1,4","srcTile":[2,-3,0],"quad":9,"perimeter":6,"stride":1,"area":49},{"src":"KB1,4","srcTile":[2,-3,0],"quad":10,"perimeter":6,"stride":1,"area":49}],
-      [{"src":"KB1,4","srcTile":[2,-3,0],"quad":54,"perimeter":3,"stride":4,"area":16},{"src":"KB1,4","srcTile":[2,-3,0],"quad":58,"perimeter":3,"stride":4,"area":16}]],
+      [ {"src":"KB1,4","srcTile":[2,-3,0],"quad":54,"perimeter":3,"stride":4,"area":16},
+        {"src":"KB1,4","srcTile":[2,-3,0],"quad":58,"perimeter":3,"stride":4,"area":16}]],
       "opacity":0.5}],
   "AdvSqs":[]}
 
@@ -266,7 +267,8 @@
   "Moves":[],
   "Gambits":[
     {"gambit":0,"action":"overlap","value":"hotspot","piece":"duke","src":"KB1,4","dst":"KB7,4","rays":[0,1,0],"advsqs":[
-      [{"src":"KB1,4","srcTile":[2,-3,0],"quad":54,"perimeter":3,"stride":4,"area":16},{"src":"KB1,4","srcTile":[2,-3,0],"quad":58,"perimeter":3,"stride":4,"area":16}],
+      [ {"src":"KB1,4","srcTile":[2,-3,0],"quad":54,"perimeter":3,"stride":4,"area":16},
+        {"src":"KB1,4","srcTile":[2,-3,0],"quad":58,"perimeter":3,"stride":4,"area":16}],
       [{"src":"KB1,4","srcTile":[2,-3,0],"quad":4,"perimeter":6,"stride":1,"area":49},{"src":"KB1,4","srcTile":[2,-3,0],"quad":1,"perimeter":6,"stride":1,"area":49}],
       [{"src":"KB1,4","srcTile":[2,-3,0],"quad":9,"perimeter":6,"stride":1,"area":49},{"src":"KB1,4","srcTile":[2,-3,0],"quad":10,"perimeter":6,"stride":1,"area":49}]],
       "opacity":0.5}],

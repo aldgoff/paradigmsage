@@ -199,6 +199,7 @@ function handleFreezeAsKing(currAdvsq) {        // TODO: finish.
   branchHistory(entry);
   // applyEntry(entry);  // Eventually.
   }
+
 function handleFreezeAsAPlane(currAdvsq) {      // TODO: finish.
   console.log("cntrl: gambits.js - handleFreezeAsAPlane(currAdvsq)", currAdvsq);
 
@@ -216,13 +217,12 @@ function handleNextPlane() {                    // TODO: finish.
   console.log("cntrl: gambits.js - handleNextPlane()");
   //TODO: Complete handleNextPlane().
 
-  // Get current gambit.
-  const entry = state.fetchCurrentState("Gambits");
+  const entry = state.fetchCurrentState("Gambits"); // Current gambit.
   if(!entry) return;
   console.log("cntrl: gambits.js - handleNextPlane()...entry:", entry);
 
   // Is it a linear, duplex, or overlap gambit?
-  if (!["linear", "duplex", "overlap"].includes(entry.move)) {
+  if (!["linear", "duplex", "overlap"].includes(entry.action)) {
     return;
   }
   vGambits.planeRotation(entry, ++rotation);
