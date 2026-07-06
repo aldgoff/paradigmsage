@@ -52,7 +52,7 @@ export function makeQuadrantEntry(advsq) {
   if(13<= quad && quad <= 36) { piece = "bishop";  p = "B";}
   const value  = quad;
 
-  const advsqs = [{ src, srcTile, quad, perimeter, stride, area }]; // Advsqs
+  const advsqs = [{ src, srcTile, quad, perimeter, stride, area }]; // Advsqs.
 
   const gambit = state.getBufferLength("Gambits");  
   const entry  = { gambit, action: "quadrant", value, piece, src, dst, rays: rayPair, advsqs, opacity }; // Return values.
@@ -63,7 +63,7 @@ export function makeQuadrantEntry(advsq) {
 export function makeLinearEntry(advsq) {
   console.log(`model: gambits.js - makeLinearEntry(advsq):`, advsq);
 
-  const { src, srcTile, quad, perimeter, stride, opacity } = advsq; // src & dst.
+  const { src, srcTile, quad, perimeter, stride, opacity } = advsq; // src & implied dst.
   const dst = planes.resolveDstTile(srcTile, quad, perimeter, stride);
   const area = (perimeter+1)*(perimeter+1);
 
@@ -73,7 +73,7 @@ export function makeLinearEntry(advsq) {
   let piece = "duke"; let p = "D";                                  // Symbol.
   if( 1<= quad && quad <= 12) { piece = "rook";    p = "R";}
   if(13<= quad && quad <= 36) { piece = "bishop";  p = "B";}
-  const value = "1";  // TODO: figure out linear coding values.
+  const value = "1";  // TODO: figure out linear coding values (1-6, 7-18, 19-26)?
 
   const quadsList = findQuadsForRay(ray);                           // Advrects.
   const quadPairs = groupByPlane(quadsList);
@@ -89,7 +89,7 @@ export function makeLinearEntry(advsq) {
 export function makeDuplexEntry(advsq) {
   console.log(`model: gambits.js - makeDuplexEntry(advsq):`, advsq);
 
-  const { src, srcTile, quad, perimeter, stride, opacity } = advsq; // src & dst.
+  const { src, srcTile, quad, perimeter, stride, opacity } = advsq; // src & implied dst.
   const dst = planes.resolveDstTile(srcTile, quad, perimeter, stride);
   const area = (perimeter+1)*(perimeter+1);
 
@@ -106,7 +106,8 @@ export function makeDuplexEntry(advsq) {
   const advsqs = [crossAdvsq1, crossAdvsq2];
 
   const gambit = state.getBufferLength("Gambits");  
-  const entry  = { gambit, action: "duplex", value, piece, src, dst, rays: ray, advsqs, opacity };    // Return values.
+  const entry  = { gambit, action: "duplex", value, piece,          // Return values.
+                   src, dst, rays: ray, advsqs, opacity };
 
   return entry;
   }
@@ -118,23 +119,27 @@ export function makeOverlapEntry(advsq) { // Player chooses the base advsq; rook
   const dst = planes.resolveDstTile(srcTile, quad, perimeter, stride);
   const area = (perimeter+1)*(perimeter+1);
 
-  const panel = document.getElementById("advsq-window");            // Overlap tile from advsq panel.
-  const overlap = panel.querySelector('[name="advsq-overlap"]')?.value;
-  const piece = quads.pqrTable(quad).piece;
+  const { rayPair } = quads.pqrTable(quad);                         // Ray.
+  const ray = resolveStrideRay(advsq, rayPair);
 
-  let advsqRook;                                                    // Deterimine player's base piece.
-  let advsqBishop;
-  let advsqDuke;
-  if(piece === "rook")    advsqRook   = advsq;
-  if(piece === "bishop")  advsqBishop = advsq;
-  if(piece === "duke")    advsqDuke   = advsq;
+  let value = "overlap";                                            // Symbol.
+
+  const panel = document.getElementById("advsq-window");            // Overlap tile type from advsq panel.
+  const overlap = panel.querySelector('[name="advsq-overlap"]')?.value;
+  let piece = quads.pqrTable(quad).piece;
+
+  let rays;                                                         // Advsqs.
+
+  let advsqRook   = (piece === "rook")   ? advsq : null;  // Player's
+  let advsqBishop = (piece === "bishop") ? advsq : null;  // base
+  let advsqDuke   = (piece === "duke")   ? advsq : null;  // piece.
 
   console.log("*** panel", panel);                                  // Diagnostics.
   console.log("*** overlap", overlap);
-  console.log("*** piece", piece);
+  console.log("*** advsqRook", advsqRook);
+  console.log("*** advsqBishop", advsqBishop);
+  console.log("*** advsqDuke", advsqDuke);
 
-  let rays;
-  let value = null;
   const advsqs = [];
   if(     overlap === "brook") {
     // TODO: tbd.
@@ -143,6 +148,7 @@ export function makeOverlapEntry(advsq) { // Player chooses the base advsq; rook
     // TODO: tbd.
     }
   else if(overlap === "hotspot") {
+    value = "hotspot";
     // const { advsqR, advsqD } = getHotspotAdvsqs(advsq); // Advsq may be for rook or duke.
     let advsqsL  = null;
     let advsqsCP = null;
@@ -152,41 +158,47 @@ export function makeOverlapEntry(advsq) { // Player chooses the base advsq; rook
     else if(piece === "duke") advsqRook = overlaps.findHotspotCompanion(advsqDuke);
 
     { // TODO: shared with makeLinearEntry, abstract helper.
-    const { src, srcTile, quad, perimeter, stride, opacity } = advsqRook; // src & implied dst.
-    const { rayPair } = quads.pqrTable(quad);                             // Ray.
-    rayRook = resolveStrideRay(advsqRook, rayPair);
-    value = 1;
-    const quadsList = findQuadsForRay(rayRook);                           // Advrects.
-    const quadPairs = groupByPlane(quadsList);
-    const rects     = buildAdvRects(src, srcTile, quadPairs, perimeter, stride);
-    advsqsL = rects;
+      const { src, srcTile, quad, perimeter, stride, opacity } = advsqRook; // src & implied dst.
+      const { rayPair } = quads.pqrTable(quad);                             // Ray.
+      rayRook = resolveStrideRay(advsqRook, rayPair);
+
+      const quadsList = findQuadsForRay(rayRook);                           // Advrects.
+      const quadPairs = groupByPlane(quadsList);
+      const rects     = buildAdvRects(src, srcTile, quadPairs, perimeter, stride);
+      advsqsL = rects;
     }
     { // TODO: shared with makeDuplexEntry, abstract helper.
-    const { src, srcTile, quad, perimeter, stride, opacity } = advsqDuke; // src & implied dst.
-    const { rayPair } = quads.pqrTable(quad);                             // Ray.
-    rayDuke = resolveStrideRay(advsqDuke, rayPair, true);// Is duplex.
-    const area = (perimeter+1)*(perimeter+1);
-    const crossPlainsAdv = "MM";  // TODO: figure out cross plane abrvs.
-    value = `${crossPlainsAdv}`;
+      const { src, srcTile, quad, perimeter, stride, opacity } = advsqDuke; // src & implied dst.
+      const { rayPair } = quads.pqrTable(quad);                             // Ray.
+      rayDuke = resolveStrideRay(advsqDuke, rayPair, true);// Is duplex.
+      const area = (perimeter+1)*(perimeter+1);
+      // const crossPlainsAdv = "MM";  // TODO: figure out cross plane abrvs.
 
-    const crossQuad = quads.findDuplexFaceQuad(quad);                     // Cross pair advsqs.
-    const crossAdvsq1 = { src, srcTile, quad, perimeter, stride, area };
-    const crossAdvsq2 = { src, srcTile, quad: crossQuad, perimeter, stride, area };
-    advsqsCP = [crossAdvsq1, crossAdvsq2];
+      const crossQuad = quads.findDuplexFaceQuad(quad);                     // Cross pair advsqs.
+      const crossAdvsq1 = { src, srcTile, quad, perimeter, stride, area };
+      const crossAdvsq2 = { src, srcTile, quad: crossQuad, perimeter, stride, area };
+      advsqsCP = [crossAdvsq1, crossAdvsq2];
     }
 
-    if(     piece === "rook") advsqs.push(advsqsL[0],advsqsL[1],  advsqsCP);  // Player order.
-    else if(piece === "duke") advsqs.push(advsqsCP,               advsqsL[0],advsqsL[1]);
-    if(     piece === "rook") rays = rayRook;
-    else if(piece === "duke") rays = rayDuke;
+    advsqs.push(advsqsL[0],advsqsL[1],  advsqsCP);
+    rays = rayRook;
+    piece = "rook";
+    // if(     piece === "rook") advsqs.push(advsqsL[0],advsqsL[1],  advsqsCP);  // Player order.
+    // else if(piece === "duke") advsqs.push(advsqsCP,               advsqsL[0],advsqsL[1]);
+    // if(     piece === "rook") rays = rayRook;
+    // else if(piece === "duke") rays = rayDuke;
     }
   else if(overlap === "Feynman") {
     // TODO: tbd.
   }
-  console.log("*** advsqs", advsqs);
+  else {
+    throw new Error(`Unknown overlap type ${overlap}.`);
+  }
+  console.log("*** advsqs", advsqs);  // Diagnostics.
 
   const gambit = state.getBufferLength("Gambits");  
-  const entry  = { gambit, action: "overlap", value, piece, src, dst, rays, advsqs, opacity };    // Return values.
+  const entry  = { gambit, action: "overlap", value, piece,         // Return values.
+                   src, dst, rays, advsqs, opacity };
 
   return entry;
 }
@@ -197,21 +209,21 @@ export function buttonAffordances(situation) {
 
   switch (situation) {
     case "on":              // Enable all panel buttons.
-      panels.enableButton("freezeQ",   true);             // Enable all the panel buttons.
-      panels.enableButton("freezeL",   true);
-      panels.enableButton("freezeD",   true);
-      panels.enableButton("freezeO",   true);
+      panels.enableButton("freezeQ",  true);             // Enable all the panel buttons.
+      panels.enableButton("freezeL",  true);
+      panels.enableButton("freezeD",  true);
+      panels.enableButton("freezeO",  true);
 
-      panels.enableButton("freezeN",   true);
-      panels.enableButton("freezeP",   true);
-      panels.enableButton("freezeK",   true);
-      panels.enableButton("asAPlane",  true);
+      panels.enableButton("freezeN",  true);
+      panels.enableButton("freezeP",  true);
+      panels.enableButton("freezeK",  true);
+      panels.enableButton("asAPlane", true);
 
-      panels.enableButton("nextPlane", true);
-      panels.enableButton("expand",    true);
-      panels.enableButton("contract",  true);
-      panels.enableButton("delete",    true);
-      panels.enableButton("remove",    true);
+      panels.enableButton("next",     true);
+      panels.enableButton("expand",   true);
+      panels.enableButton("contract", true);
+      panels.enableButton("delete",   true);
+      panels.enableButton("remove",   true);
     break;
 
     case "freezeQ":         // Advancement manifolds.
@@ -247,11 +259,11 @@ export function buttonAffordances(situation) {
 
     case "selected":        // Manifold management.
       buttonAffordances("off");
-      panels.enableButton("nextPlane", true);
-      panels.enableButton("expand",    true);
-      panels.enableButton("contract",  true);
-      panels.enableButton("delete",    true);
-      panels.enableButton("remove",    true);
+      panels.enableButton("next",     true);
+      panels.enableButton("expand",   true);
+      panels.enableButton("contract", true);
+      panels.enableButton("delete",   true);
+      panels.enableButton("remove",   true);
     break;
 
     case "off":              // Disable all panel buttons.
@@ -264,7 +276,7 @@ export function buttonAffordances(situation) {
       panels.enableButton("freezeP",   false);
       panels.enableButton("freezeK",   false);
       panels.enableButton("asAPlane",  false);
-      panels.enableButton("next",      false);
+      panels.enableButton("next",      true);
 
       panels.enableButton("expand",    false);
       panels.enableButton("contract",  false);

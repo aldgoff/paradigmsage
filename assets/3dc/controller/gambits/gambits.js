@@ -44,7 +44,7 @@ export function panelDispatch(payload) {
   const currAdvsq = state.fetchCurrentState("AdvSqs"); // Get current advsq, if any.
 
   switch (action) {                             // Change current adv manifold.
-    case "nextPlane": handleNextPlane(); break;
+    case "next":      handleNextPlane(); break;
     case "expand":    handleExpand();    break;
     case "contract":  handleContract();  break;
     case "delete":    handleDelete();    break;
@@ -83,11 +83,11 @@ function handleFreezeQuadrant(currAdvsq) {      // N Q1  R KB4,4 → KB7,7    :1
 
   const {src,srcTile,quad,perimeter,stride,opacity} = currAdvsq; // Informative.
 
-  state.clearBuffer("AdvSqs");                            // Delete advsq.
+  const entry = mGambits.makeQuadrantEntry(currAdvsq);    // Entry.
+
+  state.clearBuffer("AdvSqs");                            // Clear advsq.
   vAdvsqs.removeFromScene();
   vAdvsqs.clearAdvsqPanelParams("Q4,4");
-
-  const entry = mGambits.makeQuadrantEntry(currAdvsq);    // Entry.
 
   state.pushNewGambit(entry);                             // Change state.
   vGambits.pushPanelLine(entry);                          // Append line to panel.
@@ -103,12 +103,13 @@ function handleFreezeAsLinear(currAdvsq) {      // N L1  R Q4,4  → Q8,4     :l
   if(!currAdvsq) return;
 
   const {src,srcTile,quad,perimeter,stride,opacity} = currAdvsq; // Informative.
-
-  state.clearBuffer("AdvSqs");                            // Advsq.
-  vAdvsqs.removeFromScene();
-  vAdvsqs.clearAdvsqPanelParams("Q4,4");
+  console.log("*** quads.pqrTable(quad)", quads.pqrTable(quad));
 
   const entry = mGambits.makeLinearEntry(currAdvsq);      // Entry.
+
+  state.clearBuffer("AdvSqs");                            // Clear advsq.
+  vAdvsqs.removeFromScene();
+  vAdvsqs.clearAdvsqPanelParams("Q4,4");
 
   state.pushNewGambit(entry);                             // Change state.
   vGambits.pushPanelLine(entry);                          // Append line to panel.
@@ -123,14 +124,14 @@ function handleFreezeAsDuplex(currAdvsq) {      // N DMM D KB4,4 → 8,0,0    :1
 
   if(!currAdvsq) return;
 
-  const {src,srcTile,quad,perimeter,stride,opacity} = currAdvsq; // Informative.
+  const {src,srcTile,quad,perimeter,stride,opacity} = currAdvsq;  // Informative.
   console.log("*** quads.pqrTable(quad)", quads.pqrTable(quad));
 
-  state.clearBuffer("AdvSqs");                            // Advsq.
+  const entry = mGambits.makeDuplexEntry(currAdvsq);      // Entry.
+
+  state.clearBuffer("AdvSqs");                            // Clear advsq.
   vAdvsqs.removeFromScene();
   vAdvsqs.clearAdvsqPanelParams("Q4,4");
-
-  const entry = mGambits.makeDuplexEntry(currAdvsq);      // Entry.
 
   state.pushNewGambit(entry);                             // Change state.
   vGambits.pushPanelLine(entry);                          // Append line to panel.
@@ -140,16 +141,17 @@ function handleFreezeAsDuplex(currAdvsq) {      // N DMM D KB4,4 → 8,0,0    :1
   vGambits.render(group, { animate: true });              // Render with animation.
   }
 
-function handleFreezeWithOverlaps(currAdvsq) {  // TODO: finish.
+function handleFreezeWithOverlaps(currAdvsq) {  // N hotspot R Q4,4  → Q8,4     :left_fore
   console.log("cntrl: gambits.js - handleFreezeOverlay(currAdvsq)", currAdvsq);
 
   if(!currAdvsq) return;
 
-  const { src, srcTile, quad, perimeter, stride, opacity } = currAdvsq;  // Informative.
+  const {src,srcTile,quad,perimeter,stride,opacity} = currAdvsq;  // Informative.
+  console.log("*** quads.pqrTable(quad)", quads.pqrTable(quad));
 
-  const entry = mGambits.makeOverlapEntry(currAdvsq);    // Entry.
+  const entry = mGambits.makeOverlapEntry(currAdvsq);     // Entry (uses data in advsq panel).
 
-  state.clearBuffer("AdvSqs");                            // Delete advsq.
+  state.clearBuffer("AdvSqs");                            // Clear advsq.
   vAdvsqs.removeFromScene();
   vAdvsqs.clearAdvsqPanelParams("Q4,4");
 
@@ -158,7 +160,9 @@ function handleFreezeWithOverlaps(currAdvsq) {  // TODO: finish.
   const group = vGambits.makeGroup(entry);                // Recreate mesh group from entry.
   vGambits.getGambitGroups().push(group);                 // Store it.
 
-  branchHistory(entry); // TODO: ??
+  vGambits.render(group, { animate: true });              // Render with animation.
+
+  // branchHistory(entry); // TODO: ??
   // applyEntry(entry);  // Eventually.
   }
 

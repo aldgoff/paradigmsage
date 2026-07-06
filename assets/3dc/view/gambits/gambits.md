@@ -170,36 +170,107 @@
 ## 8. Overlaps:
  ### 8.1 Scenario: Hotspot - Rook Q4,1
   **1-0-1-0**
-{"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}}],"Moves":[],"Gambits":[{"gambit":0,"action":"overlap","value":"MM","piece":"rook","src":"KB4,4","dst":"KB6,4","rays":"left_fore","advsqs":[[{"src":"KB4,4","srcTile":[2,0,0],"quad":4,"perimeter":2,"stride":1,"area":9},{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":2,"stride":1,"area":9}],[{"src":"KB4,4","srcTile":[2,0,0],"quad":9,"perimeter":2,"stride":1,"area":9},{"src":"KB4,4","srcTile":[2,0,0],"quad":10,"perimeter":2,"stride":1,"area":9}],[{"src":"KB4,4","srcTile":[2,0,0],"quad":54,"perimeter":1,"stride":2,"area":4},{"src":"KB4,4","srcTile":[2,0,0],"quad":58,"perimeter":1,"stride":2,"area":4}]],"opacity":0.5}],"AdvSqs":[]}
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}}],"Moves":[],"Gambits":[{"gambit":0,"action":"overlap","value":"MM","piece":"rook","src":"KB4,4","dst":"KB6,4","rays":"left_fore","advsqs":[[{"src":"KB4,4","srcTile":[2,0,0],"quad":4,"perimeter":2,"stride":1,"area":9},{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":2,"stride":1,"area":9}],[{"src":"KB4,4","srcTile":[2,0,0],"quad":9,"perimeter":2,"stride":1,"area":9},{"src":"KB4,4","srcTile":[2,0,0],"quad":10,"perimeter":2,"stride":1,"area":9}],[{"src":"KB4,4","srcTile":[2,0,0],"quad":54,"perimeter":1,"stride":2,"area":4},{"src":"KB4,4","srcTile":[2,0,0],"quad":58,"perimeter":1,"stride":2,"area":4}]],"opacity":0.5}],"AdvSqs":[]}
 
-{"Setup":[
-  {"action":"makeBoard",
-  "prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},
-  "nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}}],"
-Moves":[],
-"Gambits":[
-  {"gambit":0,"action":"overlap","value":"MM","piece":"rook","src":"KB4,4","dst":"KB6,4","rays":"left_fore",
-  "advsqs":[
-    [{"src":"KB4,4","srcTile":[2,0,0],"quad":4,"perimeter":2,"stride":1,"area":9},{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":2,"stride":1,"area":9}],
-    [{"src":"KB4,4","srcTile":[2,0,0],"quad":9,"perimeter":2,"stride":1,"area":9},{"src":"KB4,4","srcTile":[2,0,0],"quad":10,"perimeter":2,"stride":1,"area":9}],
-    [{"src":"KB4,4","srcTile":[2,0,0],"quad":54,"perimeter":1,"stride":2,"area":4},{"src":"KB4,4","srcTile":[2,0,0],"quad":58,"perimeter":1,"stride":2,"area":4}]],
-    "opacity":0.5}],
-"AdvSqs":[]}
+  {"Setup":[
+    {"action":"makeBoard",
+    "prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},
+    "nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}}],"
+  Moves":[],
+  "Gambits":[
+    {"gambit":0,"action":"overlap","value":"MM","piece":"rook","src":"KB4,4","dst":"KB6,4","rays":"left_fore",
+    "advsqs":[
+      [{"src":"KB4,4","srcTile":[2,0,0],"quad":4,"perimeter":2,"stride":1,"area":9},{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":2,"stride":1,"area":9}],
+      [{"src":"KB4,4","srcTile":[2,0,0],"quad":9,"perimeter":2,"stride":1,"area":9},{"src":"KB4,4","srcTile":[2,0,0],"quad":10,"perimeter":2,"stride":1,"area":9}],
+      [{"src":"KB4,4","srcTile":[2,0,0],"quad":54,"perimeter":1,"stride":2,"area":4},{"src":"KB4,4","srcTile":[2,0,0],"quad":58,"perimeter":1,"stride":2,"area":4}]],
+      "opacity":0.5}],
+  "AdvSqs":[]}
 
  ### 8.2 Scenario: Hotspot - Rook Q1,2
   **1-0-1-0**
   {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}}],"Moves":[],"Gambits":[{"gambit":0,"action":"overlap","value":"MM","piece":"rook","src":"KB4,4","dst":"KB4,6","rays":"right_fore","advsqs":[[{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":2,"stride":5,"area":9},{"src":"KB4,4","srcTile":[2,0,0],"quad":2,"perimeter":2,"stride":5,"area":9}],[{"src":"KB4,4","srcTile":[2,0,0],"quad":5,"perimeter":2,"stride":5,"area":9},{"src":"KB4,4","srcTile":[2,0,0],"quad":6,"perimeter":2,"stride":5,"area":9}],[{"src":"KB4,4","srcTile":[2,0,0],"quad":46,"perimeter":1,"stride":2,"area":4},{"src":"KB4,4","srcTile":[2,0,0],"quad":50,"perimeter":1,"stride":2,"area":4}]],"opacity":0.5}],"AdvSqs":[]}
 
-{"Setup":[
-  {"action":"makeBoard",
+  {"Setup":[
+    {"action":"makeBoard",
+      "prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},
+      "nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}}],
+  "Moves":[],
+  "Gambits":[
+    {"gambit":0,
+      "action":"overlap","value":"MM","piece":"rook","src":"KB4,4","dst":"KB4,6","rays":"right_fore","advsqs":[
+        [{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":2,"stride":5,"area":9},{"src":"KB4,4","srcTile":[2,0,0],"quad":2,"perimeter":2,"stride":5,"area":9}],
+        [{"src":"KB4,4","srcTile":[2,0,0],"quad":5,"perimeter":2,"stride":5,"area":9},{"src":"KB4,4","srcTile":[2,0,0],"quad":6,"perimeter":2,"stride":5,"area":9}],
+        [{"src":"KB4,4","srcTile":[2,0,0],"quad":46,"perimeter":1,"stride":2,"area":4},{"src":"KB4,4","srcTile":[2,0,0],"quad":50,"perimeter":1,"stride":2,"area":4}]],
+        "opacity":0.5}],
+  "AdvSqs":[]}
+
+ ### 8.3 Scenario: Hotspot - Rook Q4,1 perimeter 
+  **1-0-0-11**
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}}],"Moves":[],"Gambits":[],"AdvSqs":[{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":1,"stride":2,"opacity":0.5},{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":2,"stride":3,"opacity":0.5},{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":2,"stride":2,"opacity":0.5},{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":2,"stride":1,"opacity":0.5},{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":3,"stride":1,"opacity":0.5},{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":4,"stride":1,"opacity":0.5},{"src":"KB4,4","srcTile":[2,-1,0],"quad":1,"perimeter":4,"stride":1,"opacity":0.5},{"src":"KB4,4","srcTile":[2,-2,0],"quad":1,"perimeter":4,"stride":1,"opacity":0.5},{"src":"KB4,4","srcTile":[2,-3,0],"quad":1,"perimeter":4,"stride":1,"opacity":0.5},{"src":"KB1,4","srcTile":[2,-3,0],"quad":1,"perimeter":5,"stride":1,"opacity":0.5},{"src":"KB1,4","srcTile":[2,-3,0],"quad":1,"perimeter":6,"stride":1,"opacity":0.5}]}
+
+  {"Setup":[
+    {"action":"makeBoard",
     "prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},
     "nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}}],
-"Moves":[],
-"Gambits":[
-  {"gambit":0,
-    "action":"overlap","value":"MM","piece":"rook","src":"KB4,4","dst":"KB4,6","rays":"right_fore","advsqs":[
-      [{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":2,"stride":5,"area":9},{"src":"KB4,4","srcTile":[2,0,0],"quad":2,"perimeter":2,"stride":5,"area":9}],
-      [{"src":"KB4,4","srcTile":[2,0,0],"quad":5,"perimeter":2,"stride":5,"area":9},{"src":"KB4,4","srcTile":[2,0,0],"quad":6,"perimeter":2,"stride":5,"area":9}],
-      [{"src":"KB4,4","srcTile":[2,0,0],"quad":46,"perimeter":1,"stride":2,"area":4},{"src":"KB4,4","srcTile":[2,0,0],"quad":50,"perimeter":1,"stride":2,"area":4}]],
+  "Moves":[],
+  "Gambits":[],
+  "AdvSqs":[
+    {"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":1,"stride":2,"opacity":0.5},{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":2,"stride":3,"opacity":0.5},{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":2,"stride":2,"opacity":0.5},{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":2,"stride":1,"opacity":0.5},{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":3,"stride":1,"opacity":0.5},{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":4,"stride":1,"opacity":0.5},{"src":"KB4,4","srcTile":[2,-1,0],"quad":1,"perimeter":4,"stride":1,"opacity":0.5},{"src":"KB4,4","srcTile":[2,-2,0],"quad":1,"perimeter":4,"stride":1,"opacity":0.5},{"src":"KB4,4","srcTile":[2,-3,0],"quad":1,"perimeter":4,"stride":1,"opacity":0.5},{"src":"KB1,4","srcTile":[2,-3,0],"quad":1,"perimeter":5,"stride":1,"opacity":0.5},{"src":"KB1,4","srcTile":[2,-3,0],"quad":1,"perimeter":6,"stride":1,"opacity":0.5}]}
+
+  **1-0-1-0**
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}}],"Moves":[],"Gambits":[{"gambit":0,"action":"overlap","value":"hotspot","piece":"rook","src":"KB1,4","dst":"KB7,4","rays":"left_fore","advsqs":[[{"src":"KB1,4","srcTile":[2,-3,0],"quad":4,"perimeter":6,"stride":1,"area":49},{"src":"KB1,4","srcTile":[2,-3,0],"quad":1,"perimeter":6,"stride":1,"area":49}],[{"src":"KB1,4","srcTile":[2,-3,0],"quad":9,"perimeter":6,"stride":1,"area":49},{"src":"KB1,4","srcTile":[2,-3,0],"quad":10,"perimeter":6,"stride":1,"area":49}],[{"src":"KB1,4","srcTile":[2,-3,0],"quad":54,"perimeter":3,"stride":4,"area":16},{"src":"KB1,4","srcTile":[2,-3,0],"quad":58,"perimeter":3,"stride":4,"area":16}]],"opacity":0.5}],"AdvSqs":[]}
+
+  {"Setup":[
+    {"action":"makeBoard",
+    "prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},
+    "nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}}],
+  "Moves":[],
+  "Gambits":[
+    {"gambit":0,
+      "action":"overlap","value":"hotspot","piece":"rook","src":"KB1,4","dst":"KB7,4","rays":"left_fore","advsqs":[
+        [{"src":"KB1,4","srcTile":[2,-3,0],"quad":4,"perimeter":6,"stride":1,"area":49},{"src":"KB1,4","srcTile":[2,-3,0],"quad":1,"perimeter":6,"stride":1,"area":49}],
+        [{"src":"KB1,4","srcTile":[2,-3,0],"quad":9,"perimeter":6,"stride":1,"area":49},{"src":"KB1,4","srcTile":[2,-3,0],"quad":10,"perimeter":6,"stride":1,"area":49}],
+        [{"src":"KB1,4","srcTile":[2,-3,0],"quad":54,"perimeter":3,"stride":4,"area":16},{"src":"KB1,4","srcTile":[2,-3,0],"quad":58,"perimeter":3,"stride":4,"area":16}]],
+        "opacity":0.5}],
+  "AdvSqs":[]}
+
+ ### 8.4 Scenario: Hotspot - Queen attacks Knight
+  **3-0-1-0**
+  1 Ohotspot R KB1,4 → KB7,4   :49 left_fore
+  1 Ohotspot D KB1,4 → KB7,4   :16 0,1,0
+
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"placePiece","list":[{"key":"WQQQ","prev":"~Q1,1","post":"@KB1,4"}]},{"action":"placePiece","list":[{"key":"BKNN","prev":"~KN1,1","post":"@KB7,4"}]}],"Moves":[],"Gambits":[{"gambit":0,"action":"overlap","value":"hotspot","piece":"rook","src":"KB1,4","dst":"KB7,4","rays":"left_fore","advsqs":[[{"src":"KB1,4","srcTile":[2,-3,0],"quad":4,"perimeter":6,"stride":1,"area":49},{"src":"KB1,4","srcTile":[2,-3,0],"quad":1,"perimeter":6,"stride":1,"area":49}],[{"src":"KB1,4","srcTile":[2,-3,0],"quad":9,"perimeter":6,"stride":1,"area":49},{"src":"KB1,4","srcTile":[2,-3,0],"quad":10,"perimeter":6,"stride":1,"area":49}],[{"src":"KB1,4","srcTile":[2,-3,0],"quad":54,"perimeter":3,"stride":4,"area":16},{"src":"KB1,4","srcTile":[2,-3,0],"quad":58,"perimeter":3,"stride":4,"area":16}]],"opacity":0.5}],"AdvSqs":[]}
+
+  {"Setup":[
+    {"action":"makeBoard",
+      "prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},
+      "nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},
+    {"action":"placePiece","list":[{"key":"WQQQ","prev":"~Q1,1","post":"@KB1,4"}]},
+    {"action":"placePiece","list":[{"key":"BKNN","prev":"~KN1,1","post":"@KB7,4"}]}],
+  "Moves":[],
+  "Gambits":[
+    {"gambit":0,"action":"overlap","value":"hotspot","piece":"rook","src":"KB1,4","dst":"KB7,4","rays":"left_fore","advsqs":[
+      [{"src":"KB1,4","srcTile":[2,-3,0],"quad":4,"perimeter":6,"stride":1,"area":49},{"src":"KB1,4","srcTile":[2,-3,0],"quad":1,"perimeter":6,"stride":1,"area":49}],
+      [{"src":"KB1,4","srcTile":[2,-3,0],"quad":9,"perimeter":6,"stride":1,"area":49},{"src":"KB1,4","srcTile":[2,-3,0],"quad":10,"perimeter":6,"stride":1,"area":49}],
+      [{"src":"KB1,4","srcTile":[2,-3,0],"quad":54,"perimeter":3,"stride":4,"area":16},{"src":"KB1,4","srcTile":[2,-3,0],"quad":58,"perimeter":3,"stride":4,"area":16}]],
       "opacity":0.5}],
-"AdvSqs":[]}
+  "AdvSqs":[]}
+
+  1 Ohotspot D KB1,4 → KB7,4   :16 0,1,0
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}}],"Moves":[],"Gambits":[{"gambit":0,"action":"overlap","value":"hotspot","piece":"duke","src":"KB1,4","dst":"KB7,4","rays":[0,1,0],"advsqs":[[{"src":"KB1,4","srcTile":[2,-3,0],"quad":54,"perimeter":3,"stride":4,"area":16},{"src":"KB1,4","srcTile":[2,-3,0],"quad":58,"perimeter":3,"stride":4,"area":16}],[{"src":"KB1,4","srcTile":[2,-3,0],"quad":4,"perimeter":6,"stride":1,"area":49},{"src":"KB1,4","srcTile":[2,-3,0],"quad":1,"perimeter":6,"stride":1,"area":49}],[{"src":"KB1,4","srcTile":[2,-3,0],"quad":9,"perimeter":6,"stride":1,"area":49},{"src":"KB1,4","srcTile":[2,-3,0],"quad":10,"perimeter":6,"stride":1,"area":49}]],"opacity":0.5}],"AdvSqs":[]}
+
+  {"Setup":[
+    {"action":"makeBoard",
+    "prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},
+    "nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}}],
+  "Moves":[],
+  "Gambits":[
+    {"gambit":0,"action":"overlap","value":"hotspot","piece":"duke","src":"KB1,4","dst":"KB7,4","rays":[0,1,0],"advsqs":[
+      [{"src":"KB1,4","srcTile":[2,-3,0],"quad":54,"perimeter":3,"stride":4,"area":16},{"src":"KB1,4","srcTile":[2,-3,0],"quad":58,"perimeter":3,"stride":4,"area":16}],
+      [{"src":"KB1,4","srcTile":[2,-3,0],"quad":4,"perimeter":6,"stride":1,"area":49},{"src":"KB1,4","srcTile":[2,-3,0],"quad":1,"perimeter":6,"stride":1,"area":49}],
+      [{"src":"KB1,4","srcTile":[2,-3,0],"quad":9,"perimeter":6,"stride":1,"area":49},{"src":"KB1,4","srcTile":[2,-3,0],"quad":10,"perimeter":6,"stride":1,"area":49}]],
+      "opacity":0.5}],
+  "AdvSqs":[]}
+
+ ### 8.5 Scenario: Hotspot - Rook Q4,1 perimeter 
+  **1-0-0-11**

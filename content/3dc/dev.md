@@ -164,6 +164,7 @@ title: "Dev"
 
  ### Week 16:
   - 7/05/26 - Make hotspot entry.
+  - 7/06/26 - Render hotspots.
 
 
 ## Move Lines:

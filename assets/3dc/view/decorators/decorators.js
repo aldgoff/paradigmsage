@@ -9,7 +9,7 @@
 */
 
 // --- Load JSON ---
-import decoratorsData from "./decorators.json" assert { type: "json" };
+  import decoratorsData from "./decorators.json" assert { type: "json" };
   const decoratorsModule = decoratorsData.decorators_module;
   const scales     = decoratorsModule.scales;
   const pallet     = decoratorsModule.pallet;

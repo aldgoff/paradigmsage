@@ -37,15 +37,15 @@
 
  ### 3.4 Freeze Overlap
   - Requirement depends on which type of quad is being explored by the advsq panel:
-    - Rook: stride must be an apex tile.
+    - Rook: stride must be a non body tile.
     - Bishop: stride must be E1 or E2.
-    - Duke: stride must be an apex tile (not a duplex tile).
+    - Duke: stride must be an apex or a duplex tile.
 
   - The advsq list depends on the overlap type:
     - Brook: one rook advsq, two pairs of bishop advsqs (linear), all quads same size.
-    - Qtile: one rook advsq, two pairs of bishop advsqs (linear), one duke advsq (half the number of perimeters)
+    - Qtile: one rook advsq, two pairs of bishop advsqs (linear), one duke advsq (half the number of perimeters).
     - Hotspot: two pairs of rook advsqs (linear), one pair of duke advsqs.
-    - Feynman: 2 advsqs, one bishop, one duke, of different sizes.
+    - Feynman: 2 advsqs, one bishop, one duke, of different sizes (2N/3N).
 
  ### 3.5 Freeze Knight
   - Shows small group of target tiles, all of which include the dst tile as the first element.
