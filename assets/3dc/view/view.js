@@ -135,23 +135,6 @@ export function buildDuplexGroup(entry) { // Params: srcTile, quad, perimeter, s
 
   const planes = advsqs.length;                                       // For each plane.
   buildDuplexPlaneGroups(piece, srcTile, dst, advsqs, planes, stride, opacity, group);
-  // for(let p=0; p<planes; p++) { // Will always equal 2.
-  //   const planeGroup = new THREE.Group();
-  //   planeGroup.userData = planeGroup.userData || {};
-  //   planeGroup.userData.overlays = [];
-
-  //   const { quad, perimeter } = advsqs[p];
-  //   const advsq = gAdvsqs.AdvSq.fromQuad(srcTile, quad, perimeter);
-  //   const perims = advsq.getPerims();
-
-  //   for(let k=1; k<perims.length; k++) {                              // For each perimeter.
-  //     const perim = perims[k];
-  //     const dst = stride;
-  //     decorateDuplexPerimeter(perim, piece, planeGroup, opacity, dst, 0.05);  // Skips source & duplex tiles.
-  //   }
-  //   group.add(planeGroup);
-  //   group.userData.planes.push(planeGroup);
-  // }
 
   return group;
   }
@@ -177,13 +160,13 @@ export function buildOverlapGroup(entry) { // Params: srcTile, quad, perimeter, 
 
   console.log("*** advsqs.length", advsqs.length);
   switch (value) {
-    case "brook": // Advsq [ [], [[,], [,]] ].
+    case "brook":   // Advsq [ [], [[,], [,]] ].
       for(let k=1; k<perims.length; k++) {
         (k%2 === 1)
           ? decorateTile(perims[k].stride[k], "queen", "brook", group, opacity)
           : decorateTile(perims[k].stride[k], "queen", "qtile", group, opacity);
       }
-      
+
       buildRectPlaneGroups("bishop", srcTile, dst, advsqs[1], 2, stride, opacity, group);
 
       const planeGroup = new THREE.Group();
@@ -194,10 +177,55 @@ export function buildOverlapGroup(entry) { // Params: srcTile, quad, perimeter, 
         const quadType = quads.quadToQuadType(quad);
         decorateQuadPerimeterNoApex(perim, "rook", quadType, planeGroup, opacity, 0.05);
       }
+
       group.add(planeGroup);
       group.userData.planes.push(planeGroup);
       break;
-    case "qtile": // Advsq [ [], [[,], [,]], [] ].
+    case "qtile":   // Advsq [ [], [[,], [,]], [] ].
+      let rookAdvsq = advsqs[0][0];
+      let thirdAdvsq = advsqs[2][0];
+
+      for(let k=1; k<perims.length; k++) {
+        (k%2 === 1)
+          ? decorateTile(perims[k].stride[k], "queen", "brook", group, opacity)
+          : decorateTile(perims[k].stride[k], "queen", "qtile", group, opacity);
+      }
+
+      {
+        const { srcTile, quad, perimeter, stride, area } = rookAdvsq;
+        const advsq = gAdvsqs.AdvSq.fromQuad(srcTile, quad, perimeter);
+        let perims = advsq.getPerims();
+
+        const planeGroup = new THREE.Group();
+        planeGroup.userData = planeGroup.userData || {};
+        planeGroup.userData.overlays = [];
+        for(let k = 1; k < perims.length; k++) {                          // Decorate advsq perimeter by perimeter.
+          const perim = perims[k];
+          const quadType = quads.quadToQuadType(quad);
+          decorateQuadPerimeterNoApex(perim, "rook", quadType, planeGroup, opacity, 0.05);
+        }
+        group.add(planeGroup);
+        group.userData.planes.push(planeGroup);
+      }
+
+      buildRectPlaneGroups("bishop", srcTile, dst, advsqs[1], 2, stride, opacity, group);
+
+      {
+        const { srcTile, quad, perimeter, stride, area } = thirdAdvsq;
+        const advsq = gAdvsqs.AdvSq.fromQuad(srcTile, quad, perimeter);
+        let perims = advsq.getPerims();
+
+        const planeGroup = new THREE.Group();
+        planeGroup.userData = planeGroup.userData || {};
+        planeGroup.userData.overlays = [];
+        for(let k = 1; k < perims.length; k++) {                          // Decorate advsq perimeter by perimeter.
+          const perim = perims[k];
+          const quadType = quads.quadToQuadType(quad);
+          decorateQuadPerimeterNoApex(perim, "duke", quadType, planeGroup, opacity, 0.05);
+        }
+        group.add(planeGroup);
+        group.userData.planes.push(planeGroup);
+      }
       break;
     case "hotspot": // Advsq [ [[,], [,]], [,] ].
       for(let k=1; k<perims.length; k++) {
@@ -223,8 +251,6 @@ export function buildOverlapGroup(entry) { // Params: srcTile, quad, perimeter, 
       throw new Error(`Unknown overlap type ${value}.`);
       break;
   }
-
-  console.log("*** TODO: buildOverlapGroup");
 
   return group;
 }

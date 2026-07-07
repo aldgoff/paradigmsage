@@ -332,3 +332,28 @@
   "AdvSqs":[]}
 
 
+ ### 8.6 Scenario: Qtile - Perimeter 6
+  **1-0-1-0**
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}}],"Moves":[],"Gambits":[{"gambit":0,"action":"overlap","value":"qtile","piece":"rook","src":"KB1,2","dst":"KB7,8","rays":null,"advsqs":[[{"src":"KB1,2","srcTile":[2,-3,-2],"quad":1,"perimeter":6,"stride":7,"area":49}],[[{"src":"KB1,2","srcTile":[2,-3,-2],"quad":26,"perimeter":6,"stride":13,"area":49},{"src":"KB1,2","srcTile":[2,-3,-2],"quad":27,"perimeter":6,"stride":13,"area":49}],[{"src":"KB1,2","srcTile":[2,-3,-2],"quad":32,"perimeter":6,"stride":13,"area":49},{"src":"KB1,2","srcTile":[2,-3,-2],"quad":33,"perimeter":6,"stride":13,"area":49}]],[{"src":"KB1,2","srcTile":[2,-3,-2],"quad":37,"perimeter":3,"stride":4,"area":49}]],"opacity":0.5}],"AdvSqs":[]}
+
+
+ ### 8.6 Scenario: Qtile - Perimeter 4
+   1 Oqtile R KB4,4 → K5,6    :undefined null
+  **1-0-1-0**
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}}],"Moves":[],"Gambits":[{"gambit":0,"action":"overlap","value":"qtile","piece":"rook","src":"KB4,4","dst":"K5,6","rays":null,"advsqs":[[{"src":"KB4,4","srcTile":[1,-3,-2],"quad":1,"perimeter":4,"stride":5,"area":25}],[[{"src":"KB4,4","srcTile":[1,-3,-2],"quad":26,"perimeter":4,"stride":9,"area":25},{"src":"KB4,4","srcTile":[1,-3,-2],"quad":27,"perimeter":4,"stride":9,"area":25}],[{"src":"KB4,4","srcTile":[1,-3,-2],"quad":32,"perimeter":4,"stride":9,"area":25},{"src":"KB4,4","srcTile":[1,-3,-2],"quad":33,"perimeter":4,"stride":9,"area":25}]],[{"src":"KB4,4","srcTile":[1,-3,-2],"quad":37,"perimeter":2,"stride":3,"area":25}]],"opacity":0.5}],"AdvSqs":[]}
+
+  {"Setup":[
+    {"action":"makeBoard",
+      "prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},
+      "nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}}],
+  "Moves":[],
+  "Gambits":[
+    {"gambit":0,"action":"overlap","value":"qtile","piece":"rook","src":"KB4,4","dst":"K5,6","rays":null,"advsqs":[
+      [{"src":"KB4,4","srcTile":[1,-3,-2],"quad":1,"perimeter":4,"stride":5,"area":25}],
+      [[{"src":"KB4,4","srcTile":[1,-3,-2],"quad":26,"perimeter":4,"stride":9,"area":25},{"src":"KB4,4","srcTile":[1,-3,-2],"quad":27,"perimeter":4,"stride":9,"area":25}],
+      [ {"src":"KB4,4","srcTile":[1,-3,-2],"quad":32,"perimeter":4,"stride":9,"area":25},{"src":"KB4,4","srcTile":[1,-3,-2],"quad":33,"perimeter":4,"stride":9,"area":25}]],
+      [{"src":"KB4,4","srcTile":[1,-3,-2],"quad":37,"perimeter":2,"stride":3,"area":25}]],"opacity":0.5}],
+  "AdvSqs":[]}
+
+
+

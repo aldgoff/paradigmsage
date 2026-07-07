@@ -250,68 +250,68 @@ export function planeRotation(entry, rotation) {
   }
 }
 
-export function planeRotation1(entry, rotation) {
-  console.log("view : gambits.js - planeRotation(rotation, entry).", rotation, entry);
+// export function planeRotation1(entry, rotation) {
+//   console.log("view : gambits.js - planeRotation(rotation, entry).", rotation, entry);
 
-  const scene = view.getContext().scene;
-  if (!scene) { return; }
+//   const scene = view.getContext().scene;
+//   if (!scene) { return; }
 
-  const group = scene.children.find(g => {
-    const e = g.userData?.entry;
-    console.log("*** e", e);
+//   const group = scene.children.find(g => {
+//     const e = g.userData?.entry;
+//     console.log("*** e", e);
 
-    if(!e) return false;
+//     if(!e) return false;
 
-    return (
-      e.move === entry.move &&
-      e.piece === entry.piece &&
-      e.src === entry.src &&
-      e.dst === entry.dst
-    );
-  });
-  console.log("*** group", group);
+//     return (
+//       e.move === entry.move &&
+//       e.piece === entry.piece &&
+//       e.src === entry.src &&
+//       e.dst === entry.dst
+//     );
+//   });
+//   console.log("*** group", group);
 
-  if (!group) { return; }
+//   if (!group) { return; }
 
-  const planeGroups = group.userData?.planes || [];
+//   const planeGroups = group.userData?.planes || [];
 
-  console.log("*** planeGroups.length", planeGroups.length);
+//   console.log("*** planeGroups.length", planeGroups.length);
 
-  if(planeGroups.length === 0) return;
+//   if(planeGroups.length === 0) return;
 
-  // --- Determine cycle size ---
-  const modes = (entry.piece === "duke") ? 4 : 3;
+//   // --- Determine cycle size ---
+//   const modes = (entry.piece === "duke") ? 4 : 3;
 
-  // mode:
-  // rook/bishop: 0=all, 1=plane1, 2=plane2
-  // duke:        0=all, 1=plane1, 2=plane2, 3=plane3
-  const mode = rotation % modes;
+//   // mode:
+//   // rook/bishop: 0=all, 1=plane1, 2=plane2
+//   // duke:        0=all, 1=plane1, 2=plane2, 3=plane3
+//   const mode = rotation % modes;
 
-  console.log("*** mode:", mode);
+//   console.log("*** mode:", mode);
 
-  // --- ALL PLANES ---
-  if (mode === 0) {
-    planeGroups.forEach(pg => {
-      applyOverlayOpacity(
-        pg.userData?.overlays || [],
-        1.0
-      );
-    });
+//   // --- ALL PLANES ---
+//   if (mode === 0) {
+//     planeGroups.forEach(pg => {
+//       applyOverlayOpacity(
+//         pg.userData?.overlays || [],
+//         1.0
+//       );
+//     });
 
-    return;
-  }
+//     return;
+//   }
 
-  // --- SINGLE PLANE EMPHASIS ---
-  planeGroups.forEach((pg, idx) => {
-    const active = (idx === mode - 1);
-    const opacity = active ? 1.0 : 0.10;
+//   // --- SINGLE PLANE EMPHASIS ---
+//   planeGroups.forEach((pg, idx) => {
+//     const active = (idx === mode - 1);
+//     const opacity = active ? 1.0 : 0.10;
 
-    applyOverlayOpacity(
-      pg.userData?.overlays || [],
-      opacity
-    );
-  });
-}
+//     applyOverlayOpacity(
+//       pg.userData?.overlays || [],
+//       opacity
+//     );
+//   });
+// }
 
 function applyOverlayOpacity(overlays, opacity) {
   overlays.forEach(o => {

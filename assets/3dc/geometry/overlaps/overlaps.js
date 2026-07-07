@@ -133,11 +133,11 @@ export function findBrookCompanion(advsq) {
     if(!spec) throw new Error("Brook map entry not found for bishop.");
 
     const k = spec.rook.perimeter;
-    for(let rookQuad = 1; rookQuad <= 12; rookQuad++) {
+    for(let quad = 1; quad <= 12; quad++) {
       for(const s of spec.rook.stride) {
-        const testDst = planes.resolveDstTile(srcTile, rookQuad, k, s);
+        const testDst = planes.resolveDstTile(srcTile, quad, k, s);
         if(testDst === dstTile) {
-          return { src, srcTile, quad: rookQuad, perimeter: k, stride: s, opacity };  // Rook advsq.
+          return { src, srcTile, quad: quad, perimeter: k, stride: s, opacity };  // Rook advsq.
         }
       }
     }
@@ -150,8 +150,77 @@ export function findBrookCompanion(advsq) {
 export function findQtileCompanion(advsq) {
   console.log(`model: overlaps.js - findQtileCompanion(advsq):`, advsq);
 
+  const { src, srcTile, quad, perimeter, stride, opacity } = advsq;
+
+  const dstTile = planes.resolveDstTile(srcTile, quad, perimeter, stride);
+  const piece = quads.pqrTable(quad).piece;
+  console.log("*** piece dstTile", piece, dstTile);
+
+  let spec = null;
+
+  if(     piece === "rook") {   // Given rook advsq, find bishop companion.
+    for(const entry of qtile) {
+      if(entry.rook.perimeter === perimeter) {
+        spec = entry;
+        break;
+      }
+    }
+    if(!spec) throw new Error("Qtile map entry not found for rook.");
+
+    const k = spec.bishop.perimeter;
+    for(let quad = 13; quad <= 36; quad++) {
+      console.log("*** bishop quad", quad);
+      for(const s of spec.bishop.stride) {
+        const testDst = planes.resolveDstTile(srcTile, quad, k, s);
+        console.log("  *** testDst", testDst);
+        if(testDst === dstTile) {
+          return { src, srcTile, quad: quad, perimeter: k, stride: s, opacity };  // Bishop advsq.
+        }
+      }
+    }
+    }
+  else if(piece === "bishop") { // Given bishop advsq, find duke companion.
+    for(const entry of qtile) {
+      if(entry.bishop.perimeter === perimeter) {
+        spec = entry;
+        break;
+      }
+    }
+    if(!spec) throw new Error("Qtile map entry not found for bishop.");
+
+    const k = spec.duke.perimeter;
+    for(let quad = 37; quad <= 60; quad++) {
+      console.log("*** duke quad", quad);
+      for(const s of spec.duke.stride) {
+        const testDst = planes.resolveDstTile(srcTile, quad, k, s);
+        console.log("  *** testDst", testDst);
+        if(testDst === dstTile) {
+          return { src, srcTile, quad: quad, perimeter: k, stride: s, opacity };  // Duke advsq.
+        }
+      }
+    }
+    }
+  else if(piece === "duke") {   // Given duke advsq, find rook companion.
+    for(const entry of qtile) {
+      if(entry.duke.perimeter === perimeter) {
+        spec = entry;
+        break;
+      }
+    }
+    if(!spec) throw new Error("Qtile map entry not found for duke.");
+
+    const k = spec.rook.perimeter;
+    for(let quad = 1; quad <= 12; quad++) {
+      for(const s of spec.rook.stride) {
+        const testDst = planes.resolveDstTile(srcTile, quad, k, s);
+        if(testDst === dstTile) {
+          return { src, srcTile, quad: quad, perimeter: k, stride: s, opacity };
+        }
+      }
+    }
+  }
+
   let companion = null;
-  // TODO: tbd.
   return companion; // Rook or bishop.
   }
 
@@ -199,11 +268,11 @@ export function findHotspotCompanion(advsq) {
     if(!spec) throw new Error("Hotspot map entry not found for duke.");
 
     const k = spec.rook.perimeter;
-    for(let rookQuad = 1; rookQuad <= 12; rookQuad++) {
+    for(let quad = 1; quad <= 12; quad++) {
       for(const s of spec.rook.stride) {
-        const testDst = planes.resolveDstTile(srcTile, rookQuad, k, s);
+        const testDst = planes.resolveDstTile(srcTile, quad, k, s);
         if(testDst === dstTile) {
-          return { src, srcTile, quad: rookQuad, perimeter: k, stride: s, opacity };
+          return { src, srcTile, quad: quad, perimeter: k, stride: s, opacity };
         }
       }
     }
@@ -246,7 +315,6 @@ export function findFeynmanCompanion(advsq) {
         }
       }
     }
-
   }
   else if(piece === "duke") {
     for(const entry of Feynman) {

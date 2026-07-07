@@ -165,7 +165,7 @@ title: "Dev"
  ### Week 16:
   - 7/05/26 - Make hotspot entry.
   - 7/06/26 - Render hotspots. Restore the gambit next plane feature.
-  - 7/07/26 - Feynman overlap. Brook overlap.
+  - 7/07/26 - Feynman overlap. Brook overlap. Qtile overlap.
 
 
 ## Move Lines:

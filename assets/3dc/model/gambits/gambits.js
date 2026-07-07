@@ -170,7 +170,49 @@ export function makeOverlapEntry(advsq) { // Player chooses the base advsq; rook
     piece = "rook";
     }
   else if(overlap === "qtile") {
-    // TODO: tbd.
+    value = "qtile";
+    let advsqsR   = null;
+    let advsqsL   = null;
+    let advsqsD   = null;
+    let rayRook   = null;
+    let rayBishop = null;
+    let rayDuke   = null;
+
+    if(     piece === "rook") {
+      advsqBishop = overlaps.findQtileCompanion(advsqRook);
+      advsqDuke = overlaps.findQtileCompanion(advsqBishop);
+    }
+    else if(piece === "bishop") {
+      advsqDuke = overlaps.findQtileCompanion(advsqBishop);
+      advsqRook = overlaps.findQtileCompanion(advsqDuke);
+    }
+    else if(piece === "duke") {
+      advsqRook = overlaps.findQtileCompanion(advsqDuke);
+      advsqBishop = overlaps.findQtileCompanion(advsqRook);
+    }
+
+    {
+      const { src, srcTile, quad, perimeter, stride, opacity } = advsqRook; // src & implied dst.
+      advsqsR = [{ src, srcTile, quad, perimeter, stride, area }]; // Advsqs.
+    }
+    {
+      const { src, srcTile, quad, perimeter, stride, opacity } = advsqBishop; // src & implied dst.
+      const { rayPair } = quads.pqrTable(quad);                         // Ray.
+      const ray = resolveStrideRay(advsqBishop, rayPair);
+
+      const quadsList = findQuadsForRay(ray);                           // Advrects.
+      const quadPairs = groupByPlane(quadsList);
+      const rects     = buildAdvRects(src, srcTile, quadPairs, perimeter, stride);
+      advsqsL = rects;
+    }
+    {
+      const { src, srcTile, quad, perimeter, stride, opacity } = advsqDuke; // src & implied dst.
+      advsqsD = [{ src, srcTile, quad, perimeter, stride, area }]; // Advsqs.
+    }
+
+    advsqs.push(advsqsR, advsqsL, advsqsD);
+    rays = rayRook;
+    piece = "rook";
     }
   else if(overlap === "hotspot") {
     value = "hotspot";
@@ -228,7 +270,7 @@ export function makeOverlapEntry(advsq) { // Player chooses the base advsq; rook
     advsqs.push(advsqBishop, advsqDuke);
     rays = rayBishop;
     piece = "bishop";
-  }
+    }
   else {
     throw new Error(`Unknown overlap type ${overlap}.`);
   }
