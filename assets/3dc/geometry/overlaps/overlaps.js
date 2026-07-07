@@ -92,8 +92,58 @@ export function getOverlapType(basePiece, quadType, perim, stride) {
 export function findBrookCompanion(advsq) {
   console.log(`model: overlaps.js - findBrookCompanion(advsq):`, advsq);
 
+  const { src, srcTile, quad, perimeter, stride, opacity } = advsq;
+
+  const dstTile = planes.resolveDstTile(srcTile, quad, perimeter, stride);
+  const piece = quads.pqrTable(quad).piece;
+  console.log("*** piece dstTile", piece, dstTile);
+
+  let spec = null;
+
+  if(     piece === "rook") {  // Given rook advsq, find bishop companion.
+    for(const entry of brook) {
+      if(entry.rook.perimeter === perimeter) {
+        spec = entry;
+        break;
+      }
+    }
+    if(!spec) throw new Error("Brook map entry not found for rook.");
+
+    const k = spec.bishop.perimeter;
+    for(let quad = 13; quad <= 36; quad++) {
+      console.log("*** bishop quad", quad);
+      for(const s of spec.bishop.stride) {
+        const testDst = planes.resolveDstTile(srcTile, quad, k, s);
+        console.log("  *** testDst", testDst);
+        if(testDst === dstTile) {
+          const companion = { src, srcTile, quad: quad, perimeter: k, stride: s, opacity };
+          console.log("*** companion", companion);
+          return { src, srcTile, quad: quad, perimeter: k, stride: s, opacity };  // Bishop advsq.
+        }
+      }
+    }
+    }
+  else if(piece === "bishop") {  // Given bishop advsq, find rook companion.
+    for(const entry of brook) {
+      if(entry.bishop.perimeter === perimeter) {
+        spec = entry;
+        break;
+      }
+    }
+    if(!spec) throw new Error("Brook map entry not found for bishop.");
+
+    const k = spec.rook.perimeter;
+    for(let rookQuad = 1; rookQuad <= 12; rookQuad++) {
+      for(const s of spec.rook.stride) {
+        const testDst = planes.resolveDstTile(srcTile, rookQuad, k, s);
+        if(testDst === dstTile) {
+          return { src, srcTile, quad: rookQuad, perimeter: k, stride: s, opacity };  // Rook advsq.
+        }
+      }
+    }
+  }
   let companion = null;
-  // TODO: tbd.
+
   return companion; // Rook or bishop.
   }
 
@@ -103,7 +153,7 @@ export function findQtileCompanion(advsq) {
   let companion = null;
   // TODO: tbd.
   return companion; // Rook or bishop.
-}
+  }
 
 export function findHotspotCompanion(advsq) {
   console.log("geometry: overlaps.js - findHotspotCompanion()", advsq);
@@ -158,7 +208,7 @@ export function findHotspotCompanion(advsq) {
       }
     }
   }
-}
+  }
 
 export function findFeynmanCompanion(advsq) {
   console.log(`model: overlaps.js - findFeynmanCompanion(advsq):`, advsq);

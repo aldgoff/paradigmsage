@@ -274,9 +274,6 @@
       "opacity":0.5}],
   "AdvSqs":[]}
 
- ### 8.5 Scenario: Hotspot -
-  **1-0-0-11**
-
  ### 8.6 Scenario: Feynman
   **1-0-1-0**
   {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}}],"Moves":[],"Gambits":[{"gambit":0,"action":"overlap","value":"Feynman","piece":"bishop","src":"KB4,4","dst":"KR6,6","rays":["LFU","RFU"],"advsqs":[{"src":"KB4,4","srcTile":[0,0,0],"quad":13,"perimeter":2,"stride":3,"opacity":0.5},{"src":"KB4,4","srcTile":[0,0,0],"quad":38,"perimeter":3,"stride":2,"opacity":0.5}],"opacity":0.5}],"AdvSqs":[]}
@@ -293,8 +290,45 @@
       "opacity":0.5}],
   "AdvSqs":[]}
 
-
-
- ### 8.6 Scenario: Feynman - Stack
+ ### 8.5 Scenario: Brook - Perimeter 5
   **1-0-1-0**
-  
+
+
+
+ ### 8.6 Scenario: Brook - Perimeter 3
+  **1-0-1-0**
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}}],"Moves":[],"Gambits":[{"gambit":0,"action":"overlap","value":"brook","piece":"rook","src":"KB4,4","dst":"KB7,7","rays":null,"advsqs":[[{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":3,"stride":4,"area":16}],[[{"src":"KB4,4","srcTile":[2,0,0],"quad":26,"perimeter":3,"stride":7,"area":16},{"src":"KB4,4","srcTile":[2,0,0],"quad":27,"perimeter":3,"stride":7,"area":16}],[{"src":"KB4,4","srcTile":[2,0,0],"quad":32,"perimeter":3,"stride":7,"area":16},{"src":"KB4,4","srcTile":[2,0,0],"quad":33,"perimeter":3,"stride":7,"area":16}]]],"opacity":0.5}],"AdvSqs":[]}
+
+  {"Setup":[
+    {"action":"makeBoard",
+      "prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},
+      "nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}}],
+  "Moves":[],
+  "Gambits":[
+    {"gambit":0,"action":"overlap","value":"brook","piece":"rook","src":"KB4,4","dst":"KB7,7","rays":null,"advsqs":[
+      [{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":3,"stride":4,"area":16}],
+      [[{"src":"KB4,4","srcTile":[2,0,0],"quad":26,"perimeter":3,"stride":7,"area":16},{"src":"KB4,4","srcTile":[2,0,0],"quad":27,"perimeter":3,"stride":7,"area":16}],
+       [{"src":"KB4,4","srcTile":[2,0,0],"quad":32,"perimeter":3,"stride":7,"area":16},{"src":"KB4,4","srcTile":[2,0,0],"quad":33,"perimeter":3,"stride":7,"area":16}]]],
+      "opacity":0.5}],
+  "AdvSqs":[]}
+
+
+ ### 8.6 Scenario: Brook - Perimeter 5
+   1 Obrook R K2,1  → K7,6    :undefined null
+  **1-0-1-0**
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}}],"Moves":[],"Gambits":[{"gambit":0,"action":"overlap","value":"brook","piece":"rook","src":"K2,1","dst":"K7,6","rays":null,"advsqs":[[{"src":"K2,1","srcTile":[1,-2,-3],"quad":1,"perimeter":5,"stride":6,"area":36}],[[{"src":"K2,1","srcTile":[1,-2,-3],"quad":26,"perimeter":5,"stride":11,"area":36},{"src":"K2,1","srcTile":[1,-2,-3],"quad":27,"perimeter":5,"stride":11,"area":36}],[{"src":"K2,1","srcTile":[1,-2,-3],"quad":32,"perimeter":5,"stride":11,"area":36},{"src":"K2,1","srcTile":[1,-2,-3],"quad":33,"perimeter":5,"stride":11,"area":36}]]],"opacity":0.5}],"AdvSqs":[]}
+
+  {"Setup":[
+    {"action":"makeBoard",
+      "prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},
+      "nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}}],
+    "Moves":[],
+  "Gambits":[
+    {"gambit":0,"action":"overlap","value":"brook","piece":"rook","src":"K2,1","dst":"K7,6","rays":null,"advsqs":[
+      [{"src":"K2,1","srcTile":[1,-2,-3],"quad":1,"perimeter":5,"stride":6,"area":36}],
+      [[{"src":"K2,1","srcTile":[1,-2,-3],"quad":26,"perimeter":5,"stride":11,"area":36},{"src":"K2,1","srcTile":[1,-2,-3],"quad":27,"perimeter":5,"stride":11,"area":36}],
+       [{"src":"K2,1","srcTile":[1,-2,-3],"quad":32,"perimeter":5,"stride":11,"area":36},{"src":"K2,1","srcTile":[1,-2,-3],"quad":33,"perimeter":5,"stride":11,"area":36}]]],
+      "opacity":0.5}],
+  "AdvSqs":[]}
+
+

@@ -172,16 +172,34 @@ export function buildOverlapGroup(entry) { // Params: srcTile, quad, perimeter, 
   const advsq = gAdvsqs.AdvSq.fromQuad(srcTile, quad, perimeter);
   let perims = advsq.getPerims();
 
-  decorateTile(perims[0].stride[0], piece, "source", group, opacity); // Source tile.
+  decorateTile(perims[0].stride[0], "queen", "source", group, opacity); // Source tile.
   const linear = (piece  === "duke") ? "linear3" : "linear2";         // Linear tiles.
 
   console.log("*** advsqs.length", advsqs.length);
   switch (value) {
-    case "brook":
+    case "brook": // Advsq [ [], [[,], [,]] ].
+      for(let k=1; k<perims.length; k++) {
+        (k%2 === 1)
+          ? decorateTile(perims[k].stride[k], "queen", "brook", group, opacity)
+          : decorateTile(perims[k].stride[k], "queen", "qtile", group, opacity);
+      }
+      
+      buildRectPlaneGroups("bishop", srcTile, dst, advsqs[1], 2, stride, opacity, group);
+
+      const planeGroup = new THREE.Group();
+      planeGroup.userData = planeGroup.userData || {};
+      planeGroup.userData.overlays = [];
+      for(let k = 1; k < perims.length; k++) {                          // Decorate advsq perimeter by perimeter.
+        const perim = perims[k];
+        const quadType = quads.quadToQuadType(quad);
+        decorateQuadPerimeterNoApex(perim, "rook", quadType, planeGroup, opacity, 0.05);
+      }
+      group.add(planeGroup);
+      group.userData.planes.push(planeGroup);
       break;
-    case "qtile":
+    case "qtile": // Advsq [ [], [[,], [,]], [] ].
       break;
-    case "hotspot":
+    case "hotspot": // Advsq [ [[,], [,]], [,] ].
       for(let k=1; k<perims.length; k++) {
         (k%2 === 1)
           ? decorateTile(perims[k].stride[2*k], piece, linear, group, opacity)
@@ -193,7 +211,7 @@ export function buildOverlapGroup(entry) { // Params: srcTile, quad, perimeter, 
       console.log("*** group.size", group.size);
       console.log("*** group.children.length", group.children.length);
       break;
-    case "Feynman":
+    case "Feynman": // Advsq [ [], [] ].
       buildBishopQuadGroup(srcTile, quad, perimeter, stride, opacity, group);
       const dukeAdvsq = advsqs[1];
       buildDukeQuadGroup(dukeAdvsq, group);
@@ -359,6 +377,23 @@ function decorateQuadPerimeter(lastPerim, perim, piece, quadType, group, opacity
     else {                                       decorateTile(stride[j], piece, "body", group, opacity);
     }
     if(lastPerim && (i === dst))                 decorateTile(stride[j], piece, "dst",  group, opacity, zOffset);
+  }
+  }
+
+function decorateQuadPerimeterNoApex(perim, piece, quadType, group, opacity, zOffset=0.00) {
+  // console.log("view : view.js - decorateQuadPerimeterNoApex(...)", perim);
+
+  const end  = (piece    === "duke") ? "end3":   "end2";
+  const apex = (quadType === "face") ? "duplex": "apex";
+
+  const stride = perim.stride;
+  for(let i=1; i<=stride.length; i++) {
+    const j = i - 1;
+    if(     utils.isSame(stride[j], perim.E1)  ) decorateTile(stride[j], piece, end,    group, opacity);
+    else if(utils.isSame(stride[j], perim.apex)) ;
+    else if(utils.isSame(stride[j], perim.E2)  ) decorateTile(stride[j], piece, end,    group, opacity);
+    else {                                       decorateTile(stride[j], piece, "body", group, opacity);
+    }
   }
   }
 

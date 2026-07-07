@@ -142,7 +142,32 @@ export function makeOverlapEntry(advsq) { // Player chooses the base advsq; rook
 
   const advsqs = [];
   if(     overlap === "brook") {
-    // TODO: tbd.
+    value = "brook";
+    let advsqsQ   = null;
+    let advsqsL   = null;
+    let rayRook   = null;
+    let rayBishop = null;
+    if(     piece === "rook") advsqBishop = overlaps.findBrookCompanion(advsqRook);
+    else if(piece === "bishop") advsqRook = overlaps.findBrookCompanion(advsqBishop);
+
+    {
+      const { src, srcTile, quad, perimeter, stride, opacity } = advsqRook; // src & implied dst.
+      advsqsQ = [{ src, srcTile, quad, perimeter, stride, area }]; // Advsqs.
+    }
+    {
+      const { src, srcTile, quad, perimeter, stride, opacity } = advsqBishop; // src & implied dst.
+      const { rayPair } = quads.pqrTable(quad);                         // Ray.
+      const ray = resolveStrideRay(advsqBishop, rayPair);
+
+      const quadsList = findQuadsForRay(ray);                           // Advrects.
+      const quadPairs = groupByPlane(quadsList);
+      const rects     = buildAdvRects(src, srcTile, quadPairs, perimeter, stride);
+      advsqsL = rects;
+    }
+
+    advsqs.push(advsqsQ, advsqsL);
+    rays = rayRook;
+    piece = "rook";
     }
   else if(overlap === "qtile") {
     // TODO: tbd.
