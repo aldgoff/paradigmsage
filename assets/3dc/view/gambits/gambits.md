@@ -355,5 +355,47 @@
       [{"src":"KB4,4","srcTile":[1,-3,-2],"quad":37,"perimeter":2,"stride":3,"area":25}]],"opacity":0.5}],
   "AdvSqs":[]}
 
+ ### 8.6 Scenario: Feynman - Double: duke then bishoop, bishop then duke.
+  1 OFeynman B KB4,4 → KR6,6   :undefined LFU,RFU
+  2 OFeynman B Q4,4  → KR2,2   :undefined RBU,LBU
+  **1-0-1-0**
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}}],"Moves":[],"Gambits":[{"gambit":0,"action":"overlap","value":"Feynman","piece":"bishop","src":"KB4,4","dst":"KR6,6","rays":["LFU","RFU"],"advsqs":[{"src":"KB4,4","srcTile":[0,0,0],"quad":13,"perimeter":2,"stride":3,"opacity":0.5},{"src":"KB4,4","srcTile":[0,0,0],"quad":38,"perimeter":3,"stride":2,"opacity":0.5}],"opacity":0.5},{"gambit":1,"action":"overlap","value":"Feynman","piece":"bishop","src":"Q4,4","dst":"KR2,2","rays":["RBU","LBU"],"advsqs":[{"src":"Q4,4","srcTile":[0,0,0],"quad":22,"perimeter":2,"stride":3,"opacity":0.5},{"src":"Q4,4","srcTile":[0,0,0],"quad":38,"perimeter":3,"stride":6,"opacity":0.5}],"opacity":0.5}],"AdvSqs":[]}
+
+  {"Setup":[
+    {"action":"makeBoard",
+      "prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},
+      "nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}}],
+  "Moves":[],
+  "Gambits":[
+    {"gambit":0,"action":"overlap","value":"Feynman","piece":"bishop","src":"KB4,4","dst":"KR6,6","rays":["LFU","RFU"],"advsqs":[
+      {"src":"KB4,4","srcTile":[0,0,0],"quad":13,"perimeter":2,"stride":3,"opacity":0.5},
+      {"src":"KB4,4","srcTile":[0,0,0],"quad":38,"perimeter":3,"stride":2,"opacity":0.5}],
+      "opacity":0.5},
+    {"gambit":1,"action":"overlap","value":"Feynman","piece":"bishop","src":"Q4,4","dst":"KR2,2","rays":["RBU","LBU"],"advsqs":[
+      {"src":"Q4,4","srcTile":[0,0,0],"quad":22,"perimeter":2,"stride":3,"opacity":0.5},
+      {"src":"Q4,4","srcTile":[0,0,0],"quad":38,"perimeter":3,"stride":6,"opacity":0.5}],
+      "opacity":0.5}],
+  "AdvSqs":[]}
 
 
+
+{"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}}],
+"Moves":[],
+"Gambits":[
+  {"gambit":0,"action":"overlap","value":"Feynman","piece":"bishop","src":"KB4,4","dst":"KR6,6","rays":["LFU","RFU"],"advsqs":[
+    {"src":"KB4,4","srcTile":[0,0,0],"quad":13,"perimeter":2,"stride":3,"opacity":0.5},
+    {"src":"KB4,4","srcTile":[0,0,0],"quad":38,"perimeter":3,"stride":2,"opacity":0.5}],
+    "opacity":0.5},
+  {"gambit":1,"action":"overlap","value":"Feynman","piece":"bishop","src":"Q4,4","dst":"KR2,2","rays":["RBU","LBU"],"advsqs":[
+    {"src":"Q4,4","srcTile":[0,0,0],"quad":22,"perimeter":2,"stride":3,"opacity":0.5},
+    {"src":"Q4,4","srcTile":[0,0,0],"quad":38,"perimeter":3,"stride":6,"opacity":0.5}],
+    "opacity":0.5},
+  {"gambit":2,"action":"quadrant","value":1,"piece":"rook","src":"Q4,4","dst":"QB7,7","rays":["left_fore","right_fore"],"advsqs":[
+    {"src":"Q4,4","srcTile":[-1,0,0],"quad":1,"perimeter":3,"stride":4,"area":16}],
+    "opacity":0.5},
+  {"gambit":3,"action":"overlap","value":"brook","piece":"rook","src":"Q2,2","dst":"Q1,1","rays":null,"advsqs":[
+    [{"src":"Q2,2","srcTile":[0,-2,-2],"quad":3,"perimeter":1,"stride":2,"area":4}],
+    [[{"src":"Q2,2","srcTile":[0,-2,-2],"quad":29,"perimeter":1,"stride":3,"area":4},{"src":"Q2,2","srcTile":[0,-2,-2],"quad":30,"perimeter":1,"stride":3,"area":4}],
+     [{"src":"Q2,2","srcTile":[0,-2,-2],"quad":35,"perimeter":1,"stride":3,"area":4},{"src":"Q2,2","srcTile":[0,-2,-2],"quad":36,"perimeter":1,"stride":3,"area":4}]]
+    ],
+      "opacity":0.5}],"AdvSqs":[]}

@@ -152,6 +152,7 @@ export function makeOverlapEntry(advsq) { // Player chooses the base advsq; rook
 
     {
       const { src, srcTile, quad, perimeter, stride, opacity } = advsqRook; // src & implied dst.
+      const area = (perimeter+1)*(perimeter+1);
       advsqsQ = [{ src, srcTile, quad, perimeter, stride, area }]; // Advsqs.
     }
     {
@@ -258,14 +259,14 @@ export function makeOverlapEntry(advsq) { // Player chooses the base advsq; rook
     else if(piece === "duke") advsqBishop = overlaps.findFeynmanCompanion(advsqDuke);
 
     { // Bishop ray.
-      const { src, srcTile, quad, perimeter, stride, opacity } = advsqBishop; // src & implied dst.
+      const { src, srcTile, quad, perimeter, stride, area, opacity } = advsqBishop; // src & implied dst.
       const { rayPair } = quads.pqrTable(quad);                               // Ray.
       rayBishop = resolveStrideRay(advsqBishop, rayPair);
     }
     { // Duke ray.
-      const { src, srcTile, quad, perimeter, stride, opacity } = advsqDuke;   // src & implied dst.
+      const { src, srcTile, quad, perimeter, stride, area, opacity } = advsqDuke;   // src & implied dst.
       const { rayPair } = quads.pqrTable(quad);                               // Ray.
-      const area = (perimeter+1)*(perimeter+1);
+      // const area = (perimeter+1)*(perimeter+1);
     }
     advsqs.push(advsqBishop, advsqDuke);
     rays = rayBishop;

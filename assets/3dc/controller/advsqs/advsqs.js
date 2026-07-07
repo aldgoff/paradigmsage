@@ -69,6 +69,7 @@ export function buildPayload(panel, action) {
     quad:                         Number(panel.querySelector('[name="advsq-quad"]')?.value),
     perimeter:                    Number(panel.querySelector('[name="advsq-perimeter"]')?.value),
     stride:                       Number(panel.querySelector('[name="advsq-stride"]')?.value),
+    area:                         Number(panel.querySelector('[name="advsq-area"]')?.value),
     opacity:                      Number(panel.querySelector('[name="advsq-opacity"]')?.value),
   };
 }
@@ -78,7 +79,7 @@ export function buildPayload(panel, action) {
 function handlePlace(payload) {
   console.log("cntrl: advsqs.js - handlePlace(payload)", payload);
 
-  const { src, srcTile, quad, perimeter, stride, opacity } = payload;  // Unpack primary fields.
+  const { src, srcTile, quad, perimeter, stride, area, opacity } = payload;  // Unpack primary fields.
 
   mAdvsqs.buttonAffordances("src-tile");
   const entry = mAdvsqs.makeEntry(payload);     // Transform panel payload into state entry.
@@ -106,7 +107,7 @@ function handleRemove(payload) {
 function handleGrow(payload) {
   console.log("cntrl: advsqs.js - handleGrow(payload)", payload);
 
-  let { src, srcTile, quad, perimeter, stride, opacity } = payload;  // Unpack primary fields.
+  let { src, srcTile, quad, perimeter, stride, area, opacity } = payload;  // Unpack primary fields.
   
   if(perimeter > 0) {                                                 // Stride stability idiom (apex, or fixed distance from E1/E2).
     if(     stride <= 1)               { stride = stride; }           // E1 (or off) - stays on end tile.
@@ -122,7 +123,7 @@ function handleGrow(payload) {
   perimeter++;                                                        // Manipulate fields.
   if(perimeter  >  0) mAdvsqs.buttonAffordances("adv-sq");
 
-  const nextEntry = { src, srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
+  const nextEntry = { src, srcTile, quad, perimeter, stride, area, opacity };           // Repack normalized fields.
 
   branchHistory(nextEntry);
   applyEntry(nextEntry);  // Clear curr, branch, state change, render, refresh panel.
@@ -132,7 +133,7 @@ function handleGrow(payload) {
 function handleShrink(payload) {
   console.log("cntrl: advsqs.js - handleShrink(payload)", payload);
 
-  let { src, srcTile, quad, perimeter, stride, opacity } = payload;  // Unpack primary fields.
+  let { src, srcTile, quad, perimeter, stride, area, opacity } = payload;  // Unpack primary fields.
   
   if(perimeter >= 1) {                                                // Stride stability idiom (apex, or fixed distance from E1/E2).
     if(     stride <= 1)               { stride = stride; }           // E1 (or off) - stays on end tile.
@@ -146,7 +147,7 @@ function handleShrink(payload) {
   if(perimeter === 0) mAdvsqs.buttonAffordances("src-tile");
   if(perimeter  >  0) mAdvsqs.buttonAffordances("adv-sq");
 
-  const nextEntry = { src, srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
+  const nextEntry = { src, srcTile, quad, perimeter, stride, area, opacity };           // Repack normalized fields.
 
   applyEntry(nextEntry);  // Clear curr, branch, state change, render, refresh panel.
   updateGambitPanelButtons(quad, perimeter, stride);
@@ -155,7 +156,7 @@ function handleShrink(payload) {
 function handleUpdateParam(payload) {
   console.log("cntrl: advsqs.js - handleUpdateParam(payload)", payload);
 
-  let { src, srcTile, quad, perimeter, stride, opacity } = payload;  // Unpack primary fields.
+  let { src, srcTile, quad, perimeter, stride, area, opacity } = payload;  // Unpack primary fields.
   
   // TODO: execute only if perimeter changes.
   // if(perimeter >= 1) {                                                // Stride stability idiom (apex, or fixed distance from E1/E2).
@@ -184,7 +185,7 @@ function handleUpdateParam(payload) {
   if(perimeter === 0) mAdvsqs.buttonAffordances("src-tile");
   if(perimeter  >  0) mAdvsqs.buttonAffordances("adv-sq");
 
-  const nextEntry = { src, srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
+  const nextEntry = { src, srcTile, quad, perimeter, stride, area, opacity };           // Repack normalized fields.
 
   applyEntry(nextEntry);  // Clear curr, branch, state change, render, refresh panel.
   updateGambitPanelButtons(quad, perimeter, stride);
@@ -214,7 +215,7 @@ function handleNudgeSrc(payload) {
 function handleNextQuad(payload) {
   console.log("cntrl: advsqs.js - handleNewQuad(payload)", payload);
 
-  let { src, srcTile, quad, perimeter, stride, opacity } = payload;  // Unpack primary fields.
+  let { src, srcTile, quad, perimeter, stride, area, opacity } = payload;  // Unpack primary fields.
                                                                             // Manipulate fields.
   if(      1 <= quad && quad <= 12) { ++quad; if(quad%4 === 1) quad -= 4; }   // Next rook quad.
   else if(13 <= quad && quad <= 36) { ++quad; if(quad%6 === 1) quad -= 6; }   // Next bishop quad.
@@ -224,7 +225,7 @@ function handleNextQuad(payload) {
   }
   stride = 1; // First stride.
 
-  const nextEntry = { src, srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
+  const nextEntry = { src, srcTile, quad, perimeter, stride, area, opacity };           // Repack normalized fields.
 
   applyEntry(nextEntry);  // Clear curr, branch, state change, render, refresh panel.
   updateGambitPanelButtons(quad, perimeter, stride);
@@ -233,7 +234,7 @@ function handleNextQuad(payload) {
 function handleNextPlane(payload) {
   console.log("cntrl: advsqs.js - handleNextPlane(payload)", payload);
 
-  let { src, srcTile, quad, perimeter, stride, opacity } = payload;  // Unpack primary fields.
+  let { src, srcTile, quad, perimeter, stride, area, opacity } = payload;  // Unpack primary fields.
                                                                             // Manipulate fields.
   if(      1 <= quad && quad <= 12) { quad += 4; if(quad > 12) quad =  1; }   // Change rook plane.
   else if(13 <= quad && quad <= 36) { quad += 6; if(quad > 36) quad = 13; }   // Change bishop plane.
@@ -243,7 +244,7 @@ function handleNextPlane(payload) {
   }
   stride = 1; // First stride.
 
-  const nextEntry = { src, srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
+  const nextEntry = { src, srcTile, quad, perimeter, stride, area, opacity };           // Repack normalized fields.
 
   applyEntry(nextEntry);  // Clear curr, branch, state change, render, refresh panel.
   updateGambitPanelButtons(quad, perimeter, stride);
@@ -252,7 +253,7 @@ function handleNextPlane(payload) {
 function handleNextPiece(payload) {
   console.log("cntrl: advsqs.js - handleNextPiece(payload)", payload);
 
-  let { src, srcTile, quad, perimeter, stride, opacity } = payload;  // Unpack primary fields.
+  let { src, srcTile, quad, perimeter, stride, area, opacity } = payload;  // Unpack primary fields.
                                                                             // Manipulate fields.
   if(      1 <= quad && quad <= 12) { quad = 13; }                            // Change rook to bishop plane.
   else if(13 <= quad && quad <= 36) { quad = 37; }                            // Change bishop to duke plane.
@@ -262,7 +263,7 @@ function handleNextPiece(payload) {
   }
   stride = 1; // First stride.
 
-  const nextEntry = { src, srcTile, quad, perimeter, stride, opacity };           // Repack normalized fields.
+  const nextEntry = { src, srcTile, quad, perimeter, stride, area, opacity };           // Repack normalized fields.
 
   applyEntry(nextEntry);  // Clear curr, branch, state change, render, refresh panel.
   updateGambitPanelButtons(quad, perimeter, stride);

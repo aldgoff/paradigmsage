@@ -95,7 +95,10 @@ function assembleLine(entry) {
 
   // --- column widths ---
   const idxCol  = String(count).padStart(2);      // right-aligned
-  const sCol    = `${symbol}${value}`.padEnd(3);  // "Q37 "
+  const sCol = (symbol === 'O') 
+    ? `${value}`.padEnd(7)  // "Feynman ".
+    : `${symbol}${value}`.padEnd(7)  // "Q37 ";
+  // const sCol    = `${symbol}${value}`.padEnd(3);  // "Q37 "
   const pCol    = `${p}`.padEnd(1);               // "R "
   const srcCol  = String(src).padEnd(5);          // "KB4,4  "
   const dstCol  = String(dst).padEnd(8);          // allow offboard arrays

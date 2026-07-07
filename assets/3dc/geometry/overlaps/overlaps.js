@@ -309,9 +309,10 @@ export function findFeynmanCompanion(advsq) {
         const testDst = planes.resolveDstTile(srcTile, dukeQuad, k, s);
         console.log("  *** testDst", testDst);
         if(testDst === dstTile) {
-          const companion = { src, srcTile, quad: dukeQuad, perimeter: k, stride: s, opacity };
-          console.log("*** companion", companion);
-          return { src, srcTile, quad: dukeQuad, perimeter: k, stride: s, opacity };
+          const area = (k+1)*(k+1);
+          // const companion = { src, srcTile, quad: dukeQuad, perimeter: k, stride: s, area, opacity };
+          // console.log("*** companion", companion);
+          return { src, srcTile, quad: dukeQuad, perimeter: k, stride: s, area, opacity };
         }
       }
     }
