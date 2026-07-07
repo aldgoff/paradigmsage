@@ -165,13 +165,17 @@ export function buildOverlapGroup(entry) { // Params: srcTile, quad, perimeter, 
   group.userData.planes = [];
 
   const { gambit, action, value, piece, src, dst, rays, advsqs, opacity } = entry;    // Advsq parameters.
-  const { srcTile, quad, perimeter, stride, area } = advsqs[0][0];
+
+  let firstAdvsq = (value === "Feynman") ? advsqs[0] : advsqs[0][0];
+  const { srcTile, quad, perimeter, stride, area } = firstAdvsq;
+  
   const advsq = gAdvsqs.AdvSq.fromQuad(srcTile, quad, perimeter);
-  const perims = advsq.getPerims();
+  let perims = advsq.getPerims();
 
   decorateTile(perims[0].stride[0], piece, "source", group, opacity); // Source tile.
   const linear = (piece  === "duke") ? "linear3" : "linear2";         // Linear tiles.
 
+  console.log("*** advsqs.length", advsqs.length);
   switch (value) {
     case "brook":
       break;
@@ -190,6 +194,12 @@ export function buildOverlapGroup(entry) { // Params: srcTile, quad, perimeter, 
       console.log("*** group.children.length", group.children.length);
       break;
     case "Feynman":
+      buildBishopQuadGroup(srcTile, quad, perimeter, stride, opacity, group);
+      const dukeAdvsq = advsqs[1];
+      buildDukeQuadGroup(dukeAdvsq, group);
+      for(let k=2; k<perims.length; k+=2) {
+        decorateTile(perims[k].stride[k], "queen", "feynman", group, opacity);
+      }
       break;
     default:
       throw new Error(`Unknown overlap type ${value}.`);
@@ -210,7 +220,7 @@ export function reprojectGroup(group, levelSep) {
     const pixels = coordsMaps.vts2pixels(obj.userData.vts, levelSep);
     obj.position.set(...pixels);
   });
-}
+  }
 
 export function reprojectPiecesGroup(group, levelSep) {
   console.log("view : view.js - reprojectPiecesGroup(group, levelSep).", group, levelSep);
@@ -241,6 +251,99 @@ export function reprojectPiecesGroup(group, levelSep) {
 // Seampoint: more global functions...
 
 // --- Helpers ---
+function buildRectPlaneGroups(piece, srcTile, dst, advsqs, planes, stride, opacity, group) {
+  console.log("view : view.js - buildRectPlaneGroups(...).", piece, srcTile, dst, advsqs, planes, stride, opacity, group);
+
+  for(let p=0; p<planes; p++) {
+    const planeGroup = new THREE.Group();
+    planeGroup.userData = planeGroup.userData || {};
+    planeGroup.userData.overlays = [];
+
+    for(let q=0; q<2; q++) {                                          // For each advsq.
+      const { quad, perimeter } = advsqs[p][q];
+      const advsq = gAdvsqs.AdvSq.fromQuad(srcTile, quad, perimeter);
+      const perims = advsq.getPerims();
+      const linear = (q%2) ? true : false;
+
+      for(let k=1; k<perims.length; k++) {                            // For each perimeter.
+        const perim = perims[k];
+        const quadType = quads.quadToQuadType(quad);
+        const lastPerim = (k === perims.length - 1);
+        const dst = stride;
+        decorateRectPerimeter(lastPerim, perim, piece, quadType, planeGroup, opacity, dst, linear, 0.05);
+      }
+    }
+    group.add(planeGroup);
+    group.userData.planes.push(planeGroup);
+  }
+  }
+
+function buildDuplexPlaneGroups(piece, srcTile, dst, advsqs, planes, stride, opacity, group) {
+  console.log("view : view.js - buildDuplexPlaneGroups(...).", piece, srcTile, dst, advsqs, planes, stride, opacity, group);
+
+  for(let p=0; p<planes; p++) { // Will always equal 2.               // For each advsq.
+    const planeGroup = new THREE.Group();
+    planeGroup.userData = planeGroup.userData || {};
+    planeGroup.userData.overlays = [];
+
+    const { quad, perimeter } = advsqs[p];
+    const advsq = gAdvsqs.AdvSq.fromQuad(srcTile, quad, perimeter);
+    const perims = advsq.getPerims();
+
+    for(let k=1; k<perims.length; k++) {                              // For each perimeter.
+      const perim = perims[k];
+      const dst = stride;
+      decorateDuplexPerimeter(perim, piece, planeGroup, opacity, dst, 0.05);  // Skips source & duplex tiles.
+    }
+    group.add(planeGroup);
+    group.userData.planes.push(planeGroup);
+  }
+  }
+
+function buildBishopQuadGroup(srcTile, quad, perimeter, stride, opacity, group) {
+  console.log("view : view.js - buildBishopQuadGroup(...).", srcTile, quad, perimeter, stride, opacity, group);
+
+  const planeGroup = new THREE.Group();
+  planeGroup.userData = planeGroup.userData || {};
+  planeGroup.userData.overlays = [];
+
+  const advsq = gAdvsqs.AdvSq.fromQuad(srcTile, quad, perimeter, stride, opacity);
+  const perims = advsq.getPerims();
+  const quadType = quads.quadToQuadType(quad);
+
+  // TODO: skip every other apex tile.
+  for(let k=1; k<perims.length; k++) {                              // For each perimeter.
+    const perim = perims[k];
+    const lastPerim = (k === perims.length - 1);
+    decoratePerimeterAlternateApex(k, perim, "bishop", planeGroup, opacity, stride, 0.05);
+  }
+  group.add(planeGroup);
+  group.userData.planes.push(planeGroup);
+  }
+
+function buildDukeQuadGroup(dukeAdvsq, group) {
+  console.log("view : view.js - buildDukeQuadGroup(dukeAdvsq, group).", dukeAdvsq, group);
+
+  const { srcTile, quad, perimeter, stride, opacity } = dukeAdvsq;
+
+  const planeGroup = new THREE.Group();
+  planeGroup.userData = planeGroup.userData || {};
+  planeGroup.userData.overlays = [];
+
+  const advsq = gAdvsqs.AdvSq.fromQuad(srcTile, quad, perimeter, stride, opacity);
+  const perims = advsq.getPerims();
+  const quadType = quads.quadToQuadType(quad);
+
+  // Skip every 'third' tile.
+  for(let k=1; k<perims.length; k++) {                              // For each perimeter.
+    const perim = perims[k];
+    const lastPerim = (k === perims.length - 1);
+    decoratePerimeterSkipThirds(perim, "duke", planeGroup, opacity, stride, 0.05);
+  }
+  group.add(planeGroup);
+  group.userData.planes.push(planeGroup);
+}
+
 function decorateQuadPerimeter(lastPerim, perim, piece, quadType, group, opacity, dst, zOffset=0.00) {
   // console.log("view : view.js - decorateQuadPerimeter(perim)", perim);
 
@@ -270,7 +373,7 @@ function decorateRectPerimeter(lastPerim, perim, piece, quadType, group, opacity
     const j = i - 1;
 
     if(quad2) {
-      if(     utils.isSame(stride[j], perim.E1)  ) ;
+      if(     utils.isSame(stride[j], perim.E1)  ) ; // Skip.
       else if(utils.isSame(stride[j], perim.apex)) decorateTile(stride[j], piece, apex,   group, opacity);
       else if(utils.isSame(stride[j], perim.E2)  ) decorateTile(stride[j], piece, end,    group, opacity);
       else {                                       decorateTile(stride[j], piece, "body", group, opacity);
@@ -279,7 +382,7 @@ function decorateRectPerimeter(lastPerim, perim, piece, quadType, group, opacity
     else {
       if(     utils.isSame(stride[j], perim.E1)  ) decorateTile(stride[j], piece, end,    group, opacity);
       else if(utils.isSame(stride[j], perim.apex)) decorateTile(stride[j], piece, apex,   group, opacity);
-      else if(utils.isSame(stride[j], perim.E2)  ) ;//decorateTile(stride[j], piece, end,    group, opacity);
+      else if(utils.isSame(stride[j], perim.E2)  ) ; // Skip.
       else {                                       decorateTile(stride[j], piece, "body", group, opacity);
       }
     }
@@ -292,14 +395,48 @@ function decorateDuplexPerimeter(perim, piece, group, opacity, dst, zOffset=0.00
   const stride = perim.stride;
   for(let i=1; i<=stride.length; i++) {
     const j = i - 1;
-
     if(     utils.isSame(stride[j], perim.E1)  ) decorateTile(stride[j], piece, "end3", group, opacity);
-    else if(utils.isSame(stride[j], perim.apex)) ;
+    else if(utils.isSame(stride[j], perim.apex)) ; // Skip.
     else if(utils.isSame(stride[j], perim.E2)  ) decorateTile(stride[j], piece, "end3", group, opacity);
     else {                                       decorateTile(stride[j], piece, "body", group, opacity);
     }
   }
   }
+
+function decoratePerimeterAlternateApex(k, perim, piece, group, opacity, dst, zOffset=0.00) {
+  // console.log("view : view.js - decoratePerimeterAlternateApex(...)", k, perim, piece, group, opacity, dst, zOffset);
+
+  const end = (piece  === "duke") ? "end3": "end2";
+
+  const stride = perim.stride;
+  for(let i=1; i<=stride.length; i++) { // Skip even apex tiles (feynman).
+    const j = i - 1;
+    if(     utils.isSame(stride[j], perim.E1)  ) decorateTile(stride[j], piece, end, group, opacity);
+    else if(utils.isSame(stride[j], perim.apex)) {
+            if(k%2 === 1)                        decorateTile(stride[j], piece, "apex", group, opacity);
+      }
+    else if(utils.isSame(stride[j], perim.E2)  ) decorateTile(stride[j], piece,  end,   group, opacity);
+    else {                                       decorateTile(stride[j], piece, "body", group, opacity);
+    }
+  }
+}
+
+function decoratePerimeterSkipThirds(perim, piece, group, opacity, dst, zOffset=0.00) {
+  // console.log("view : view.js - decoratePerimeterAlternateApex(...)", k, perim, piece, group, opacity, dst, zOffset);
+
+  const end = (piece  === "duke") ? "end3": "end2";
+
+  const stride = perim.stride;
+  for(let i=1; i<=stride.length; i++) { // Skip even apex tiles (feynman).
+    const j = i - 1;
+    if(     utils.isSame(stride[j], perim.E1)  ) decorateTile(stride[j], piece, end, group, opacity);
+    // else if(utils.isSame(stride[j], perim.third)) ;  // TODO: fix duke third tiles.
+    else if(utils.isSame(stride[j], perim.apex)) decorateTile(stride[j], piece, "apex", group, opacity);
+    else if(utils.isSame(stride[j], perim.E2)  ) decorateTile(stride[j], piece,  end,   group, opacity);
+    else {                                       decorateTile(stride[j], piece, "body", group, opacity);
+    }
+  }
+}
 
 function decorateTile(coords, piece, decorator, group, opacity, zOffset = 0.00) {
   // console.log("view : view.js - decorateTile(...)", coords, piece, decorator);
@@ -347,55 +484,6 @@ function decorateTile(coords, piece, decorator, group, opacity, zOffset = 0.00) 
 
     // console.log("view : view.js - decorateTile(...)...group.userData.overlays", group.userData.overlays);
     // console.log("decorator:", decorator, "count:", group.userData.overlays.length);
-  }
-}
-
-function buildRectPlaneGroups(piece, srcTile, dst, advsqs, planes, stride, opacity, group) {
-  console.log("view : view.js - buildRectPlaneGroups(...).", piece, srcTile, dst, advsqs, planes, stride, opacity, group);
-
-  for(let p=0; p<planes; p++) {
-    const planeGroup = new THREE.Group();
-    planeGroup.userData = planeGroup.userData || {};
-    planeGroup.userData.overlays = [];
-
-    for(let q=0; q<2; q++) {                                          // For each advsq.
-      const { quad, perimeter } = advsqs[p][q];
-      const advsq = gAdvsqs.AdvSq.fromQuad(srcTile, quad, perimeter);
-      const perims = advsq.getPerims();
-      const linear = (q%2) ? true : false;
-
-      for(let k=1; k<perims.length; k++) {                            // For each perimeter.
-        const perim = perims[k];
-        const quadType = quads.quadToQuadType(quad);
-        const lastPerim = (k === perims.length - 1);
-        const dst = stride;
-        decorateRectPerimeter(lastPerim, perim, piece, quadType, planeGroup, opacity, dst, linear, 0.05);
-      }
-    }
-    group.add(planeGroup);
-    group.userData.planes.push(planeGroup);
-  }
-  }
-
-function buildDuplexPlaneGroups(piece, srcTile, dst, advsqs, planes, stride, opacity, group) {
-  console.log("view : view.js - buildDuplexPlaneGroups(...).", piece, srcTile, dst, advsqs, planes, stride, opacity, group);
-
-  for(let p=0; p<planes; p++) { // Will always equal 2.               // For each advsq.
-    const planeGroup = new THREE.Group();
-    planeGroup.userData = planeGroup.userData || {};
-    planeGroup.userData.overlays = [];
-
-    const { quad, perimeter } = advsqs[p];
-    const advsq = gAdvsqs.AdvSq.fromQuad(srcTile, quad, perimeter);
-    const perims = advsq.getPerims();
-
-    for(let k=1; k<perims.length; k++) {                              // For each perimeter.
-      const perim = perims[k];
-      const dst = stride;
-      decorateDuplexPerimeter(perim, piece, planeGroup, opacity, dst, 0.05);  // Skips source & duplex tiles.
-    }
-    group.add(planeGroup);
-    group.userData.planes.push(planeGroup);
   }
 }
 // Seampoint: more local functions...

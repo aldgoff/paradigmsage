@@ -274,5 +274,27 @@
       "opacity":0.5}],
   "AdvSqs":[]}
 
- ### 8.5 Scenario: Hotspot - Rook Q4,1 perimeter 
+ ### 8.5 Scenario: Hotspot -
   **1-0-0-11**
+
+ ### 8.6 Scenario: Feynman
+  **1-0-1-0**
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}}],"Moves":[],"Gambits":[{"gambit":0,"action":"overlap","value":"Feynman","piece":"bishop","src":"KB4,4","dst":"KR6,6","rays":["LFU","RFU"],"advsqs":[{"src":"KB4,4","srcTile":[0,0,0],"quad":13,"perimeter":2,"stride":3,"opacity":0.5},{"src":"KB4,4","srcTile":[0,0,0],"quad":38,"perimeter":3,"stride":2,"opacity":0.5}],"opacity":0.5}],"AdvSqs":[]}
+
+  {"Setup":[
+    {"action":"makeBoard",
+      "prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},
+      "nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}}],
+  "Moves":[],
+  "Gambits":[
+    {"gambit":0,"action":"overlap","value":"Feynman","piece":"bishop","src":"KB4,4","dst":"KR6,6","rays":["LFU","RFU"],"advsqs":[
+      {"src":"KB4,4","srcTile":[0,0,0],"quad":13,"perimeter":2,"stride":3,"opacity":0.5},
+      {"src":"KB4,4","srcTile":[0,0,0],"quad":38,"perimeter":3,"stride":2,"opacity":0.5}],
+      "opacity":0.5}],
+  "AdvSqs":[]}
+
+
+
+ ### 8.6 Scenario: Feynman - Stack
+  **1-0-1-0**
+  

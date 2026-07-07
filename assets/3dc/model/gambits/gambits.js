@@ -172,7 +172,6 @@ export function makeOverlapEntry(advsq) { // Player chooses the base advsq; rook
       const { rayPair } = quads.pqrTable(quad);                             // Ray.
       rayDuke = resolveStrideRay(advsqDuke, rayPair, true);// Is duplex.
       const area = (perimeter+1)*(perimeter+1);
-      // const crossPlainsAdv = "MM";  // TODO: figure out cross plane abrvs.
 
       const crossQuad = quads.findDuplexFaceQuad(quad);                     // Cross pair advsqs.
       const crossAdvsq1 = { src, srcTile, quad, perimeter, stride, area };
@@ -183,13 +182,27 @@ export function makeOverlapEntry(advsq) { // Player chooses the base advsq; rook
     advsqs.push(advsqsL[0],advsqsL[1],  advsqsCP);
     rays = rayRook;
     piece = "rook";
-    // if(     piece === "rook") advsqs.push(advsqsL[0],advsqsL[1],  advsqsCP);  // Player order.
-    // else if(piece === "duke") advsqs.push(advsqsCP,               advsqsL[0],advsqsL[1]);
-    // if(     piece === "rook") rays = rayRook;
-    // else if(piece === "duke") rays = rayDuke;
     }
   else if(overlap === "Feynman") {
-    // TODO: tbd.
+    value = overlap;
+    let rayBishop = null;
+    let rayDuke   = null;
+    if(     piece === "bishop") advsqDuke = overlaps.findFeynmanCompanion(advsqBishop);
+    else if(piece === "duke") advsqBishop = overlaps.findFeynmanCompanion(advsqDuke);
+
+    { // Bishop ray.
+      const { src, srcTile, quad, perimeter, stride, opacity } = advsqBishop; // src & implied dst.
+      const { rayPair } = quads.pqrTable(quad);                               // Ray.
+      rayBishop = resolveStrideRay(advsqBishop, rayPair);
+    }
+    { // Duke ray.
+      const { src, srcTile, quad, perimeter, stride, opacity } = advsqDuke;   // src & implied dst.
+      const { rayPair } = quads.pqrTable(quad);                               // Ray.
+      const area = (perimeter+1)*(perimeter+1);
+    }
+    advsqs.push(advsqBishop, advsqDuke);
+    rays = rayBishop;
+    piece = "bishop";
   }
   else {
     throw new Error(`Unknown overlap type ${overlap}.`);

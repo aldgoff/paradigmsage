@@ -146,27 +146,83 @@ export function findHotspotCompanion(advsq) {
         break;
       }
     }
-    if(!spec) throw new Error("Hotspot map entry not found duke.");
+    if(!spec) throw new Error("Hotspot map entry not found for duke.");
 
     const k = spec.rook.perimeter;
     for(let rookQuad = 1; rookQuad <= 12; rookQuad++) {
       for(const s of spec.rook.stride) {
         const testDst = planes.resolveDstTile(srcTile, rookQuad, k, s);
-        if(utils.isSame(testDst, dstTile)) {
+        if(testDst === dstTile) {
           return { src, srcTile, quad: rookQuad, perimeter: k, stride: s, opacity };
         }
       }
     }
   }
-
-  throw new Error("Unable to locate Hotspot companion.");
 }
 
 export function findFeynmanCompanion(advsq) {
   console.log(`model: overlaps.js - findFeynmanCompanion(advsq):`, advsq);
 
+  const { src, srcTile, quad, perimeter, stride, opacity } = advsq;
+
   let companion = null;
+
+  const dstTile = planes.resolveDstTile(srcTile, quad, perimeter, stride);
+  const piece = quads.pqrTable(quad).piece;
+  console.log("*** piece dstTile", piece, dstTile);
+
+  let spec = null;
+
+  if(     piece === "bishop") {
+    for(const entry of Feynman) {
+      console.log("*** entry", entry);
+      if(entry.bishop.perimeter === perimeter) {
+        spec = entry;
+        break;
+      }
+    }
+    if(!spec) throw new Error("Feynman map entry not found for bishop.");
+
+    const k = spec.duke.perimeter;
+    for(let dukeQuad = 37; dukeQuad <= 60; dukeQuad++) {
+      console.log("*** duke quad", dukeQuad);
+      for(const s of spec.duke.stride) {
+        const testDst = planes.resolveDstTile(srcTile, dukeQuad, k, s);
+        console.log("  *** testDst", testDst);
+        if(testDst === dstTile) {
+          const companion = { src, srcTile, quad: dukeQuad, perimeter: k, stride: s, opacity };
+          console.log("*** companion", companion);
+          return { src, srcTile, quad: dukeQuad, perimeter: k, stride: s, opacity };
+        }
+      }
+    }
+
+  }
+  else if(piece === "duke") {
+    for(const entry of Feynman) {
+      if(entry.duke.perimeter === perimeter) {
+        spec = entry;
+        break;
+      }
+    }
+    if(!spec) throw new Error("Feynman map entry not found for duke.");
+
+    const k = spec.bishop.perimeter;
+    for(let bishopQuad = 13; bishopQuad <= 36; bishopQuad++) {
+      for(const s of spec.bishop.stride) {
+        const testDst = planes.resolveDstTile(srcTile, bishopQuad, k, s);
+        if(testDst === dstTile) {
+        // if(utils.isSame(testDst, dstTile)) {
+          return { src, srcTile, quad: bishopQuad, perimeter: k, stride: s, opacity };
+        }
+      }
+    }
+  }
+
   // TODO: tbd.
+
+  throw new Error("Unable to locate Feynman companion.");
+
   return companion; // Rook or bishop.
 }
 // Seampoint: more global functions...

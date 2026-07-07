@@ -214,7 +214,7 @@ function makeOverlapGroup(entry) {
 
   const { move, piece, src, dst, ray, advsqs, opacity } = entry;
 
-  const group = view.buildOverlapGroup(entry);  // TODO: write.
+  const group = view.buildOverlapGroup(entry);
 
   return group;
 }
