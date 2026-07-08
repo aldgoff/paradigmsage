@@ -40,7 +40,7 @@ export function getBlackTray() { return blackTray; }
 export function init(entry) {
   console.log("model: trays.js - init(entry)", entry);
   
-  const { action, boardSize, trayType, trayGap, boardSpec } = entry;
+  const { action, boardSize, trayType, trayGap } = entry;
 
   clearTrays();
   vTrays.makeTrays(entry);
@@ -49,7 +49,7 @@ export function init(entry) {
 export function destroy(entry) {
   console.log("model: trays.js - destroy(entry)", entry);
   
-  const { action, boardSize, trayType, trayGap, boardSpec } = entry;
+  const { action, boardSize, trayType, trayGap } = entry;
 
   clearTrays();
   vTrays.destroyTrays(entry);

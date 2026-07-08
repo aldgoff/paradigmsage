@@ -23,7 +23,7 @@
 export function init(entry) {
   console.log("cntrl: pieces.js - init(entry)", entry);
   
-  const { action, boardSize, trayType, trayGap, boardSpec } = entry;
+  const { action, boardSize, trayType, trayGap } = entry;
 
   mPieces.init(entry);  // Initial set depends on board size and tray type.
 
@@ -33,7 +33,7 @@ export function init(entry) {
 export function destroy(entry) {
   console.log("cntrl: pieces.js - destroy(entry)", entry);
   
-  const { action, boardSize, trayType, trayGap, boardSpec } = entry;
+  const { action, boardSize, trayType, trayGap } = entry;
 
   mPieces.destroy(entry);  // Initial set depends on board size and tray type.
 

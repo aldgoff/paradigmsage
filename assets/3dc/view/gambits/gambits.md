@@ -241,7 +241,7 @@
         "opacity":0.5}],
   "AdvSqs":[]}
 
- ### 8.4 Scenario: Hotspot - Queen attacks Knight
+ ### 8.4 Scenario: Hotspot - Queen attacks Knight (BAD w/o site refresh)
   **3-0-1-0**
   1 Ohotspot R KB1,4 → KB7,4   :49 left_fore
   1 Ohotspot D KB1,4 → KB7,4   :16 0,1,0

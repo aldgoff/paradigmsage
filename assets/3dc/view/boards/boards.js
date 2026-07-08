@@ -35,7 +35,6 @@ export function destroyBoards() {
 export function render(board) {
   console.log("view : boards.js - render(board)", board);
 
-  // const { action, boardSize, trayType, trayGap, boardSpec } = entry;
   const { boardSize, trayType, trayGap } = board;
 
   const dims = boardSize.split(/[x-]/).map(Number);

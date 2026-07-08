@@ -38,7 +38,6 @@
 // Seampoint: more imports...
 
 // --- Globals ---
-  export let boardSpec = "0x0x0"; // Deprecate.
   let currBoard = { boardSize: "0x0x0", trayType: "None", trayGap: 0 };
   let frozenPlacement = false;
 // Seampoint: more globals...
@@ -109,7 +108,6 @@ export function buildForward(entry) {     // Redo.
     clearBoard(prevBoard);
     buildBoard(nextBoard);
     currBoard = structuredClone(nextBoard);
-      boardSpec = currBoard.boardSize;  // Deprecate.
 
     vSetup.refreshPanel(nextBoard);         
 
@@ -163,7 +161,6 @@ export function buildBackward(entry) {    // Undo.
     clearBoard(nextBoard);
     buildBoard(prevBoard);
     currBoard = structuredClone(prevBoard);
-      boardSpec = currBoard.boardSize;
     
     vSetup.refreshPanel(prevBoard);         
 

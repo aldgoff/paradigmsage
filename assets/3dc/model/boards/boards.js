@@ -28,7 +28,6 @@ export function getOrigin() { return origin; }
 export function init(board) {
   console.log("model: boards.js - init(board)", board);
 
-  // const { action, boardSize, trayType, trayGap, boardSpec } = entry;
   const { boardSize, trayType, trayGap } = board;
 
   vBoards.render(board);
@@ -37,7 +36,6 @@ export function init(board) {
 export function destroy(board) {
   console.log("model: boards.js - destroy(board)", board);
   
-  // const { action, boardSize, trayType, trayGap, boardSpec } = entry;
   const { boardSize, trayType, trayGap } = board;
 
   vBoards.clear(board);

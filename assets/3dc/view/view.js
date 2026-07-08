@@ -543,10 +543,10 @@ function decorateTile(coords, piece, decorator, group, opacity, zOffset = 0.00) 
 
     group.userData.overlays.push(...overlays);  // Tracked overlays for fast removal.
 
-    console.log("*** decorateTile");
-    console.log("*** meshTile", meshTile.uuid, meshTile.userData.vts);
-    console.log("*** group.userData.overlays", group.userData.overlays);
-    console.log("*** decorator:", decorator, "count:", group.userData.overlays.length);
+    // console.log("*** decorateTile");
+    // console.log("*** meshTile", meshTile.uuid, meshTile.userData.vts);
+    // console.log("*** group.userData.overlays", group.userData.overlays);
+    // console.log("*** decorator:", decorator, "count:", group.userData.overlays.length);
   }
 }
 // Seampoint: more local functions...

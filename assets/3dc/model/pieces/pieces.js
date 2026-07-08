@@ -41,7 +41,7 @@ export function getPieceList() { return pieceList; }
 export function init(entry) {
   console.log("model: pieces.js - init(entry)", entry);
   
-  const { action, boardSize, trayType, trayGap, boardSpec } = entry;
+  const { action, boardSize, trayType, trayGap } = entry;
 
   clearPieceState();
   createPiecesInTrays(entry);
@@ -58,7 +58,7 @@ export function clearPieceState() {
 export function destroy(entry) {
   console.log("model: pieces.js - destroy(entry)", entry);
   
-  const { action, boardSize, trayType, trayGap, boardSpec } = entry;
+  const { action, boardSize, trayType, trayGap } = entry;
 
   vPieces.destroyPieces(pieceList);
 
@@ -71,7 +71,7 @@ export function movePieceFromTrayToBoard(key, dstStr) {  // "WQQP", "Q1,1". // T
   console.log("model: pieces.js - movePieceFromTrayToBoard(key, dstStr)", key, dstStr);
 
   // --- Parse ---
-    const spec = cSetup.boardSpec;                                  // Support all three board sizes.
+    const spec = cSetup.getCurrBoard().boardSize;                   // Support all three board sizes.
 
     const piece = pieceList[key];                                   // Ensure valid args - should never fail.
     if(!piece) throw new Error(`Piece ${key} not found.`);
@@ -124,7 +124,7 @@ export function movePieceTileToTile(key, dstStr) {
   console.log("model: pieces.js - movePieceTileToTile(key, dstStr)", key, dstStr);
 
   // --- Parse ---
-    const spec = cSetup.boardSpec;                                  // Support all three board sizes.
+    const spec = cSetup.getCurrBoard().boardSize;                   // Support all three board sizes.
 
     const piece = pieceList[key];                                   // Ensure valid args - should never fail.
     if(!piece) throw new Error(`Piece ${key} not found.`);
@@ -162,7 +162,7 @@ export function movePieceFromBoardToTray(key) {
   console.log("model: pieces.js - movePieceFromBoardToTray(key)", key);
 
   // --- Parse ---
-    const spec = cSetup.boardSpec;
+    const spec = cSetup.getCurrBoard().boardSize;               // Support all three board sizes.
 
     const piece = pieceList[key];                               // Ensure valid args - should never fail.
     if(!piece) throw new Error(`Piece ${key} not found.`);
@@ -326,7 +326,7 @@ export function pieceLocOnBoard(key) {
 function createPiecesInTrays(entry) {
   console.log("model: pieces.js - createPiecesInTrays(entry)", entry);
   
-  const { action, boardSize, trayType, trayGap, boardSpec } = entry;
+  const { action, boardSize, trayType, trayGap } = entry;
   
   // ChangePoint:
   if(     boardSize === "8x8x8")    { createPiecesForEightBoard(trayGap); } 
@@ -346,7 +346,7 @@ function createPiecesInTrays(entry) {
 function destroyPieces(entry) {
   console.log("model: pieces.js - destroyPieces(entry)", entry);
   
-  const { action, boardSize, trayType, trayGap, boardSpec } = entry;
+  const { action, boardSize, trayType, trayGap } = entry;
 
   vPieces.destroyPieces(pieceList);
 
