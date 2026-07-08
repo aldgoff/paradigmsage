@@ -81,8 +81,8 @@ export function popPanelLine() {
   scroll.removeChild(last);
   }
 
-export function refreshPanel(move) {
-  console.log("view : moves.js - refreshPanel(move)", move);
+export function refreshPanel() {
+  console.log("view : moves.js - refreshPanel()");
 
   const scroll = document.getElementById("move-list");    // Scroll list.
   if(!scroll) return;

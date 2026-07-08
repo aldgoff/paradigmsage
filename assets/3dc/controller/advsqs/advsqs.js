@@ -315,7 +315,8 @@ function updateGambitPanelButtons(quad, perimeter, stride) {
 function branchHistory(entry) {
   console.log("cntrl: advsqs.js - branchHistory(entry):", entry);
 
-  if(!state.isAtEnd("AdvSqs")) {                // Branches undo history, discards original branch.
+  if(!state.isAtEnd("AdvSqs")) {      // Branches undo history, discards original branch.
+
     const idx = state.getCurrentIndex("AdvSqs");
     state.truncateState("AdvSqs", idx);
   }

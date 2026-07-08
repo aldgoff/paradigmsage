@@ -64,6 +64,15 @@ export function clearGambits() {
   }  
   }
 
+export function truncateGroups(idx) {
+  console.log("view : gambits.js - truncateGroups(idx)", idx);
+
+  while(gambitGroups.length > idx) {
+    const group = gambitGroups.pop();
+    derenderGambit(group);
+  }
+}
+
 export function pushPanelLine(entry) {
   console.log("view : gambits.js - pushPanelLine(entry)", entry);
 
@@ -92,8 +101,8 @@ export function popPanelLine() {
   scroll.removeChild(last);
   }
 
-export function refreshPanel(gambit) {
-  console.log("view : gambits.js - refreshPanel(gambit)", gambit);
+export function refreshPanel() {
+  console.log("view : gambits.js - refreshPanel()");
 
   const scroll = document.getElementById("gambit-list");  // Scroll list.
   if(!scroll) return;
@@ -295,6 +304,7 @@ function applyMaterialOpacity(obj, opacity) {
 /* ----- ----- ----- ----- */
 export function undo(entry) {
   console.log("view : gambits.js - undo(entry).", entry);
+  console.log("*** gambitGroups.length", gambitGroups.length);
 
   const group = gambitGroups[entry.gambit];
   if(group) {
@@ -304,6 +314,7 @@ export function undo(entry) {
 
 export function redo(entry) {
   console.log("view : gambits.js - redo(entry).", entry);
+  console.log("*** gambitGroups.length", gambitGroups.length);
 
   const group = gambitGroups[entry.gambit];
 

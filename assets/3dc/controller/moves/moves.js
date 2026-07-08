@@ -98,7 +98,7 @@ export function buildForward(entry) {     // Restore from redo.
     throw new Error(`Unknown forward action ${action} for moves.`);
   }
 
-  vMoves.refreshPanel(entry);         
+  vMoves.refreshPanel();         
 
   console.log("*** pieceList", mPieces.getPieceList());
 
@@ -121,7 +121,7 @@ export function buildBackward(entry) {    // Restore from undo.
     throw new Error(`Unknown backward action ${action} for moves.`);
   }
 
-  vMoves.refreshPanel(entry);         
+  vMoves.refreshPanel();         
 
   console.log("*** pieceList", mPieces.getPieceList());
 
@@ -592,7 +592,7 @@ function backwardUplift(entry) {
 function branchHistory(entry) {
   console.log("cntrl: moves.js - branchHistory(entry):", entry);
 
-  if(!state.isAtEnd("Moves")) {               // Undo branch.
+  if(!state.isAtEnd("Moves")) {       // Branches undo history, discards original branch.
     let top = state.getBufferLength("Moves");
     const idx = state.getCurrentIndex("Moves");
     state.truncateState("Moves", idx);
@@ -600,7 +600,7 @@ function branchHistory(entry) {
       vMoves.popPanelLine();
       top--;
     }
-    vMoves.refreshPanel(entry);
+    vMoves.refreshPanel();
   }
 
   vGambits.clearGambits();            // Remove all entries in downstream buffers.
@@ -613,11 +613,9 @@ function branchHistory(entry) {
 function applyEntry(entry) {
   console.log("cntrl: moves.js - applyEntry(entry)", entry);
 
-  // branchHistory(entry);               // Manage undo history when branched.
-
   state.pushNewMove(entry);           // Change state.
-    vMoves.pushPanelLine(entry);        // Add line to panel.
-    vMoves.refreshPanel(entry);         // Refresh panel (dimmed future rows).
+    vMoves.pushPanelLine(entry);      // Add line to panel.
+    vMoves.refreshPanel();            // Refresh panel (dimmed future rows).
   game.showUndoStatus();
 }
 // Seampoint: more local functions...

@@ -15,6 +15,8 @@
 // --- Dependencies ---
   import * as utils    from "../../../utils/utils.js";  
 
+  import * as panels   from "../../panels/panels.js";
+
   import * as game     from "../../controller/game/game.js";
   import * as cAdvsqs  from "../../controller/advsqs/advsqs.js";
 
@@ -73,6 +75,35 @@ export function buildPayload(panel, action) {
 
   return { action };
 }
+
+export function buildForward(entry) {     // Restore from redo.
+  console.log("cntrl: gambit.js - buildForward(entry)", entry);
+
+  const { gambit, action, value, piece, src, dst, rays, advsqs, opacity } = entry;
+
+  const group = vGambits.makeGroup(entry);        // Create mesh group.
+  vGambits.getGambitGroups().push(group);         // Store it.
+
+  vGambits.redo(entry);
+
+  vGambits.refreshPanel();         
+
+  panels.diagnostics();
+  }
+
+export function buildBackward(entry) {    // Restore from undo.
+  console.log("cntrl: gambit.js - buildBackward(entry)", entry);
+
+  const { gambit, action, value, piece, src, dst, rays, advsqs, opacity } = entry;
+
+  vGambits.undo(entry);
+
+  vGambits.getGambitGroups().pop();         // Delete it.
+
+  vGambits.refreshPanel();
+
+  panels.diagnostics();
+}
 // Seampoint: more global functions...
 
 // --- Handle Functions ---
@@ -83,6 +114,8 @@ function handleFreezeQuadrant(currAdvsq) {      // N Q1  R KB4,4 → KB7,7    :1
 
     const {src,srcTile,quad,perimeter,stride,area,opacity} = currAdvsq; // Informative.
     console.log("*** quads.pqrTable(quad)", quads.pqrTable(quad));
+
+    branchHistory();  // Correct placement.
 
     const entry = mGambits.makeQuadrantEntry(currAdvsq);    // Entry.
 
@@ -107,6 +140,8 @@ function handleFreezeAsLinear(currAdvsq) {      // N L1  R Q4,4  → Q8,4     :l
     const {src,srcTile,quad,perimeter,stride,area,opacity} = currAdvsq; // Informative.
     console.log("*** quads.pqrTable(quad)", quads.pqrTable(quad));
 
+    branchHistory();
+
     const entry = mGambits.makeLinearEntry(currAdvsq);      // Entry.
 
     state.clearBuffer("AdvSqs");                            // Clear advsq.
@@ -129,6 +164,8 @@ function handleFreezeAsDuplex(currAdvsq) {      // N DMM D KB4,4 → 8,0,0    :1
 
     const {src,srcTile,quad,perimeter,stride,area,opacity} = currAdvsq; // Informative.
     console.log("*** quads.pqrTable(quad)", quads.pqrTable(quad));
+
+    branchHistory();
 
     const entry = mGambits.makeDuplexEntry(currAdvsq);      // Entry.
 
@@ -153,6 +190,8 @@ function handleFreezeWithOverlaps(currAdvsq) {  // N hotspot R Q4,4  → Q8,4   
     const {src,srcTile,quad,perimeter,stride,area,opacity} = currAdvsq; // Informative.
     console.log("*** quads.pqrTable(quad)", quads.pqrTable(quad));
 
+    branchHistory();
+
     const entry = mGambits.makeOverlapEntry(currAdvsq);     // Entry (uses data in advsq panel).
 
     state.clearBuffer("AdvSqs");                            // Clear advsq.
@@ -166,51 +205,61 @@ function handleFreezeWithOverlaps(currAdvsq) {  // N hotspot R Q4,4  → Q8,4   
   game.showUndoStatus();
 
   vGambits.render(group, { animate: true });              // Render with animation.
-
-  // branchHistory(entry);
-  // applyEntry(entry);  // Eventually.
+  applyEntry(entry);
   }
 
-function handleFreezeAsKnight(currAdvsq) {      // TODO: finish.
+function handleFreezeAsKnight(currAdvsq) {
   console.log("cntrl: gambits.js - handleFreezeAsKnight(currAdvsq)", currAdvsq);
 
   if(!currAdvsq) return;
 
   const { src, srcTile, quad, perimeter, stride, opacity } = currAdvsq;  // Informative.
 
-  branchHistory(entry);
-  applyEntry(entry);  // Eventually.
+  branchHistory();
+
+  // TODO: finish.
+
+  applyEntry(entry);
  }
-function handleFreezeAsPawn(currAdvsq) {        // TODO: finish.
+function handleFreezeAsPawn(currAdvsq) {
   console.log("cntrl: gambits.js - handleFreezeAsPawn(currAdvsq)", currAdvsq);
 
   if(!currAdvsq) return;
 
   const { src, srcTile, quad, perimeter, stride, opacity } = currAdvsq;  // Informative.
 
-  branchHistory(entry);
-  applyEntry(entry);  // Eventually.
+  branchHistory();
+
+  // TODO: finish.
+
+  applyEntry(entry);
   }
-function handleFreezeAsKing(currAdvsq) {        // TODO: finish.
+function handleFreezeAsKing(currAdvsq) {
   console.log("cntrl: gambits.js - handleFreezeAsKing(currAdvsq)", currAdvsq);
 
   if(!currAdvsq) return;
 
   const { src, srcTile, quad, perimeter, stride, opacity } = currAdvsq;  // Informative.
 
-  branchHistory(entry);
-  applyEntry(entry);  // Eventually.
+  branchHistory();
+
+  // TODO: finish.
+
+  applyEntry(entry);
   }
 
-function handleFreezeAsAPlane(currAdvsq) {      // TODO: finish.
+function handleFreezeAsAPlane(currAdvsq) {
   console.log("cntrl: gambits.js - handleFreezeAsAPlane(currAdvsq)", currAdvsq);
 
   if(!currAdvsq) return;
 
   const { src, srcTile, quad, perimeter, stride, opacity } = currAdvsq;  // Informative.
 
-  branchHistory(entry);
-  applyEntry(entry);  // Eventually.
+  branchHistory();
+
+  // TODO: finish.
+
+  applyEntry(entry);
 }
 
 let rotation = 0; // 0-12: duke: %4=0 => all, else 1,2,3 - rook|bishop: %3=0 => all, else 1,2.
@@ -314,18 +363,18 @@ function buildAdvRects(srcTile, quadPairs, perimeter, stride, opacity) {
   });
 }
 
-function branchHistory(entry) {
-  console.log("cntrl: gambits.js - branchHistory(entry):", entry);
+function branchHistory() {
+  console.log("cntrl: gambits.js - branchHistory():");
 
-  if(!state.isAtEnd("Gambits")) {               // Undo branch.
+  if(!state.isAtEnd("Gambits")) {     // Branches undo history, discards original branch.
     let top = state.getBufferLength("Gambits");
     const idx = state.getCurrentIndex("Gambits");
     state.truncateState("Gambits", idx);
+    vGambits.truncateGroups(idx);
     while(top > idx) {
       vGambits.popPanelLine();
       top--;
     }
-    vGambits.refreshPanel(entry);
   }
 
   vAdvsqs.clearAdvsqs();              // Remove all entries in downstream buffers.
@@ -337,8 +386,7 @@ function applyEntry(entry) {   // Clear curr, branch, state change, render, refr
 
   state.pushNewGambit(entry);          // Log state change in undo buffer.
     vGambits.pushPanelLine(entry);        // Add line to panel.
-    vGambits.refreshPanel(entry);         // Refresh panel (dimmed future rows).
-    // vGambits.refreshEntry(entry); 
+    vGambits.refreshPanel();         // Refresh panel (dimmed future rows).
   game.showUndoStatus();
 }
 // Seampoint: more local functions...

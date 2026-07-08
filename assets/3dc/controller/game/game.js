@@ -239,10 +239,7 @@ async function handleLoad() {
         state.pushNewState(key, entry);
         if(     key === "Setup")   { vSetup.pushPanelLine(entry); }
         else if(key === "Moves")   { vMoves.pushPanelLine(entry); }
-        else if(key === "Gambits") { vGambits.pushPanelLine(entry);
-          const group = vGambits.makeGroup(entry);        // Create mesh group.
-          vGambits.getGambitGroups().push(group);         // Store it.
-        }
+        else if(key === "Gambits") { vGambits.pushPanelLine(entry); }
         else if(key === "AdvSqs")  { /* Has no scroll list. */ }
         else  { throw new Error(`Unknown entry key ${key}.`); }
       }
@@ -321,7 +318,7 @@ function rewindCurrentBuffer(buffer) {
     }
 
     state.setBufferIndex("Gambits", 1);
-    vGambits.refreshPanel(first);
+    vGambits.refreshPanel();
     }
   else if(buffer === "Moves") {
     const first = state.getState().Moves[0];
@@ -331,7 +328,7 @@ function rewindCurrentBuffer(buffer) {
     }
 
     state.setBufferIndex("Moves", 1);
-    vMoves.refreshPanel(first);
+    vMoves.refreshPanel();
     }
   else if(buffer === "Setup") {
     const first = state.getState().Setup[0];
@@ -373,7 +370,7 @@ function fastForwardCurrentBuffer(buffer) {
     }
 
     state.setBufferIndex("Moves", len);
-    vMoves.refreshPanel(last);
+    vMoves.refreshPanel();
     }
   else if(buffer === "Gambits") {
     const last = state.getState().Gambits[len - 1];
@@ -383,7 +380,7 @@ function fastForwardCurrentBuffer(buffer) {
     }    
 
     state.setBufferIndex("Gambits", len);
-    vGambits.refreshPanel(last);
+    vGambits.refreshPanel();
     }
   else if(buffer === "AdvSqs") {  // Snapshot buffer.
     const last = state.getState().AdvSqs[len - 1];
@@ -428,7 +425,7 @@ function processUndoBuffer(key, idx) {
     }
 
     cSelects.manageAdvsqButtons();
-
+    cSelects.manageGambitButtons();
     }
   else if(key === "Gambits") {
     const entry = state.fetchCurrentState("Gambits");
@@ -438,8 +435,9 @@ function processUndoBuffer(key, idx) {
     }
     state.setBufferIndex("Gambits", idx-1);
     
-    vGambits.undo(entry);
-    vGambits.refreshPanel(entry);
+    cGambits.buildBackward(entry);
+    
+    cSelects.manageGambitButtons();
 
     return true;
     }
@@ -452,9 +450,6 @@ function processUndoBuffer(key, idx) {
     state.setBufferIndex("Moves", idx-1);
 
     cMoves.buildBackward(entry);
-
-    cSetup.clearAllTileSelections();
-    cSetup.clearAllPieceSelections();
     
     cSelects.manageMoveButtons();
 
@@ -470,9 +465,6 @@ function processUndoBuffer(key, idx) {
 
     cSetup.buildBackward(entry);
 
-    cSetup.clearAllTileSelections();
-    cSetup.clearAllPieceSelections();
-
     cSelects.manageSetupButtons();
 
     return true;
@@ -480,6 +472,9 @@ function processUndoBuffer(key, idx) {
   else {  // Unreachable.
     throw new Error(`Unknown or missing key in undo ${key}.`);
   }
+
+  cSetup.clearAllTileSelections();
+  cSetup.clearAllPieceSelections();
   }
 
 function processRedoBuffer(key, idx) {
@@ -494,9 +489,6 @@ function processRedoBuffer(key, idx) {
     }
 
     cSetup.buildForward(entry);
-
-    cSetup.clearAllTileSelections();
-    cSetup.clearAllPieceSelections();
     
     cSelects.manageSetupButtons();
 
@@ -511,9 +503,6 @@ function processRedoBuffer(key, idx) {
     }
 
     cMoves.buildForward(entry);
-
-    cSetup.clearAllTileSelections();
-    cSetup.clearAllPieceSelections();
     
     cSelects.manageMoveButtons();
 
@@ -527,8 +516,9 @@ function processRedoBuffer(key, idx) {
       return false;
     }
 
-    vGambits.redo(entry);
-    vGambits.refreshPanel(entry.gambit);         
+    cGambits.buildForward(entry);
+    
+    cSelects.manageGambitButtons();
 
     return true;
     }
@@ -561,6 +551,9 @@ function processRedoBuffer(key, idx) {
   else {  // Unreachable.
     throw new Error(`Unknown or missing key in redo ${key}.`);
   }
+
+  cSetup.clearAllTileSelections();
+  cSetup.clearAllPieceSelections();
 }
 
 function hardReset() {

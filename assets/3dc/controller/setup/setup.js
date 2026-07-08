@@ -42,7 +42,7 @@
   let frozenPlacement = false;
 // Seampoint: more globals...
 
-export function getCurrBoard() { return currBoard; }
+export function getCurrBoard() { return structuredClone(currBoard); }
 export function getFrozenPlacement() { return frozenPlacement; }
 // --- UI ---
 export function panelDispatch(payload) {    // Dispatch payload from panel to handle event functions.
@@ -465,7 +465,7 @@ function initialLineup(entry) {
 function branchHistory(entry) {
   console.log("cntrl: setup.js - branchHistory(entry):", entry);
 
-  if(!state.isAtEnd("Setup")) {               // Undo branch.
+  if(!state.isAtEnd("Setup")) {       // Branches undo history, discards original branch.
     let top = state.getBufferLength("Setup");
     const idx = state.getCurrentIndex("Setup");
     state.truncateState("Setup", idx);
