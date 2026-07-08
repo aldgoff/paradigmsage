@@ -134,11 +134,11 @@ export function makeOverlapEntry(advsq) { // Player chooses the base advsq; rook
   let advsqBishop = (piece === "bishop") ? advsq : null;  // base
   let advsqDuke   = (piece === "duke")   ? advsq : null;  // piece.
 
-  console.log("*** panel", panel);                                  // Diagnostics.
-  console.log("*** overlap", overlap);
-  console.log("*** advsqRook", advsqRook);
-  console.log("*** advsqBishop", advsqBishop);
-  console.log("*** advsqDuke", advsqDuke);
+  // console.log("*** panel", panel);                                  // Diagnostics.
+  // console.log("*** overlap", overlap);
+  // console.log("*** advsqRook", advsqRook);
+  // console.log("*** advsqBishop", advsqBishop);
+  // console.log("*** advsqDuke", advsqDuke);
 
   const advsqs = [];
   if(     overlap === "brook") {

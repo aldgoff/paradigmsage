@@ -155,15 +155,13 @@ function handleFreezeWithOverlaps(currAdvsq) {  // N hotspot R Q4,4  → Q8,4   
   vAdvsqs.removeFromScene();
   vAdvsqs.clearAdvsqPanelParams("Q4,4");
 
-  state.pushNewGambit(entry);                             // Change state.
-  vGambits.pushPanelLine(entry);                          // Append line to panel.
   const group = vGambits.makeGroup(entry);                // Recreate mesh group from entry.
   vGambits.getGambitGroups().push(group);                 // Store it.
 
   vGambits.render(group, { animate: true });              // Render with animation.
 
-  // branchHistory(entry); // TODO: ??
-  // applyEntry(entry);  // Eventually.
+  branchHistory(entry);
+  applyEntry(entry);  // Eventually.
   }
 
 function handleFreezeAsKnight(currAdvsq) {      // TODO: finish.
@@ -173,9 +171,8 @@ function handleFreezeAsKnight(currAdvsq) {      // TODO: finish.
 
   const { src, srcTile, quad, perimeter, stride, opacity } = currAdvsq;  // Informative.
 
-  
   branchHistory(entry);
-  // applyEntry(entry);  // Eventually.
+  applyEntry(entry);  // Eventually.
  }
 function handleFreezeAsPawn(currAdvsq) {        // TODO: finish.
   console.log("cntrl: gambits.js - handleFreezeAsPawn(currAdvsq)", currAdvsq);
@@ -184,9 +181,8 @@ function handleFreezeAsPawn(currAdvsq) {        // TODO: finish.
 
   const { src, srcTile, quad, perimeter, stride, opacity } = currAdvsq;  // Informative.
 
-  
   branchHistory(entry);
-  // applyEntry(entry);  // Eventually.
+  applyEntry(entry);  // Eventually.
   }
 function handleFreezeAsKing(currAdvsq) {        // TODO: finish.
   console.log("cntrl: gambits.js - handleFreezeAsKing(currAdvsq)", currAdvsq);
@@ -195,9 +191,8 @@ function handleFreezeAsKing(currAdvsq) {        // TODO: finish.
 
   const { src, srcTile, quad, perimeter, stride, opacity } = currAdvsq;  // Informative.
 
-  
   branchHistory(entry);
-  // applyEntry(entry);  // Eventually.
+  applyEntry(entry);  // Eventually.
   }
 
 function handleFreezeAsAPlane(currAdvsq) {      // TODO: finish.
@@ -207,15 +202,13 @@ function handleFreezeAsAPlane(currAdvsq) {      // TODO: finish.
 
   const { src, srcTile, quad, perimeter, stride, opacity } = currAdvsq;  // Informative.
 
-  
   branchHistory(entry);
-  // applyEntry(entry);  // Eventually.
+  applyEntry(entry);  // Eventually.
 }
 
 let rotation = 0; // 0-12: duke: %4=0 => all, else 1,2,3 - rook|bishop: %3=0 => all, else 1,2.
-function handleNextPlane() {                    // TODO: finish.
+function handleNextPlane() {
   console.log("cntrl: gambits.js - handleNextPlane()");
-  //TODO: Complete handleNextPlane().
 
   const entry = state.fetchCurrentState("Gambits"); // Current gambit.
   if(!entry) return;
@@ -317,12 +310,10 @@ function buildAdvRects(srcTile, quadPairs, perimeter, stride, opacity) {
 function branchHistory(entry) {
   console.log("cntrl: gambits.js - branchHistory(entry):", entry);
 
-  console.log("*** top, idx", state.getState()["Gambits"].length, state.getIndices()["Gambits"]);
   if(!state.isAtEnd("Gambits")) {               // Undo branch.
     let top = state.getBufferLength("Gambits");
     const idx = state.getCurrentIndex("Gambits");
     state.truncateState("Gambits", idx);
-    console.log("*** top, idx", top, idx);
     while(top > idx) {
       vGambits.popPanelLine();
       top--;
@@ -337,14 +328,11 @@ function branchHistory(entry) {
 function applyEntry(entry) {   // Clear curr, branch, state change, render, refresh panel.
   console.log("cntrl: gambits.js - applyEntry(entry)", entry);
 
-  if(!state.isAtEnd("Gambits")) {                // Branches undo history, discards original branch.
-    const idx = state.getCurrentIndex("Gambits");
-    state.truncateState("Gambits", idx);
-  }
-
   state.pushNewGambit(entry);          // Log state change in undo buffer.
-  vGambits.renderGambit(entry); 
-  // vGambits.refreshEntry(entry); 
+    vGambits.pushPanelLine(entry);        // Add line to panel.
+    vGambits.refreshPanel(entry);         // Refresh panel (dimmed future rows).
+    // vGambits.refreshEntry(entry); 
+  game.showUndoStatus();
 }
 // Seampoint: more local functions...
 
@@ -360,7 +348,7 @@ function applyEntry(entry) {   // Clear curr, branch, state change, render, refr
    9. ✅ Update specs
   10. ✅ Freeze Linear
   11. ✅ Freeze Duplex
-  12. Freeze Overlap
+  12. ✅ Freeze Overlap
   13. ✅ Plumbing for test suite
   14. Add expand & contract feature
   15. Next fails if dst is offboard (at least for duplex moves)

@@ -80,9 +80,7 @@ export function popPanelLine() {
 export function refreshPanel(board) {
   console.log("view : setup.js - refreshPanel(board):", board);
 
-  // const { boardSize, trayType, trayGap } = board;
-
-  let scroll = document.getElementById("setup-list");     // Scroll list.
+  const scroll = document.getElementById("setup-list");   // Scroll list.
   if(!scroll) return;
 
   const count = state.getIndices().Setup;                 // Scroll text box.
@@ -93,6 +91,8 @@ export function refreshPanel(board) {
       : "0.5";    // future
     children[i].style.opacity = opacity;
   }
+
+  // const { boardSize, trayType, trayGap } = board;
 
   const panel = document.getElementById("setup-window");   // Radio buttons.
   if(!panel) return;

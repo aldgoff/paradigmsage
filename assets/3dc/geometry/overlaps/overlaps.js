@@ -92,15 +92,12 @@ export function getOverlapType(basePiece, quadType, perim, stride) {
 export function findBrookCompanion(advsq) {
   console.log(`model: overlaps.js - findBrookCompanion(advsq):`, advsq);
 
-  const { src, srcTile, quad, perimeter, stride, opacity } = advsq;
-
+  const { src, srcTile, quad, perimeter, stride, area, opacity } = advsq;
   const dstTile = planes.resolveDstTile(srcTile, quad, perimeter, stride);
   const piece = quads.pqrTable(quad).piece;
-  console.log("*** piece dstTile", piece, dstTile);
-
   let spec = null;
 
-  if(     piece === "rook") {  // Given rook advsq, find bishop companion.
+  if(     piece === "rook") {   // Given rook advsq, find bishop companion.
     for(const entry of brook) {
       if(entry.rook.perimeter === perimeter) {
         spec = entry;
@@ -111,19 +108,15 @@ export function findBrookCompanion(advsq) {
 
     const k = spec.bishop.perimeter;
     for(let quad = 13; quad <= 36; quad++) {
-      console.log("*** bishop quad", quad);
       for(const s of spec.bishop.stride) {
         const testDst = planes.resolveDstTile(srcTile, quad, k, s);
-        console.log("  *** testDst", testDst);
         if(testDst === dstTile) {
-          const companion = { src, srcTile, quad: quad, perimeter: k, stride: s, opacity };
-          console.log("*** companion", companion);
-          return { src, srcTile, quad: quad, perimeter: k, stride: s, opacity };  // Bishop advsq.
+          return { src, srcTile, quad: quad, perimeter: k, stride: s, area, opacity };  // Bishop advsq.
         }
       }
     }
     }
-  else if(piece === "bishop") {  // Given bishop advsq, find rook companion.
+  else if(piece === "bishop") { // Given bishop advsq, find rook companion.
     for(const entry of brook) {
       if(entry.bishop.perimeter === perimeter) {
         spec = entry;
@@ -137,25 +130,20 @@ export function findBrookCompanion(advsq) {
       for(const s of spec.rook.stride) {
         const testDst = planes.resolveDstTile(srcTile, quad, k, s);
         if(testDst === dstTile) {
-          return { src, srcTile, quad: quad, perimeter: k, stride: s, opacity };  // Rook advsq.
+          return { src, srcTile, quad: quad, perimeter: k, stride: s, area, opacity };  // Rook advsq.
         }
       }
     }
-  }
-  let companion = null;
-
-  return companion; // Rook or bishop.
+    }
+  else throw new Error("Unable to locate Brook companion.");
   }
 
 export function findQtileCompanion(advsq) {
   console.log(`model: overlaps.js - findQtileCompanion(advsq):`, advsq);
 
-  const { src, srcTile, quad, perimeter, stride, opacity } = advsq;
-
+  const { src, srcTile, quad, perimeter, stride, area, opacity } = advsq;
   const dstTile = planes.resolveDstTile(srcTile, quad, perimeter, stride);
   const piece = quads.pqrTable(quad).piece;
-  console.log("*** piece dstTile", piece, dstTile);
-
   let spec = null;
 
   if(     piece === "rook") {   // Given rook advsq, find bishop companion.
@@ -169,12 +157,10 @@ export function findQtileCompanion(advsq) {
 
     const k = spec.bishop.perimeter;
     for(let quad = 13; quad <= 36; quad++) {
-      console.log("*** bishop quad", quad);
       for(const s of spec.bishop.stride) {
         const testDst = planes.resolveDstTile(srcTile, quad, k, s);
-        console.log("  *** testDst", testDst);
         if(testDst === dstTile) {
-          return { src, srcTile, quad: quad, perimeter: k, stride: s, opacity };  // Bishop advsq.
+          return { src, srcTile, quad: quad, perimeter: k, stride: s, area, opacity };  // Bishop advsq.
         }
       }
     }
@@ -190,12 +176,10 @@ export function findQtileCompanion(advsq) {
 
     const k = spec.duke.perimeter;
     for(let quad = 37; quad <= 60; quad++) {
-      console.log("*** duke quad", quad);
       for(const s of spec.duke.stride) {
         const testDst = planes.resolveDstTile(srcTile, quad, k, s);
-        console.log("  *** testDst", testDst);
         if(testDst === dstTile) {
-          return { src, srcTile, quad: quad, perimeter: k, stride: s, opacity };  // Duke advsq.
+          return { src, srcTile, quad: quad, perimeter: k, stride: s, area, opacity };  // Duke advsq.
         }
       }
     }
@@ -214,28 +198,23 @@ export function findQtileCompanion(advsq) {
       for(const s of spec.rook.stride) {
         const testDst = planes.resolveDstTile(srcTile, quad, k, s);
         if(testDst === dstTile) {
-          return { src, srcTile, quad: quad, perimeter: k, stride: s, opacity };
+          return { src, srcTile, quad: quad, perimeter: k, stride: s, area, opacity };
         }
       }
     }
-  }
-
-  let companion = null;
-  return companion; // Rook or bishop.
+    }
+  else throw new Error("Unable to locate Qtile companion.");
   }
 
 export function findHotspotCompanion(advsq) {
   console.log("geometry: overlaps.js - findHotspotCompanion()", advsq);
 
-  const { src, srcTile, quad, perimeter, stride, opacity } = advsq;
-
+  const { src, srcTile, quad, perimeter, stride, area, opacity } = advsq;
   const dstTile = planes.resolveDstTile(srcTile, quad, perimeter, stride);
   const piece = quads.pqrTable(quad).piece;
-  console.log("*** piece dstTile", piece, dstTile);
-
   let spec = null;
 
-  if(     piece === "rook") {  // Given rook advsq, find duke companion.
+  if(     piece === "rook") {   // Given rook advsq, find duke companion.
     for(const entry of hotspot) {
       if(entry.rook.perimeter === perimeter) {
         spec = entry;
@@ -245,20 +224,16 @@ export function findHotspotCompanion(advsq) {
     if(!spec) throw new Error("Hotspot map entry not found for rook.");
 
     const k = spec.duke.perimeter;
-    for(let dukeQuad = 37; dukeQuad <= 60; dukeQuad++) {
-      console.log("*** duke quad", dukeQuad);
+    for(let quad = 37; quad <= 60; quad++) {
       for(const s of spec.duke.stride) {
-        const testDst = planes.resolveDstTile(srcTile, dukeQuad, k, s);
-        console.log("  *** testDst", testDst);
+        const testDst = planes.resolveDstTile(srcTile, quad, k, s);
         if(testDst === dstTile) {
-          const companion = { src, srcTile, quad: dukeQuad, perimeter: k, stride: s, opacity };
-          console.log("*** companion", companion);
-          return { src, srcTile, quad: dukeQuad, perimeter: k, stride: s, opacity };
+          return { src, srcTile, quad: quad, perimeter: k, stride: s, area, opacity };
         }
       }
     }
     }
-  else if(piece === "duke") {  // Given duke advsq, find rook companion.
+  else if(piece === "duke") {   // Given duke advsq, find rook companion.
     for(const entry of hotspot) {
       if(entry.duke.perimeter === perimeter) {
         spec = entry;
@@ -272,29 +247,24 @@ export function findHotspotCompanion(advsq) {
       for(const s of spec.rook.stride) {
         const testDst = planes.resolveDstTile(srcTile, quad, k, s);
         if(testDst === dstTile) {
-          return { src, srcTile, quad: quad, perimeter: k, stride: s, opacity };
+          return { src, srcTile, quad: quad, perimeter: k, stride: s, area, opacity };
         }
       }
     }
-  }
+    }
+  else throw new Error("Unable to locate Hotspot companion.");
   }
 
 export function findFeynmanCompanion(advsq) {
   console.log(`model: overlaps.js - findFeynmanCompanion(advsq):`, advsq);
 
-  const { src, srcTile, quad, perimeter, stride, opacity } = advsq;
-
-  let companion = null;
-
+  const { src, srcTile, quad, perimeter, stride, area, opacity } = advsq;
   const dstTile = planes.resolveDstTile(srcTile, quad, perimeter, stride);
   const piece = quads.pqrTable(quad).piece;
-  console.log("*** piece dstTile", piece, dstTile);
-
   let spec = null;
 
-  if(     piece === "bishop") {
+  if(     piece === "bishop") { // Given bishop advsq, find duke companion.
     for(const entry of Feynman) {
-      console.log("*** entry", entry);
       if(entry.bishop.perimeter === perimeter) {
         spec = entry;
         break;
@@ -303,21 +273,17 @@ export function findFeynmanCompanion(advsq) {
     if(!spec) throw new Error("Feynman map entry not found for bishop.");
 
     const k = spec.duke.perimeter;
-    for(let dukeQuad = 37; dukeQuad <= 60; dukeQuad++) {
-      console.log("*** duke quad", dukeQuad);
+    for(let quad = 37; quad <= 60; quad++) {
       for(const s of spec.duke.stride) {
-        const testDst = planes.resolveDstTile(srcTile, dukeQuad, k, s);
-        console.log("  *** testDst", testDst);
+        const testDst = planes.resolveDstTile(srcTile, quad, k, s);
         if(testDst === dstTile) {
           const area = (k+1)*(k+1);
-          // const companion = { src, srcTile, quad: dukeQuad, perimeter: k, stride: s, area, opacity };
-          // console.log("*** companion", companion);
-          return { src, srcTile, quad: dukeQuad, perimeter: k, stride: s, area, opacity };
+          return { src, srcTile, quad: quad, perimeter: k, stride: s, area, opacity };
         }
       }
     }
-  }
-  else if(piece === "duke") {
+    }
+  else if(piece === "duke") {   // Given duke advsq, find bishop companion.
     for(const entry of Feynman) {
       if(entry.duke.perimeter === perimeter) {
         spec = entry;
@@ -331,18 +297,12 @@ export function findFeynmanCompanion(advsq) {
       for(const s of spec.bishop.stride) {
         const testDst = planes.resolveDstTile(srcTile, bishopQuad, k, s);
         if(testDst === dstTile) {
-        // if(utils.isSame(testDst, dstTile)) {
-          return { src, srcTile, quad: bishopQuad, perimeter: k, stride: s, opacity };
+          return { src, srcTile, quad: bishopQuad, perimeter: k, stride: s, area, opacity };
         }
       }
     }
-  }
-
-  // TODO: tbd.
-
-  throw new Error("Unable to locate Feynman companion.");
-
-  return companion; // Rook or bishop.
+    }
+  else throw new Error("Unable to locate Feynman companion.");
 }
 // Seampoint: more global functions...
 

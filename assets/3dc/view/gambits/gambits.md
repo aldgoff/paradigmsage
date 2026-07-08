@@ -290,8 +290,11 @@
       "opacity":0.5}],
   "AdvSqs":[]}
 
- ### 8.5 Scenario: Brook - Perimeter 5
-  **1-0-1-0**
+ ### 8.5 Scenario: Double Feynman
+  1 Feynman B KB4,4 → KR6,6   : 9 LFU,RFU
+  2 Q22     B Q4,4  → KB2,4   : 9 RBU,LBU
+  **1-0-2-5**
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}}],"Moves":[],"Gambits":[{"gambit":0,"action":"overlap","value":"Feynman","piece":"bishop","src":"KB4,4","dst":"KR6,6","rays":["LFU","RFU"],"advsqs":[{"src":"KB4,4","srcTile":[0,0,0],"quad":13,"perimeter":2,"stride":3,"area":9,"opacity":0.5},{"src":"KB4,4","srcTile":[0,0,0],"quad":38,"perimeter":3,"stride":2,"area":16,"opacity":0.5}],"opacity":0.5},{"gambit":1,"action":"quadrant","value":22,"piece":"bishop","src":"Q4,4","dst":"KB2,4","rays":["RBU","LBU"],"advsqs":[{"src":"Q4,4","srcTile":[0,0,0],"quad":22,"perimeter":2,"stride":1,"area":9}],"opacity":0.5}],"AdvSqs":[{"src":"Q4,4","srcTile":[0,0,0],"quad":1,"perimeter":1,"stride":2,"area":0,"opacity":0.5},{"src":"Q4,4","srcTile":[0,0,0],"quad":1,"perimeter":2,"stride":3,"area":4,"opacity":0.5},{"src":"Q4,4","srcTile":[0,0,0],"quad":1,"perimeter":3,"stride":4,"area":9,"opacity":0.5},{"src":"Q4,4","srcTile":[0,0,0],"quad":1,"perimeter":4,"stride":5,"area":16,"opacity":0.5},{"src":"Q4,4","srcTile":[0,0,0],"quad":1,"perimeter":5,"stride":6,"area":25,"opacity":0.5}]}
 
 
 

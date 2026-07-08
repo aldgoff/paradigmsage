@@ -493,8 +493,8 @@ function applyEntry(entry) {
   console.log("cntrl: setup.js - applyEntry(entry):", entry);
 
   state.pushNewSetup(entry);          // Log state change in undo buffer.
-  vSetup.pushPanelLine(entry);        // Add line to panel.
-  vSetup.refreshPanel(entry);         // Only needed by panels with derived fields.
+    vSetup.pushPanelLine(entry);        // Add line to panel.
+    vSetup.refreshPanel(entry);         // Refresh panel (dimmed future rows).
   game.showUndoStatus();
 }
 // Seampoint: more local functions...

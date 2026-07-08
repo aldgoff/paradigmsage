@@ -123,10 +123,10 @@ function handleGrow(payload) {
   perimeter++;                                                        // Manipulate fields.
   if(perimeter  >  0) mAdvsqs.buttonAffordances("adv-sq");
 
-  const nextEntry = { src, srcTile, quad, perimeter, stride, area, opacity };           // Repack normalized fields.
+  const entry = { src, srcTile, quad, perimeter, stride, area, opacity };           // Repack normalized fields.
 
-  branchHistory(nextEntry);
-  applyEntry(nextEntry);  // Clear curr, branch, state change, render, refresh panel.
+  branchHistory(entry);               // Manage undo history when branched.
+  applyEntry(entry);  // Clear curr, branch, state change, render, refresh panel.
   updateGambitPanelButtons(quad, perimeter, stride);
   }
 
@@ -147,9 +147,10 @@ function handleShrink(payload) {
   if(perimeter === 0) mAdvsqs.buttonAffordances("src-tile");
   if(perimeter  >  0) mAdvsqs.buttonAffordances("adv-sq");
 
-  const nextEntry = { src, srcTile, quad, perimeter, stride, area, opacity };           // Repack normalized fields.
+  const entry = { src, srcTile, quad, perimeter, stride, area, opacity };           // Repack normalized fields.
 
-  applyEntry(nextEntry);  // Clear curr, branch, state change, render, refresh panel.
+  branchHistory(entry);               // Manage undo history when branched.
+  applyEntry(entry);  // Clear curr, branch, state change, render, refresh panel.
   updateGambitPanelButtons(quad, perimeter, stride);
   }
 
@@ -185,9 +186,10 @@ function handleUpdateParam(payload) {
   if(perimeter === 0) mAdvsqs.buttonAffordances("src-tile");
   if(perimeter  >  0) mAdvsqs.buttonAffordances("adv-sq");
 
-  const nextEntry = { src, srcTile, quad, perimeter, stride, area, opacity };           // Repack normalized fields.
+  const entry = { src, srcTile, quad, perimeter, stride, area, opacity };           // Repack normalized fields.
 
-  applyEntry(nextEntry);  // Clear curr, branch, state change, render, refresh panel.
+  branchHistory(entry);               // Manage undo history when branched.
+  applyEntry(entry);  // Clear curr, branch, state change, render, refresh panel.
   updateGambitPanelButtons(quad, perimeter, stride);
   }
 
@@ -199,17 +201,18 @@ function handleNudgeSrc(payload) {
   const current = state.fetchCurrentState("AdvSqs");                           // Prepacked normalized fields.
   if (!current) return;
 
-  let nextEntry = {      // Safe clone.
+  let entry = {      // Safe clone.
     ...current,
     srcTile: [...current.srcTile]
   };
 
-  if (axis === "z")      nextEntry.srcTile[0] += delta;                      // Manipulate fields.
-  else if (axis === "x") nextEntry.srcTile[1] += delta;
-  else if (axis === "y") nextEntry.srcTile[2] += delta;
+  if (axis === "z")      entry.srcTile[0] += delta;                      // Manipulate fields.
+  else if (axis === "x") entry.srcTile[1] += delta;
+  else if (axis === "y") entry.srcTile[2] += delta;
   else throw new Error("Invalid axis");
 
-  applyEntry(nextEntry);  // Clear curr, branch, state change, render, refresh panel.
+  branchHistory(entry);               // Manage undo history when branched.
+  applyEntry(entry);  // Clear curr, branch, state change, render, refresh panel.
   }
 
 function handleNextQuad(payload) {
@@ -225,9 +228,10 @@ function handleNextQuad(payload) {
   }
   stride = 1; // First stride.
 
-  const nextEntry = { src, srcTile, quad, perimeter, stride, area, opacity };           // Repack normalized fields.
+  const entry = { src, srcTile, quad, perimeter, stride, area, opacity };           // Repack normalized fields.
 
-  applyEntry(nextEntry);  // Clear curr, branch, state change, render, refresh panel.
+  branchHistory(entry);               // Manage undo history when branched.
+  applyEntry(entry);  // Clear curr, branch, state change, render, refresh panel.
   updateGambitPanelButtons(quad, perimeter, stride);
   }
 
@@ -244,9 +248,10 @@ function handleNextPlane(payload) {
   }
   stride = 1; // First stride.
 
-  const nextEntry = { src, srcTile, quad, perimeter, stride, area, opacity };           // Repack normalized fields.
+  const entry = { src, srcTile, quad, perimeter, stride, area, opacity };           // Repack normalized fields.
 
-  applyEntry(nextEntry);  // Clear curr, branch, state change, render, refresh panel.
+  branchHistory(entry);               // Manage undo history when branched.
+  applyEntry(entry);  // Clear curr, branch, state change, render, refresh panel.
   updateGambitPanelButtons(quad, perimeter, stride);
   }
 
@@ -263,9 +268,10 @@ function handleNextPiece(payload) {
   }
   stride = 1; // First stride.
 
-  const nextEntry = { src, srcTile, quad, perimeter, stride, area, opacity };           // Repack normalized fields.
+  const entry = { src, srcTile, quad, perimeter, stride, area, opacity };           // Repack normalized fields.
 
-  applyEntry(nextEntry);  // Clear curr, branch, state change, render, refresh panel.
+  branchHistory(entry);               // Manage undo history when branched.
+  applyEntry(entry);  // Clear curr, branch, state change, render, refresh panel.
   updateGambitPanelButtons(quad, perimeter, stride);
 }
 // Seampoint: more handlers...
@@ -321,7 +327,8 @@ function applyEntry(entry) {   // Clear curr, branch, state change, render, refr
   vAdvsqs.render(entry);              // Render the new advsq.
 
   state.pushNewAdvsq(entry);          // Log state change in undo buffer.
-  vAdvsqs.refreshPanel(entry);        // Only needed by panels with derived fields.
+
+    vAdvsqs.refreshPanel(entry);         // Refresh panel (dimmed future rows).
   game.showUndoStatus();
   }
 

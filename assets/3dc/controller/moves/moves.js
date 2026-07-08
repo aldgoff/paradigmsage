@@ -137,6 +137,7 @@ function handleMove(payload, selections) {      // Create from panel.
   const entry = mMoves.makeMoveEntry(payload, selections);
   forewardMove(entry);
 
+  branchHistory(entry);               // Manage undo history when branched.
   applyEntry(entry);
   }
 
@@ -147,6 +148,7 @@ function handleCapture(payload, selections) {   // Create from panel.
   const entry = mMoves.makeCaptureEntry(payload, selections);
   forewardCapture(entry);
 
+  branchHistory(entry);               // Manage undo history when branched.
   applyEntry(entry);
   }
 
@@ -158,6 +160,7 @@ function handleFission(payload, selections) {   // Create from panel.
   const entry = mMoves.makeFissionEntry(payload, selections);
   forewardFission(entry);
 
+  branchHistory(entry);               // Manage undo history when branched.
   applyEntry(entry);
   }
 
@@ -168,6 +171,7 @@ function handleEnpassant(payload, selections) { // Create from panel.
   const entry = mMoves.makeEnpassantEntry(payload, selections);
   forewardEnpassant(entry);
 
+  branchHistory(entry);               // Manage undo history when branched.
   applyEntry(entry);
   }
 
@@ -178,6 +182,7 @@ function handleCastle(payload, selections) {    // Create from panel.
   const entry = mMoves.makeCastleEntry(payload, selections);
   forewardCastle(entry);
 
+  branchHistory(entry);               // Manage undo history when branched.
   applyEntry(entry);
   }
 
@@ -188,6 +193,7 @@ function handlePromote(payload, selections) {   // Create from panel.
   const entry = mMoves.makePromoteEntry(payload, selections);
   forewardPromote(entry);
 
+  branchHistory(entry);               // Manage undo history when branched.
   applyEntry(entry);
   }
 
@@ -607,10 +613,12 @@ function branchHistory(entry) {
 function applyEntry(entry) {
   console.log("cntrl: moves.js - applyEntry(entry)", entry);
 
-  branchHistory(entry);               // Manage undo history when branched.
+  // branchHistory(entry);               // Manage undo history when branched.
+
   state.pushNewMove(entry);           // Change state.
-  vMoves.pushPanelLine(entry);        // Add line to panel.
-  vMoves.refreshPanel(entry);         // Refresh panel (dimmed future rows).
+    vMoves.pushPanelLine(entry);        // Add line to panel.
+    vMoves.refreshPanel(entry);         // Refresh panel (dimmed future rows).
+  game.showUndoStatus();
 }
 // Seampoint: more local functions...
 

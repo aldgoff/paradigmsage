@@ -106,7 +106,7 @@ export function refreshPanel(advsq) {
   panel.querySelector('[name="advsq-perimeter"]').value    = perimeter;
   panel.querySelector('[name="advsq-stride"]').value       = stride;
   panel.querySelector('[name="advsq-opacity"]').value      = opacity;
-}
+  }
 
 export function refreshEntry(entry) {
   console.log("view : advsqs.js - refreshEntry(entry):", entry);

@@ -241,7 +241,7 @@ async function handleLoad() {
         else if(key === "Moves")   { vMoves.pushPanelLine(entry); }
         else if(key === "Gambits") { vGambits.pushPanelLine(entry);
           const group = vGambits.makeGroup(entry);        // Create mesh group.
-          vGambits.getGambitGroups().push(group);                 // Store it.
+          vGambits.getGambitGroups().push(group);         // Store it.
         }
         else if(key === "AdvSqs")  { /* Has no scroll list. */ }
         else  { throw new Error(`Unknown entry key ${key}.`); }
@@ -262,6 +262,7 @@ async function handleLoad() {
     mMoves.buttonAffordances("off");
     mGambits.buttonAffordances("off");
     mAdvsqs.buttonAffordances("default");
+
     panels.diagnostics();
 
     showUndoStatus();                 // Visual indicator of successful load.
@@ -431,7 +432,6 @@ function processUndoBuffer(key, idx) {
     }
   else if(key === "Gambits") {
     const entry = state.fetchCurrentState("Gambits");
-
     if(!entry) {
       console.log("*** No prev gambit.");
       return false;
@@ -445,12 +445,12 @@ function processUndoBuffer(key, idx) {
     }
   else if(key === "Moves") {
     const entry = state.fetchCurrentState("Moves");
-
     if(!entry) {
       console.log("*** No prev move.");
       return false;
     }
     state.setBufferIndex("Moves", idx-1);
+
     cMoves.buildBackward(entry);
 
     cSetup.clearAllTileSelections();
@@ -462,15 +462,16 @@ function processUndoBuffer(key, idx) {
     }
   else if(key === "Setup") {
     const entry = state.fetchCurrentState("Setup");
-
-    if(entry) {
-      state.setBufferIndex("Setup", idx-1);
-
-      cSetup.buildBackward(entry);
-
-      cSetup.clearAllTileSelections();
-      cSetup.clearAllPieceSelections();
+    if(!entry) {
+      console.log("*** No prev setup.");
+      return false;
     }
+    state.setBufferIndex("Setup", idx-1);
+
+    cSetup.buildBackward(entry);
+
+    cSetup.clearAllTileSelections();
+    cSetup.clearAllPieceSelections();
 
     cSelects.manageSetupButtons();
 
@@ -486,12 +487,12 @@ function processRedoBuffer(key, idx) {
 
   if(     key === "Setup") {
     state.setBufferIndex("Setup", idx + 1);
-
     const entry = state.fetchCurrentState("Setup");
     if(!entry) {
       console.log("*** No next setup.");
       return false;
     }
+
     cSetup.buildForward(entry);
 
     cSetup.clearAllTileSelections();
@@ -503,12 +504,12 @@ function processRedoBuffer(key, idx) {
     }
   else if(key === "Moves") {
     state.setBufferIndex("Moves", idx + 1);
-
     const entry = state.fetchCurrentState("Moves");
     if(!entry) {
       console.log("*** No next move.");
       return false;
     }
+
     cMoves.buildForward(entry);
 
     cSetup.clearAllTileSelections();
@@ -520,7 +521,6 @@ function processRedoBuffer(key, idx) {
     }
   else if(key === "Gambits") {
     state.setBufferIndex("Gambits", idx + 1);
-
     const entry = state.fetchCurrentState("Gambits");
     if(!entry) {
       console.log("*** No next gambit.");
@@ -556,7 +556,7 @@ function processRedoBuffer(key, idx) {
     }
         
     cSelects.manageAdvsqButtons();
-
+    cSelects.manageGambitButtons();
     }
   else {  // Unreachable.
     throw new Error(`Unknown or missing key in redo ${key}.`);

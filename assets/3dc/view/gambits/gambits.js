@@ -62,7 +62,7 @@ export function clearGambits() {
         tile.remove(overlay);
       });
   }  
-}
+  }
 
 export function pushPanelLine(entry) {
   console.log("view : gambits.js - pushPanelLine(entry)", entry);
@@ -79,35 +79,6 @@ export function pushPanelLine(entry) {
   scroll.appendChild(div);
   scroll.scrollTop = scroll.scrollHeight;
   }
-function assembleLine(entry) {
-  console.log("view : gambits.js - assembleLine(entry)", entry);
-
-  const { gambit, action, value, piece, src, dst, rays, advsqs } = entry;
-
-  const count  = state.getIndices().Gambits;
-  const symbol = action[0].toUpperCase();
-
-  const p      = piece[0].toUpperCase();
-  let area = (advsqs[0].length > 1)
-    ? `${advsqs[0][0].area}`.padStart(2)
-    : `${advsqs[0].area}`.padStart(2);
-  const feedback = `${area} ${rays}`;
-
-  // --- column widths ---
-  const idxCol  = String(count).padStart(2);      // right-aligned
-  const sCol = (symbol === 'O') 
-    ? `${value}`.padEnd(7)  // "Feynman ".
-    : `${symbol}${value}`.padEnd(7)  // "Q37 ";
-  // const sCol    = `${symbol}${value}`.padEnd(3);  // "Q37 "
-  const pCol    = `${p}`.padEnd(1);               // "R "
-  const srcCol  = String(src).padEnd(5);          // "KB4,4  "
-  const dstCol  = String(dst).padEnd(8);          // allow offboard arrays
-  const areaCol = String(feedback).padStart(2);   // right-aligned
-
-  const line = `${idxCol} ${sCol} ${pCol} ${srcCol} → ${dstCol}:${areaCol}`;
-  
-  return line;
-}
 
 export function popPanelLine() {
   console.log("view : gambits.js - popPanelLine()");
@@ -125,7 +96,7 @@ export function refreshPanel(gambit) {
   console.log("view : gambits.js - refreshPanel(gambit)", gambit);
 
   const scroll = document.getElementById("gambit-list");  // Scroll list.
-  if (!scroll) return;
+  if(!scroll) return;
 
   const count = state.getIndices().Gambits;               // Scroll text box.
   const children = scroll.children;
@@ -408,6 +379,35 @@ export function setLevelSep(levelSep) {
 // Seampoint: more global functions...
 
 //--- Helpers ---
+function assembleLine(entry) {
+  console.log("view : gambits.js - assembleLine(entry)", entry);
+
+  const { gambit, action, value, piece, src, dst, rays, advsqs } = entry;
+
+  const count  = state.getIndices().Gambits;
+  const symbol = action[0].toUpperCase();
+
+  const p      = piece[0].toUpperCase();
+  let area = (advsqs[0].length > 1)
+    ? `${advsqs[0][0].area}`.padStart(2)
+    : `${advsqs[0].area}`.padStart(2);
+  const feedback = `${area} ${rays}`;
+
+  // --- column widths ---
+  const idxCol  = String(count).padStart(2);      // right-aligned
+  const sCol = (symbol === 'O') 
+    ? `${value}`.padEnd(7)  // "Feynman ".
+    : `${symbol}${value}`.padEnd(7)  // "Q37 ";
+  const pCol    = `${p}`.padEnd(1);               // "R "
+  const srcCol  = String(src).padEnd(5);          // "KB4,4  "
+  const dstCol  = String(dst).padEnd(8);          // allow offboard arrays
+  const areaCol = String(feedback).padStart(2);   // right-aligned
+
+  const line = `${idxCol} ${sCol} ${pCol} ${srcCol} → ${dstCol}:${areaCol}`;
+  
+  return line;
+  }
+
 function applyOpacity(obj, opacity) {
   if (obj.material) {
     obj.material.transparent = true;
