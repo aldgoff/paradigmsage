@@ -115,21 +115,6 @@ export function refreshEntry(entry) {
   refreshPanel(gambit);
   }
 
-export function renderGambit(entry) {
-  console.log("view : gambits.js - renderGambit(entry):", entry);
-
-  // const line = "Reduce entry to line.";
-  const symbol   = "S";
-  const value    = "60";
-  const piece    = "P";
-  const src      = "src";
-  const dst      = "dst";
-  const feedback = "F";
-  const line = { symbol, value, piece, src, dst, feedback };
-
-  pushPanelLine(line);
-}
-
 export function makeGroup(entry) {
   console.log("view : gambits.js - makeGroup(entry).", entry);
 
@@ -336,28 +321,18 @@ export function render(group, { animate = false } = {}) {
   function attachOverlays(overlays) {
     overlays.forEach(o => {
       const tile = o.userData?.parentTile;
-
-      if (tile && !o.parent) {
+      if(tile && !o.parent) {
         tile.add(o);
       }
     });
   }
 
-  // --- Root overlays ---
-  attachOverlays(
-    group.userData?.overlays || []
-  );
+  attachOverlays(group.userData?.overlays || []);  // --- Root overlays ---
+  const planeGroups = group.userData?.planes || [];  // --- Plane overlays ---
 
-  // --- Plane overlays ---
-  const planeGroups = group.userData?.planes || [];
+  planeGroups.forEach(pg => { attachOverlays(pg.userData?.overlays || []); });
 
-  planeGroups.forEach(pg => {
-    attachOverlays(
-      pg.userData?.overlays || []
-    );
-  });
-
-  if (animate) {
+  if(animate) {
     animateFreezeTransition(group);
   }
   }
@@ -367,7 +342,7 @@ export function cancelAnimation() {
     activeAnimation.cancelled = true;
     activeAnimation = null;
   }
-}
+  }
 
 export function setLevelSep(levelSep) {
   console.log("view : gambits.js - setLevelSep(levelSep):", levelSep);
@@ -431,7 +406,7 @@ function animateFreezeTransition(group, duration = 0.8) {
   const anim = { cancelled: false };
   activeAnimation = anim;
 
-    const start = performance.now();
+  const start = performance.now();
 
   function step(now) {
     if (anim.cancelled) return;   // 🔥 STOP if invalidated
@@ -460,27 +435,27 @@ function animateFreezeTransition(group, duration = 0.8) {
   }
 
   requestAnimationFrame(step);
-  }
+}
 
 function derenderGambit(group) {
   console.log("view : gambits.js - derenderGambit(group)", group);
 
   if (!group) return;
 
-  // --- Remove overlays (THIS is what clears onboard visuals) ---
-  if (group.userData?.overlays) {
-    group.userData.overlays.forEach(o => {
-      if (o.parent) o.parent.remove(o);
-    });
+  removeOverlays(group.userData.overlays);
+
+  for (const pg of group.userData.planes || []) {
+      removeOverlays(pg.userData.overlays);
   }
 
-  // --- Remove offboard tiles ---
-  if (group.parent) {
-    group.parent.remove(group);
-  } else {
-    view.getContext().scene.remove(group);
-  }
-  }
+  view.getContext().scene.remove(group);
+}
+function removeOverlays(list) {
+    for (const o of list) {
+        if (o.parent)
+            o.parent.remove(o);
+    }
+}
 // Seampoint: more local functions...
 
 /* TODO: Gambit additions:

@@ -166,7 +166,7 @@ title: "Dev"
   - 7/05/26 - Make hotspot entry.
   - 7/06/26 - Render hotspots. Restore the gambit next plane feature.
   - 7/07/26 - Feynman overlap. Brook overlap. Qtile overlap. Gambit line QC.
-  - 7/08/26 - QC modules.
+  - 7/08/26 - QC modules. Fix gambit manual/load undo bug.
 
 
 ## Move Lines:

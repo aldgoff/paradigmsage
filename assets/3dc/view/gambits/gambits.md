@@ -62,7 +62,14 @@
 
 ## 7. Loads:
  ### 7. Scenario:
+  1 Q1      R KB4,4 → KB7,7   :16 left_fore,right_fore
+  2 L1      B Q4,4  → KN7,4   :16 LFU
+  3 DMM     D Q4,4  → KR4,4   : 9 1,0,0
+
   **1-0-3-0**
+
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}}],"Moves":[],"Gambits":[{"gambit":0,"action":"quadrant","value":1,"piece":"rook","src":"KB4,4","dst":"KB7,7","rays":["left_fore","right_fore"],"advsqs":[{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":3,"stride":4,"area":16}],"opacity":0.5},{"gambit":1,"action":"linear","value":"1","piece":"bishop","src":"Q4,4","dst":"KN7,4","rays":"LFU","advsqs":[[{"src":"Q4,4","srcTile":[0,0,0],"quad":18,"perimeter":3,"stride":1,"area":16},{"src":"Q4,4","srcTile":[0,0,0],"quad":13,"perimeter":3,"stride":1,"area":16}],[{"src":"Q4,4","srcTile":[0,0,0],"quad":25,"perimeter":3,"stride":1,"area":16},{"src":"Q4,4","srcTile":[0,0,0],"quad":26,"perimeter":3,"stride":1,"area":16}]],"opacity":0.5},{"gambit":2,"action":"duplex","value":"MM","piece":"duke","src":"Q4,4","dst":"KR4,4","rays":[1,0,0],"advsqs":[{"src":"Q4,4","srcTile":[0,0,0],"quad":38,"perimeter":2,"stride":3,"area":9},{"src":"Q4,4","srcTile":[0,0,0],"quad":41,"perimeter":2,"stride":3,"area":9}],"opacity":0.5}],"AdvSqs":[]}
+
   {"Setup":[],"Moves":[],"Gambits":[{"gambit":0,"action":"quadrant","value":1,"piece":"rook","src":"KB4,4","dst":"KB7,7","rays":["left_fore","right_fore"],"advsqs":[{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":3,"stride":4,"area":16}],"opacity":0.5},{"gambit":1,"action":"linear","value":"1","piece":"bishop","src":"Q4,4","dst":"KN7,4","rays":"LFU","advsqs":[[{"src":"Q4,4","srcTile":[0,0,0],"quad":18,"perimeter":3,"stride":1,"area":16},{"src":"Q4,4","srcTile":[0,0,0],"quad":13,"perimeter":3,"stride":1,"area":16}],[{"src":"Q4,4","srcTile":[0,0,0],"quad":25,"perimeter":3,"stride":1,"area":16},{"src":"Q4,4","srcTile":[0,0,0],"quad":26,"perimeter":3,"stride":1,"area":16}]],"opacity":0.5},{"gambit":2,"action":"duplex","value":"MM","piece":"duke","src":"Q4,4","dst":"KR4,4","rays":[1,0,0],"advsqs":[{"src":"Q4,4","srcTile":[0,0,0],"quad":38,"perimeter":2,"stride":3,"area":9},{"src":"Q4,4","srcTile":[0,0,0],"quad":41,"perimeter":2,"stride":3,"area":9}],"opacity":0.5}],"AdvSqs":[]}
 
 
@@ -296,8 +303,6 @@
   **1-0-2-5**
   {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}}],"Moves":[],"Gambits":[{"gambit":0,"action":"overlap","value":"Feynman","piece":"bishop","src":"KB4,4","dst":"KR6,6","rays":["LFU","RFU"],"advsqs":[{"src":"KB4,4","srcTile":[0,0,0],"quad":13,"perimeter":2,"stride":3,"area":9,"opacity":0.5},{"src":"KB4,4","srcTile":[0,0,0],"quad":38,"perimeter":3,"stride":2,"area":16,"opacity":0.5}],"opacity":0.5},{"gambit":1,"action":"quadrant","value":22,"piece":"bishop","src":"Q4,4","dst":"KB2,4","rays":["RBU","LBU"],"advsqs":[{"src":"Q4,4","srcTile":[0,0,0],"quad":22,"perimeter":2,"stride":1,"area":9}],"opacity":0.5}],"AdvSqs":[{"src":"Q4,4","srcTile":[0,0,0],"quad":1,"perimeter":1,"stride":2,"area":0,"opacity":0.5},{"src":"Q4,4","srcTile":[0,0,0],"quad":1,"perimeter":2,"stride":3,"area":4,"opacity":0.5},{"src":"Q4,4","srcTile":[0,0,0],"quad":1,"perimeter":3,"stride":4,"area":9,"opacity":0.5},{"src":"Q4,4","srcTile":[0,0,0],"quad":1,"perimeter":4,"stride":5,"area":16,"opacity":0.5},{"src":"Q4,4","srcTile":[0,0,0],"quad":1,"perimeter":5,"stride":6,"area":25,"opacity":0.5}]}
 
-
-
  ### 8.6 Scenario: Brook - Perimeter 3
   **1-0-1-0**
   {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}}],"Moves":[],"Gambits":[{"gambit":0,"action":"overlap","value":"brook","piece":"rook","src":"KB4,4","dst":"KB7,7","rays":null,"advsqs":[[{"src":"KB4,4","srcTile":[2,0,0],"quad":1,"perimeter":3,"stride":4,"area":16}],[[{"src":"KB4,4","srcTile":[2,0,0],"quad":26,"perimeter":3,"stride":7,"area":16},{"src":"KB4,4","srcTile":[2,0,0],"quad":27,"perimeter":3,"stride":7,"area":16}],[{"src":"KB4,4","srcTile":[2,0,0],"quad":32,"perimeter":3,"stride":7,"area":16},{"src":"KB4,4","srcTile":[2,0,0],"quad":33,"perimeter":3,"stride":7,"area":16}]]],"opacity":0.5}],"AdvSqs":[]}
@@ -314,7 +319,6 @@
        [{"src":"KB4,4","srcTile":[2,0,0],"quad":32,"perimeter":3,"stride":7,"area":16},{"src":"KB4,4","srcTile":[2,0,0],"quad":33,"perimeter":3,"stride":7,"area":16}]]],
       "opacity":0.5}],
   "AdvSqs":[]}
-
 
  ### 8.6 Scenario: Brook - Perimeter 5
    1 Obrook R K2,1  → K7,6    :undefined null
@@ -334,11 +338,9 @@
       "opacity":0.5}],
   "AdvSqs":[]}
 
-
  ### 8.6 Scenario: Qtile - Perimeter 6
   **1-0-1-0**
   {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}}],"Moves":[],"Gambits":[{"gambit":0,"action":"overlap","value":"qtile","piece":"rook","src":"KB1,2","dst":"KB7,8","rays":null,"advsqs":[[{"src":"KB1,2","srcTile":[2,-3,-2],"quad":1,"perimeter":6,"stride":7,"area":49}],[[{"src":"KB1,2","srcTile":[2,-3,-2],"quad":26,"perimeter":6,"stride":13,"area":49},{"src":"KB1,2","srcTile":[2,-3,-2],"quad":27,"perimeter":6,"stride":13,"area":49}],[{"src":"KB1,2","srcTile":[2,-3,-2],"quad":32,"perimeter":6,"stride":13,"area":49},{"src":"KB1,2","srcTile":[2,-3,-2],"quad":33,"perimeter":6,"stride":13,"area":49}]],[{"src":"KB1,2","srcTile":[2,-3,-2],"quad":37,"perimeter":3,"stride":4,"area":49}]],"opacity":0.5}],"AdvSqs":[]}
-
 
  ### 8.6 Scenario: Qtile - Perimeter 4
    1 Oqtile R KB4,4 → K5,6    :undefined null
@@ -382,23 +384,92 @@
 
 
 
-{"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}}],
-"Moves":[],
-"Gambits":[
-  {"gambit":0,"action":"overlap","value":"Feynman","piece":"bishop","src":"KB4,4","dst":"KR6,6","rays":["LFU","RFU"],"advsqs":[
-    {"src":"KB4,4","srcTile":[0,0,0],"quad":13,"perimeter":2,"stride":3,"opacity":0.5},
-    {"src":"KB4,4","srcTile":[0,0,0],"quad":38,"perimeter":3,"stride":2,"opacity":0.5}],
-    "opacity":0.5},
-  {"gambit":1,"action":"overlap","value":"Feynman","piece":"bishop","src":"Q4,4","dst":"KR2,2","rays":["RBU","LBU"],"advsqs":[
-    {"src":"Q4,4","srcTile":[0,0,0],"quad":22,"perimeter":2,"stride":3,"opacity":0.5},
-    {"src":"Q4,4","srcTile":[0,0,0],"quad":38,"perimeter":3,"stride":6,"opacity":0.5}],
-    "opacity":0.5},
-  {"gambit":2,"action":"quadrant","value":1,"piece":"rook","src":"Q4,4","dst":"QB7,7","rays":["left_fore","right_fore"],"advsqs":[
-    {"src":"Q4,4","srcTile":[-1,0,0],"quad":1,"perimeter":3,"stride":4,"area":16}],
-    "opacity":0.5},
-  {"gambit":3,"action":"overlap","value":"brook","piece":"rook","src":"Q2,2","dst":"Q1,1","rays":null,"advsqs":[
-    [{"src":"Q2,2","srcTile":[0,-2,-2],"quad":3,"perimeter":1,"stride":2,"area":4}],
-    [[{"src":"Q2,2","srcTile":[0,-2,-2],"quad":29,"perimeter":1,"stride":3,"area":4},{"src":"Q2,2","srcTile":[0,-2,-2],"quad":30,"perimeter":1,"stride":3,"area":4}],
-     [{"src":"Q2,2","srcTile":[0,-2,-2],"quad":35,"perimeter":1,"stride":3,"area":4},{"src":"Q2,2","srcTile":[0,-2,-2],"quad":36,"perimeter":1,"stride":3,"area":4}]]
-    ],
-      "opacity":0.5}],"AdvSqs":[]}
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}}],
+  "Moves":[],
+  "Gambits":[
+    {"gambit":0,"action":"overlap","value":"Feynman","piece":"bishop","src":"KB4,4","dst":"KR6,6","rays":["LFU","RFU"],"advsqs":[
+      {"src":"KB4,4","srcTile":[0,0,0],"quad":13,"perimeter":2,"stride":3,"opacity":0.5},
+      {"src":"KB4,4","srcTile":[0,0,0],"quad":38,"perimeter":3,"stride":2,"opacity":0.5}],
+      "opacity":0.5},
+    {"gambit":1,"action":"overlap","value":"Feynman","piece":"bishop","src":"Q4,4","dst":"KR2,2","rays":["RBU","LBU"],"advsqs":[
+      {"src":"Q4,4","srcTile":[0,0,0],"quad":22,"perimeter":2,"stride":3,"opacity":0.5},
+      {"src":"Q4,4","srcTile":[0,0,0],"quad":38,"perimeter":3,"stride":6,"opacity":0.5}],
+      "opacity":0.5},
+    {"gambit":2,"action":"quadrant","value":1,"piece":"rook","src":"Q4,4","dst":"QB7,7","rays":["left_fore","right_fore"],"advsqs":[
+      {"src":"Q4,4","srcTile":[-1,0,0],"quad":1,"perimeter":3,"stride":4,"area":16}],
+      "opacity":0.5},
+    {"gambit":3,"action":"overlap","value":"brook","piece":"rook","src":"Q2,2","dst":"Q1,1","rays":null,"advsqs":[
+      [{"src":"Q2,2","srcTile":[0,-2,-2],"quad":3,"perimeter":1,"stride":2,"area":4}],
+      [[{"src":"Q2,2","srcTile":[0,-2,-2],"quad":29,"perimeter":1,"stride":3,"area":4},{"src":"Q2,2","srcTile":[0,-2,-2],"quad":30,"perimeter":1,"stride":3,"area":4}],
+      [{"src":"Q2,2","srcTile":[0,-2,-2],"quad":35,"perimeter":1,"stride":3,"area":4},{"src":"Q2,2","srcTile":[0,-2,-2],"quad":36,"perimeter":1,"stride":3,"area":4}]]
+      ],
+        "opacity":0.5}],"AdvSqs":[]}
+
+
+ ### 8.6 Scenario: 
+  **1-0-1-0**
+
+
+## 9. Debugging Listing
+ ### 9.1.1 Scenario: Load
+  model: state.js - pushNewState(buffer, values): Setup {action: 'makeBoard', prevBoard: {…}, nextBoard: {…}}
+  view : setup.js - pushPanelLine(entry) {action: 'makeBoard', prevBoard: {…}, nextBoard: {…}}
+  view : setup.js - assembleLine(entry) {action: 'makeBoard', prevBoard: {…}, nextBoard: {…}}
+  model: state.js - pushNewState(buffer, values): Gambits {gambit: 0, action: 'overlap', value: 'Feynman', piece: 'bishop', src: 'KB4,4', …}
+  - view : gambits.js - pushPanelLine(entry) {gambit: 0, action: 'overlap', value: 'Feynman', piece: 'bishop', src: 'KB4,4', …}
+  - view : gambits.js - assembleLine(entry) {gambit: 0, action: 'overlap', value: 'Feynman', piece: 'bishop', src: 'KB4,4', …}
+  - view : gambits.js - makeGroup(entry). {gambit: 0, action: 'overlap', value: 'Feynman', piece: 'bishop', src: 'KB4,4', …}
+  - view : gambits.js - makeOverlapGroup(entry). {gambit: 0, action: 'overlap', value: 'Feynman', piece: 'bishop', src: 'KB4,4', …}
+  - view : view.js - buildOverlapGroup(entry). {gambit: 0, action: 'overlap', value: 'Feynman', piece: 'bishop', src: 'KB4,4', …}
+  - view : view.js - buildBishopQuadGroup(...). (3) [0, 0, 0] 13 2 3 0.5 Group {isObject3D: true, uuid: 'f9e379a7-aa28-4db1-b6d1-eba63a70e711', name: '', type: 'Group', parent: null, …}
+  - view : view.js - buildDukeQuadGroup(dukeAdvsq, group). {src: 'KB4,4', srcTile: Array(3), quad: 38, perimeter: 3, stride: 2, …} Group {isObject3D: true, uuid: 'f9e379a7-aa28-4db1-b6d1-eba63a70e711', name: '', type: 'Group', parent: null, …}
+
+  view : gambits.js - refreshEntry(entry): null
+  view : gambits.js - refreshPanel(gambit) null
+  - model: gambits.js - buttonAffordances(situation) off
+
+  cntrl : panels.js - diagnostics()
+  - cntrl: game.js - showUndoStatus():
+
+ ### 9.1.2 Scenario: Redo
+  model: state.js - getCurrBuffer
+  model: state.js - getCurrBuffer
+  cntrl: game.js - processRedoBuffer(key, idx): Gambits 0
+  view : gambits.js - redo(entry). {gambit: 0, action: 'overlap', value: 'Feynman', piece: 'bishop', src: 'KB4,4', …}
+  - view : gambits.js - render(group) Group {isObject3D: true, uuid: '41ab8332-ce1c-4717-a1ec-e6f43731036a', name: '', type: 'Group', parent: null, …}
+  - view : gambits.js - refreshPanel(gambit) 0
+  - cntrl: game.js - showUndoStatus():
+
+ ### 9.2 Scenario: Manual
+  cntrl: gambits.js - handleFreezeOverlay(currAdvsq) {src: 'KB4,4', srcTile: Array(3), quad: 13, perimeter: 2, stride: 3, …}
+                      *** quads.pqrTable(quad) {piece: 'bishop', plane: 'Upward', globalQ: 13, pieceQ: 1, planeQ: 1, …}
+  model: gambits.js - makeOverlapEntry(advsq): {src: 'KB4,4', srcTile: Array(3), quad: 13, perimeter: 2, stride: 3, …}
+  cntrl: gambits.js - resolveStrideRay(currAdvsq, rayPair) {src: 'KB4,4', srcTile: Array(3), quad: 13, perimeter: 2, stride: 3, …} (2) ['LFU', 'RFU']
+  model: overlaps.js - findFeynmanCompanion(advsq): {src: 'KB4,4', srcTile: Array(3), quad: 13, perimeter: 2, stride: 3, …}
+  cntrl: gambits.js - resolveStrideRay(currAdvsq, rayPair) {src: 'KB4,4', srcTile: Array(3), quad: 13, perimeter: 2, stride: 3, …} (2) ['LFU', 'RFU']
+
+  model: state.js - clearBuffer(buffer): AdvSqs
+  view : advsqs.js - removeFromScene():
+  view : advsqs.js - clearAdvsqPanelParams(srcTile): Q4,4
+
+  - view : gambits.js - makeGroup(entry). {gambit: 0, action: 'overlap', value: 'Feynman', piece: 'bishop', src: 'KB4,4', …}
+  - view : gambits.js - makeOverlapGroup(entry). {gambit: 0, action: 'overlap', value: 'Feynman', piece: 'bishop', src: 'KB4,4', …}
+  - view : view.js - buildOverlapGroup(entry). {gambit: 0, action: 'overlap', value: 'Feynman', piece: 'bishop', src: 'KB4,4', …}
+  - view : view.js - buildBishopQuadGroup(...). (3) [0, 0, 0] 13 2 3 0.5 Group {isObject3D: true, uuid: 'c7e6bf35-dec8-4943-9c9b-94f7729b0c69', name: '', type: 'Group', parent: null, …}
+  - view : view.js - buildDukeQuadGroup(dukeAdvsq, group). {src: 'KB4,4', srcTile: Array(3), quad: 38, perimeter: 3, stride: 2, …} 
+  Group {isObject3D: true, uuid: 'c7e6bf35-dec8-4943-9c9b-94f7729b0c69', name: '', type: 'Group', parent: null, …}
+
+  - view : gambits.js - render(group) Group {isObject3D: true, uuid: 'c7e6bf35-dec8-4943-9c9b-94f7729b0c69', name: '', type: 'Group', parent: null, …}
+  cntrl: gambits.js - branchHistory(entry): {gambit: 0, action: 'overlap', value: 'Feynman', piece: 'bishop', src: 'KB4,4', …}
+  view : advsqs.js - clearAdvsqs()
+  model: state.js - clearBuffer(buffer): AdvSqs
+  cntrl: gambits.js - applyEntry(entry) {gambit: 0, action: 'overlap', value: 'Feynman', piece: 'bishop', src: 'KB4,4', …}
+  model: state.js - pushNewState(buffer, values): Gambits {gambit: 0, action: 'overlap', value: 'Feynman', piece: 'bishop', src: 'KB4,4', …}
+  - view : gambits.js - pushPanelLine(entry) {gambit: 0, action: 'overlap', value: 'Feynman', piece: 'bishop', src: 'KB4,4', …}
+  - view : gambits.js - assembleLine(entry) {gambit: 0, action: 'overlap', value: 'Feynman', piece: 'bishop', src: 'KB4,4', …}
+  - view : gambits.js - refreshPanel(gambit) {gambit: 0, action: 'overlap', value: 'Feynman', piece: 'bishop', src: 'KB4,4', …}
+  - cntrl: game.js - showUndoStatus():
+  - model: gambits.js - buttonAffordances(situation) off
+  - cntrl: game.js - showUndoStatus():
+  *** vGambits.getGambitGroups().length 1
+

@@ -81,19 +81,21 @@ function handleFreezeQuadrant(currAdvsq) {      // N Q1  R KB4,4 → KB7,7    :1
 
   if(!currAdvsq) return;
 
-  const {src,srcTile,quad,perimeter,stride,opacity} = currAdvsq; // Informative.
+    const {src,srcTile,quad,perimeter,stride,area,opacity} = currAdvsq; // Informative.
+    console.log("*** quads.pqrTable(quad)", quads.pqrTable(quad));
 
-  const entry = mGambits.makeQuadrantEntry(currAdvsq);    // Entry.
+    const entry = mGambits.makeQuadrantEntry(currAdvsq);    // Entry.
 
-  state.clearBuffer("AdvSqs");                            // Clear advsq.
-  vAdvsqs.removeFromScene();
-  vAdvsqs.clearAdvsqPanelParams("Q4,4");
+    state.clearBuffer("AdvSqs");                            // Clear advsq.
+    vAdvsqs.removeFromScene();
+    vAdvsqs.clearAdvsqPanelParams("Q4,4");
 
   state.pushNewGambit(entry);                             // Change state.
   vGambits.pushPanelLine(entry);                          // Append line to panel.
   const group = vGambits.makeGroup(entry);                // Recreate mesh group from entry.
   vGambits.getGambitGroups().push(group);                 // Store it.
-  
+  game.showUndoStatus();
+
   vGambits.render(group, { animate: true });              // Render with animation.
   }
 
@@ -102,19 +104,20 @@ function handleFreezeAsLinear(currAdvsq) {      // N L1  R Q4,4  → Q8,4     :l
 
   if(!currAdvsq) return;
 
-  const {src,srcTile,quad,perimeter,stride,opacity} = currAdvsq; // Informative.
-  console.log("*** quads.pqrTable(quad)", quads.pqrTable(quad));
+    const {src,srcTile,quad,perimeter,stride,area,opacity} = currAdvsq; // Informative.
+    console.log("*** quads.pqrTable(quad)", quads.pqrTable(quad));
 
-  const entry = mGambits.makeLinearEntry(currAdvsq);      // Entry.
+    const entry = mGambits.makeLinearEntry(currAdvsq);      // Entry.
 
-  state.clearBuffer("AdvSqs");                            // Clear advsq.
-  vAdvsqs.removeFromScene();
-  vAdvsqs.clearAdvsqPanelParams("Q4,4");
+    state.clearBuffer("AdvSqs");                            // Clear advsq.
+    vAdvsqs.removeFromScene();
+    vAdvsqs.clearAdvsqPanelParams("Q4,4");
 
   state.pushNewGambit(entry);                             // Change state.
   vGambits.pushPanelLine(entry);                          // Append line to panel.
   const group = vGambits.makeGroup(entry);                // Recreate mesh group from entry.
   vGambits.getGambitGroups().push(group);                 // Store it.
+  game.showUndoStatus();
 
   vGambits.render(group, { animate: true });              // Render with animation.
   }
@@ -124,19 +127,20 @@ function handleFreezeAsDuplex(currAdvsq) {      // N DMM D KB4,4 → 8,0,0    :1
 
   if(!currAdvsq) return;
 
-  const {src,srcTile,quad,perimeter,stride,opacity} = currAdvsq;  // Informative.
-  console.log("*** quads.pqrTable(quad)", quads.pqrTable(quad));
+    const {src,srcTile,quad,perimeter,stride,area,opacity} = currAdvsq; // Informative.
+    console.log("*** quads.pqrTable(quad)", quads.pqrTable(quad));
 
-  const entry = mGambits.makeDuplexEntry(currAdvsq);      // Entry.
+    const entry = mGambits.makeDuplexEntry(currAdvsq);      // Entry.
 
-  state.clearBuffer("AdvSqs");                            // Clear advsq.
-  vAdvsqs.removeFromScene();
-  vAdvsqs.clearAdvsqPanelParams("Q4,4");
+    state.clearBuffer("AdvSqs");                            // Clear advsq.
+    vAdvsqs.removeFromScene();
+    vAdvsqs.clearAdvsqPanelParams("Q4,4");
 
   state.pushNewGambit(entry);                             // Change state.
   vGambits.pushPanelLine(entry);                          // Append line to panel.
   const group = vGambits.makeGroup(entry);                // Recreate mesh group from entry.
   vGambits.getGambitGroups().push(group);                 // Store it.
+  game.showUndoStatus();
 
   vGambits.render(group, { animate: true });              // Render with animation.
   }
@@ -146,22 +150,25 @@ function handleFreezeWithOverlaps(currAdvsq) {  // N hotspot R Q4,4  → Q8,4   
 
   if(!currAdvsq) return;
 
-  const {src,srcTile,quad,perimeter,stride,opacity} = currAdvsq;  // Informative.
-  console.log("*** quads.pqrTable(quad)", quads.pqrTable(quad));
+    const {src,srcTile,quad,perimeter,stride,area,opacity} = currAdvsq; // Informative.
+    console.log("*** quads.pqrTable(quad)", quads.pqrTable(quad));
 
-  const entry = mGambits.makeOverlapEntry(currAdvsq);     // Entry (uses data in advsq panel).
+    const entry = mGambits.makeOverlapEntry(currAdvsq);     // Entry (uses data in advsq panel).
 
-  state.clearBuffer("AdvSqs");                            // Clear advsq.
-  vAdvsqs.removeFromScene();
-  vAdvsqs.clearAdvsqPanelParams("Q4,4");
+    state.clearBuffer("AdvSqs");                            // Clear advsq.
+    vAdvsqs.removeFromScene();
+    vAdvsqs.clearAdvsqPanelParams("Q4,4");
 
+  state.pushNewGambit(entry);                             // Change state.
+  vGambits.pushPanelLine(entry);                          // Append line to panel.
   const group = vGambits.makeGroup(entry);                // Recreate mesh group from entry.
   vGambits.getGambitGroups().push(group);                 // Store it.
+  game.showUndoStatus();
 
   vGambits.render(group, { animate: true });              // Render with animation.
 
-  branchHistory(entry);
-  applyEntry(entry);  // Eventually.
+  // branchHistory(entry);
+  // applyEntry(entry);  // Eventually.
   }
 
 function handleFreezeAsKnight(currAdvsq) {      // TODO: finish.
