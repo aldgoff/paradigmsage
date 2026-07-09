@@ -18,11 +18,11 @@
 // --- Dependencies ---
   import * as panels   from "../../panels/panels.js";
 
-  import * as game        from "../../controller/game/game.js";
-  import * as cBoards     from "../../controller/boards/boards.js";
-  import * as cTrays      from "../../controller/trays/trays.js";
-  import * as cPieces     from "../../controller/pieces/pieces.js";
-  import * as cSelections from "../../controller/selections/selections.js";
+  import * as game     from "../../controller/game/game.js";
+  import * as cBoards  from "../../controller/boards/boards.js";
+  import * as cTrays   from "../../controller/trays/trays.js";
+  import * as cPieces  from "../../controller/pieces/pieces.js";
+  import * as cSelects from "../../controller/selections/selections.js";
 
   import * as state    from "../../model/state/state.js";
   import * as mSetup   from "../../model/setup/setup.js";
@@ -51,7 +51,7 @@ export function panelDispatch(payload) {    // Dispatch payload from panel to ha
   vGambits.cancelAnimation();
 
   const { action } = payload;
-  const selections = cSelections.getSelections();
+  const selections = cSelects.getSelections();
 
   switch (action) {
     case "makeBoard":    handleMakeBoard(payload);    break;
@@ -146,8 +146,8 @@ export function buildForward(entry) {     // Redo.
     }
   else { throw new Error(`Unknown setup action ${action}`); }
   
-  cSelections.manageSetupButtons();
-
+  cSelects.manageSetupButtons();
+  vSetup.refreshPanel(entry);         // Refresh panel (dimmed future rows).
   panels.diagnostics();
   }
 
@@ -209,8 +209,8 @@ export function buildBackward(entry) {    // Undo.
     }
   else { throw new Error(`Unknown setup action ${action}`); }
 
-  cSelections.manageSetupButtons();
-
+  cSelects.manageSetupButtons();
+  vSetup.refreshPanel(entry);         // Refresh panel (dimmed future rows).
   panels.diagnostics();
 }
 
@@ -233,21 +233,21 @@ export function returnAllPiecesToHomeTray() {
 export function clearAllTileSelections() {
   // console.log("cntrl: setup.js - clearAllTileSelections()");
 
-  const { pieceSelections, tileSelections } = cSelections.getSelections();
+  const { pieceSelections, tileSelections } = cSelects.getSelections();
   for(const vts of tileSelections) {            // vts, ...
-    cSelections.deselectTile(vts);
+    cSelects.deselectTile(vts);
   }
-  cSelections.clearTileSelections();            // Set of tile locations, indexed by vts.
+  cSelects.clearTileSelections();            // Set of tile locations, indexed by vts.
   }
 
 export function clearAllPieceSelections() {
   // console.log("cntrl: setup.js - clearAllPieceSelections()");
 
-  const { pieceSelections, tileSelections } = cSelections.getSelections();
+  const { pieceSelections, tileSelections } = cSelects.getSelections();
   for(const key of pieceSelections) {           // "WKRR", ...
     vPieces.deHighlight(key);
   }
-  cSelections.clearPieceSelections();           // Set of pieces highlighted, indexed by key.
+  cSelects.clearPieceSelections();           // Set of pieces highlighted, indexed by key.
 }
 // Seampoint: more global functions...
 
@@ -263,7 +263,7 @@ function handleMakeBoard(payload) {
 
   clearAllPieceSelections();
   clearAllTileSelections();
-  cSelections.clearSelections();  
+  cSelects.clearSelections();  
   }
 
 function handlePlacePiece(payload, selections) {
@@ -304,7 +304,7 @@ function handleFreeze(payload) {
 
   clearAllPieceSelections();
   clearAllTileSelections();
-  cSelections.clearSelections();
+  cSelects.clearSelections();
 
   mSetup.buttonAffordances("loaded");
   }
@@ -326,7 +326,7 @@ function handleStartingPos(payload) {
 
   clearAllPieceSelections();
   clearAllTileSelections();
-  cSelections.clearSelections();
+  cSelects.clearSelections();
   
   mSetup.buttonAffordances("loaded");
   }
@@ -343,7 +343,7 @@ function pieceSetup(entry) {
 
   clearAllPieceSelections();
   clearAllTileSelections();
-  cSelections.clearSelections();
+  cSelects.clearSelections();
 
   mSetup.buttonAffordances("placed");
 }
@@ -490,7 +490,7 @@ function applyEntry(entry) {
 
   state.pushNewSetup(entry);          // Log state change in undo buffer.
     vSetup.pushPanelLine(entry);        // Add line to panel.
-    vSetup.refreshPanel(entry);         // Refresh panel (dimmed future rows).
+    // vSetup.refreshPanel(entry);         // Refresh panel (dimmed future rows).
   game.showUndoStatus();
 }
 // Seampoint: more local functions...

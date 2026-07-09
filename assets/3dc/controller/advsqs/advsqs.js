@@ -13,6 +13,7 @@
 // Seampoint: more objects...
 
 // --- Dependencies ---
+  import * as cSelects from "../../controller/selections/selections.js";
   import * as game     from "../../controller/game/game.js";
 
   import * as state    from "../../model/state/state.js";
@@ -210,7 +211,7 @@ function handleNudgeSrc(payload) {
 
   const { axis, delta } = payload;
 
-  const current = state.fetchCurrentState("AdvSqs");                           // Prepacked normalized fields.
+  const current = state.fetchCurrentState("AdvSqs");                // Prepacked normalized fields.
   if (!current) return;
 
   let entry = {      // Safe clone.
@@ -218,10 +219,12 @@ function handleNudgeSrc(payload) {
     srcTile: [...current.srcTile]
   };
 
-  if (axis === "z")      entry.srcTile[0] += delta;                      // Manipulate fields.
-  else if (axis === "x") entry.srcTile[1] += delta;
-  else if (axis === "y") entry.srcTile[2] += delta;
+  if(     axis === "z") entry.srcTile[0] += delta;                 // Manipulate fields.
+  else if(axis === "x") entry.srcTile[1] += delta;
+  else if(axis === "y") entry.srcTile[2] += delta;
   else throw new Error("Invalid axis");
+
+  const { action, src, srcTile, quad, perimeter, stride, area, opacity } = entry;  // Unpack primary fields.
 
   if(0<= quad && quad <= 60)  vAdvsqs.render(entry);      // Render the new advsq.
   else                        vAdvsqs.renderKnight(entry);

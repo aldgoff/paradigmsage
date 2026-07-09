@@ -17,6 +17,7 @@
 
   import * as panels   from "../../panels/panels.js";
 
+  import * as cSelects from "../../controller/selections/selections.js";
   import * as game     from "../../controller/game/game.js";
   import * as cAdvsqs  from "../../controller/advsqs/advsqs.js";
 
@@ -86,8 +87,8 @@ export function buildForward(entry) {     // Restore from redo.
 
   vGambits.redo(entry);
 
+  cSelects.manageSetupButtons();
   vGambits.refreshPanel();         
-
   panels.diagnostics();
   }
 
@@ -100,8 +101,8 @@ export function buildBackward(entry) {    // Restore from undo.
 
   vGambits.getGambitGroups().pop();         // Delete it.
 
+  cSelects.manageSetupButtons();
   vGambits.refreshPanel();
-
   panels.diagnostics();
 }
 // Seampoint: more global functions...
@@ -377,7 +378,7 @@ function applyEntry(entry) {   // Clear curr, branch, state change, render, refr
 
   state.pushNewGambit(entry);          // Log state change in undo buffer.
   vGambits.pushPanelLine(entry);        // Add line to panel.
-  vGambits.refreshPanel();         // Refresh panel (dimmed future rows).
+  // vGambits.refreshPanel();         // Refresh panel (dimmed future rows).
   game.showUndoStatus();
 }
 // Seampoint: more local functions...

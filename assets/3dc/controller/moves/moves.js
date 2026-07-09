@@ -13,10 +13,10 @@
 // Seampoint: more objects...
 
 // --- Dependencies ---
-  import * as panels      from "../../panels/panels.js";
-  import * as game        from "../../controller/game/game.js";
-  import * as cSetup      from "../../controller/setup/setup.js";
-  import * as cSelections from "../../controller/selections/selections.js";
+  import * as panels   from "../../panels/panels.js";
+  import * as game     from "../../controller/game/game.js";
+  import * as cSetup   from "../../controller/setup/setup.js";
+  import * as cSelects from "../../controller/selections/selections.js";
 
   import * as state    from "../../model/state/state.js";
   import * as mMoves   from "../../model/moves/moves.js";
@@ -40,7 +40,7 @@ export function panelDispatch(payload) {
   vGambits.cancelAnimation();
 
   const { action, player,} = payload;   // White|Black
-  const selections = cSelections.getSelections();
+  const selections = cSelects.getSelections();
 
   switch (action) {
     case "move":          handleMove(payload, selections); break;
@@ -98,11 +98,10 @@ export function buildForward(entry) {     // Restore from redo.
     throw new Error(`Unknown forward action ${action} for moves.`);
   }
 
+  cSelects.manageSetupButtons();
   vMoves.refreshPanel();         
-
-  console.log("*** pieceList", mPieces.getPieceList());
-
   panels.diagnostics();
+  console.log("*** pieceList", mPieces.getPieceList());
   }
 
 export function buildBackward(entry) {    // Restore from undo.
@@ -121,11 +120,10 @@ export function buildBackward(entry) {    // Restore from undo.
     throw new Error(`Unknown backward action ${action} for moves.`);
   }
 
+  cSelects.manageSetupButtons();
   vMoves.refreshPanel();         
-
-  console.log("*** pieceList", mPieces.getPieceList());
-
   panels.diagnostics();
+  console.log("*** pieceList", mPieces.getPieceList());
 }
 // Seampoint: more global functions...
 
@@ -136,7 +134,7 @@ function handleMove(payload, selections) {      // Create from panel.
   const { action, player } = payload;
   const entry = mMoves.makeMoveEntry(payload, selections);
 
-  forewardMove(entry);
+  buildForward(entry);
   branchHistory(entry);               // Manage undo history when branched.
   applyEntry(entry);
   }
@@ -147,7 +145,7 @@ function handleCapture(payload, selections) {   // Create from panel.
   const { action, player } = payload;
   const entry = mMoves.makeCaptureEntry(payload, selections);
 
-  forewardCapture(entry);
+  buildForward(entry);
   branchHistory(entry);               // Manage undo history when branched.
   applyEntry(entry);
   }
@@ -158,7 +156,7 @@ function handleFission(payload, selections) {   // Create from panel.
   const { action, player } = payload;
   const entry = mMoves.makeFissionEntry(payload, selections);
 
-  forewardFission(entry);
+  buildForward(entry);
   branchHistory(entry);               // Manage undo history when branched.
   applyEntry(entry);
   }
@@ -169,7 +167,7 @@ function handleEnpassant(payload, selections) { // Create from panel.
   const { action, player } = payload;
   const entry = mMoves.makeEnpassantEntry(payload, selections);
 
-  forewardEnpassant(entry);
+  buildForward(entry);
   branchHistory(entry);               // Manage undo history when branched.
   applyEntry(entry);
   }
@@ -180,7 +178,7 @@ function handleCastle(payload, selections) {    // Create from panel.
   const { action, player } = payload;
   const entry = mMoves.makeCastleEntry(payload, selections);
 
-  forewardCastle(entry);
+  buildForward(entry);
   branchHistory(entry);               // Manage undo history when branched.
   applyEntry(entry);
   }
@@ -191,7 +189,7 @@ function handlePromote(payload, selections) {   // Create from panel.
   const { action, player } = payload;
   const entry = mMoves.makePromoteEntry(payload, selections);
 
-  forewardPromote(entry);
+  buildForward(entry);
   branchHistory(entry);               // Manage undo history when branched.
   applyEntry(entry);
   }
@@ -614,7 +612,7 @@ function applyEntry(entry) {
 
   state.pushNewMove(entry);           // Change state.
     vMoves.pushPanelLine(entry);      // Add line to panel.
-    vMoves.refreshPanel();            // Refresh panel (dimmed future rows).
+    // vMoves.refreshPanel();            // Refresh panel (dimmed future rows).
   game.showUndoStatus();
 }
 // Seampoint: more local functions...

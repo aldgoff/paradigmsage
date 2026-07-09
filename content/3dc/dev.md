@@ -162,12 +162,13 @@ title: "Dev"
   - 7/03/26 - QC quad gambits. QC gambit module.
   - 7/04/26 - Overlap affordances.
 
- ### Week 16:
+ ### Week 17:
   - 7/05/26 - Make hotspot entry.
   - 7/06/26 - Render hotspots. Restore the gambit next plane feature.
   - 7/07/26 - Feynman overlap. Brook overlap. Qtile overlap. Gambit line QC.
   - 7/08/26 - QC modules. Fix gambit manual/load undo bug. Deprecate boardSpec. Align gambit entry flow. Saved testcases.
-  - 7/09/26 - Capture module saves. POC on knight.
+  - 7/09/26 - Capture module saves. POC on knight. Testsuite for advsqs.
+  - 7/10/26 - Advsq buildForward/buildBackward.
 
 
 ## Move Lines:
