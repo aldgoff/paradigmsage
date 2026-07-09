@@ -373,10 +373,8 @@ function assembleLine(entry) {
   const count  = state.getIndices().Gambits;
   const symbol = action[0].toUpperCase();
 
-  const p      = piece[0].toUpperCase();
-  let area = (advsqs[0].length > 1)
-    ? `${advsqs[0][0].area}`.padStart(2)
-    : `${advsqs[0].area}`.padStart(2);
+  const p        = piece[0].toUpperCase();
+  let area       = findFirstArea(advsqs);
   const feedback = `${area} ${rays}`;
 
   // --- column widths ---
@@ -393,6 +391,24 @@ function assembleLine(entry) {
   
   return line;
   }
+
+function findFirstArea(node) {
+  if (!node) return undefined;
+
+  if (Array.isArray(node)) {
+    for (const item of node) {
+      const area = findFirstArea(item);
+      if (area !== undefined) return area;
+    }
+    return undefined;
+  }
+
+  if (typeof node === "object" && "area" in node) {
+    return node.area;
+  }
+
+  return undefined;
+}
 
 function applyOpacity(obj, opacity) {
   if (obj.material) {
@@ -446,7 +462,7 @@ function animateFreezeTransition(group, duration = 0.8) {
   }
 
   requestAnimationFrame(step);
-}
+  }
 
 function derenderGambit(group) {
   console.log("view : gambits.js - derenderGambit(group)", group);
@@ -460,7 +476,8 @@ function derenderGambit(group) {
   }
 
   view.getContext().scene.remove(group);
-}
+  }
+
 function removeOverlays(list) {
     for (const o of list) {
         if (o.parent)

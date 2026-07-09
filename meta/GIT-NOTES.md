@@ -2,6 +2,8 @@
 
 ## Hugo Server Start
   hugo server --disableFastRender --buildFuture
+  
+  git log --oneline --decorate --graph --all --boundary -n 30
 
 ## Branching and Publishing Model
   For serialization topics (like PoP), use git branches to stage release publications.
