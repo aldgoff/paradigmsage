@@ -123,13 +123,11 @@ function handleFreezeQuadrant(currAdvsq) {      // N Q1  R KB4,4 → KB7,7    :1
     vAdvsqs.removeFromScene();
     vAdvsqs.clearAdvsqPanelParams("Q4,4");
 
-  state.pushNewGambit(entry);                             // Change state.
-  vGambits.pushPanelLine(entry);                          // Append line to panel.
   const group = vGambits.makeGroup(entry);                // Recreate mesh group from entry.
   vGambits.getGambitGroups().push(group);                 // Store it.
-  game.showUndoStatus();
-
   vGambits.render(group, { animate: true });              // Render with animation.
+
+  applyEntry(entry);
   }
 
 function handleFreezeAsLinear(currAdvsq) {      // N L1  R Q4,4  → Q8,4     :left_fore
@@ -148,13 +146,11 @@ function handleFreezeAsLinear(currAdvsq) {      // N L1  R Q4,4  → Q8,4     :l
     vAdvsqs.removeFromScene();
     vAdvsqs.clearAdvsqPanelParams("Q4,4");
 
-  state.pushNewGambit(entry);                             // Change state.
-  vGambits.pushPanelLine(entry);                          // Append line to panel.
   const group = vGambits.makeGroup(entry);                // Recreate mesh group from entry.
   vGambits.getGambitGroups().push(group);                 // Store it.
-  game.showUndoStatus();
-
   vGambits.render(group, { animate: true });              // Render with animation.
+
+  applyEntry(entry);
   }
 
 function handleFreezeAsDuplex(currAdvsq) {      // N DMM D KB4,4 → 8,0,0    :1,0,0
@@ -173,13 +169,11 @@ function handleFreezeAsDuplex(currAdvsq) {      // N DMM D KB4,4 → 8,0,0    :1
     vAdvsqs.removeFromScene();
     vAdvsqs.clearAdvsqPanelParams("Q4,4");
 
-  state.pushNewGambit(entry);                             // Change state.
-  vGambits.pushPanelLine(entry);                          // Append line to panel.
   const group = vGambits.makeGroup(entry);                // Recreate mesh group from entry.
   vGambits.getGambitGroups().push(group);                 // Store it.
-  game.showUndoStatus();
-
   vGambits.render(group, { animate: true });              // Render with animation.
+
+  applyEntry(entry);
   }
 
 function handleFreezeWithOverlaps(currAdvsq) {  // N hotspot R Q4,4  → Q8,4     :left_fore
@@ -198,13 +192,10 @@ function handleFreezeWithOverlaps(currAdvsq) {  // N hotspot R Q4,4  → Q8,4   
     vAdvsqs.removeFromScene();
     vAdvsqs.clearAdvsqPanelParams("Q4,4");
 
-  state.pushNewGambit(entry);                             // Change state.
-  vGambits.pushPanelLine(entry);                          // Append line to panel.
   const group = vGambits.makeGroup(entry);                // Recreate mesh group from entry.
   vGambits.getGambitGroups().push(group);                 // Store it.
-  game.showUndoStatus();
-
   vGambits.render(group, { animate: true });              // Render with animation.
+
   applyEntry(entry);
   }
 
@@ -385,8 +376,8 @@ function applyEntry(entry) {   // Clear curr, branch, state change, render, refr
   console.log("cntrl: gambits.js - applyEntry(entry)", entry);
 
   state.pushNewGambit(entry);          // Log state change in undo buffer.
-    vGambits.pushPanelLine(entry);        // Add line to panel.
-    vGambits.refreshPanel();         // Refresh panel (dimmed future rows).
+  vGambits.pushPanelLine(entry);        // Add line to panel.
+  vGambits.refreshPanel();         // Refresh panel (dimmed future rows).
   game.showUndoStatus();
 }
 // Seampoint: more local functions...
