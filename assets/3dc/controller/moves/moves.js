@@ -135,8 +135,8 @@ function handleMove(payload, selections) {      // Create from panel.
 
   const { action, player } = payload;
   const entry = mMoves.makeMoveEntry(payload, selections);
-  forewardMove(entry);
 
+  forewardMove(entry);
   branchHistory(entry);               // Manage undo history when branched.
   applyEntry(entry);
   }
@@ -146,8 +146,8 @@ function handleCapture(payload, selections) {   // Create from panel.
 
   const { action, player } = payload;
   const entry = mMoves.makeCaptureEntry(payload, selections);
-  forewardCapture(entry);
 
+  forewardCapture(entry);
   branchHistory(entry);               // Manage undo history when branched.
   applyEntry(entry);
   }
@@ -156,10 +156,9 @@ function handleFission(payload, selections) {   // Create from panel.
   console.log("cntrl: moves.js - handleFission(payload, selections)", payload, selections);
 
   const { action, player } = payload;
-
   const entry = mMoves.makeFissionEntry(payload, selections);
-  forewardFission(entry);
 
+  forewardFission(entry);
   branchHistory(entry);               // Manage undo history when branched.
   applyEntry(entry);
   }
@@ -169,8 +168,8 @@ function handleEnpassant(payload, selections) { // Create from panel.
 
   const { action, player } = payload;
   const entry = mMoves.makeEnpassantEntry(payload, selections);
-  forewardEnpassant(entry);
 
+  forewardEnpassant(entry);
   branchHistory(entry);               // Manage undo history when branched.
   applyEntry(entry);
   }
@@ -180,8 +179,8 @@ function handleCastle(payload, selections) {    // Create from panel.
  
   const { action, player } = payload;
   const entry = mMoves.makeCastleEntry(payload, selections);
-  forewardCastle(entry);
 
+  forewardCastle(entry);
   branchHistory(entry);               // Manage undo history when branched.
   applyEntry(entry);
   }
@@ -191,8 +190,8 @@ function handlePromote(payload, selections) {   // Create from panel.
 
   const { action, player } = payload;
   const entry = mMoves.makePromoteEntry(payload, selections);
-  forewardPromote(entry);
 
+  forewardPromote(entry);
   branchHistory(entry);               // Manage undo history when branched.
   applyEntry(entry);
   }

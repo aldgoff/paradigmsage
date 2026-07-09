@@ -20,6 +20,7 @@
   import * as game       from "../controller/game/game.js";
   import * as viewer     from "../controller/viewer/viewer.js";
 
+  import * as rays       from "../foundation/rays/rays.js";
   import * as gAdvsqs    from "../geometry/advsqs/advsqs.js";
   import * as decorators from "./decorators/decorators.js";
   import * as quads      from "../geometry/quads/quads.js";
@@ -62,7 +63,7 @@ export function init(playBoard) {
 export function buildAdvSqGroup(specs) { // Params: srcTile, quad, perimeter, stride, opacity.
   console.log("view : view.js - buildAdvSqGroup(specs).", specs);
 
-  const { gambit, action, src, srcTile, quad, perimeter, stride, opacity } = specs;
+  const { src, srcTile, quad, perimeter, stride, area, opacity } = specs;
 
   const group = new THREE.Group();                                  // Initialize the mesh group.
   group.userData = group.userData || {};
@@ -83,6 +84,34 @@ export function buildAdvSqGroup(specs) { // Params: srcTile, quad, perimeter, st
 
     decorateQuadPerimeter(lastPerim, perim, piece, quadType, group, opacity, stride, 0.05);
   }
+
+  console.log("*** group.userData", group.userData);
+  return group;
+}
+
+export function buildKnightShellGroup(specs) {
+  console.log("view : view.js - buildKnightShellGroup(specs).", specs);
+
+  const { src, srcTile, quad, perimeter, stride, area, opacity } = specs;
+
+  const group = new THREE.Group();                                  // Initialize the mesh group.
+  group.userData = group.userData || {};
+  group.userData.overlays = [];
+
+  console.log("*** TODO: write view : view.js - buildKnightShellGroup().");
+
+  decorateTile(srcTile, "knight", "source", group, opacity);
+
+  const list = rays.getKnightDeltas();
+  console.log("*** list.length", list.length);
+  console.log("*** srcTile", srcTile);
+  for(const cell of list) {
+    console.log("*** cell", cell);
+    const coords = utils.add(cell, srcTile);
+    console.log("*** coords", coords);
+    decorateTile(coords, "knight", "lite", group, opacity);
+  }
+  
 
   console.log("*** group.userData", group.userData);
   return group;

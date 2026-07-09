@@ -79,11 +79,14 @@ export function buildPayload(panel, action) {
 function handlePlace(payload) {
   console.log("cntrl: advsqs.js - handlePlace(payload)", payload);
 
-  const { src, srcTile, quad, perimeter, stride, area, opacity } = payload;  // Unpack primary fields.
+  const { action, src, srcTile, quad, perimeter, stride, area, opacity } = payload;  // Unpack primary fields.
 
   mAdvsqs.buttonAffordances("src-tile");
   const entry = mAdvsqs.makeEntry(payload);     // Transform panel payload into state entry.
-  
+
+  if(0<= quad && quad <= 60)  vAdvsqs.render(entry);      // Render the new advsq.
+  else                        vAdvsqs.renderKnight(entry);
+
   branchHistory(entry);
   applyEntry(entry);
   updateGambitPanelButtons(quad, perimeter, stride);
@@ -92,7 +95,7 @@ function handlePlace(payload) {
 function handleRemove(payload) {
   console.log("cntrl: advsqs.js - handleRemove(payload)", payload);
   
-  let { src, srcTile, quad, perimeter, stride, opacity } = payload;  // Unpack primary fields.
+  const { action, src, srcTile, quad, perimeter, stride, area, opacity } = payload;  // Unpack primary fields.
                                                                             // Manipulate fields.
   mAdvsqs.buttonAffordances("build");
   mGambits.buttonAffordances("off");
@@ -107,7 +110,7 @@ function handleRemove(payload) {
 function handleGrow(payload) {
   console.log("cntrl: advsqs.js - handleGrow(payload)", payload);
 
-  let { src, srcTile, quad, perimeter, stride, area, opacity } = payload;  // Unpack primary fields.
+  let { action, src, srcTile, quad, perimeter, stride, area, opacity } = payload;  // Unpack primary fields.
   
   if(perimeter > 0) {                                                 // Stride stability idiom (apex, or fixed distance from E1/E2).
     if(     stride <= 1)               { stride = stride; }           // E1 (or off) - stays on end tile.
@@ -115,7 +118,7 @@ function handleGrow(payload) {
     else if(stride === perimeter + 1)  { stride++; }                  // Apex - stays on apex tile.
     else if(stride < 2*perimeter + 1)  { stride+=2; }                 // Inbound - constant distance from E2.
     else if(stride >= 2*perimeter + 1) { stride = 2*perimeter + 3; }  // E2 (or off scale) - stays on end tile.
-  }
+    } 
   else {
     stride = 2;
   }
@@ -123,7 +126,10 @@ function handleGrow(payload) {
   perimeter++;                                                        // Manipulate fields.
   if(perimeter  >  0) mAdvsqs.buttonAffordances("adv-sq");
 
-  const entry = { src, srcTile, quad, perimeter, stride, area, opacity };           // Repack normalized fields.
+  const entry = { action, src, srcTile, quad, perimeter, stride, area, opacity };           // Repack normalized fields.
+
+  if(0<= quad && quad <= 60)  vAdvsqs.render(entry);      // Render the new advsq.
+  else                        vAdvsqs.renderKnight(entry);
 
   branchHistory(entry);               // Manage undo history when branched.
   applyEntry(entry);  // Clear curr, branch, state change, render, refresh panel.
@@ -133,7 +139,7 @@ function handleGrow(payload) {
 function handleShrink(payload) {
   console.log("cntrl: advsqs.js - handleShrink(payload)", payload);
 
-  let { src, srcTile, quad, perimeter, stride, area, opacity } = payload;  // Unpack primary fields.
+  let { action, src, srcTile, quad, perimeter, stride, area, opacity } = payload;  // Unpack primary fields.
   
   if(perimeter >= 1) {                                                // Stride stability idiom (apex, or fixed distance from E1/E2).
     if(     stride <= 1)               { stride = stride; }           // E1 (or off) - stays on end tile.
@@ -147,7 +153,10 @@ function handleShrink(payload) {
   if(perimeter === 0) mAdvsqs.buttonAffordances("src-tile");
   if(perimeter  >  0) mAdvsqs.buttonAffordances("adv-sq");
 
-  const entry = { src, srcTile, quad, perimeter, stride, area, opacity };           // Repack normalized fields.
+  const entry = { action, src, srcTile, quad, perimeter, stride, area, opacity };           // Repack normalized fields.
+
+  if(0<= quad && quad <= 60)  vAdvsqs.render(entry);      // Render the new advsq.
+  else                        vAdvsqs.renderKnight(entry);
 
   branchHistory(entry);               // Manage undo history when branched.
   applyEntry(entry);  // Clear curr, branch, state change, render, refresh panel.
@@ -157,7 +166,7 @@ function handleShrink(payload) {
 function handleUpdateParam(payload) {
   console.log("cntrl: advsqs.js - handleUpdateParam(payload)", payload);
 
-  let { src, srcTile, quad, perimeter, stride, area, opacity } = payload;  // Unpack primary fields.
+  let { action, src, srcTile, quad, perimeter, stride, area, opacity } = payload;  // Unpack primary fields.
   
   // TODO: execute only if perimeter changes.
   // if(perimeter >= 1) {                                                // Stride stability idiom (apex, or fixed distance from E1/E2).
@@ -186,7 +195,10 @@ function handleUpdateParam(payload) {
   if(perimeter === 0) mAdvsqs.buttonAffordances("src-tile");
   if(perimeter  >  0) mAdvsqs.buttonAffordances("adv-sq");
 
-  const entry = { src, srcTile, quad, perimeter, stride, area, opacity };           // Repack normalized fields.
+  const entry = { action, src, srcTile, quad, perimeter, stride, area, opacity };           // Repack normalized fields.
+
+  if(0<= quad && quad <= 60)  vAdvsqs.render(entry);      // Render the new advsq.
+  else                        vAdvsqs.renderKnight(entry);
 
   branchHistory(entry);               // Manage undo history when branched.
   applyEntry(entry);  // Clear curr, branch, state change, render, refresh panel.
@@ -211,6 +223,9 @@ function handleNudgeSrc(payload) {
   else if (axis === "y") entry.srcTile[2] += delta;
   else throw new Error("Invalid axis");
 
+  if(0<= quad && quad <= 60)  vAdvsqs.render(entry);      // Render the new advsq.
+  else                        vAdvsqs.renderKnight(entry);
+
   branchHistory(entry);               // Manage undo history when branched.
   applyEntry(entry);  // Clear curr, branch, state change, render, refresh panel.
   }
@@ -218,8 +233,8 @@ function handleNudgeSrc(payload) {
 function handleNextQuad(payload) {
   console.log("cntrl: advsqs.js - handleNewQuad(payload)", payload);
 
-  let { src, srcTile, quad, perimeter, stride, area, opacity } = payload;  // Unpack primary fields.
-                                                                            // Manipulate fields.
+  let { action, src, srcTile, quad, perimeter, stride, area, opacity } = payload;  // Unpack primary fields.
+
   if(      1 <= quad && quad <= 12) { ++quad; if(quad%4 === 1) quad -= 4; }   // Next rook quad.
   else if(13 <= quad && quad <= 36) { ++quad; if(quad%6 === 1) quad -= 6; }   // Next bishop quad.
   else if(37 <= quad && quad <= 60) { ++quad; if(quad%4 === 1) quad -= 4; }   // Next duke quad.
@@ -228,7 +243,10 @@ function handleNextQuad(payload) {
   }
   stride = 1; // First stride.
 
-  const entry = { src, srcTile, quad, perimeter, stride, area, opacity };           // Repack normalized fields.
+  const entry = { action, src, srcTile, quad, perimeter, stride, area, opacity };           // Repack normalized fields.
+
+  if(0<= quad && quad <= 60)  vAdvsqs.render(entry);      // Render the new advsq.
+  else                        vAdvsqs.renderKnight(entry);
 
   branchHistory(entry);               // Manage undo history when branched.
   applyEntry(entry);  // Clear curr, branch, state change, render, refresh panel.
@@ -238,17 +256,24 @@ function handleNextQuad(payload) {
 function handleNextPlane(payload) {
   console.log("cntrl: advsqs.js - handleNextPlane(payload)", payload);
 
-  let { src, srcTile, quad, perimeter, stride, area, opacity } = payload;  // Unpack primary fields.
+  let { action, src, srcTile, quad, perimeter, stride, area, opacity } = payload;  // Unpack primary fields.
                                                                             // Manipulate fields.
-  if(      1 <= quad && quad <= 12) { quad += 4; if(quad > 12) quad =  1; }   // Change rook plane.
-  else if(13 <= quad && quad <= 36) { quad += 6; if(quad > 36) quad = 13; }   // Change bishop plane.
-  else if(37 <= quad && quad <= 60) { quad += 4; if(quad > 60) quad = 37; }   // Change duke plane.
-  else {                                                                      // Throw.
+  if(      1 <= quad && quad <= 12) { quad += 4; if(quad > 12) quad =  1; } // Change rook plane.
+  else if(13 <= quad && quad <= 36) { quad += 6; if(quad > 36) quad = 13; } // Change bishop plane.
+  else if(37 <= quad && quad <= 60) { quad += 4; if(quad > 60) quad = 37; } // Change duke plane.
+  else if(61 <= quad && quad <= 66) { quad = 67; }                          // Change knight 'plane'.
+  else if(67 <= quad && quad <= 78) { quad = 79; }                          // Change knight 'plane'.
+  else if(79 <= quad && quad <= 84) { quad = 85; }                          // Change knight 'plane'.
+  else if(85 <= quad && quad <= 85) { quad = 61; }                          // Change knight 'plane'.
+  else {                                                                    // Throw.
     throw new Error("Unknown quad number in control: advsqs.js - handleNextPlane() quad", quad);
   }
   stride = 1; // First stride.
 
-  const entry = { src, srcTile, quad, perimeter, stride, area, opacity };           // Repack normalized fields.
+  const entry = { action, src, srcTile, quad, perimeter, stride, area, opacity };           // Repack normalized fields.
+
+  if(0<= quad && quad <= 60)  vAdvsqs.render(entry);      // Render the new advsq.
+  else                        vAdvsqs.renderKnight(entry);
 
   branchHistory(entry);               // Manage undo history when branched.
   applyEntry(entry);  // Clear curr, branch, state change, render, refresh panel.
@@ -258,17 +283,21 @@ function handleNextPlane(payload) {
 function handleNextPiece(payload) {
   console.log("cntrl: advsqs.js - handleNextPiece(payload)", payload);
 
-  let { src, srcTile, quad, perimeter, stride, area, opacity } = payload;  // Unpack primary fields.
-                                                                            // Manipulate fields.
-  if(      1 <= quad && quad <= 12) { quad = 13; }                            // Change rook to bishop plane.
-  else if(13 <= quad && quad <= 36) { quad = 37; }                            // Change bishop to duke plane.
-  else if(37 <= quad && quad <= 60) { quad =  1; }                            // Change duke to rook plane.
-  else {                                                                      // Throw.
+  let { action, src, srcTile, quad, perimeter, stride, area, opacity } = payload;  // Unpack primary fields.
+                                                                          // Manipulate fields.
+  if(      1 <= quad && quad <= 12) { quad = 13; }                        // Change rook to bishop plane.
+  else if(13 <= quad && quad <= 36) { quad = 37; }                        // Change bishop to duke plane.
+  else if(37 <= quad && quad <= 60) { quad = 61; }                        // Change duke to knight.
+  else if(61 <= quad && quad <= 85) { quad =  1; }                        // Change knight to rook plane.
+  else {                                                                  // Throw.
     throw new Error("Unknown quad number in control: advsqs.js - handleNextPiece() quad", quad);
   }
   stride = 1; // First stride.
 
-  const entry = { src, srcTile, quad, perimeter, stride, area, opacity };           // Repack normalized fields.
+  const entry = { action, src, srcTile, quad, perimeter, stride, area, opacity };           // Repack normalized fields.
+
+  if(0<= quad && quad <= 60)  vAdvsqs.render(entry);      // Render the new advsq.
+  else                        vAdvsqs.renderKnight(entry);
 
   branchHistory(entry);               // Manage undo history when branched.
   applyEntry(entry);  // Clear curr, branch, state change, render, refresh panel.
@@ -282,7 +311,9 @@ function updateGambitPanelButtons(quad, perimeter, stride) {
 
   const panel = document.getElementById("advsq-window");
   const overlap = panel.querySelector('[name="advsq-overlap"]')?.value;
-  const piece = quads.pqrTable(quad).piece;
+  let piece = "knight";
+  if(0<= quad && quad <= 60)
+    piece = quads.pqrTable(quad).piece;
 
   console.log("*** overlap text", overlap); // Essential - advsq panel must be updated prior to updating gambit buttons.
 
@@ -325,7 +356,7 @@ function branchHistory(entry) {
 function applyEntry(entry) {   // Clear curr, branch, state change, render, refresh panel.
   console.log("cntrl: advsqs.js - applyEntry(entry)", entry);
 
-  vAdvsqs.render(entry);              // Render the new advsq.
+  const { src, srcTile, quad, perimeter, stride, area, opacity } = entry;
 
   state.pushNewAdvsq(entry);          // Log state change in undo buffer.
 

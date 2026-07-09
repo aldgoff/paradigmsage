@@ -13,7 +13,7 @@
 */
 
 // --- Load module ---
-import raysData from "./rays.json" assert { type: "json" };
+  import raysData from "./rays.json" assert { type: "json" };
   const raysModule = raysData.rays_module;
   const ROOK   = raysModule.rook;
   const BISHOP = raysModule.bishop;

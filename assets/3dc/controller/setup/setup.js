@@ -255,7 +255,6 @@ function handleMakeBoard(payload) {
   console.log("cntrl: setup.js - handleMakeBoard(payload):", payload);
 
   const { action, prevBoard, nextBoard } = payload; // Informative.
-  
   const entry = mSetup.makeBoardEntry(payload);     // Create entry.
 
   buildForward(entry);                          // Build board, trays, and pieces.

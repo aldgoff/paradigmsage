@@ -75,6 +75,14 @@ export function render(advsq) {
   makeAdvsq(advsq);
   } 
 
+export function renderKnight(entry) {
+  console.log("view : advsqs.js - renderKnight(entry)", entry);
+
+  if(!entry) return;
+
+  makeKnightShell(entry);
+  } 
+
 export function refreshPanel(advsq) {
   console.log("view : advsqs.js - refreshPanel(advsq):", advsq);
 
@@ -83,7 +91,11 @@ export function refreshPanel(advsq) {
 
   const { srcTile, quad, perimeter, stride, opacity } = advsq;
 
-  const derived = computeAdvsqDerived({quad, perimeter, stride});                     // Compute derived fields.
+  let derived = null;                                     // Compute derived fields.
+  if(0<= quad && quad <= 60)
+    derived = computeAdvsqDerived({quad, perimeter, stride});
+  else
+    derived = computeKnightDerived(quad, perimeter, stride);
 
   panel.querySelector('[name="advsq-nickname"]').textContent  = derived.nickname;     // Update quad derived fields.
   panel.querySelector('[name="advsq-pieceQuad"]').textContent = derived.pieceQuad;
@@ -288,14 +300,60 @@ function strideDerived(q, k, s) {
   else                                                  piece = basePiece;
 
   return { strideType, moveType, overlap, piece };
-  }
+}
 
-function makeAdvsq(specs) {
-  console.log("view : advsqs.js - makeAdvsq(specs):", specs);
+function computeKnightDerived(quad, perimeter, stride) {
+  console.log("view : advsqs.js - computeKnightDerived(quad, perimeter, stride):", quad, perimeter, stride);
+
+  const panel = document.getElementById("advsq-window");
+  const srcTile = panel.querySelector('[name="advsq-src"]')?.value;
+  const source = coords.normalizeTileToVts(srcTile);
+
+  console.log("*** quads: 61-66: faces");
+  console.log("*** quads: 67-78: edges");
+  console.log("*** quads: 79-84: corners");
+  console.log("*** quads: 85-85: all 24 knight moves");
+
+  console.log("*** TODO: write view : advsqs.js - computeKnightDerived().");
+
+  let plane;
+  if(61 <= quad && quad <= 66) {
+    plane = "faces";
+    }
+  else if(67 <= quad && quad <= 78) {
+    plane = "edges";
+    }
+  else if(79 <= quad && quad <= 84) {
+    plane = "corners";
+    }
+  else if(85 <= quad && quad <= 85) {
+    plane = "all";
+  }
+  else throw new Error(`Unsupported knight quad ${quad}.`);
+
+  const derived = { nickname: "knight", plane, moveType: "jump", piece: "knight" };
+  // TODO: knight nicknames, if any?
+
+  return derived;
+}
+
+function makeAdvsq(advsq) {
+  console.log("view : advsqs.js - makeAdvsq(advsq):", advsq);
 
   removeFromScene();  // Derenders.
 
-  const group = view.buildAdvSqGroup(specs);
+  const group = view.buildAdvSqGroup(advsq);
+
+  view.getContext().scene.add(group);
+  currAdvsqGroup = group;
+}
+
+function makeKnightShell(advsq) {
+  console.log("view : advsqs.js - makeKnightShell(advsq):", advsq);
+
+  removeFromScene();  // Derenders.
+
+  const group = view.buildKnightShellGroup(advsq);
 
   view.getContext().scene.add(group);
   currAdvsqGroup = group;

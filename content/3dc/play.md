@@ -259,7 +259,7 @@ layout: "play"
     <label> Source Tile  <input  name="advsq-src"       type="text"    value="KB4,4" maxlength="7" style="width: 60px;"> </label>
   </div>
   <div class="section">
-    <label> Quad         <input  name="advsq-quad"      type="number" min="1" step="1" value="1" max="60"> </label>
+    <label> Quad         <input  name="advsq-quad"      type="number" min="1" step="1" value="1" max="85"> </label>
     <label> BP:          <output name="advsq-pieceQuad" style="opacity:0.7; font-style:italic;"></output> </label>
     <label> P:           <output name="advsq-planeQuad" style="opacity:0.7; font-style:italic;"></output> </label>
   </div>
@@ -274,7 +274,7 @@ layout: "play"
   <div class="section"> <label> Stride Type: <output name="advsq-strideType"style="opacity:0.7; font-style:italic;"></output> </label> </div>
   <div class="section"> <label> Move Type:   <output name="advsq-moveType"  style="opacity:0.7; font-style:italic;"> Q|L|D|O </output> </label> </div>
   <div class="section"> <label> Overlap:     <output name="advsq-overlap"   style="opacity:0.7; font-style:italic;"> B|Q|H|F </output> </label> </div>
-  <div class="section"> <label> Pieces:      <output name="advsq-piece"     style="opacity:0.7; font-style:italic;"> R|B|D|Q|N|S|P|U|K </output> </label> </div>
+  <div class="section"> <label> Piece:       <output name="advsq-piece"     style="opacity:0.7; font-style:italic;"> R|B|D|Q|N|S|P|U|K </output> </label> </div>
   <!-- Key hints (visual only) -->
   <div class="section" style="font-size: 13px; font-weight: bold; color: #666;">
     Slip&Slide +: kij -: KIJ
