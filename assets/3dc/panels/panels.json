@@ -65,6 +65,7 @@
           "lines": [
             "Reveals the nonintuitive nature of 3D moves.",
             "Place a source tile, then grow an advancement square.",
+            "Click on a tile to reposition.",
             "Advancement squares grow into a quadrant (1-60).",
             "Or use the perimeter box for direct entry (0-7).",
             "All advsqs are square, NxN - thus may exceed the board.",
@@ -106,7 +107,7 @@
       "compassText": {
           "title": "Compass Panel Help",
           "lines": [
-            "Slip and slide advsqs along planes and quads.",
+            "Slip and slide advsqs along planes and quads (eventually).",
             "* Next step: technical feedback (Diagnostics Panel).",
             "--- Future feature: additional pedagogical tools. ---"
           ]

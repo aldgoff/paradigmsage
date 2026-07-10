@@ -1,14 +1,19 @@
 ---
 title: "Clues"
+weight: 20
 ---
 
-**(Occasional Posts)**
+**Clues**
+
+*Hints for those who like to figure things out for themselves.*
 
   To achieve play that **feels like chess** requires:
   - a formal line of development
   - with geometrical and logical rigor
   - that respects the game
-  - and requires the penetration of **two paradigm barriers**
+  - and requires the penetration of two paradigm barriers.
+
+  It is a great exercise in thinking out-of-the-box, of breaking **paradigms**.
 
 ### Clues
   - 4/08/26 - If the 2D board is a *square of squares* (8x8), then the 3D board should be a...?
@@ -90,6 +95,7 @@ title: "Clues"
   - 6/29/26 - Either the duke or the bishop may move; *duke decay* or *bishop decay* (b-decay, ahem...beta-decay).
   - 6/30/26 - And, under restrictive conditions, both can leave in a single move called a *fission*.
   - 7/01/26 - Fusion, however, remains undefined - a challenge for some future generation.
-  - 7/02/26 - 
-
+  - 7/02/26 - That should be enough for the terminally curious.
+  - 7/03/26 - From here, you can begin to generate your own hits/questions/clues.
+  - 7/04/26 - To learn more, explore, study, or best of all teach someone else.
 

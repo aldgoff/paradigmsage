@@ -1,5 +1,6 @@
 ---
 title: "Play"
+weight: 50
 layout: "play"
 ---
 
