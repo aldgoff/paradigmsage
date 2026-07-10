@@ -362,7 +362,6 @@ function applyEntry(entry) {   // Clear curr, branch, state change, render, refr
   const { src, srcTile, quad, perimeter, stride, area, opacity } = entry;
 
   state.pushNewAdvsq(entry);          // Log state change in undo buffer.
-
     vAdvsqs.refreshPanel(entry);         // Refresh panel (dimmed future rows).
   game.showUndoStatus();
   }

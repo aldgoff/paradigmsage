@@ -378,7 +378,6 @@ function applyEntry(entry) {   // Clear curr, branch, state change, render, refr
 
   state.pushNewGambit(entry);          // Log state change in undo buffer.
   vGambits.pushPanelLine(entry);        // Add line to panel.
-  // vGambits.refreshPanel();         // Refresh panel (dimmed future rows).
   game.showUndoStatus();
 }
 // Seampoint: more local functions...

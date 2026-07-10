@@ -611,8 +611,7 @@ function applyEntry(entry) {
   console.log("cntrl: moves.js - applyEntry(entry)", entry);
 
   state.pushNewMove(entry);           // Change state.
-    vMoves.pushPanelLine(entry);      // Add line to panel.
-    // vMoves.refreshPanel();            // Refresh panel (dimmed future rows).
+  vMoves.pushPanelLine(entry);      // Add line to panel.
   game.showUndoStatus();
 }
 // Seampoint: more local functions...

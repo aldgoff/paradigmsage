@@ -40,10 +40,11 @@
 // --- Globals ---
   let currBoard = { boardSize: "0x0x0", trayType: "None", trayGap: 0 };
   let frozenPlacement = false;
+
+  export function getCurrBoard() { return structuredClone(currBoard); }
+  export function getFrozenPlacement() { return frozenPlacement; }
 // Seampoint: more globals...
 
-export function getCurrBoard() { return structuredClone(currBoard); }
-export function getFrozenPlacement() { return frozenPlacement; }
 // --- UI ---
 export function panelDispatch(payload) {    // Dispatch payload from panel to handle event functions.
   console.log("cntrl: setup.js - panelDispatch(payload):", payload);
@@ -251,6 +252,7 @@ export function clearAllPieceSelections() {
 }
 // Seampoint: more global functions...
 
+// --- Handle Functions ---
 function handleMakeBoard(payload) {
   console.log("cntrl: setup.js - handleMakeBoard(payload):", payload);
 
@@ -489,8 +491,7 @@ function applyEntry(entry) {
   console.log("cntrl: setup.js - applyEntry(entry):", entry);
 
   state.pushNewSetup(entry);          // Log state change in undo buffer.
-    vSetup.pushPanelLine(entry);        // Add line to panel.
-    // vSetup.refreshPanel(entry);         // Refresh panel (dimmed future rows).
+  vSetup.pushPanelLine(entry);        // Add line to panel.
   game.showUndoStatus();
 }
 // Seampoint: more local functions...
