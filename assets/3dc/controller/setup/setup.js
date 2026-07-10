@@ -97,6 +97,10 @@ export function buildPayload(panel, action) {
     break;
     default: throw new Error(`Unknown setup action ${action}`); break;
   }
+
+  clearAllPieceSelections();
+  clearAllTileSelections();
+  cSelects.clearSelections();  
 }
 
 export function buildForward(entry) {     // Redo.
@@ -262,10 +266,6 @@ function handleMakeBoard(payload) {
   buildForward(entry);                          // Build board, trays, and pieces.
   branchHistory(entry);
   applyEntry(entry);
-
-  clearAllPieceSelections();
-  clearAllTileSelections();
-  cSelects.clearSelections();  
   }
 
 function handlePlacePiece(payload, selections) {
@@ -304,10 +304,6 @@ function handleFreeze(payload) {
   branchHistory(entry);
   applyEntry(entry);
 
-  clearAllPieceSelections();
-  clearAllTileSelections();
-  cSelects.clearSelections();
-
   mSetup.buttonAffordances("loaded");
   }
 
@@ -325,10 +321,6 @@ function handleStartingPos(payload) {
   buildForward(entry);
   branchHistory(entry);
   applyEntry(entry);
-
-  clearAllPieceSelections();
-  clearAllTileSelections();
-  cSelects.clearSelections();
   
   mSetup.buttonAffordances("loaded");
   }
@@ -342,10 +334,6 @@ function pieceSetup(entry) {
   buildForward(entry);
   branchHistory(entry);
   applyEntry(entry);
-
-  clearAllPieceSelections();
-  clearAllTileSelections();
-  cSelects.clearSelections();
 
   mSetup.buttonAffordances("placed");
 }
@@ -461,7 +449,7 @@ function initialLineup(entry) {
       }
     }
   }
-  }
+}
 
 function branchHistory(entry) {
   console.log("cntrl: setup.js - branchHistory(entry):", entry);

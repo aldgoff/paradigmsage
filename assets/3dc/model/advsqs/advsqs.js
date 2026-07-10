@@ -56,6 +56,7 @@ export function buttonAffordances(situation) {
     buttonAffordances("off");
     panels.enableButton("place",     true);
     panels.enableButton("grow",      true);
+    panels.enableButton("nextPiece", true);
     }
   else if(situation === "build") {      // Initial values, ready to build advsqs.
     buttonAffordances("off");
@@ -66,6 +67,8 @@ export function buttonAffordances(situation) {
     buttonAffordances("off");
     panels.enableButton("remove",    true);
     panels.enableButton("grow",      true);
+    panels.enableButton("nextQuad",  true);
+    panels.enableButton("nextPlane", true);
     panels.enableButton("nextPiece", true);
     }
   else if(situation === "adv-sq") {     // Advsq.

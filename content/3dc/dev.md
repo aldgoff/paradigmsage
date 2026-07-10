@@ -168,7 +168,8 @@ title: "Dev"
   - 7/07/26 - Feynman overlap. Brook overlap. Qtile overlap. Gambit line QC.
   - 7/08/26 - QC modules. Fix gambit manual/load undo bug. Deprecate boardSpec. Align gambit entry flow. Saved testcases.
   - 7/09/26 - Capture module saves. POC on knight. Testsuite for advsqs.
-  - 7/10/26 - QC applyEntry and advsqs. Advsq buildForward/buildBackward.
+  - 7/10/26 - QC applyEntry and advsqs. Advsq click1.
+  Advsq buildForward/buildBackward.
 
 
 ## Move Lines:

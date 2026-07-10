@@ -256,7 +256,7 @@ layout: "play"
     <button data-action="shrink">Shrink</button>
   </div>
   <div class="section">
-    <label> Source Tile  <input  name="advsq-src"       type="text"    value="KB4,4" maxlength="7" style="width: 60px;"> </label>
+    <label> Source Tile  <input  name="advsq-src"       type="text"    value="Q4,4" maxlength="7" style="width: 60px;"> </label>
   </div>
   <div class="section">
     <label> Quad         <input  name="advsq-quad"      type="number" min="1" step="1" value="1" max="85"> </label>

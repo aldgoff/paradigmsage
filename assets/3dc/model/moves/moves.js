@@ -453,7 +453,7 @@ export function buttonAffordances(situation) {
 // Seampoint: more global functions...
 
 // --- Helpers ---
-function cleanupSelections() {
+function cleanupSelections() {  // TODO: Move to control layer.
   cSetup.clearAllPieceSelections();                       // Cleanup.
   cSetup.clearAllTileSelections();
   cSelects.clearSelections();

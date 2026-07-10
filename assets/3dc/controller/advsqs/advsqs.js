@@ -14,6 +14,7 @@
 
 // --- Dependencies ---
   import * as cSelects from "../../controller/selections/selections.js";
+  import * as cSetup   from "../../controller/setup/setup.js";
   import * as game     from "../../controller/game/game.js";
 
   import * as state    from "../../model/state/state.js";
@@ -57,22 +58,116 @@ export function panelDispatch(payload) {
     default: throw new Error(`Unknown advsq action ${action}, payload ${JSON.stringify(payload)}.`);
   }
 
+  cSelects.clearSelections();
   game.showUndoStatus();    // Show undo buffer status in game panel.
   }
 
 export function buildPayload(panel, action) {
   console.log("     ---------- cntrl: advsqs.js");
-  
+
+  const size = cSetup.getCurrBoard().boardSize;           // Parse piece and tile info.
+  const tileSelections = cSelects.getTileSelection();
+  const [tile1, tile2] = [...tileSelections];             // Tiles.
+  const { sdStr1, sdStr2 } = cSelects.getTiles([...tileSelections], size);
+
+  let src     = panel.querySelector('[name="advsq-src"]')?.value;
+  let srcTile = coords.normalizeTileToVts(src);
+  if(tile1) {
+    src     = sdStr1;
+    srcTile = tile1;
+    const currPiece = panel.querySelector('[name="advsq-piece"]')?.value;
+    if(currPiece == "R|B|D|Q|N|S|P|U|K")
+      panel.querySelector('[name="advsq-piece"]').textContent = "rook";
+  }
+
   return {  // payload
     action,
-    src:                                 panel.querySelector('[name="advsq-src"]')?.value,
-    srcTile:   coords.normalizeTileToVts(panel.querySelector('[name="advsq-src"]')?.value),
-    quad:                         Number(panel.querySelector('[name="advsq-quad"]')?.value),
-    perimeter:                    Number(panel.querySelector('[name="advsq-perimeter"]')?.value),
-    stride:                       Number(panel.querySelector('[name="advsq-stride"]')?.value),
-    area:                         Number(panel.querySelector('[name="advsq-area"]')?.value),
-    opacity:                      Number(panel.querySelector('[name="advsq-opacity"]')?.value),
+    src,
+    srcTile,
+    quad:      Number(panel.querySelector('[name="advsq-quad"]')?.value),
+    perimeter: Number(panel.querySelector('[name="advsq-perimeter"]')?.value),
+    stride:    Number(panel.querySelector('[name="advsq-stride"]')?.value),
+    area:      Number(panel.querySelector('[name="advsq-area"]')?.value),
+    opacity:   Number(panel.querySelector('[name="advsq-opacity"]')?.value),
   };
+}
+
+export function buildForward(entry) {     // TODO: advsqs buildForward. Redo.
+  console.log("cntrl: advsqs.js - buildForward(entry)", entry);
+
+  const { action, src, srcTile, quad, perimeter, stride, area, opacity } = entry;  // Unpack primary fields.
+
+  if(     action === "place") {
+    mAdvsqs.buttonAffordances("on");
+    }
+  else if(action === "remove") {
+    mAdvsqs.buttonAffordances("on");
+    }
+  else if(action === "grow") {
+    mAdvsqs.buttonAffordances("on");
+    }
+  else if(action === "shrink") {
+    mAdvsqs.buttonAffordances("on");
+    }
+  else if(action === "updateParam") {
+    mAdvsqs.buttonAffordances("on");
+    }
+  else if(action === "nudgeSrc") {
+    mAdvsqs.buttonAffordances("on");
+    }
+  else if(action === "nextQuad") {
+    mAdvsqs.buttonAffordances("on");
+    }
+  else if(action === "nextPlane") {
+    mAdvsqs.buttonAffordances("on");
+    }
+  else if(action === "nextPiece") {
+    mAdvsqs.buttonAffordances("on");
+    }
+  else { throw new Error(`Unknown advsq action ${action}`); }
+  
+  cSelects.manageAdvsqButtons();
+  vAdvsqs.refreshPanel(entry);         // Refresh panel.
+  panels.diagnostics();
+  }
+
+export function buildBackward(entry) {    // TODO: advsqs buildBackward. Undo.
+  console.log("cntrl: advsqs.js - buildBackwards(entry)", entry);
+
+  const { action, src, srcTile, quad, perimeter, stride, area, opacity } = entry;  // Unpack primary fields.
+
+  if(     action === "place") {
+    mAdvsqs.buttonAffordances("on");
+    }
+  else if(action === "remove") {
+    mAdvsqs.buttonAffordances("on");
+    }
+  else if(action === "grow") {
+    mAdvsqs.buttonAffordances("on");
+    }
+  else if(action === "shrink") {
+    mAdvsqs.buttonAffordances("on");
+    }
+  else if(action === "updateParam") {
+    mAdvsqs.buttonAffordances("on");
+    }
+  else if(action === "nudgeSrc") {
+    mAdvsqs.buttonAffordances("on");
+    }
+  else if(action === "nextQuad") {
+    mAdvsqs.buttonAffordances("on");
+    }
+  else if(action === "nextPlane") {
+    mAdvsqs.buttonAffordances("on");
+    }
+  else if(action === "nextPiece") {
+    mAdvsqs.buttonAffordances("on");
+    }
+  else { throw new Error(`Unknown advsq action ${action}`); }
+
+  cSelects.manageAdvsqButtons();
+  vAdvsqs.refreshPanel(entry);         // Refresh panel.
+  panels.diagnostics();
 }
 // Seampoint: more global functions...
 
@@ -80,7 +175,7 @@ export function buildPayload(panel, action) {
 function handlePlace(payload) {
   console.log("cntrl: advsqs.js - handlePlace(payload)", payload);
 
-  const { action, src, srcTile, quad, perimeter, stride, area, opacity } = payload;  // Unpack primary fields.
+  let { action, src, srcTile, quad, perimeter, stride, area, opacity } = payload;  // Unpack primary fields.
 
   mAdvsqs.buttonAffordances("src-tile");
   const entry = mAdvsqs.makeEntry(payload);     // Transform panel payload into state entry.
@@ -99,7 +194,7 @@ function handleRemove(payload) {
   const { action, src, srcTile, quad, perimeter, stride, area, opacity } = payload;  // Unpack primary fields.
                                                                             // Manipulate fields.
   mAdvsqs.buttonAffordances("build");
-  mGambits.buttonAffordances("off");
+  // mGambits.buttonAffordances("off");
   const newAdvsq = blank(payload);        // Repack normalized fields.
 
   state.clearBuffer("AdvSqs");            // Log state change in undo buffer.
@@ -318,9 +413,7 @@ function updateGambitPanelButtons(quad, perimeter, stride) {
   if(0<= quad && quad <= 60)
     piece = quads.pqrTable(quad).piece;
 
-  console.log("*** overlap text", overlap); // Essential - advsq panel must be updated prior to updating gambit buttons.
-
-  mGambits.buttonAffordances("off");
+  mGambits.buttonAffordances("off"); // Essential - advsq panel must be updated prior to updating gambit buttons.
   switch (overlap) {
     case "source":  mGambits.buttonAffordances("off"); break;
     case "body":    mGambits.buttonAffordances("freezeQ"); break;
@@ -353,6 +446,7 @@ function branchHistory(entry) {
 
     const idx = state.getCurrentIndex("AdvSqs");
     state.truncateState("AdvSqs", idx);
+    vAdvsqs.refreshPanel(entry);
   }
   }
 
@@ -362,7 +456,7 @@ function applyEntry(entry) {   // Clear curr, branch, state change, render, refr
   const { src, srcTile, quad, perimeter, stride, area, opacity } = entry;
 
   state.pushNewAdvsq(entry);          // Log state change in undo buffer.
-    vAdvsqs.refreshPanel(entry);         // Refresh panel (dimmed future rows).
+  vAdvsqs.refreshPanel(entry);         // Refresh panel (dimmed future rows).
   game.showUndoStatus();
   }
 

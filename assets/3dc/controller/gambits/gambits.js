@@ -367,6 +367,7 @@ function branchHistory() {
       vGambits.popPanelLine();
       top--;
     }
+    vGambits.refreshPanel();
   }
 
   vAdvsqs.clearAdvsqs();              // Remove all entries in downstream buffers.
