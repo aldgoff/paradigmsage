@@ -55,13 +55,20 @@ export function buttonAffordances(situation) {
   else if(situation === "default") {         // Place or grow (implied place).
     buttonAffordances("off");
     panels.enableButton("place",     true);
+    panels.enableButton("remove",    true);
     panels.enableButton("grow",      true);
+    panels.enableButton("shrink",    true);
+
+    panels.enableButton("nextQuad",  true);
+    panels.enableButton("nextPlane", true);
     panels.enableButton("nextPiece", true);
     }
   else if(situation === "build") {      // Initial values, ready to build advsqs.
     buttonAffordances("off");
     panels.enableButton("place",     true);
+    panels.enableButton("remove",    true);
     panels.enableButton("grow",      true);
+    panels.enableButton("shrink",    true);
     }
   else if(situation === "src-tile") {   // Single tile, perimeter 0, src tile.
     buttonAffordances("off");
@@ -85,7 +92,6 @@ export function buttonAffordances(situation) {
     panels.enableButton("remove",    false);
     panels.enableButton("grow",      false);
     panels.enableButton("shrink",    false);
-
     panels.enableButton("nextQuad",  false);
     panels.enableButton("nextPlane", false);
     panels.enableButton("nextPiece", false);

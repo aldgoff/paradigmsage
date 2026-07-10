@@ -479,10 +479,12 @@ function derenderGambit(group) {
   }
 
 function removeOverlays(list) {
-    for (const o of list) {
-        if (o.parent)
-            o.parent.remove(o);
-    }
+  console.log("view : gambits.js - removeOverlays(list)", list);
+
+  for(const o of list) {
+    if(o.parent)
+      o.parent.remove(o);
+  }
 }
 // Seampoint: more local functions...
 

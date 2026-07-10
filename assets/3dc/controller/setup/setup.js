@@ -468,11 +468,8 @@ function branchHistory(entry) {
   vMoves.clearMoves();                // Remove all entries in downstream buffers.
   state.clearBuffer("Moves");
 
-  vGambits.clearGambits();
-  state.clearBuffer("Gambits");
-
-  vAdvsqs.clearAdvsqs();
-  state.clearBuffer("AdvSqs");
+  // vGambits.clearGambits();
+  // state.clearBuffer("Gambits");
   }
 
 function applyEntry(entry) {

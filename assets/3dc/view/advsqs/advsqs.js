@@ -31,6 +31,16 @@
 // --- Globals ---
   let advsqPanelInitialParams = null;
   let currAdvsqGroup = null;
+
+  export function setAdvsqPanelInitialParams() {
+    advsqPanelInitialParams = getAdvsqPanelParams();
+    }
+  export function getAdvsqPanelInitialParams() {
+    return advsqPanelInitialParams;
+    }
+  export function getCurrAdvsGroup() {
+    return currAdvsqGroup;
+    }
 // Seampoint: more globals...
 
 // --- UI ---
@@ -128,14 +138,6 @@ export function refreshEntry(entry) {
   // const advsq = entry; // Same code as in Setup, Moves, & Gambits.
   // refreshPanel(advsq);
 }
-
-export function setAdvsqPanelInitialParams() {
-  advsqPanelInitialParams = getAdvsqPanelParams();
-  }
-
-export function getAdvsqPanelInitialParams() {
-  return advsqPanelInitialParams;
-  }
 
 export function clearAdvsqPanelParams(srcTile) {
   console.log("view : advsqs.js - clearAdvsqPanelParams(srcTile):", srcTile); // srcTile: positional notation.
@@ -300,7 +302,7 @@ function strideDerived(q, k, s) {
   else                                                  piece = basePiece;
 
   return { strideType, moveType, overlap, piece };
-}
+  }
 
 function computeKnightDerived(quad, perimeter, stride) {
   console.log("view : advsqs.js - computeKnightDerived(quad, perimeter, stride):", quad, perimeter, stride);
@@ -346,7 +348,7 @@ function makeAdvsq(advsq) {
 
   view.getContext().scene.add(group);
   currAdvsqGroup = group;
-}
+  }
 
 function makeKnightShell(advsq) {
   console.log("view : advsqs.js - makeKnightShell(advsq):", advsq);

@@ -600,11 +600,8 @@ function branchHistory(entry) {
     vMoves.refreshPanel();
   }
 
-  vGambits.clearGambits();            // Remove all entries in downstream buffers.
-  state.clearBuffer("Gambits");
-
-  vAdvsqs.clearAdvsqs();
-  state.clearBuffer("AdvSqs");
+  // vGambits.clearGambits();            // Remove all entries in downstream buffers.
+  // state.clearBuffer("Gambits");
   }
 
 function applyEntry(entry) {

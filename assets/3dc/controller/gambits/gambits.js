@@ -370,8 +370,8 @@ function branchHistory() {
     vGambits.refreshPanel();
   }
 
-  vAdvsqs.clearAdvsqs();              // Remove all entries in downstream buffers.
-  state.clearBuffer("AdvSqs");
+  // vAdvsqs.clearAdvsqs();              // Remove all entries in downstream buffers.
+  // state.clearBuffer("AdvSqs");
   }
 
 function applyEntry(entry) {   // Clear curr, branch, state change, render, refresh panel.
