@@ -14,10 +14,10 @@
 // Seampoint: more objects...
 
 // --- Dependencies ---
-  import * as panels  from "../../panels/panels.js";
+  import * as panels   from "../../panels/panels.js";
 
-  import * as cSetup      from "../../controller/setup/setup.js";
-  import * as cSelections from "../../controller/selections/selections.js";
+  import * as cSelects from "../../controller/selections/selections.js";
+  import * as cSetup   from "../../controller/setup/setup.js";
 
   import * as state   from "../../model/state/state.js";
   import * as mPieces from "../../model/pieces/pieces.js";
@@ -46,23 +46,19 @@ export function makeMoveEntry(payload, selections) {
   const size = cSetup.getCurrBoard().boardSize;           // Parse piece and tile info.
   const pieces = pieceSelections.size;
   const tiles  = tileSelections.size;
-  console.log("*** pieces, tiles", pieces, tiles);
+  // console.log("*** pieces, tiles", pieces, tiles);
 
   const [key1, key2] = [...pieceSelections];              // Pieces.
-  const piece1 = mPieces.getPieceList()[key1];
-  const piece2 = mPieces.getPieceList()[key2];
+  const { piece1, piece2 } = cSelects.getPieces([...pieceSelections]);
 
   const [tile1, tile2] = [...tileSelections];             // Tiles.
-  const tile1Str = coords.vtsToBoard(tile1, size);
-  let tile2Str = tile2
-    ? coords.vtsToBoard(tile2, size)
-    : null;
+  const { sdStr1 } = cSelects.getTiles([...tileSelections], size);
 
   const stack = (pieces > 1)
     ? mPieces.isStackMate(key1, key2)
     : false;
   let annotation = "";                                    // Annotation.
-  if(pieces === 1 && tiles === 1) {
+  if(     pieces === 1 && tiles === 1) {
     if(mPieces.hasOtherStackSubpiece(key1, tile1)) {
       if(stack)   annotation = "tele";
       else        annotation = "join";
@@ -77,7 +73,7 @@ export function makeMoveEntry(payload, selections) {
   }
 
   const prev  = `@${piece1.pos}`;                         // Assemble.
-  const post  = `@${tile1Str}`;  
+  const post  = `@${sdStr1}`;  
   const list = [{ key: key1, prev, post }];  // list:[{key:"WKRR", prev:"@KR1,1", post:"@KR3,3"}].
   if(key2) 
     list.push({ key: key2, prev, post });   // list:[{key, prev, post}, {key, prev, post}].
@@ -95,14 +91,11 @@ export function makeCaptureEntry(payload, selections) {
   const size = cSetup.getCurrBoard().boardSize;           // Parse piece and tile info.
   const pieces = pieceSelections.size;
   const tiles  = tileSelections.size;
-  console.log("*** pieces, tiles", pieces, tiles);
+  // console.log("*** pieces, tiles", pieces, tiles);
   if(tiles != 0) return;
 
   const [key1, key2, key3, key4] = [...pieceSelections];  // Pieces.
-  const piece1 = mPieces.getPieceList()[key1];
-  const piece2 = mPieces.getPieceList()[key2];
-  const piece3 = (pieces >= 3) ? mPieces.getPieceList()[key3] : null;
-  const piece4 = (pieces >= 4) ? mPieces.getPieceList()[key4] : null;
+  const { piece1, piece2, piece3, piece4 } = cSelects.getPieces([...pieceSelections]);
 
   let annotation = "";                                    // Annotation.
   if(pieces === 2 ) annotation = "capture";
@@ -110,7 +103,7 @@ export function makeCaptureEntry(payload, selections) {
   if(pieces === 3 && (piece1.pos === piece2.pos)) annotation = "SxC";
   if(pieces === 3 && (piece2.pos === piece3.pos)) annotation = "CxS";
   if(pieces === 4 ) annotation = "SxS";
-  console.log("*** annotation", annotation);
+  // console.log("*** annotation", annotation);
   // console.log("*** mPieces.piecesOnTile(piece1.vts)", mPieces.piecesOnTile(piece1.vts));
 
   let list = [];                                          // Assemble.
@@ -166,73 +159,67 @@ export function makeFissionEntry(payload, selections) {
   const size = cSetup.getCurrBoard().boardSize;                 // Parse piece and tile info.
   const pieces = pieceSelections.size;
   const tiles  = tileSelections.size;
-  const annotation = cSelections.getAnnotation();
+  const annotation = cSelects.getAnnotation();
   console.log("*** pieces, tiles, annotation", pieces, tiles, annotation);
 
   const [key1,key2,key3,key4,key5,key6] = [...pieceSelections]; // Pieces.
-  const piece1 = mPieces.getPieceList()[key1];
-  const piece2 = mPieces.getPieceList()[key2];
-  const piece3 = (pieces >= 3) ? mPieces.getPieceList()[key3] : null;
-  const piece4 = (pieces >= 4) ? mPieces.getPieceList()[key4] : null;
-  const piece5 = (pieces >= 5) ? mPieces.getPieceList()[key5] : null;
-  const piece6 = (pieces >= 6) ? mPieces.getPieceList()[key6] : null;
+  const { piece1, piece2, piece3, piece4, piece5, piece6 } = cSelects.getPieces([...pieceSelections]);
 
   const [tile1, tile2] = [...tileSelections];                   // Tiles.
-  console.log("*** tile1, tile2", tile1, tile2);
-
-  const dstStr1 = (tile1) ? coords.vtsToBoard(tile1, size) : null;
-  const dstStr2 = (tile2) ? coords.vtsToBoard(tile2, size) : null;
-  console.log("*** dstStr1, dstStr2", dstStr1, dstStr2);
+  const { sdStr1, sdStr2 } = cSelects.getTiles([...tileSelections], size);
 
   const prev1 = (piece1) ? `@${piece1.pos}` : null;
   const prev2 = (piece2) ? `@${piece2.pos}` : null;
+
+  console.log("*** tile1, tile2", tile1, tile2);
+  console.log("*** sdStr1, sdStr2", sdStr1, sdStr2);
   console.log("*** prev1, prev2", prev1, prev2);
 
-  const movCap = cSelections.getTileFirst();
+  const movCap = cSelects.getTileFirst();
 
   let list = [];                                                // Assemble.
 
   if(     annotation === "fissMM") {
-    const first  = { key: key1, prev: `@${piece1.pos}`, post: `@${dstStr1}` };    // Tile.
-    const second = { key: key2, prev: `@${piece2.pos}`, post: `@${dstStr2}` };    // Tile.
+    const first  = { key: key1, prev: `@${piece1.pos}`, post: `@${sdStr1}` };     // Tile.
+    const second = { key: key2, prev: `@${piece2.pos}`, post: `@${sdStr2}` };     // Tile.
     list = [first, second];  // list:[{},{}].
     }
   else if(annotation === "fissMJ") {
-    const first  = { key: key1, prev: `@${piece1.pos}`, post: `@${dstStr1}` };    // Tile.
-    const second = { key: key2, prev: `@${piece2.pos}`, post: `@${dstStr2}` };    // Tile.
+    const first  = { key: key1, prev: `@${piece1.pos}`, post: `@${sdStr1}` };     // Tile.
+    const second = { key: key2, prev: `@${piece2.pos}`, post: `@${sdStr2}` };     // Tile.
     list = [first, second];  // list:[{},{}].
     }
   else if(annotation === "fissJM") {
-    const first  = { key: key1, prev: `@${piece1.pos}`, post: `@${dstStr1}` };    // Tile.
-    const second = { key: key2, prev: `@${piece2.pos}`, post: `@${dstStr2}` };    // Tile.
+    const first  = { key: key1, prev: `@${piece1.pos}`, post: `@${sdStr1}` };     // Tile.
+    const second = { key: key2, prev: `@${piece2.pos}`, post: `@${sdStr2}` };     // Tile.
     list = [first, second];  // list:[{},{}].
     }
   else if(annotation === "fissJJ") {
-    const first  = { key: key1, prev: `@${piece1.pos}`, post: `@${dstStr1}` };    // Tile.
-    const second = { key: key2, prev: `@${piece2.pos}`, post: `@${dstStr2}` };    // Tile.
+    const first  = { key: key1, prev: `@${piece1.pos}`, post: `@${sdStr1}` };     // Tile.
+    const second = { key: key2, prev: `@${piece2.pos}`, post: `@${sdStr2}` };     // Tile.
     list = [first, second];  // list:[{},{}].
   }
   else if(annotation === "fissMC") {
-    const first  = { key: key1, prev: `@${piece1.pos}`, post: `@${dstStr1}` };    // Tile.
+    const first  = { key: key1, prev: `@${piece1.pos}`, post: `@${sdStr1}` };     // Tile.
     const second = { key: key2, prev: `@${piece2.pos}`, post: `@${piece3.pos}` }; // Piece.
     const third  = { key: key3, prev: `@${piece3.pos}`, post: `~${piece3.home.trayPos}` };
     list = [first, second, third];  // list:[{},{},{}].
     }
   else if(annotation === "fissMS") {
-    const first  = { key: key1, prev: `@${piece1.pos}`, post: `@${dstStr1}` };    // Tile.
+    const first  = { key: key1, prev: `@${piece1.pos}`, post: `@${sdStr1}` };     // Tile.
     const second = { key: key2, prev: `@${piece2.pos}`, post: `@${piece3.pos}` }; // Piece.
     const third  = { key: key3, prev: `@${piece3.pos}`, post: `~${piece3.home.trayPos}` };
     const fourth = { key: key4, prev: `@${piece4.pos}`, post: `~${piece4.home.trayPos}` };
     list = [first, second, third, fourth];  // list:[{},{},{},{}].
     }
   else if(annotation === "fissJC") {
-    const first  = { key: key1, prev: `@${piece1.pos}`, post: `@${dstStr1}` };    // Tile.
+    const first  = { key: key1, prev: `@${piece1.pos}`, post: `@${sdStr1}` };     // Tile.
     const second = { key: key2, prev: `@${piece2.pos}`, post: `@${piece3.pos}` }; // Piece.
     const third  = { key: key3, prev: `@${piece3.pos}`, post: `~${piece3.home.trayPos}` };
     list = [first, second, third];  // list:[{},{},{}].
     }
   else if(annotation === "fissJS") {
-    const first  = { key: key1, prev: `@${piece1.pos}`, post: `@${dstStr1}` };    // Tile.
+    const first  = { key: key1, prev: `@${piece1.pos}`, post: `@${sdStr1}` };     // Tile.
     const second = { key: key2, prev: `@${piece2.pos}`, post: `@${piece3.pos}` }; // Piece.
     const third  = { key: key3, prev: `@${piece3.pos}`, post: `~${piece3.home.trayPos}` };
     const fourth = { key: key4, prev: `@${piece4.pos}`, post: `~${piece4.home.trayPos}` };
@@ -240,26 +227,26 @@ export function makeFissionEntry(payload, selections) {
   }
   else if(annotation === "fissCM") {
     const first  = { key: key1, prev: `@${piece1.pos}`, post: `@${piece3.pos}` }; // Piece.
-    const second = { key: key2, prev: `@${piece2.pos}`, post: `@${dstStr1}` };    // Tile.
+    const second = { key: key2, prev: `@${piece2.pos}`, post: `@${sdStr1}` };     // Tile.
     const third  = { key: key3, prev: `@${piece3.pos}`, post: `~${piece3.home.trayPos}` };
     list = [first, second, third];  // list:[{},{},{}].
     }
   else if(annotation === "fissSM") {
     const first  = { key: key1, prev: `@${piece1.pos}`, post: `@${piece3.pos}` }; // Piece.
-    const second = { key: key2, prev: `@${piece2.pos}`, post: `@${dstStr1}` };    // Tile.
+    const second = { key: key2, prev: `@${piece2.pos}`, post: `@${sdStr1}` };     // Tile.
     const third  = { key: key3, prev: `@${piece3.pos}`, post: `~${piece3.home.trayPos}` };
     const fourth = { key: key4, prev: `@${piece4.pos}`, post: `~${piece4.home.trayPos}` };
     list = [first, second, third, fourth];  // list:[{},{},{},{}].
     }
   else if(annotation === "fissCJ") {
     const first  = { key: key1, prev: `@${piece1.pos}`, post: `@${piece3.pos}` }; // Piece.
-    const second = { key: key2, prev: `@${piece2.pos}`, post: `@${dstStr1}` };    // Tile.
+    const second = { key: key2, prev: `@${piece2.pos}`, post: `@${sdStr1}` };     // Tile.
     const third  = { key: key3, prev: `@${piece3.pos}`, post: `~${piece3.home.trayPos}` };
     list = [first, second, third];  // list:[{},{},{}].
     }
   else if(annotation === "fissSJ") {
     const first  = { key: key1, prev: `@${piece1.pos}`, post: `@${piece3.pos}` }; // Piece.
-    const second = { key: key2, prev: `@${piece2.pos}`, post: `@${dstStr1}` };    // Tile.
+    const second = { key: key2, prev: `@${piece2.pos}`, post: `@${sdStr1}` };     // Tile.
     const third  = { key: key3, prev: `@${piece3.pos}`, post: `~${piece3.home.trayPos}` };
     const fourth = { key: key4, prev: `@${piece4.pos}`, post: `~${piece4.home.trayPos}` };
     list = [first, second, third, fourth];  // list:[{},{},{},{}].
@@ -313,7 +300,7 @@ export function makeEnpassantEntry(payload, selections) {
   const size = cSetup.getCurrBoard().boardSize;           // Parse piece and tile info.
   const pieces = pieceSelections.size;
   const tiles  = tileSelections.size;
-  const annotation = cSelections.getAnnotation();
+  const annotation = cSelects.getAnnotation();
   console.log("*** pieces, tiles, annotation", pieces, tiles, annotation);
 
   const [attacker, captured] = [...pieceSelections];      // Pieces.
@@ -342,7 +329,7 @@ export function makeCastleEntry(payload, selections) {
   const size = cSetup.getCurrBoard().boardSize;           // Parse piece and tile info.
   const pieces = pieceSelections.size;
   const tiles  = tileSelections.size;
-  const annotation = cSelections.getAnnotation();
+  const annotation = cSelects.getAnnotation();
   console.log("*** pieces, tiles, annotation", pieces, tiles, annotation);
 
   const [king, rook, rook2] = [...pieceSelections];       // Pieces.
@@ -383,7 +370,7 @@ export function makePromoteEntry(payload, selections) {
   const size = cSetup.getCurrBoard().boardSize;           // Parse piece and tile info.
   const pieces = pieceSelections.size;
   const tiles  = tileSelections.size;
-  const annotation = cSelections.getAnnotation();
+  const annotation = cSelects.getAnnotation();
   console.log("*** pieces, tiles, annotation", pieces, tiles, annotation);
 
   const [key, upgrade] = [...pieceSelections];            // Pieces.
@@ -402,7 +389,7 @@ export function makePromoteEntry(payload, selections) {
   cleanupSelections();                                    // Cleanup.
   
   return { action, turn, player, list, annotation };      // Entry.
-}
+  }
 
 export function makeUpliftEntry(payload, selections) {
   console.log(`model: gambits.js - makeUpliftEntry(payload, selections):`, payload, selections);
@@ -412,7 +399,7 @@ export function makeUpliftEntry(payload, selections) {
   const size = cSetup.getCurrBoard().boardSize;           // Parse piece and tile info.
   const pieces = pieceSelections.size;
   const tiles  = tileSelections.size;
-  const annotation = cSelections.getAnnotation();
+  const annotation = cSelects.getAnnotation();
   console.log("*** pieces, tiles, annotation", pieces, tiles, annotation);
 
   const [pawn, subpiece] = [...pieceSelections];     // Pieces.
@@ -466,10 +453,10 @@ export function buttonAffordances(situation) {
 // Seampoint: more global functions...
 
 // --- Helpers ---
-function cleanupSelections() {
+function cleanupSelections() {  // TODO: Move to control layer.
   cSetup.clearAllPieceSelections();                       // Cleanup.
   cSetup.clearAllTileSelections();
-  cSelections.clearSelections();
+  cSelects.clearSelections();
   }
 
 function parse(payload, selections) {
@@ -514,4 +501,8 @@ function promotePiece(oldKey, upgrade) {  // TODO: questionable approach.
   return newKey;
 }
 // Seampoint: more local functions...
+
+/* TODO: QC checklist
+  1. tbd
+*/
 

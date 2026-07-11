@@ -79,17 +79,16 @@ export function popPanelLine() {
   if(!last) return;
 
   scroll.removeChild(last);
-}
+  }
 
-export function refreshPanel(move) {
-  console.log("view : moves.js - refreshPanel(move)", move);
+export function refreshPanel() {
+  console.log("view : moves.js - refreshPanel()");
 
   const scroll = document.getElementById("move-list");    // Scroll list.
-  if (!scroll) return;
+  if(!scroll) return;
 
   const count = state.getIndices().Moves;
   const children = scroll.children;
-
   for(let i = 0; i < children.length; i += 2) {
     const white = children[i];
     const black = children[i + 1];
@@ -134,7 +133,7 @@ export function refreshPanel(move) {
   (count%2 === 1)                                         // Player radio buttons.
     ? document.querySelector('input[name="move-player"][value="Black"]').checked = true
     : document.querySelector('input[name="move-player"][value="White"]').checked = true;
-}
+  }
 
 export function refreshEntry(entry) {
   console.log("view : moves.js - refreshEntry(entry):", entry);
@@ -457,7 +456,12 @@ function assembleUpliftLine(entry) {
 }
 // Seampoint: more local functions...
 
-// PromoteMov.
-// PromoteCap, uplifts.
-// Castle, KQ-side, royal.
+/* TODO: QC checklist
+  1. PromoteMov
+  2. PromoteCap
+  3. uplifts
+  4. Castle
+  5. KQ-side
+  6. royal
+*/
 

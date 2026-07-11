@@ -42,8 +42,6 @@ export function clearSetup() {
     top--;
   }
 
-  const scene = view.getContext().scene;
-
   vPieces.destroyPieces(mPieces.getPieceList());
   vTrays.destroyTrays();
   vBoards.destroyBoards();
@@ -52,8 +50,8 @@ export function clearSetup() {
 export function pushPanelLine(entry) {
   console.log("view : setup.js - pushPanelLine(entry)", entry);
 
-  const { action, prevBoard, nextBoard } = entry;
-
+  const { action } = entry;
+  
   const scroll = document.getElementById("setup-list");
   if(!scroll) return;
 
@@ -82,9 +80,7 @@ export function popPanelLine() {
 export function refreshPanel(board) {
   console.log("view : setup.js - refreshPanel(board):", board);
 
-  // const { boardSize, trayType, trayGap } = board;
-
-  let scroll = document.getElementById("setup-list");     // Scroll list.
+  const scroll = document.getElementById("setup-list");   // Scroll list.
   if(!scroll) return;
 
   const count = state.getIndices().Setup;                 // Scroll text box.
@@ -95,6 +91,8 @@ export function refreshPanel(board) {
       : "0.5";    // future
     children[i].style.opacity = opacity;
   }
+
+  // const { boardSize, trayType, trayGap } = board;
 
   const panel = document.getElementById("setup-window");   // Radio buttons.
   if(!panel) return;
@@ -124,7 +122,7 @@ export function clear(entry) {
   vTrays.destroyTrays();
   }
   
-export function render(entry) {
+export function render(entry) { // TODO: common arch with other modules.
   console.log("view : setup.js - render(entry)", entry);
 
   const { action, boardSize, trayType, trayGap } = entry;  // Informative.
@@ -150,34 +148,26 @@ export function clearSetupPanelParams(params) {
 function assembleLine(entry) {
   console.log("view : setup.js - assembleLine(entry)", entry);
 
-  const { action, boardSpec } = entry;
+  const { action } = entry;  // Entry varies.
 
   switch (action) {
     case "makeBoard": {
-      // const { boardSize, trayType } = entry;
-      const { action, prevBoard, nextBoard, boardSize,trayType,trayGap } = entry;
+      const { prevBoard, nextBoard } = entry;
       const prevCol = `${prevBoard.boardSize}`.padEnd(8);
       const currCol = `${nextBoard.boardSize}`.padEnd(8);
       const typeCol = `${nextBoard.trayType}`.padEnd(4);
       const line    = `${prevCol} ${currCol} ${typeCol}`;
       return line; }
-    case "destroyBoard": {
-      const { boardSize, trayType } = entry;
-      const sizeCol = `${boardSize}`.padEnd(8);
-      const typeCol = `${trayType}`.padEnd(7);
-      const line    = `${sizeCol} ${typeCol}`;
-      return line; }
-    case "placePiece": 
+    case "placePiece": // TODO: deal with stack.
     case "shiftPiece": 
     case "returnPiece": {
-      const { key, prev, post } = entry;
+      const { list } = entry; // [{key, prev, post}, {key, prev, post}].
+      const { key, prev, post } = list[0];
       const line = `${key} ${prev} ${post}`;
       return line; }
     case "freezePuzzle": 
     case "startingPos": {
       const line = `${action}`;
-      // const { data } = entry;
-      // const line = `${action} ${data} pieces`;
       return line; }
     default:
       throw new Error(`Unknown setup action: ${action}.`);
@@ -185,4 +175,8 @@ function assembleLine(entry) {
   }
   }
 // Seampoint: more local functions...
+
+/* TODO: QC checklist
+  1. tbd
+*/
 

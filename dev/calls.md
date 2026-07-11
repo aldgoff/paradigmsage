@@ -149,7 +149,6 @@ title: "Call Structure"
     |                       |                       |
 
 ## View
-
     | view.js (export)          | view.js (local)                                   |
     | :------------------------ | :------------------------------------------------ | 
     | initView()                | render()                                          |
@@ -198,3 +197,9 @@ title: "Call Structure"
     |                        | drawSpookyMarks(unresolved, colorMap)                  |
     |                        | drawClassicalMarks(placements, stateString)            |
 
+### 3.2 Miracles
+  If the universe is game like, physics cannot rule out miracles.
+  They do not require suspension of the laws of physics, merely a change in intent from active agents.
+  The rules have not changed, only intent has.
+  The change can be strategic, global, local, permanent, temporary, or idosyncratic.
+  But in all cases, the change appears **discontinuous**.

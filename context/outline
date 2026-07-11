@@ -156,10 +156,14 @@
 │   │   │   │   ├── tiles.js
 │   │   │   │   ├── tiles.json
 │   │   │   │   └── tiles.md
-│   │   │   └── trays
-│   │   │       ├── trays.js
-│   │   │       ├── trays.json
-│   │   │       └── trays.md
+│   │   │   ├── trays
+│   │   │   │   ├── trays.js
+│   │   │   │   ├── trays.json
+│   │   │   │   └── trays.md
+│   │   │   └── viewer
+│   │   │       ├── viewer.js
+│   │   │       ├── viewer.json
+│   │   │       └── viewer.md
 │   │   ├── panels
 │   │   │   ├── panels.js
 │   │   │   ├── panels.json
@@ -574,6 +578,29 @@
 │   ├── Screenshot 2026-06-25 at 6.51.45 PM.png
 │   ├── Screenshot 2026-06-25 at 7.07.42 PM.png
 │   ├── Screenshot 2026-06-27 at 2.32.10 PM.png
+│   ├── Screenshot 2026-06-27 at 2.40.05 PM.png
+│   ├── Screenshot 2026-06-27 at 2.40.46 PM.png
+│   ├── Screenshot 2026-06-27 at 2.41.30 PM.png
+│   ├── Screenshot 2026-06-27 at 2.42.18 PM.png
+│   ├── Screenshot 2026-07-01 at 1.16.28 PM.png
+│   ├── Screenshot 2026-07-01 at 4.09.26 PM.png
+│   ├── Screenshot 2026-07-01 at 4.26.12 PM.png
+│   ├── Screenshot 2026-07-02 at 5.17.48 PM.png
+│   ├── Screenshot 2026-07-02 at 8.00.42 PM.png
+│   ├── Screenshot 2026-07-02 at 8.15.18 PM.png
+│   ├── Screenshot 2026-07-02 at 8.23.11 PM.png
+│   ├── Screenshot 2026-07-03 at 11.55.11 AM.png
+│   ├── Screenshot 2026-07-03 at 11.55.28 AM.png
+│   ├── Screenshot 2026-07-03 at 6.40.20 PM.png
+│   ├── Screenshot 2026-07-03 at 6.40.54 PM.png
+│   ├── Screenshot 2026-07-04 at 7.47.01 PM.png
+│   ├── Screenshot 2026-07-06 at 12.08.56 PM.png
+│   ├── Screenshot 2026-07-06 at 2.42.51 PM.png
+│   ├── Screenshot 2026-07-07 at 2.02.13 PM.png
+│   ├── Screenshot 2026-07-07 at 4.35.16 PM.png
+│   ├── Screenshot 2026-07-08 at 5.19.55 PM.png
+│   ├── Screenshot 2026-07-09 at 12.57.04 PM.png
+│   ├── Screenshot 2026-07-10 at 11.33.26 AM.png
 │   ├── Turn 1.png
 │   ├── Turn 2.png
 │   ├── Turn 3.png
@@ -715,4 +742,4 @@
 │           └── poc.js
 └── themes
 
-122 directories, 593 files
+123 directories, 619 files

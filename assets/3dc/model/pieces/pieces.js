@@ -20,6 +20,7 @@
 
   import * as utils   from "../../../utils/utils.js";
   import * as cSetup  from "../../controller/setup/setup.js";
+  import * as cViewer from "../../controller/viewer/viewer.js";
 
   import * as mTrays  from "../trays/trays.js";
   import * as mBoards from "../boards/boards.js";
@@ -40,7 +41,7 @@ export function getPieceList() { return pieceList; }
 export function init(entry) {
   console.log("model: pieces.js - init(entry)", entry);
   
-  const { action, boardSize, trayType, trayGap, boardSpec } = entry;
+  const { action, boardSize, trayType, trayGap } = entry;
 
   clearPieceState();
   createPiecesInTrays(entry);
@@ -57,7 +58,7 @@ export function clearPieceState() {
 export function destroy(entry) {
   console.log("model: pieces.js - destroy(entry)", entry);
   
-  const { action, boardSize, trayType, trayGap, boardSpec } = entry;
+  const { action, boardSize, trayType, trayGap } = entry;
 
   vPieces.destroyPieces(pieceList);
 
@@ -67,10 +68,10 @@ export function destroy(entry) {
   }
 
 export function movePieceFromTrayToBoard(key, dstStr) {  // "WQQP", "Q1,1". // TODO: assumes 8x8x8 board.
-  // console.log("model: pieces.js - movePieceFromTrayToBoard(key, dstStr)", key, dstStr);
+  console.log("model: pieces.js - movePieceFromTrayToBoard(key, dstStr)", key, dstStr);
 
   // --- Parse ---
-    const spec = cSetup.boardSpec;                                  // Support all three board sizes.
+    const spec = cSetup.getCurrBoard().boardSize;                   // Support all three board sizes.
 
     const piece = pieceList[key];                                   // Ensure valid args - should never fail.
     if(!piece) throw new Error(`Piece ${key} not found.`);
@@ -123,7 +124,7 @@ export function movePieceTileToTile(key, dstStr) {
   console.log("model: pieces.js - movePieceTileToTile(key, dstStr)", key, dstStr);
 
   // --- Parse ---
-    const spec = cSetup.boardSpec;                                  // Support all three board sizes.
+    const spec = cSetup.getCurrBoard().boardSize;                   // Support all three board sizes.
 
     const piece = pieceList[key];                                   // Ensure valid args - should never fail.
     if(!piece) throw new Error(`Piece ${key} not found.`);
@@ -139,6 +140,11 @@ export function movePieceTileToTile(key, dstStr) {
 
     vPieces.placePiece(key);                                        // Relocate the piece mesh (group).
 
+  // --- Reposition any dukes --- 
+    const piecesGroup = vPieces.getCurrPiecesGroup();
+    const levelSep = cViewer.getLevelSep();
+    view.reprojectPiecesGroup(piecesGroup, levelSep);
+
   // Debug instrumention.
     // console.log("*** rcs:  ", structuredClone(indices));
     // console.log("*** dst:  ", structuredClone(dstTile));
@@ -146,7 +152,9 @@ export function movePieceTileToTile(key, dstStr) {
     // console.log("*** spec: ", structuredClone(spec));
 
     // console.log("*** pieceList", structuredClone(pieceList));                // Diagnositcs.
-
+    // console.log("*** whiteTray", structuredClone(mTrays.getWhiteTray()));
+    // console.log("*** blackTray", structuredClone(mTrays.getBlackTray()));
+    
   return { ok: true, err: null };
   }
 
@@ -154,7 +162,7 @@ export function movePieceFromBoardToTray(key) {
   console.log("model: pieces.js - movePieceFromBoardToTray(key)", key);
 
   // --- Parse ---
-    const spec = cSetup.boardSpec;
+    const spec = cSetup.getCurrBoard().boardSize;               // Support all three board sizes.
 
     const piece = pieceList[key];                               // Ensure valid args - should never fail.
     if(!piece) throw new Error(`Piece ${key} not found.`);
@@ -173,10 +181,10 @@ export function movePieceFromBoardToTray(key) {
     const tray = (player === "W")
       ? mTrays.getWhiteTray() 
       : mTrays.getBlackTray();
-    if(tray[k][i][j] != null) {                                  // Update occupancy arrays.
-      const err = `Cannot move to an occupied ${tray[k][i][j]} at ${k},${i},${j}.`;
-      return { ok: false, err };
-    }
+    // if(tray[k][i][j] != null) {                                  // Update occupancy arrays.
+    //   const err = `Cannot move to an occupied ${tray[k][i][j]} at ${k},${i},${j}.`;
+    //   return { ok: false, err };
+    // }
     tray[k][i][j] = key;
     // console.log("*** Update tray occupancy", piece.home.trayVts);
 
@@ -186,6 +194,11 @@ export function movePieceFromBoardToTray(key) {
     piece.coords = piece.home.trayCoords;
 
     vPieces.placePieceInTray(key);                                 // Relocate the piece mesh (group).
+
+  // --- Reposition any dukes --- 
+    const piecesGroup = vPieces.getCurrPiecesGroup();
+    const levelSep = cViewer.getLevelSep();
+    view.reprojectPiecesGroup(piecesGroup, levelSep);
 
   // Debug instrumention.
     // console.log("*** tray: ", structuredClone(tray[z]));
@@ -198,7 +211,7 @@ export function movePieceFromBoardToTray(key) {
     console.log("*** whiteTray", structuredClone(mTrays.getWhiteTray()));
     console.log("*** blackTray", structuredClone(mTrays.getBlackTray()));
 
-  return { ok: true, err: null };
+  return;
 }
 
 export function splitStackInTray(piece) {
@@ -313,7 +326,7 @@ export function pieceLocOnBoard(key) {
 function createPiecesInTrays(entry) {
   console.log("model: pieces.js - createPiecesInTrays(entry)", entry);
   
-  const { action, boardSize, trayType, trayGap, boardSpec } = entry;
+  const { action, boardSize, trayType, trayGap } = entry;
   
   // ChangePoint:
   if(     boardSize === "8x8x8")    { createPiecesForEightBoard(trayGap); } 
@@ -333,7 +346,7 @@ function createPiecesInTrays(entry) {
 function destroyPieces(entry) {
   console.log("model: pieces.js - destroyPieces(entry)", entry);
   
-  const { action, boardSize, trayType, trayGap, boardSpec } = entry;
+  const { action, boardSize, trayType, trayGap } = entry;
 
   vPieces.destroyPieces(pieceList);
 
@@ -432,5 +445,9 @@ function createPiecesForTray(tray, trayDef, offset=0) {
  *     }
  *   }
  * } 
+*/
+
+/* TODO: QC checklist
+  1. tbd
 */
 

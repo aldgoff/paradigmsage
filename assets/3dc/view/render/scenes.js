@@ -7,17 +7,18 @@
   UI: the export functions.
 */
 
-// --- Load Libraries ---
-const THREE = window.THREE;
-
 // --- Load JSON ---
-import scenesData from "./scenes.json" assert { type: "json" };
+  import scenesData from "./scenes.json" assert { type: "json" };
   const scenesModule = scenesData.scenes_module;
   const background  = scenesModule.background;
 // Seampoint: more objects...
 
 // --- Dependencies ---
 // Seampoint: more imports...
+
+// --- Globals ---
+  const THREE = window.THREE;
+// Seampoint: more globals...
 
 // --- UI ---
 export function init() {
@@ -32,4 +33,7 @@ export function init() {
 // --- Helpers ---
 // Seampoint: more local functions...
 
+/* TODO: QC checklist
+  1. tbd
+*/
 

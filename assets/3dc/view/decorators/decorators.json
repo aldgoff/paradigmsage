@@ -49,6 +49,7 @@
         "linear1": { "background": "blue", "left": ["black", "blue"],  "center": ["black", "black"], "right": ["black", "blue"] }
         },
       "queen": {
+        "source":  ["purple", "black"],
         "dst":     ["purple", "white", "purple", "white"],
         "qtile":   ["purple", "red",   "green", "dkBlue"],
         "brook":   ["purple", "green", "green", "red"],

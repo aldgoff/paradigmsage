@@ -16,16 +16,17 @@
   import * as panels  from "../../panels/panels.js";
   import * as utils   from "../../../utils/utils.js";  
 
-  import * as state   from "../../model/state/state.js";
-  import * as planes  from "../../geometry/planes/planes.js";
-  import * as rays    from "../../foundation/rays/rays.js";
-  import * as coords  from "../../foundation/coords/coords.js";
-  import * as quads   from "../../geometry/quads/quads.js";
-  import * as gAdvsqs from "../../geometry/advsqs/advsqs.js";
+  import * as state    from "../../model/state/state.js";
+  import * as planes   from "../../geometry/planes/planes.js";
+  import * as rays     from "../../foundation/rays/rays.js";
+  import * as coords   from "../../foundation/coords/coords.js";
+  import * as quads    from "../../geometry/quads/quads.js";
+  import * as gAdvsqs  from "../../geometry/advsqs/advsqs.js";
+  import * as overlaps from "../../geometry/overlaps/overlaps.js";
 
   import * as view     from "../../view/view.js";
   import * as vGambits from "../../view/gambits/gambits.js";
-// Seampoint: more imports..
+// Seampoint: more imports...
 
 // --- Globals ---
 // Seampoint: more globals...
@@ -35,93 +36,264 @@ export function reset() {
   console.log("model: gambits.js - reset()");
 
   vGambits.clearGambits();
-  }
-
-export function makeEntry(payload) {  // Never called, specialized versions below.
-  console.log(`model: gambits.js - makeEntry(payload):`, payload);
-
-  const { action, src, srcTile, quad, perimeter, stride, opacity } = payload;  // Informative.
-
-  const entry = payload;
-
-  return entry;
-  }
+}
 
 export function makeQuadrantEntry(advsq) {
   console.log(`model: gambits.js - makeQuadrantEntry(advsq):`, advsq);
 
-  const { src, srcTile, quad, perimeter, stride, opacity } = advsq; // src & dst.
+  const { src, srcTile, quad, perimeter, stride, opacity } = advsq; // src & implied dst.
   const dst = planes.resolveDstTile(srcTile, quad, perimeter, stride);
   const area = (perimeter+1)*(perimeter+1);
   
-  let p = "D";                                                      // Symbol.
-  if( 1<= quad && quad <= 12)  p = "R";
-  if(13<= quad && quad <= 36)  p = "B";
-  const symbol = `Q`;
+  const { rayPair } = quads.pqrTable(quad);                         // Ray.
 
-  const advsqs = [{ src, srcTile,quad,perimeter,stride, opacity }]; // Advsqs
+  let piece = "duke"; let p = "D";                                  // Symbol.
+  if( 1<= quad && quad <= 12) { piece = "rook";    p = "R";}
+  if(13<= quad && quad <= 36) { piece = "bishop";  p = "B";}
+  const value  = quad;
 
-  const entry = { Q: quad, src, dst, area, advsqs };                // Return values.
-  const line = { symbol, value: quad, piece: p, src, dst, feedback: area };
+  const advsqs = [{ src, srcTile, quad, perimeter, stride, area }]; // Advsqs.
 
-  return {entry, line};
+  const gambit = state.getBufferLength("Gambits");  
+  const entry  = { gambit, action: "quadrant", value, piece, src, dst, rays: rayPair, advsqs, opacity }; // Return values.
+
+  return entry;
   }
 
 export function makeLinearEntry(advsq) {
   console.log(`model: gambits.js - makeLinearEntry(advsq):`, advsq);
 
-  const { src, srcTile, quad, perimeter, stride, opacity } = advsq; // src & dst.
+  const { src, srcTile, quad, perimeter, stride, opacity } = advsq; // src & implied dst.
   const dst = planes.resolveDstTile(srcTile, quad, perimeter, stride);
+  const area = (perimeter+1)*(perimeter+1);
 
   const { rayPair } = quads.pqrTable(quad);                         // Ray.
-  const ray       = resolveStrideRay(advsq, rayPair);
+  const ray = resolveStrideRay(advsq, rayPair);
 
-  const move = "linear";                                            // Symbol.
-  let piece = "duke"; let p = "D";
+  let piece = "duke"; let p = "D";                                  // Symbol.
   if( 1<= quad && quad <= 12) { piece = "rook";    p = "R";}
   if(13<= quad && quad <= 36) { piece = "bishop";  p = "B";}
-  const value = "1";  // TODO: figure out value.
-  const symbol = `L`;
+  const value = "1";  // TODO: figure out linear coding values (1-6, 7-18, 19-26)?
 
   const quadsList = findQuadsForRay(ray);                           // Advrects.
   const quadPairs = groupByPlane(quadsList);
-  const rects     = buildAdvRects(srcTile, quadPairs, perimeter, stride, opacity);
+  const rects     = buildAdvRects(src, srcTile, quadPairs, perimeter, stride);
   const advsqs    = rects;
 
-  const entry = { move, piece, src, dst, ray, advsqs, opacity };    // Return values.
-  const line  = { symbol, value, piece: p, src, dst, feedback: ray };
+  const gambit = state.getBufferLength("Gambits");  
+  const entry  = { gambit, action: "linear", value, piece, src, dst, rays: ray, advsqs, opacity };    // Return values.
 
-  return { entry, line };
+  return entry;
   }
 
 export function makeDuplexEntry(advsq) {
   console.log(`model: gambits.js - makeDuplexEntry(advsq):`, advsq);
 
-  const { src, srcTile, quad, perimeter, stride, opacity } = advsq; // src & dst.
+  const { src, srcTile, quad, perimeter, stride, opacity } = advsq; // src & implied dst.
   const dst = planes.resolveDstTile(srcTile, quad, perimeter, stride);
+  const area = (perimeter+1)*(perimeter+1);
 
   const { rayPair } = quads.pqrTable(quad);                         // Ray.
-  const rayPairVts = [
-    rays.getRayVector(rayPair[0]),
-    rays.getRayVector(rayPair[1]),
-  ]
-  const ray = utils.scale(utils.add(rayPairVts[0], rayPairVts[1]), 0.5);  // vts coords.
+  const ray = resolveStrideRay(advsq, rayPair, true);// Is duplex.
 
-  const move = "duplex";                                            // Symbol.
-  const piece = "duke";
-  const p = "D";
+  const piece = "duke";                                             // Symbol.
   const crossPlainsAdv = "MM";  // TODO: figure out cross plane abrvs.
   const value = `${crossPlainsAdv}`;
-  const symbol = `${p}`;
 
   const crossQuad = quads.findDuplexFaceQuad(quad);                 // Advsqs.
-  const crossAdvsq = { src, srcTile, quad: crossQuad, perimeter, stride, opacity};
-  const advsqs = [advsq, crossAdvsq];
+  const crossAdvsq1 = { src, srcTile, quad, perimeter, stride, area };
+  const crossAdvsq2 = { src, srcTile, quad: crossQuad, perimeter, stride, area };
+  const advsqs = [crossAdvsq1, crossAdvsq2];
 
-  const entry = { move, piece, src, dst, ray, advsqs, opacity };    // Return values.
-  const line  = { symbol, value, piece: p, src, dst, feedback: ray };
+  const gambit = state.getBufferLength("Gambits");  
+  const entry  = { gambit, action: "duplex", value, piece,          // Return values.
+                   src, dst, rays: ray, advsqs, opacity };
 
-  return { entry, line };
+  return entry;
+  }
+
+export function makeOverlapEntry(advsq) { // Player chooses the base advsq; rook, bishop, duke.
+  console.log(`model: gambits.js - makeOverlapEntry(advsq):`, advsq);
+
+  const { src, srcTile, quad, perimeter, stride, opacity } = advsq; // src & implied dst.
+  const dst = planes.resolveDstTile(srcTile, quad, perimeter, stride);
+  const area = (perimeter+1)*(perimeter+1);
+
+  const { rayPair } = quads.pqrTable(quad);                         // Ray.
+  const ray = resolveStrideRay(advsq, rayPair);
+
+  let value = "overlap";                                            // Symbol.
+
+  const panel = document.getElementById("advsq-window");            // Overlap tile type from advsq panel.
+  const overlap = panel.querySelector('[name="advsq-overlap"]')?.value;
+  let piece = quads.pqrTable(quad).piece;
+
+  let rays;                                                         // Advsqs.
+
+  let advsqRook   = (piece === "rook")   ? advsq : null;  // Player's
+  let advsqBishop = (piece === "bishop") ? advsq : null;  // base
+  let advsqDuke   = (piece === "duke")   ? advsq : null;  // piece.
+
+  // console.log("*** panel", panel);                                  // Diagnostics.
+  // console.log("*** overlap", overlap);
+  // console.log("*** advsqRook", advsqRook);
+  // console.log("*** advsqBishop", advsqBishop);
+  // console.log("*** advsqDuke", advsqDuke);
+
+  const advsqs = [];
+  if(     overlap === "brook") {
+    value = "brook";
+    let advsqsQ   = null;
+    let advsqsL   = null;
+    let rayRook   = null;
+    let rayBishop = null;
+    if(     piece === "rook") advsqBishop = overlaps.findBrookCompanion(advsqRook);
+    else if(piece === "bishop") advsqRook = overlaps.findBrookCompanion(advsqBishop);
+
+    {
+      const { src, srcTile, quad, perimeter, stride, opacity } = advsqRook; // src & implied dst.
+      const { rayPair } = quads.pqrTable(quad);                     // Ray.
+      rayRook = resolveStrideRay(advsqRook, rayPair);
+
+      const area = (perimeter+1)*(perimeter+1);
+      advsqsQ = [{ src, srcTile, quad, perimeter, stride, area }];  // Advsqs.
+    }
+    {
+      const { src, srcTile, quad, perimeter, stride, opacity } = advsqBishop; // src & implied dst.
+      const { rayPair } = quads.pqrTable(quad);                     // Ray.
+      const rayBishop = resolveStrideRay(advsqBishop, rayPair);
+
+      const quadsList = findQuadsForRay(rayBishop);                 // Advrects.
+      const quadPairs = groupByPlane(quadsList);
+      const rects     = buildAdvRects(src, srcTile, quadPairs, perimeter, stride);
+      advsqsL = rects;
+    }
+
+    advsqs.push(advsqsQ, advsqsL);
+    rays = rayRook;
+    piece = "rook";
+    }
+  else if(overlap === "qtile") {
+    value = "qtile";
+    let advsqsR   = null;
+    let advsqsL   = null;
+    let advsqsD   = null;
+    let rayRook   = null;
+    let rayBishop = null;
+    let rayDuke   = null;
+
+    if(     piece === "rook") {
+      advsqBishop = overlaps.findQtileCompanion(advsqRook);
+      advsqDuke = overlaps.findQtileCompanion(advsqBishop);
+      }
+    else if(piece === "bishop") {
+      advsqDuke = overlaps.findQtileCompanion(advsqBishop);
+      advsqRook = overlaps.findQtileCompanion(advsqDuke);
+      }
+    else if(piece === "duke") {
+      advsqRook = overlaps.findQtileCompanion(advsqDuke);
+      advsqBishop = overlaps.findQtileCompanion(advsqRook);
+    }
+    console.log("*** advsqBishop", advsqBishop);
+
+    {
+      const { src, srcTile, quad, perimeter, stride, opacity } = advsqRook; // src & implied dst.
+      const { rayPair } = quads.pqrTable(quad);                     // Ray.
+      rayRook = resolveStrideRay(advsqRook, rayPair);
+
+      const area = (perimeter+1)*(perimeter+1);
+      advsqsR = [{ src, srcTile, quad, perimeter, stride, area }];  // Advsqs.
+    }
+    {
+      const { src, srcTile, quad, perimeter, stride, opacity } = advsqBishop; // src & implied dst.
+      const { rayPair } = quads.pqrTable(quad);                         // Ray.
+      const ray = resolveStrideRay(advsqBishop, rayPair);
+
+      const quadsList = findQuadsForRay(ray);                           // Advrects.
+      const quadPairs = groupByPlane(quadsList);
+      const rects     = buildAdvRects(src, srcTile, quadPairs, perimeter, stride);
+      advsqsL = rects;
+    }
+    {
+      const { src, srcTile, quad, perimeter, stride, opacity } = advsqDuke; // src & implied dst.
+      const { rayPair } = quads.pqrTable(quad);                     // Ray.
+      rayDuke = resolveStrideRay(advsqRook, rayPair);
+
+      const area = (perimeter+1)*(perimeter+1);
+      advsqsD = [{ src, srcTile, quad, perimeter, stride, area }];  // Advsqs.
+    }
+
+    advsqs.push(advsqsR, advsqsL, advsqsD);
+    rays = rayRook;
+    piece = "rook";
+    }
+  else if(overlap === "hotspot") {
+    value = "hotspot";
+    // const { advsqR, advsqD } = getHotspotAdvsqs(advsq); // Advsq may be for rook or duke.
+    let advsqsL  = null;
+    let advsqsCP = null;
+    let rayRook  = null;
+    let rayDuke  = null;
+    if(     piece === "rook") advsqDuke = overlaps.findHotspotCompanion(advsqRook);
+    else if(piece === "duke") advsqRook = overlaps.findHotspotCompanion(advsqDuke);
+
+    { // TODO: shared with makeLinearEntry, abstract helper.
+      const { src, srcTile, quad, perimeter, stride, opacity } = advsqRook; // src & implied dst.
+      const { rayPair } = quads.pqrTable(quad);                             // Ray.
+      rayRook = resolveStrideRay(advsqRook, rayPair);
+
+      const quadsList = findQuadsForRay(rayRook);                           // Advrects.
+      const quadPairs = groupByPlane(quadsList);
+      const rects     = buildAdvRects(src, srcTile, quadPairs, perimeter, stride);
+      advsqsL = rects;
+    }
+    { // TODO: shared with makeDuplexEntry, abstract helper.
+      const { src, srcTile, quad, perimeter, stride, opacity } = advsqDuke; // src & implied dst.
+      const { rayPair } = quads.pqrTable(quad);                             // Ray.
+      rayDuke = resolveStrideRay(advsqDuke, rayPair, true);// Is duplex.
+      const area = (perimeter+1)*(perimeter+1);
+
+      const crossQuad = quads.findDuplexFaceQuad(quad);                     // Cross pair advsqs.
+      const crossAdvsq1 = { src, srcTile, quad, perimeter, stride, area };
+      const crossAdvsq2 = { src, srcTile, quad: crossQuad, perimeter, stride, area };
+      advsqsCP = [crossAdvsq1, crossAdvsq2];
+    }
+
+    advsqs.push(advsqsL[0],advsqsL[1],  advsqsCP);
+    rays = rayRook;
+    piece = "rook";
+    }
+  else if(overlap === "Feynman") {
+    value = overlap;
+    let rayBishop = null;
+    let rayDuke   = null;
+    if(     piece === "bishop") advsqDuke = overlaps.findFeynmanCompanion(advsqBishop);
+    else if(piece === "duke") advsqBishop = overlaps.findFeynmanCompanion(advsqDuke);
+
+    { // Bishop ray.
+      const { src, srcTile, quad, perimeter, stride, area, opacity } = advsqBishop; // src & implied dst.
+      const { rayPair } = quads.pqrTable(quad);                               // Ray.
+      rayBishop = resolveStrideRay(advsqBishop, rayPair);
+    }
+    { // Duke ray.
+      const { src, srcTile, quad, perimeter, stride, area, opacity } = advsqDuke;   // src & implied dst.
+      const { rayPair } = quads.pqrTable(quad);                               // Ray.
+      // const area = (perimeter+1)*(perimeter+1);
+    }
+    advsqs.push(advsqBishop, advsqDuke);
+    rays = rayBishop;
+    piece = "bishop";
+    }
+  else {
+    throw new Error(`Unknown overlap type ${overlap}.`);
+  }
+  console.log("*** advsqs", advsqs);  // Diagnostics.
+
+  const gambit = state.getBufferLength("Gambits");  
+  const entry  = { gambit, action: "overlap", value, piece,         // Return values.
+                   src, dst, rays, advsqs, opacity };
+
+  return entry;
 }
 // Seampoint: more Entry functions...
 
@@ -130,49 +302,34 @@ export function buttonAffordances(situation) {
 
   switch (situation) {
     case "on":              // Enable all panel buttons.
-      panels.enableButton("freezeQ",   true);             // Enable all the panel buttons.
-      panels.enableButton("freezeL",   true);
-      panels.enableButton("freezeD",   true);
-      panels.enableButton("freezeO",   true);
+      panels.enableButton("freezeQ",  true);             // Enable all the panel buttons.
+      panels.enableButton("freezeL",  true);
+      panels.enableButton("freezeD",  true);
+      panels.enableButton("freezeO",  true);
 
-      panels.enableButton("freezeN",   true);
-      panels.enableButton("freezeP",   true);
-      panels.enableButton("freezeK",   true);
-      panels.enableButton("asAPlane",  true);
+      panels.enableButton("freezeN",  true);
+      panels.enableButton("freezeP",  true);
+      panels.enableButton("freezeK",  true);
+      panels.enableButton("asAPlane", true);
 
-      panels.enableButton("nextPlane", true);
-      panels.enableButton("expand",    true);
-      panels.enableButton("contract",  true);
-      panels.enableButton("delete",    true);
-      panels.enableButton("remove",    true);
+      panels.enableButton("next",     true);
+      panels.enableButton("expand",   true);
+      panels.enableButton("contract", true);
+      panels.enableButton("delete",   true);
+      panels.enableButton("remove",   true);
     break;
 
     case "freezeQ":         // Advancement manifolds.
-      buttonAffordances("off");
-      panels.enableButton("freezeQ",   true);
+      panels.enableButton("freezeQ", true);
       break;
     case "freezeL":
-      buttonAffordances("off");
-      panels.enableButton("freezeL",   true);
+      panels.enableButton("freezeL", true);
       break;
     case "freezeD":
-      buttonAffordances("off");
-      panels.enableButton("freezeD",   true);
+      panels.enableButton("freezeD", true);
       break;
     case "freezeO":
-      buttonAffordances("off");
-      panels.enableButton("freezeO",   true);
-    break;
-
-    case "linear":          // Quadrant options.
-      buttonAffordances("off");
-      panels.enableButton("freezeQ",   true);
-      panels.enableButton("freezeL",   true);
-      break;
-    case "duplex":
-      buttonAffordances("off");
-      panels.enableButton("freezeQ",   true);
-      panels.enableButton("freezeD",   true);
+      panels.enableButton("freezeO", true);
     break;
 
     case "freezeN":         // Restricted pieces.
@@ -195,11 +352,11 @@ export function buttonAffordances(situation) {
 
     case "selected":        // Manifold management.
       buttonAffordances("off");
-      panels.enableButton("nextPlane", true);
-      panels.enableButton("expand",    true);
-      panels.enableButton("contract",  true);
-      panels.enableButton("delete",    true);
-      panels.enableButton("remove",    true);
+      panels.enableButton("next",     true);
+      panels.enableButton("expand",   true);
+      panels.enableButton("contract", true);
+      panels.enableButton("delete",   true);
+      panels.enableButton("remove",   true);
     break;
 
     case "off":              // Disable all panel buttons.
@@ -212,7 +369,7 @@ export function buttonAffordances(situation) {
       panels.enableButton("freezeP",   false);
       panels.enableButton("freezeK",   false);
       panels.enableButton("asAPlane",  false);
-      panels.enableButton("next",      false);
+      panels.enableButton("next",      true);
 
       panels.enableButton("expand",    false);
       panels.enableButton("contract",  false);
@@ -227,7 +384,7 @@ export function buttonAffordances(situation) {
 // Seampoint: more global functions...
 
 // --- Helpers ---
-function resolveStrideRay(currAdvsq, rayPair) { // ray or null.
+function resolveStrideRay(currAdvsq, rayPair, duplex=false) { // ray or null.
   console.log("cntrl: gambits.js - resolveStrideRay(currAdvsq, rayPair)", currAdvsq, rayPair);
 
   const { srcTile, quad, perimeter, stride } = currAdvsq;
@@ -237,16 +394,23 @@ function resolveStrideRay(currAdvsq, rayPair) { // ray or null.
   const last   = perims[perims.length - 1];
 
   const strideTile = last.stride[stride - 1];  // <-- actual coord
-  console.log("cntrl: gambits.js - last,strideTile", last, strideTile);
 
   if (utils.isSame(strideTile, last.E1))   return rayPair[0];
-  if (utils.isSame(strideTile, last.apex)) return rayPair;
   if (utils.isSame(strideTile, last.E2))   return rayPair[1];
+  if (utils.isSame(strideTile, last.apex)) {
+    if(duplex) {    // TODO: for duplex, convert to rook ray.
+      const rayPairVts = [
+        rays.getRayVector(rayPair[0]),
+        rays.getRayVector(rayPair[1]),
+      ]
+      const ray = utils.scale(utils.add(rayPairVts[0], rayPairVts[1]), 0.5);  // vts coords.
+      return ray; // [z,x,y].
+    }
+
+    return rayPair;
+  }
 
   return null;
-
-  // const e2 = 2*perimeter + 1;
-  // throw new Error(`Stride tile was ${stride}, must be E1(1) or E2(${e2})`);
   }
 
 function findQuadsForRay(ray) {
@@ -306,13 +470,14 @@ function groupByPlane(quadsList) {
   return result;
   }
 
-function buildAdvRects(srcTile, quadPairs, perimeter, stride, opacity) {
+function buildAdvRects(src, srcTile, quadPairs, perimeter, stride, opacity) {
   console.log("cntrl: gambits.js - buildAdvRects(...)", srcTile, quadPairs, perimeter, stride, opacity);
 
   const area = (perimeter+1)*(perimeter+1);
 
   return quadPairs.map(pair => {
     return pair.map(Q => ({
+      src,
       srcTile,
       quad: Q,
       perimeter,
@@ -324,14 +489,18 @@ function buildAdvRects(srcTile, quadPairs, perimeter, stride, opacity) {
 // Seampoint: more local functions...
 
 /* TODO: Gambit additions:
- * 0. HandleLoad
- * 1. Rebuild groups on load
- * 2. No single source of registry
- * 3. Entry not canonical
- * 4. Load does not restore indexed state correctly
+ * 0. ✅ HandleLoad
+ * 1. ✅ Rebuild groups on load
+ * 2. ✅ No single source of registry
+ * 3. ✅ Entry not canonical
+ * 4. ✅ Load does not restore indexed state correctly
  * 5. ✅ Free Load from rerunGambits()
  * 6. Group creation path is unclear
  * 7. Delete by passes state API
  * 8. Hard coded UI reset values
  * 9. Panel + state desync possibility.
+ * 10. For duplex, convert to rook ray.
+ * 11. Figure out cross plane abrvs.
+ * 12. Figure out linear coding values.
 */
+

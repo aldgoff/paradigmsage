@@ -23,7 +23,7 @@
 export function init(entry) {
   console.log("cntrl: trays.js - init(entry)", entry);
   
-  const { action, boardSize, trayType, trayGap, boardSpec } = entry;
+  const { action, boardSize, trayType, trayGap } = entry;
 
   mTrays.init(entry);  // Initial occupancy depends on board size and tray type.
 
@@ -33,7 +33,7 @@ export function init(entry) {
 export function destroy(entry) {
   console.log("cntrl: trays.js - destroy(entry)", entry);
   
-  const { action, boardSize, trayType, trayGap, boardSpec } = entry;
+  const { action, boardSize, trayType, trayGap } = entry;
 
   mTrays.destroy(entry);  // Initial occupancy depends on board size and tray type.
 

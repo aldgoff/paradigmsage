@@ -61,49 +61,33 @@ export function clearGambits() {
       .forEach(overlay => {
         tile.remove(overlay);
       });
+  }  
   }
+
+export function truncateGroups(idx) {
+  console.log("view : gambits.js - truncateGroups(idx)", idx);
+
+  while(gambitGroups.length > idx) {
+    const group = gambitGroups.pop();
+    derenderGambit(group);
   }
+}
 
-export function pushPanelLine(line) {
-  console.log("view : gambits.js - pushPanelLine(line)", line);
-  
-  const { symbol, value, piece, src, dst, feedback } = line;
+export function pushPanelLine(entry) {
+  console.log("view : gambits.js - pushPanelLine(entry)", entry);
 
-  const row = assembleRowFromLine(line);
+  const { gambit, action, value, piece, src, dst, rays, advsqs } = entry;
 
-  writeRowToScrollList(row);
-  }
-function assembleRowFromLine(line) {
-  console.log("view : gambits.js - assembleRowFromLine(line):", line);
-
-  const { symbol, value, piece, src, dst, feedback } = line;
-
-  const count = state.getIndices().Gambits;
-
-  // --- column widths ---
-  const idxCol  = String(count).padStart(2);      // right-aligned
-  const sCol    = `${symbol}${value}`.padEnd(3);  // "Q37 "
-  const pCol    = `${piece}`.padEnd(1);           // "R "
-  const srcCol  = String(src).padEnd(5);          // "KB4,4  "
-  const dstCol  = String(dst).padEnd(8);          // allow offboard arrays
-  const areaCol = String(feedback).padStart(2);   // right-aligned
-
-  const row = `${idxCol} ${sCol} ${pCol} ${srcCol} → ${dstCol}:${areaCol}`;
-
-  return row;
-  }
-function writeRowToScrollList(row) {
-  console.log("view : gambits.js - writeRowToScrollList(row)", row);
-
-  const scroll = document.getElementById("gambit-list");
+  const scroll = document.getElementById("gambit-list");  // Trap.
   if(!scroll) return;
 
-  const div = document.createElement("div");
-  div.textContent = row;
+  const line = assembleLine(entry);                      // Assemble line.
 
+  const div = document.createElement("div");              // Write to scroll box.
+  div.textContent = line;
   scroll.appendChild(div);
   scroll.scrollTop = scroll.scrollHeight;
-}
+  }
 
 export function popPanelLine() {
   console.log("view : gambits.js - popPanelLine()");
@@ -117,13 +101,11 @@ export function popPanelLine() {
   scroll.removeChild(last);
   }
 
-export function refreshPanel(gambit) {
-  console.log("view : gambits.js - refreshPanel(gambit)", gambit);
-
-  // const { Q, src, dst, area, advsqs } = gambit;  // undefined.
+export function refreshPanel() {
+  console.log("view : gambits.js - refreshPanel()");
 
   const scroll = document.getElementById("gambit-list");  // Scroll list.
-  if (!scroll) return;
+  if(!scroll) return;
 
   const count = state.getIndices().Gambits;               // Scroll text box.
   const children = scroll.children;
@@ -142,23 +124,25 @@ export function refreshEntry(entry) {
   refreshPanel(gambit);
   }
 
-export function renderGambit(entry) {
-  console.log("view : gambits.js - renderGambit(entry):", entry);
+export function makeGroup(entry) {
+  console.log("view : gambits.js - makeGroup(entry).", entry);
 
-  // const line = "Reduce entry to line.";
-  const symbol   = "S";
-  const value    = "60";
-  const piece    = "P";
-  const src      = "src";
-  const dst      = "dst";
-  const feedback = "F";
-  const line = { symbol, value, piece, src, dst, feedback };
+  const { action } = entry;
 
-  pushPanelLine(line);
-}
+  let group;                                                        // Create mesh group.
+  if(     action === "quadrant")  group = makeQuadrantGroup(entry);
+  else if(action === "linear")    group = makeLinearGroup(entry);
+  else if(action === "duplex")    group = makeDuplexGroup(entry);
+  else if(action === "overlap")   group = makeOverlapGroup(entry);
+  else throw new Error(`Unknown action ${action} for makeGroup.`);
 
-export function makeQuadGroup(entry) {
-  console.log("view : gambits.js - makeQuadGroup(entry).", entry);
+  group.userData.entry = entry; // Required for plane presentation (rotate through planes).
+
+  return group;
+  }
+
+function makeQuadrantGroup(entry) {
+  console.log("view : gambits.js - makeQuadrantGroup(entry).", entry);
 
   const { Q, src, dst, area, advsqs } = entry;
   
@@ -169,96 +153,133 @@ export function makeQuadGroup(entry) {
   }
 
   const group = view.buildAdvSqGroup(advsq); // {srcTile: Array(3), quad: 1, perimeter: 0, stride: 0, opacity: 0.5}
-  // group.userData.entry = entry;
-  // group.userData.gambitId = entry.gambitId;
 
   return group;
   }
 
-export function makeLinearGroup(entry) {
+function makeLinearGroup(entry) {
   console.log("view : gambits.js - makeLinearGroup(entry).", entry);
 
   const { move, piece, src, dst, ray, advsqs, opacity } = entry;
 
   const group = view.buildAdvRectGroups(entry);
-  // group.userData.entry = entry;
-  // group.userData.gambitId = entry.gambitId;
 
   return group;
   }
 
-export function makeDuplexGroup(entry) {
+function makeDuplexGroup(entry) {
   console.log("view : gambits.js - makeDuplexGroup(entry).", entry);
 
   const { move, piece, src, dst, ray, advsqs, opacity } = entry;
 
   const group = view.buildDuplexGroup(entry);
-  // group.userData.entry = entry;
-  // group.userData.gambitId = entry.gambitId;
 
   return group;
   }
 
+function makeOverlapGroup(entry) {
+  console.log("view : gambits.js - makeOverlapGroup(entry).", entry);
+
+  const { move, piece, src, dst, ray, advsqs, opacity } = entry;
+
+  const group = view.buildOverlapGroup(entry);
+
+  return group;
+}
+
 export function planeRotation(entry, rotation) {
-  console.log("view : gambits.js - planeRotation(rotation, entry).", rotation, entry);
+  console.log("view : gambits.js - planeRotation()", rotation, entry);
 
-  const scene = view.getContext().scene;
-  if (!scene) { return; }
+  // Locate the rendered group.
+  const group = gambitGroups[entry.gambit];
+  if(!group) return;
 
-  const group = scene.children.find(g => {
-
-    const e = g.userData?.entry;
-
-    if (!e) return false;
-
-    return (
-      e.move === entry.move &&
-      e.piece === entry.piece &&
-      e.src === entry.src &&
-      e.dst === entry.dst
-    );
-  });
-
-  if (!group) { return; }
-
+  // The builders define the presentation planes.
   const planeGroups = group.userData?.planes || [];
+  if(planeGroups.length === 0) return;
 
-  if (planeGroups.length === 0) return;
+  // Mode 0 = all planes.
+  const mode = rotation % (planeGroups.length + 1);
 
-  // --- Determine cycle size ---
-  const modes = (entry.piece === "duke") ? 4 : 3;
+  console.log("*** planes", planeGroups.length);
+  console.log("*** mode", mode);
 
-  // mode:
-  // rook/bishop: 0=all, 1=plane1, 2=plane2
-  // duke:        0=all, 1=plane1, 2=plane2, 3=plane3
-  const mode = rotation % modes;
+  for(let p = 0; p < planeGroups.length; p++) {
+    const planeGroup = planeGroups[p];
 
-  console.log("planeRotation()...mode:", mode);
-
-  // --- ALL PLANES ---
-  if (mode === 0) {
-
-    planeGroups.forEach(pg => {
-      applyOverlayOpacity(
-        pg.userData?.overlays || [],
-        1.0
-      );
-    });
-
-    return;
-  }
-
-  // --- SINGLE PLANE EMPHASIS ---
-  planeGroups.forEach((pg, idx) => {
-    const active = (idx === mode - 1);
-    const opacity = active ? 1.0 : 0.10;
+    const opacity = (mode === 0 || p === mode-1)
+      ? 1.0
+      : 0.10;
 
     applyOverlayOpacity(
-      pg.userData?.overlays || [],
+      planeGroup.userData?.overlays || [],
       opacity
     );
-  });
+  }
 }
+
+// export function planeRotation1(entry, rotation) {
+//   console.log("view : gambits.js - planeRotation(rotation, entry).", rotation, entry);
+
+//   const scene = view.getContext().scene;
+//   if (!scene) { return; }
+
+//   const group = scene.children.find(g => {
+//     const e = g.userData?.entry;
+//     console.log("*** e", e);
+
+//     if(!e) return false;
+
+//     return (
+//       e.move === entry.move &&
+//       e.piece === entry.piece &&
+//       e.src === entry.src &&
+//       e.dst === entry.dst
+//     );
+//   });
+//   console.log("*** group", group);
+
+//   if (!group) { return; }
+
+//   const planeGroups = group.userData?.planes || [];
+
+//   console.log("*** planeGroups.length", planeGroups.length);
+
+//   if(planeGroups.length === 0) return;
+
+//   // --- Determine cycle size ---
+//   const modes = (entry.piece === "duke") ? 4 : 3;
+
+//   // mode:
+//   // rook/bishop: 0=all, 1=plane1, 2=plane2
+//   // duke:        0=all, 1=plane1, 2=plane2, 3=plane3
+//   const mode = rotation % modes;
+
+//   console.log("*** mode:", mode);
+
+//   // --- ALL PLANES ---
+//   if (mode === 0) {
+//     planeGroups.forEach(pg => {
+//       applyOverlayOpacity(
+//         pg.userData?.overlays || [],
+//         1.0
+//       );
+//     });
+
+//     return;
+//   }
+
+//   // --- SINGLE PLANE EMPHASIS ---
+//   planeGroups.forEach((pg, idx) => {
+//     const active = (idx === mode - 1);
+//     const opacity = active ? 1.0 : 0.10;
+
+//     applyOverlayOpacity(
+//       pg.userData?.overlays || [],
+//       opacity
+//     );
+//   });
+// }
 
 function applyOverlayOpacity(overlays, opacity) {
   overlays.forEach(o => {
@@ -283,10 +304,9 @@ function applyMaterialOpacity(obj, opacity) {
 /* ----- ----- ----- ----- */
 export function undo(entry) {
   console.log("view : gambits.js - undo(entry).", entry);
+  console.log("*** gambitGroups.length", gambitGroups.length);
 
-  const { gambitId, action, src, srcTile, quad, perimeter, stride, opacity } = entry;
-
-  const group = gambitGroups[gambitId];
+  const group = gambitGroups[entry.gambit];
   if(group) {
     derenderGambit(group);    
   }
@@ -294,11 +314,13 @@ export function undo(entry) {
 
 export function redo(entry) {
   console.log("view : gambits.js - redo(entry).", entry);
-
-  const group = gambitGroups[entry.gambitId];
   console.log("*** gambitGroups.length", gambitGroups.length);
 
-  render(group, { animate: false });      // Render.
+  const group = gambitGroups[entry.gambit];
+
+  if(group) {
+    render(group, { animate: false });      // Render.
+  }
 }
 
 export function render(group, { animate = false } = {}) {
@@ -310,28 +332,18 @@ export function render(group, { animate = false } = {}) {
   function attachOverlays(overlays) {
     overlays.forEach(o => {
       const tile = o.userData?.parentTile;
-
-      if (tile && !o.parent) {
+      if(tile && !o.parent) {
         tile.add(o);
       }
     });
   }
 
-  // --- Root overlays ---
-  attachOverlays(
-    group.userData?.overlays || []
-  );
+  attachOverlays(group.userData?.overlays || []);  // --- Root overlays ---
+  const planeGroups = group.userData?.planes || [];  // --- Plane overlays ---
 
-  // --- Plane overlays ---
-  const planeGroups = group.userData?.planes || [];
+  planeGroups.forEach(pg => { attachOverlays(pg.userData?.overlays || []); });
 
-  planeGroups.forEach(pg => {
-    attachOverlays(
-      pg.userData?.overlays || []
-    );
-  });
-
-  if (animate) {
+  if(animate) {
     animateFreezeTransition(group);
   }
   }
@@ -346,17 +358,58 @@ export function cancelAnimation() {
 export function setLevelSep(levelSep) {
   console.log("view : gambits.js - setLevelSep(levelSep):", levelSep);
 
-  const scene = view.getContext().scene;
-
-  scene.children
-    .filter(g => g.userData?.entry)
-    .forEach(g => {
-      view.reprojectGroup(g, levelSep);
-    });
+  getGambitGroups().forEach(group => {
+    view.reprojectGroup(group, levelSep);
+  });
 }
 // Seampoint: more global functions...
 
 //--- Helpers ---
+function assembleLine(entry) {
+  console.log("view : gambits.js - assembleLine(entry)", entry);
+
+  const { gambit, action, value, piece, src, dst, rays, advsqs } = entry;
+
+  const count  = state.getIndices().Gambits;
+  const symbol = action[0].toUpperCase();
+
+  const p        = piece[0].toUpperCase();
+  let area       = findFirstArea(advsqs);
+  const feedback = `${area} ${rays}`;
+
+  // --- column widths ---
+  const idxCol  = String(count).padStart(2);      // right-aligned
+  const sCol = (symbol === 'O') 
+    ? `${value}`.padEnd(7)  // "Feynman ".
+    : `${symbol}${value}`.padEnd(7)  // "Q37 ";
+  const pCol    = `${p}`.padEnd(1);               // "R "
+  const srcCol  = String(src).padEnd(5);          // "KB4,4  "
+  const dstCol  = String(dst).padEnd(8);          // allow offboard arrays
+  const areaCol = String(feedback).padStart(2);   // right-aligned
+
+  const line = `${idxCol} ${sCol} ${pCol} ${srcCol} → ${dstCol}:${areaCol}`;
+  
+  return line;
+  }
+
+function findFirstArea(node) {
+  if (!node) return undefined;
+
+  if (Array.isArray(node)) {
+    for (const item of node) {
+      const area = findFirstArea(item);
+      if (area !== undefined) return area;
+    }
+    return undefined;
+  }
+
+  if (typeof node === "object" && "area" in node) {
+    return node.area;
+  }
+
+  return undefined;
+}
+
 function applyOpacity(obj, opacity) {
   if (obj.material) {
     obj.material.transparent = true;
@@ -380,7 +433,7 @@ function animateFreezeTransition(group, duration = 0.8) {
   const anim = { cancelled: false };
   activeAnimation = anim;
 
-    const start = performance.now();
+  const start = performance.now();
 
   function step(now) {
     if (anim.cancelled) return;   // 🔥 STOP if invalidated
@@ -412,65 +465,34 @@ function animateFreezeTransition(group, duration = 0.8) {
   }
 
 function derenderGambit(group) {
-  console.log("view : gambits.js - derenderGambit(...)",);
-  console.log("derender entry:", group.userData.entry);
-
-  console.log("overlays tracked:", group.userData.overlays?.length);
+  console.log("view : gambits.js - derenderGambit(group)", group);
 
   if (!group) return;
 
-  // --- Remove overlays (THIS is what clears onboard visuals) ---
-  if (group.userData?.overlays) {
-    group.userData.overlays.forEach(o => {
-      if (o.parent) o.parent.remove(o);
-    });
+  removeOverlays(group.userData.overlays);
+
+  for (const pg of group.userData.planes || []) {
+      removeOverlays(pg.userData.overlays);
   }
 
-  // --- Remove any missed overlays by entry ---
-  const tileMap = view.getContext().tileMap;
-
-  for (const tile of tileMap.values()) {
-    if (!tile.children) continue;
-
-    tile.children
-      .filter(child => child.userData?.entry === group.userData.entry)
-      .forEach(child => tile.remove(child));
+  view.getContext().scene.remove(group);
   }
 
-  // --- Remove offboard tiles ---
-  if (group.parent) {
-    group.parent.remove(group);
-  } else {
-    view.getContext().scene.remove(group);
+function removeOverlays(list) {
+  console.log("view : gambits.js - removeOverlays(list)", list);
+
+  for(const o of list) {
+    if(o.parent)
+      o.parent.remove(o);
   }
-  }
-
-function assembleLine(line) {
-  console.log("view : gambits.js - assembleLine(line):", line);
-
-  const { symbol, value, piece, src, dst, feedback } = line;
-
-  const count = state.getIndices().Gambits;
-
-  // --- column widths ---
-  const idxCol  = String(count).padStart(2);      // right-aligned
-  const sCol    = `${symbol}${value}`.padEnd(3);  // "Q37 "
-  const pCol    = `${piece}`.padEnd(1);           // "R "
-  const srcCol  = String(src).padEnd(5);          // "KB4,4  "
-  const dstCol  = String(dst).padEnd(8);          // allow offboard arrays
-  const areaCol = String(feedback).padStart(2);   // right-aligned
-
-  const row = `${idxCol} ${sCol} ${pCol} ${srcCol} → ${dstCol}:${areaCol}`;
-
-  return row;
 }
 // Seampoint: more local functions...
 
 /* TODO: Gambit additions:
- * 1. Review rendering code.
- * 2. Upgrade rows format to new standard.
+ * 1. ✅ Review rendering code.
+ * 2. ✅ Upgrade rows format to new standard.
  * 3. Write updateDerived data function.
- * 4. Expose button enable functions.
+ * 4. ✅ Expose button enable functions.
  * 5. ✅ Code to extract quads from the gambit.
  * 6. ✅ Remove decIntensity.
 */

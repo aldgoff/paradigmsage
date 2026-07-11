@@ -7,9 +7,6 @@
   UI: the export functions.
 */
 
-// --- Load Libraries ---
-const THREE = window.THREE;
-
 // --- Load JSON ---
 // Seampoint: more objects...
 
@@ -18,6 +15,10 @@ const THREE = window.THREE;
   import * as scenes  from "./scenes.js";
   import * as lights  from "./lights.js";
 // Seampoint: more imports...
+
+// --- Globals ---
+  const THREE = window.THREE;
+// Seampoint: more globals...
 
 // --- UI ---
 export function init(container) {
@@ -56,3 +57,8 @@ export function init(container) {
 
 // --- Helpers ---
 // Seampoint: more local functions...
+
+/* TODO: QC checklist
+  1. tbd
+*/
+

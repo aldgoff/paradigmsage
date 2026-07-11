@@ -1,5 +1,6 @@
 ---
 title: "Play"
+weight: 50
 layout: "play"
 ---
 
@@ -75,8 +76,8 @@ layout: "play"
   }
   
   #setup-window       { top:  160px; left:   20px; width: 163px }  /* DOM Control Panels */
-  #move-window        { top: 1000px; left:   20px; width: 670px }
-  #gambit-window      { top:  745px; left:   20px; width: 280px }
+  #move-window        { top: 1050px; left:   20px; width: 680px }
+  #gambit-window      { top:  770px; left:   20px; width: 320px }
   #advsq-window       { top:  160px; left:  210px; width: 155px }
   #compass-window     { top:  160px; left:  560px; width: 160px; height: 220px }
   #diagnostics-window { top:  160px; left:  960px; width: 145px }
@@ -216,6 +217,10 @@ layout: "play"
     <button data-action="delete">Delete</button>
     <button data-action="removeAll">Remove All</button>
   </div>
+  <div class="section" style="display:flex; align-items:center;">
+    <label>Pieces:                          <output name="gambit-selPieces" style="opacity:0.7; font-style:italic;">...</output> </label>
+    <label style="margin-left:12px;">Tiles: <output name="gambit-selTiles"  style="opacity:0.7; font-style:italic;">...</output> </label>
+  </div>
   <div class="section">
     <label> Open   :  <output name="gambit-open"  style="opacity:0.7; font-style:italic;"> [,,,,,]</output> </label>
   </div>
@@ -252,10 +257,10 @@ layout: "play"
     <button data-action="shrink">Shrink</button>
   </div>
   <div class="section">
-    <label> Source Tile  <input  name="advsq-src"       type="text"    value="KB4,4" maxlength="7" style="width: 60px;"> </label>
+    <label> Source Tile  <input  name="advsq-src"       type="text"    value="Q4,4" maxlength="7" style="width: 60px;"> </label>
   </div>
   <div class="section">
-    <label> Quad         <input  name="advsq-quad"      type="number" min="1" step="1" value="1" max="60"> </label>
+    <label> Quad         <input  name="advsq-quad"      type="number" min="1" step="1" value="1" max="85"> </label>
     <label> BP:          <output name="advsq-pieceQuad" style="opacity:0.7; font-style:italic;"></output> </label>
     <label> P:           <output name="advsq-planeQuad" style="opacity:0.7; font-style:italic;"></output> </label>
   </div>
@@ -270,7 +275,7 @@ layout: "play"
   <div class="section"> <label> Stride Type: <output name="advsq-strideType"style="opacity:0.7; font-style:italic;"></output> </label> </div>
   <div class="section"> <label> Move Type:   <output name="advsq-moveType"  style="opacity:0.7; font-style:italic;"> Q|L|D|O </output> </label> </div>
   <div class="section"> <label> Overlap:     <output name="advsq-overlap"   style="opacity:0.7; font-style:italic;"> B|Q|H|F </output> </label> </div>
-  <div class="section"> <label> Pieces:      <output name="advsq-piece"     style="opacity:0.7; font-style:italic;"> R|B|D|Q|N|S|P|U|K </output> </label> </div>
+  <div class="section"> <label> Piece:       <output name="advsq-piece"     style="opacity:0.7; font-style:italic;"> R|B|D|Q|N|S|P|U|K </output> </label> </div>
   <!-- Key hints (visual only) -->
   <div class="section" style="font-size: 13px; font-weight: bold; color: #666;">
     Slip&Slide +: kij -: KIJ
@@ -279,6 +284,10 @@ layout: "play"
     <button data-action="nextQuad">Next Quad</button>
     <button data-action="nextPlane">Next Plane</button>
     <button data-action="nextPiece">Next Piece</button>
+  </div>
+  <div class="section" style="display:flex; align-items:center;">
+    <label>Pieces:                          <output name="advsq-selPieces" style="opacity:0.7; font-style:italic;">...</output> </label>
+    <label style="margin-left:12px;">Tiles: <output name="advsq-selTiles"  style="opacity:0.7; font-style:italic;">...</output> </label>
   </div>
   <div class="section">
     <label> Offboard Visibility
@@ -308,7 +317,6 @@ layout: "play"
   <div class="section"> <label> White Tray:       <output name="diags-whiteTray"  style="font-style:italic;">0</output> </label> </div>
   <div class="section"> <label> Black Tray:       <output name="diags-blackTray"  style="font-style:italic;">0</output> </label> </div>
   <div class="section"> <label> Board Count:      <output name="diags-boardCount" style="font-style:italic;">0</output> </label> </div>
-  <div class="section"> <label> Board Occupancy:  <output name="diags-boardOcc"   style="font-style:italic;">0</output> </label> </div>
   <div class="section"> <label>Selections ----- </label> </div>
   <div class="section"> <label> Piece Selections:  <output name="diags-pieceSels" style="font-style:italic;">0</output> </label> </div>
   <div class="section"> <label> Tile Selections:   <output name="diags-tileSels"  style="font-style:italic;">0</output> </label> </div>

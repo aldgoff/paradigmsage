@@ -23,7 +23,7 @@
 export function init(entry) {
   console.log("cntrl: boards.js - init(entry)", entry);
   
-  const { action, boardSize, trayType, trayGap, boardSpec } = entry;
+  const { action, boardSize, trayType, trayGap } = entry;
   
   mBoards.init(entry);
 
@@ -33,7 +33,7 @@ export function init(entry) {
 export function destroy(entry) {
   console.log("cntrl: boards.js - destroy(entry)", entry);
   
-  const { action, boardSize, trayType, trayGap, boardSpec } = entry;
+  const { action, boardSize, trayType, trayGap } = entry;
   
   mBoards.destroy(entry);
 

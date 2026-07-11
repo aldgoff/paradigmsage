@@ -27,7 +27,7 @@ export function reset() {
   console.log("model: advsqs.js - reset()");
 
   vAdvsqs.clearAdvsqs();
-  }
+}
 
 export function makeEntry(payload) {
   console.log(`model: advsqs.js - makeEntry(payload):`, payload);
@@ -52,15 +52,30 @@ export function buttonAffordances(situation) {
     panels.enableButton("nextPlane", true);
     panels.enableButton("nextPiece", true);
     }
+  else if(situation === "default") {         // Place or grow (implied place).
+    buttonAffordances("off");
+    panels.enableButton("place",     true);
+    panels.enableButton("remove",    true);
+    panels.enableButton("grow",      true);
+    panels.enableButton("shrink",    true);
+
+    panels.enableButton("nextQuad",  true);
+    panels.enableButton("nextPlane", true);
+    panels.enableButton("nextPiece", true);
+    }
   else if(situation === "build") {      // Initial values, ready to build advsqs.
     buttonAffordances("off");
     panels.enableButton("place",     true);
+    panels.enableButton("remove",    true);
     panels.enableButton("grow",      true);
+    panels.enableButton("shrink",    true);
     }
   else if(situation === "src-tile") {   // Single tile, perimeter 0, src tile.
     buttonAffordances("off");
     panels.enableButton("remove",    true);
     panels.enableButton("grow",      true);
+    panels.enableButton("nextQuad",  true);
+    panels.enableButton("nextPlane", true);
     panels.enableButton("nextPiece", true);
     }
   else if(situation === "adv-sq") {     // Advsq.
@@ -77,7 +92,6 @@ export function buttonAffordances(situation) {
     panels.enableButton("remove",    false);
     panels.enableButton("grow",      false);
     panels.enableButton("shrink",    false);
-
     panels.enableButton("nextQuad",  false);
     panels.enableButton("nextPlane", false);
     panels.enableButton("nextPiece", false);
@@ -88,4 +102,8 @@ export function buttonAffordances(situation) {
 
 // --- Helpers ---
 // Seampoint: more local functions...
+
+/* TODO: QC checklist
+  1. tbd
+*/
 

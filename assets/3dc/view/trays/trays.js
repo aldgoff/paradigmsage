@@ -95,7 +95,7 @@ export function showTray() {
   whiteTrayGroup.visible = true;
   blackTrayGroup.visible = true;
   vPieces.showTrayPieces();
-}
+  }
 
 export function hideTray() {
   console.log("view : trays.js - hideTray()");

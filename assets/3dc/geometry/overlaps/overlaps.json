@@ -193,6 +193,38 @@
           }
         }
       }
+    },
+    "map": {
+      "brook": [
+        { "rook": { "perimeter": 1, "stride": [ 2] }, "bishop": { "perimeter": 1, "stride": [1,  3] } },
+        { "rook": { "perimeter": 3, "stride": [ 4] }, "bishop": { "perimeter": 3, "stride": [1,  7] } },
+        { "rook": { "perimeter": 5, "stride": [ 6] }, "bishop": { "perimeter": 5, "stride": [1, 11] } },
+        { "rook": { "perimeter": 7, "stride": [ 8] }, "bishop": { "perimeter": 7, "stride": [1, 15] } },
+        { "rook": { "perimeter": 9, "stride": [10] }, "bishop": { "perimeter": 9, "stride": [1, 19] } }
+      ],
+      "qtile": [
+        { "rook": { "perimeter": 2, "stride":  [3] }, "bishop": { "perimeter": 2, "stride": [1,  5] }, "duke": { "perimeter": 1, "stride": [2], "type": "edge" }},
+        { "rook": { "perimeter": 4, "stride":  [5] }, "bishop": { "perimeter": 4, "stride": [1,  9] }, "duke": { "perimeter": 2, "stride": [3], "type": "edge" }},
+        { "rook": { "perimeter": 6, "stride":  [7] }, "bishop": { "perimeter": 6, "stride": [1, 13] }, "duke": { "perimeter": 3, "stride": [4], "type": "edge" }},
+        { "rook": { "perimeter": 8, "stride":  [9] }, "bishop": { "perimeter": 8, "stride": [1, 17] }, "duke": { "perimeter": 4, "stride": [5], "type": "edge" }}
+      ],
+      "hotspot": [
+        { "rook": { "perimeter": 2, "stride": [1,  5] }, "duke": { "perimeter": 1, "stride": [2], "type": "face" } },
+        { "rook": { "perimeter": 4, "stride": [1,  9] }, "duke": { "perimeter": 2, "stride": [3], "type": "face" } },
+        { "rook": { "perimeter": 6, "stride": [1, 13] }, "duke": { "perimeter": 3, "stride": [4], "type": "face" } },
+        { "rook": { "perimeter": 8, "stride": [1, 17] }, "duke": { "perimeter": 4, "stride": [5], "type": "face" } }
+      ],
+      "Feynman": [
+        { "bishop": { "perimeter": 2, "stride": [3] }, "duke": { "perimeter": 3, "stride": [2,  6] } },
+        { "bishop": { "perimeter": 4, "stride": [5] }, "duke": { "perimeter": 6, "stride": [3, 11] } },
+        { "bishop": { "perimeter": 6, "stride": [7] }, "duke": { "perimeter": 9, "stride": [4, 16] } }
+      ]
+    },
+    "masks": {
+      "brook":   { "rook": "apex", "bishop": "linear" },
+      "qtile":   { "rook": "apex", "bishop": "linear", "duke": "apex" },
+      "hotspot": { "rook": "alternateE1E2", "duke": "duplex" },
+      "Feynman": { "bishop": "alternateApex", "duke": "thirds" }
     }
   }
 }

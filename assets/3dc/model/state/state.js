@@ -359,22 +359,12 @@ export function pushNewState(buffer, values) {  // Uses current index, will bran
   export const pushNewAdvsq  = (values) => pushNewState("AdvSqs",  values);
 /* ----- ----- ----- ----- */
 
-// export function collapseKeyIndex() {
-  //   const order = ["AdvSqs", "Gambits", "Moves", "Setup"];
-
-  //   for (const key of order) {
-  //     const i = indexes[key];
-
-  //     if (i > 1) {
-  //       indexes[key] = 1;
-  //       return { arrayKey: key, index: 0 };
-  //     }
-  //   }
-
-  //   return null; // Bottom Sentry
-  // }
 // Seampoint: more global functions...
 
 // --- Helpers ---
 // Seampoint: more local functions...
+
+/* TODO: QC checklist
+  1. tbd
+*/
 

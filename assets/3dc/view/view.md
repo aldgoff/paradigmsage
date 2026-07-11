@@ -100,3 +100,50 @@
  ### 1.6 Pieces
   text
 
+
+## 5. Full Load Stress Tests
+ ### 5.1 Scenario: 
+  **Setup Listing**
+
+  **Move Listing**
+
+  **Gambit Listing**
+
+  **8-5-2-10**
+
+{"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"makeBoard","prevBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0},"nextBoard":{"boardSize":"10x8x8","trayType":"Real","trayGap":0}},{"action":"makeBoard","prevBoard":{"boardSize":"10x8x8","trayType":"Real","trayGap":0},"nextBoard":{"boardSize":"10x10x10","trayType":"Real","trayGap":0}},{"action":"makeBoard","prevBoard":{"boardSize":"10x10x10","trayType":"Real","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"placePiece","list":[{"key":"BKKK","prev":"~K1,1","post":"@KB6,6"}]},{"action":"placePiece","list":[{"key":"WKRR","prev":"~KR1,1","post":"@K4,3"}]},{"action":"placePiece","list":[{"key":"WKKK","prev":"~K1,1","post":"@Q5,5"}]},{"action":"freezePuzzle","data":3}],"Moves":[{"action":"move","turn":1,"player":"White","list":[{"key":"WKRR","prev":"@K4,3","post":"@K5,5"}],"annotation":"move"},{"action":"move","turn":1,"player":"Black","list":[{"key":"BKKK","prev":"@KB6,6","post":"@KN6,6"}],"annotation":"move"},{"action":"move","turn":2,"player":"White","list":[{"key":"WKKK","prev":"@Q5,5","post":"@K6,6"}],"annotation":"move"},{"action":"move","turn":2,"player":"Black","list":[{"key":"BKKK","prev":"@KN6,6","post":"@KN7,6"}],"annotation":"move"},{"action":"move","turn":3,"player":"White","list":[{"key":"WKRR","prev":"@K5,5","post":"@KB5,5"}],"annotation":"move"}],"Gambits":[{"gambit":0,"action":"quadrant","value":1,"piece":"rook","src":"KB5,5","dst":"KB8,8","rays":["left_fore","right_fore"],"advsqs":[{"src":"KB5,5","srcTile":[2,1,1],"quad":1,"perimeter":3,"stride":4,"area":16}],"opacity":0.5},{"gambit":1,"action":"quadrant","value":5,"piece":"rook","src":"KB5,5","dst":[5,1,1],"rays":["up","right_fore"],"advsqs":[{"src":"KB5,5","srcTile":[2,1,1],"quad":5,"perimeter":3,"stride":1,"area":16}],"opacity":0.5}],"AdvSqs":[{"action":"place","src":"Q4,4","srcTile":[0,0,0],"quad":1,"perimeter":0,"stride":0,"area":0,"opacity":0.5},{"action":"grow","src":"Q4,4","srcTile":[0,0,0],"quad":1,"perimeter":1,"stride":2,"area":1,"opacity":0.5},{"action":"nextPlane","src":"Q4,4","srcTile":[0,0,0],"quad":5,"perimeter":1,"stride":1,"area":4,"opacity":0.5},{"action":"nextPlane","src":"Q4,4","srcTile":[0,0,0],"quad":9,"perimeter":1,"stride":1,"area":4,"opacity":0.5},{"action":"nextPlane","src":"Q4,4","srcTile":[1,0,0],"quad":9,"perimeter":1,"stride":1,"area":4,"opacity":0.5},{"action":"nextPlane","src":"Q4,4","srcTile":[2,0,0],"quad":9,"perimeter":1,"stride":1,"area":4,"opacity":0.5},{"action":"nextPlane","src":"Q4,4","srcTile":[2,1,0],"quad":9,"perimeter":1,"stride":1,"area":4,"opacity":0.5},{"action":"nextPlane","src":"Q4,4","srcTile":[2,1,1],"quad":9,"perimeter":1,"stride":1,"area":4,"opacity":0.5},{"action":"grow","src":"KB5,5","srcTile":[2,1,1],"quad":9,"perimeter":2,"stride":1,"area":4,"opacity":0.5},{"action":"grow","src":"KB5,5","srcTile":[2,1,1],"quad":9,"perimeter":3,"stride":1,"area":9,"opacity":0.5}]}
+
+
+## 5. Template
+ ### 5.1 Scenario: 
+  **Setup Listing**
+
+  **Move Listing**
+
+  **Gambit Listing**
+
+  **0-0-0-0**
+  
+
+## 6. Debugging
+ ### 6.1 Scenario: Placing piece erases advsq decorators
+  **Setup Listing**
+
+    0x0x0    8x8x8    Real
+    BKRR ~KR1,1 @KR7,7
+    WKRP ~KR2,2 @KR3,4
+
+  **3-0-0-6**
+  
+    {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"placePiece","list":[{"key":"BKRR","prev":"~KR1,1","post":"@KR7,7"}]},{"action":"placePiece","list":[{"key":"WKRP","prev":"~KR2,2","post":"@KR3,4"}]}],"Moves":[],"Gambits":[],"AdvSqs":[{"action":"grow","src":"KR7,7","srcTile":[4,3,3],"quad":1,"perimeter":1,"stride":2,"area":0,"opacity":0.5},{"action":"nextQuad","src":"KR7,7","srcTile":[4,3,3],"quad":2,"perimeter":1,"stride":1,"area":4,"opacity":0.5},{"action":"nextQuad","src":"KR7,7","srcTile":[4,3,3],"quad":3,"perimeter":1,"stride":1,"area":4,"opacity":0.5},{"action":"grow","src":"KR7,7","srcTile":[4,3,3],"quad":3,"perimeter":2,"stride":1,"area":4,"opacity":0.5},{"action":"grow","src":"KR7,7","srcTile":[4,3,3],"quad":3,"perimeter":3,"stride":1,"area":9,"opacity":0.5},{"action":"grow","src":"KR7,7","srcTile":[4,3,3],"quad":3,"perimeter":4,"stride":1,"area":16,"opacity":0.5}]}
+
+## 8. Template
+ ### 8.1 Scenario: 
+  **Setup Listing**
+
+  **Move Listing**
+
+  **Gambit Listing**
+
+  **0-0-0-0**
+  

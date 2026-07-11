@@ -3,6 +3,8 @@
 ## Hugo Server Start
   hugo server --disableFastRender --buildFuture
 
+  git log --oneline --decorate --graph --all --boundary -n 30
+
 ## Branching and Publishing Model
   For serialization topics (like PoP), use git branches to stage release publications.
   Content for upcoming releases are developed on stage branches.
@@ -87,6 +89,7 @@
     Merge branch '3dc' - Duplex gambits, clues, trays, dots.
     Merge 3dc3 Board occupancy, entry standards, stack simplification.
     Merge 3dc3 Fission, duke lowering, button affordances, clues, tag.
+    Merge 3dc3 Affordances, stack, gambits, overlaps, save testsuites, QC.
   git push origin main
   git switch 3dc3
   ```
@@ -103,7 +106,7 @@
   git tag
   git tag -a 3dc-v0.5-<desc> -m "yada yada"
   git push origin <tag>  (Preferred)
-  gti show tag
+  git show tag
 
   git push --tags  (Just as good on a solo project.)
   ```
@@ -115,7 +118,7 @@
   v0.2-feynman-tile
   v0.3-3dc
   v0.4-move-pieces
-  v0.5-3dc-affordances
+  v0.5-3dc-fission
   v1.0.1
   ```
   Canonical Use Going Forward

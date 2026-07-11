@@ -14,8 +14,8 @@
 
 // --- Dependencies ---
   import * as panels      from "../../panels/panels.js";
-  import * as cSelections from "../../controller/selections/selections.js";
 
+  import * as cSelects from "../../controller/selections/selections.js";
   import * as cSetup   from "../../controller/setup/setup.js";
   import * as cMoves   from "../../controller/moves/moves.js";
   import * as cGambits from "../../controller/gambits/gambits.js";
@@ -239,10 +239,7 @@ async function handleLoad() {
         state.pushNewState(key, entry);
         if(     key === "Setup")   { vSetup.pushPanelLine(entry); }
         else if(key === "Moves")   { vMoves.pushPanelLine(entry); }
-        else if(key === "Gambits") { 
-          const line  = cGambits.convertEntryToLine(entry)
-          vGambits.pushPanelLine(line);
-        }
+        else if(key === "Gambits") { vGambits.pushPanelLine(entry); }
         else if(key === "AdvSqs")  { /* Has no scroll list. */ }
         else  { throw new Error(`Unknown entry key ${key}.`); }
       }
@@ -257,7 +254,12 @@ async function handleLoad() {
 
     mPieces.clearPieceState();        // Reset occupancies.
     mTrays.clearTrays();
+    
     mSetup.buttonAffordances("makeBoard");
+    mMoves.buttonAffordances("off");
+    mGambits.buttonAffordances("off");
+    mAdvsqs.buttonAffordances("default");
+
     panels.diagnostics();
 
     showUndoStatus();                 // Visual indicator of successful load.
@@ -316,7 +318,7 @@ function rewindCurrentBuffer(buffer) {
     }
 
     state.setBufferIndex("Gambits", 1);
-    vGambits.refreshPanel(first);
+    vGambits.refreshPanel();
     }
   else if(buffer === "Moves") {
     const first = state.getState().Moves[0];
@@ -326,7 +328,7 @@ function rewindCurrentBuffer(buffer) {
     }
 
     state.setBufferIndex("Moves", 1);
-    vMoves.refreshPanel(first);
+    vMoves.refreshPanel();
     }
   else if(buffer === "Setup") {
     const first = state.getState().Setup[0];
@@ -368,7 +370,7 @@ function fastForwardCurrentBuffer(buffer) {
     }
 
     state.setBufferIndex("Moves", len);
-    vMoves.refreshPanel(last);
+    vMoves.refreshPanel();
     }
   else if(buffer === "Gambits") {
     const last = state.getState().Gambits[len - 1];
@@ -378,7 +380,7 @@ function fastForwardCurrentBuffer(buffer) {
     }    
 
     state.setBufferIndex("Gambits", len);
-    vGambits.refreshPanel(last);
+    vGambits.refreshPanel();
     }
   else if(buffer === "AdvSqs") {  // Snapshot buffer.
     const last = state.getState().AdvSqs[len - 1];
@@ -421,53 +423,58 @@ function processUndoBuffer(key, idx) {
       state.setBufferIndex("AdvSqs", idx-1);
       return true;
     }
+
+    cSelects.manageAdvsqButtons();
+    cSelects.manageGambitButtons();
     }
   else if(key === "Gambits") {
     const entry = state.fetchCurrentState("Gambits");
-
     if(!entry) {
       console.log("*** No prev gambit.");
       return false;
     }
     state.setBufferIndex("Gambits", idx-1);
-    vGambits.undo(entry);
-    vGambits.refreshPanel(entry);
+    
+    cGambits.buildBackward(entry);
+    
+    cSelects.manageGambitButtons();
 
     return true;
     }
   else if(key === "Moves") {
     const entry = state.fetchCurrentState("Moves");
-
     if(!entry) {
       console.log("*** No prev move.");
       return false;
     }
     state.setBufferIndex("Moves", idx-1);
-    cMoves.buildBackward(entry);
 
-    cSetup.clearAllTileSelections();
-    cSetup.clearAllPieceSelections();
+    cMoves.buildBackward(entry);
     
+    cSelects.manageMoveButtons();
+
     return true;
     }
   else if(key === "Setup") {
     const entry = state.fetchCurrentState("Setup");
-
-    if(entry) {
-      state.setBufferIndex("Setup", idx-1);
-      cSetup.buildBackward(entry);
-
-      cSetup.clearAllTileSelections();
-      cSetup.clearAllPieceSelections();
+    if(!entry) {
+      console.log("*** No prev setup.");
+      return false;
     }
+    state.setBufferIndex("Setup", idx-1);
 
-    cSelections.manageSetupButtons();
+    cSetup.buildBackward(entry);
+
+    cSelects.manageSetupButtons();
 
     return true;
     }
   else {  // Unreachable.
     throw new Error(`Unknown or missing key in undo ${key}.`);
   }
+
+  cSetup.clearAllTileSelections();
+  cSetup.clearAllPieceSelections();
   }
 
 function processRedoBuffer(key, idx) {
@@ -475,53 +482,44 @@ function processRedoBuffer(key, idx) {
 
   if(     key === "Setup") {
     state.setBufferIndex("Setup", idx + 1);
-
     const entry = state.fetchCurrentState("Setup");
     if(!entry) {
       console.log("*** No next setup.");
       return false;
     }
-    cSetup.buildForward(entry);
 
-    cSetup.clearAllTileSelections();
-    cSetup.clearAllPieceSelections();
+    cSetup.buildForward(entry);
     
-    cSelections.manageSetupButtons();
+    cSelects.manageSetupButtons();
 
     return true;
     }
   else if(key === "Moves") {
     state.setBufferIndex("Moves", idx + 1);
-
     const entry = state.fetchCurrentState("Moves");
     if(!entry) {
       console.log("*** No next move.");
       return false;
     }
-    cMoves.buildForward(entry);
 
-    cSetup.clearAllTileSelections();
-    cSetup.clearAllPieceSelections();
+    cMoves.buildForward(entry);
     
+    cSelects.manageMoveButtons();
+
     return true;
     }
   else if(key === "Gambits") {
     state.setBufferIndex("Gambits", idx + 1);
-
     const entry = state.fetchCurrentState("Gambits");
     if(!entry) {
       console.log("*** No next gambit.");
       return false;
     }
 
-    const group = view.buildAdvSqGroup(entry); // {srcTile: Array(3), quad: 1, perimeter: 0, stride: 0, opacity: 0.5}
-    vGambits.getGambitGroups()[entry.gambitId] = group;
-    console.log("*** gambitGroups.length", vGambits.getGambitGroups().length);
-    group.userData.entry = entry;
-    vGambits.render(group, { animate: false });      // Render.
-
-    vGambits.refreshPanel();         
+    cGambits.buildForward(entry);
     
+    cSelects.manageGambitButtons();
+
     return true;
     }
   else if(key === "AdvSqs") {
@@ -546,10 +544,16 @@ function processRedoBuffer(key, idx) {
       state.setBufferIndex("AdvSqs", idx + 1);
       return true;
     }
+        
+    cSelects.manageAdvsqButtons();
+    cSelects.manageGambitButtons();
     }
   else {  // Unreachable.
     throw new Error(`Unknown or missing key in redo ${key}.`);
   }
+
+  cSetup.clearAllTileSelections();
+  cSetup.clearAllPieceSelections();
 }
 
 function hardReset() {
@@ -613,9 +617,9 @@ function assertStateConsistency() {
 // Seampoint: more local functions...
 
 /* ✅ TODO: QC checklist
-    1. ✅ Load/Save fails to make board.
-    2. ✅ Still have gambit issues.
-    3. ✅ Undo from play throws an error, play removed.
-    4. ✅ Load does not clear the scene.
- */
+  1. ✅ Load/Save fails to make board.
+  2. ✅ Still have gambit issues.
+  3. ✅ Undo from play throws an error, play removed.
+  4. ✅ Load does not clear the scene.
+*/
 

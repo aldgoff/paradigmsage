@@ -8,39 +8,23 @@
 */
 
 // --- Load module ---
-import advsqsData from "./advsqs.json" assert { type: "json" };
+  import advsqsData from "./advsqs.json" assert { type: "json" };
   const advsqsModule = advsqsData.advsqs_module;
   const category  = advsqsModule.category;
 // Seampoint: more objects...
 
 // --- Build upon the previous layers ---
-import * as utils from "../../../utils/utils.js";
-
-import {getBoardSpec,
-} from "../../foundation/coords/coords.js";
-import {bishopColor,
-        dukeColor,
-} from "../../foundation/colors/colors.js";
-
-import {nextPlane,
-        prevPlane,
-} from "../../geometry/planes/planes.js";
-
-import {rayPairToQuad,
-        quadToRayPair,
-        quadToPiece,
-        quadToPlane,
-        planeToQuad,
-        quadToPlaneQuad,
-        nextQuadInPlane,
-        prevQuadInPlane,
-} from "../../geometry/quads/quads.js";
-import {getStride,
-        onboardTiles,
-} from "../../geometry/perims/perims.js";
+  import * as utils  from "../../../utils/utils.js";
+  import * as coords from "../../foundation/coords/coords.js";
+  import * as colors from "../../foundation/colors/colors.js";
+  import * as planes from "../../geometry/planes/planes.js";
+  import * as quads  from "../../geometry/quads/quads.js";
+  import * as perims from "../../geometry/perims/perims.js";
 // Seampoint: more imports...
 
-const _private = Symbol("AdvSq");
+// --- Globals ---
+  const _private = Symbol("AdvSq");
+// Seampoint: more globals...
 
 // --- UI ---
 export class AdvSq {
@@ -59,7 +43,7 @@ export class AdvSq {
 
     // Offset the perimeters by source - belongs in perims as a feature.
     for (let i=0; i<=k; i++) {        // Each successive perimeter.
-      this.perims[i] = getStride({ quad, k: i }); // return {k, stride, E1, apex, E2 };
+      this.perims[i] = perims.getStride({ quad, k: i }); // return {k, stride, E1, apex, E2 };
       let perim = this.perims[i];
       perim.E1   = utils.add(source, perim.E1);
       perim.apex = utils.add(source, perim.apex);
@@ -72,18 +56,18 @@ export class AdvSq {
 
   // Static constructors.
   static fromQuad(source, quad, k) {
-    const rayPair = quadToRayPair(quad);
+    const rayPair = quads.quadToRayPair(quad);
     return new AdvSq(_private, { source, quad, rayPair, k });
     }
 
   static fromRayPair(source, rayPair, k) {
-    const quad = rayPairToQuad(rayPair);
+    const quad = quads.rayPairToQuad(rayPair);
     return new AdvSq(_private, { source, quad, rayPair, k });
   }
 
   // Accessors:
-  getPiece()     { return quadToPiece(this.quad); }
-  getPlane()     { return quadToPlane(this.quad); }
+  getPiece()     { return quads.quadToPiece(this.quad); }
+  getPlane()     { return quads.quadToPlane(this.quad); }
   getQuad()      { return this.quad; }
   getRayPair()   { return this.rayPair; }
   getRange()     { return this.k; }
@@ -107,8 +91,8 @@ export class AdvSq {
     const tiles = this.perims.flatMap(p => p.stride);
 
     for (const tile of tiles) {
-      const b = bishopColor(tile, spec);
-      const d = dukeColor(tile, spec);
+      const b = colors.bishopColor(tile, spec);
+      const d = colors.dukeColor(tile, spec);
 
       tally[b]++;
       tally[d]++;
@@ -119,29 +103,29 @@ export class AdvSq {
 
   // Morphers:
   nextQuad() {
-    return AdvSq.fromQuad(this.source, nextQuadInPlane(this.quad), this.k);
+    return AdvSq.fromQuad(this.source, quads.nextQuadInPlane(this.quad), this.k);
     }
 
   prevQuad() {
-    return AdvSq.fromQuad(this.source, prevQuadInPlane(this.quad), this.k);
+    return AdvSq.fromQuad(this.source, quads.prevQuadInPlane(this.quad), this.k);
     }
 
   nextPlane() {
-    const plane = quadToPlane(this.quad);
-    const planeQ = quadToPlaneQuad(this.quad);
+    const plane = quads.quadToPlane(this.quad);
+    const planeQ = quads.quadToPlaneQuad(this.quad);
 
-    const newPlane = nextPlane(plane);
-    const newQuad = planeToQuad(newPlane, planeQ);
+    const newPlane = planes.nextPlane(plane);
+    const newQuad = quads.planeToQuad(newPlane, planeQ);
 
     return AdvSq.fromQuad(this.source, newQuad, this.k);
     }
 
   prevPlane() {
-    const plane = quadToPlane(this.quad);
-    const planeQ = quadToPlaneQuad(this.quad);
+    const plane = quads.quadToPlane(this.quad);
+    const planeQ = quads.quadToPlaneQuad(this.quad);
 
-    const newPlane = prevPlane(plane);
-    const newQuad = planeToQuad(newPlane, planeQ);
+    const newPlane = planes.prevPlane(plane);
+    const newQuad = quads.planeToQuad(newPlane, planeQ);
 
     return AdvSq.fromQuad(this.source, newQuad, this.k);
   }
@@ -151,7 +135,7 @@ export class AdvSq {
     let onboard = 0;
     let k = 0;
     for(const perim of this.perims) {
-      const perimOnboard = onboardTiles(this.source, this.quad, k);
+      const perimOnboard = perims.onboardTiles(this.source, this.quad, k);
       // console.log("this.source, this.quad, this.k", this.source, this.quad, k, perimOnboard);
       onboard += perimOnboard;
       k++;
@@ -168,7 +152,7 @@ export function isEqual(a,b) {
 
 // --- Helpers ---
 function isValidVtsTile(tile) {
-  const spec = getBoardSpec("10x10x10");  // Max board size.
+  const spec = coords.getBoardSpec("10x10x10");  // Max board size.
   const max = 3*spec.Nz/2;                // Includes max vts shell.
   const min = -max + 1;
 
