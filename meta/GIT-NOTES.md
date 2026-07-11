@@ -90,6 +90,7 @@
     Merge 3dc3 Board occupancy, entry standards, stack simplification.
     Merge 3dc3 Fission, duke lowering, button affordances, clues, tag.
     Merge 3dc3 Affordances, stack, gambits, overlaps, save testsuites, QC.
+    Merge 3dc3 Visual tweaks.
   git push origin main
   git switch 3dc3
   ```
@@ -102,6 +103,7 @@
   git tag -a v1.0.1 -m "Tag label."
   git show v0.5-<desc>  (Better)
   git show v0.5-3dc3-<desc>  (Best)
+  git tag -a v0.6-3dc-MVP
 
   git tag
   git tag -a 3dc-v0.5-<desc> -m "yada yada"

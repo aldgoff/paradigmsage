@@ -216,3 +216,6 @@
 
   **0-0-0-0**
 
+## Debugging
+  {"Setup":[{"action":"makeBoard","prevBoard":{"boardSize":"0x0x0","trayType":"None","trayGap":0},"nextBoard":{"boardSize":"8x8x8","trayType":"Real","trayGap":0}},{"action":"startingPos","data":0}],"Moves":[],"Gambits":[],"AdvSqs":[{"action":"grow","src":"KR2,2","srcTile":[4,-2,-2],"quad":1,"perimeter":1,"stride":2,"area":0,"opacity":0.5},{"action":"grow","src":"KR2,2","srcTile":[4,-2,-2],"quad":1,"perimeter":2,"stride":3,"area":4,"opacity":0.5},{"action":"grow","src":"KR2,2","srcTile":[4,-2,-2],"quad":1,"perimeter":3,"stride":4,"area":9,"opacity":0.5},{"action":"grow","src":"KR2,2","srcTile":[4,-2,-2],"quad":1,"perimeter":4,"stride":5,"area":16,"opacity":0.5},{"action":"grow","src":"KR2,2","srcTile":[4,-2,-2],"quad":1,"perimeter":5,"stride":6,"area":25,"opacity":0.5},{"action":"grow","src":"KR2,2","srcTile":[4,-2,-2],"quad":1,"perimeter":6,"stride":7,"area":36,"opacity":0.5}]}
+
