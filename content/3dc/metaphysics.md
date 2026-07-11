@@ -33,14 +33,7 @@ weight: 60
   From their perspective, the rules of the game (the laws of physics) have changed suddenly, **discontinuously**, for no apparent reason. 
   The change is literally miraculous.
  
- ### 3.1 Core Response
+ ### 3.2 Core Response
   Any **system** with **embedded agents** cannot have its **rules inferred** purely from **observation**, 
   because agent **intent** is **indistinguishable** from **rule variation.**
-
- ### 3.2 Miracles
-  If the universe is game like, physics cannot rule out miracles.
-  They do not require suspension of the laws of physics, merely a change in intent from active agents.
-  The rules have not changed, only intent has.
-  The change can be strategic, global, local, permanent, temporary, or idosyncratic.
-  But in all cases, the change appears **discontinuous**.
 

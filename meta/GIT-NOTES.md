@@ -2,7 +2,7 @@
 
 ## Hugo Server Start
   hugo server --disableFastRender --buildFuture
-  
+
   git log --oneline --decorate --graph --all --boundary -n 30
 
 ## Branching and Publishing Model
@@ -89,6 +89,7 @@
     Merge branch '3dc' - Duplex gambits, clues, trays, dots.
     Merge 3dc3 Board occupancy, entry standards, stack simplification.
     Merge 3dc3 Fission, duke lowering, button affordances, clues, tag.
+    Merge 3dc3 Affordances, stack, gambits, overlaps, save testsuites, QC.
   git push origin main
   git switch 3dc3
   ```
