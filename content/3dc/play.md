@@ -40,6 +40,9 @@ layout: "play"
   .panel-temporal {
     background: rgba(236,232,222,0.95);
   }
+  .panel-diagnostic {
+    background: rgba(252, 228, 166, 0.95);
+  }
 
   #setup-list {
     font-family: monospace;
@@ -76,16 +79,16 @@ layout: "play"
   }
   
   #setup-window       { top:  160px; left:   20px; width: 163px }  /* DOM Control Panels */
-  #move-window        { top: 1050px; left:   20px; width: 680px }
-  #gambit-window      { top:  770px; left:   20px; width: 320px }
+  #move-window        { top: 1550px; left:   20px; width: 680px }
+  #gambit-window      { top:  800px; left:   20px; width: 320px }
   #advsq-window       { top:  160px; left:  210px; width: 155px }
-  #compass-window     { top:  160px; left:  560px; width: 160px; height: 220px }
-  #diagnostics-window { top:  160px; left:  960px; width: 145px }
+  #compass-window     { top:  555px; left:   20px; width: 160px; height: 220px }
+  #diagnostics-window { top: 1130px; left:   20px; width: 145px }
 
   #game-window   { top:  160px; left:  390px; }
 
-  #camera-window { top:   400px; left:  390px; }
-  #viewer-window { top:   160px; left:  760px; }
+  #camera-window { top:   370px; left:  390px; }
+  #viewer-window { top:   160px; left:  560px; }
 
   .help-popup {
     position: fixed;
@@ -307,7 +310,7 @@ layout: "play"
   </div>
   </div>
 
-<div class="panel panel-supportive" id="diagnostics-window">
+<div class="panel panel-diagnostic" id="diagnostics-window">
   <div class="panel-title"><span>Diagnostics Panel</span>
     <button class="help-btn" data-help="diagnostics">?</button>
   </div>
@@ -381,7 +384,7 @@ layout: "play"
     <label> Tray Gap <input name="viewer-trayGap" type="number" min="0" step="1" value="0" max="3"> </label>
   </div>
   <div class="section">
-    <label> Level Sep <input name="viewer-levelSep" type="number" min="1.0" step="0.1" value="1.5" max="2.0"> </label>
+    <label> Level Sep <input name="viewer-levelSep" type="number" min="1.0" step="0.1" value="1.7" max="2.0"> </label>
   </div>
   <div class="section">
     <button data-action="ToggleAnimation"> Toggle Animation </button>

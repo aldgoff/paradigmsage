@@ -715,7 +715,7 @@ function makePawnMeshGroup(tileWidth, pawn, color) {
   const baseRadius = (tileWidth * breadth) / 2;                               // Dimensions.
   const washerRadius = baseRadius * 0.85;
   const washerHeight = baseRadius * 0.30;
-  const sphereRadius = baseRadius * 0.62;
+  const sphereRadius = baseRadius * 0.65;
 
   const sphereGeo = new THREE.SphereGeometry(sphereRadius, 32, 24);           // Geometries.
   const washerGeo = new THREE.CylinderGeometry(washerRadius, washerRadius, washerHeight, 32);
@@ -724,7 +724,7 @@ function makePawnMeshGroup(tileWidth, pawn, color) {
   const sphereMesh = new THREE.Mesh(sphereGeo, new THREE.MeshBasicMaterial({ color: color.surfaceColor }));// Meshes.
   const washerMesh = new THREE.Mesh(washerGeo, new THREE.MeshBasicMaterial({ color: color.surfaceColor }));
 
-  sphereMesh.position.y = washerHeight/2 + sphereRadius * 0.85;               // Placement.
+  sphereMesh.position.y = washerHeight + sphereRadius * 0.85;               // Placement.
 
   const group = new THREE.Group();                                            // Assembly.
 
@@ -776,7 +776,7 @@ function addPawnLatitudes(mesh, radius, color) {
     new THREE.LineBasicMaterial({ color: color.lineColor });
 
   // Upper, middle, lower bands.
-  const bands = [0.55, 0.20, -0.15];
+  const bands = [0.6, 0.20, -0.25];
 
   const scale = 1.03;  // Slightly outside sphere.
 

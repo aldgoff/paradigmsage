@@ -76,7 +76,10 @@ export function makeBoard(dimensions) {
 
         if(isPrimaryPlaneMarker(tile, pos)) {        // Primary plane markers.
           const marker = makePrimaryPlaneMarker();
-          meshTile.add(marker);
+          marker.position.copy(meshTile.position);
+          // adjust Y here if necessary
+          // meshTile.add(marker);
+          boardGroup.add(marker);
         }
         boardGroup.add(meshTile); // Add tile to board.
         count++;
@@ -160,7 +163,7 @@ function makePrimaryPlaneMarker() {
   // TODO: solve the level fighting between dots and decorators.
   const material = new THREE.MeshPhongMaterial({ color: 0x111111 });
   const marker = new THREE.Mesh( geometry, material);
-
+    
   return marker;
 }
 // Seampoint: more local functions...

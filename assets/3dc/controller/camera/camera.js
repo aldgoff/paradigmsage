@@ -8,7 +8,7 @@
 */
 
 // --- Load JSON ---
-import cameraData from "./camera.json" assert { type: "json" };
+  import cameraData from "./camera.json" assert { type: "json" };
   const cameraModule = cameraData.camera_module;
 // Seampoint: more objects...
 
