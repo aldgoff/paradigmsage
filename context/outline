@@ -266,6 +266,9 @@
 │   │           ├── viewer.json
 │   │           └── viewer.md
 │   ├── jsconfig.json
+│   ├── lof
+│   │   └── lof2026
+│   │       └── LOF2026_19.pptx
 │   ├── qt3
 │   │   └── js
 │   │       ├── arch.js
@@ -329,6 +332,7 @@
 │   │   ├── dev.md
 │   │   ├── guide.md
 │   │   ├── metaphysics.md
+│   │   ├── outOfTheBox.md
 │   │   ├── play.md
 │   │   ├── quickStart.md
 │   │   └── rationale.md
@@ -338,6 +342,8 @@
 │   │   ├── _index.md
 │   │   └── red-herrings
 │   │       └── _index.md
+│   ├── lof
+│   │   └── _index.md
 │   ├── pop
 │   │   ├── _index.md
 │   │   ├── ch-01-paradigms.md
@@ -747,4 +753,4 @@
 │           └── poc.js
 └── themes
 
-123 directories, 624 files
+126 directories, 627 files
