@@ -177,5 +177,4 @@ weight: 100
   - 7/09/26 - Capture module saves. POC on knight. Testsuite for advsqs.
   - 7/10/26 - QC applyEntry and advsqs. Advsq click1. Debug advsqs removal after place or move. Final QC for MVP.
   - 7/11/26 - MVP (vs 0.6). Several critical visual tweaks.
-  Advsq buildForward/buildBackward.
 

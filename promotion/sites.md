@@ -65,7 +65,19 @@ Places AI said might be good for promoting the website.
     - Falsification by contradiction is an established method of proof.
     - But contradiction by self-reference admits another solution, imaginary truthvalues.
 
-  ### 5. 
+ ### 5. 7/14/26
+  #### Title:
+    - Why is it so hard to devise rules for 3D chess that feel like chess?
+    - Why is it hard to devise rules for 3D chess that feel like chess?
+    - Devising rules for 3D chess is hard.
+    - 3D chess, if the board is promoted by a dimension, shouldn't the moves also?
+    - What paradigm makes devising rules for 3D chess hard?
+  #### URL:
+    - https://paradigmsage.com/3dc/
+  #### Text:
+    - The board has been promoted by dimension (8x8x8) should not the moves also be promoted by a dimension?
+
+ ### 5. 
   #### Title:
    - If it's better to give than to receive, shouldn't the birthday boy give presents?
   #### URL:
