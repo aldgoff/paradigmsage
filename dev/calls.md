@@ -203,3 +203,39 @@ title: "Call Structure"
   The rules have not changed, only intent has.
   The change can be strategic, global, local, permanent, temporary, or idosyncratic.
   But in all cases, the change appears **discontinuous**.
+
+## Recursive QM - +1, +i, -1, -i
+
+(+1, +i, -1, -i), (+1, +i, -1, -i), (+1, +i, -1, -i)... = 0
++1, (+i, -1, -i, +1), (+i, -1, -i, +1)...               = 1
++1, +i, (-1, -i, +1, +i), (-1, -i, +1, +i)...           = 1+i;
++1, +i, -1, (-i, +1, +i, -1), (-i, +1, +i, -1)...       = i
+
+Even groupings = 0 or 1+i
+Odd groupings = 1 or i
+
+Grouping by four's yields the desired behavior, two groups, each with a different pair of values - complementarity in infinite series.
+
+Grouping by three's reverses the series with a phase shift...
+(+1, +i, -1), (-i, +1, +i), (-1, -i, +1), (+i, -1, -i), (+i, -1, -i) = +i, +1, -i, -1, ...
+
+If we group this modified series by fours...
+(+i, +1, -i, -1), (+i, +1, -i, -1), (+i, +1, -i, -1)... = 0 
++i, (+1, -i, -1, +i), (+1, -i, -1, +i)...               = i 
++i, +1, (-i, -1, +i, +1), (-i, -1, +i, +1)...           = 1+i 
++i, +1, -i, (-1, +i, +1, -i), (-1, +i, +1, -i)...       = 1
+
+Even groupings = 0 or 1+i
+Odd groupings = i or 1
+
+Now that was unexpected, same parings. Hmmm...
+
++1, (+i, -1, -i), (+1, +i, -1), (-i, +1, +i), (-1, -i, +1)... = 0, 1+i, 2, 1-i, ...
++1, +i, (-1, -i, +1), (+i, -1, -i), (+1, +i, -1), (-i, +1, +i)... = 1+i, 1, i, 2+i, ... 
+
+I think this series corresponds to a closed loop of four square root of NOT gates...T,i,F,j,...
+
+Variations on the Reimann series and conditional convergence.
+
++1, +i, -1, -i, +1, +i, -1, -i, +1, +i, -1, -i, +1, +i, -1, -i, 
+
