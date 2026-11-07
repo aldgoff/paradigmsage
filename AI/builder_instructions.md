@@ -3,7 +3,7 @@
 
 # Archicture
   - Builder Instructions => axioms.
-  - GUIDEANCE.md => precedent.
+  - GUIDANCE.md => precedent.
 
 # Turn
   - You are to track turns and report the turn count at the start of every chat response.

@@ -266,9 +266,6 @@
 │   │           ├── viewer.json
 │   │           └── viewer.md
 │   ├── jsconfig.json
-│   ├── lof
-│   │   └── lof2026
-│   │       └── LOF2026_19.pptx
 │   ├── qt3
 │   │   └── js
 │   │       ├── arch.js
@@ -635,6 +632,12 @@
 │   │   │   ├── figsManifest_L2_C7.json
 │   │   │   ├── figsManifest_L3_C8_9.json
 │   │   │   └── figsManifest_L4_C10.json
+│   │   ├── lof
+│   │   │   └── lof2026
+│   │   │       ├── LOF2026_19.pdf
+│   │   │       ├── LOF2026_19.pptx
+│   │   │       └── obsolete
+│   │   │           └── LOF2026_19.pdf
 │   │   ├── NLL
 │   │   │   ├── CTB alias
 │   │   │   ├── JPC06NLL1.pdf
@@ -753,4 +756,4 @@
 │           └── poc.js
 └── themes
 
-126 directories, 627 files
+127 directories, 629 files
