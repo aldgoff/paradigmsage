@@ -1,29 +1,33 @@
 ---
 title: "Paradigm Sage"
 ---
+## Quantum
 
-Quantum systems are counter-intuitive because they violate deep assumptions about reality. 
-The quantum realm is shocking because of a paradigm barrier, a blocking paradigm, one that we do not yet see.
-This research considers if the blocking paradigm is the intrusion of paradox, indeed of self-reference in general.
+Quantum physics is hard. It's not the math (ok, a little bit),
+it is hard because common sense is at odds with reality.
+In scientific terms, 'common sense' is a **paradigm**, one that worked pretty well for classical physics.
+Add a little calculus, and viola, the industrial revolution.
 
-Has physics stalled because it contains paradoxes, or because it refuses to learn how to think about them?
-The purpose of this site is to dismantle assumptions about paradoxes.
+This website is focused on penetrating the *classical* paradigm. The goal; make quantum physics *intuitive*.
 
-The litmus test of these speculations will be the *quantum measurement problem* — a mystery that has haunted physics for a century.
-If we learn how to think about paradox, does it remove a blocking paradigm? Might it permit progress on this long standing conundrum?
+## Games
 
-This is an exploration; it ranges across ideas that resist neat classification: 
-constraints, invariants, self-reference, feedback, how do these shape what is possible?
-Do these fundamental concepts link disparate fields?
-Are there structural similarities in
-quantum physics, games, logic, mathematics, computation, metaphysics, philosophy, even theology?
+A clever way to build intuition is to change the problem.
+Instead of trying to figure out all of quantum reality in one fell swoop,
+we nibble away at reality via **toy universes**.
 
-The work is organized as a set of projects that appear independent on the surface but are connected at a deeper structural level. 
-The aim is not to offer premature answers, but to develop concepts and tools for thinking clearly in domains where the rules themselves are unstable. 
-This is a work in progress; return from time to time to see what new territory has been mapped.
+We shall leverage the *metaphor of games*, but games with a twist - a paradigm twist.
 
-Think of it as a quest. The map is the book *Paradigm of Paradox*, presented as a weekly series.
+## Stories
 
-**Who this is for**: readers who enjoy sustained, careful thought about intricate ideas.
+We shall also leverage an algorithm that nature has built into us - **stories**.
+Heroes, villians, supporting cast - add a quest, with daunting obstacles, and we have a story.
 
-**Target Demographic**: those who find epiphanies and paradigms a delight.
+## Self-Reference
+
+Our hero needs a weapon. We shall arm him with one - self-reference. 
+"This statement is false." Things like that. Get the physics to *refer to itself*. 
+And a shield, *imaginary truthvalues* - a general solution to logical *paradox*.
+
+I invite you along for the hunt, a hunt for **epiphanies**.
+
