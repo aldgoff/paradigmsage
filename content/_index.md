@@ -21,13 +21,14 @@ We shall leverage the *metaphor of games*, but games with a twist - a paradigm t
 ## Stories
 
 We shall also leverage an algorithm that nature has built into us - **stories**.
-Heroes, villians, supporting cast - add a quest, with daunting obstacles, and we have a story.
+Heroes, villians, supporting cast - add a quest, sprinkle in a few obstacles, and we have a story.
 
 ## Self-Reference
 
 Our hero needs a weapon. We shall arm him with one - self-reference. 
 "This statement is false." Things like that. Get the physics to *refer to itself*. 
-And a shield, *imaginary truthvalues* - a general solution to logical *paradox*.
+Self-reference has been at the heart of the major limit theorems of the past century.
+It might be sharp enough to penentrate the conceptual biases that make quantum physics seems so *spooky*.
 
 I invite you along for the hunt, a hunt for **epiphanies**.
 
