@@ -22,11 +22,10 @@ params:
   seminal work *The Structure of Scientific Revolutions*.
   It is derived from the Greek word for pattern.
   The modern idiom is *thinking out of the box*.
-  Many puzzles are paradigm puzzles, they are quite opaque until you
-  question the blocking assumption.
+  Many puzzles are paradigm puzzles; opaque until you question the blocking assumption.
   This is a skill which can be developed.
-  The great revolutions in science were all paradigm shifts.
-  Solving the quantum measurement problem likely requires a major paradigm shift.
+  The great revolutions in science were often paradigm shifts.
+  Solving the quantum measurement problem likely requires a paradigm shift.
 
 ## Primary Docs
   **Paradigm Discourse:**  
