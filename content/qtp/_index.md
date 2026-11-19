@@ -1,7 +1,6 @@
 ---
 title: "QTP Hypothesis"
-type: instrument
-draft: true
+draft: false
 ---
 
 # Intent
