@@ -1,5 +1,6 @@
 ---
 title: "Epiphany"
+weight: 10
 ---
 
 ### Conundrum
