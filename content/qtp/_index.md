@@ -3,7 +3,7 @@ title: "QTP Hypothesis"
 draft: false
 ---
 
-# Intent
+## Intent
   - Introduce the QTP hypothesis.
   - Content pages will explore the various arguments for and against.
 
