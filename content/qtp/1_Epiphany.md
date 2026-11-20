@@ -5,7 +5,10 @@ weight: 10
 
 ### Conundrum
 
-Quantum entanglement hints at *spacelike causality*, but spacelike causality is problematic.
+The nonlocal nature of quantum entanglement creates a quandry;
+to affect something *over there*, spacelike separated from something *over here*,
+invites suppositions about *spacelike causality*,
+but spacelike causality is problematic.
 
 Spacelike causality is required for FTL travel, even just for superluminal communication, but both are tantamount to *time travel*.
 
@@ -13,7 +16,7 @@ Given two spacelike links, it is possible to create a *closed loop in spacetime*
 
 If physics has taught us anything, it is that causality must be *consistent*;
 traveling backwards in time to murder your grandfather before he met granny is causally ludicrous,
-thus spacelike causality cannot be allowed.
+thus the modern conclusion that spacelike causality cannot be allowed.
 
 ### However
 
@@ -23,6 +26,7 @@ Building self-reference into logic allows the *Liar's Paradox*: "This statement 
 to be given a logical value, actually a pair of them: *imaginary true* or *imaginary false*.
 This is in perfect symmetry with the *Circular Argument*: "This statement is true",
 which also has a pair of solutions: *Boolean true* or *Boolean false*.
+They differ only by a *phase shift*.
 
 Each self-referential form is *consistent* (indeterminate) in one set of logical values but *inconsistent* (paradoxical) in the other set - almost like *conjugate bases in physics*.
 
@@ -48,4 +52,8 @@ What would have to be true for this hypothesis to be viable?
 Responding to this challenge is the purpose of this website.
 
 Spacelike causality might not only be allowed but *required*.
+
+---
+
+*Updated 11/20/2026*
 
