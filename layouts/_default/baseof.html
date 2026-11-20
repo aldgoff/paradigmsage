@@ -60,19 +60,21 @@
 
       {{ $p := .RelPermalink }}
       {{ $items := slice
-        (dict "name" "Start Here"           "path" "start-here/")
-        (dict "name" "Paradigm of Paradox"  "path" "pop/")
-        (dict "name" "QT3"                  "path" "qt3/")
-        (dict "name" "3DC"                  "path" "3dc/")
-        (dict "name" "LOF"                  "path" "lof/")
-        (dict "name" "QTP"                  "path" "qtp/")
-        (dict "name" "Contact"              "path" "contact/")
+        (dict "name" "Start Here" "path" "start-here/"  "tip" "Mouse over TLAs")
+        (dict "name" "PoP"        "path" "pop/"         "tip" "Paradigm of Paradox")
+        (dict "name" "QTP"        "path" "qtp/"         "tip" "Quantum Temporal Paradox")
+        (dict "name" "QT3"        "path" "qt3/"         "tip" "Quantum Tic-Tac-Toe")
+        (dict "name" "3DC"        "path" "3dc/"         "tip" "3D Chess (planar moves and advancement squares)")
+        (dict "name" "LOF"        "path" "lof/"         "tip" "Laws of Form")
+        (dict "name" "NLL"        "path" "nll/"         "tip" "Non Linear Logic")
+        (dict "name" "Contact"    "path" "contact/")
       }}
 
       {{ range $items }}
         {{ $url := .path | relURL }}
         {{ $active := or (eq $p $url) (hasPrefix $p $url) }}
         <a href="{{ $url }}"
+          title="{{ .tip }}"
           style="text-decoration:none; color:inherit; padding:0.15rem 0.35rem; border-radius:0.35rem; {{ if $active }}background:#eee; font-weight:600;{{ end }}">
           {{ .name }}
         </a>

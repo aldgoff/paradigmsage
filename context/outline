@@ -391,8 +391,10 @@
 │   │   └── variants.md
 │   ├── qtp
 │   │   ├── _index.md
-│   │   ├── test1.md
-│   │   └── test2.md
+│   │   ├── 1_Epiphany.md
+│   │   ├── 2_qt3.md
+│   │   ├── 3_ij.md
+│   │   └── 4-research.md
 │   ├── quantum
 │   │   └── first.md
 │   └── start-here.md
@@ -761,4 +763,4 @@
 │           └── poc.js
 └── themes
 
-128 directories, 633 files
+128 directories, 635 files
