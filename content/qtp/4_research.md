@@ -1,9 +1,9 @@
 ---
-title: "Research"
+title: "Research Objectives"
 weight: 40
 ---
 
-### Research
+### Objectives
 
 This leaves us with three things to investigate:
 1. Logical self-reference, the development of nonlinear logics ameanable to self-reference.

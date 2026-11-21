@@ -341,6 +341,9 @@
 │   │       └── _index.md
 │   ├── lof
 │   │   └── _index.md
+│   ├── nll
+│   │   ├── _index.md
+│   │   └── page1.md
 │   ├── pop
 │   │   ├── _index.md
 │   │   ├── ch-01-paradigms.md
@@ -391,12 +394,19 @@
 │   │   └── variants.md
 │   ├── qtp
 │   │   ├── _index.md
-│   │   ├── 1_Epiphany.md
+│   │   ├── 1_epiphany.md
 │   │   ├── 2_qt3.md
 │   │   ├── 3_ij.md
-│   │   └── 4-research.md
+│   │   ├── 4_research.md
+│   │   ├── 5_nll.md
+│   │   ├── 6_acp.md
+│   │   ├── 7_worldRibbons.md
+│   │   └── 8_ssi.md
 │   ├── quantum
 │   │   └── first.md
+│   ├── ssi
+│   │   ├── _index.md
+│   │   └── page1.md
 │   └── start-here.md
 ├── context
 │   ├── COMICS-PORTENTS.md
@@ -429,6 +439,9 @@
 │   ├── instrument
 │   │   ├── list.html
 │   │   └── single.html
+│   ├── nll
+│   │   ├── list.html
+│   │   └── single.html
 │   ├── partials
 │   │   ├── instrument
 │   │   │   └── nav.html
@@ -441,7 +454,10 @@
 │   ├── qt3
 │   │   ├── list.html
 │   │   └── single.html
-│   └── qtp
+│   ├── qtp
+│   │   ├── list.html
+│   │   └── single.html
+│   └── ssi
 │       ├── list.html
 │       └── single.html
 ├── meta
@@ -763,4 +779,4 @@
 │           └── poc.js
 └── themes
 
-128 directories, 635 files
+132 directories, 647 files
