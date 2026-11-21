@@ -35,6 +35,17 @@ Is it really the case that both stories can be 'true' at the same time?
 
 Call this the *Ambiguous Collapse Paradigm* (ACP).
 
+### Spacelike Causality
+
+The ACP may in fact be the way the world is.
+It is jarring because the idea of two incompatible causal stories both being valid is counterintuitive.
+An alternative is *spacelike causality*, where one and only one measurement is the *actual cause* of the collapse.
+Such an alternative theory would have to specify how the particulars of the 
+nonlocal situation *preferentially select* one measurement over the other.
+Such a theory could not be tested directly, because both collapses yield the same observable statistics.
+There would have to be side effects, or perhaps other quantum behaviors, for which the theory
+could make testable predictions about experimental outcomes.
+
 ---
 
-*Updated 11/20/2026*
+*Updated 11/21/2026*
